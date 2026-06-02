@@ -1,0 +1,18 @@
+# User-specific Claude Code settings
+.claude/settings.local.json
+.claude/launch.json
+
+# Generated outputs
+prototypes/
+briefs/handoffs/
+critic-*.md
+council-testimony.md
+proctor-*.md
+
+# Project-specific work
+HANDOFF-*.md
+JULIAN-*.md
+REPO-SETUP.md
+
+# macOS
+.DS_Store

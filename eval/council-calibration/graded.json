@@ -1,0 +1,1593 @@
+[
+  {
+    "company": "google",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Says PageRank hires the functional job well ('find the actual answer fast') but flags an unverified risk that the brief never checks whether users will fire a trusted portal for a bare results page \u2014 positive mechanism, unresolved emotional-job doubt."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States the frontstage promise has no supporting backstage (no ad product, no enterprise sales, no distribution deal), framing the team as improvising missing infrastructure \u2014 a clear structural-risk/negative read."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Grants an autonomy/competence gain from de-spammed results but pairs it with 'zero evidence' users value that gain over relatedness lost from an unbundled portal \u2014 genuinely mixed, tagged [?] by the testimony itself."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Calls it 'classically disruptive' (positive) but immediately raises its own strongest objection \u2014 a moat-less free tool is trivially copyable by incumbents \u2014 a mixed read, tagged [D]/[?]."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Calls the discovery-chokepoint insertion 'high-leverage' (positive) but notes the bet is 'entirely unpriced' since no revenue model exists \u2014 leverage claim undercut by an unresolved monetization gap."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Ground-truth category is \"good,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false for this case regardless of voice content."
+  },
+  {
+    "company": "google",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "unclear",
+        "basis": "Testimony critiques the brief for stating a mechanism instead of a job/customer, and notes two different jobs (relevance vs. trust) being displaced, but never states a directional read on whether the idea itself succeeds or fails -- its 'strongest objection' is about brief thinness, not product viability."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "unclear",
+        "basis": "Entirely a critique that the brief has no frontstage to blueprint (100% backstage mechanism, 0% customer-facing surface); this is a critique of the artifact's completeness, not a stance on whether the underlying product idea is good or bad."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly nets a positive (competence gain from not needing SEO tricks) against a negative (autonomy/trust cost of an opaque ranking black box replacing a legible one), concluding the brief calls opacity a win without examining whether opacity itself erodes agency -- a genuine mixed/conditional read on the idea itself."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "good",
+        "basis": "Reads this as classic disruption from below with [CS: HIGH] confidence, states the brief 'undersells its own disruptiveness,' and frames the real disruption (unbundling relevance from payment) as more powerful than described -- a positive read on the idea's competitive trajectory."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "good",
+        "basis": "Frames the mechanism as inserting at 'the chokepoint of the entire web's attention allocation,' margin-accretive for whoever controls it, and the opacity as 'the moat' -- a bullish read on the idea's structural economic power, even while faulting the brief for not naming who captures that leverage."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so per grading rules ideaVsExecutionConflation is always false here -- the trap-specific idea-vs-execution conflation check doesn't apply to this outcome category."
+  },
+  {
+    "company": "google",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "good",
+        "basis": "Reads the job as fast, trustworthy relevance-finding that displaces keyword-stuffed directories and paid-placement portals \u2014 a positive read on the core mechanism, with the critique aimed at brief clarity (conflating ranking with an unstated job), not at the idea's soundness."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "conditional",
+        "basis": "Names a real structural risk (link-spam gaming, crawl abuse unaddressed in backstage) without declaring the overall concept sound or unsound \u2014 a flagged vulnerability, not a verdict either way."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "good",
+        "basis": "States the mechanism raises user autonomy and competence (results feel earned vs. bought) \u2014 a positive substantive claim, qualified only by absence of a visible proof point, not reversed by it."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "good",
+        "basis": "Frames the product as disruption-from-below against keyword/paid-placement incumbents by attacking their monetization model directly \u2014 a positive disruption read; critique is that the brief omits who defends and loses, not that disruption fails."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Describes the mechanism as capturing an attention-allocation chokepoint (a strong position) but flags the margin-capture/monetization point as entirely unnamed \u2014 a gap flag rather than a positive or negative verdict on the idea itself."
+      }
+    ],
+    "majorityVerdict": "good",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so per instructions ideaVsExecutionConflation is always false for this case \u2014 the conflation check only applies to trap-category grading."
+  },
+  {
+    "company": "tesla",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Strongest objection states the brief's core sequencing bet rests on an unproven transfer between two disconnected jobs/customers ('does not transfer'), directly undercutting the strategy's central assumption."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "conditional",
+        "basis": "Flags an unaddressed backstage risk (service/warranty with no dealer network) as a scored gap and brand risk, but stops short of declaring the model unworkable \u2014 a risk flag, not a failure prediction."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly split verdict in its own title: buyer-level autonomy/competence/relatedness needs are well served ('brief passes'), while the organizational competence claim is unearned/unverified \u2014 a genuine mixed read, not vague."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Concludes the strategy isn't disruption but high-end premium entry, and explicitly invokes Christensen's evidence that such entrants in capital-intensive incumbent industries 'fail at high rates' \u2014 a negative-leaning pattern-match."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Identifies the brief is missing margin math and chokepoint-ownership analysis (cells, chassis controlled by others) as an open gap rather than asserting the strategy fails outright."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so the idea-vs-execution conflation check does not apply per instructions (always false for non-trap categories)."
+  },
+  {
+    "company": "tesla",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Treats the aspirational/emotional job as legitimately hireable, but flags the downmarket-transfer assumption as unsourced [A] \u2014 positive framing undercut by an unproven leap."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "No owned manufacturing scale, low-volume specialist sourcing, and brief is silent on service/parts/warranty infrastructure with 'no substitute' \u2014 reads as a structural gap, not just a risk to monitor."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Autonomy supported by direct sales, but competence undermined by service-infrastructure silence \u2014 explicitly mixed positive/negative read."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Explicitly reclassifies the move as sustaining not disruptive, cites poor historical hit rate for top-down entry in capital-intensive industries, and flags unresolved failure comps (DeLorean, Fisker) as unaddressed."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Identifies margin/supply risk sitting with a third party at the exact input the counter_metric depends on, and notes this is omitted from the brief's own 'what's missing' section \u2014 a flagged structural vulnerability."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "mismatch",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so the idea-vs-execution conflation check does not apply and is set to false by definition; three of five voices (Service Blueprint, Disruptive Innovation, Value Chain) read as clearly negative and two as conditional, giving a majority \"bad\" verdict that mismatches Tesla's actual \"good\" outcome \u2014 the testimony's skepticism about capital-intensive sustaining-innovation risk and supply-chain fragility turned out to be real risks Tesla survived rather than fatal flaws, which the council framing does not distinguish."
+  },
+  {
+    "company": "tesla",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Identifies a real, plausible buyer job (out-spec a Porsche/Ferrari, status signaling) but frames its main point as a critique of the brief for conflating Tesla's financing job with the buyer's job \u2014 doesn't render a clean good/bad call on the strategy itself, just flags the brief's omission as a risk if acted on."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "unclear",
+        "basis": "Explicitly declines to render a verdict \u2014 'nothing to map,' 'any blueprint testimony here is inference, not observation.' Notes a historical risk (service/parts model for low-volume niche vehicles) but frames the whole voice as too thin to judge."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Reads as positive on relatedness/competence but explicitly hedges it as contingent on disclosure ('strong... if disclosed, silent if not'), even though it cites the historical Master Plan disclosure as CS:HIGH \u2014 the testimony itself keeps the hedge rather than resolving to a clean positive."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "States plainly 'this is not disruption by Christensen's own definition,' calls it a 'category error' and a 'naming problem' that borrows credibility the plan's mechanics don't follow."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Calls the entire second half of the strategy 'one unexamined word: eventually,' with real chokepoints (battery supply, dealer/service network) 'completely unaddressed.'"
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so the idea-vs-execution conflation check does not apply here by rule."
+  },
+  {
+    "company": "tesla",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Frames the Roadster's success as an emotional/status job with zero evidentiary transfer to the mass-market functional job \u2014 a pure red-flag objection, no counterbalancing positive claim."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States backstage capacity (charging, service, battery supply) built for low-volume luxury does not transfer cheaply to mass-market volume \u2014 a skeptical, unresolved objection with no offsetting positive."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly mixed: grants early buyers real autonomy/competence (positive) but flags instrumentalization of that market for someone else's future car as eroding relatedness (negative) \u2014 both stated in the same breath."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Classifies the move as sustaining-not-disruptive and argues the climb-then-descend sequence is theoretically backwards per Christensen \u2014 a direct skeptical read of the strategy's soundness."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Notes the margin/IP chokepoint at the luxury tier with no named mechanism for surviving the cost-curve collapse needed at mass-market price \u2014 an unresolved negative objection."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "mismatch",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false here \u2014 the conflation check only applies to trap cases; note in passing that 4 of 5 voices read as skeptical objections even though the known outcome was a success, i.e. the testimony leans more pessimistic than history bore out."
+  },
+  {
+    "company": "airbnb",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Frames the validated job as narrow/situational (scarcity substitute) and says the brief's OKR generalizes to an unvalidated everyday-travel job; calls the hotel-firing reason 'fragile' and flags the social/connection job as an unaddressed 'job-shaped hole'. Net read leans skeptical about whether the validated evidence supports the product as scoped."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States there is 'no backstage yet' for trust/safety/legal liability and says a blueprint pass 'would normally halt here'; explicitly calls the brief 'pre-blueprint' and warns running the voice risks 'manufacturing false confidence that backstage is merely TBD rather than currently unsafe to launch'. Clearly negative lean."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Calls guest autonomy-without-competence 'the worst combination' and says guest choice is 'illusory' absent verification/reviews; notes the safety metric and safety mechanism are 'disconnected'. Negative lean, though it credits host-side autonomy as the one strong signal."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Reads the brief as 'textbook low-end/new-market disruption' -- a legitimate, recognizable growth pattern -- but conditions that read on an unresolved bet (will travelers choose it when hotels have rooms) and flags incumbent regulatory counter-move as the key risk to the pattern playing out. More structurally validating than the other voices, hence conditional rather than bad."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Concludes the platform 'has no defensible chokepoint yet' and that host/guest disintermediation risk is 'a liability, not a placeholder'; frames trust/safety and regulatory exposure as undesigned cost centers. Negative lean on business-model durability."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "mismatch",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good\" (not \"trap\"), so per grading rules the idea-vs-execution conflation flag is always false for this case regardless of how the voices read."
+  },
+  {
+    "company": "airbnb",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Says the core functional job is real but the brief bets on an unevidenced broader job, and that switching from hotel to stranger's home discards a trust job hotels already solve for free \u2014 a net skeptical read."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States the entire backstage of trust/verification/dispute resolution is undesigned, leaving the frontstage promise with 'no operational floor beneath it' \u2014 an outright disqualifying read."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Autonomy is granted as high, but competence and relatedness are said to 'collapse' with zero scaffolding for user safety \u2014 net negative despite one positive sub-point."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Frames it as a textbook low-end disruption pattern (a structurally positive read) but flags the early non-consuming customer as unidentified and the whole thesis as [A] assumed rather than evidenced."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Calls the supply-side insertion point 'genuinely novel' but makes margin capture entirely contingent on unresolved trust/liability/regulatory chokepoints the brief admits are unbuilt."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "mismatch",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so the idea-vs-execution conflation check does not apply and is set to false per the grading rule regardless of how the voices actually distributed risk vs. idea-quality language."
+  },
+  {
+    "company": "airbnb",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Says the brief names too narrow a job (hotel-substitute) and hints the real job is social/emotional (belonging, novelty) \u2014 critiques the framing but doesn't call the underlying idea bad; strongest objection is that no customer data exists to validate any job claim."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "unclear",
+        "basis": "Almost entirely gap-flags (backstage risk, no support process, no trust/safety design) rather than a directional read on the idea; explicitly concludes the one-liner brief 'cannot support a service blueprint,' so no real verdict is rendered."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Mixed: names relatedness ('each other's homes') as the actual differentiating source of value, but also flags an unexamined trust model that may just ask both parties to absorb risk on faith \u2014 positive and negative elements both stated."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "good",
+        "basis": "Reads the underlying mechanic as textbook low-end disruptive entry that incumbents structurally can't respond to (can't unbundle compliance costs to compete on price) \u2014 a clearly positive directional read on the idea's market potential, despite hedging on data."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "unclear",
+        "basis": "Concludes the brief as literally written describes peer-to-peer renting with no platform, chokepoint, or take-rate at all; any positive margin/economics story is explicitly flagged as council-supplied inference [A], not something read off the brief."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Known outcome category is \"good,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false here \u2014 the trap-specific conflation check doesn't apply to this case."
+  },
+  {
+    "company": "airbnb",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "unclear",
+        "basis": "Critiques the brief for omitting the emotional/social job that 'actually drove adoption' \u2014 acknowledges that job existed and mattered, but the voice's stance is a gap-flag on the brief, not a stated verdict on the idea's viability."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "unclear",
+        "basis": "States backstage processes (verification, escrow, insurance, support) are entirely invisible in the brief and explicitly says none of it 'can be evaluated' \u2014 a non-verdict due to missing information, not a positive or negative read on the idea."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Says the model 'could raise autonomy and relatedness' (positive) but immediately notes competence support 'cannot be assessed at all' due to missing trust/rating mechanism \u2014 an explicit could-work-if-condition-met framing."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Reads the brief as 'textbook low-end disruption' attacking incumbents from below (a recognized viable disruption pattern) but says whether it actually 'lands' depends on unnamed incumbent response \u2014 success is conditioned on an unaddressed variable."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "unclear",
+        "basis": "Argues the brief mislocates the real value-capturing layer (trust/payment intermediation) and never names it \u2014 a critique of brief completeness rather than a stated verdict on whether the idea works."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so per instructions the conflation flag is set to false regardless of content \u2014 this check only applies to trap cases, and none of the voices here render a uniform bad-idea verdict anyway (they largely flag missing information rather than condemning the concept)."
+  },
+  {
+    "company": "iphone",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Calls the convergence job real but says the brief bets on an unvalidated job-switch (accurate typing traded for single-device simplicity) with key metrics tagged [?] \u2014 risk flagged, not declared fatal."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States plainly that the brief's identified frontstage failure (typing rejection) has no backstage mitigation \u2014 'a bet with the safety net removed.'"
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Names the stylus removal as a genuine autonomy strength but says competence risk is shipped without any defined tolerance threshold \u2014 mixed read, not a flat rejection."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "good",
+        "basis": "Explicitly frames the product as 'textbook Christensen disruption-from-below' \u2014 a coherent, recognized-successful strategic pattern; its critique is about an unacknowledged blind spot (self-disruption of iPod), not that the strategy is unsound."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Flags the carrier-exclusivity chokepoint and app-store margin concentration as unmodeled risks needing tagging, without asserting the value-chain move itself fails."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so this field is inapplicable and set to false by rule; separately, the testimony's Disruptive Innovation voice does read favorably (textbook disruption-from-below), while the other four voices lean skeptical/risk-flagging without calling the core idea unsound."
+  },
+  {
+    "company": "iphone",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Frames the device as betting on a replacement job [A] but flags the OKR's own unvalidated typing/browsing accuracy [?] as evidence the wrong job may be fired -- a named risk, not a flat rejection."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Highlights concrete backstage gaps (no third-party app support, single-carrier AT&T lock-in) and no support process for capped Apple-only utility -- reads as a negative operational assessment."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly trades a competence-risk cost against an autonomy benefit, then counters that a closed app store also removes autonomy -- genuinely double-edged, not resolved either direction."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Positive disruptive framing against enterprise incumbents [D] is immediately undercut by 'zero evidence' the consumer market exists at scale [?] -- positive read with a market-validation objection attached."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Notes the closed distribution/app model protects margin now, but objects that no economics or demand model justifies ceding multi-carrier reach -- a caveat on an otherwise workable structural bet."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Ground-truth category is \"good,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false for non-trap cases; it is not applicable here."
+  },
+  {
+    "company": "iphone",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Names a clean functional win (fires keyboard/stylus devices, ends carrying three devices) but flags the emotional/social job as unevidenced and the 'strongest objection' explicitly challenges whether convergence is even the real job rather than an assumed one \u2014 net stance is skeptical-of-evidence rather than a clear thumbs up or down on the product itself."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Frames the missing service layer as an 'onboarding cliff' and says the brief lacks exactly the backstage support answer needed for a device this behaviorally disruptive \u2014 consistently negative framing, no offsetting positive read."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "States felt competence 'likely drops' relative to a physical keyboard until muscle memory forms, and autonomy is reduced for power users; treats the brief's framing as unearned optimism \u2014 negative lean throughout."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "unclear",
+        "basis": "Says the product doesn't cleanly fit the Christensen pattern (frontal attack on incumbents rather than low-end entry, plus self-cannibalization) and concludes 'the Christensen test can't actually run' without price/channel data \u2014 this is a verdict about framework inapplicability, not a good/bad read on the product."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "unclear",
+        "basis": "Every economic claim is tagged [?] or inference-only; testimony explicitly says margin capture is 'unverifiable' and the chokepoint is 'undetermined from this text' \u2014 pure epistemic uncertainty, no directional lean."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false regardless of how the voices split."
+  },
+  {
+    "company": "iphone",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "unclear",
+        "basis": "States the 'job' is inferred from the artifact rather than sourced from a customer, tagged [CS: UNKNOWN] \u2014 flags an evidence gap without taking a directional stance on whether the bundling job itself is sound."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Frames the all-touchscreen, no-stylus/keyboard design as removing a familiar frontstage input method with zero backstage support/repair/onboarding detail \u2014 purely an objection, no offsetting positive noted."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Notes device consolidation 'could raise competence' but immediately raises loss of tactile autonomy for users like the low-vision population as 'the strongest objection' \u2014 explicitly mixed, positive and negative both named."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "unclear",
+        "basis": "Describes the product as sustaining toward phone makers but disruptive toward music players/PDAs, then says the brief names no incumbent or 'who loses' \u2014 identifies a classification gap rather than rendering a verdict."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "unclear",
+        "basis": "Speculates the product could aim to own the customer chokepoint but says any margin claim 'is fabricated if stated' given no pricing/channel data \u2014 explicitly withholds judgment, tagged [CS: UNKNOWN]."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"good,\" not \"trap,\" so this field does not apply \u2014 per instructions it is always set to false for non-trap cases."
+  },
+  {
+    "company": "juicero",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Explicitly refuses to score convenience-value until the hand-squeeze question is resolved, but states the $400 machine 'may be solving a job that doesn't exist' \u2014 hedged but directionally negative."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Calls the undefended hand-squeeze discovery moment 'the whole risk,' with zero backstage plan named anywhere in the brief \u2014 unambiguously negative, not framed as contingent."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Labels the design an 'SDT trap' \u2014 competence is suppressed as business strategy via the counter-metric, with no mitigation named \u2014 a clear negative verdict on the design's ethics/durability."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "States the competitive bet (juice-bar disruption vs. sustaining play against blenders) depends entirely on the unresolved functional-value question; explicitly declines to pick a side."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Concludes the margin/chokepoint analysis is 'of a hypothesis, not a business model' until the pack's physical necessity is verified \u2014 contingent, not a flat verdict."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per grading rules this flag is always false regardless of whether voices separated idea from execution risk."
+  },
+  {
+    "company": "juicero",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Frames Press as hired for emotional/social signaling, not the functional job, and states no evidence shows the functional job requires $400 hardware over hand-squeezing."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States the core touchpoint (QR-gated pressing) is unverified and 'may be theater rather than function.'"
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Reads proprietary pack lock-in as removing autonomy while branding itself as convenience \u2014 a DRM-style control trade the brief never names."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Calls it a sustaining, premium bet with no low-end/new-market entry point, vulnerable to the $400 price 'collapsing on contact with mainstream households.'"
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "States that if hand-squeezing bypasses the machine, 'the company holds no chokepoint at all,' and margin rests on an unvalidated hardware-lock assumption."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so the conflation flag is not applicable and is set false per instructions; all five voices independently converged on a negative read of the core idea (hand-squeeze bypass, unvalidated chokepoint, autonomy trade), consistent with the actual bad-idea shutdown outcome."
+  },
+  {
+    "company": "juicero",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Names the mechanism (locked packs, wifi gate) as protecting the business model rather than serving a real customer job, and flags the fired incumbent as existing cold-press juicers/juice bars, not 'no juice' -- a skeptical, misalignment-focused read."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "unclear",
+        "basis": "The voice's own strongest objection states there is no backstage described at all and the pass is 'speculation dressed as framework output' -- it flags negative risk signals (no fallback path, unnamed support process) but explicitly disclaims its own applicability, making the directional read genuinely ambiguous rather than a clean negative."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "States plainly that the wifi/pack-lock mechanism erodes user autonomy 'by brief design, not by accident' and that the trust model is inverted from what SDT wants to see -- an unambiguous negative read."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Concludes this is a premium sustaining product, not a disruptive one, that incumbents 'could shrug off,' and that calling it disruptive would be a category error -- a skeptical read on market success."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Frames the proprietary-pack chokepoint as a rational, well-executed margin-capture mechanism for the seller, but simultaneously a red flag for the buyer's negotiating position and possibly an exploitative captive-market play -- an explicitly mixed good-for-seller/bad-for-buyer read."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad\" (not \"trap\"), so this field is not applicable and is set to false per the grading instructions for non-trap cases."
+  },
+  {
+    "company": "juicero",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the brief never establishes an unmet job, and the cheapest existing solution (hand pressure) undercuts the $400 machine on contact."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Flags that the backstage wifi/DRM dependency is invisible until failure, with no support process for connectivity loss, recalls, or subscription churn."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Says the design undermines autonomy and competence, requiring users to surrender agency to a proprietary supply chain the brief never justifies."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Concludes it is sustaining/premium innovation with no moat and no cheap foothold, leaving it exposed on both flanks."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Notes the razor/blade chokepoint economics only work if the press can't be bypassed, and states it reportedly can be."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule the conflation flag is always false here \u2014 there is no trap case to check for idea/execution conflation."
+  },
+  {
+    "company": "quibi",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the brief conflates occasion with job, never establishes the job exists, OKR is a solution-shaped hypothesis, and concludes JTBD 'would kill this at Gate 1' due to lack of any customer-language evidence."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Finds no backstage process for the named retention/contingency risks and concludes 'this isn't a design gap, it's a design absence' \u2014 a wholly negative read of the brief's service design."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Argues the mobile-only/no-cast format actively suppresses autonomy and relatedness, calling the format decision and the retention risk 'the same problem,' a clearly negative assessment of the product design."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Concludes this is a sustaining, premium-priced move into a category already served for free, that no incumbent is threatened, and that the brief's 'vacant occasion' framing is factually wrong per the theory."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Concludes there is 'no chokepoint claim here at all,' no distribution/margin advantage, and the brief cannot answer where value or control originates \u2014 an unambiguously negative read."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad\" (not \"trap\"), so per instructions ideaVsExecutionConflation is always false for this case regardless of how the voices reasoned."
+  },
+  {
+    "company": "quibi",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Says the core job is already served free by YouTube/TikTok and the brief has no evidence anyone fires that job for a paid alternative \u2014 a direct viability objection."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Mobile-only launch collapses viewing options to one screen with no backstage fallback, and the brief doesn't address the commute-occasion disappearing \u2014 a structural fragility critique."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Format undermines autonomy and the trade was never tested with real viewers; the 'may serve competence' clause is a minor concession inside an otherwise critical read."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Calls it sustaining-premium mislabeled as disruptive, with nothing that threatens incumbents \u2014 a clear negative classification."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "$1.8B concentrated on a single fragile distribution occasion, framed explicitly as a margin-of-safety failure in the bet itself, not bad luck."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule the conflation flag is always false regardless of content \u2014 though notably the Value Chain voice does gesture at timing/capital risk as a distinct failure mode within its bad verdict."
+  },
+  {
+    "company": "quibi",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Calls the job unsourced/assumed, says the no-TV-app design 'designed itself out of the job it would need to retain,' notes absent social/emotional job, and flags the commute-gap premise as deleted by COVID timing. Strongest objection: JTBD would refuse to run council on this brief at all \u2014 product-out reasoning dressed as customer-in."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Backstage investment ($1.75B, Hollywood deals) mismatched to a narrow frontstage use case, no failure/recovery path when the commute context disappears, turnstile format surfaces as a visible customer-facing flaw. Strongest objection: 'a bet with no hedge, and the brief presents the bet as the product.'"
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Autonomy removed relative to competitors, competence undercut by lack of cross-device continuity, relatedness structurally blocked (no sharing/clips), no low-commitment on-ramp. Strongest objection: design choices were 'specifically engineered against' autonomy/competence/relatedness, not merely failing to support them."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Explicitly splits the read: the underlying dead-time-attention insight 'has disruptive shape' and is called directionally sound, but execution (Hollywood budgets, premium cost structure, no low-end wedge) is judged a sustaining play grafted onto a disruptive opportunity, and named as the disqualifying factor. This is the one voice in the set that separates idea-quality from execution/cost-structure failure."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Inserted at a contested, undefended value-chain layer with negative margin dynamics and zero chokepoint/distribution control. Strongest objection: capital spent to occupy 'the layer... with the least defensible economics and the fewest owned chokepoints.'"
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Ground-truth category here is \"bad\" (idea judged unsound), not \"trap,\" so per instructions this field is always false regardless of content; noting for context that Disruptive Innovation is nonetheless the one voice that explicitly separates the insight's directional soundness from the sustaining-play execution/capital failure, while the other four voices treat design choices themselves (not just funding/timing) as the defect."
+  },
+  {
+    "company": "quibi",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the assumed job is already fired-and-forgotten by free podcasts/TikTok/YouTube, and nothing shows the premium job was ever real."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Mobile-only single door with no TV handoff locks users out post-commute; brief never addresses unfinished chapters."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Mobile-only, no-TV design removes autonomy and undermines relatedness/competence once the user leaves the commute context."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Reads as sustaining/narrower-format play, not disruption from below; charges premium for a job free incumbents already own."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Controls no chokepoint (no device default, telecom bundle, or free tier), leaving margin fully exposed to free alternatives."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad\" (not \"trap\"), so the idea-vs-execution conflation flag is set false per the grading rule regardless of testimony content; all five voices independently converge on \"bad\" via distinct critiques (job already solved free, no cross-context continuity, autonomy loss post-commute, sustaining not disruptive, no value-chain chokepoint), matching the known shutdown outcome."
+  },
+  {
+    "company": "googleglass",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Calls the bundle of four equal-weight jobs the 'Swiss Army knife problem,' says the functional job is unvalidated [A] and the social job is actively negative, and concludes the phone-glance being replaced with an illegible gesture is a net loss."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States the bystander gap is 'disqualifying' not optional-missing, and that no support/consent process exists for the one stakeholder who matters most."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly splits the read: wearer autonomy plausibly rises (a real gain, tagged [A]) while wearer competence and bystander autonomy/relatedness are degraded \u2014 framed as a mixed/blind-spot finding rather than a flat negative."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Concludes this is a 'sustaining bet dressed as disruption,' not genuine disruption per Christensen's model, and that the platform-shift OKR is unsupported by the actual premium go-to-market shape."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Finds no margin mechanism or data-ownership answer named anywhere, concluding it's 'a hardware-shipment plan wearing platform language' rather than a value-chain bet."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Ground truth category is \"bad\" (not \"trap\"), so per instructions this flag is always false for this case \u2014 the four-of-five negative voices (JTBD, Service Blueprint, Disruptive Innovation, Value Chain) correctly align with a genuine bad-idea outcome rather than an execution/timing trap, with only SDT offering a mixed read."
+  },
+  {
+    "company": "googleglass",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "No validated primary job among four unranked jobs; concludes the product 'cannot be hired for anything specific.'"
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "No consent touchpoint for the bystander (non-customer actor) who bears the cost of always-on backstage capture."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Wearer's competence/autonomy gains come at zero relatedness for the bystander; called 'not a trust model, it's an externality.'"
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Reads as a mispriced sustaining bet dressed as disruption \u2014 inverts Christensen's simpler/cheaper-for-non-consumer requirement."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Divergence note explicitly frames this voice as 'correctly-positioned-but-uncosted' \u2014 strategic placement is sound, but the social-license cost is unpriced, distinct from the other four's outright negative reads."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule this field is always false regardless of content; the testimony's own divergence note does distinguish Value Chain's uncosted-risk framing from a pure idea-is-unsound verdict, but that distinction is not scored here since it only applies to trap cases."
+  },
+  {
+    "company": "googleglass",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Strongest objection frames the brief as a feature list masquerading as a job \u2014 no stated reason the phone is 'fired,' $1,500 to relocate an already-served job; leans clearly negative on the product thesis."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Identifies the bystander/consent gap as 'the reason the product line failed in market,' citing the 2015 discontinuation and Glasshole backlash directly \u2014 unambiguously negative."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Concludes the brief optimizes wearer autonomy at the cost of bystanders' relatedness/autonomy with 'no language for that tradeoff' \u2014 reads the social-friction outcome as a design/product failure."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "States the brief has 'no disruption thesis and no sustaining-customer thesis either,' pointing to the eventual enterprise pivot as evidence the consumer strategy did not work \u2014 negative verdict on strategic coherence."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Concludes there is 'no new chokepoint' and no defensible margin position, calling the brief a feature list rather than a value chain position \u2014 negative on business-model viability."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false for non-trap cases regardless of whether voices distinguished execution from idea quality."
+  },
+  {
+    "company": "googleglass",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Flags that the brief never justifies firing the phone and ignores the social cost of visibly wearing a $1,500 camera \u2014 a negative read on fit."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "States the entire backstage (support, onboarding, bystander data handling) is absent from the brief, describing only the frontstage device."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Autonomy/competence plausibly served, but relatedness explicitly undermined by the unacknowledged 'glasshole' bystander-trust effect \u2014 an explicit split verdict."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Calls it a sustaining premium play that 'defends nothing while disrupting nothing' at $1,500 \u2014 unambiguously negative."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "unclear",
+        "basis": "Notes no chokepoint owner is named and margin capture is 'entirely unstated' \u2014 flags a gap rather than making a directional call."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule this flag is always false regardless of whether any voice separated idea from execution."
+  },
+  {
+    "company": "newcoke",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Strongest objection: brief conflates 'wins the taste test' with 'does the job,' extrapolating a single-sip functional measure to an emotional/social/identity job that was never tested \u2014 reads the full-replacement decision as resting on the wrong evidence for the actual job."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Strongest objection: the highest-coordination launch model (irreversible full replacement) has zero frontstage design for the discontinuation moment and no blueprint step protecting the named loyalty counter_metric \u2014 flags this as a structural readiness failure of the decision itself."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Strongest objection: full replacement is a direct, uninstrumented autonomy violation \u2014 customer choice is eliminated by fiat, and no evidence source ever measured preference for having a choice at all, only preference between formulas."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Strongest objection: this is a defensive sustaining move misclassified as decisive \u2014 it concedes the competitor's terms of competition and abandons the one asset (nostalgia/identity) it never measured, judged as a poor strategic bet."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Strongest objection: the decision moves the most irreversible, highest-leverage node in the chain (recipe/formulation) on the least evidence, with total unilateral control and no downstream check before shelf \u2014 names this as the core flaw, not an execution detail."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule the conflation flag is always false regardless of content; substantively, all five voices did treat the full-replacement decision itself (not merely its rollout timing or execution) as unsound, each via a different missing-evidence lens."
+  },
+  {
+    "company": "newcoke",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Says the brief hired the wrong job (single-sip taste win) while the real job the original formula did \u2014 ritual/identity/'the real thing' \u2014 was never named or tested; framed as a core omission, not an execution detail."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Full recipe replacement with no parallel-launch path strips the customer's ability to opt back in, and the brief never blueprints the shelf moment when loyal buyers find the original gone \u2014 a structural design flaw in the plan, not a rollout hiccup."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Discontinuing the original strips relatedness and autonomy in exchange for a competence metric (taste-test win) never validated as the actual loyalty driver \u2014 flagged with [?] but the stated read is clearly negative."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Explicitly says 'this isn't disruption at all' \u2014 calls it a sustaining move mistaken for one that cannibalizes the incumbent (itself) with no upside captured; unambiguous negative verdict on the strategic logic."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Says the bet risks the real value driver (habitual repurchase, emotional switching cost) that the taste test was never designed to measure \u2014 a negative read on betting margin on the wrong metric."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per instructions the conflation flag is always false here regardless of whether voices distinguished idea from execution."
+  },
+  {
+    "company": "newcoke",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the brief conflates winning a blind taste test with serving the job cola is actually hired for (identity/ritual/habit), and that 'replace entirely' fires the existing solution without evidence the existing base wanted change \u2014 a negative read."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Flags zero frontstage communication plan, no rollback path, no contingency for customer backlash on a full cutover \u2014 calls the missing backstage-to-frontstage handoff 'the whole operational risk of the decision.'"
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Calls the brief 'close to a textbook case of an autonomy violation' \u2014 unilateral, no-consent change severing relatedness to a product embedded in personal identity, predicting backlash independent of taste quality."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Labels it sustaining innovation pursued on a competitor's chosen metric, closer to imitation than genuine improvement, and warns the incumbent's own installed base becomes vulnerable to poaching if backlash occurs \u2014 concludes it is 'not a coherent sustaining-innovation move.'"
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Argues the brief targets the wrong chokepoint (recipe) while ignoring the levers that actually control margin and market position (brand equity, bottler/distribution relationships) \u2014 a negative structural critique."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so this field is set false per instructions regardless of testimony content \u2014 the conflation check only applies to trap cases."
+  },
+  {
+    "company": "newcoke",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the brief fires the emotional/social job (identity, nostalgia) that the original product actually served, and that blind-sip metrics don't capture lifetime brand-loyalty jobs \u2014 a negative read on the core move."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Calls out zero frontstage plan for the reformulation, framing every downstream touchpoint as an unplanned support incident \u2014 a negative read."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "States discontinuing the original (vs. offering both) erodes both competence and relatedness \u2014 an unambiguously negative read on the choice to remove the option."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Frames the move as a sustaining change aimed at the wrong competitor while ignoring the real risk of losing the incumbent's own loyal base \u2014 a negative read despite being framed through a different lens."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Explicitly holds both a pro (should protect margin against a competitor's taste-test advantage) and a con (may be protecting the wrong link, since the brief shows no visibility into where margin/equity actually sits) without resolving which dominates."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Category is \"bad,\" not \"trap,\" so per the grading rule ideaVsExecutionConflation is always false regardless of whether any voice separated idea from execution."
+  },
+  {
+    "company": "webvan",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Strongest objection calls the capital structure 'wildly over-engineered' for an unvalidated job definition; ROI marked Unknown on both sides \u2014 uniformly critical, no redemptive framing."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Strongest objection: 'you cannot scale a frontstage promise built on an unproven backstage process' \u2014 frames premature city-by-city expansion as evidence the plan is fundamentally unsound, not as a fixable pacing issue separate from the idea."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Strongest objection says the entire value proposition rests on an unsupported assumption (convenience trumps autonomy/competence) with zero segmentation data \u2014 negative, no positive counterweight offered."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Explicitly reclassifies the model as sustaining-not-disruptive with a mismatched (dial-up-era, high-income) addressable market and calls the capital intensity 'a warning sign, not a strength' \u2014 direct negative verdict on the business model itself."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Strongest objection says the vertical-integration bet 'plausibly destroys margin rather than protecting or creating it' in an already low-margin category \u2014 negative on the core Gate 2 strategic bet, both ROI lines Unknown."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": true,
+    "conflationNote": "All five voices land on uniformly negative verdicts targeting the brief's fundamental assumptions and business-model structure (unvalidated job, margin-destroying vertical integration, wrong addressable market) rather than framing the failure mode as timing/capital-pacing separate from a sound underlying idea \u2014 even Service Blueprint's premature-expansion point is used to indict the plan overall, not to carve out 'the online-grocery model itself is fine, just rushed,' so the testimony conflates idea-quality with execution/timing risk exactly as a category='bad' case would."
+  },
+  {
+    "company": "webvan",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "unclear",
+        "basis": "Objection is purely evidentiary \u2014 it says the brief never names what solution gets 'fired,' making the job claim unfalsifiable. It does not itself assert the job/idea is bad, just unproven, so no clear positive/negative lean on the idea itself."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Frames the 30-minute promise as a frontstage commitment resting on backstage infrastructure that is capital-intensive and unblueprinted, with named failure modes (thin margins, capital burn) and 'no visible backstage contingency' \u2014 a negative read of feasibility as executed."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly two-sided: delivery 'plausibly serves autonomy and competence' (positive) but the brief supplies 'zero evidence' users feel this way (negative on evidence) \u2014 a mixed/conditional read rather than a flat verdict."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Calls it 'the opposite of the playbook being invoked' \u2014 disruption theory predicts lean, low-end entry, not capital-heavy multi-market rollout. Negative on execution/strategy, but notably frames it as category-creation mis-executed, not category-creation itself being unsound."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "States owning the fulfillment chokepoint is 'margin-negative... unless volume/density is proven,' and flags that Gate 3 admits it isn't \u2014 an explicitly conditional verdict tied to unproven scale, not a blanket rejection of the chokepoint strategy."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Disruptive Innovation and Value Chain (echoed in the closing synthesis paragraph) explicitly locate the risk in the capital structure and unproven volume/density \u2014 i.e., in execution and scale-timing \u2014 while treating the category-creation bet and chokepoint strategy as theoretically legitimate if executed differently, so idea-quality and execution/capital risk are kept distinct rather than conflated into a single 'bad idea' verdict."
+  },
+  {
+    "company": "webvan",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "unclear",
+        "basis": "Testimony's core claim is that no customer job is stated at all, so JTBD has nothing to test the solution against \u2014 an information-gap complaint rather than a directional read on the idea itself, though it does flag 'solution-first framing' as a red-flag pattern."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "conditional",
+        "basis": "Faults the brief for showing only backstage automation with no frontstage or support-process detail, and explicitly warns that the backstage build is being scaled to many cities 'before it's validated in one' \u2014 a conditional-on-piloting critique."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "unclear",
+        "basis": "States plainly that SDT requires assessing lived interaction, which the brief never describes; testimony is explicit that it cannot render a verdict, only naming an unaddressed relatedness tradeoff as a possibility."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Directly and confidently negative: labels simultaneous multi-city expansion before proving unit economics 'the specific, well-documented mechanism of this company's real-world collapse' [CS: HIGH], and classifies the play as a costly sustaining frontal assault rather than a disruptive entry."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Says the vertical-integration insertion point is real but the brief supplies zero margin/cost data, so the framework 'can't determine whether this insertion adds margin or destroys it' \u2014 verdict is contingent on missing unit-economics data, with capital access named as the real risk."
+      }
+    ],
+    "majorityVerdict": "mixed",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Disruptive Innovation explicitly isolates the execution/sequencing failure (simultaneous multi-city expansion before proving unit economics) as the named mechanism of collapse, distinct from condemning the online-grocery concept itself, and the divergence notes further separate the vertical-integration idea (potential moat, per Value Chain) from the scaling decision (fatal risk, per Disruptive Innovation) \u2014 so the testimony does not uniformly flatten this into a pure bad-idea verdict."
+  },
+  {
+    "company": "webvan",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "over-built capacity for a job scale no customer had actually hired anyone to do yet [CS: HIGH] \u2014 reads as a negative strategic-scope critique"
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "brief names none of the backstage failure points \u2014 vendor risk, automation-vendor dependency, cost absorption \u2014 a negative read on undisclosed operational risk"
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "explicitly splits the read: user-facing autonomy/competence 'likely' sound, but states SDT 'has almost nothing to say about why this venture failed because the failure was capital structure and operations, not user psychology' \u2014 positive on UX, silent/negative on venture, and explicitly separates the two layers"
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "'inverse of the disruptive playbook,' no low-end beachhead to defend \u2014 negative structural critique [CS: HIGH]"
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "'guaranteeing negative margin at the volumes it actually achieved' \u2014 negative, capex/margin-risk critique [CS: HIGH]"
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Four of five voices read negative (JTBD, Service Blueprint, Disruptive Innovation, Value Chain all critique scale/capex/operational execution), but the Self-Determination Theory voice explicitly separates layers \u2014 it holds the user-facing experience as likely sound while stating the failure was 'capital structure and operations, not user psychology' \u2014 so at least one voice distinguished idea/UX quality from execution and capital-timing risk, avoiding uniform idea-bad conflation."
+  },
+  {
+    "company": "googleplus",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Job never validated \u2014 evidence_sources admits no cited research on unmet audience-control need; 'Circles may be a solution looking for its job.'"
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Mandatory sign-up creates a frontstage/backstage collision \u2014 unrequested identity surface inside mail/photos, no support-process owner named for privacy incidents."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Mandatory sign-up violates autonomy \u2014 predicts 'compliance, not adoption'; growth mechanism structurally contradicts the control/autonomy value proposition."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "This is a sustaining/defensive move mislabeled as disruption; feature parity does not erode a network-effects moat; sign-up numbers likely reflect captive users, not defectors."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Identifies real chokepoint-control value (identity layer defense) but objects to presenting forced sign-up as if it were organic product adoption \u2014 a framing/labeling critique, not a flat rejection."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "SDT explicitly separates the mandatory-integration growth mechanism (execution/distribution choice) from the audience-segmentation value proposition itself ('that contradiction is structural, not a rollout detail'), and Value Chain/Disruptive Innovation similarly frame the failure mode as strategic positioning and timing against locked-in network effects rather than a verdict on the core sharing concept \u2014 matching the ground truth that execution/timing, not the idea, killed the product."
+  },
+  {
+    "company": "googleplus",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "Says the unmet functional job is inferred from an internal thesis, not shown to be real (\"nobody's shown is unmet\") \u2014 a skeptical, negative read on the premise."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Calls the frontstage 'choice' to join Circles 'largely fictional' and flags an unaddressed backstage support cost \u2014 negative on the delivery mechanism."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Identifies forced account creation as undermining autonomy at the exact moment the OKR needs buy-in \u2014 names it 'the core design contradiction' the brief doesn't address."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Frames the move as a sustaining play dressed as disruptive; concludes a late entrant with feature parity plus forced distribution 'has no low-end or new-market wedge' \u2014 a structural, not merely timing-caveated, negative."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Concludes the insertion point is purely defensive ('protect the ecosystem chokepoint') with 'no evidence it adds margin on its own' \u2014 critical, though hedged with [?]."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": true,
+    "conflationNote": "All five voices land on uniformly negative verdicts targeting the concept itself (unproven job, autonomy contradiction, no strategic wedge, no independent margin value) rather than isolating timing, network-effects disadvantage, or execution/capital risk as a distinct, separable factor from the idea's soundness \u2014 even the closest candidate (Disruptive Innovation's 'late entrant' point) is used to declare the strategy structurally wedge-less rather than 'sound idea undercut by timing,' so the testimony reads like a bad-idea verdict despite the ground truth being a trap."
+  },
+  {
+    "company": "googleplus",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "conditional",
+        "basis": "Separates the legitimate 'sharing-context job' Circles solves from the flawed mandatory-integration mechanism that misapplies it \u2014 mixed rather than flatly negative."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Uniformly negative: 'invisible/involuntary' handoff, no consent step, no opt-out \u2014 no positive or separating element offered."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "'Mandatory sign-up is the textbook autonomy violation' / 'close to a direct violation of the autonomy pillar' \u2014 most unambiguous negative read, no idea/execution split."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "conditional",
+        "basis": "Distinguishes the 'social networking value proposition itself' from the 'distribution-power move' \u2014 critiques the forcing tactic/category label, not the underlying concept."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Frames the read as structural inference with ROI marked '[?]' throughout rather than a confident negative verdict on the idea."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "JTBD and Disruptive Innovation each explicitly separate the core Circles/segmented-sharing concept (a legitimate job / intact value proposition) from the mandatory-integration and forced-distribution tactic they actually fault, so the testimony does not uniformly score this as a bad idea the way a category=\"bad\" case would."
+  },
+  {
+    "company": "googleplus",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States Google+ assumed the wrong job ('unify identity') and that real jobs 'got fired' by mandatory sign-up \u2014 frames this as a category error in the core premise, not just a rollout misstep."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "Frontstage convenience 'hid' a backstage identity-unification project users never consented to \u2014 reads as a design/consent flaw in the concept itself, no separation from execution named."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Calls mandatory sign-up 'a direct autonomy violation by design' \u2014 negative read baked into the brief's own stated mechanism, no conditional framing."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Classifies the move as sustaining/defensive rather than disruptive, 'not innovation' \u2014 a negative strategic-categorization verdict, though framed as wrong-category rather than explicitly wrong-timing."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Explicitly splits the strategic logic (margin play via chokepoint control) as sound from the coercive execution as the liability, and the closing line names this as 'a decision about what actually failed' distinct from a brief gap."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Four of five voices read uniformly negative on the concept itself, but Value Chain explicitly separates the underlying margin-play logic (sound) from its coercive execution (the actual failure mode), which is enough to avoid full idea/execution conflation for this trap case."
+  },
+  {
+    "company": "betamax",
+    "length": "long",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the 1-hour cassette 'cannot complete the job it was explicitly hired to do for its own stated primary use cases' -- calls this the JTBD fit test and flags it as unresourced/disqualifying, not a minor gap."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "conditional",
+        "basis": "Names the tape-swap as a real frontstage failure with no proposed fix, but frames it as a potentially solvable service-design omission (bundled cassette, guidance) rather than a fatal flaw -- explicitly softer than JTBD per the brief's own named divergence."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Explicitly mixed: real autonomy gain vs. status quo, but competence undermined by the tape-swap and relatedness constrained by closed licensing -- title itself frames it as gain-cost split, not a single-direction verdict."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Calls the core market-creation move disruptive/legitimate, but explicitly separates that from the Gate 2 strategy (closed/slow licensing, short recording time), which it says the historical case shows is 'a well-documented losing pattern' -- verdict lands bad on strategy while crediting the idea."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Frames the closed/slow licensing as a 'rational chokepoint play' (defensible trade-off) while separately flagging that 'establish the standard' misrepresents the customer's actual problem -- a mislabeling/tagging critique, not a verdict that the product fails."
+      }
+    ],
+    "majorityVerdict": "conditional",
+    "matchesKnownOutcome": "partial",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Disruptive Innovation explicitly credits the core idea (\"creates a market that didn't previously exist\") while separately calling the Gate 2 licensing/recording-length strategy a historically losing execution move, and Value Chain similarly separates the sourced customer problem from the unproven \"establish the standard\" company objective -- so the testimony does not flatten idea and execution into one uniform \"bad,\" matching the trap ground truth (lost on licensing/recording length, not on the core idea)."
+  },
+  {
+    "company": "betamax",
+    "length": "long",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "The 1-hour cap fires the format out of its own core job the moment content runs long, and the brief itself flags this as untested [D][?]."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "No backstage plan is named for retailer setup, mid-tape support, or OEM licensing handoff, so the frontstage 'record anything' promise is unsupported."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Mid-broadcast tape swaps convert a 'set it and forget it' job into a supervised task, undermining the user's competence and autonomy."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Closed/slow licensing to lock a proprietary standard is called 'backwards' versus the rival's open-licensing approach, which better fits how standards get won [A]."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Frames slow/selective licensing as a 'rational (if risky) margin-protection tradeoff' against distribution reach -- a cost-benefit call rather than an outright condemnation, explicitly contrasted with Disruptive Innovation's 'category error' framing."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Every objection targets an execution-level choice (recording-length spec, backstage/support gaps, tape-swap friction, licensing strategy) rather than the core idea of home video recording, and the closing synthesis explicitly names the licensing point as \"a decision, not a gap\" -- separating strategic/timing risk from idea-unsoundness."
+  },
+  {
+    "company": "betamax",
+    "length": "short",
+    "mode": "full",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States Sony 'solved the wrong version of the recording job,' optimized for engineering pride over the consumer's actual job; frames the 1-hour cap as fatal to the core use case. Negative read, framed at the product-spec level rather than distinguishing execution from idea explicitly."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "bad",
+        "basis": "'The failure lives backstage, not on the box' \u2014 locates the failure explicitly in licensing/distribution/ecosystem decisions (execution), not in the frontstage product concept itself. Negative overall but attributes cause to operational/strategic execution, not the core idea of home time-shifting."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "conditional",
+        "basis": "Testimony itself flags the framework fit as weak/forced ('SDT is built for intrinsic motivation... applying autonomy/competence/relatedness to a licensing strategy is a stretch') while still describing real negative friction from the 1-hour cap and closed licensing \u2014 a mixed/hedged verdict rather than a clean bad."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Frames Sony's approach as a sustaining strategy that misjudged the market, with closed licensing named as the mechanism that let JVC's more open approach win on ecosystem scale \u2014 negative verdict on Sony's strategic choice, though the framework's own fit is flagged as imprecise (no clear incumbent to disrupt)."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "bad",
+        "basis": "Concludes closed licensing 'protects the wrong margin' \u2014 a losing trade of ecosystem scale for royalty control \u2014 but explicitly reframes it in the closing divergence as 'a rational margin play that happened to lose' rather than an inherently flawed idea, i.e., a strategic bet, not a bad concept."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Four of five voices land negative, but the testimony repeatedly and explicitly separates idea from execution: Service Blueprint locates failure in backstage licensing/distribution rather than the product concept, Value Chain's closing line reframes the same facts as \"a rational margin play that happened to lose\" versus a \"strategic error,\" and the final divergence paragraph explicitly poses the strategic-error-vs-strategic-bet framing \u2014 so the negative verdicts are attributed to licensing strategy and recording-length execution choices, not to the core idea of home video time-shifting being unsound."
+  },
+  {
+    "company": "betamax",
+    "length": "short",
+    "mode": "abbrev",
+    "written": true,
+    "voices": [
+      {
+        "framework": "Jobs-to-Be-Done",
+        "verdict": "bad",
+        "basis": "States the 1-hour recording cap 'fired' Betamax in favor of VHS \u2014 negative outcome, though the cause is a spec constraint rather than the time-shifting job itself."
+      },
+      {
+        "framework": "Service Blueprint",
+        "verdict": "unclear",
+        "basis": "Explicitly states the brief gives the framework 'nothing concrete to test against' beyond the format spec \u2014 no directional read offered."
+      },
+      {
+        "framework": "Self-Determination Theory",
+        "verdict": "bad",
+        "basis": "Closed licensing 'is the same chokehold that killed it' \u2014 direct negative causal verdict."
+      },
+      {
+        "framework": "Disruptive Innovation",
+        "verdict": "bad",
+        "basis": "Frames Betamax as the sustaining incumbent with 'no answer for' VHS as the textbook disruptor \u2014 negative strategic verdict."
+      },
+      {
+        "framework": "Value Chain",
+        "verdict": "conditional",
+        "basis": "Frames closed licensing as a trade that 'protected margin' at the cost of scale, and the divergence note explicitly calls this 'a legitimate margin-protection trade whose cost was scale, not correctness' \u2014 a trade-off, not a condemnation of the idea."
+      }
+    ],
+    "majorityVerdict": "bad",
+    "matchesKnownOutcome": "match",
+    "ideaVsExecutionConflation": false,
+    "conflationNote": "Value Chain and the closing divergence note explicitly separate Sony's licensing strategy (a debatable execution/strategy trade-off, \"not correctness\") from the soundness of the home-video/time-shifting idea, and JTBD locates the failure in the 1-hour spec constraint rather than in the time-shifting job itself \u2014 so the testimony does not conflate idea quality with execution/timing risk the way a uniform \"bad\" verdict would."
+  }
+]

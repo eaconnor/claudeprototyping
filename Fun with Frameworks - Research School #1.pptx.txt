@@ -1,0 +1,167 @@
+Fun with Frameworks
+Beth Schwindt
+BC Research School #1
+Diane Fossey
+
+Witty Slide/Intro
+
+Q. 
+Where doframeworks 
+come from?   
+
+Guts --- personas are really the “user” part of a product architecture map. --- When we are good, we map the user needs to the function structure. Always be mapping the user needs to the function structure. 
+
+Q. 
+What can they do for me?   
+
+Discovery
+
+Gather a lot of data 
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+Evaluative
+
+Diagnose + Define “Good”
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+POEMS
+Overall/Unknown
+
+People
+Objects
+Environments
+Messages
+Services/Systems 
+
+
+
+Inventory Existing
+Write Questions
+Take Notes
+Analyze Results
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+POEMS
+Overall/Unknown
+
+
+People
+Objects
+Environments
+Messages
+Services/Systems 
+
+
+
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+5Es
+Process
+
+Entice
+Enter
+Engage
+Exit
+Extend
+
+
+
+Inventory Existing
+Write Questions
+Take Notes
+Analyze Results
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+5Es
+Process
+
+Entice
+Enter
+Engage
+Exit
+Extend
+
+
+
+Inventory Existing
+Write Questions
+Take Notes
+Analyze Results
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+Human Factors
+Did we design for the full human?
+
+Cognitive
+Social
+Cultural
+Physical 
+Emotional
+
+
+
+Inventory Existing
+Write Questions
+Take Notes
+Analyze Results
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+InventoryExisting
+Write Research Questions
+Take Notes
+Analyze Results
+4As - 
+Who are these people, really?
+What do they care about? 
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+4As
+What do we know about what people really want?
+
+Ambitions
+Anxieties
+Attitudes
+Actions
+
+
+
+Inventory Existing
+Write Questions
+Take Notes
+Analyze Results
+https://www.nngroup.com/articles/interviewing-users/
+30% of usability errors
+https://www.qualtrics.com/experience-management/research/determine-sample-size/
+95% confident, +/-5% confidence level/margin of error  (one variable) 
+
+5es, AEIOU, 5HFs, POEMS frameworks --- 
+https://www.epicpeople.org/article_author/rick-robinson/
+
+
+
+Thanks! 
+Questions?  

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "apex-agent": {
+      "command": "npx",
+      "args": ["@n-able/apex-ui", "agent"]
+    },
+    "n-able": {
+      "type": "http",
+      "url": "https://api.n-able.com/mcp-read-only",
+      "headers": {
+        "Authorization": "Bearer ${NABLE_API_TOKEN}"
+      }
+    }
+  }
+}

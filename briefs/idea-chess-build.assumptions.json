@@ -1,0 +1,123 @@
+[
+  {
+    "id": "BET1",
+    "label": "Ticket Triage & Dispatch is the right day-1 Coworker to ship in onboarding",
+    "probability": 0.35,
+    "required": true,
+    "stage": "adopt",
+    "tag": "[SPECCED]",
+    "kill_criterion": "Triage does not appear in the researched top-five default Coworkers; QBR Advisor ranks #1 (priority 2.90, DEC-006) and Triage is not in the built or specced catalog at all. First-run delight is staged on a task chosen for ConnectWise buildability, not demand.",
+    "test_that_resolves_it": "A/B two onboarding first-Coworkers (Triage vs QBR Advisor or Alert Flood Suppressor) with 8-12 real MSP admins; measure completion AND 7-day second-Coworker activation. If QBR wins on retention, swap the onboarding vehicle.",
+    "evidence": "FSN-82692 SCOPE-005 + full section 3 journey ships Triage; FSN-83143 section 6 catalog + DEC-006 lists five defaults (QBR Advisor 2.90 ... Security Tabletop 5.00), Triage absent; grep: 'triage' absent from app code."
+  },
+  {
+    "id": "BET2",
+    "label": "Engine-first: build Runbook Engine + Value Ledger before the top-demand runbooks (QBR, IR-RCA have no spec)",
+    "probability": 0.45,
+    "required": true,
+    "stage": "launch",
+    "tag": "[BUILT]",
+    "kill_criterion": "The value ledger writes entries only on Coworker run completion; the only planned first writer is onboarding REQ-017, which is unbuilt. A fully-built ledger has no value producer, so the ROI substrate cannot render a non-zero demo. Substrate with no demanded runbook on top is plumbing you can't show.",
+    "test_that_resolves_it": "Build ONE demanded runbook (QBR Advisor) end-to-end against the existing engine + ledger and demo a real time-saved number. If it lands, engine-first is vindicated; if the demanded runbook exposes engine gaps, the sequencing was wrong.",
+    "evidence": "specs/002 tasks 49/49 [X], specs/003-value-ledger 52/52 [X] (both BUILT); FSN-82692 NONGOAL-002 defers QBR/IR-RCA; FSN-83143 catalog names them with no build; ledger producer is Execution-Engine/onboarding scope, both SPECCED."
+  },
+  {
+    "id": "BET3",
+    "label": "Flat, non-orchestrated coworkers: coworker-to-coworker orchestration is a v1 NON-GOAL",
+    "probability": 0.50,
+    "required": false,
+    "stage": "defend",
+    "tag": "[SPECCED]",
+    "kill_criterion": "Once two of the five defaults exist, 'let the Alert Suppressor feed the QBR' is the obvious next demand; NONGOAL-002 forbids it and the flat schema cannot express it, forcing an orchestration retrofit onto the core entity.",
+    "test_that_resolves_it": "Interview design partners on whether they expect multi-coworker chaining in the first 90 days. If >30% do, the non-goal is a near-term liability, not a v1 simplification.",
+    "evidence": "FSN-83143 NONGOAL-002; code has StepsRunWorkflow (Expert DAG) but no coworker-to-coworker path; flat Coworker model has no registry to reference from."
+  },
+  {
+    "id": "BET4",
+    "label": "Risk-tier + admin-gated autonomy (low auto / med batch / high explicit; Manual->Assisted->Autonomous admin-only) is the ratified model",
+    "probability": 0.75,
+    "required": false,
+    "stage": "adopt",
+    "tag": "[BUILT]",
+    "kill_criterion": "The model itself is defensible and decision-logged; the risk is that the onboarding demo vehicle (10-ticket first run, INV-003/REQ-006) surfaces only 1-2 medium-risk items, so the educational approval moment (the point of the model) under-delivers. OQ-004 already flags this.",
+    "test_that_resolves_it": "Instrument closed-beta first runs: count medium-risk approval items surfaced per onboarding. If median < 3, the approval moment is anticlimactic and the cap or the vehicle needs tuning.",
+    "evidence": "FSN-82692 INV-009, REQ-016, INV-003, REQ-006, OQ-004; FSN-83143 DEC-005/DEC-007, INV-PROD-003; guardrail three-tier logic present in runbook/coworker guardrail schemas."
+  },
+  {
+    "id": "BET5",
+    "label": "Audit-after governance: control plane audits runbooks after, does not pre-screen customer/vendor runbooks",
+    "probability": 0.60,
+    "required": false,
+    "stage": "defend",
+    "tag": "[BUILT]",
+    "kill_criterion": "Sound at the Coworker action layer (actions gated pre-execution). Weak at the Expert layer because the specs contradict whether an Expert can execute actions at all (HOLE-1). If Experts can act (FSN-82688 REQ-017), an Expert tool call can fire before the audit sees it.",
+    "test_that_resolves_it": "Resolve the Expert-can-act contradiction first (HOLE-1); then red-team whether any Expert-initiated action can reach an external system before an approval/audit record exists.",
+    "evidence": "ACP-Management-Plane doc risk-tier table (management ops gated); FSN-82688 REQ-015/REQ-017 + glossary (Experts execute within domain/ceiling); FSN-83143 TEST-001 (reject write-capable Expert bindings) — direct contradiction; Expert Registry 0/46 unbuilt so unresolved in code."
+  },
+  {
+    "id": "BET6",
+    "label": "Normalization is deferrable: PSA connector / cross-vendor normalization can come after; QBR-value can wait",
+    "probability": 0.40,
+    "required": true,
+    "stage": "launch",
+    "tag": "[SPECCED]",
+    "kill_criterion": "The onboarding demo's core promise — 'we can see [N] tickets across [N] queues' and a live ConnectWise write on approval — cannot execute without ticket normalization. DEP-002 (PSA Connector Framework) is 'Not started' and no ConnectWise/normalize code exists. The demoed value moment is theater without it.",
+    "test_that_resolves_it": "Stand up a minimal ConnectWise read->normalize->classify->write path against a sandbox and time it. If it can't be built to run inside the 20-min budget, normalization was not deferrable for the demo path.",
+    "evidence": "FSN-82692 DEP-002 'Not started', NONGOAL-001; grep: 'ConnectWise' and 'normaliz' absent from app code; onboarding Steps 2/4/5/6 all depend on the normalized ticket path."
+  },
+  {
+    "id": "BET7",
+    "label": "'Agent control plane / agent factory' positioning is right (standalone platform), not 'MSP-OS / Shopify'",
+    "probability": 0.50,
+    "required": false,
+    "stage": "defend",
+    "tag": "[A]",
+    "kill_criterion": "Factory framing optimizes for substrate quality (versioning, determinism, MCP parity — all built, all buyer-invisible) and cedes the outcome-led category story to whoever tells the MSP-OS narrative first.",
+    "test_that_resolves_it": "Message-test both framings with MSP buyers; measure which drives demo requests and perceived differentiation. If MSP-OS wins on buyer pull, reposition the narrative even while keeping the factory internals.",
+    "evidence": "CLAUDE.md line 5 'agent factory'; constitution 'Agent Control Plane'; Principle VI auto-MCP-exposure is engineering-visible only; no category/story artifact in the build."
+  },
+  {
+    "id": "BET8",
+    "label": "<20-min onboarding and <=15-min builder are achievable design constraints",
+    "probability": 0.45,
+    "required": true,
+    "stage": "launch",
+    "tag": "[SPECCED]",
+    "kill_criterion": "Both are asserted as design constraints, not derived from research. The 22-partner study sized use-case demand, not time-to-connect-a-PSA or time-to-configure. Blocking OQs on ConnectWise scopes (OQ-001) and on-prem (OQ-007) are open. If the assumed 'API-key-in-8-min' MSP admin doesn't exist, PSA-step drop-off (MET-003 <15%) fails and there is no time in a 20-min budget to redesign the step the spec says to redesign.",
+    "test_that_resolves_it": "Timed usability test with 5+ real MSP admins on a ConnectWise sandbox from signup to scheduled run; measure PSA-step drop-off and total time. Resolve OQ-001/OQ-007 first.",
+    "evidence": "FSN-82692 section 1 '20-minute ceiling is a design constraint', MET-002/MET-003, OQ-001/OQ-007 (blocking, open); spec-004 SC-003 '<=15 minutes median'; onboarding 0% built."
+  },
+  {
+    "id": "BET9",
+    "label": "Flat Coworker/Expert pre-registry tables are an OK interim while versioned/guardrail registry is designed-not-migrated",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "tag": "[BUILT flat / SPECCED versioned]",
+    "kill_criterion": "Every downstream promise (immutable versions FR-013, autonomy family attr FR-030, draft locks FR-005a, reverse-reference FR-033, per-ref health FR-037, runbook-death auto-pause FR-012a) needs a family/version schema the flat tables lack. This is a core-entity schema migration that lands after runs already reference flat coworker IDs.",
+    "test_that_resolves_it": "Prototype the flat->family/version migration and a run-record backfill before more code lands on the flat tables; measure whether existing run references survive.",
+    "evidence": "agents/service.py flat CRUD only, no versioning/audit (BUILT); specs/004 0/40 and specs/003-expert 0/46 (SPECCED); spec-004 FR-013/FR-030/FR-005a/FR-033/FR-037/FR-012a all assume family+version."
+  },
+  {
+    "id": "HOLE-1",
+    "label": "Whether an AI Expert can execute actions is settled",
+    "probability": 0.30,
+    "required": false,
+    "stage": "build",
+    "tag": "[?]",
+    "kill_criterion": "Two canonical specs contradict: FSN-82688 says Experts execute actions within domain + risk ceiling (REQ-015/REQ-017, glossary); FSN-83143 TEST-001 rejects write-capable Expert bindings and treats Experts as read-only reasoning. Unresolved in code (Expert Registry 0/46). It changes the meaning of audit-after (BET5) and the approval model.",
+    "test_that_resolves_it": "Product decision + single canonical amendment: are Experts read-only reasoners or scoped actors? Encode the winner as an invariant before Expert Registry is built.",
+    "evidence": "FSN-82688 REQ-015, REQ-017, glossary 'can both reason and execute'; FSN-83143 REQ (read-only tool bindings) + TEST-001; both marked canonical build spec."
+  },
+  {
+    "id": "HOLE-2",
+    "label": "The Value Ledger will have a value producer wired up at launch",
+    "probability": 0.40,
+    "required": true,
+    "stage": "launch",
+    "tag": "[SPECCED]",
+    "kill_criterion": "The ledger is fully built (52/52) but writes only on Coworker run completion; its only planned first producer is onboarding REQ-017, which is 0% built. At launch the ROI dashboard renders $0 because nothing generates entries.",
+    "test_that_resolves_it": "Wire one built runbook + execution path to emit a real ledger entry end-to-end and confirm the dashboard shows a non-zero aggregate; if no producer can be wired, the ledger investment is stranded at launch.",
+    "evidence": "specs/003-value-ledger 52/52 [X] BUILT; producers (Execution Engine, onboarding REQ-017) SPECCED; spec-003 US1 entry-on-completion."
+  }
+]

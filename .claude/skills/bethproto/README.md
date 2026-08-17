@@ -98,7 +98,7 @@ After each pipeline run:
 
 ---
 
-## Ownership Attribution ("The Owensing")
+## Ownership Attribution
 
 Every prototype includes **X% Nicole** attribution on components involving judgment:
 
@@ -205,3 +205,5 @@ This skill implements the Band Protocol as defined in `/Users/elizabeth/Desktop/
 ---
 
 **Ready to prototype?** Try one of the test cases from `test-cases-nicole.json` or just ask Claude naturally to prototype any ACP feature.
+
+**Lesson (2026-07-31, qbr-prep-sim proctor BLOCK):** any edit to a prototype AFTER a critic pass — even applying that critic's own fix list — invalidates the score of record until a critic delta-check re-rules on the shipping bytes. Sequence that holds: apply fixes → ledger line with new line counts → critic delta-check → THEN packet assembly. Bradley/proctor gates compare `wc -l` against the ledger; an unexplained delta is a hard stop. The fix-then-repackage loop must never outrun the review trail.

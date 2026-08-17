@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Band — The House</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --vermillion: #D8472B;
+  --ultramarine: #1F3C96;
+  --ochre: #C99A2E;
+  --violet: #5B3A7E;
+  --green-earth: #5E7A3F;
+  --cadmium: #E8B93A;
+  --ink: #1a1612;
+  --ink2: #403830;
+  --mute: #7a7066;
+  --mute2: #a89e90;
+  --line: #1a1612;
+  --paper: #efe7d6;
+  --paper2: #e8dfc9;
+  --card: #f7f0df;
+  --note: #fff5d6;
+  --grid: rgba(26, 22, 18, 0.055);
+  --grid-strong: rgba(26, 22, 18, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Kalam', cursive;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  min-height: 100vh;
+}
+
+/* === LAYOUT === */
+.shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 32px clamp(20px, 3vw, 48px) 80px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 32px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 16px;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.brand-mark {
+  width: 28px; height: 28px;
+  display: inline-block;
+  position: relative;
+  transform: translateY(4px);
+}
+.brand-mark .dot { position: absolute; }
+.brand-mark .sq { width: 14px; height: 14px; background: var(--ultramarine); left: 0; top: 0; }
+.brand-mark .ci { width: 14px; height: 14px; background: var(--vermillion); border-radius: 50%; right: 0; top: 0; }
+.brand-mark .tr {
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 12px solid var(--cadmium);
+  left: 7px; bottom: 0;
+}
+.brand h1 {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: clamp(28px, 3.6vw, 44px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.brand .sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.project-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  text-align: right;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+.project-name .label {
+  color: var(--mute);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+}
+.project-name input {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px dashed var(--mute);
+  color: var(--ink);
+  text-align: right;
+  padding: 2px 0;
+  outline: none;
+  width: 200px;
+}
+.project-name input:focus { border-bottom-color: var(--vermillion); }
+
+/* === ROOM NAV === */
+.rooms {
+  display: flex;
+  gap: 0;
+  margin-bottom: 32px;
+  border-bottom: 1.5px solid var(--line);
+}
+.room-tab {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 22px;
+  background: transparent;
+  border: none;
+  border-right: 1.5px solid var(--line);
+  cursor: pointer;
+  color: var(--mute);
+  position: relative;
+  transition: color 0.1s, background 0.1s;
+}
+.room-tab:first-child { border-left: 1.5px solid var(--line); }
+.room-tab:hover { color: var(--ink); background: rgba(0,0,0,0.03); }
+.room-tab.active {
+  color: var(--ink);
+  background: var(--card);
+}
+.room-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1.5px;
+  height: 3px;
+  background: var(--accent, var(--ink));
+}
+.room-tab[data-room="george"] { --accent: var(--vermillion); }
+.room-tab[data-room="frameworks"] { --accent: var(--ultramarine); }
+.room-tab[data-room="paul"] { --accent: var(--ochre); }
+.room-tab[data-room="juliet"] { --accent: var(--violet); }
+.room-tab[data-room="library"] { --accent: var(--green-earth); }
+.room-tab[data-room="bradley"] { --accent: var(--ultramarine); }
+.room-tab .room-idx {
+  display: inline-block;
+  width: 18px; height: 18px;
+  line-height: 18px;
+  text-align: center;
+  font-size: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  margin-right: 8px;
+  vertical-align: 2px;
+}
+.room-tab.active .room-idx { background: var(--accent, var(--ink)); }
+.room-tab.has-flag::before {
+  content: '';
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 6px; height: 6px;
+  background: var(--green-earth);
+  border-radius: 50%;
+}
+
+.room { display: none; }
+.room.active { display: block; }
+
+/* === PANELS === */
+.panel {
+  border: 2px solid var(--line);
+  background: var(--card);
+  box-shadow: 6px 6px 0 var(--line);
+  padding: 24px;
+}
+.panel-tight { padding: 18px 20px; }
+.panel-flat { box-shadow: none; }
+.panel h3, .panel h2 {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.panel h3 .tag, .panel h2 .tag {
+  font-size: 9px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 6px;
+  letter-spacing: 0.1em;
+}
+
+textarea, input.text {
+  width: 100%;
+  padding: 14px;
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  line-height: 1.55;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+  outline: none;
+}
+textarea:focus, input.text:focus { border-color: var(--vermillion); }
+textarea.mono { font-family: 'Space Mono', monospace; font-size: 13px; }
+
+/* === BUTTONS === */
+.btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.08s, background 0.1s, color 0.1s;
+}
+.btn:hover { background: var(--ink); color: var(--paper); transform: translate(-1px, -1px); }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--vermillion); border-color: var(--vermillion); }
+.btn.ghost { border-color: var(--mute); color: var(--mute); }
+.btn.ghost:hover { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn.danger:hover { background: var(--vermillion); border-color: var(--vermillion); color: var(--paper); }
+.btn.go { border-color: var(--green-earth); color: var(--green-earth); }
+.btn.go:hover { background: var(--green-earth); border-color: var(--green-earth); color: var(--paper); }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* === GEORGE ROOM === */
+.george-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 28px;
+  align-items: start;
+}
+.george-main { display: flex; flex-direction: column; gap: 24px; }
+.george-aside { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 20px; }
+
+.george-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.george-meta .who {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  display: flex; align-items: center; gap: 8px;
+}
+.george-meta .who::before {
+  content: '';
+  width: 10px; height: 10px;
+  background: var(--vermillion);
+  display: inline-block;
+}
+.george-meta .turn {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+}
+.george-meta .turn b { color: var(--ink); }
+
+/* George remarks column (right) */
+.remarks {
+  padding: 18px 18px 22px;
+  position: relative;
+  min-height: 240px;
+}
+.remarks::before {
+  content: '';
+  position: absolute;
+  top: 14px; bottom: 14px; left: 0;
+  width: 3px;
+  background: var(--vermillion);
+}
+.remarks h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  margin-bottom: 12px;
+  padding-left: 10px;
+}
+.remarks-list { display: flex; flex-direction: column; gap: 14px; padding-left: 10px; }
+.remark {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink);
+  position: relative;
+  padding-left: 16px;
+  animation: writeIn 0.35s ease-out both;
+}
+.remark::before {
+  content: '—';
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--vermillion);
+  font-weight: 700;
+}
+.remark.dim { color: var(--mute); }
+.remark.cite {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--ink2);
+  background: var(--paper);
+  padding: 4px 8px;
+  border-left: 2px solid var(--vermillion);
+  margin-left: 12px;
+}
+.remark.cite::before { display: none; }
+@keyframes writeIn {
+  from { opacity: 0; transform: translateX(6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.remarks-empty {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+  padding-left: 10px;
+  line-height: 1.6;
+}
+
+/* === FOUR LENSES === */
+.lenses { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+.lens {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--mute2);
+  cursor: pointer;
+}
+.lens:last-child { border-bottom: none; }
+.lens-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.lens-bar {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.lens-cell {
+  width: 100%;
+  height: 18px;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  position: relative;
+  flex: 1;
+  cursor: pointer;
+}
+.lens-cell.filled { background: var(--ultramarine); }
+.lens-cell.weak { background: var(--cadmium); }
+.lens-cell.strong { background: var(--green-earth); }
+.lens-cell:hover { outline: 2px solid var(--vermillion); outline-offset: 1px; z-index: 2; }
+.lens-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+  white-space: nowrap;
+}
+.lens-meta b { color: var(--ink); font-size: 12px; }
+.lens-overridden {
+  display: inline-block;
+  font-size: 9px;
+  background: var(--ochre);
+  color: var(--ink);
+  padding: 1px 5px;
+  margin-left: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lens-evidence {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--paper);
+  border-left: 3px solid var(--ultramarine);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink2);
+  display: none;
+}
+.lens.open .lens-evidence { display: block; }
+.lens-evidence .row { margin-bottom: 6px; }
+.lens-evidence .row:last-child { margin-bottom: 0; }
+.lens-evidence .kw {
+  display: inline-block;
+  background: var(--card);
+  padding: 1px 6px;
+  margin: 0 4px 4px 0;
+  border: 1px solid var(--mute2);
+  font-size: 10px;
+}
+.lens-evidence .kw.hit { border-color: var(--ultramarine); color: var(--ultramarine); }
+.lens-evidence .kw.miss { color: var(--mute2); }
+.lens-evidence .actions { margin-top: 8px; display: flex; gap: 8px; align-items: center; }
+.lens-evidence .actions .lbl { color: var(--mute); }
+.mini-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+}
+.mini-btn:hover { background: var(--ink); color: var(--paper); }
+.mini-btn.active { background: var(--ochre); border-color: var(--ochre); }
+
+/* === FRAMEWORK SUGGESTION === */
+.suggestion {
+  border: 2px solid var(--vermillion);
+  background: var(--card);
+  box-shadow: 6px 6px 0 var(--vermillion);
+  padding: 24px;
+  display: none;
+}
+.suggestion.show { display: block; }
+.suggestion .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.suggestion .head .tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+}
+.suggestion .reason {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+}
+.suggestion .name {
+  font-family: 'Space Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+.suggestion .when {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  color: var(--ink2);
+  margin-bottom: 14px;
+}
+.suggestion .why {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.6;
+  padding: 12px 14px;
+  background: var(--paper);
+  border-left: 3px solid var(--vermillion);
+  margin-bottom: 16px;
+}
+.suggestion .cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.suggestion .cat {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+/* === READY GATE === */
+.ready-gate {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 2px solid var(--mute);
+  background: var(--paper);
+  color: var(--mute);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+.ready-gate.ready {
+  border-color: var(--green-earth);
+  background: rgba(94, 122, 63, 0.08);
+  color: var(--green-earth);
+  box-shadow: 6px 6px 0 var(--green-earth);
+}
+.ready-gate .pip {
+  width: 14px; height: 14px;
+  border: 2px solid currentColor;
+  background: transparent;
+  flex-shrink: 0;
+}
+.ready-gate.ready .pip { background: var(--green-earth); }
+.ready-gate .progress { flex: 1; }
+.ready-gate .progress b { text-transform: uppercase; letter-spacing: 0.14em; color: inherit; }
+.ready-gate .progress span { color: var(--ink2); margin-top: 2px; display: block; font-family: 'Kalam', cursive; font-size: 14px; letter-spacing: 0; }
+
+/* === FRAMEWORKS ROOM === */
+.fw-intro {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  color: var(--ink2);
+  max-width: 640px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.fw-section { margin-bottom: 32px; }
+.fw-section-head {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 6px;
+}
+.fw-section-head h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.fw-section-head .lens-key {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--mute);
+}
+.fw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.fw-card {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+  position: relative;
+}
+.fw-card:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--line); }
+.fw-card.locked { cursor: not-allowed; opacity: 0.55; }
+.fw-card.locked:hover { transform: none; box-shadow: none; }
+.fw-card .nm {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.fw-card .ds {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+.fw-card .ct {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+.fw-card .badge {
+  position: absolute;
+  top: 8px; right: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  background: var(--green-earth);
+  color: var(--paper);
+  padding: 2px 6px;
+  letter-spacing: 0.1em;
+}
+.fw-card.locked .badge { background: var(--mute2); color: var(--ink); }
+
+/* === OVERLAY (framework workspace) === */
+.overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.overlay.show { display: flex; animation: fadeIn 0.2s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.workspace {
+  background: var(--paper);
+  border: 3px solid var(--line);
+  box-shadow: 12px 12px 0 var(--line);
+  width: 94vw; height: 92vh;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.28s ease-out;
+  background-image:
+    linear-gradient(var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+@keyframes slideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.workspace-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 22px;
+  border-bottom: 2px solid var(--line);
+  background: var(--card);
+}
+.workspace-head .ttl {
+  display: flex; align-items: baseline; gap: 12px;
+}
+.workspace-head h2 {
+  font-family: 'Space Mono', monospace;
+  font-size: 20px; font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.workspace-head .meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+.workspace-head .actions { display: flex; gap: 8px; }
+.workspace-body {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+}
+.workspace-foot {
+  border-top: 2px solid var(--line);
+  padding: 12px 22px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--card);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+}
+
+/* Sticky note grid */
+.sticky-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.cat-col {
+  border: 1.5px solid var(--line);
+  background: rgba(247, 240, 223, 0.6);
+  padding: 14px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+.cat-col h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  display: flex; justify-content: space-between;
+}
+.cat-col h4 .cnt {
+  font-size: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1px 6px;
+  letter-spacing: 0.08em;
+}
+.cat-notes {
+  display: flex; flex-direction: column; gap: 8px;
+  flex: 1;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.sticky {
+  background: var(--note);
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  line-height: 1.45;
+  position: relative;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  cursor: text;
+  word-wrap: break-word;
+  min-height: 44px;
+}
+.sticky textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  line-height: 1.45;
+  resize: none;
+  padding: 0;
+  outline: none;
+  min-height: 24px;
+}
+.sticky .del {
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 18px; height: 18px;
+  background: var(--vermillion);
+  color: var(--paper);
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  opacity: 0;
+  font-family: 'Space Mono', monospace;
+}
+.sticky:hover .del { opacity: 1; }
+.add-note {
+  margin-top: 8px;
+  border: 1.5px dashed var(--mute);
+  background: transparent;
+  padding: 8px;
+  color: var(--mute);
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.add-note:hover { border-style: solid; border-color: var(--ink); color: var(--ink); }
+
+.workspace-stub {
+  padding: 60px 40px;
+  text-align: center;
+  max-width: 480px;
+  margin: 60px auto;
+  border: 2px dashed var(--mute);
+  background: var(--card);
+}
+.workspace-stub h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: var(--mute);
+}
+.workspace-stub p {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+/* === PAUL ROOM === */
+.paul-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 18px;
+}
+.paul-meta .who {
+  color: var(--ochre);
+}
+.paul-meta .who::before { background: var(--ochre); }
+.paul-meta .turn {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+  font-style: italic;
+}
+.paul-input { display: flex; flex-direction: column; gap: 12px; }
+.paul-input textarea { min-height: 240px; }
+.paul-actions { display: flex; gap: 8px; }
+.paul-card {
+  border: 2px solid var(--ochre);
+  background: var(--card);
+  box-shadow: 6px 6px 0 var(--ochre);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+}
+.paul-card .head {
+  background: var(--ochre);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.paul-card .body {
+  padding: 16px 18px;
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre-wrap;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 480px;
+}
+.paul-card .body.mute { color: var(--mute); }
+.paul-card .empty {
+  display: flex; align-items: center; justify-content: center;
+  flex: 1;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+  padding: 30px;
+  text-align: center;
+  line-height: 1.6;
+}
+.paul-card .foot {
+  border-top: 1px solid var(--line);
+  padding: 10px 14px;
+  display: flex; gap: 6px; justify-content: flex-end;
+  background: var(--paper);
+}
+.paul-card .body .del { text-decoration: line-through; color: var(--mute); background: rgba(216,71,43,0.08); padding: 0 2px; }
+.paul-card .body .add { background: rgba(94,122,63,0.18); padding: 0 2px; }
+.paul-card .body .flag { background: rgba(232,185,58,0.4); padding: 0 2px; }
+
+.paul-notes {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink2);
+  background: var(--paper);
+  border-left: 3px solid var(--ochre);
+  padding: 10px 12px;
+}
+.paul-notes ul { padding-left: 18px; margin-top: 4px; }
+.paul-notes li { margin-bottom: 2px; }
+
+/* === LIBRARY === */
+.lib-intro {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  color: var(--ink2);
+  max-width: 640px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.lib-card {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+  position: relative;
+}
+.lib-card:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--line); }
+.lib-card .kind {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ultramarine);
+  padding: 2px 6px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.lib-card.paul .kind { background: var(--ochre); color: var(--ink); }
+.lib-card.audit .kind { background: var(--vermillion); }
+.lib-card .nm {
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.lib-card .snip {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.4;
+  margin-bottom: 10px;
+  max-height: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lib-card .meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+  display: flex; justify-content: space-between;
+}
+.lib-card .del-x {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 20px; height: 20px;
+  background: transparent;
+  border: 1px solid var(--mute2);
+  color: var(--mute);
+  cursor: pointer;
+  font-size: 11px;
+  font-family: 'Space Mono', monospace;
+  opacity: 0;
+}
+.lib-card:hover .del-x { opacity: 1; }
+.lib-card .del-x:hover { background: var(--vermillion); color: var(--paper); border-color: var(--vermillion); }
+.lib-empty {
+  border: 2px dashed var(--mute);
+  background: transparent;
+  padding: 40px;
+  text-align: center;
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  color: var(--mute);
+}
+
+/* === JULIET ROOM === */
+.juliet-meta .who { color: var(--violet); }
+.juliet-meta .who::before { background: var(--violet); }
+.juliet-banner {
+  border: 2px solid var(--violet);
+  background: rgba(91, 58, 126, 0.06);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--violet);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.juliet-banner b { letter-spacing: 0.14em; text-transform: uppercase; }
+.juliet-banner span { font-family: 'Kalam', cursive; color: var(--ink2); font-size: 14px; letter-spacing: 0; }
+.juliet-banner .lock {
+  width: 16px; height: 16px;
+  border: 2px solid var(--violet);
+  position: relative;
+  flex-shrink: 0;
+}
+.juliet-banner .lock::after {
+  content: '';
+  position: absolute;
+  top: -6px; left: 2px;
+  width: 8px; height: 8px;
+  border: 2px solid var(--violet);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+#julietInput {
+  min-height: 320px;
+  font-family: 'Kalam', cursive;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.juliet-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+.juliet-actions .left { display: flex; gap: 8px; }
+.juliet-actions .meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+}
+.btn.burn { border-color: var(--vermillion); color: var(--vermillion); }
+.btn.burn:hover { background: var(--vermillion); border-color: var(--vermillion); color: var(--paper); }
+.btn.violet { border-color: var(--violet); color: var(--violet); }
+.btn.violet:hover { background: var(--violet); border-color: var(--violet); color: var(--paper); }
+
+.juliet-entries { margin-top: 24px; }
+.juliet-entries h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: var(--violet);
+}
+.juliet-entry {
+  border: 1.5px solid var(--violet);
+  background: var(--card);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+}
+.juliet-entry .meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.juliet-entry .body { color: var(--ink2); }
+.juliet-entry .actions { margin-top: 6px; }
+
+/* === BRADLEY ROOM === */
+.bradley-meta .who { color: var(--ultramarine); }
+.bradley-meta .who::before { background: var(--ultramarine); }
+.bradley-intro {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  color: var(--ink2);
+  max-width: 640px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.bradley-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.b-stat {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  padding: 18px 20px;
+}
+.b-stat .lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 6px;
+}
+.b-stat .val {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.b-stat .val .unit {
+  font-size: 13px;
+  color: var(--mute);
+  margin-left: 4px;
+  font-weight: 400;
+}
+.b-stat .sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--ink2);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+.b-stat .lens-row {
+  display: flex; gap: 12px;
+  margin-top: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+.b-stat .lens-row .l {
+  display: flex; align-items: center; gap: 6px;
+}
+.b-stat .lens-row .l b {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--mute2);
+}
+.b-stat .lens-row .l b.s2 { background: var(--cadmium); }
+.b-stat .lens-row .l b.s3 { background: var(--ultramarine); }
+.b-stat .lens-row .l b.s4 { background: var(--green-earth); }
+.b-stat .lens-row .l b.s5 { background: var(--green-earth); }
+
+.bradley-route {
+  border: 2px solid var(--ultramarine);
+  background: var(--card);
+  box-shadow: 6px 6px 0 var(--ultramarine);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+.bradley-route .head {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ultramarine);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bradley-route .head::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--ultramarine);
+  display: inline-block;
+}
+.bradley-route .next {
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.bradley-route .next .arrow { color: var(--ultramarine); margin: 0 8px; }
+.bradley-route .why {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+.bradley-log {
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  padding: 16px 18px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+.bradley-log h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  color: var(--ink);
+  display: flex; justify-content: space-between;
+}
+.bradley-log h3 small { font-size: 9px; color: var(--mute); }
+.b-event {
+  display: grid;
+  grid-template-columns: 70px 14px 1fr auto;
+  gap: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--mute2);
+  align-items: baseline;
+}
+.b-event:last-child { border-bottom: none; }
+.b-event .t { color: var(--mute); }
+.b-event .d {
+  width: 8px; height: 8px;
+  background: var(--mute);
+  margin-top: 4px;
+}
+.b-event.audit .d { background: var(--vermillion); }
+.b-event.framework .d { background: var(--ultramarine); }
+.b-event.paul .d { background: var(--ochre); }
+.b-event.juliet .d { background: var(--violet); }
+.b-event.system .d { background: var(--green-earth); }
+.b-event .msg { color: var(--ink2); }
+.b-event .tag {
+  font-size: 9px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1px 5px;
+  letter-spacing: 0.08em;
+}
+.b-empty {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  color: var(--mute);
+  text-align: center;
+  padding: 30px 12px;
+}
+
+/* === BRIEF ROOM === */
+.brief-room .panel { margin-bottom: 18px; }
+.brief-helper {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  color: var(--ink2);
+  margin-bottom: 14px;
+  line-height: 1.5;
+  max-width: 640px;
+}
+.brief-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--mute);
+}
+.brief-stats b { color: var(--ink); }
+
+/* === TWEAKS PANEL (custom, lightweight) === */
+.tweaks-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px; height: 44px;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  box-shadow: 4px 4px 0 var(--line);
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  z-index: 500;
+}
+.tweaks-btn:hover { background: var(--ink); color: var(--paper); }
+.tweaks {
+  display: none;
+  position: fixed;
+  bottom: 80px; right: 24px;
+  width: 280px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  box-shadow: 6px 6px 0 var(--line);
+  z-index: 500;
+  padding: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+.tweaks.show { display: block; }
+.tweaks h4 {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 6px;
+  display: flex; justify-content: space-between;
+}
+.tweak-row { margin-bottom: 14px; }
+.tweak-row label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 4px;
+}
+.tweak-seg { display: flex; gap: 0; border: 1px solid var(--line); }
+.tweak-seg button {
+  flex: 1;
+  padding: 6px;
+  font-size: 10px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  background: var(--paper);
+  border: none;
+  border-right: 1px solid var(--line);
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tweak-seg button:last-child { border-right: none; }
+.tweak-seg button.on { background: var(--ink); color: var(--paper); }
+
+@media (max-width: 900px) {
+  .george-grid { grid-template-columns: 1fr; }
+  .george-aside { position: static; }
+  .paul-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">
+        <span class="sq dot"></span>
+        <span class="ci dot"></span>
+        <span class="tr dot"></span>
+      </span>
+      <div>
+        <h1>The House</h1>
+        <div class="sub">A band protocol</div>
+      </div>
+    </div>
+    <div></div>
+    <div class="project-name">
+      <span class="label">Project</span><br>
+      <input type="text" id="projectName" value="The Band" />
+    </div>
+  </header>
+
+  <!-- ROOM NAV -->
+  <nav class="rooms" id="rooms">
+    <button class="room-tab active" data-room="brief"><span class="room-idx">01</span>Brief</button>
+    <button class="room-tab" data-room="bradley"><span class="room-idx">02</span>Bradley</button>
+    <button class="room-tab" data-room="george"><span class="room-idx">03</span>George</button>
+    <button class="room-tab" data-room="frameworks"><span class="room-idx">04</span>Frameworks</button>
+    <button class="room-tab" data-room="paul"><span class="room-idx">05</span>Paul</button>
+    <button class="room-tab" data-room="juliet"><span class="room-idx">06</span>Juliet</button>
+    <button class="room-tab" data-room="library"><span class="room-idx">07</span>Library</button>
+  </nav>
+
+  <!-- ROOM: BRIEF -->
+  <section class="room active brief-room" data-room="brief">
+    <div class="panel">
+      <h3>Project Brief <span class="tag">SHARED</span></h3>
+      <p class="brief-helper">Bring what you know. Fragments are fine. The brief is the seed — every room reads it.</p>
+      <textarea id="briefMain" placeholder="What are you making? For whom? Why? What does done look like?&#10;&#10;Drop fragments. Sentences. Lists. Anything you have. You'll refine it elsewhere."></textarea>
+      <div class="brief-stats">
+        <span>Words: <b id="wordCount">0</b></span>
+        <span>Chars: <b id="charCount">0</b></span>
+        <span>Last touched: <b id="lastTouched">—</b></span>
+      </div>
+    </div>
+    <div class="panel panel-tight" style="margin-top: 18px;">
+      <h3>Where to next</h3>
+      <p style="font-family: Kalam; font-size: 15px; color: var(--ink2); line-height: 1.5;">George reads briefs through four lenses — WHAT, WHO, WHY, HOW — and suggests a framework for the thinnest one. Paul refines drafts. The library holds what you've made.</p>
+      <div class="btn-row" style="margin-top: 14px;">
+        <button class="btn primary" onclick="goRoom('george')">Open George →</button>
+        <button class="btn" onclick="goRoom('frameworks')">Browse frameworks</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOM: GEORGE -->
+  <section class="room" data-room="george">
+    <div class="george-meta">
+      <div class="who">George — reflection &amp; audit</div>
+      <div class="turn">Turn <b id="georgeTurn">0</b> / 10 · 10-turn session boundary</div>
+    </div>
+    <div class="george-grid">
+      <div class="george-main">
+
+        <div class="panel">
+          <h3>Brief <span class="tag">LIVE</span></h3>
+          <textarea id="briefGeorge" placeholder="The brief from room 01 mirrors here. Type to update — both rooms stay in sync."></textarea>
+        </div>
+
+        <div class="panel">
+          <h3>Four Lenses <span class="tag">AUDIT</span></h3>
+          <p style="font-family: Space Mono; font-size: 11px; color: var(--mute); line-height: 1.6; margin-bottom: 6px;">Auto-scored from brief evidence. Click any lens to see what was matched and override the score.</p>
+          <div class="lenses" id="lenses"></div>
+        </div>
+
+        <div class="suggestion" id="suggestion">
+          <div class="head">
+            <div class="tag">George suggests a framework</div>
+            <div class="reason" id="sugReason"></div>
+          </div>
+          <div class="name" id="sugName"></div>
+          <div class="when" id="sugWhen"></div>
+          <div class="why" id="sugWhy"></div>
+          <div class="cats" id="sugCats"></div>
+          <div class="btn-row">
+            <button class="btn primary" onclick="acceptSuggestion()">Open workspace →</button>
+            <button class="btn" onclick="tryAnother()">Try another</button>
+            <button class="btn ghost" onclick="dismissSuggestion()">Dismiss</button>
+          </div>
+        </div>
+
+        <div class="ready-gate" id="readyGate">
+          <span class="pip"></span>
+          <div class="progress">
+            <b id="gateLabel">Not ready yet</b>
+            <span id="gateDetail">George wants 3+ lenses scoring 3 or higher, and at least one framework instance worked. Currently: 0 strong lenses, 0 frameworks.</span>
+          </div>
+          <button class="btn go" id="gateBtn" style="display:none;" onclick="goRoom('paul')">Open Paul →</button>
+        </div>
+      </div>
+
+      <aside class="george-aside">
+        <div class="panel remarks panel-flat" style="background: var(--card); border: 1.5px solid var(--line); box-shadow: 4px 4px 0 var(--line);">
+          <h4>George's column</h4>
+          <div class="remarks-list" id="remarksList">
+            <div class="remarks-empty">Nothing yet. Start writing the brief — short observations will appear here as you type. George stays terse. One thing at a time.</div>
+          </div>
+        </div>
+        <div class="panel panel-tight" style="background: var(--paper); border: 1.5px solid var(--line); box-shadow: 4px 4px 0 var(--line);">
+          <h3>House rules</h3>
+          <ul style="font-family: Space Mono; font-size: 10px; line-height: 1.7; color: var(--ink2); list-style: none; padding: 0;">
+            <li>· No anthropomorphizing.</li>
+            <li>· Default sparse.</li>
+            <li>· Your judgment, your keeping.</li>
+            <li>· Ten turns per session.</li>
+            <li>· The brief is the seed.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ROOM: FRAMEWORKS -->
+  <section class="room" data-room="frameworks">
+    <p class="fw-intro">Frameworks live here as workspaces. Open one to fill it in. Each save becomes an instance in the Library — you can keep iterating (v1, v2, v3) or open multiple in parallel.</p>
+
+    <div class="fw-section">
+      <div class="fw-section-head">
+        <h3>Sticky-note frameworks</h3>
+        <div class="lens-key">— categorize and accumulate</div>
+      </div>
+      <div class="fw-grid" id="stickyGrid"></div>
+    </div>
+
+    <div class="fw-section">
+      <div class="fw-section-head">
+        <h3>Drawing frameworks</h3>
+        <div class="lens-key">— map entities and flows</div>
+      </div>
+      <div class="fw-grid" id="drawingGrid"></div>
+    </div>
+
+    <div class="fw-section">
+      <div class="fw-section-head">
+        <h3>Canvas frameworks</h3>
+        <div class="lens-key">— structured layouts</div>
+      </div>
+      <div class="fw-grid" id="canvasGrid"></div>
+    </div>
+  </section>
+
+  <!-- ROOM: PAUL -->
+  <section class="room" data-room="paul">
+    <div class="george-meta paul-meta">
+      <div class="who">Paul — editorial mirror</div>
+      <div class="turn">No turn limit · refinement is ongoing, not frivolous</div>
+    </div>
+    <div class="panel">
+      <h3>What Paul does <span class="tag">EDITORIAL</span></h3>
+      <p style="font-family: Kalam; font-size: 15px; color: var(--ink2); line-height: 1.5;">Bring a draft. Any rough work — a brief section, framework notes, a paragraph that's almost right. Paul tightens, clarifies, polishes. <b>Never</b> changes your voice or judgment. Never adds ideas that weren't there.</p>
+    </div>
+
+    <div class="paul-grid">
+      <div class="paul-input">
+        <div class="panel" style="padding: 0;">
+          <div style="padding: 18px 22px 0;"><h3 style="margin: 0;">Your draft <span class="tag">BRING</span></h3></div>
+          <div style="padding: 14px 22px 18px;">
+            <textarea id="paulInput" placeholder="Paste or write anything that needs tightening — a sentence, a paragraph, framework notes. Then click Refine."></textarea>
+            <div class="paul-actions" style="margin-top: 12px;">
+              <button class="btn primary" onclick="paulRefine()">Refine →</button>
+              <button class="btn ghost" onclick="paulPullBrief()">Pull from brief</button>
+              <button class="btn ghost" onclick="paulClear()">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paul-card" id="paulCard">
+        <div class="head">
+          <span>Refined</span>
+          <span id="paulCardMeta">—</span>
+        </div>
+        <div class="empty" id="paulEmpty">Bring a draft. Paul will refine it — show what was tightened, what was flagged, what stayed. Your voice doesn't move.</div>
+        <div class="body" id="paulBody" style="display:none;"></div>
+        <div class="foot" id="paulFoot" style="display:none;">
+          <button class="btn ghost" onclick="paulCopy()">Copy refined</button>
+          <button class="btn ghost" onclick="paulDiscard()">Discard</button>
+          <button class="btn go" onclick="paulAccept()">Accept &amp; file</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="paul-notes" id="paulNotes" style="margin-top: 18px; display: none;">
+      <b>What changed:</b>
+      <ul id="paulChangesList"></ul>
+    </div>
+  </section>
+
+  <!-- ROOM: JULIET -->
+  <section class="room" data-room="juliet">
+    <div class="george-meta juliet-meta">
+      <div class="who">Juliet — private freewrite</div>
+      <div class="turn">No turn counter · Bradley cannot see this</div>
+    </div>
+    <div class="juliet-banner">
+      <span class="lock"></span>
+      <div>
+        <b>Local only.</b><br>
+        <span>Nothing here flows anywhere. Not to the brief, not to Bradley, not into the library. Write what can't be shared. Burn it after if you want.</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Freewrite <span class="tag">PRIVATE</span></h3>
+      <textarea id="julietInput" placeholder="Anything. Drafts you'd never share. The stuff that needs to come out of your head before you can think."></textarea>
+      <div class="juliet-actions">
+        <div class="left">
+          <button class="btn violet" onclick="julietSave()">Save private</button>
+          <button class="btn burn" onclick="julietBurn()">Burn</button>
+        </div>
+        <div class="meta">
+          <span id="julietMeta">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="juliet-entries" id="julietEntries"></div>
+  </section>
+
+  <!-- ROOM: LIBRARY -->
+  <section class="room" data-room="library">
+    <p class="lib-intro">Everything filed. Framework instances, Paul refinements, audit checkpoints. Click any card to re-open and iterate — your work compounds.</p>
+    <div class="lib-grid" id="libGrid"></div>
+  </section>
+
+  <!-- ROOM: BRADLEY -->
+  <section class="room" data-room="bradley">
+    <div class="george-meta bradley-meta">
+      <div class="who">Bradley — silent router</div>
+      <div class="turn">PM layer · reads state, doesn't speak unless asked</div>
+    </div>
+    <p class="bradley-intro">Bradley sits on top of the work. He doesn't suggest. He notices. This room is what he sees: where you are, what's been filed, what's load-bearing. The next room is a guess based on state — yours to take or ignore.</p>
+
+    <div class="bradley-route" id="bradleyRoute">
+      <div class="head">Next room</div>
+      <div class="next" id="bradleyNext">—</div>
+      <div class="why" id="bradleyWhy">—</div>
+    </div>
+
+    <div class="bradley-grid">
+      <div class="b-stat">
+        <div class="lbl">Brief</div>
+        <div class="val" id="bStatBrief">0<span class="unit">w</span></div>
+        <div class="sub" id="bStatBriefSub">No brief yet.</div>
+      </div>
+      <div class="b-stat">
+        <div class="lbl">Four lenses</div>
+        <div class="val" id="bStatLensAvg">—<span class="unit">/5 avg</span></div>
+        <div class="lens-row" id="bStatLensRow"></div>
+      </div>
+      <div class="b-stat">
+        <div class="lbl">Frameworks filed</div>
+        <div class="val" id="bStatFw">0</div>
+        <div class="sub" id="bStatFwSub">No instances yet.</div>
+      </div>
+      <div class="b-stat">
+        <div class="lbl">Paul refinements</div>
+        <div class="val" id="bStatPaul">0</div>
+        <div class="sub" id="bStatPaulSub">Nothing refined yet.</div>
+      </div>
+    </div>
+
+    <div class="bradley-log">
+      <h3>Project log <small>Newest first · Juliet never appears here</small></h3>
+      <div id="bradleyLog"></div>
+    </div>
+  </section>
+
+  <!-- (Library section end above) -->
+
+</div>
+
+<!-- OVERLAY (framework workspace) -->
+<div class="overlay" id="overlay">
+  <div class="workspace">
+    <div class="workspace-head">
+      <div class="ttl">
+        <h2 id="wsTitle">Framework</h2>
+        <div class="meta" id="wsMeta">—</div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" onclick="closeWorkspace()">Cancel</button>
+        <button class="btn go" onclick="saveWorkspace()">Save &amp; file</button>
+      </div>
+    </div>
+    <div class="workspace-body" id="wsBody"></div>
+    <div class="workspace-foot">
+      <span id="wsFootLeft">—</span>
+      <span id="wsFootRight">Double-click a category header to quick-add a note.</span>
+    </div>
+  </div>
+</div>
+
+<!-- TWEAKS -->
+<button class="tweaks-btn" id="tweaksBtn" title="Tweaks">⚙</button>
+<div class="tweaks" id="tweaksPanel">
+  <h4>Tweaks <button class="btn ghost" style="padding: 2px 6px; font-size: 9px;" onclick="toggleTweaks()">×</button></h4>
+  <div class="tweak-row">
+    <label>George voice</label>
+    <div class="tweak-seg" data-tweak="voice">
+      <button data-val="quiet">Quiet</button>
+      <button data-val="normal" class="on">Normal</button>
+      <button data-val="loud">Loud</button>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label>Lens strictness</label>
+    <div class="tweak-seg" data-tweak="strict">
+      <button data-val="loose">Loose</button>
+      <button data-val="normal" class="on">Normal</button>
+      <button data-val="strict">Strict</button>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label>Brief mirror</label>
+    <div class="tweak-seg" data-tweak="mirror">
+      <button data-val="auto" class="on">Auto</button>
+      <button data-val="off">Off</button>
+    </div>
+  </div>
+  <div style="border-top: 1px solid var(--mute2); padding-top: 10px; margin-top: 4px;">
+    <button class="btn ghost" style="width: 100%; font-size: 10px;" onclick="resetState()">Reset all state</button>
+  </div>
+</div>
+
+<script src="band.js"></script>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#efe7d6"/>
+  <rect x="40" y="60" width="40" height="40" fill="#1F3C96"/>
+  <circle cx="140" cy="80" r="20" fill="#D8472B"/>
+  <polygon points="80,150 120,150 100,115" fill="#E8B93A"/>
+  <text x="100" y="180" font-family="monospace" font-size="14" font-weight="700" fill="#1a1612" text-anchor="middle">THE BAND</text>
+</svg>
+</template>
+</body>
+</html>

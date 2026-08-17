@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Band — Solve the right problem. Build the right thing. Build the thing right.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --vermillion: #D8472B;
+  --ultramarine: #1F3C96;
+  --ochre: #C99A2E;
+  --violet: #5B3A7E;
+  --green-earth: #5E7A3F;
+  --cadmium: #E8B93A;
+  --ink: #1a1612;
+  --ink2: #3a342c;
+  --mute: #7a7066;
+  --mute2: #b8ae9b;
+  --line: #1a1612;
+  --hair: #c9bfa9;
+  --paper: #efe7d6;
+  --paper2: #e8dfc9;
+  --card: #f7f0df;
+  --note: #fff5d6;
+  --grid: rgba(26, 22, 18, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+deck-stage { background: #0c0a08; }
+deck-stage > section {
+  width: 1920px; height: 1080px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 26px;
+  line-height: 1.5;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 112px 120px;
+}
+
+/* === Type === */
+.mono { font-family: 'Space Mono', monospace; }
+.it { font-style: italic; }
+em, .em-it { font-style: italic; font-weight: 400; }
+b, strong { font-weight: 700; }
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+h1.display { font-size: 76px; line-height: 1.06; letter-spacing: -0.04em; }
+h2.display { font-size: 56px;  line-height: 1.06;  letter-spacing: -0.035em; }
+h3.display { font-size: 64px;  line-height: 1.05; letter-spacing: -0.025em; }
+h4.display { font-size: 42px;  line-height: 1.1;  letter-spacing: -0.02em; }
+
+.eyebrow {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 18px;
+}
+.eyebrow::before { content: ''; width: 48px; height: 2px; background: currentColor; }
+.eyebrow.blue { color: var(--ultramarine); }
+.eyebrow.gold { color: var(--ochre); }
+.eyebrow.violet { color: var(--violet); }
+.eyebrow.green { color: var(--green-earth); }
+
+.lede {
+  font-size: 34px;
+  line-height: 1.45;
+  color: var(--ink2);
+  max-width: 1400px;
+}
+.body-l { font-size: 28px; line-height: 1.5; color: var(--ink2); }
+.body-m { font-size: 24px; line-height: 1.55; color: var(--ink2); }
+
+/* === Slide foot === */
+.foot {
+  position: absolute;
+  bottom: 36px; left: 112px; right: 112px;
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  white-space: nowrap;
+}
+.foot .lhs { display: flex; gap: 24px; align-items: baseline; }
+.foot .lhs .name { color: var(--ink); text-transform: none; letter-spacing: 0; font-weight: 700; font-size: 24px; }
+.foot .lhs .name em { color: var(--vermillion); font-style: italic; font-weight: 700; }
+
+/* === Bauhaus mark === */
+.mark {
+  width: 48px; height: 48px;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+}
+.mark .sq, .mark .ci, .mark .tr { position: absolute; }
+.mark .sq { width: 24px; height: 24px; background: var(--ultramarine); left: 0; top: 0; }
+.mark .ci { width: 24px; height: 24px; background: var(--vermillion); border-radius: 50%; right: 0; top: 0; }
+.mark .tr {
+  width: 0; height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 21px solid var(--cadmium);
+  left: 12px; bottom: 0;
+}
+.mark.sm { width: 22px; height: 22px; }
+.mark.sm .sq, .mark.sm .ci { width: 11px; height: 11px; }
+.mark.sm .tr { border-left-width: 5.5px; border-right-width: 5.5px; border-bottom-width: 10px; left: 5.5px; }
+
+/* === Common: ingredient mode === */
+.ingredient {
+  list-style: none;
+  padding: 0;
+}
+.ingredient li {
+  font-size: 26px;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  padding-left: 28px;
+  position: relative;
+  color: var(--ink);
+}
+.ingredient li::before {
+  content: '—';
+  position: absolute; left: 0; top: 0;
+  color: var(--vermillion);
+  font-weight: 700;
+}
+.ingredient li .note {
+  display: block;
+  margin-top: 4px;
+  color: var(--mute);
+  font-style: italic;
+  font-size: 22px;
+}
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 8px;
+  display: inline-block;
+  vertical-align: 0.18em;
+}
+.tag.wobbly { background: var(--cadmium); color: var(--ink); }
+.tag.assume { background: var(--ochre); color: var(--ink); }
+.tag.cs-hi { background: var(--green-earth); color: var(--paper); }
+.tag.cs-md { background: var(--ultramarine); color: var(--paper); }
+.tag.cs-lo { background: var(--vermillion); color: var(--paper); }
+.tag.thin { background: var(--violet); color: var(--paper); }
+.tag.tradition { background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); }
+
+/* === Geometric corner mark === */
+.corner-mark {
+  position: absolute;
+  top: 80px; right: 112px;
+  display: flex; align-items: center; gap: 14px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.corner-mark .blocks { display: flex; gap: 6px; }
+.corner-mark .blocks .b {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+.corner-mark .blocks .b.f1 { background: var(--vermillion); border-color: var(--vermillion); }
+.corner-mark .blocks .b.f2 { background: var(--ultramarine); border-color: var(--ultramarine); border-radius: 50%; }
+.corner-mark .blocks .b.f3 { background: var(--cadmium); border-color: var(--cadmium); }
+
+/* === SLIDE 01: TITLE === */
+.s-title { padding-top: 80px; padding-right: 480px; }
+.s-title .hero-art {
+  position: absolute;
+  top: 80px; right: 112px;
+  width: 380px; height: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 18px;
+}
+.s-title .hero-art .blk {
+  border: 2.5px solid var(--ink);
+  background: var(--paper);
+  position: relative;
+}
+.s-title .hero-art .b1 { background: var(--vermillion); }
+.s-title .hero-art .b2 { background: var(--paper); }
+.s-title .hero-art .b3 { background: var(--ultramarine); grid-column: span 2; }
+.s-title .hero-art .b4 { background: var(--cadmium); border-radius: 50%; }
+.s-title .hero-art .b5 { background: var(--ochre); }
+.s-title .hero-art .blk .stamp {
+  position: absolute;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 0.2em;
+}
+.s-title .hero-art .b1 .stamp { color: var(--paper); bottom: 18px; left: 22px; }
+.s-title .hero-art .b3 .stamp { color: var(--cadmium); top: 22px; left: 28px; font-size: 36px; letter-spacing: -0.02em; text-transform: none; font-style: italic; }
+.s-title .hero-art .b5 .stamp { color: var(--ink); bottom: 18px; right: 22px; }
+.s-title .kicker {
+  font-size: 24px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--mute); margin-bottom: 40px;
+  display: flex; align-items: center; gap: 24px;
+}
+.s-title h1 .l1 { display: block; }
+.s-title h1 .l2 { display: block; color: var(--ultramarine); }
+.s-title h1 .l3 { display: block; color: var(--ochre); }
+.s-title h1 .l1 b { color: var(--vermillion); }
+.s-title h1 .l1 { white-space: nowrap; }
+.s-title h1 .l2 { white-space: nowrap; }
+.s-title h1 .l3 { white-space: nowrap; }
+.s-title .deck-sub {
+  font-size: 32px;
+  line-height: 1.35;
+  color: var(--ink2);
+  margin-top: 40px;
+  max-width: 1500px;
+  font-style: italic;
+}
+.s-title .deck-sub b { font-style: normal; }
+.s-title .byline {
+  position: absolute;
+  bottom: 60px; left: 112px; right: 112px;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  border-top: 1.5px solid var(--line);
+  padding-top: 20px;
+  font-size: 24px;
+}
+.s-title .byline .who {
+  font-weight: 700; font-size: 26px;
+}
+.s-title .byline .who em { color: var(--vermillion); font-style: italic; }
+.s-title .byline .meta {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  font-weight: 700;
+  font-size: 24px;
+}
+
+/* === SLIDE 02: THE THREE PARTS === */
+.s-three { padding-top: 80px; }
+.s-three h2 { max-width: 1500px; margin-bottom: 56px; }
+.s-three h2 em { font-style: italic; }
+.s-three .parts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+}
+.part {
+  border-top: 6px solid var(--ink);
+  padding: 24px 0 0;
+  min-height: 460px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.part::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 0;
+  width: 64px; height: 64px;
+  background: var(--ink);
+  transform: translateY(-32px);
+}
+.part.p1::before { background: var(--vermillion); }
+.part.p2::before { background: var(--ultramarine); border-radius: 50%; }
+.part.p3 { border-top-color: var(--ochre); }
+.part.p3::before {
+  background: transparent;
+  width: 0; height: 0;
+  border-left: 32px solid transparent;
+  border-right: 32px solid transparent;
+  border-bottom: 56px solid var(--ochre);
+}
+.part.p1 { border-top-color: var(--vermillion); }
+.part.p2 { border-top-color: var(--ultramarine); }
+.part .step {
+  font-size: 24px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--mute);
+  margin-bottom: 14px;
+}
+.part.p1 .step { color: var(--vermillion); }
+.part.p2 .step { color: var(--ultramarine); }
+.part.p3 .step { color: var(--ochre); }
+.part h3 {
+  font-size: 54px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin-bottom: 24px;
+}
+.part h3 em { font-style: italic; }
+.part .q {
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--ink2);
+  font-style: italic;
+  margin-bottom: 22px;
+}
+.part .q b { font-style: normal; font-weight: 700; }
+.part .signal {
+  margin-top: auto;
+  padding-top: 22px;
+  border-top: 1.5px dashed var(--mute2);
+  font-size: 24px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.part .signal .lbl {
+  display: block;
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 6px;
+}
+
+/* === SLIDE 03: WHERE BRIEFS FAIL === */
+.s-fail h2 em { font-style: italic; color: var(--vermillion); }
+.s-fail .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  margin-top: 40px;
+  border-top: 2px solid var(--line);
+  border-left: 2px solid var(--line);
+}
+.fail-cell {
+  border-right: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+  padding: 30px 36px 32px;
+  min-height: 380px;
+  display: flex; flex-direction: column;
+}
+.fail-cell .step {
+  font-size: 24px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--mute);
+  margin-bottom: 12px;
+}
+.fail-cell.p1 .step { color: var(--vermillion); }
+.fail-cell.p2 .step { color: var(--ultramarine); }
+.fail-cell.p3 .step { color: var(--ochre); }
+.fail-cell h4 {
+  font-size: 34px;
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+.fail-cell h4 em { font-style: italic; }
+.fail-cell .ex {
+  font-style: italic;
+  color: var(--ink2);
+  font-size: 24px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+.fail-cell .ex b { font-style: normal; font-weight: 700; color: var(--ink); }
+.fail-cell .tell {
+  margin-top: auto;
+  font-size: 22px;
+  color: var(--mute);
+  line-height: 1.4;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--mute2);
+}
+.fail-cell .tell b { color: var(--ink); }
+
+/* === SLIDE 04: FOUR LENSES === */
+.s-lenses h2 em { font-style: italic; color: var(--vermillion); }
+.s-lenses h2 { margin-bottom: 8px; }
+.s-lenses .grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  border-top: 2px solid var(--line);
+  border-left: 2px solid var(--line);
+  height: 760px;
+}
+.s-lenses .q {
+  border-right: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+  padding: 24px 32px 22px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.s-lenses .q .meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 12px;
+  white-space: nowrap;
+}
+.s-lenses .q .meta .id {
+  font-style: italic;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+.s-lenses .q.what .meta { color: var(--vermillion); }
+.s-lenses .q.who  .meta { color: var(--ultramarine); }
+.s-lenses .q.why  .meta { color: var(--ochre); }
+.s-lenses .q.how  .meta { color: var(--green-earth); }
+.s-lenses .q h4 {
+  font-size: 52px;
+  margin-bottom: 10px;
+}
+.s-lenses .q h4 em { font-style: italic; }
+.s-lenses .q p {
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink2);
+}
+.s-lenses .q .ontrack {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1.5px dashed var(--mute2);
+  font-size: 22px;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.s-lenses .q .ontrack .lbl {
+  display: inline-block;
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-right: 8px;
+}
+
+/* === SLIDE 05: FRAMEWORKS === */
+.s-fwf h2 em { font-style: italic; color: var(--ultramarine); }
+.s-fwf .layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 64px;
+  margin-top: 36px;
+  align-items: start;
+}
+.s-fwf .why {
+  font-size: 28px;
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.s-fwf .why p {
+  margin-bottom: 22px;
+  font-size: 26px;
+  line-height: 1.45;
+}
+.s-fwf .why p em { font-style: italic; color: var(--ink); }
+.s-fwf .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-top: 1.5px solid var(--hair);
+  border-left: 1.5px solid var(--hair);
+}
+.fw-cell {
+  border-right: 1.5px solid var(--hair);
+  border-bottom: 1.5px solid var(--hair);
+  padding: 22px 28px;
+  min-height: 180px;
+  display: flex; flex-direction: column;
+  background: var(--note);
+  box-shadow: 3px 3px 0 rgba(26,22,18,0.12);
+  margin: -1px -1px 0 0;
+  position: relative;
+}
+.fw-cell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 40px; height: 6px;
+}
+.fw-cell.what::before { background: var(--vermillion); }
+.fw-cell.who::before { background: var(--ultramarine); }
+.fw-cell.why::before { background: var(--ochre); }
+.fw-cell.how::before { background: var(--green-earth); }
+.fw-cell .lens-tag {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 12px;
+}
+.fw-cell.what .lens-tag { color: var(--vermillion); }
+.fw-cell.who  .lens-tag { color: var(--ultramarine); }
+.fw-cell.why  .lens-tag { color: var(--ochre); }
+.fw-cell.how  .lens-tag { color: var(--green-earth); }
+.fw-cell h3 {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+.fw-cell .cats {
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--ink2);
+  font-style: italic;
+  margin-bottom: auto;
+}
+.fw-cell .when {
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-top: 12px;
+}
+
+/* === SLIDE 06: GEORGE === */
+.s-george h2 em { font-style: italic; color: var(--vermillion); }
+.s-george .scene {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 50px;
+  margin-top: 30px;
+}
+.brief-box {
+  border-top: 2px solid var(--line);
+  padding-top: 22px;
+}
+.brief-box .head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 18px;
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.brief-box .head .live {
+  background: var(--ink); color: var(--paper);
+  padding: 4px 12px;
+  font-size: 20px;
+  letter-spacing: 0.16em;
+}
+.brief-box .text {
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--ink2);
+  margin-bottom: 28px;
+}
+.brief-box .text mark {
+  background: transparent;
+  border-bottom: 2.5px solid var(--vermillion);
+  color: var(--ink);
+  padding-bottom: 1px;
+}
+.brief-box .text mark.who { border-color: var(--ultramarine); }
+.brief-box .text mark.why { border-color: var(--ochre); }
+.brief-box .text mark.how { border-color: var(--green-earth); }
+.lens-mock { border-top: 1.5px solid var(--hair); padding-top: 20px; }
+.lens-mock h5 {
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: var(--mute);
+}
+.lens-line {
+  display: grid;
+  grid-template-columns: 80px 1fr 90px;
+  gap: 24px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1.5px solid var(--hair);
+}
+.lens-line:last-child { border-bottom: none; }
+.lens-line .nm {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.lens-line .bar { display: flex; gap: 8px; }
+.lens-line .cell {
+  flex: 1; height: 18px;
+  border: 1.5px solid var(--ink);
+}
+.lens-line .cell.f { background: var(--ink); }
+.lens-line .cell.weak { background: var(--cadmium); border-color: var(--cadmium); }
+.lens-line .cell.strong { background: var(--green-earth); border-color: var(--green-earth); }
+.lens-line .sc {
+  font-size: 22px;
+  color: var(--mute);
+  font-style: italic;
+}
+.lens-line .sc b { color: var(--ink); font-style: normal; }
+
+.column-remarks {
+  border-left: 4px solid var(--vermillion);
+  padding: 4px 0 4px 28px;
+  margin-bottom: 24px;
+}
+.column-remarks h5 {
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  margin-bottom: 18px;
+}
+.column-remarks .r {
+  font-size: 24px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+.column-remarks .r .tags { display: inline; }
+.column-remarks .r::before {
+  content: '— ';
+  color: var(--vermillion);
+  font-weight: 700;
+}
+.column-remarks .r .it { font-style: italic; }
+
+.sugg-box {
+  border-top: 2px solid var(--vermillion);
+  padding-top: 18px;
+}
+.sugg-box .lbl {
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  margin-bottom: 8px;
+}
+.sugg-box .nm {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.sugg-box .nm em { font-style: italic; }
+.sugg-box .why {
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink2);
+}
+.sugg-box .why b { color: var(--ink); }
+
+/* === SLIDE 07: PAUL (drafting in pieces) === */
+.s-paul h2 em { font-style: italic; color: var(--ochre); }
+.s-paul .intro {
+  margin-top: 22px;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink2);
+  max-width: 1400px;
+}
+.s-paul .intro b { color: var(--ink); }
+.s-paul .convo {
+  margin-top: 22px;
+  display: grid;
+  gap: 14px;
+  max-width: 1500px;
+}
+.turn .bubble { border-left: 4px solid var(--mute2); padding: 4px 0 4px 22px; }
+.turn.you .bubble p { font-size: 22px; line-height: 1.4; color: var(--ink); font-style: italic; }
+.turn.paul ul.ing li { font-size: 21px; line-height: 1.38; margin-bottom: 6px; padding-left: 22px; color: var(--ink); position: relative; }
+.turn {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.turn .who-lbl {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mute);
+  padding-top: 8px;
+}
+.turn.you .who-lbl { color: var(--ink); }
+.turn.paul .who-lbl { color: var(--ochre); }
+.turn .bubble {
+  border-left: 4px solid var(--mute2);
+  padding: 6px 0 6px 24px;
+}
+.turn.you .bubble { border-left-color: var(--ink); }
+.turn.paul .bubble { border-left-color: var(--ochre); }
+.turn.you .bubble p {
+  font-size: 26px;
+  line-height: 1.45;
+  color: var(--ink);
+  font-style: italic;
+}
+.turn.you .bubble p::after { content: '…?'; color: var(--mute); }
+.turn.paul .bubble {
+  font-size: 24px;
+}
+.turn.paul ul.ing {
+  list-style: none;
+  padding: 0;
+}
+.turn.paul ul.ing li {
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 8px;
+  font-size: 24px;
+  line-height: 1.42;
+  color: var(--ink);
+}
+.turn.paul ul.ing li::before {
+  content: '·';
+  position: absolute; left: 0; top: -4px;
+  color: var(--ochre);
+  font-weight: 700;
+  font-size: 32px;
+}
+.turn.paul ul.ing li.tradition,
+.turn.paul ul.ing li.wobbly,
+.turn.paul ul.ing li.assume,
+.turn.paul ul.ing li.note {
+  color: var(--mute);
+  font-style: italic;
+}
+.turn.paul ul.ing li.tradition::before,
+.turn.paul ul.ing li.wobbly::before,
+.turn.paul ul.ing li.assume::before { content: ''; }
+.s-paul .principle {
+  position: absolute;
+  bottom: 96px; left: 112px; right: 112px;
+  border-top: 1.5px solid var(--hair);
+  padding-top: 14px;
+  display: none;
+}
+
+/* === SLIDE 08: JULIET + BRADLEY === */
+.s-jb h2 em { font-style: italic; color: var(--violet); }
+.s-jb .two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin-top: 40px;
+}
+.persona {
+  border-top: 3px solid var(--line);
+  padding-top: 22px;
+  min-height: 640px;
+  display: flex; flex-direction: column;
+}
+.persona.j {
+  border-top-color: var(--violet);
+  position: relative;
+}
+.persona.j::before {
+  content: '';
+  position: absolute;
+  top: -32px; right: 0;
+  width: 56px; height: 56px;
+  border: 4px solid var(--violet);
+  border-radius: 50%;
+}
+.persona.j::after {
+  content: '';
+  position: absolute;
+  top: -50px; right: 14px;
+  width: 28px; height: 22px;
+  border: 4px solid var(--violet);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+}
+.persona.b {
+  border-top-color: var(--ultramarine);
+  position: relative;
+}
+.persona.b::before {
+  content: '';
+  position: absolute;
+  top: -36px; right: 0;
+  width: 56px; height: 64px;
+  background: var(--ultramarine);
+}
+.persona.b::after {
+  content: '';
+  position: absolute;
+  top: -44px; right: 14px;
+  width: 28px; height: 14px;
+  background: var(--cadmium);
+  border: 3px solid var(--ink);
+}
+.persona .lbl-r {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+.persona.j .lbl-r { color: var(--violet); }
+.persona.b .lbl-r { color: var(--ultramarine); }
+.persona h3 {
+  font-size: 72px;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.persona h3 em { font-style: italic; }
+.persona.j h3 em { color: var(--violet); }
+.persona.b h3 em { color: var(--ultramarine); }
+.persona .role {
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--ink2);
+  font-style: italic;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1.5px solid var(--hair);
+}
+.persona ul.pts { list-style: none; padding: 0; }
+.persona ul.pts li {
+  font-size: 24px;
+  line-height: 1.4;
+  color: var(--ink);
+  padding-left: 28px;
+  position: relative;
+  margin-bottom: 14px;
+}
+.persona ul.pts li::before {
+  content: '';
+  position: absolute; left: 0; top: 16px;
+  width: 16px; height: 2px;
+  background: currentColor;
+}
+.persona ul.pts li em { color: var(--mute); font-style: italic; }
+.persona .quote {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1.5px solid var(--hair);
+  font-size: 26px;
+  font-style: italic;
+  color: var(--ink2);
+  line-height: 1.35;
+}
+
+/* === SLIDE 09: DEMO (interactive) === */
+.s-demo {
+  padding: 64px 80px 120px;
+}
+.s-demo .top {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 22px;
+}
+.s-demo .top .lhs h2 { font-size: 78px; line-height: 1; }
+.s-demo .top .lhs h2 em { font-style: italic; color: var(--ochre); }
+.s-demo .top .lhs .eyebrow { margin-bottom: 18px; }
+.s-demo .top .rhs {
+  text-align: right;
+}
+.s-demo .top .rhs .file {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 8px;
+}
+.s-demo .top .rhs .openbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 22px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+.s-demo .top .rhs .openbtn:hover { background: var(--vermillion); }
+.s-demo .top .rhs .openbtn::after { content: '↗'; font-size: 24px; }
+
+.s-demo .frame-wrap {
+  border: 3px solid var(--line);
+  box-shadow: 10px 10px 0 var(--line);
+  background: var(--paper);
+  height: 760px;
+  overflow: hidden;
+  position: relative;
+}
+.s-demo iframe {
+  width: 1640px;
+  height: 920px;
+  transform: scale(0.95);
+  transform-origin: top left;
+  border: 0;
+  background: var(--paper);
+}
+.s-demo .fallback {
+  display: none;
+  padding: 60px;
+  text-align: center;
+}
+.s-demo .fallback .stub {
+  border: 2px dashed var(--mute);
+  padding: 60px;
+  font-size: 26px;
+  color: var(--mute2);
+}
+.s-demo .crumbs {
+  margin-top: 16px;
+  display: flex; gap: 18px; flex-wrap: wrap;
+  font-size: 20px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.s-demo .crumbs .c {
+  padding: 4px 10px;
+  border: 1.5px solid var(--mute2);
+}
+.s-demo .crumbs .c b { color: var(--ink); }
+
+/* === SLIDE 10: TAKEAWAYS === */
+.s-take h2 em { font-style: italic; color: var(--vermillion); }
+.s-take .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+  margin-top: 40px;
+}
+.take-c {
+  border-top: 6px solid var(--ink);
+  padding-top: 24px;
+  min-height: 440px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.take-c::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 0;
+  width: 48px; height: 48px;
+  transform: translateY(-24px);
+}
+.take-c.c1::before { background: var(--vermillion); }
+.take-c.c2::before { background: var(--ultramarine); border-radius: 50%; }
+.take-c.c3::before {
+  background: transparent;
+  width: 0; height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-bottom: 42px solid var(--ochre);
+}
+.take-c.c1 { border-top-color: var(--vermillion); }
+.take-c.c2 { border-top-color: var(--ultramarine); }
+.take-c.c3 { border-top-color: var(--ochre); }
+.take-c .n {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--mute);
+  margin-bottom: 14px;
+}
+.take-c.c1 .n { color: var(--vermillion); }
+.take-c.c2 .n { color: var(--ultramarine); }
+.take-c.c3 .n { color: var(--ochre); }
+.take-c h3 {
+  font-size: 44px;
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+.take-c h3 em { font-style: italic; }
+.take-c p {
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.take-c p b { color: var(--ink); }
+.s-take .closer {
+  position: absolute;
+  bottom: 110px; left: 112px; right: 112px;
+  border-top: 1.5px solid var(--hair);
+  padding-top: 22px;
+  font-size: 30px;
+  line-height: 1.3;
+  color: var(--ink);
+  font-style: italic;
+}
+.s-take .closer b {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mute);
+  display: block;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<deck-stage>
+
+  <!-- SLIDE 01: TITLE -->
+  <section data-screen-label="01 Title" class="s-title">
+    <div class="hero-art">
+      <div class="blk b1"><span class="stamp">i.</span></div>
+      <div class="blk b2"></div>
+      <div class="blk b3"><span class="stamp">on track…?</span></div>
+      <div class="blk b4"></div>
+      <div class="blk b5"><span class="stamp">iii.</span></div>
+    </div>
+    <div class="kicker">
+      <span class="mark"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span>
+      <span>The Band Protocol · Design Team Talk · May 2026</span>
+    </div>
+    <h1 class="display">
+      <span class="l1">Solve the <b>right problem.</b></span>
+      <span class="l2">Build the right thing.</span>
+      <span class="l3">Build the thing right.</span>
+    </h1>
+    <div class="deck-sub"><b>How do you keep an AI-assisted brief honest?</b><br>Three questions, and the tool I built to ask them.</div>
+    <div class="byline">
+      <div class="who"><em>Elizabeth Connor</em> — for the design team</div>
+      <div class="meta">10 slides · ~20 minutes</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 02: THE THREE PARTS -->
+  <section data-screen-label="02 The three parts" class="s-three">
+    <div class="eyebrow">The brief, in the age of fluent machines</div>
+    <h2 class="display">Three questions an <em>AI-assisted</em><br>brief has to answer honestly.</h2>
+    <div class="parts">
+      <div class="part p1">
+        <div class="step">Part i.</div>
+        <h3>Solve the<br><em>right</em> problem.</h3>
+        <div class="q">Did the AI help me audit the brief, or did it help me <em>finish</em> the brief? Have I named what's missing across all four lenses before I let the model run further?</div>
+        <div class="signal">
+          <span class="lbl">On track when</span>
+          A human ran the audit. The AI flagged what it doesn't know. The thinnest lens is named, not papered over.
+        </div>
+      </div>
+      <div class="part p2">
+        <div class="step">Part ii.</div>
+        <h3>Build the<br><em>right</em> thing.</h3>
+        <div class="q">Is the framework doing real thinking, or is the AI generating plausible structure? Pick for fit, not because the model offered it.</div>
+        <div class="signal">
+          <span class="lbl">On track when</span>
+          A framework was filled in by a human, not auto-generated. It surfaced something the model wouldn't have predicted from the brief.
+        </div>
+      </div>
+      <div class="part p3">
+        <div class="step">Part iii.</div>
+        <h3>Build the<br>thing <em>right.</em></h3>
+        <div class="q">Whose voice is on the page — mine, or the model's? Is every AI-generated claim flagged for verification before the deck goes out?</div>
+        <div class="signal">
+          <span class="lbl">On track when</span>
+          Every AI sentence is sourced, flagged, or rewritten. [WOBBLY] [CS:] [ASSUMPTION] visible on the page. Voice stays mine.
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>02 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 03: WHERE BRIEFS FAIL -->
+  <section data-screen-label="03 Where briefs fail" class="s-fail">
+    <div class="eyebrow">The AI-era failure modes</div>
+    <h2 class="display">Three ways AI quietly wrecks a brief<br>before anyone <em>notices.</em></h2>
+    <div class="grid">
+      <div class="fail-cell p1">
+        <div class="step">Part i. fail</div>
+        <h4>The AI finished it<br>before you <em>thought it.</em></h4>
+        <p class="ex"><b>The tell:</b> the brief is fluent on WHAT and HOW. Thin on WHO and WHY. The model filled the gaps with plausible language and you let it.</p>
+        <div class="tell"><b>What it costs:</b> six weeks of beautiful work pointed at a problem the AI invented for you.</div>
+      </div>
+      <div class="fail-cell p2">
+        <div class="step">Part ii. fail</div>
+        <h4>The model picked<br>the <em>framework.</em></h4>
+        <p class="ex"><b>The tell:</b> the AI suggested POEMS or Jobs-to-Be-Done before you finished thinking. You used it because it was offered, not because it fit.</p>
+        <div class="tell"><b>What it costs:</b> a deliverable that looks rigorous and explains nothing — generated structure, not earned structure.</div>
+      </div>
+      <div class="fail-cell p3">
+        <div class="step">Part iii. fail</div>
+        <h4>The AI <em>cleaned</em><br>your voice out.</h4>
+        <p class="ex"><b>The tell:</b> you pasted the draft into the model and it came back smoother, smarter, and not yours. Nobody can tell who wrote it. Including you, in six months.</p>
+        <div class="tell"><b>What it costs:</b> the work passes review and quietly fails to move anyone. Fluent ≠ true.</div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>03 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 04: PART i — FOUR LENSES -->
+  <section data-screen-label="04 Four lenses" class="s-lenses">
+    <div class="eyebrow">Part i. Solve the right problem · audit the AI</div>
+    <h2 class="display">An AI-assisted brief earns trust<br>when it holds up in <em>four directions.</em></h2>
+    <div class="grid">
+      <div class="q what">
+        <div class="meta"><span>What · System</span><span class="id">i.</span></div>
+        <h4>The <em>thing.</em></h4>
+        <p>Name it. "Platform" when you mean "spreadsheet" is how the wrong problem walks into the room.</p>
+        <div class="ontrack"><span class="lbl">On track</span>Specific. Concrete. Could be photographed.</div>
+      </div>
+      <div class="q who">
+        <div class="meta"><span>Who · People</span><span class="id">ii.</span></div>
+        <h4>The <em>humans.</em></h4>
+        <p>Specifically. Not "users". The ones you'd recognize walking into the room.</p>
+        <div class="ontrack"><span class="lbl">On track</span>Named segment. Real anxieties. Not a persona deck.</div>
+      </div>
+      <div class="q why">
+        <div class="meta"><span>Why · Value</span><span class="id">iii.</span></div>
+        <h4>The <em>change.</em></h4>
+        <p>What shifts if it works. What flows — in money, attention, or trust.</p>
+        <div class="ontrack"><span class="lbl">On track</span>Stakes named. Failure mode legible.</div>
+      </div>
+      <div class="q how">
+        <div class="meta"><span>How · Mechanics</span><span class="id">iv.</span></div>
+        <h4>The <em>moves.</em></h4>
+        <p>Steps, phases, sequence. Where the rubber meets the road, where money exits the bank.</p>
+        <div class="ontrack"><span class="lbl">On track</span>A first user could walk it. Without a guide.</div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>04 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 05: PART ii — FRAMEWORKS -->
+  <section data-screen-label="05 Frameworks" class="s-fwf">
+    <div class="eyebrow blue">Part ii. Build the right thing · frameworks against drift</div>
+    <h2 class="display">When a lens is thin, a <em>framework</em><br>forces the model — and you — to do real work.</h2>
+    <div class="layout">
+      <div class="why">
+        <p>Frameworks aren't deliverables. They're <em>forcing functions</em> — and against AI they do specific work: they make you fill cells the model would have skimmed past. You read them back, and most of the time you throw them away.</p>
+        <p>Generative models converge on the statistically central answer. A framework yanks the work off-center.</p>
+        <p>Same back catalogue I've been teaching for fifteen years. The point isn't that they're new. The point is they still do the work the model won't.</p>
+      </div>
+      <div class="grid">
+        <div class="fw-cell what">
+          <div class="lens-tag">What</div>
+          <h3>POEMS</h3>
+          <div class="cats">People · Objects · Environments · Messages · Services</div>
+          <div class="when">Map the territory</div>
+        </div>
+        <div class="fw-cell what">
+          <div class="lens-tag">What</div>
+          <h3>AEIOU</h3>
+          <div class="cats">Activities · Environments · Interactions · Objects · Users</div>
+          <div class="when">Hold context whole</div>
+        </div>
+        <div class="fw-cell how">
+          <div class="lens-tag">How</div>
+          <h3>5Es</h3>
+          <div class="cats">Entice · Enter · Engage · Exit · Extend</div>
+          <div class="when">Walk the journey</div>
+        </div>
+        <div class="fw-cell who">
+          <div class="lens-tag">Who</div>
+          <h3>4As</h3>
+          <div class="cats">Ambitions · Anxieties · Attitudes · Actions</div>
+          <div class="when">Get under the skin</div>
+        </div>
+        <div class="fw-cell who">
+          <div class="lens-tag">Who</div>
+          <h3>Five HF</h3>
+          <div class="cats">Emotional · Cultural · Social · Cognitive · Physical</div>
+          <div class="when">The whole human</div>
+        </div>
+        <div class="fw-cell why">
+          <div class="lens-tag">Why</div>
+          <h3>Value Web</h3>
+          <div class="cats">Map entities. Map what flows.</div>
+          <div class="when">See what's exchanged</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>05 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 06: GEORGE -->
+  <section data-screen-label="06 George" class="s-george">
+    <div class="eyebrow">Part i. + ii. · George — the AI auditor</div>
+    <h2 class="display">Reads. Scores. Names what's <em>thin.</em></h2>
+    <div class="scene">
+      <div>
+        <div class="brief-box">
+          <div class="head"><span>Brief</span><span class="live">Live</span></div>
+          <div class="text">A research <mark>school</mark> for <mark class="who">design managers</mark>. Eight weeks. Cohort of <mark class="who">12 mid-career people promoted without training</mark>. They should leave with a <mark class="why">portfolio of frameworks they actually used</mark>. <mark class="how">Each week pairs one framework with one project</mark> they apply it to.</div>
+        </div>
+        <div class="lens-mock">
+          <h5>Four Lenses · Audit</h5>
+          <div class="lens-line">
+            <div class="nm">WHAT</div>
+            <div class="bar"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell"></div><div class="cell"></div></div>
+            <div class="sc"><b>3</b>/5</div>
+          </div>
+          <div class="lens-line">
+            <div class="nm">WHO</div>
+            <div class="bar"><div class="cell f strong"></div><div class="cell f strong"></div><div class="cell f strong"></div><div class="cell f strong"></div><div class="cell"></div></div>
+            <div class="sc"><b>4</b>/5</div>
+          </div>
+          <div class="lens-line">
+            <div class="nm">WHY</div>
+            <div class="bar"><div class="cell f weak"></div><div class="cell f weak"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+            <div class="sc"><b>2</b>/5</div>
+          </div>
+          <div class="lens-line">
+            <div class="nm">HOW</div>
+            <div class="bar"><div class="cell f weak"></div><div class="cell f weak"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+            <div class="sc"><b>2</b>/5</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="column-remarks">
+          <h5>George's column</h5>
+          <div class="r">"design managers" — which ones? Two years in? Twenty…?</div>
+          <div class="r">WHY is 2/5. What <em>shifts</em> if they leave with frameworks they used…?</div>
+          <div class="r">HOW is thin. What's a "week" actually look like…?</div>
+          <div class="r">"portfolio" — for whom? A boss, a peer, themselves…?</div>
+          <div class="r"><span class="tag wobbly">WOBBLY</span> &nbsp;assumes "they want a portfolio" — verify.</div>
+        </div>
+        <div class="sugg-box">
+          <div class="lbl">George suggests a framework</div>
+          <div class="nm"><em>4As</em></div>
+          <div class="why">WHY is thinnest. <b>4As</b> — Ambitions, Anxieties, Attitudes, Actions — gets under "anxious about being found out". <span class="tag tradition">TRADITION: 4As · IIT canon</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>06 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 07: PAUL — DRAFTING IN PIECES -->
+  <section data-screen-label="07 Paul" class="s-paul">
+    <div class="eyebrow gold">Part iii. Build the thing right · Paul</div>
+    <h2 class="display">Drafts <em>in pieces.</em><br>Never finishes the dish.</h2>
+    <div class="intro">Paul doesn't tighten a finished draft. Paul gives you <b>ingredients</b>. You bring a fragment — half a sentence, an instinct, a question with a tail on it — and Paul reflects back bullets, partial threads, named assumptions. The dish stays yours to assemble.</div>
+
+    <div class="convo">
+      <div class="turn you">
+        <div class="who-lbl">You</div>
+        <div class="bubble"><p>Something about how silence in the brief isn't passive</p></div>
+      </div>
+      <div class="turn paul">
+        <div class="who-lbl">Paul</div>
+        <div class="bubble">
+          <ul class="ing">
+            <li>negative space as active, not absence</li>
+            <li>what the brief <em>doesn't</em> say defines it as much as what it does</li>
+            <li>the unsaid is where assumptions hide ←</li>
+            <li class="tradition"><span class="tag tradition">TRADITION:</span> Japanese <em>ma</em> · Bauhaus negative space</li>
+            <li class="wobbly"><span class="tag wobbly">WOBBLY</span> tying this to brief practice — practitioner intuition, not literature</li>
+            <li>the brief that is mostly white space might be the most honest one…?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="turn you">
+        <div class="who-lbl">You</div>
+        <div class="bubble"><p>Right — and the "honest" part is what I want to land on</p></div>
+      </div>
+      <div class="turn paul">
+        <div class="who-lbl">Paul</div>
+        <div class="bubble">
+          <ul class="ing">
+            <li>honesty in a brief = naming what you don't know yet ←</li>
+            <li>"we haven't validated this" is more useful than "users want X"</li>
+            <li>fragments + questions = working brief; full paragraphs = finished brief…?</li>
+            <li class="assume"><span class="tag assume">ASSUMPTION</span> you mean intellectual honesty, not legal-disclaimer honesty</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="one">Your voice is the seed.<br>Paul is the compost.</div>
+      <div class="two">Never adds an idea that wasn't there. Cuts filler. Flags vague words (kept — your call). Names every assumption inline. Ends fragments with ellipses so you can finish them.</div>
+    </div>
+
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>07 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 08: JULIET + BRADLEY -->
+  <section data-screen-label="08 Juliet and Bradley" class="s-jb">
+    <div class="eyebrow violet">The two rooms most AI tools skip</div>
+    <h2 class="display">Private space the AI <em>can't see.</em><br>Silent PM that doesn't sell you anything.</h2>
+    <div class="two">
+      <div class="persona j">
+        <div class="lbl-r"><span>06 · Juliet</span><span>Private freewrite</span></div>
+        <h3>The <em>private</em> room.</h3>
+        <div class="role">A place to write what AI can't see. No mirror, no audit, no model. The thing you'd never paste into a chat box, by design.</div>
+        <ul class="pts">
+          <li>Separate localStorage key. Bradley has no read path.</li>
+          <li>Two buttons: <em>save,</em> or <em>burn.</em></li>
+          <li>No turn counter. No suggestions. No witness you didn't invite.</li>
+          <li>Named after 400 years of women writing letters to Verona.</li>
+        </ul>
+        <div class="quote">Not every thought needs to be a deliverable.</div>
+      </div>
+      <div class="persona b">
+        <div class="lbl-r"><span>02 · Bradley</span><span>Silent PM</span></div>
+        <h3>The <em>silent</em> PM.</h3>
+        <div class="role">Doesn't speak unless asked. Watches the work. Names where you are — and what comes next, as a guess from state.</div>
+        <ul class="pts">
+          <li>Next-room hint <em>— not a suggestion, a read.</em></li>
+          <li>Lens averages, framework count, refinements filed.</li>
+          <li>Project log — every move except Juliet's.</li>
+          <li>Works for the person, not the tool's quarterly numbers.</li>
+        </ul>
+        <div class="quote">Anticipates. Doesn't advise.</div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>08 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 09: DEMO (interactive embed) -->
+  <section data-screen-label="09 Demo" class="s-demo">
+    <div class="top">
+      <div class="lhs">
+        <div class="eyebrow">Live</div>
+        <h2 class="display">The tool, <em>running.</em></h2>
+      </div>
+      <div class="rhs">
+        <div class="file">Single file · No server</div>
+        <a class="openbtn" href="The Band.html" target="_blank" rel="noopener">Open prototype</a>
+      </div>
+    </div>
+    <div class="frame-wrap">
+      <iframe src="The Band.html" title="The Band — live prototype"></iframe>
+    </div>
+    <div class="crumbs">
+      <span class="c"><b>Try:</b> drop a brief</span>
+      <span class="c"><b>Then:</b> watch the lenses score</span>
+      <span class="c"><b>Then:</b> open a framework</span>
+      <span class="c"><b>Then:</b> hand Paul a fragment</span>
+      <span class="c"><b>Then:</b> check Bradley</span>
+    </div>
+    <div class="foot" style="bottom: 24px;">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>09 / 10</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10: TAKEAWAYS -->
+  <section data-screen-label="10 Takeaways" class="s-take">
+    <div class="eyebrow">Three things to take</div>
+    <h2 class="display">If the brief is <em>honest,</em><br>the rest of the work knows it.</h2>
+    <div class="cols">
+      <div class="take-c c1">
+        <div class="n">i. Solve right</div>
+        <h3>Audit the AI<br>before you <em>ship.</em></h3>
+        <p>Run the four lenses on every AI-assisted brief. <b>The cheap fix isn't a smarter model — it's a human catching what the model glossed over, in all four directions, before anyone signs off.</b></p>
+      </div>
+      <div class="take-c c2">
+        <div class="n">ii. Build right</div>
+        <h3>Frameworks are<br>forcing <em>functions.</em></h3>
+        <p>POEMS, 4As, 5Es. <b>The model will offer one. Pick for fit, not because it was offered. Fill the cells yourself — the AI's job is to widen options, not to choose.</b></p>
+      </div>
+      <div class="take-c c3">
+        <div class="n">iii. Build right</div>
+        <h3>Voice is the<br><em>seed.</em></h3>
+        <p>Draft in pieces. Let the model give ingredients — bullets, ellipses, <span class="tag wobbly" style="font-size:18px;">WOBBLY</span> tags, named assumptions. <b>You assemble. You decide what's true. You decide what's done.</b></p>
+      </div>
+    </div>
+    <div class="closer">
+      <b>Open question</b>
+      What would your version of George ask you about the last brief you handed an AI?
+    </div>
+    <div class="foot">
+      <div class="lhs"><span class="mark sm"><span class="sq"></span><span class="ci"></span><span class="tr"></span></span><span class="name">Solve right · Build right · Build right</span></div>
+      <div>10 / 10</div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+</body>
+</html>

@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EBR/QBR Service Blueprint — all stages, in the map</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    margin: 0; padding: 26px 32px 60px; background: #fff; color: #111; font-size: 12px; line-height: 1.4;
+  }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  .sub { font-size: 12px; color: #444; margin-bottom: 10px; }
+  .model-note {
+    border: 1px solid #999; border-left: 5px solid #111; padding: 10px 14px;
+    margin-bottom: 18px; font-size: 12px; background: #fafafa;
+  }
+
+  .cast { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .card-person { border: 1px solid #bbb; border-radius: 4px; padding: 8px 10px; width: 235px; font-size: 11.5px; }
+  .card-person .who { font-weight: 700; }
+  .card-person .role { color: #555; font-size: 10.5px; margin-bottom: 4px; }
+
+  .legend { font-size: 11px; margin-bottom: 10px; }
+  .legend .chip {
+    font-family: "SF Mono", Menlo, monospace; font-size: 9.5px; padding: 1px 6px; border-radius: 3px;
+    border: 1px solid #999; margin-right: 4px;
+  }
+  .cls-prod { background: #eef7ee; border-color: #4a8; }
+  .cls-hybrid { background: #fff3e0; border-color: #d90; }
+  .cls-brains { background: #fde8e8; border-color: #d33; }
+  .cls-unclass { background: #eee; border-color: #aaa; color: #777; }
+
+  .grid-wrap { overflow-x: auto; border: 1px solid #999; margin-bottom: 24px; }
+  table.bp { border-collapse: collapse; width: 100%; min-width: 5400px; }
+  table.bp th, table.bp td { border: 1px solid #bbb; padding: 6px 8px; vertical-align: top; text-align: left; font-size: 11px; width: 175px; }
+
+  tr.stages th {
+    background: #111; color: #fff; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.3px; text-align: center; padding: 5px 6px;
+  }
+  tr.moments th { background: #ddd; font-size: 9.5px; font-weight: 600; text-align: center; color: #222; padding: 4px 5px; }
+  tr.moments th .cls { display: block; margin-top: 2px; }
+  tr.gather th {
+    background: #ccc; font-size: 9px; font-weight: 600; text-align: center; color: #222; padding: 3px 4px;
+  }
+
+  th.rowlabel {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+    width: 120px; min-width: 120px; text-align: left; position: sticky; left: 0; z-index: 2;
+  }
+  .band-actions th.rowlabel, .band-actions td { background: #f3f3f3; }
+  .band-tools th.rowlabel, .band-tools td { background: #f2f0f7; }
+  .band-feel th.rowlabel, .band-feel td { background: #eef3f8; }
+  .band-stress th.rowlabel, .band-stress td { background: #faf1e6; }
+  .band-opp th.rowlabel, .band-opp td { background: #fbf8e4; }
+  .band-front th.rowlabel, .band-front td { background: #fff; }
+  .band-back th.rowlabel, .band-back td { background: #f6f6f6; }
+  .band-support th.rowlabel, .band-support td { background: #fff; }
+
+  tr.line td, tr.line th {
+    border-top: 2px dashed #666; border-bottom: 2px dashed #666;
+    font-size: 9px; font-style: italic; color: #555; text-align: center; padding: 3px; background: #fff;
+  }
+
+  .cell-empty { color: #999; font-style: italic; }
+  .def { font-weight: 400; font-size: 8.5px; color: #444; display: block; margin-top: 2px; text-transform: none; letter-spacing: 0; }
+  .role { font-weight: 700; }
+  .badge { font-family: "SF Mono", Menlo, monospace; font-size: 9px; padding: 0 3px; border-radius: 2px; border: 1px solid #999; }
+  .badge-kit { background: #eef7ee; border-color: #4a8; }
+  .badge-judge { background: #fff3e0; border-color: #d90; }
+  .tool { font-size: 9.5px; color: #446; font-family: "SF Mono", Menlo, monospace; }
+
+  h2 { font-size: 14.5px; margin: 30px 0 8px; padding-bottom: 3px; border-bottom: 2px solid #111; }
+  .callout {
+    background: #fff5f5; border: 1px solid #e3b; border-left: 4px solid #c33;
+    padding: 10px 14px; margin: 10px 0; font-size: 11.5px;
+  }
+  .callout b.hdr { display: block; margin-bottom: 4px; }
+  table.jobshop { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 11.5px; }
+  table.jobshop th, table.jobshop td { border: 1px solid #bbb; padding: 6px 9px; vertical-align: top; }
+  table.jobshop th { background: #eee; font-size: 10.5px; text-transform: uppercase; }
+  td.kit { background: #f4faf4; } td.job { background: #fffaf0; }
+  table.jobshop td.why { background: #f7f7fb; }
+  table.jobshop td.good { background: #fbfbf4; }
+  .band-build th.rowlabel, .band-build td { background: #eef2ee; }
+  .bs { font-family: "SF Mono", Menlo, monospace; font-size: 8.5px; padding: 1px 5px;
+        border: 1px solid #999; border-radius: 3px; display: inline-block; margin-bottom: 3px; }
+  .bs-built { background: #dff0d8; border-color: #4a8; }
+  .bs-spec  { background: #fff3e0; border-color: #d90; }
+  .bs-adj   { background: #e8eef7; border-color: #789; }
+  .bs-none  { background: #f0f0f0; border-color: #bbb; color: #777; }
+  .sourcing { border: 1px solid #999; border-left: 5px solid #c33; background: #fffafa;
+    padding: 10px 14px; margin: 14px 0 18px; font-size: 12px; }
+
+  /* Print = the canon's third fidelity level: a printed poster. One very wide sheet,
+     so the 27-column grid is never sliced. Prose blocks stay a readable measure. */
+  @media print {
+    @page { size: 58in 54in; margin: 0.5in; }
+    body { padding: 0; }
+    h1, .sub, .model-note, .sourcing, .legend, .cast, .callout,
+    table.jobshop, h2 { max-width: 1500px; }
+    .grid-wrap { overflow: visible; border: 1px solid #666; }
+    table.bp { min-width: 5400px; }
+    .grid-wrap, .callout, .cast, tr { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>EBR/QBR Service Blueprint — all stages, in the map</h1>
+<div class="sub">Sourced from <code>briefs/ebr-process-map-2026-07-28.md</code> (Maps 1–6) +
+<code>briefs/context/qbr-ebr.context.md</code> §2/§6 (the real 15-tab template). Prep-Assemble is
+no longer one collapsed column — "prep the QBR" is 8 separately-sourced data pulls, each named,
+each tied to a specific tool, the same way a real experience map never lets "research the trip"
+stand in for "look up time tables" / "research hotels" / "compare airfare" as if they were one
+action.</div>
+
+<div class="model-note">
+  <b>The model:</b> a service blueprint is an experience map with the back of the house added.
+  Rows 1–5 are the customer's experience map (PICNIC bands). Below the Line of Visibility, rows
+  6–8 are the operational rows a pure experience map never shows. 26 columns: Entice · Enter ·
+  Schedule · 8 named Prep-Assemble pulls · Prep-Judge · the 12 live meeting moments (Stefanie's
+  own tab order) · Follow-up · Extend.
+</div>
+
+<div class="cast">
+  <div class="card-person"><div class="who">Craig</div><div class="role">Owner/Partner — buyer/champion</div>
+    Went to Empower, brought the framework home. Not a swimlane actor in a single cycle — he's why
+    the practice exists.</div>
+  <div class="card-person"><div class="who">Vanessa Chart</div><div class="role">Client Delivery Lead — the user</div>
+    4–5h/EBR, hit her own ceiling at 4/week. Deliberately not a technician.</div>
+  <div class="card-person"><div class="who">Head of Technical Overview</div><div class="role">Hidden cost center</div>
+    Pulled off the service desk to build the risk review.</div>
+  <div class="card-person"><div class="who">Client Executive</div><div class="role">The customer in this blueprint</div>
+    Not interested in the back end; arrives guarded if the MSP's gone quiet.</div>
+</div>
+
+<div class="sourcing">
+  <b>What this map is built from — read this before quoting anything off it.</b><br>
+  <b>Small-n qualitative research only.</b> Two sources: one taught process (Stefanie Hammond,
+  N-able Head Nerd — a recorded training session plus her real 15-tab EBR template) and
+  <b>one</b> MSP operator's account of running that process for a year (Vanessa Chart, Technica
+  Solutions — n=1, a vendor-selected reference customer). Both are vendor content. That makes this
+  map <b>directional, not projectable</b>: it tells you what the work actually looks like and where
+  it hurts. It does not tell you how common any of it is, and no figure on this page should be read
+  as a market number.<br>
+  <b>The receipts:</b> <code>briefs/ebr-process-map-2026-07-28.md</code> (Maps 1–6, timestamped
+  quotes) · <code>briefs/context/qbr-ebr.context.md</code> (the standing spec, fully footnoted) ·
+  <code>scout_input/stephanie-hammond-ebr-sources-2026-07-28.md</code> (raw source list) ·
+  <code>Executive Business Review Template 1.xlsx</code> (Stefanie's actual template).
+  Jargon index is at the bottom of this page.
+</div>
+
+<div class="legend">
+  Tab classification (Maister's leverage-ratio distinction, <code>qbr-ebr.context.md</code> §6):
+  <span class="chip cls-prod">production-line</span> pullable/automatable ·
+  <span class="chip cls-hybrid">hybrid</span> entries pullable, synthesis is judgment ·
+  <span class="chip cls-brains">brains-work — protect this</span> live conversation only ·
+  <span class="chip cls-unclass">unclassified</span> not sorted in the original pass, marked honestly.
+  <br><br>
+  Bottom row — <b>our own build, checked against the map</b> (<code>acp-core-main</code>, read 2026-07-29):
+  <span class="bs bs-built">BUILT</span> code exists ·
+  <span class="bs bs-spec">SPECCED</span> in a spec, no code ·
+  <span class="bs bs-adj">ADJACENT</span> something related exists but doesn't do this ·
+  <span class="bs bs-none">ABSENT</span> nothing.
+</div>
+
+<div class="grid-wrap">
+<table class="bp">
+  <tr class="stages">
+    <th class="rowlabel"></th>
+    <th>ENTICE</th><th>ENTER</th><th>SCHEDULE</th>
+    <th colspan="9">PREP</th>
+    <th colspan="12">ENGAGE — THE MEETING ITSELF (Stefanie's tab order)</th>
+    <th>FOLLOW-UP</th><th>EXTEND</th>
+  </tr>
+  <tr class="moments">
+    <th class="rowlabel">Service moment</th>
+    <th>pre-sale, step 1</th><th>onboarding, steps 2–4</th><th>booked live, prior cycle's close</th>
+    <th colspan="8">Assemble — 8 separate data pulls, not one step</th>
+    <th>Judge <span class="cls">★</span></th>
+    <th>Meeting Kick Off <span class="cls chip cls-unclass" style="display:inline-block;">unclass.</span></th>
+    <th>Current Climate <span class="cls chip cls-prod" style="display:inline-block;">prod-line</span></th>
+    <th>Risk &amp; Security Review <span class="cls chip cls-hybrid" style="display:inline-block;">hybrid</span></th>
+    <th>Compliancy Review <span class="cls chip cls-hybrid" style="display:inline-block;">hybrid</span></th>
+    <th>Business Priorities &amp; Goals <span class="cls chip cls-brains" style="display:inline-block;">brains</span></th>
+    <th>Hardware/Software Asset Review <span class="cls chip cls-prod" style="display:inline-block;">prod-line</span></th>
+    <th>Employee Review <span class="cls chip cls-prod" style="display:inline-block;">prod-line</span></th>
+    <th>Technology Roadmap <span class="cls chip cls-hybrid" style="display:inline-block;">hybrid</span></th>
+    <th>Technology Budget <span class="cls chip cls-brains" style="display:inline-block;">brains</span></th>
+    <th>Additional Items <span class="cls chip cls-unclass" style="display:inline-block;">unclass.</span></th>
+    <th>Referrals &amp; Testimonials <span class="cls chip cls-brains" style="display:inline-block;">brains</span></th>
+    <th>Next Meeting Planning <span class="cls chip cls-prod" style="display:inline-block;">prod-line</span></th>
+    <th>Post-Meeting Action Items + KPIs <span class="cls chip cls-prod" style="display:inline-block;">prod-line</span></th>
+    <th>steps 7–8, living document</th>
+  </tr>
+  <tr class="gather">
+    <th class="rowlabel">Which pull</th>
+    <th colspan="3"></th>
+    <th>1. Warranty/EOL<span class="def">Is this hardware still covered by the maker's
+      warranty, and when does the maker stop patching it at all ("End-of-Life")? Unsupported
+      hardware can't be fixed even once you know it's broken.</span></th>
+    <th>2. License utilization<span class="def">Of the software seats the client pays for every
+      month, which ones has literally nobody logged into in 3–4 months?</span></th>
+    <th>3. User/staff reconcile<span class="def">Does the list of people who can log in match the
+      list of people who still work there? Catches ex-employees who still have access and new
+      hires who don't yet.</span></th>
+    <th>4. Ticket volume + SLA<span class="def">How many support requests came in, and did the MSP
+      answer/fix them inside the response time it contractually promised (its "SLA")?</span></th>
+    <th>5. Patch + backup<span class="def">Are systems up to date on security fixes, and are
+      backups running — and, separately, has anyone tested that a backup can actually be
+      <i>restored</i>? "Job succeeded" and "restorable" are different claims.</span></th>
+    <th>6. Phish-sim + training<span class="def">Did staff pass the fake phishing emails sent to
+      test them ("phish-sim"), and did they finish required security-awareness training?</span></th>
+    <th>7. Tenant config vs. baseline<span class="def">Is the client's cloud environment (their
+      "tenant" — e.g. their own Microsoft 365) still set up the way the MSP recommends (the MSP's
+      own "baseline"), or has it drifted?</span></th>
+    <th>8. Compliance checklist<span class="def">Is the client meeting whatever regulation applies
+      to them — HIPAA for healthcare, PCI for card payments, etc.? Which standards apply per
+      client isn't named in source.</span></th>
+    <th colspan="15"></th>
+  </tr>
+
+  <tr class="band-actions">
+    <th class="rowlabel">Actions<br>(customer)</th>
+    <td>Prospect meets AM before deal closes; forms early expectations.</td>
+    <td>Attends kickoff, receives welcome gift, joins check-ins.</td>
+    <td>Agrees to and confirms the next EBR date, live, before leaving the room.</td>
+    <td colspan="8" class="cell-empty">None yet, across all 8 pulls — backstage-only, client not present.</td>
+    <td class="cell-empty">None yet.</td>
+    <td>Arrives, hears purpose/agenda recap.</td>
+    <td>Reviews snapshot of current environment.</td>
+    <td>Reviews risk register; asks questions.</td>
+    <td>Reviews compliance standing.</td>
+    <td>Discusses actual business goals/priorities; gives or withholds consensus.</td>
+    <td>Reviews asset/warranty status.</td>
+    <td>Reviews staffing notes.</td>
+    <td>Reviews 12–36mo roadmap; re-prioritizes live.</td>
+    <td>Reviews budget tied to roadmap. <b>CFO asks for a copy — the buy-in moment.</b></td>
+    <td class="cell-empty">[?] unspecified content.</td>
+    <td>May give a referral or testimonial when asked.</td>
+    <td>Confirms next EBR date, live, closing the loop to Schedule.</td>
+    <td>Receives client-facing extract only.</td>
+    <td>Receives ongoing marketing/anniversary touches; benefits from continuity.</td>
+  </tr>
+
+  <tr class="band-tools">
+    <th class="rowlabel">Processes,<br>Tools, Tech</th>
+    <td>Sales conversation, in-person/call.</td>
+    <td>Kickoff meeting, welcome gift, check-in calls.</td>
+    <td>Verbal, in-room — no scheduling tool observed.</td>
+    <td colspan="8" class="cell-empty">No customer touchpoint at any of the 8 pulls — each pull's specific tool is in Support Processes below.</td>
+    <td class="cell-empty">—</td>
+    <td colspan="12"><b>The meeting itself</b>, in-person, one continuous session — one instance ran through lunch. (single touchpoint spans all 12 live moments, per the guide's "one touchpoint per service moment" convention read at the meeting level, not the tab level.)</td>
+    <td>Follow-up email, async, client-facing extract only.</td>
+    <td>Marketing touches, channel unspecified.</td>
+  </tr>
+
+  <tr class="band-feel">
+    <th class="rowlabel">Thinking &amp;<br>Feeling</th>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">Implied momentum if booking is easy.</td>
+    <td colspan="8" class="cell-empty">n/a across all 8 pulls — client not present.</td>
+    <td class="cell-empty">n/a — client not present</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td>"Not really interested in the back end." If translation succeeds, feels informed, not overwhelmed.</td>
+    <td class="cell-empty">[?]</td>
+    <td>Engagement here is what makes the later referral ask land.</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">The buy-in feeling — CFO wants a copy.</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td>Arrives <i>guarded</i> next cycle if the MSP's gone quiet in between.</td>
+  </tr>
+
+  <tr class="band-stress">
+    <th class="rowlabel">Stressors</th>
+    <td class="cell-empty">[?]</td>
+    <td><b>No structure/no framework</b> — "they don't know how to structure them."</td>
+    <td>No system backs the live commit up — if it doesn't happen, cadence discipline resets to whatever's convenient later.</td>
+    <td colspan="8"><b>Resource contention across all 8 pulls</b> — one person (Head of Technical Overview) doing all of them, pulled off paying service-desk work for the whole batch, not per-pull.</td>
+    <td>Operator discomfort in an exec room — no product answer exists.</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td><b>The load-bearing moment.</b> "Can't prepare 20 min before you walk in." If discomfort wins here: raw data shown instead of translation, meeting reads tactical.</td>
+    <td class="cell-empty">[?]</td>
+    <td>If this collapses into tech/stats recitation, client sees no value, declines next.</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td class="cell-empty">[?]</td>
+    <td>"Client said no" taken at face value — a terrible reason per Stefanie.</td>
+    <td><b>No follow-through</b> — action items never become tickets → "quickly cause your customer to lose faith." Stefanie's #1 killer.</td>
+    <td>Client refuses EBRs entirely (some do); switching-cost risk if Vanessa leaves.</td>
+  </tr>
+
+  <tr class="band-opp">
+    <th class="rowlabel">Opportunities<br>(build implication)</th>
+    <td class="cell-empty">[?] open — no material.</td>
+    <td>The kit's structural-templating value answers Rib 1 directly — if it's the right structure (Musts 1–8).</td>
+    <td><b>Build note:</b> the live verbal commit may be load-bearing for show-rate; a calendar-bot replacing it is untested risk.</td>
+
+    <td><b>⚙ Direct API pull</b>, no judgment. Feeds Hardware/Software Asset Review + Current Climate.</td>
+    <td><b>⚙ Kit the detection</b> — inactive-login query against login logs is mechanical; <i>what to do about it</i> is judgment, feeds the Business Priorities conversation, not this pull.</td>
+    <td><b>⚙ Kit the diff</b> — two-list comparison (AD/IdP vs. HR roster) flags joiners/leavers; provisioning follow-up is a separate action, not this pull.</td>
+    <td><b>⚙ Kit this</b> — a standard PSA report export. Feeds Current Climate.</td>
+    <td><b>⚙ Kit this</b> — direct pull; <b>explicitly flag overdue restore tests</b>, not just backup-job-success — "ran" and "verified restorable" are different claims and the source only confirms the former reliably.</td>
+    <td><b>⚙ Kit this</b> — a completion-rate export from the awareness platform.</td>
+    <td><b>Hybrid</b> — the config diff is pullable, but "vs. OUR standard" means the baseline itself is MSP-authored judgment, not universal. Don't kit the baseline definition, only the diff against it.</td>
+    <td><b>Hybrid</b> — checklist items pullable if the standard is codified; the narrative "are we compliant enough" stays judgment.</td>
+
+    <td>Draft the business-consequence translation. <b>Do not</b> build a "documentation shields you legally" claim.</td>
+    <td class="cell-empty">[?] no material.</td>
+    <td>Low-risk to auto-generate this tab's content once the 8 pulls feed it.</td>
+    <td>Confirm-gate any Unverified claim before it's spoken. Restate any prep-time claim as a ratio, never an absolute.</td>
+    <td>Entries pullable; narrative synthesis stays judgment.</td>
+    <td><b>Do not template.</b> Brains-work — protect it. A product surface should support Vanessa's live judgment, not replace it.</td>
+    <td>Production-line — safe to auto-populate from pulls 1 &amp; 3.</td>
+    <td>Production-line — safe to auto-populate from pull 3.</td>
+    <td>Re-prioritization logic could be assisted, but the priority call itself is judgment, set in Prep-Judge and re-tested live here.</td>
+    <td>Protect as brains-work — this is the clearest single ROI-demonstration moment to the client's own buyer (the CFO).</td>
+    <td class="cell-empty">[?] content unspecified.</td>
+    <td>A coworker could surface/remind the ask opportunity but shouldn't script the relationship-dependent moment itself.</td>
+    <td>Preserve the "book next meeting live" moment in any redesigned close — highest ROI-per-effort step, easiest to silently break.</td>
+    <td><b>⚙ Action-item → PSA ticket</b>, already an explicit instruction — clearest win in the template. Build two real artifacts (working doc + extract), not one doc with a toggle.</td>
+    <td>Price/name the living document's switching-cost value. Any TAM math must respect the tiered/opt-out population.</td>
+  </tr>
+
+  <tr class="line"><td colspan="27">— LINE OF VISIBILITY — only the business-value translation and the client-facing extract cross here —</td></tr>
+
+  <tr class="band-front">
+    <th class="rowlabel">Staff Actions<br>— Frontstage —</th>
+    <td><span class="role">AM</span>: "pre-frames" the relationship.</td>
+    <td><span class="role">AM</span>: runs kickoff, support-process education.</td>
+    <td><span class="role">Vanessa</span>: books next EBR live, every time.</td>
+    <td colspan="8" class="cell-empty">Invisible across all 8 pulls — assembly is backstage-only.</td>
+    <td class="cell-empty">Invisible — judgment is backstage-only.</td>
+    <td><span class="role">Vanessa</span>: opens meeting, states purpose.</td>
+    <td><span class="role">Vanessa</span>: presents snapshot.</td>
+    <td><span class="role">Vanessa</span> (NOT a technician): delivers pre-drafted translation, parks tech Qs.</td>
+    <td><span class="role">Vanessa</span>: presents compliance standing.</td>
+    <td><span class="role">Vanessa</span>: reads the room, builds consensus, sets priority live.</td>
+    <td><span class="role">Vanessa</span>: presents asset review.</td>
+    <td><span class="role">Vanessa</span>: presents staffing notes.</td>
+    <td><span class="role">Vanessa</span>: presents roadmap, re-prioritizes live.</td>
+    <td><span class="role">Vanessa</span>: presents budget, secures buy-in.</td>
+    <td><span class="role">Vanessa</span>: covers additional items.</td>
+    <td><span class="role">Vanessa</span>: asks for referral.</td>
+    <td><span class="role">Vanessa</span>: confirms next date live.</td>
+    <td><span class="role">Vanessa</span>: transcribes, reissues roadmap+budget, converts tickets, chases referral.</td>
+    <td>Ongoing marketing to existing base.</td>
+  </tr>
+
+  <tr class="band-back">
+    <th class="rowlabel">Staff Actions<br>— Backstage —</th>
+    <td class="cell-empty">[?] who preps the AM's pitch — unknown.</td>
+    <td class="cell-empty">[?] who preps kickoff materials — unknown.</td>
+    <td class="cell-empty">[?] which cadence tier (A/B/C) applies — assumed known, not confirmed as a system lookup.</td>
+
+    <td><span class="badge badge-kit">⚙</span> <span class="role">Head of Tech. Overview</span>: pulls hardware warranty status + EOL dates.</td>
+    <td><span class="badge badge-kit">⚙</span> <span class="role">Head of Tech. Overview</span>: checks license utilization — who hasn't logged in 3–4mo.</td>
+    <td><span class="badge badge-kit">⚙</span> <span class="role">Head of Tech. Overview</span>: reconciles user/employee list.</td>
+    <td><span class="badge badge-kit">⚙</span> <span class="role">Head of Tech. Overview</span>: pulls ticket volume + SLA attainment for the period.</td>
+    <td><span class="badge badge-kit">⚙</span> <span class="role">Head of Tech. Overview</span>: checks patch compliance + backup job success/restore-test status.</td>
+    <td><span class="badge badge-kit">⚙</span> <span class="role">Head of Tech. Overview</span>: reviews phish-sim results + awareness-training completion.</td>
+    <td><span class="badge badge-judge">★</span> <span class="role">Head of Tech. Overview</span>: checks tenant security config against the MSP's own baseline (baseline itself is MSP-authored).</td>
+    <td><span class="badge badge-judge">★</span> <span class="role">Head of Tech. Overview</span>: pulls status against a named compliance-standard checklist.</td>
+
+    <td><span class="badge badge-judge">★</span> <span class="role">Vanessa</span>: judges gap vs. standard, translates to business consequence, sets roadmap priority — the real constraint.</td>
+    <td colspan="12" class="cell-empty">Already completed in Prep — invisible during the live meeting.</td>
+    <td class="cell-empty">[?] unclear who enters tickets — Vanessa or a delegate.</td>
+    <td>Institutional memory in the living document; cadence re-tiered per client (A/B/C; some refuse).</td>
+  </tr>
+
+  <tr class="band-support">
+    <th class="rowlabel">Support<br>Processes</th>
+    <td class="cell-empty">[?] none named.</td>
+    <td class="cell-empty">[?] none named.</td>
+    <td class="cell-empty">[?] no scheduling tool named.</td>
+
+    <td class="tool">Asset/RMM inventory system (warranty lookup, EOL database).</td>
+    <td class="tool">License management tool / M365 admin center / IdP login logs.</td>
+    <td class="tool">Active Directory or IdP vs. HR roster (manual or API cross-check).</td>
+    <td class="tool">PSA (Halo) reporting.</td>
+    <td class="tool">RMM (patch status) + backup-monitoring tool (job success + restore-test log).</td>
+    <td class="tool">Security-awareness / phish-sim platform.</td>
+    <td class="tool">Tenant security-posture tool, compared against an internally-defined baseline.</td>
+    <td class="tool">Compliance/GRC tool, or a manual checklist if none exists.</td>
+
+    <td class="cell-empty">None named — the one moment with no tool at all.</td>
+    <td colspan="12" class="cell-empty">n/a during the live meeting — all support processes are Prep-side.</td>
+    <td>PSA/Halo ticket queue.</td>
+    <td>The living/working document as an institutional-memory system — "a switching-cost surface nobody in canon has priced."</td>
+  </tr>
+
+  <tr class="line"><td colspan="27">— BELOW THIS LINE IS NOT THE MSP'S SERVICE. IT IS OUR OWN BUILD, CHECKED AGAINST IT (acp-core-main, read 2026-07-29) —</td></tr>
+
+  <tr class="band-build">
+    <th class="rowlabel">ACP today<br>(in the build)</th>
+    <td><span class="bs bs-none">ABSENT</span><br>Nothing. No pre-sale surface. <span class="tool">—</span></td>
+    <td><span class="bs bs-adj">ADJACENT</span><br>There <i>is</i> an onboarding spec — but it onboards <b>the MSP into ACP</b>, not the MSP's client into the MSP. Same word, inverted direction. <span class="tool">Intent Specs/FSN-82692</span></td>
+    <td><span class="bs bs-adj">ADJACENT</span><br><b>ScheduleService</b> can fire a coworker on a cron/interval and is unit-tested — but it is called from <b>no API route</b>. Built infrastructure, no product surface. <span class="tool">app/runs/temporal/schedules.py</span></td>
+    <td><span class="bs bs-none">ABSENT</span><br>No warranty or EOL concept anywhere in code or specs.</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No license/seat/login-inactivity check. (Value Ledger names <code>license_savings</code> as a future secondary-value idea — a savings estimate, not a dormant-seat query. <span class="tool">specs/003-value-ledger/spec.md:186</span>)</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No AD/IdP/HR-roster reconcile.</td>
+    <td><span class="bs bs-adj">ADJACENT</span><br>PSA exists only as narrative: a "Ticket Triage &amp; Dispatch" coworker story. ConnectWise/Autotask/Halo are <i>named</i> and marked <b>"pending spec — not started."</b> <span class="tool">Intent Specs/FSN-82692:437</span></td>
+    <td><span class="bs bs-adj">ADJACENT</span><br>A seeded demo "Patch Management Expert" persona and a <code>backup.restore</code> string in one unit test. No RMM, no backup-monitoring connector. <span class="tool">scripts/seed_experts.py:37</span></td>
+    <td><span class="bs bs-none">ABSENT</span><br>No phish-sim or awareness-training surface.</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No posture tool, no baseline-comparison mechanism.</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No GRC or compliance-checklist surface.</td>
+    <td><span class="bs bs-none">ABSENT</span><br><b>Nothing — and this is the one step the MSP has no tool for either.</b> Absent on both sides of the map.</td>
+    <td><span class="bs bs-none">ABSENT</span><br>—</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No environment-snapshot surface.</td>
+    <td><span class="bs bs-spec">SPECCED</span><br><b>QBR Advisor coworker</b> is specced to "generate client-ready QBR narratives and security/posture summaries" — the closest conceptual match in the whole corpus. <b>0 of 40 tasks complete</b>; its seed migration never landed; the live <code>Coworker</code> model is an older, flatter shape than the spec assumes. <span class="tool">specs/004-ai-coworker-registry</span></td>
+    <td><span class="bs bs-none">ABSENT</span><br>—</td>
+    <td><span class="bs bs-adj">ADJACENT</span><br><b>Value Ledger <code>GET /summary</code></b> — the only reporting surface in the build. Automation ROI (time/cost saved by coworkers), not client business goals. <span class="tool">api/v1/value_ledger.py:93</span></td>
+    <td><span class="bs bs-none">ABSENT</span><br>No asset inventory.</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No staffing surface.</td>
+    <td><span class="bs bs-none">ABSENT</span><br>No roadmap object.</td>
+    <td><span class="bs bs-adj">ADJACENT</span><br>Value Ledger holds <code>cost_saved</code> + encrypted hourly rate — the only money in the build, but it is <i>our</i> ROI, not the client's IT budget. <span class="tool">value_ledger/models.py</span></td>
+    <td><span class="bs bs-none">ABSENT</span><br>—</td>
+    <td><span class="bs bs-none">ABSENT</span><br>—</td>
+    <td><span class="bs bs-adj">ADJACENT</span><br>ScheduleService again — the mechanism exists, unwired.</td>
+    <td><span class="bs bs-adj">ADJACENT</span><br><b>Ticket creation is absent.</b> The nearest thing is a narrative idea about writing queue <i>re</i>-assignments back to ConnectWise — routing, not creating. Value Ledger's CSV/PDF export job is the only client-ready-artifact mechanism that actually ships. <span class="tool">value_ledger/templates/report.html</span></td>
+    <td><span class="bs bs-none">ABSENT</span><br>No cross-year living document. ("Institutional memory" appears in two Intent Specs — as a <i>changelog header for the spec document itself</i>. Different thing.)</td>
+  </tr>
+</table>
+</div>
+
+<h2>What acp-core already has, checked against this map</h2>
+
+<div class="model-note">
+  <b>Read at 2026-07-29 from <code>acp-core-main</code></b> — the Intent Specs, the five <code>specs/</code>
+  folders, and <code>apps/backend</code>, distinguishing what is in code from what is only in prose.
+  Bottom row of the grid above carries the per-step verdict. The short version: <b>of the 26 steps in
+  this map, 0 are built, 1 is specced, 8 are adjacent, and 17 are absent.</b> That is not a criticism
+  of the build — acp-core was scoped to autonomous runbook execution, not to account management. It
+  means this map describes work the product does not currently touch.
+</div>
+
+<div class="callout" style="background:#f4faf4; border-color:#4a8; border-left-color:#4a8;">
+  <b class="hdr">The one real match — and it's a mechanism, not a feature</b>
+  The <b>Value Ledger</b> is fully built (~2,100 lines across service, models, baseline resolver,
+  rollup, and Temporal export workflows). Every entry carries a <code>baseline_source</code> tag
+  resolved <i>once at write time</i> and permanently embedded, never re-resolved:
+  <code>tenant_configured</code> → <code>platform_default</code> → <code>coworker_reported</code> →
+  <code>unknown</code>. A model self-reporting zero saved minutes is rejected outright as a probable
+  bug.
+  <br><br>
+  That is <b>provenance tiering already shipped in production code</b> — tenant-verified beats
+  platform-estimated beats model-self-reported beats unknown-and-flagged. It is the same discipline
+  this whole map is built on: never let a number be quoted without saying where it came from. The
+  build already has the mechanism the EBR needs. What it doesn't have is any of the eight subjects
+  the EBR needs it pointed at. <b>The gap is subject matter, not mechanism.</b>
+  <br><br>
+  The Ledger also emits a real client-ready artifact: <code>POST /exports</code> produces CSV or a
+  Jinja/WeasyPrint-rendered PDF (sync under 1,000 entries, async Temporal workflow above it). So the
+  build can already generate a document and hand it to a human — the pipe exists.
+</div>
+
+<h2 style="font-size:12.5px; border-bottom-width:1px;">Named integrations in the build</h2>
+<table class="jobshop">
+  <tr><th style="width:22%;">Integration</th><th style="width:14%;">Status</th><th>Where it actually lives</th></tr>
+  <tr><td><b>MCP server / instance framework</b></td><td class="kit"><b>BUILT</b></td>
+    <td class="kit">A generic bring-your-own-connector layer — credential or OAuth, per-tool allowlist,
+    HITL flag, tenant-scoped. <b>Ships with zero named connectors.</b> The migration defines the
+    <code>mcp_servers</code>/<code>mcp_credentials</code> tables and no vendor rows.
+    <span class="tool">specs/004-mcp-configs · app/mcp/</span></td></tr>
+  <tr><td>ConnectWise Manage (PSA)</td><td class="job">narrative only</td>
+    <td class="job">Explicitly marked <b>"pending spec — not started"</b>.
+    <span class="tool">Intent Specs/FSN-82692:437</span></td></tr>
+  <tr><td>Autotask · HaloPSA (PSA)</td><td class="job">named, not detailed</td>
+    <td class="job">Listed as future PSA types in a non-goal.
+    <span class="tool">Intent Specs/FSN-82692:272</span></td></tr>
+  <tr><td>N-central / RMM</td><td class="job">out of scope</td>
+    <td class="job">"Not required… introduced post-onboarding."
+    <span class="tool">Intent Specs/FSN-82692:269</span></td></tr>
+  <tr><td>Jira · GitHub · Jamf</td><td class="job">test fixtures</td>
+    <td class="job">Arbitrary strings exercising the generic MCP model in unit tests and demo seed
+    data. Not connectors.
+    <span class="tool">tests/agents/test_expert_api.py · scripts/seed_experts.py</span></td></tr>
+</table>
+<p style="font-size:11.5px; color:#444; margin:6px 0 0;">
+  No PSA, RMM, M365/IdP, backup, GRC, or license-management system is wired into this codebase.
+  Every one of the eight prep pulls would need a connector registered from scratch. That is the
+  honest size of the integration problem — and it is the same list, eight times over, that the
+  Head of Technical Overview is currently doing by hand.
+</p>
+
+<h2 style="font-size:12.5px; border-bottom-width:1px;">Three things worth knowing before Will and I decide</h2>
+<table class="jobshop">
+  <tr><th style="width:26%;">What we found</th><th>Why it matters to the build decision</th></tr>
+  <tr>
+    <td><b>"QBR Advisor" is already a named coworker in the spec</b> — one of five v1 platform
+      defaults, scoped to "generate client-ready QBR narratives and security/posture summaries."</td>
+    <td>Someone already had this instinct and wrote it down. But <b>0 of 40 tasks are complete</b>,
+      the seed migration never landed, and the live <code>Coworker</code> ORM model is a flatter,
+      older shape with none of the <code>guardrails</code>/<code>trigger</code>/<code>autonomy_level</code>
+      fields the registry spec assumes. So the name exists and the thing does not — which makes it
+      easy to over-read as coverage in a status conversation.
+      <span class="tool">specs/004-ai-coworker-registry/{spec.md:57, tasks.md:81}</span></td>
+  </tr>
+  <tr>
+    <td><b>Scheduling is built but unwired.</b> <code>ScheduleService</code> wraps Temporal
+      Schedules, fires a coworker on a cron or interval, and has passing unit tests.</td>
+    <td>It is called from no API route and no coworker surface exposes a schedule field. The
+      recurring-cadence mechanism an EBR needs is sitting there finished with nothing plugged into
+      it. Cheapest real path from this map to shipped code probably runs through here.
+      <span class="tool">app/runs/temporal/schedules.py · api/v1/coworkers.py</span></td>
+  </tr>
+  <tr>
+    <td><b>The build's "onboarding" is the opposite direction from the map's.</b></td>
+    <td>FSN-82692 onboards <i>the MSP into ACP</i>. The Enter stage of this map is the MSP onboarding
+      <i>its own client</i> — the step that sets the precedent for whether EBRs happen at all. Same
+      word, inverted actor. Worth catching before anyone treats one as covering the other.</td>
+  </tr>
+</table>
+
+<h2 style="font-size:12.5px; border-bottom-width:1px;">Absent, in full</h2>
+<p style="font-size:11.5px; color:#333;">
+  Warranty/EOL · license-utilization / dormant seats · AD-IdP-vs-HR reconcile · ticket volume + SLA ·
+  patch compliance · backup job success and restore-test verification · phish-sim and awareness
+  training · tenant posture vs. baseline · compliance checklist vs. a named standard · the Judge step ·
+  all 15 meeting tabs · PSA ticket <i>creation</i> · dual internal/client-facing artifact separation ·
+  the cross-year living document. Fourteen categories, no code and (except QBR Advisor) no spec.
+</p>
+
+<h2>Three findings that change what you should build</h2>
+
+<div class="callout">
+  <b class="hdr">1 — The Risk Register's second job, and why Prep-Judge / Risk &amp; Security Review are careful (unvalidated, kept in full)</b>
+  Stefanie states the register's purpose three ways, none of them "prove value": shift the risk
+  onto the customer, survive the insurer,
+  stay out of court. The John anecdote (documented warning removed
+  blame/emotion when a client got hit) is the mechanism appearing
+  to work. <b>Downgraded 2026-07-28 after a legal scout pass:</b> two named cases exist, not three,
+  neither 2025 (Mastagni Holstedt v. LanTech; Boardman Molded Products v. Involta); no case law,
+  US or UK, has tested a documented refusal as a defense; no carrier treats it as mitigating —
+  underwriters assess deployed controls, not paperwork; the defense gets pierced by the seller's
+  own marketing (Involta's "one-stop shop" copy was used against it); the jurisdiction is inverted
+  (advice is UK-sourced, litigation is US); and the mechanism runs both ways — machine-generated
+  risk detection expands the record of what the MSP <i>knew</i>. <b>Volume of detection is volume
+  of exposure.</b> Status: unvalidated, not a finding, not to appear client-facing before counsel.
+</div>
+
+<div class="callout">
+  <b class="hdr">2 — The 4–5h baseline's own credibility problem</b>
+  Vanessa's 4–5h/EBR was originally read as independently corroborated by Stefanie's own figure.
+  It is not — the source's own timeline shows Vanessa adopted this framework <i>after</i> Craig
+  brought it home from Stefanie's training. Same process, measured twice at two points in its
+  transmission — an echo, not validation. Wider vendor-blog figures (3–8h, "4–6 hours") have no
+  primary source anywhere. Three unsourced numbers agreeing is not triangulation. Any reduction
+  claim must be phrased as a ratio against this one-conversational-self-report baseline, never as
+  an absolute — the 15-min-edit assumption in canon is really a claim of ~16–20× reduction on a
+  job-shop task with a human-judgment core.
+</div>
+
+<div class="callout">
+  <b class="hdr">3 — The dual-surface artifact is structural, not a nice-to-have</b>
+  Two living documents: Risk Register + Technology Roadmap/Budget feed The Working Document
+  (internal notes Vanessa keeps) which produces The Client-Facing
+  Extract (follow-up email only). Any product that renders <i>one</i> document — even with a
+  redaction toggle — breaks this structurally. It needs to be two real artifacts. The 2026-07-28
+  Tier-1 prototype did exactly this wrong thing; council caught it
+  (<code>prototypes/acp-qbr-ebr/council-pipeline-fast.md</code>).
+</div>
+
+<h2>Job shop vs. production line — every step, why it's sorted that way, and what good looks like</h2>
+
+<div class="model-note">
+  <b>The distinction, in one paragraph.</b> A <b>production line</b> step produces the same output
+  every time from the same inputs — no judgment in the middle. Anyone (or anything) following the
+  procedure gets the same answer, so the only questions are speed and cost. A <b>job shop</b> step
+  produces a different output every time because the answer depends on <i>this</i> client, <i>this</i>
+  quarter, <i>this</i> room — the value is the judgment itself, so making it faster by removing the
+  judgment destroys the thing you were selling. (The framing is David Maister's leverage-ratio
+  distinction from professional-services economics, applied to the EBR in
+  <code>qbr-ebr.context.md</code> §6.)
+  <br><br>
+  <b>Stefanie's two rules are the whole spec.</b> On the production-line half:
+  <b>"assemble it — and never show it."</b> On the job-shop half: <b>"this is the whole meeting."</b>
+  Everything below is those two rules applied step by step.
+  <br><br>
+  <b>Why this matters for what we build:</b> automating the production line is a cost-and-speed play
+  with a known-good answer. Touching the job shop is a different bet entirely — the tool can hold
+  the structure and surface the prompt, but the moment it writes the judgment, the operator's own
+  competence is what got automated, and the failure is silent. The one failure mode named more than
+  any other in the source is an operator who <i>shows the production-line output instead of doing the
+  job-shop translation</i> — so a product that makes the production-line output prettier and easier
+  to display makes the most-cited failure mode <i>easier to commit</i>. That's the sharpest design
+  tension on this page.
+</div>
+
+<table class="jobshop">
+  <tr>
+    <th style="width:15%;">Step</th>
+    <th style="width:8%;">Class</th>
+    <th style="width:25%;">Why it's sorted that way</th>
+    <th style="width:26%;">What good looks like</th>
+    <th style="width:26%;">If we build it wrong</th>
+  </tr>
+
+  <tr><td colspan="5" style="background:#111;color:#fff;font-size:10px;text-transform:uppercase;letter-spacing:.4px;"><b>Prep — assemble (the 2–3h nobody sees)</b></td></tr>
+
+  <tr>
+    <td><b>Pulls 1–6</b><br>warranty/EOL · license use · user reconcile · ticket+SLA · patch+backup ·
+      phish-sim/training</td>
+    <td class="kit"><span class="chip cls-prod">prod-line</span></td>
+    <td class="kit">Each is a query against a system of record with one correct answer. No
+      client-specific interpretation is needed to <i>produce the number</i>. Six different systems,
+      one mechanical operation each.</td>
+    <td class="kit">All six land assembled, current, and complete before anyone opens their mouth —
+      and a human never touches a keyboard to get them. Pull 5 reports backup <i>restore-tests</i>
+      separately from backup-job-success; those are two different claims and only the weaker one is
+      reliably in source.</td>
+    <td class="kit">Today's failure is not wrongness, it's <i>cost</i>: it's done by hand, late, by
+      the one person who should be on the paying service desk. Build it so it's still manual-ish and
+      you've kept the whole cost center.</td>
+  </tr>
+  <tr>
+    <td><b>Pull 7</b><br>tenant config vs. baseline</td>
+    <td class="job"><span class="chip cls-hybrid">hybrid</span></td>
+    <td class="job">The <i>diff</i> is mechanical. The <i>baseline</i> it's diffed against is the
+      MSP's own authored standard — an opinion about what good security looks like for this kind of
+      client, not a universal fact.</td>
+    <td class="job">The comparison runs automatically; the baseline stays editable, attributable,
+      and visibly the MSP's own. The MSP can see and defend which standard it held the client to.</td>
+    <td class="job">Ship a vendor-defined baseline as if it were objective and you've quietly taken
+      over the MSP's security opinion — and made every "you're non-compliant" claim our claim, not
+      theirs.</td>
+  </tr>
+  <tr>
+    <td><b>Pull 8</b><br>compliance checklist</td>
+    <td class="job"><span class="chip cls-hybrid">hybrid</span></td>
+    <td class="job">Checklist status is pullable <i>if</i> the standard is codified. Which standard
+      applies to this client, and whether they're "compliant enough," is judgment — and the source
+      never names which standards apply per client.</td>
+    <td class="job">Items auto-populate against a named, selected standard; the "are we OK" narrative
+      stays a human sentence, written by someone who knows what the client is exposed to.</td>
+    <td class="job">Auto-generate a compliance verdict and we've made a legal-adjacent assertion on
+      the MSP's behalf with no counsel in the loop.</td>
+  </tr>
+
+  <tr><td colspan="5" style="background:#111;color:#fff;font-size:10px;text-transform:uppercase;letter-spacing:.4px;"><b>Prep — judge (the step with no tool at all)</b></td></tr>
+
+  <tr>
+    <td><b>Translate gaps into business consequence</b> · set roadmap priority</td>
+    <td class="job"><span class="chip cls-brains">brains</span></td>
+    <td class="job">This is the actual constraint in the whole process. Turning "17 machines are
+      out of warranty" into "here's what that costs you if it fails in November" requires knowing
+      this client's business. Source is explicit: <b>"you can't prepare 20 minutes before you walk
+      in."</b> It is also the one step in the entire map with <b>no supporting tool named</b>.</td>
+    <td class="job">The operator walks in with the translation already written and believes it. The
+      tool's job is to hold the structure, put the right prompt in front of them, and refuse to let
+      an unverified claim get spoken — <i>not</i> to write the sentence.</td>
+    <td class="job">Two ways to fail. Draft the translation for them and their competence quietly
+      erodes with no signal. Skip it and you've built a data-dump generator — which is the
+      most-cited failure in the corpus.</td>
+  </tr>
+
+  <tr><td colspan="5" style="background:#111;color:#fff;font-size:10px;text-transform:uppercase;letter-spacing:.4px;"><b>The meeting — Stefanie's 15 tabs, in her order</b></td></tr>
+
+  <tr>
+    <td><b>Meeting Kick Off</b></td>
+    <td class="job"><span class="chip cls-unclass">unclass.</span></td>
+    <td class="job">Never sorted in the original pass. Named honestly rather than guessed — setting
+      the room's purpose is plausibly judgment, but the source doesn't say.</td>
+    <td class="job">Unknown. Worth asking an operator directly before building anything here.</td>
+    <td class="job">Guessing its class is how a build decision gets made on nothing.</td>
+  </tr>
+  <tr>
+    <td><b>Current Climate</b></td>
+    <td class="kit"><span class="chip cls-prod">prod-line</span></td>
+    <td class="kit">A snapshot of state. Fed almost entirely by pulls 1, 3 and 4 — the numbers are
+      the content.</td>
+    <td class="kit">Auto-populated, zero prep, correct on arrival. The lowest-risk automation target
+      on the whole map.</td>
+    <td class="kit">Little downside — but also little differentiation. Every competitor can do this.</td>
+  </tr>
+  <tr>
+    <td><b>Risk &amp; Security Review</b></td>
+    <td class="job"><span class="chip cls-hybrid">hybrid</span></td>
+    <td class="job">The load-bearing moment. Entries come from pulls 5–8; the delivery is the
+      business-consequence translation. Notably delivered by the client-delivery lead,
+      <b>deliberately not a technician</b>.</td>
+    <td class="job">Register entries arrive pre-populated and ranked; the room hears consequences,
+      not findings; tech questions get parked rather than answered live. Any claim that hasn't been
+      verified is gated <i>before</i> it's spoken.</td>
+    <td class="job">This is where discomfort wins and raw data gets shown. Make the raw view the
+      path of least resistance and we've built the failure mode a nicer front door. See finding 1
+      below on the register's second job — it is <i>not</i> validated.</td>
+  </tr>
+  <tr>
+    <td><b>Compliancy Review</b></td>
+    <td class="job"><span class="chip cls-hybrid">hybrid</span></td>
+    <td class="job">Same shape as pull 8: status is pullable, standing is a judgment call with legal
+      adjacency.</td>
+    <td class="job">Status shown against a named standard, verdict spoken by a human.</td>
+    <td class="job">A generated verdict is an assertion we don't have standing to make.</td>
+  </tr>
+  <tr>
+    <td><b>Business Priorities &amp; Goals</b></td>
+    <td class="job"><span class="chip cls-brains">brains</span></td>
+    <td class="job">There is no system of record for what a client is trying to do next year. The
+      answer only exists in the conversation. Engagement here is also what makes the later referral
+      ask land.</td>
+    <td class="job">Real 12/24/36-month plans surface, in the client's words, and get captured
+      verbatim into the living document. The tool listens and structures; it does not suggest goals.</td>
+    <td class="job">Template this and it collapses into tech/stats recitation — and per source, the
+      client sees no value and declines the next one.</td>
+  </tr>
+  <tr>
+    <td><b>Hardware/Software Asset Review</b></td>
+    <td class="kit"><span class="chip cls-prod">prod-line</span></td>
+    <td class="kit">Direct output of pulls 1 and 3. Inventory is inventory.</td>
+    <td class="kit">Fully auto-populated, warranty/EOL dates flagged by urgency, ready to feed the
+      roadmap and the budget without retyping.</td>
+    <td class="kit">Leaving it manual burns technician hours for zero differentiation.</td>
+  </tr>
+  <tr>
+    <td><b>Employee Review</b></td>
+    <td class="kit"><span class="chip cls-prod">prod-line</span></td>
+    <td class="kit">Output of pull 3 — the joiners/leavers diff.</td>
+    <td class="kit">Auto-populated, with provisioning follow-ups falling out as action items rather
+      than being noticed by a person.</td>
+    <td class="kit">Same as above: cost, not correctness.</td>
+  </tr>
+  <tr>
+    <td><b>Technology Roadmap</b></td>
+    <td class="job"><span class="chip cls-hybrid">hybrid</span></td>
+    <td class="job">The <i>entries</i> come from the gaps found in prep; the <i>order</i> is a
+      judgment call that gets set in Prep-Judge and then re-tested live in the room against what the
+      client just said their priorities were.</td>
+    <td class="job">Entries flow in automatically; re-prioritizing live is fast and low-friction; the
+      reordered roadmap is reissued after the meeting without retyping.</td>
+    <td class="job">Auto-rank the roadmap and we've replaced the one judgment the client is actually
+      paying for — and made live re-prioritization feel like fighting the tool.</td>
+  </tr>
+  <tr>
+    <td><b>Technology Budget</b></td>
+    <td class="job"><span class="chip cls-brains">brains</span></td>
+    <td class="job">Money tied to the roadmap, in front of the person who controls it. Source's
+      clearest buy-in signal is the client's CFO asking for a copy — that's the ROI demonstration
+      landing in real time.</td>
+    <td class="job">Budget stays tied line-by-line to roadmap items so the client can see what each
+      number buys. Protected as a live conversation, not a generated figure.</td>
+    <td class="job">A generated budget nobody in the room owns is the fastest way to lose the one
+      moment where value is visibly proven.</td>
+  </tr>
+  <tr>
+    <td><b>Additional Items</b></td>
+    <td class="job"><span class="chip cls-unclass">unclass.</span></td>
+    <td class="job">Content unspecified in source. Not sorted.</td>
+    <td class="job">Unknown.</td>
+    <td class="job">Don't build to an empty slot.</td>
+  </tr>
+  <tr>
+    <td><b>Referrals &amp; Testimonials</b></td>
+    <td class="job"><span class="chip cls-brains">brains</span></td>
+    <td class="job">Purely relationship-dependent. Whether to ask, and how, depends on how the last
+      50 minutes went — which is why it sits at the end of the agenda, not the start.</td>
+    <td class="job">The tool <i>reminds</i> that the opportunity exists and tracks whether the ask
+      happened. The operator decides and phrases it.</td>
+    <td class="job">Script this and it reads as a script. A templated referral ask damages the
+      relationship it's trying to monetize.</td>
+  </tr>
+  <tr>
+    <td><b>Next Meeting Planning</b></td>
+    <td class="kit"><span class="chip cls-prod">prod-line</span></td>
+    <td class="kit">Mechanically trivial — but per source it must happen <b>live, in the room, before
+      anyone leaves</b>. Highest return per unit of effort in the whole process, and the easiest to
+      silently break.</td>
+    <td class="kit">The date is committed verbally in the room and captured instantly. Cadence tier
+      (A/B/C — not every client gets the same frequency, and some refuse entirely) is respected.</td>
+    <td class="kit">Replace the live verbal commit with a "we'll send an invite" and you may have
+      broken the show-rate. Untested risk — flag it, don't assume it's safe.</td>
+  </tr>
+  <tr>
+    <td><b>Post-Meeting Action Items + KPIs</b></td>
+    <td class="kit"><span class="chip cls-prod">prod-line</span></td>
+    <td class="kit">Turning agreed actions into tracked tickets is pure mechanism — and the template
+      already instructs it explicitly.</td>
+    <td class="kit">Every action item becomes a real PSA ticket with an owner, automatically. This is
+      the single clearest win in the template.</td>
+    <td class="kit"><b>Stefanie's #1 killer.</b> No follow-through — action items that never became
+      tickets — will "quickly cause your customer to lose faith." Get this wrong and the entire
+      meeting was theatre.</td>
+  </tr>
+
+  <tr><td colspan="5" style="background:#111;color:#fff;font-size:10px;text-transform:uppercase;letter-spacing:.4px;"><b>After — follow-up and the living document</b></td></tr>
+
+  <tr>
+    <td><b>The follow-up extract</b></td>
+    <td class="job"><span class="chip cls-hybrid">hybrid</span></td>
+    <td class="job">Transcription and ticket conversion are mechanical. <i>Deciding what crosses the
+      line to the client</i> is judgment — and the internal working document and the client-facing
+      extract are two genuinely different artifacts, not one document with a filter.</td>
+    <td class="job">Two real artifacts exist. The internal one keeps the operator's candid notes; the
+      client one is composed, not filtered. See finding 3 below.</td>
+    <td class="job">One document plus a redaction toggle breaks this structurally — an accidental
+      un-toggle is a client-visible incident. Our own Tier-1 prototype made exactly this mistake.</td>
+  </tr>
+  <tr>
+    <td><b>The living document / institutional memory</b></td>
+    <td class="job"><span class="chip cls-brains">brains</span></td>
+    <td class="job">Its value is accumulated context — years of what this client said they wanted and
+      what was decided. Nothing generates that; it's deposited over time.</td>
+    <td class="job">It compounds. Continuity survives the operator leaving. Source calls this a
+      switching-cost surface nobody in canon has priced.</td>
+    <td class="job">Treat it as a meeting-notes archive and we've missed the one asset here that gets
+      more valuable the longer a client stays.</td>
+  </tr>
+</table>
+
+<h2>Jargon index</h2>
+<table class="jobshop">
+  <tr><th style="width:20%;">Term</th><th>Plain meaning</th></tr>
+  <tr><td><b>EBR / QBR</b></td><td>Executive / Quarterly Business Review — the recurring meeting
+    where an MSP sits down with a client's leadership and reviews the state of their technology,
+    risks, and plans. The thing this whole map describes.</td></tr>
+  <tr><td><b>MSP</b></td><td>Managed Service Provider — the outsourced IT company. The customer of
+    the product we'd be building.</td></tr>
+  <tr><td><b>RMM</b></td><td>Remote Monitoring &amp; Management — the software an MSP uses to see and
+    manage a client's computers from afar.</td></tr>
+  <tr><td><b>PSA</b></td><td>Professional Services Automation — the MSP's own ticketing/billing/
+    scheduling system. "Halo" is the specific PSA product named in source.</td></tr>
+  <tr><td><b>SLA</b></td><td>Service Level Agreement — the response/fix time the MSP contractually
+    promised.</td></tr>
+  <tr><td><b>EOL</b></td><td>End-of-Life — the point where a manufacturer stops supporting and
+    patching a product. After EOL, a known flaw can't be fixed at all.</td></tr>
+  <tr><td><b>Warranty (hardware)</b></td><td>Whether the manufacturer will still repair or replace
+    the machine. Separate from EOL: a device can be in warranty but past EOL, or vice versa.</td></tr>
+  <tr><td><b>Tenant</b></td><td>A client's own dedicated slice of a shared cloud service (e.g. their
+    own Microsoft 365 environment, separate from every other MSP client's).</td></tr>
+  <tr><td><b>Baseline</b></td><td>The MSP's own written standard for how a client environment should
+    be configured. An opinion, not a universal fact — which is why pull 7 is hybrid.</td></tr>
+  <tr><td><b>Phish-sim</b></td><td>Simulated phishing — fake scam emails deliberately sent to a
+    client's staff to see who clicks.</td></tr>
+  <tr><td><b>Patch compliance</b></td><td>What share of machines are up to date on security
+    updates.</td></tr>
+  <tr><td><b>Restore test</b></td><td>Actually proving a backup can be recovered, as opposed to the
+    backup job merely reporting success. Different claim; commonly skipped.</td></tr>
+  <tr><td><b>RTO / RPO</b></td><td>Recovery Time Objective / Recovery Point Objective — how long the
+    client can afford to be down, and how much data they can afford to lose. Both are business
+    decisions, which is why probing them is job-shop work.</td></tr>
+  <tr><td><b>IdP</b></td><td>Identity Provider — the system that manages who can log in (e.g. Active
+    Directory, Okta).</td></tr>
+  <tr><td><b>GRC tool</b></td><td>Governance, Risk &amp; Compliance software — tracks compliance
+    requirements against a checklist.</td></tr>
+  <tr><td><b>Risk register</b></td><td>The running list of known risks in a client's environment,
+    including ones the client was told about and declined to fix.</td></tr>
+  <tr><td><b>Cadence tier (A/B/C)</b></td><td>How often a given client gets an EBR. Not universal —
+    some clients get them quarterly, some annually, some refuse entirely.</td></tr>
+  <tr><td><b>AM / AE</b></td><td>Account Manager / Account Executive — the relationship owner and
+    the salesperson, respectively.</td></tr>
+  <tr><td><b>⚙ / ★ / ★★</b></td><td>⚙ = a machine can do this with no human judgment · ★ = needs a
+    human's judgment call · ★★ = needs judgment from a specific, scarce person, not just
+    anyone.</td></tr>
+</table>
+
+
+</body>
+</html>

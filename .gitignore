@@ -16,3 +16,31 @@ REPO-SETUP.md
 
 # macOS
 .DS_Store
+
+# N-able internal repo — local reference only
+acp-core-main-3/
+
+# Binaries
+*.dmg
+*.zip
+*.pdf
+*.docx
+*.pptx
+
+# Real data — GDPR
+*.csv
+*.xlsx
+
+# Nameless zip
+ziGjtYY8
+
+# Embedded git repo (no remote; use prototyping-toolkit 2/ instead)
+prototyping-toolkit/
+
+# Share packages (zip is canonical)
+adlumin-prototype-package/
+band-toolkit-share-2026-07-31/
+julian-prototype-package/
+julian-prototype-package 2/
+prototype-skill-share/
+prototype-skill-share 2/

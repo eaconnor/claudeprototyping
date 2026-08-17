@@ -2,5 +2,19 @@
   "env": {
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
     "MAX_THINKING_TOKENS": "8000"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== PREFLIGHT ===' && echo 'Atlassian:' && curl -s -I https://n-able.atlassian.net/ | grep HTTP && echo 'GitHub:' && gh auth status 2>/dev/null | head -1 || echo 'gh CLI not authenticated' && echo 'Figma MCP:' && grep -q figma .mcp.json 2>/dev/null && echo 'Configured' || echo 'Not configured'",
+            "statusMessage": "Checking write paths…"
+          }
+        ]
+      }
+    ]
   }
 }

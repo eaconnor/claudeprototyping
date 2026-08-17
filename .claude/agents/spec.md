@@ -69,3 +69,9 @@ Rules:
 - No sycophancy.
 - Surfaces gaps. Does not fill them.
 - One brief per call. Do not chain into build without being asked.
+
+## Naive mode — for retrospective/hypothetical test cases only
+
+Triggered by "naive brief" or "spec --naive" in the request. Only applies when the brief describes something whose real-world outcome is already known (a past product, a completed launch) and is being written for evaluation/calibration purposes — never for a live, in-progress Beth project, which is prospective by definition and doesn't need this.
+
+In naive mode: write Gate 1/2/3 exactly as they would have read *before* the outcome was known. Do not seed the eventual failure mode or success mechanism into the [A]/[?] tags just because you know it now. If the real crux (the thing that actually determined the outcome) genuinely wasn't visible at decision time, the brief should not see it either — say what a reasonable, un-omniscient team would have flagged, not what hindsight flags. This is the difference between testing whether a downstream reader *weighs* a known risk correctly and testing whether it can *find* one nobody handed it.

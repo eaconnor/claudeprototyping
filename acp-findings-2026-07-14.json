@@ -1,0 +1,1903 @@
+{
+  "swept": "2026-07-14",
+  "sources_covered": 8,
+  "raw_count": 211,
+  "merged": {
+    "conflicts": [
+      {
+        "topic": "ELT/GO-NO-GO partner selection date",
+        "finding_a": "GO/NO-GO partner selection gate set for 2026-07-31 (Partner Diligence Tracking, Nicole)",
+        "finding_b": "ELT decision on which partner to select is scheduled for July 17 (GPM Partner Execution Project Plan, Suzanne Britt)",
+        "note": "Two different partner-selection decision dates (July 17 vs July 31) across the Confluence AI space and the GPM space. Contract execution Aug 3 is consistent across both; the decision date is not. Reconcile before quoting a timeline."
+      },
+      {
+        "topic": "Onboarding sign-in / N-able account requirement",
+        "finding_a": "Teams (William Mincher): sign-up WITHOUT an N-able account (link later)",
+        "finding_b": "Teams (Jude Scally, open question): whether new customers onboard via N-able sign-in like any N-sight customer",
+        "note": "Whether ACP onboarding requires/uses an N-able account is stated as decided-no in one thread and raised as still-open in another. Also intersects DEC-001 (v1 standalone, zero dependency on owning N-central) \u2014 supports no-account path but the mechanism is unsettled."
+      },
+      {
+        "topic": "Coworker start-to-activation / first-run time target",
+        "finding_a": "Onboarding hard constraint: signup to first run <20 min (ACP-4 / FSN-82692)",
+        "finding_b": "Coworker success metric MET: median start-to-activation <=15 min (FSN-83143)",
+        "note": "Not a strict contradiction but two different time budgets (20 min end-to-end onboarding vs 15 min builder start-to-activation) that are easy to conflate. Different scopes; keep distinct."
+      },
+      {
+        "topic": "$33,600/month false-positive savings figure",
+        "finding_a": "Top MSP problem is false-positive alert burden; $33,600/mo impact figure derived",
+        "finding_b": "CLAIM-MATH-DISPUTED-001: the $33,600/mo figure does not reconcile with its own stated formula \u2014 do not quote externally",
+        "note": "Internal self-conflict flagged by Beth's own critic pass. The underlying false-positive burden is real/sourced; the derived dollar figure is disputed. DO-NOT-CITE until recomputed."
+      },
+      {
+        "topic": "'AI Coworker' naming/positioning",
+        "finding_a": "Spec + PR use 'AI Coworker' framing (value prop: turn labor into software, reduce technicians)",
+        "finding_b": "Positioning tension: 'AI Coworker' implies parity with human; partners want 'Managed Intelligence Provider' framing, Kaseya's 'Digital Specialists' elevates the human",
+        "note": "Live positioning conflict between the product's own naming and partner/competitive framing surfaced in human-factors research. Word choice is an open decision, not settled."
+      },
+      {
+        "topic": "Value Ledger vs Trust Ledger naming",
+        "finding_a": "Value Ledger is the customer-facing artifact (nicole-actual-acp-vision, scout_input)",
+        "finding_b": "whats-up-with-the-humans references 'Trust/Value Ledger' as a teaching interface",
+        "note": "Vision doc explicitly corrects 'Trust Ledger' to 'Value Ledger'; designer notes still use the combined 'Trust/Value Ledger' phrasing. Canonical name is Value Ledger per Nicole's vision doc."
+      },
+      {
+        "topic": "Headless / invisible-infrastructure aspiration vs discoverability need",
+        "finding_a": "ACP positioned as 'headless IT' \u2014 turn UEM/Cove/Adlumin into invisible infrastructure under one control plane",
+        "finding_b": "Partners want a standalone, bookmarkable app with persistent chat history \u2014 'directly contradicting the headless aspiration' (22 partner interviews)",
+        "note": "Explicitly named contradiction in the source: the headless/invisible vision fights the user-stated need for a discoverable, persistent standalone surface. Unresolved product tension."
+      }
+    ],
+    "dupes_merged": 19,
+    "coverage_gaps": [
+      "Teams (M365): did not fully paginate 'coworker'/'runbook'/'MCP'/'approval' queries to exhaustion; standalone 'QBR' query never run (no direct QBR hits); large TrustPoint/Nik Lipor competitive scorecard (54KB), linked Confluence pages, Figma boards, GitHub PRs, and attached .docx/.pptx (pricing strategy, AI corporate philosophy, workshop summary, Road to 100 Milly) unread; connector only scans ~50 recent chats so older Brain Dump history may be missing; findings skew to Chris Barber/Nicole/Mincher/Scally as most active posters.",
+      "Confluence AI space: 'ACP prototype' page (61995876354) is an embedded HTML attachment with no extractable body \u2014 prototype not opened/analyzed. Sibling GPM pages (Partner/Build RAID + decision logs) only seen as search summaries. WTP figures ($300+/user/mo, 10-15% SOC cost) are single-source anecdotes, directional not projectable. Survey n varies by question (27-45) with drop-off. Real interviewee names present in BLIND INTERVIEWS page \u2014 anonymize before external use.",
+      "Confluence FSN space: MAJOR SCOPE MISMATCH \u2014 FSN (Fusion) holds effectively no ACP content; all real architecture/scope lives in space AI. No pages titled 'Architecture Overview', 'V1 Scope', or discrete intent-spec pages found. Notification-service architecture only described inline in the Approval Model doc; no standalone notification spec located. IC-2026-001 (Runbook Engine) and IC-2026-002 (Value Ledger) not pulled. Recommend re-scout against space AI (and confirm whether FSN was ever the intended key).",
+      "Confluence GPM space: both RAID/Decision Log PAGES (62091723272, 62091723080) are empty templates as of 2026-06-22. Both DECISION-LOG DATABASES (Partner 62093361317, Build 62091723363) are Confluence database objects returning 404 \u2014 API cannot read rows; Partner Decision Log findings reconstructed from CQL summary snippet only (owners DMac/Brad, Gaurav/Laura and statuses need in-app verification). ACP Build Decision Log returned empty summary \u2014 needs manual UI review. Milestone tables largely unpopulated (owner/date cells blank).",
+      "Jira ACP project: FSN half of JQL returned zero separate issues \u2014 any FSN tickets outside those referenced inside ACP descriptions are UNVERIFIED. FSN spec docs (FSN-83143/82692/82688) live in GitHub acp-core and were not fetched (only ACP-embedded summaries read). Comments not pulled. ACP-7 (BYOM), ACP-9/11/19 (MCP), and backlog ACP-15..24 have empty descriptions \u2014 scope inferred from titles/status only.",
+      "Condens (nable workspace): 'vCISO' returned ZERO artifacts \u2014 no vCISO research exists in repo. Only 10 of ~60 artifacts deep-read; NOT read: 5 common-token-API interviews (P1-P5), Adlumin Show-me/Integrations, Reddit Comments, several Asset View + Linux/Apple patch reports, and the Empower sub-finding PDFs (Reporting, Navigation, Risk Acceptance, Data Consolidation, Server Patching). Time-saving stats are user-perceived/self-reported (tagged [D] but not instrumented \u2014 triangulate before quoting).",
+      "SharePoint/OneDrive ACP Data Dump: NOT read \u2014 full research-evidence.md (only JSON sidecar surfaced), nicole-actual-acp-vision.md + acp-vision-from-pdfs.md bodies (only sidecars), problems-ranked.md + council-frameworks.md, competitors/ subfolder (60+ profiles), AI-AI Coworker Description PDF, IC-2026-002 Value Ledger + IC-2026-003 AI Expert Config specs, AI_Pricing_Strategy_Report_2026_v3.docx (redacted $ figures), and all video/screen-recording assets. Several Empower CAB partners named but no quotes. $33,600/mo figure and redacted pricing report must be verified before external use.",
+      "Local ACP files: NOT fully read \u2014 /specs SpecKit sub-artifacts (spec/plan/data-model/tasks/contracts for 4 feature folders), full 44-voice council reports, QBR-analyst brief body past frontmatter (round-2-findings, concept-mvps, staged-path), acp-headless full council + Doblin scoring, nicole-acp-trust-level + claude-acp-v1-skill-extension handoffs, and source PDFs referenced in frontmatter. Several vendor stats flagged disputed/do-not-cite per source docs.",
+      "Cross-cutting evidence hygiene: DO-NOT-CITE fabrication traps confirmed \u2014 '82%/85% QBR retention', '~30% AI efficiency' VC rollups, 'Gartner 70% presentations AI-generated by 2026', respondent '$300+/user/mo' and '15-20 hrs', vCISO '$1.06B->$1.48B by 2032'. Buyer-vs-user gap: Nicole studied buyers (would-you-pay); daily user (vCIO/analyst) experience layer is ~93% [A] \u2014 biggest research gap in the QBR/department concept. Small-n qual (8 interviews, 22 partner interviews) is directional, not projectable \u2014 always triangulate with quant."
+    ],
+    "counts": {
+      "user": 62,
+      "market": 32,
+      "_inbox": 13,
+      "total_after_merge": 107,
+      "total_before_merge": 126
+    },
+    "shelves": {
+      "user": [
+        {
+          "claim": "ACP approval model is risk-tier-based, set at Coworker config time (not per-action at runtime): Low auto-executes, Medium batches into one per-run approval, High always requires explicit individual sign-off and is never batched. Runtime confirmation of every action would stall scheduled workers and create alert fatigue.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document",
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/ACP-Approval-Model-Definition.md",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:515"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "Kate Salley"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Approval Model / permissions",
+          "_merged_from": 6
+        },
+        {
+          "claim": "Risk tier is a platform-declared property set per-action/script in the Script Repository and per-workflow-node in the Runbook \u2014 not user-overridable at runtime.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Approval model / governance",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Approval delivery differs by invocation surface: real-time N-zo chat surfaces inline interactive cards; scheduled/background workers pause to 'Waiting for Approval' and notify via persistent dashboard badge, automatic email, and execution-log status. Notification defaults to the MSP Admin who configured the Coworker (configurable).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "UX / approval delivery / notification service",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Approval timeout (default 24h, second reminder at 12h) cancels/skips the blocked step and NEVER auto-approves \u2014 a stalled run beats an unreviewed high-risk action. Medium-risk batch waiting 24h \u2192 Cancelled/Approval Timeout; high-risk waiting 24h \u2192 Skipped.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document",
+            "https://teams.microsoft.com/l/message/19%3ameeting_MjU5ZmU2N2MtY2I4ZS00Y2NlLWIwZDktODMyYjJlYjQ5MzE2%40thread.v2/1781189979111"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "Kate Salley"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Approval model / safety / timeout",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Approval model enforces the Manual \u2192 Assisted \u2192 Autonomous progression but does not decide when to promote \u2014 a separate Trust/Autonomy Promotion system governs promotion. Promotion is admin-initiated with a system recommendation, never automatic (TRADE-004).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:525"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Trust / autonomy promotion model",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Medium-risk batch approval is modeled on Claude's batch-approval pattern: reduce decisions without reducing awareness; default CTA 'Approve all', secondary 'Review individually' path that skips unapproved actions.",
+          "tag": "A",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Batch approval UX"
+        },
+        {
+          "claim": "Runs completing with a mix of approved and skipped steps are logged as 'Completed \u2014 Partial' (not Failed); the Value Ledger records value only for completed successful steps (IC-2026-002).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Partial run / Value Ledger"
+        },
+        {
+          "claim": "Five approval-model design decisions remain open (OQ-001..005): technician vs Admin-only approval authority; whether authority cascades to end-customer admin in multi-tenant; whether low-risk steps continue while a medium batch pends; snooze option; optional four-eyes second-approver for high-risk.",
+          "tag": "?",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "Approval model open questions",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Trust score combines five components: track record (success rate over time), risk classification, scope boundaries, escalation rules, and audit trail \u2014 the L4 'earned autonomy' model (human confirms \u2192 AI executes, human audits).",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/scout_input/01-control-plane.md"
+          ],
+          "contributor": [
+            "Nicole Reineke (from Ewan Cameron experiment)"
+          ],
+          "date": "2026-05-27",
+          "spec_touched": "ACP Trust-Level Model"
+        },
+        {
+          "claim": "Three competing trust/autonomy mental models are being tested for earned autonomy (L4): track record ('handled 47 patches \u2192 promote'), graduated dial (manual/assisted/autonomous slider per task), scope guardrail (low auto / med approval / high manual). Ewan Cameron's hypothesis: one must win a 10-second comprehension test \u2014 this is an open research question.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/whats-up-with-the-humans.md",
+            "/Users/elizabeth/Desktop/Bethproto/scout_input/02-ai-coworker.md:155"
+          ],
+          "contributor": [
+            "Ewan Cameron experiment (via Beth notes)"
+          ],
+          "date": "2026-05-27",
+          "spec_touched": "Trust/autonomy UX model",
+          "_merged_from": 2
+        },
+        {
+          "claim": "An AI Coworker is the deployable unit of automation: it assembles one or more N-able AI Experts + a Runbook (MSP's actual SOP) + MSP-approved scripts + MCP connections + guardrails into a named agent with a job description, risk policy, schedule, and accountability trail.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-6",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:96"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 AI Coworkers",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Trust model starts conservative (Manual: human approves medium+high risk); admin can promote only after the Coworker demonstrates a qualifying track record. N-able ships default platform Coworkers covering top research-identified use cases; MSPs run immediately or clone and customize.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-6"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 AI Coworkers",
+          "_merged_from": 2
+        },
+        {
+          "claim": "The ACP management plane is AI-operator-accessible from day one; Coworkers may be assembled with help from an AI (N-zo or Claude Code) but follow the same lifecycle and approval model as human-initiated creation.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-6"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 / Management Plane"
+        },
+        {
+          "claim": "22 partner interviews confirm MSP high-volume tasks (patching, alert triage, endpoint health, ticket resolution, compliance audits, QBRs) are scriptable but rarely fully automated \u2014 because scripts are risky without governance, expertise is unevenly distributed across technicians, and MSPs lack a trusted mechanism to encode SOPs into agents.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-6"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 AI Coworkers"
+        },
+        {
+          "claim": "Three primary personas: MSP Admin (full CRUD, activate, promote autonomy), MSP Technician (run on-demand, approve within permission level, cannot modify), AI Operator (Claude Code/N-zo \u2014 drafts + proposes changesets, cannot activate or approve own changes).",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:205-207"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 personas"
+        },
+        {
+          "claim": "Invariant: activation is always a separate, explicit human operation \u2014 any actor (human or AI) creating a Coworker/Runbook produces a Draft; deployment never auto-activates.",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:102-104"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 invariants"
+        },
+        {
+          "claim": "Invariant: an AI operator cannot grant itself additional permissions \u2014 it operates only within permissions delegated by the authorizing admin session (INV-RISK-004, security-tested).",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:471"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 / Management Plane"
+        },
+        {
+          "claim": "Invariant: platform (N-able-owned) Coworkers and Runbooks are immutable to tenants \u2014 MSPs may only clone them; clones are tenant-owned and isolated (INV-PROD-002, 403 on tenant PUT/PATCH).",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:450"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 / Runbook Engine"
+        },
+        {
+          "claim": "Success metrics for Coworker v1: builder completion \u226570%, median start-to-activation \u226415 min, \u226580% of active Coworkers with a successful run in first 7 days, approval-timeout rate <10% (MET-001..004).",
+          "tag": "D",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 metrics"
+        },
+        {
+          "claim": "AI Experts are the N-able-owned/authored/published reasoning layer: specialized agents with a narrow domain that MSPs discover and select when assembling a Coworker but cannot configure. An Expert is typically an MCP server with a domain-specific system prompt and bound tools; can both reason AND execute, but only within declared domain scope and configured risk ceiling. In v1 only N-able can author/publish Experts; MSP-authored custom Experts are out of scope.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-5",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-82688-AI-Expert-Support.md"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "David Woakes"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82688 / IC-2026-003 AI Expert",
+          "_merged_from": 4
+        },
+        {
+          "claim": "Expert platform invariants: out-of-domain execution and risk-ceiling violations enforced at the invocation layer (not config); Expert actions flow through the same risk-tier batch approval as all other actions and do not bypass it.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-5"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "David Woakes"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82688 AI Expert"
+        },
+        {
+          "claim": "Expert configs are immutable/versioned: active config never mutated in place, all updates produce a new version, prior versions preserved; configs are read-only to all tenants (no MSP may modify/clone/override prompt, scope, tool bindings, or risk ceiling).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-5"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "David Woakes"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82688 AI Expert"
+        },
+        {
+          "claim": "Expert lifecycle is Draft \u2192 Active \u2192 Deprecated; a Coworker must not invoke a non-Active Expert, and Draft/Deprecated Experts are invisible to assembly and the runtime invocation API. New Expert versions must not break in-flight executions (pinned versions keep running).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-5"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "David Woakes"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82688 AI Expert"
+        },
+        {
+          "claim": "Every Expert invocation/action must be recorded in the audit log, attributing action to Expert identity, version, context passed, output returned, and the Coworker run it belongs to; runtime invocation target is structured reasoning output in <500ms p95.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-5"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "David Woakes"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82688 AI Expert / audit"
+        },
+        {
+          "claim": "MSP onboarding is a hard design constraint: net-new MSP goes from ACP signup to a scheduled, running AI Coworker in under 20 minutes without contacting support; any step exceeding its time budget in testing must be simplified before launch.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-4",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-82692_MSP Onboarding \u2014 Signup to First Coworker Run.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82692 / IC-2026-004 MSP Onboarding",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Onboarding is a seven-step linear wizard: account creation \u2192 PSA connection \u2192 Coworker selection \u2192 Coworker config \u2192 first run \u2192 approval moment \u2192 schedule set. The activated Coworker is Ticket Triage & Dispatch against the 10 most recent open tickets in one ConnectWise queue.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-4"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82692 MSP Onboarding"
+        },
+        {
+          "claim": "Onboarding culminates in a live medium-risk batch approval \u2014 the MSP sees a real dispatch recommendation, approves it, and watches ConnectWise update; framed as the product demonstrating its model, not a bureaucratic gate.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-4"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82692 MSP Onboarding"
+        },
+        {
+          "claim": "The PSA connection framework is PSA-agnostic at the UX layer: one connection object across PSAs, with PSA-specific credential labels surfaced conditionally; must be reusable for ConnectWise, Autotask, HaloPSA, and future PSAs without redesigning the step.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-4"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82692 MSP Onboarding"
+        },
+        {
+          "claim": "Onboarding hard rules: PSA connection must pass live validation before advancing past Step 2 (no speculative connections); first run capped at 10 tickets server-side (no UI override); conservative approval policy default and non-configurable during onboarding; schedule mandatory (no skip); email verification sent at account creation but must not block the wizard.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-4"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82692 MSP Onboarding"
+        },
+        {
+          "claim": "Onboarding success metrics: median account-creation-to-first-run \u226420 min; \u226580% wizard completion; PSA-step drop-off <15%; first-run success \u226595%; \u226560% return to run a second Coworker within 7 days; zero MSPs exit without a schedule.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-4"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-24",
+          "spec_touched": "FSN-82692 MSP Onboarding"
+        },
+        {
+          "claim": "Onboarding time-to-value goal (Teams framing): sign up, activate, and complete a real coworker ticket-triage run within 20 minutes \u2014 via sign-up without an N-able account (link later) plus a tutorial 'Customer' shipping a fake PSA MCP and generic starter coworkers/experts/runbooks that can be hidden once live.",
+          "tag": "A",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ad5906de41e48434c93751900f15a8e3b%40thread.tacv2/1782904883429"
+          ],
+          "contributor": [
+            "William Mincher"
+          ],
+          "date": "2026-07-01",
+          "spec_touched": "MSP Onboarding (FSN-82692); time-to-value"
+        },
+        {
+          "claim": "Decision: Models and MCPs are pre-requisite connections for the whole ACP product (not per-artefact), so MCP config should be built and sequenced BEFORE coworkers, which feed into them alongside runbooks and experts.",
+          "tag": "D",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ad5906de41e48434c93751900f15a8e3b%40thread.tacv2/1782979659626"
+          ],
+          "contributor": [
+            "Chris Barber"
+          ],
+          "date": "2026-07-02",
+          "spec_touched": "ACP-9 MCP Config; onboarding sequence"
+        },
+        {
+          "claim": "Friction point: experts and coworkers won't work without a model set, raising whether Bedrock should be on by default so a user can start a coworker without first configuring a model provider (paying for outcomes + token usage).",
+          "tag": "A",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ad5906de41e48434c93751900f15a8e3b%40thread.tacv2/1782904995452"
+          ],
+          "contributor": [
+            "Chris Barber"
+          ],
+          "date": "2026-07-01",
+          "spec_touched": "Model provider config; onboarding friction"
+        },
+        {
+          "claim": "BYOM risk question: allowing self-hosted bring-your-own-model could let people siphon off runbook info, prompts, and guardrails \u2014 is that an accepted risk?",
+          "tag": "?",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1783593696101"
+          ],
+          "contributor": [
+            "Ben Casling"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Model config; IP/guardrail security"
+        },
+        {
+          "claim": "Runbook is a governed execution contract: plain-language intent + policy rules + AI reasoning boundaries + approved reasoning paths + workflow references + escalation logic + handoff behavior. 'AI Coworkers think, Runbooks govern how thinking becomes action'; Runbooks are Coworker-invoked, text-first, composable, contain deterministic Workflows; active configs never mutated in place (each change is a new version) and unresolved/unapproved references block activation.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/AI-Runbooks definition-040626-153631.pdf",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-81484_Runbook-Engine-Config-Storage.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-04",
+          "spec_touched": "IC-2026-001 Runbook Engine",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Runbook data model decision: introduced a hasDraft boolean and made 'inactive' the default state for new and cloned runbook families, so users can see draft/active status without opening the runbook; active/inactive gates whether a coworker can run with that family.",
+          "tag": "D",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ad5906de41e48434c93751900f15a8e3b%40thread.tacv2/1783334015230"
+          ],
+          "contributor": [
+            "Chris Barber"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "ACP-1 Runbook Engine config/versioning"
+        },
+        {
+          "claim": "Management plane is API-first and exposed as an MCP server \u2014 the MCP server IS the canonical interface (no separate 'AI mode'); AI operators submit 'proposed changesets' (PR-style) that a human admin must approve, and can never self-activate or approve their own changes.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/ACP-Management-Plane-AI-Operator-Model.md",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/ACP-Management-Plane-AI-Operator-Model.md",
+            "https://teams.microsoft.com/l/message/19%3ad5906de41e48434c93751900f15a8e3b%40thread.tacv2/1781626237730"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-16",
+          "spec_touched": "Management Plane / AI Operator model (FSN-80865)",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Ownership of AI-created objects belongs to the approving admin, not the AI ('authorship-on-behalf-of'); objects carry created_by/approved_by/on_behalf_of metadata and revert to tenant ownership if the admin leaves \u2014 authority stays human.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/ACP-Management-Plane-AI-Operator-Model.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-16",
+          "spec_touched": "Ownership / audit / permissions"
+        },
+        {
+          "claim": "Agent taxonomy: AI Agent Experts (N-able first-party, fixed runbook), Approved Vendor Experts (third-party, certified, governed via management plane), and AI Coworkers (customer-assembled super-agents combining Experts + own runbooks + own MCP connections). Each deployment gets its own scoped Non-Human Identity (NHI); no shared service principal across customers; identity enforced at runtime not config time.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/Headless IT Tech in the AI Agent world-040626-152836 (1).pdf",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /nicole-actual-acp-vision.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-04",
+          "spec_touched": "Agent/Expert/Coworker model + NHI identity",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Unresolved governance risk (Nicole's 'BIG QUESTION'): the control plane does NOT pre-screen customer/vendor runbooks \u2014 the audit layer catches out-of-policy behavior only after the fact; governing vendor agents running on customer infrastructure is unsettled.",
+          "tag": "?",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/Headless IT Tech in the AI Agent world-040626-152836 (1).pdf"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-04",
+          "spec_touched": "Runbook governance / pre-screen policy"
+        },
+        {
+          "claim": "A Deterministic Substitution Engine (DSE) intercepts requests that would go to an LLM and routes them to a script instead, logging original intent, substituted script, and tokens saved \u2014 the metering backbone for the LLM inference layer.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/Headless IT Tech in the AI Agent world-040626-152836 (1).pdf"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-04",
+          "spec_touched": "Deterministic Substitution Engine / telemetry"
+        },
+        {
+          "claim": "Open permission-model questions (Teams): granularity (fine-grained e.g. 'edit runbook but not add MCP' vs coarse CRUD+Run-X-coworkers vs both); where permissions get configured (dedicated screen vs inside each coworker/runbook/MCP config); whether new customers onboard via N-able sign-in like any N-sight customer.",
+          "tag": "?",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1783957027055"
+          ],
+          "contributor": [
+            "Jude Scally"
+          ],
+          "date": "2026-07-13",
+          "spec_touched": "Permissions / access model"
+        },
+        {
+          "claim": "ACP backlog names dedicated Permissions (ACP-16), MSP SSO (ACP-15), and Audit (ACP-22) initiatives \u2014 permissions, tenant identity, and auditability are scoped as separate workstreams, not folded into feature specs. MCP config is a live initiative (ACP-9), MCP config UI in Spec Review (ACP-11), standalone MCP Gateway (ACP-19).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-16",
+            "https://n-able.atlassian.net/browse/ACP-9"
+          ],
+          "contributor": [
+            "Christopher Dunlop",
+            "Chris Barber"
+          ],
+          "date": "2026-07-14",
+          "spec_touched": "Permissions / MSP SSO / Audit / MCP",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Runbook Engine architecture: an OTS Runbook Library v1 (N-able canned) plus a Customer-Editable Runbook Engine, connected via an LLM + MCP Server layer; Secure Controls & Audit Logging plus Admin Dashboard & Approval Workflows are gating milestones before pilot (human-in-the-loop / permissioned execution).",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Internal build architecture / runbook engine",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Proposed experience principle: always show consequence previews/forecasts before a coworker runs \u2014 how many devices it will impact, results of manual vs auto-execute, token cost \u2014 to build trust rather than asking users to trust blind; suggests explicit 'preview panes' in the UI.",
+          "tag": "A",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1783011125737"
+          ],
+          "contributor": [
+            "Meaghan Reinecke"
+          ],
+          "date": "2026-07-02",
+          "spec_touched": "Experience principles; coworker preview/confidence"
+        },
+        {
+          "claim": "QBR Analyst is the build-first AI coworker \u2014 most broadly demanded in the 8 blind interviews (4 of 8, ranked #1 three times), high-intensity (cumulative 31, avg 7.8), and tops BOTH ranking cuts (survey mean-rank 2.90 and cumulative). Consistency across cuts is the strongest signal. Small-n qual: directional, not projectable.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "Beth Connor"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Coworker prioritization / acp-qbr-analyst",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Incident Response RCA is the consistent #2 coworker (cumulative 26); wanted by every cyber-deep operator and tied to cyber-insurance policy requirements.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Coworker prioritization"
+        },
+        {
+          "claim": "Ticket Triage & Dispatch posts the highest intensity of the field (avg 8.3, daily volume), cumulative demand #3 (25); differentiated wedge is the live-diagnostics layer, not classification which is table-stakes in the PSA.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Coworker prioritization / differentiation"
+        },
+        {
+          "claim": "Autonomy is universally gated by buyers: graduated control \u2014 read-only diagnostics first, write-with-approval next, full automation only after trust earned; governance and rollback named as price of entry.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Permissions / trust model",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Survey drag-rank priority (n=39) leads with QBR business reporting (avg 2.90), then Alert flood suppression (3.23), Incident Response RCA (4.00); MSP Benchmarking ranks last (6.46). Individual value ratings (1-5) top out at Env Health Monitor 3.59 and QBR Analyst 3.40; Employee On/Offboarding lowest at 2.94 \u2014 narrow spread, no runaway on absolute value.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62151262211/ACP+Survey+-+End2End+use+cases"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-07",
+          "spec_touched": "Coworker prioritization",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Partner-conference survey: 119 total responses, 75% (27 of 36 answering the value question) see overall value in the agent concepts.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62151262211/ACP+Survey+-+End2End+use+cases"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-07",
+          "spec_touched": "Demand validation"
+        },
+        {
+          "claim": "Interview panel split 4 Build-ACP / 4 Narrow-MVP / 0 Do-Not-Build across 8 demand-validation interviews (12-17 June 2026, via Guidepoint).",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Demand validation"
+        },
+        {
+          "claim": "Survey theme: integration gaps are a blocker \u2014 agents must connect to the PSA/RMM partners actually use; HaloPSA cited specifically. Data trust is a prerequisite \u2014 objectors cite data-sovereignty and non-consent to AI accessing customer data; transparency about data handling essential.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62151262211/ACP+Survey+-+End2End+use+cases"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-07",
+          "spec_touched": "Integration requirements / data governance",
+          "_merged_from": 2
+        },
+        {
+          "claim": "13 of 17 UEM users are concerned about agentic workflows, most commonly fearing AI 'going rogue', decisions made on inaccurate data, and unacceptable customer risk. Every one of the 17 expects human control and human approval regardless of comfort level.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aC1cv3d0xxWii8zwolXan"
+          ],
+          "contributor": [
+            "Taha Doueidar"
+          ],
+          "date": "2026-05-25",
+          "spec_touched": "ACP agentic trust / human-in-the-loop",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Information gathering and troubleshooting are the top two roles users expect an AI coworker to play in UEM; these are also the most time-consuming everyday workflows.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aC1cv3d0xxWii8zwolXan"
+          ],
+          "contributor": [
+            "Taha Doueidar"
+          ],
+          "date": "2026-05-25",
+          "spec_touched": "ACP jobs-to-be-done / coworker role"
+        },
+        {
+          "claim": "AI assistance is seen as more valuable when embedded in-context (asset details panel) because the coworker already understands the working context \u2014 faster, more accurate responses.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aC1cv3d0xxWii8zwolXan"
+          ],
+          "contributor": [
+            "Taha Doueidar"
+          ],
+          "date": "2026-05-25",
+          "spec_touched": "ACP surfacing / UX placement"
+        },
+        {
+          "claim": "A skeptical user (P17) moved from high concern to higher confidence over one session \u2014 agentic trust can be built incrementally with lower-adoption users.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aC1cv3d0xxWii8zwolXan"
+          ],
+          "contributor": [
+            "Taha Doueidar"
+          ],
+          "date": "2026-05-25",
+          "spec_touched": "ACP trust-building / adoption"
+        },
+        {
+          "claim": "A notable segment of MSP users do not use AI at all day-to-day, citing lack of interest, no time to think about implementation, and environmental concerns.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aC1cv3d0xxWii8zwolXan"
+          ],
+          "contributor": [
+            "Taha Doueidar"
+          ],
+          "date": "2026-05-25",
+          "spec_touched": "ACP non-adopter persona"
+        },
+        {
+          "claim": "Users prefer AI in patch management as a supportive/assistive tool (reporting, diagnostics, recommendations) rather than fully autonomous patching; participants support automating responses to low-severity vulns and triggering actions (ticket, alert) when a vuln is actively exploited \u2014 tiered autonomy by risk.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/ayXKS9xphdMRsyHeT1Ho6",
+            "https://share.condens.io/au2yhD9Fe6JaiNKLsr78M"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2026-03-25",
+          "spec_touched": "ACP tiered autonomy / policy engine",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Accountability is a core barrier: users ask 'who is responsible if AI declines a patch and a customer gets hacked?' and want clear audit trails plus human oversight. Users treat remediation as a governed process requiring risk decisions, accountability (who decided, when, why), and evidence \u2014 not a purely technical 'install a patch' action.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/ayXKS9xphdMRsyHeT1Ho6",
+            "https://share.condens.io/ax3JJhL6AbJ7JvIWYISY5"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2026-03-31",
+          "spec_touched": "ACP accountability / governance / auditability",
+          "_merged_from": 2
+        },
+        {
+          "claim": "'Black box' behavior is a major blocker; users want verbose decision logs and transparency into how the AI reaches conclusions before trusting it. Users want source citations and data provenance on every answer (which system, filters applied, last-refreshed timestamp) to build trust and enable verification before client sharing.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/ayXKS9xphdMRsyHeT1Ho6",
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Jane Wilson",
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP transparency / explainability / provenance",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Of 7 patch-survey respondents, all use N-central, all patch 300+ assets, and none currently use any AI in patching \u2014 a low adoption baseline for a coworker rollout.",
+          "tag": "D",
+          "source_link": [
+            "https://share.condens.io/ayXKS9xphdMRsyHeT1Ho6"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2025-11-07",
+          "spec_touched": "ACP adoption baseline"
+        },
+        {
+          "claim": "'Human in the loop' was raised unprompted by multiple Empower customers \u2014 shared expectation that autonomous action is only viable after confidence is earned incrementally.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/a6lFAAMkHxBSEUh1VSScZ"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2026-04-24",
+          "spec_touched": "ACP human-in-the-loop / trust"
+        },
+        {
+          "claim": "Without governance controls (ability to explicitly block remediation, prevent junior/automated override, record rationale), senior staff hesitate to grant access and features stay locked behind process, limiting adoption.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/ax3JJhL6AbJ7JvIWYISY5"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2026-03-31",
+          "spec_touched": "ACP permissions / role controls"
+        },
+        {
+          "claim": "MSPs run data across four or more tools; N-zo's single-product scope limits value \u2014 users want the coworker to reach into COVE, SentinelOne, MSP Manager, MDR/EDR and billing for a unified assistant.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP data integration / single pane"
+        },
+        {
+          "claim": "Engineers quickly distrust a tool that 'lies once'; N-zo returning incomplete/wrong data (e.g. 9 of 350 servers) erodes trust and discourages adoption.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP data accuracy / trust"
+        },
+        {
+          "claim": "Lack of chat history/session persistence was raised by almost every N-zo participant; losing conversation state on tab close drives 'one and done' behavior instead of sustained coworker use.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP session persistence / memory"
+        },
+        {
+          "claim": "Users want a dedicated troubleshooting mode with structured outputs (symptoms, suspected causes, checks performed, findings, next actions) plus an evidence panel \u2014 shifting the coworker from 'doc search' to 'investigation assistant'.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP runbook / investigation"
+        },
+        {
+          "claim": "Making clarifying questions the default when user intent is underspecified (client? site? date range? device group?) reduces wrong answers and speeds time-to-value.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP interaction pattern / disambiguation"
+        },
+        {
+          "claim": "Users requested a Developer/Automation entry point (API/MCP access with docs, keys, example workflows, guardrails) to build custom coworker workflows without cluttering the core UI.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/aotjLmXXEDnyywKh8lfdF"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-03-16",
+          "spec_touched": "ACP extensibility / MCP"
+        },
+        {
+          "claim": "User-reported time savings for N-zo (self-reported, not instrumented): QBR generation ~90 min \u2192 ~17.5 min (80.6%, 5.1x); root-cause/incident reporting 120 \u2192 3 min (40x); resource-utilisation analysis 240 \u2192 1 min (240x). An incident report was fully generated and exported to Word/PDF, letting a technician skip manual report-writing.",
+          "tag": "D",
+          "source_link": [
+            "https://share.condens.io/aw4c8940rw5nxGD1tfxrC"
+          ],
+          "contributor": [
+            "Julian Taylor"
+          ],
+          "date": "2026-05-11",
+          "spec_touched": "ACP ROI / QBR / runbook / incident reporting",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Reporting/exporting was the most emotionally charged topic across Empower sessions; a PDF-exportable, human-readable report was called 'magic sauce' and a 'game changer' \u2014 the clearest high-priority gap. QBR/Business Review is the highest-value use case: report prep drops ~1.5 hrs to 15-20 min; bottleneck is translation (teams strong with numbers, weak at executive language); structured branded Word/PDF export is a hard requirement.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/a4eNWmzMalaR3Qqg9uByA",
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "Jane Wilson",
+            "Partner 'David' (Managed IT Experts)",
+            "Aaron Betts",
+            "Taciano Tavares"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "UC-01 QBR / reporting",
+          "_merged_from": 2
+        },
+        {
+          "claim": "MSP field visits show AI is used today for troubleshooting, script generation, and content review, valued as a 'second opinion'; false positives and inconsistent information remain the top barriers to broader adoption.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/ahvnvyPjPiQWGUK3VYrrk"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2025-10-23",
+          "spec_touched": "ACP coworker role / reliability"
+        },
+        {
+          "claim": "MSPs cite navigating customer pages in N-central as a costly time sink (thousands annually), driven by lack of direct links in HALO tickets and inconsistent customer naming across platforms \u2014 a pain the coworker could target.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/ahvnvyPjPiQWGUK3VYrrk"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2025-10-23",
+          "spec_touched": "ACP pain-point / navigation"
+        },
+        {
+          "claim": "Data accuracy and trust is the #1 adoption blocker \u2014 when results are wrong or incomplete the whole workflow breaks (350 servers returned only 9; 1,300 devices read partially; Win10/Win11 counts wrong), inverting the time-savings promise. A confirmed reliability bug: when Ask N-zo cannot access documentation it silently falls back to trained data instead of surfacing the failure; product owner acknowledged 'that should never be happening.'",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "22 partner interviews",
+            "Wesley Harris",
+            "Nicole Reineke (ack)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "Data ingestion accuracy / trust / UC-A KB Assistant",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Persona split is structural: technicians want raw data and lists; account managers/vCIOs want executive narratives translating stats into business value \u2014 one UI serving two audiences creates invisible friction.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "22 partner interviews"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "Persona / UX"
+        },
+        {
+          "claim": "Discoverability is a top UX blocker: Ask N-zo is buried on the asset tab, loses context on tab-switch, and has no chat history; partners want a standalone, bookmarkable app with persistent history \u2014 directly contradicting the headless aspiration.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "22 partner interviews"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "Discoverability / navigation"
+        },
+        {
+          "claim": "Alert triage is a full-time human cost sink: a dedicated person spends ~20 hrs/week on alerts, 80-90% just checking \u2014 'the output is mostly negative space' \u2014 making flood suppression/correlation a high-value target (UC-09).",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "Partner 'David' (Managed IT Experts)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "UC-09 Alert Flood Suppression"
+        },
+        {
+          "claim": "License/cost reconciliation (active vs billed) is a near-universal MSP pain \u2014 'ninety percent of the hands would go up' \u2014 but the data is not yet integrated; would-pay-if-ROI-clear signal (~$30/user) (UC-B).",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "Aaron Betts",
+            "Robby Swartenbroekx (b-inside)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "UC-B License & Cost Optimization"
+        },
+        {
+          "claim": "Root-cause troubleshooting (UC-07) shows 100% adoption signal from one partner but is gated on missing data: limited historical (>24hr) data, missing events, network devices, last-logged-in user; '24 hours is nothing' for correlating 100 alerts.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt"
+          ],
+          "contributor": [
+            "Jeff Zimbalist",
+            "Taciano Tavares",
+            "Louis Oosthuizen"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "UC-07 RCA / data breadth"
+        },
+        {
+          "claim": "Human-factors design imperatives (SDT / competence preservation): techs fear becoming button-pushers (if ACP shows WHAT not WHY, the senior tech is reduced to clicking approve \u2014 must surface reasoning); fear losing the next generation ('learned helplessness as a product side-effect', juniors never learn triage). Design must show WHY not just WHAT; the win is not 'saved 12 minutes' but 'Valentine's evening was free' (time returned to humans).",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/whats-up-with-the-humans.md",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /whats-up-with-the-humans.md"
+          ],
+          "contributor": [
+            "Beth (from 22 partner interviews, SDT)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "SDT / competence preservation / Value Ledger design",
+          "_merged_from": 4
+        },
+        {
+          "claim": "Trust caution is professional not reactionary: 65% of analysts skeptical of AI-generated alerts, 79% prefer hybrid over full automation; a named partner reported AI mis-reporting the fleet ('all Windows 10, zero Windows 11'), inverting the time-savings promise into constant double-checking. NOTE: the 65%/79% figures should be traced to a citable primary source before external use.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/whats-up-with-the-humans.md",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /whats-up-with-the-humans.md"
+          ],
+          "contributor": [
+            "Beth (from 22 partner interviews)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "ACP human factors / trust",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Sketch/Ditty partner call confirms real technician value: service desk engineer 'refers to it quite often', uses it to write scripts and fact-check engineering conclusions, willing to adopt/pay ('heck yeah'); but 'cannot give me a list of workstations with active failed checks' and wants access beyond RMM (MDR, EDR, Cove, MSP Manager) plus historical memory.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/transcripts/sketch-ditty-ask-nzo-feedback.txt"
+          ],
+          "contributor": [
+            "Sketch (Ditty) partner"
+          ],
+          "date": "2026-06-03",
+          "spec_touched": "Failed-checks / cross-tool coverage / memory"
+        },
+        {
+          "claim": "JTBD framing of the real job: functional = 'stop paying technicians $32/hr to investigate alerts that turn out to be nothing'; emotional = 'run an IT services business, not a triage sweatshop'; social = 'position as a managed intelligence provider'; tension = 'ACP brief assumes MSPs want AI coworkers; real job is margin protection.'",
+          "tag": "A",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/01-jobs-to-be-done-template.md"
+          ],
+          "contributor": [
+            "Band Protocol framework template"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "JTBD / positioning"
+        },
+        {
+          "claim": "Core value prop of Coworkers: 'take labor and turn it into software' \u2014 the MSP outcome is reducing the number of technicians needed to deliver contracted services.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-6",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:173"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 AI Coworkers",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Conservative trust defaults are a design decision: low-risk=auto-execute, medium=batch approval, high=always explicit sign-off; MSPs relax only after trust is established.",
+          "tag": "D",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:515"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 / Approval Model"
+        },
+        {
+          "claim": "Identity model: each deployed agent gets its own scoped Non-Human Identity (NHI); no shared service principal; identity enforced at runtime not config time.",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /nicole-actual-acp-vision.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "ACP architecture / identity"
+        },
+        {
+          "claim": "Riskiest assumption on ACP-V1 brief: no customer interviews/ethnography validate the asserted MSP pains \u2014 the problem is asserted by Nicole; whether it was validated with N MSPs is unknown. Brief measured 80% [A]+[?] (grep-verified), 2.7x over the 30% threshold.",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/nicole-acp-v1-2026-05-27/HANDOFF.md",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/acp-v1.brief.md"
+          ],
+          "contributor": [
+            "Beth (Spec pipeline)"
+          ],
+          "date": "2026-05-27",
+          "spec_touched": "acp-v1 brief Gate 1"
+        },
+        {
+          "claim": "Riskiest assumption on Headless dashboard: the 'ACP-First MSP' vision (MSPs never open UEM/Cove/Adlumin) is the hypothesis being tested, not a validated pain \u2014 no interview data confirms MSPs want a single control surface over product-native UIs; world-claim ratio 70% [A]+[?] (Tier 1 acceptable, must drop below 40% for Tier 2).",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/acp-headless.brief.md"
+          ],
+          "contributor": [
+            "Beth (Spec pipeline)"
+          ],
+          "date": "2026-05-28",
+          "spec_touched": "acp-headless brief Gate 1"
+        },
+        {
+          "claim": "Riskiest assumption on Trust-Level UI: no user research shows MSPs asked to see the trust math; surfacing the calculation may create cognitive load without benefit or imply false precision when track record is thin (55% [A]+[?]).",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/acp-trust-level.brief.md"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "Beth"
+          ],
+          "date": "2026-05-28",
+          "spec_touched": "acp-trust-level brief"
+        },
+        {
+          "claim": "Named buyer-vs-user gap: Nicole studied buyers ('would you pay'); the daily user (vCIO/analyst) is unstudied \u2014 the experience layer of the QBR/department concept is ~93% [A]. Biggest research gap in the concept.",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth Connor"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "acp-qbr-analyst experience gap"
+        },
+        {
+          "claim": "Post-pilot success metrics defined (due 8/25): tasks automated/week, technician hrs saved, confidence in AI governance (1-5), audit log usefulness (1-5), chargeback report clarity (1-5), NPS, go-live intent.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Success metrics / research plan"
+        },
+        {
+          "claim": "Target MSP profile to be defined as AI-operator vs AI-integrator, segmented by size, vertical, and RMM maturity (GTM item due 8/15).",
+          "tag": "?",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Persona / segmentation"
+        },
+        {
+          "claim": "OPEN ITEM (Partner track): Onboarding Support Plan flagged with a 2026-06-29 date in the Partner Decision Log \u2014 support ownership for partner-track onboarding is unresolved. A week-of-Aug-30 milestone frames a related open UX question for the Nerds cohort: self-serve vs. self-guided onboarding.",
+          "tag": "?",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/database/62093361317",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091788505/ACP+Partner+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "per ACP Partner Decision Log",
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-29",
+          "spec_touched": "Support model / onboarding (open)",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Partner track sequences two pilots (Pilot 1 August post-signing with 2 partners; Pilot 2 Sept/Oct with a larger GTM motion); Internal Build track onboards 2 pilot MSPs followed by a Pilot Feedback & Iteration Sprint before monetization/packaging alignment.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091788505/ACP+Partner+Execution+Project+Plan",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Pilot / validation plan",
+          "_merged_from": 2
+        }
+      ],
+      "market": [
+        {
+          "claim": "ACP is positioned as vendor-agnostic by design \u2014 a coordination/guardrail layer that sits ABOVE the MSP's existing PSA, security, backup, and monitoring tools rather than forcing them into one tool; an MSP operating system ('headless IT') that turns N-able's own products (UEM, Cove, Adlumin) into invisible infrastructure under a single control-plane/marketplace interface. The analogue is Shopify, not Kaseya.",
+          "tag": "D",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3a521f85c9f1864541b9413fb98eb8eda5%40thread.tacv2/1782910336291",
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/Headless IT Tech in the AI Agent world-040626-152836 (1).pdf",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /nicole-actual-acp-vision.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-04",
+          "spec_touched": "Positioning / headless IT vision",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Core ACP value pillars in the draft PR: faster incident response with audit trail, consistent patch/remediation with risk-gated approval, silent-failure detection across vendors, gap-free onboarding/offboarding with least-privilege, and acting as a safety net over MSPs' own scripts/agents.",
+          "tag": "D",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3a521f85c9f1864541b9413fb98eb8eda5%40thread.tacv2/1782910336291"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-01",
+          "spec_touched": "Positioning / value prop"
+        },
+        {
+          "claim": "An MSP interviewee has already hand-built a DIY control plane (Claude + Make orchestrating across Cove, Autotask, and N-Central) to run governed multi-step backup automation 4x daily \u2014 the exact cross-tool coworker use case ACP is meant to replace with first-class infrastructure. Largest, most-mature shops are a displacement risk: one enterprise operator already runs his own control plane and would not adopt a second \u2014 sweet spot is the larger side of SMB, not enterprise.",
+          "tag": "R",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1780949866357",
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-08",
+          "spec_touched": "Competitive / DIY control plane / target segment",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Runbooks must stay vendor-agnostic so a coworker can mix and match, but some use cases will need vendor-specific tools defined inside the runbook \u2014 a deliberate tension between portability and specificity. Internal Build plan calls for 3rd-Party MCP Integration as a distinct milestone (runbook engine designed to connect to external MCP servers beyond N-able's own).",
+          "tag": "A",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1783948032826",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Chris Barber",
+            "Suzanne Britt"
+          ],
+          "date": "2026-07-13",
+          "spec_touched": "Runbook Engine / vendor-agnostic MCP",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Possible go-to-market SKU split: an MSP-focused edition with tailored industry runbooks plus a separate general-release version.",
+          "tag": "A",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ameeting_ZTEyMDcyZGMtNGY4Zi00OTBkLTk2ODAtYjEwYTY1M2M3MmI3%40thread.v2/1782984273278"
+          ],
+          "contributor": [
+            "William Mincher"
+          ],
+          "date": "2026-07-02",
+          "spec_touched": "Packaging / SKU strategy"
+        },
+        {
+          "claim": "Internal competitive worry: N-able is reportedly building a single MCP to cover every product, which team members think is a bad move; preference is strong per-product MCPs for N-central and N-sight that ACP could integrate and filter for viability.",
+          "tag": "A",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ameeting_ZTEyMDcyZGMtNGY4Zi00OTBkLTk2ODAtYjEwYTY1M2M3MmI3%40thread.v2/1782989170277"
+          ],
+          "contributor": [
+            "Chris Barber"
+          ],
+          "date": "2026-07-02",
+          "spec_touched": "MCP architecture / competitive"
+        },
+        {
+          "claim": "'Build it into the RMM' expectation caps willingness to pay \u2014 Alert Suppression and Environment Health scored high on usage but low on paid priority because buyers expect them as features of tooling they already own.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Monetization / positioning",
+          "_merged_from": 2
+        },
+        {
+          "claim": "One buyer was paying $300+/user/month for ScalePad Lifecycle Manager X and called a true cross-stack QBR 'the holy grail'; another would pay 10-15% of SOC running cost for cross-stack correlation. NOTE: single-source anecdotes, directional not projectable; the '$300+/user/mo' figure is on the DO-NOT-CITE list until traced to a primary source.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Willingness-to-pay / competitive pricing"
+        },
+        {
+          "claim": "Preferred access model (n=27): 13 want it included in product packages, 10 as an add-on, 3 buy-and-customize \u2014 leaning toward bundled/included over standalone.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62151262211/ACP+Survey+-+End2End+use+cases"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-07",
+          "spec_touched": "Monetization / packaging"
+        },
+        {
+          "claim": "Survey theme: AI skepticism is real and vocal \u2014 ~25% see no value, ranging from environmental concerns to resistance to non-determinism in operational tools; unlikely to convert on features alone.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62151262211/ACP+Survey+-+End2End+use+cases"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-07",
+          "spec_touched": "Adoption risk / positioning"
+        },
+        {
+          "claim": "ACP ships on two parallel tracks \u2014 an Internal Build track and a Partner (OEM vendor) track \u2014 each with its own project plan, milestones, and RAID log. ACP Partner Diligence is explicitly a PARTNER EXPLORATION (white-label bridge for discovery/validation), NOT the internal MVP build \u2014 targeting IN MARKET 2H 2026.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/folder/62091919465",
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking"
+          ],
+          "contributor": [
+            "Suzanne Britt (GPMO)",
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "ACP program structure / dual-track / GTM",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Strategic rationale for partner track: combine probabilistic + deterministic systems; acquisition lets N-able focus on permissions, integration, and automation outcomes; pre-revenue targets offer attractive valuations.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Strategy / M&A rationale"
+        },
+        {
+          "claim": "Active partner candidates in diligence: ZenZero (OEM/M&A, Azure-hosted, $2100/mo trial, rec testing), NeoAgent (great fit but Microsoft-only auth blocker), Vertesia (full multi-tenant+governance+scale but 'may be too complex'), HyprEdge (identity layer). Ruled out: Flamingo, Avoca, Cybrary, Hadrian, Avantra. May-June due diligence evaluated three finalists: ZenZero, NeoAgent, Vertesia.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091788505/ACP+Partner+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "Suzanne Britt"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Competitive / vendor landscape",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Partner must-haves: multi-tenancy by design, validated with 10+ customer environments, open architecture (3rd-party MCPs/LLMs/integrations), governed execution with rollback/recovery, ideally AWS+Bedrock cross-AZ/region.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Vendor evaluation criteria"
+        },
+        {
+          "claim": "CONFLICT \u2014 partner selection date differs by source: GO/NO-GO partner selection gate set for 2026-07-31 (exec approval, decision owner Laura DuBois) per Partner Diligence Tracking; ELT decision scheduled July 17 per GPM Partner Execution Project Plan. Contract execution Aug 3, integration+pilot complete Aug 14 are consistent.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091788505/ACP+Partner+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Nicole Reineke",
+            "Suzanne Britt"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Program timeline / decision gates",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Top delivery risks (High/High): partner integration complexity (esp. security review + NC/NS MCP integration) and MVP scope creep; BizApps SKU ('we need to make sure we can charge for this') flagged HIGH RISK, target September.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Risk register / monetization"
+        },
+        {
+          "claim": "Pricing/monetization is an open workstream owned by Gaurav Bahl across both tracks (In Progress, high priority, raised 2026-06-16) \u2014 pricing due diligence + offer validation (8-10 customer, top objections + segment differences, due 7/27). BizApps/RevOps surfaces an unresolved 'Usage Logic Decision' and 'First-In Usage Build' \u2014 the metering/usage-based billing model is not yet decided. Named gap feeding offer design.",
+          "tag": "?",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/database/62093361317",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Gaurav Bahl",
+            "Laura DuBois",
+            "Nicole Reineke",
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-16",
+          "spec_touched": "Monetization / offer validation / usage metering",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Security/pen-test decisions: no pen test required for OEM/partner-track products (resolved 2026-06-17, owners DMac + Brad), but D.MacKinnon recommends a security assessment per candidate (SOC2 sent to Vertesia, NeoAgent). Internal Build has a hard Q1 milestone 'Pen Test / GA Offering in Market' with a PenTest Security Review scheduled December.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62013669455/ACP+Partner+Diligence+Project+Tracking",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/database/62093361317",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "D.MacKinnon",
+            "Brad",
+            "Nicole Reineke",
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-17",
+          "spec_touched": "Security / diligence / pen test",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Partner GTM (Aug 17): use OEM vendor materials for sales/marketing/enablement, targeted (not general) sales until October; Aug 17 milestones bundle three readiness gates \u2014 partner integration in staging, monetization approved, and support ownership determined.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091788505/ACP+Partner+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "GTM / positioning / readiness gates",
+          "_merged_from": 2
+        },
+        {
+          "claim": "A separate lighter-weight Coworker implementation exists within UEM/N-zo for within-product automation and is explicitly out of scope for the ACP Coworker spec. Decision (DEC-001): v1 is scoped to ACP only, not UEM/N-zo (separate identity/permissions model) \u2014 aligns with BOLT QUAD 'build once'; ACP is standalone with zero dependency on owning N-central or any other N-able line.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-6",
+            "/Users/elizabeth/Desktop/Bethproto/acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md:628"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-30",
+          "spec_touched": "FSN-83143 scope / DEC-001",
+          "_merged_from": 2
+        },
+        {
+          "claim": "BYOM (Bring Your Own Model) is an active initiative (ACP-7, Implementing), owned by Chris Barber \u2014 indicates ACP intends model-agnosticism / vendor-agnostic LLM choice. N-able does NOT host its own LLMs \u2014 all inference is external via N-able's AWS Bedrock or customer BYOK/BYOM.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-7",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /nicole-actual-acp-vision.md"
+          ],
+          "contributor": [
+            "Chris Barber",
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-01",
+          "spec_touched": "BYOM / LLM architecture",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Monetization core bet is to stop pricing per device and 'price the work', via a stacked seven-layer revenue model (platform/subscription access, workflow execution metering, Expert licensing, marketplace/vendor-ecosystem rev-share Shopify-style, MCP/tool metering, LLM inference pass-through, outcome-based pricing). Thesis: per-device pricing is broken because AI surfaces 3,000 findings per pass vs 10.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/Headless IT Tech in the AI Agent world-040626-152836 (1).pdf",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /nicole-actual-acp-vision.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-04",
+          "spec_touched": "Monetization / revenue architecture",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Seth Godin 'purple cow' framing: the differentiated MSP story is provable outcomes \u2014 'We run 14 AI Coworkers; last month they resolved 340 incidents, onboarded 12 employees, closed 2,100 vulnerabilities... here is the proof.' The Value Ledger (NOT 'Trust Ledger') is the customer-facing artifact the MSP shows their customer to justify price, and that N-able shows the MSP to justify the platform fee; tracks manual-time vs AI-time, time saved per action, cumulative value.",
+          "tag": "D",
+          "source_link": [
+            "https://nabletechnologies-my.sharepoint.com/personal/nicole_reineke_n-able_com/Documents/Documents/ACP_DataDump/Headless IT Tech in the AI Agent world-040626-152836 (1).pdf",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /nicole-actual-acp-vision.md",
+            "/Users/elizabeth/Desktop/Bethproto/scout_input/01-control-plane.md"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "Positioning / IC-2026-002 Value Ledger narrative",
+          "_merged_from": 2
+        },
+        {
+          "claim": "MCP access is framed by forward partners as the platform unlock / 'game changer' \u2014 letting MSPs build their own tooling on the same data and extend beyond out-of-box features. Industry has converged on MCP as the agent-to-tool protocol (Anthropic, OpenAI, Workato, Rewst, Salesforce, ServiceNow, CrowdStrike) \u2014 ACP architecture is structurally aligned.",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/nicole-acp-datadump/N-UEM-Coworker-Use-Cases.txt",
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/HANDOFF.md"
+          ],
+          "contributor": [
+            "22 partner interviews",
+            "Beth Schwindt"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "MCP / extensibility / market convergence",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Customers want narrative-driven reports to communicate value internally to C-suite and externally to end customers; the Remediation Dashboard is valued as a bridge between MSPs and their clients and could eliminate third-party reporting tools if designed for multiple personas (technician, security manager, business owner, end customer). Over-simplifying AI interactions can obscure product value and make cost harder to justify \u2014 effortlessness can undercut perceived worth.",
+          "tag": "R",
+          "source_link": [
+            "https://share.condens.io/a4eNWmzMalaR3Qqg9uByA",
+            "https://share.condens.io/aT8uEi4MLcJjitQ1OrYTb",
+            "https://share.condens.io/a6lFAAMkHxBSEUh1VSScZ"
+          ],
+          "contributor": [
+            "Jane Wilson"
+          ],
+          "date": "2026-04-24",
+          "spec_touched": "Positioning / QBR narrative / vendor consolidation / value framing",
+          "_merged_from": 3
+        },
+        {
+          "claim": "Named market threats: Microsoft Agent 365 at $15/user/month bundled into M365 (SMB reach), plus autonomous L1 already shipped by competitors (Pia/Kaseya, Robin/Atera, ServiceNow) \u2014 'catching up on L1 alone is not differentiating'; the marketplace + control plane is the moat. Consumption pricing is mainstream (Agentforce $2/conversation, Zendesk $1.50/resolution, n8n).",
+          "tag": "R",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth Schwindt"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "Competitive positioning / market trends",
+          "_merged_from": 2
+        },
+        {
+          "claim": "DISPUTED \u2014 do NOT quote externally (CLAIM-MATH-DISPUTED-001): the '$33,600/month per MSP' false-positive savings figure does not reconcile with its stated formula; open decision is recompute vs rewrite vs pull. The underlying problem is real: false-positive alert burden (46% of security alerts false positive; ~960 alerts/day; ~70 min/alert) is the top-ranked MSP problem.",
+          "tag": "?",
+          "source_link": [
+            "https://nabletechnologies.sharepoint.com/sites/ACPBoltTeam/Shared Documents/What's Up with the People/HANDOFF.md",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /problems-ranked.md"
+          ],
+          "contributor": [
+            "Beth Schwindt (critic pass)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "ROI / value math / problem ranking",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Language/positioning tension: partners hope to be seen as Managed Intelligence Providers \u2014 Nicole's 'AI Coworker' framing implies parity with the human while Kaseya's 'Digital Specialists' elevates the human; word choice is a live positioning decision.",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/what's up with the humans in ACP? /whats-up-with-the-humans.md"
+          ],
+          "contributor": [
+            "Beth (from partner interviews)"
+          ],
+          "date": "2026-06-05",
+          "spec_touched": "Positioning / naming"
+        },
+        {
+          "claim": "Security is demand's center of gravity: 4 of top-5 demanded coworkers are security-flavored; vCISO is the hotter market (MSPs offering it reportedly tripled YoY per vendor sources) and N-able has Adlumin to feed it \u2014 a possible bigger play than QBR alone. NOTE: the vCISO market-size figures are on the DO-NOT-CITE list.",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth Connor"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "acp-qbr-analyst vCISO play"
+        },
+        {
+          "claim": "Established competitive conclusions: nobody does true cross-vendor end-to-end normalization (two independent absence-findings) \u2014 normalization is the hardest-to-replace moat; deck-generation is commoditizing (ScalePad Copilot/Cassidy/Cast.app/Plus AI), so race normalization + decision-driving, not deck-gen.",
+          "tag": "R",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth (research rounds 1-2)"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "acp-qbr-analyst competitive"
+        },
+        {
+          "claim": "Biggest-ROI acquisition to buy the normalization moat = Gradient MSP (cross-vendor normalization, already Cove-integrated, ~$8M raised); Liongard is a deeper alt; vCIOToolbox/CloudRadial are delivery layers already partnered with N-able.",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth (research rounds 1-2)"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "acp-qbr-analyst M&A"
+        },
+        {
+          "claim": "Verified fabrication traps (DO-NOT-CITE): '82%/85% QBR retention', '~30% AI efficiency' VC rollups, 'Gartner 70% of presentations AI-generated by 2026', respondent-reported '$300+/user/mo' and '15-20 hrs', and the vCISO '$1.06B\u2192$1.48B by 2032' figure \u2014 none trace to a citable primary source.",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth (Bradley/47% verification)"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "acp-qbr-analyst evidence hygiene"
+        }
+      ],
+      "_inbox": [
+        {
+          "claim": "ACP two-hour design-thinking workshop (scenarios, personas, pain points, brainstorm, acceptance criteria, riskiest assumptions) was run, followed by a Claude-assisted clash-detection pass comparing outputs against the five intent specs: Runbook Engine, Value Ledger, AI Expert, MSP Onboarding, Management Plane.",
+          "tag": "R",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1782997168093"
+          ],
+          "contributor": [
+            "Elizabeth Connor"
+          ],
+          "date": "2026-07-02",
+          "spec_touched": "All five intent specs; workshop personas"
+        },
+        {
+          "claim": "Value Ledger open question: whether per-run token usage and cost should feed the value ledger and coworker stats, or be surfaced as an estimated average cost on a specific coworker.",
+          "tag": "?",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1782373166247"
+          ],
+          "contributor": [
+            "Chris Barber"
+          ],
+          "date": "2026-06-25",
+          "spec_touched": "Value Ledger (FSN-81539); cost surfacing"
+        },
+        {
+          "claim": "Series of external MSP demand-validation consultation transcripts ('Governed Agentic Automation in MSP Operations') were posted to the Brain Dump channel as primary research input for ACP.",
+          "tag": "R",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3aOlTtVVyAz8wISWXG2Jfi-9xSIAqBe4k-No9OAmHb1bM1%40thread.tacv2/1781297697154"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-12",
+          "spec_touched": "Demand validation / market research"
+        },
+        {
+          "claim": "An MCP config Figma design pass was generated directly from Chris B's current MCP implementation using a Figma Console MCP bridge, with the next step to annotate/correct and feed back in.",
+          "tag": "D",
+          "source_link": [
+            "https://teams.microsoft.com/l/message/19%3ad5906de41e48434c93751900f15a8e3b%40thread.tacv2/1783695432808"
+          ],
+          "contributor": [
+            "William Mincher"
+          ],
+          "date": "2026-07-10",
+          "spec_touched": "ACP-9 MCP Config UI; design-to-code pipeline"
+        },
+        {
+          "claim": "Unmet needs surfaced outside the candidate list (both interview rounds): staff upskilling, AI-agent governance-as-a-service (managing agent sprawl), cross-tool billing/financial reconciliation ('AI bookkeeper'), vulnerability ops (CVSS\u00d7EPSS), dispatcher/scheduling automation.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62064099623/BLIND+INTERVIEWS+ACP+-+June+2026+Study"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Adjacent opportunity backlog",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Related research artifacts referenced but not in space AI: Research plan (ProdUX 61951967688), survey data analysis (ProdUX 62149787674), RFI/NDA docs on SharePoint.",
+          "tag": "?",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/ProdUX/pages/62149787674"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-07-09",
+          "spec_touched": "Source pointers"
+        },
+        {
+          "claim": "The Approval Model is a canonical reference document (v0.1.0, Draft) that other specs defer to rather than redefining approvals; referenced by IC-2026-001 (Runbook Engine), IC-2026-002 (Value Ledger), and a pending Execution Engine spec.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/AI/pages/62057152915/AI+Coworker+and+ACP+Approval+Model+Definition+Document"
+          ],
+          "contributor": [
+            "Nicole Reineke"
+          ],
+          "date": "2026-06-11",
+          "spec_touched": "ACP spec architecture / doc dependency graph"
+        },
+        {
+          "claim": "Both tracks share the same release ladder: Limited Tech Preview (target August), Public Preview (target September/October), GA (target Q4), then Post-GA \u2014 all stages Not started as of 22 Jun 2026. Partner cross-functional team kicks off week of July 27; Internal Build cross-functional kickoff TBD.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan",
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091788505/ACP+Partner+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Release milestones (LTP/PP/GA) / mobilization",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Internal Build progress as of 22 Jun: 'Spec to AI - Dev Environment Stood Up' Complete; Initial Architectural Design and Customer-Editable Runbook Engine In Progress; all remaining build milestones (OTS Runbook Library, LLM+MCP connectivity, 3rd-party MCP integration, secure controls/audit logging, admin dashboard/approval workflows) Not started.",
+          "tag": "D",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Build status / milestone tracking"
+        },
+        {
+          "claim": "ACP senior leadership (SLT) named in the plan: Nicole R, Laura D, Meaghan R, Kurt J; Head Nerd Jason M; GPMO Suz. Both plans list a broad cross-functional dependency set for GA: PMM/Marketing, Enablement, BizApps, Pricing, Sales, Nerds, Meaghan/UX, Support, Engineering, Bus/Corp Dev, plus conditional Security/GRC and DevOps.",
+          "tag": "R",
+          "source_link": [
+            "https://n-able.atlassian.net/wiki/spaces/GPM/pages/62091723297/ACP+Internal+Build+Execution+Project+Plan"
+          ],
+          "contributor": [
+            "Suzanne Britt"
+          ],
+          "date": "2026-06-22",
+          "spec_touched": "Decision owners / governance / cross-functional deps",
+          "_merged_from": 2
+        },
+        {
+          "claim": "Backlog initiatives Agent Factory (ACP-18), Execution Engine (ACP-21), Initial Pipeline generation (ACP-20), Feature Flags/LaunchDarkly (ACP-17), and Reporting (ACP-23) are titled-only with no descriptions yet \u2014 scope undefined. Initial Infrastructure (ACP-8, Implementing) requires Dev/Stg/Prod + CI/CD (frontend+backend pipelines deploy to all three); child epics cover acp-core/application/module ECR+build+deploy (ACP-10 Done, ACP-12/13/14, ACP-24).",
+          "tag": "?",
+          "source_link": [
+            "https://n-able.atlassian.net/browse/ACP-18",
+            "https://n-able.atlassian.net/browse/ACP-8"
+          ],
+          "contributor": [
+            "Christopher Dunlop",
+            "Sidhant Hanwate"
+          ],
+          "date": "2026-07-14",
+          "spec_touched": "Backlog scope / Infrastructure / CI-CD",
+          "_merged_from": 2
+        },
+        {
+          "claim": "ACP-V1 critic delta: layering Apex Bridge as the delivery vehicle raised Demo-ability (3\u21924) and Differentiation (2\u21923, 'ACP rides into N-central as overlay' is a distribution wedge) but lowered Scope discipline (3\u21922) by introducing a narrative collision + component-coverage gap. Bridge makes V1 stronger AND more complicated.",
+          "tag": "D",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/nicole-acp-v1-2026-05-27/HANDOFF.md"
+          ],
+          "contributor": [
+            "Beth (critic pipeline)"
+          ],
+          "date": "2026-05-27",
+          "spec_touched": "acp-v1 Apex Bridge delivery"
+        },
+        {
+          "claim": "Decision-owners on ACP work are Beth (UX Manager), her boss Meaghan Reinecke, and Nicole Reineke (Chief AI Officer) \u2014 all build/strategy/pricing calls route to those three; this is product-experience research, NOT a go/no-go. Core reframe (Beth's structural read): the top-5 demanded coworkers are not five products but three capability bands + one voice \u2014 Operational Health (alert flood, env health, ticket triage), Security/vCISO (IR RCA, tabletop), and QBR as the OUTPUT/narration layer. Composition is a strategic [A].",
+          "tag": "A",
+          "source_link": [
+            "/Users/elizabeth/Desktop/Bethproto/briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/HANDOFF.md",
+            "/Users/elizabeth/Desktop/Bethproto/briefs/acp-qbr-analyst.brief.md"
+          ],
+          "contributor": [
+            "Beth Connor"
+          ],
+          "date": "2026-07-06",
+          "spec_touched": "ACP governance / decision ownership / coworker-department reframe",
+          "_merged_from": 2
+        }
+      ]
+    }
+  },
+  "coverage": [
+    "Microsoft Teams (M365 connector) \u2014 ACP team groupId e1d888d8-86aa-47d3-b07a-791e907d627a: Brain Dump channel, ACP-1/ACP-6/ACP-9 dev channels, \"AI coworkers / where we set mcps and models\" channel, and adjacent meeting + 1:1 chats. Queries run: coworker, runbook, MCP, permissions, agnostic, persona, approval, value prop/QBR.: Covered the required queries (coworker, runbook, MCP, permissions, agnostic, persona, approval, value prop/QBR) at offset 0 and partially paginated (offsets up to ~50 on the first two queries). I did NOT fully paginate every query to exhaustion \u2014 'coworker', 'runbook', 'MCP', 'approval' each have more pages beyond what I read (nextOffset returned). 'QBR' specifically returned no direct hits (the combined 'value prop QBR' query surfaced value/pricing docs but no QBR-tagged content); a standalone QBR query was not run. I did not open the large persisted competitive doc (TrustPoint/Nik Lipor scorecard, 54KB) beyond its preview, nor the linked Confluence pages, Figma boards, GitHub PRs, or attached .docx/.pptx (pricing strategy, AI corporate philosophy, workshop summary, Road to 100 Milly) \u2014 those are named here via source links but their full contents are unread. Interviewee names are largely kept out of claims except the one competitive DIY-control-plane finding, which Nicole documented by name in-channel as intel. The connector's date-scoped search only scans ~50 recent chats, so older Brain Dump history and channel-only messages beyond that window may be missing. Findings skew toward Chris Barber / Nicole Reineke / William Mincher / Jude Scally because they are the most active posters in these channels.",
+    "Confluence space AI (Nicole Reineke / ACP research), n-able.atlassian.net \u2014 pages: ACP Survey End2End, BLIND INTERVIEWS ACP June 2026, AI Coworker & ACP Approval Model Definition, ACP Partner Diligence Project Tracking, ACP prototype: Space key resolved: the requested 'AI' space is Confluence key AI (id 59690942525), owned by Nicole Reineke \u2014 distinct from GPM (Global Portfolio Mgmt), which holds sibling ACP project/RAID/decision-log pages I did NOT fully read (only search summaries seen: ACP Partner Decision Log, ACP Build Decision Log, ACP Internal Build + Partner RAID/Decision Logs, ACP Partner Execution Project Plan). Those GPM pages likely contain additional decisions/risks worth a follow-up scout. All 5 named target pages in space AI were read in full EXCEPT 'ACP prototype' (61995876354), which contains only an embedded HTML file attachment with no extractable body text \u2014 the prototype itself was not opened/analyzed. The BLIND INTERVIEWS page contains real interviewee names (Vitali Amare, Kenneth May, Jonathan Blakey, Shawn Eftink, Derek Froese, Mike Ritsema, Matt Polatsek, Vikram Thakar, Nik Lipor); I kept them out of claims except where a named quote was load-bearing for a WTP/priority signal \u2014 Beth should anonymize before any external use. Willingness-to-pay figures ($300+/user/mo ScalePad, 10-15% SOC cost) are single-source anecdotes from individual interviews, directional not projectable. Survey n varies by question (n=27 to n=45) with expected drop-off; treat sub-scores accordingly. Did not open linked SharePoint RFI/spreadsheet or ProdUX research-plan/survey-analysis pages (out of scope / different space).",
+    "Confluence \u2014 intended space FSN (Fusion, id 58540328568), cloudId 21ab04ef-0acf-4e62-b163-a12e66774c17. Actual ACP architecture/scope content lives in space AI, not FSN. FSN returned zero matching pages.: MAJOR SCOPE MISMATCH \u2014 read before trusting completeness. The task named space FSN as holding 'ACP architecture + intent specs + notification service.' That is not accurate as of 2026-07-14. FSN (Fusion, id 58540328568) contains effectively no ACP/coworker/MCP/runbook/notification content \u2014 the only page that surfaces against it (BLIND INTERVIEWS ACP) actually reports its home space as AI, and the CQL space=FSN filter was silently ignored by the search API (a bare `space = FSN AND text ~ ...` query even returned the GPM space object, not pages). All real ACP architecture and scope content lives in space AI: the Approval Model Definition Document (62057152915), the June 2026 Blind Interviews study (62064099623), ACP Survey End2End (62151262211), Partner Diligence Tracking (62013669455), and ACP prototype (61995876354). I did NOT find any page titled 'Architecture Overview (ACP)', 'V1 Scope', or discrete 'intent-spec' pages \u2014 those named targets appear not to exist under those titles, or live in a space I did not scan (candidates: AI, ADL, PUT, ProdUX). NOT read this run: the ACP Survey End2End page, Partner Diligence Tracking, the ACP prototype page, and the referenced specs IC-2026-001 (Runbook Engine) and IC-2026-002 (Value Ledger) \u2014 those are Jira/IC keys I did not pull. The notification-service architecture is only described inline within the Approval Model doc (channels: dashboard badge, email, execution-log status); no standalone notification-service spec was located. Recommend re-running the scout against space AI (and confirming whether FSN was the intended key at all) to close these gaps. All interviewee personal names deliberately kept out of the claims text.",
+    "Confluence GPM space (Global Portfolio Mgmt) \u2014 ACP Internal Build + Partner project plans and decision logs, cloudId 21ab04ef-0acf-4e62-b163-a12e66774c17: Fully read: both project-plan pages (ACP Internal Build Execution Project Plan 62091723297 and ACP Partner Execution Project Plan 62091788505) via full ADF body extraction. NOT reachable: the two RAID/Decision Log PAGES (62091723272 Internal, 62091723080 Partner) are empty templates \u2014 every Risk/Assumption/Issue/Dependency cell is blank as of 2026-06-22, so no RAID content exists to extract yet. The two DECISION-LOG DATABASES (ACP Partner Decision Log 62093361317, ACP Build Decision Log 62091723363) are Confluence 'database' objects that return 404 via both getConfluencePage and the ARI fetch tool \u2014 the API cannot read database rows. The three Partner Decision Log findings above are reconstructed from the CQL search SUMMARY snippet only (pen-test decision, pricing/monetization, onboarding support), not a full-fidelity read; owner initials (DMac/Brad, Gaurav/Laura) and exact statuses are from that snippet and should be verified in-app. The ACP Build Decision Log returned an EMPTY summary \u2014 I could not extract any of its rows; that log needs manual review in the Confluence UI. Milestone tables in both plans are largely unpopulated (owner/date cells blank), so most milestones are labels without assigned owners or firm dates. Interviewee/customer names avoided; only internal team-member first names appear as they are the decision owners recorded in the plans.",
+    "Jira project ACP (n-able.atlassian.net, cloudId 21ab04ef-0acf-4e62-b163-a12e66774c17), 24 issues scanned 2026-07-14. FSN cross-project search returned no separate issues; FSN specs are referenced inside ACP tickets.: Scanned all 24 issues in Jira project ACP (full descriptions read for the four spec-bearing initiatives: ACP-4 Onboarding, ACP-5 Experts, ACP-6 Coworkers, plus ACP-8 infra). The FSN half of the JQL returned zero separate issues \u2014 the tool call for the combined project=ACP OR (project=FSN...) query initially misrouted to a Confluence-spaces response, then the ACP-only rerun succeeded; I did NOT get a clean standalone FSN result set, so any FSN tickets matching coworker/runbook/MCP/ACP outside those referenced inside ACP descriptions are UNVERIFIED. FSN spec docs themselves (FSN-83143, FSN-82692, FSN-82688) live in GitHub (acp-core repo, Intent Specs/) and were NOT fetched \u2014 only their ACP-embedded summaries were read. Comments were not pulled (fields did not include comment). ACP-7 (BYOM), ACP-9/11/19 (MCP), and all backlog initiatives (ACP-15 through ACP-24) have empty descriptions \u2014 their scope is inferred from titles/status only and tagged [?] or [D] accordingly. Real interviewee names from the 22 partner interviews were not exposed in tickets, so none are included. Reporter/assignee names retained as contributors since they are internal N-able staff, not customer interviewees.",
+    "Condens \u2014 N-able User Insights Repository (workspace: nable): Single workspace found: 'nable' (N-able User Insights Repository); no separate ACP-named workspace exists \u2014 ACP-relevant signal is embedded in AI/N-zo/agentic and vulnerability-remediation research. Searches run: ACP/agentic coworker, coworker/trust/delegation, QBR, vCISO, runbook/automation. 'vCISO' returned ZERO artifacts \u2014 no vCISO research exists in this repo. Deep-read 10 of ~60 published artifacts (the highest-relevance AI/agentic/governance/reporting ones); retrieved full text with real share.condens.io permalinks. NOT deep-read (titles/summaries only, could yield more): the 5 common-token-API interview findings (P1-P5), Adlumin Show-me/Integrations reports, Reddit Comments, several Asset View and Linux/Apple patch reports, and the Empower sub-finding PDFs (Reporting, Navigation, Risk Acceptance, Data Consolidation, Server Patching) which are referenced as child PDFs inside the Empower Summary but were not individually fetched. Time-saving stats are user-perceived/self-reported (tagged [D] but not instrumented \u2014 triangulate before quoting in a spec). Interviewee company names (VBT IT Solutions, Infinity IT) appear in one field-visit finding; individual participant identifiers kept as anonymized codes (P3, P8, P17) per instruction. Researcher/contributor names retained as 'contributor' per schema, not as interviewees.",
+    "SharePoint/OneDrive \u2014 ACP Data Dump (Nicole Reineke's OneDrive ACP_DataDump + ACPBoltTeam \"What's Up with the People\") and related ACP research docs: Two distinct ACP Data Dump locations exist and were both reached: (1) Nicole Reineke's OneDrive /Documents/ACP_DataDump/ and (2) the ACPBoltTeam SharePoint site 'What's Up with the People' (which includes a nicole-acp-datadump/ mirror, transcripts/, competitors/, framework-templates/, and _sidecars/). I fully read: N-UEM-Coworker-Use-Cases.txt (13 use cases + 22-interview evidence), whats-up-with-the-humans.md, ACP-Approval-Model-Definition.md, ACP-Management-Plane-AI-Operator-Model.md, AI-Runbooks definition PDF, the Headless IT positioning PDF (all 35 pages via chunked read), HANDOFF.md market analysis, one transcript (Sketch/Ditty), and the JTBD + SDT framework templates. NOT reached / gaps: the full research-evidence.md (only its JSON sidecar surfaced), nicole-actual-acp-vision.md and acp-vision-from-pdfs.md (only sidecars appeared in results \u2014 the source .md bodies were not opened), problems-ranked.md and council-frameworks.md (referenced but not read), the competitors/ subfolder contents (60+ competitor profiles referenced but individual files not opened), the AI-AI Coworker Description PDF, the IC-2026-002 Value Ledger and IC-2026-003 AI Expert Config Registry specs (only surfaced in search, not read), the AI_Pricing_Strategy_Report_2026_v3.docx (redacted $X figures), and all video/screen-recording assets (standups, Friday Feature Fair, Value Ledger Demo, AI Expert Registry demos \u2014 not transcribable here). Several Empower 2026 CAB partners (Christian K., Chris W., Jeff Y., Michael B., Thomas C.) are named as sources but have no quotes in the synthesized record. Interviewee first names appear in the source docs and some are retained in findings where they are the load-bearing attribution; approved-for-external quotes (e.g. Robby Swartenbroekx / b-inside) are noted as such in the source. The disputed $33,600/mo figure and the redacted pricing report should be verified before any external use.",
+    "Local ACP files: acp-core-main-3/Intent Specs + /specs, briefs/ (incl. handoffs), scout_input/: Scanned in full: all 6 Intent Specs (FSN/IC canonical build specs \u2014 frontmatter, rules, personas, invariants, decisions, metrics), 3 ACP briefs (acp-v1, acp-trust-level, acp-headless), the QBR-analyst brief frontmatter + domain_model, the two major handoffs (nicole-acp-v1, next-claude-acp-coworker-dept), the 'what's up with the humans in ACP?' packet (vision, problems-ranked, whats-up-with-humans, research-evidence head), and key scout_input files (01-control-plane, 02-ai-coworker). NOT fully read (time/scope): the /specs SpecKit sub-artifacts (spec.md/plan.md/data-model.md/tasks.md/contracts for the 4 numbered feature folders \u2014 likely contain detailed data models, API contracts, and acceptance-criteria IDs I only sampled via the Intent Specs); the full 44-voice council reports (acp-v1-council-report.md, acp-trust-level-council-44.md, council-testimony-department-reframe.md, council-mini-* \u2014 large, would surface additional named tensions); the QBR-analyst brief body past frontmatter (round-2-findings, concept-mvps, staged-path); the acp-headless full council + Doblin scoring; the nicole-acp-trust-level and claude-acp-v1-skill-extension handoffs; and all source PDFs referenced in frontmatter (AI Coworker Description, Runbooks Definition, Headless IT Tech 35pp, Top 10 Use Cases, N-UEM 22-partner catalog) which live outside the scanned dirs. Real interviewee names were kept out of claims except where a name is load-bearing to ownership/authorship (Nicole Reineke, Ewan Cameron, Meaghan Reinecke, Beth); individual partner quotes were attributed generically ('a named partner'). The $33,600/month figure and several vendor stats are flagged disputed/do-not-cite per the source docs' own warnings."
+  ]
+}

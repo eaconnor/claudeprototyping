@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adlumin UX Roadmap · Now / Next / Later · Annotated</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141C29; --paper:#F5F7F9; --panel:#FFFFFF; --line:#DBE0E7; --line-2:#EAEDF1;
+    --muted:#5C6675; --muted-2:#8A93A1;
+    --now:#0D9F6E; --next:#2E7DD1; --later:#8A6BEF;
+    --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Inter',system-ui,sans-serif;
+    --shadow:0 1px 2px rgba(20,28,41,.04),0 6px 18px rgba(20,28,41,.05);
+    --ws-apex:#E4572E; --ws-scale:#0E9F9A; --ws-pat:#6366F1; --ws-set:#B45309; --ws-rbac:#3B82F6;
+    --ws-lic:#2E9E6B; --ws-dr:#D14343; --ws-int:#0891B2; --ws-onb:#DB2777; --ws-ai:#9333EA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1480px;margin:0 auto;padding:26px 22px 56px;}
+  a{color:inherit;text-decoration:none;}
+  .eyebrow{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--now);}
+  h1{font-size:23px;font-weight:800;letter-spacing:-.02em;margin:7px 0 0;}
+  .sub{color:var(--muted);font-size:12.5px;margin-top:7px;max-width:900px;line-height:1.5;}
+  .header{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:16px;}
+
+  .legend{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px;}
+  .ws-key{display:flex;gap:12px;flex-wrap:wrap;}
+  .ws-key .k{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+  .ws-key .sw{width:10px;height:10px;border-radius:3px;}
+  .conf-key{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);white-space:nowrap;}
+  .conf-key .grad{width:120px;height:8px;border-radius:5px;background:linear-gradient(90deg,var(--now),var(--next),var(--later));opacity:.8;}
+
+  .gate-key{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:11px;color:var(--muted);margin-bottom:16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;}
+  .gate-key b{color:var(--ink);}
+
+  .gate{display:inline-block;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.03em;padding:1px 5px;border-radius:3px;margin-left:1px;vertical-align:1px;white-space:nowrap;}
+  .gate-R{background:#DCEFE3;color:#0B7A45;}
+  .gate-D{background:#DCE8FB;color:#1D4E9B;}
+  .gate-A{background:#F6E8D2;color:#8A5A17;}
+  .gate-U{background:#F3E1E1;color:#A13A3A;}
+
+  /* threads panel */
+  .threads-panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px;margin-bottom:16px;}
+  .threads-panel h2{font-size:13px;margin:0 0 3px;letter-spacing:-.01em;}
+  .threads-panel .tp-sub{color:var(--muted);font-size:11.5px;margin-bottom:12px;line-height:1.5;max-width:1000px;}
+  .thread-row{display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;padding:9px 0;border-top:1px solid var(--line-2);}
+  .thread-row:first-of-type{border-top:none;}
+  .thread-name{font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;}
+  .thread-name .dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+  .stepper{display:flex;align-items:center;}
+  .step{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+  .step .node{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:700;color:#fff;flex-shrink:0;}
+  .node.n-now{background:var(--now);} .node.n-next{background:var(--next);} .node.n-later{background:var(--later);}
+  .step .label{font-size:10.5px;line-height:1.25;color:var(--ink);min-width:0;}
+  .step .label .h{display:block;font-family:var(--mono);font-size:7.5px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.05em;}
+  .step-line{flex:0 0 22px;height:2px;background:var(--line);margin:0 2px;}
+
+  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;}
+  .col{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+  .col-head{padding:15px 16px;color:#fff;position:relative;}
+  .col.c-now .col-head{background:linear-gradient(135deg,#0D9F6E,#0B8659);}
+  .col.c-next .col-head{background:linear-gradient(135deg,#2E7DD1,#2864B0);}
+  .col.c-later .col-head{background:linear-gradient(135deg,#8A6BEF,#6F4FD8);}
+  .col-head .nnl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.85;}
+  .col-head .hz{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-top:3px;}
+  .col-head .win{font-family:var(--mono);font-size:10px;font-weight:500;opacity:.8;margin-top:2px;}
+  .col-head .outcome{font-size:12px;line-height:1.5;margin-top:9px;opacity:.96;border-top:1px solid rgba(255,255,255,.22);padding-top:9px;}
+  .col-head .conf{position:absolute;top:14px;right:16px;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:20px;}
+
+  .col-body{padding:11px;display:flex;flex-direction:column;gap:9px;}
+  .wcard{border:1px solid var(--line);border-left-width:4px;border-radius:8px;padding:9px 11px;background:var(--panel);}
+  .col.c-next .wcard{background:#FCFDFE;}
+  .col.c-later .wcard{border-style:dashed;background:#FCFCFE;}
+  .wcard .wn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .wcard .wn .dot{width:7px;height:7px;border-radius:2px;}
+  .wcard ul{margin:0;padding:0;list-style:none;}
+  .wcard li{font-size:11.8px;line-height:1.4;padding-left:12px;position:relative;margin-bottom:5px;color:var(--ink);}
+  .wcard li:last-child{margin-bottom:0;}
+  .wcard li::before{content:"";position:absolute;left:0;top:6px;width:4px;height:4px;border-radius:50%;background:var(--muted-2);}
+  .col.c-later .wcard li{color:#39424F;}
+  .tix{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:7px;border-top:1px solid var(--line-2);}
+  .tix a{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:1px 5px;line-height:1.5;}
+  .tix a:hover{border-color:var(--now);color:var(--now);}
+  .tix .lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2);align-self:center;margin-right:2px;}
+  .tag-new{font-family:var(--mono);font-size:8px;font-weight:700;color:#fff;background:var(--muted-2);border-radius:4px;padding:1px 4px;margin-left:5px;letter-spacing:.03em;}
+  .thread-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.03em;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:1px 6px;}
+
+  .pu{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line-2);}
+  .pu .row{display:flex;gap:6px;font-size:11.3px;line-height:1.42;margin-bottom:5px;}
+  .pu .row:last-child{margin-bottom:0;}
+  .pu .lbl2{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-2);white-space:nowrap;padding-top:2px;min-width:64px;}
+  .pu .txt{color:var(--ink);}
+  .pu .note{display:block;margin-top:2px;font-size:10px;color:var(--muted);font-style:italic;}
+
+  .foot{margin-top:20px;border:1px dashed var(--line);border-radius:10px;background:var(--panel);padding:14px 18px;font-size:12px;line-height:1.55;color:var(--muted);}
+  .foot b{color:var(--ink);}
+  .meta{margin-top:16px;font-family:var(--mono);font-size:10px;color:var(--muted-2);letter-spacing:.04em;}
+  @media (max-width:1000px){ .board{grid-template-columns:1fr;} .thread-row{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="eyebrow">Adlumin UX Roadmap · Agile View · Annotated</div>
+    <h1>Now / Next / Later</h1>
+    <p class="sub">Outcome-based roadmap. Columns are commitment horizons, not fixed dates: Now is committed, Next is planned, Later is directional. Workstream colors stay consistent across columns so you can trace a theme end to end. Each card links its related Jira initiatives and epics. Windows are guides, since these initiatives aren't date-locked. <b>Added in this version:</b> a Problem + $ Upside line per card, pulled from the linked Jira initiative where it states one, plus a Threads panel showing which workstreams are actually one multi-step effort running across horizons.</p>
+  </div>
+
+  <div class="gate-key">
+    <b>Sourcing key for Problem / $ Upside:</b>
+    <span><span class="gate gate-R">R</span> stated in the ticket's research / customer quote</span>
+    <span><span class="gate gate-D">D</span> stated metric or figure in the ticket</span>
+    <span><span class="gate gate-A">A</span> inferred, not stated in the ticket — treat as a hypothesis to validate</span>
+    <span><span class="gate gate-U">U</span> claim already in this roadmap that I could not independently verify</span>
+  </div>
+
+  <div class="legend">
+    <div class="ws-key">
+      <span class="k"><span class="sw" style="background:var(--ws-apex)"></span>Apex foundation</span>
+      <span class="k"><span class="sw" style="background:var(--ws-scale)"></span>Partner Console &amp; multitenancy</span>
+      <span class="k"><span class="sw" style="background:var(--ws-pat)"></span>Catalog+SOAR patterns</span>
+      <span class="k"><span class="sw" style="background:var(--ws-set)"></span>Settings IA</span>
+      <span class="k"><span class="sw" style="background:var(--ws-rbac)"></span>RBAC</span>
+      <span class="k"><span class="sw" style="background:var(--ws-lic)"></span>License</span>
+      <span class="k"><span class="sw" style="background:var(--ws-dr)"></span>Detection &amp; response</span>
+      <span class="k"><span class="sw" style="background:var(--ws-int)"></span>Integration</span>
+      <span class="k"><span class="sw" style="background:var(--ws-onb)"></span>Onboarding</span>
+      <span class="k"><span class="sw" style="background:var(--ws-ai)"></span>AI-native</span>
+    </div>
+    <div class="conf-key">Confidence <div class="grad"></div> directional</div>
+  </div>
+
+  <div class="threads-panel">
+    <h2>Threads — where "one card per column" is actually one multi-step initiative</h2>
+    <p class="tp-sub">Most workstreams below aren't three separate projects — they're one initiative moving through Now → Next → Later. Reading a thread across its full row shows what actually has to ship, in order, before the Later outcome is real.</p>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-apex)"></span>Apex foundation</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Migrate tables, log views &amp; dashboards off MDB onto Apex</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Nav shell + forms onto Apex; adopt AI-ready patterns</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>Remaining surfaces migrated; MDB retired</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-scale)"></span>Partner Console &amp; multitenancy</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>IA + multi-hierarchy migration; tenant/partner APIs</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Console for full 200+ tenant book, decisions-first</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>200-tenant scale validated; SUS + N-able ecosystem</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-pat)"></span>Catalog + SOAR patterns</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Detection Catalog v1; shared pattern set defined</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>SOAR 2.0 UI on shared patterns; granular control</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>Multi-persona shared framework; test mode</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-set)"></span>Settings IA</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Inventory + keep/move/kill audit</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Redesign destinations; migrate / deprecate</span></div>
+        <div class="step-line" style="opacity:.25"></div>
+        <div class="step" style="opacity:.35"><span class="node" style="background:var(--line);color:var(--muted-2)">—</span><span class="label"><span class="h">Later</span>No card — folds into Partner Console IA</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-rbac)"></span>RBAC</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Interim scoped Tenant Admin role (stopgap)</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Granular RBAC design → build; internal staff RBAC</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>Granular controls GA; access-at-a-glance + audit</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-lic)"></span>License</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>v1 drill-down; partner-level view</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>v2 deepen; SKU provisioning; Usage API</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>Consolidated license/audit/reporting into Console</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-dr)"></span>Detection &amp; response</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Incident Dashboard (internal MDR); correlation groundwork</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Correlation / incident-story UX; coverage governance</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>D&amp;R on Apex, cohesive; SOAR handoffs on pattern language</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-int)"></span>Integration</div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Partner-level PSA MVP; self-service tenant CRUD</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Reversible bulk actions; integration health, tenant + global</span></div>
+        <div class="step-line" style="opacity:.25"></div>
+        <div class="step" style="opacity:.35"><span class="node" style="background:var(--line);color:var(--muted-2)">—</span><span class="label"><span class="h">Later</span>No card — matures inside Partner Console</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-onb)"></span>Onboarding <span class="tag-new">new</span></div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Discovery: journey map, service blueprint</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>Guided onboarding v1: self-service wizard</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>Resource libraries + in-product education; TTV measured</span></div>
+      </div>
+    </div>
+
+    <div class="thread-row">
+      <div class="thread-name"><span class="dot" style="background:var(--ws-ai)"></span>AI-native <span class="tag-new">new</span></div>
+      <div class="stepper">
+        <div class="step"><span class="node n-now">1</span><span class="label"><span class="h">Now</span>Lightweight AI intake model; assistant + NLP search discovery</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-next">2</span><span class="label"><span class="h">Next</span>AI-assisted triage; NLP log search; AI report builder</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="node n-later">3</span><span class="label"><span class="h">Later</span>AI-native triage v1; compliance intelligence; posture</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+
+    <!-- NOW -->
+    <div class="col c-now">
+      <div class="col-head">
+        <span class="conf">Committed</span>
+        <div class="nnl">Now</div>
+        <div class="hz">Rebuild the Core</div>
+        <div class="win">Horizon 1 · ~Q3–Q4 2026</div>
+        <div class="outcome"><b>Outcome:</b> Adlumin runs on the shared Apex system with a multitenant Partner Console IA, and the patterns everything else inherits are set.</div>
+      </div>
+      <div class="col-body">
+
+        <div class="wcard" style="border-left-color:var(--ws-apex)">
+          <div class="wn"><span class="dot" style="background:var(--ws-apex)"></span>Apex foundation<span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>Adopt shared Apex; migrate tables, log views &amp; dashboards off MDB</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Platform runs on an off-the-shelf Material kit not built for dense security data. Foundational UX tickets have sat blocked up to <b>19 months</b> because every screen builds its own version of the same table/dashboard logic.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt"><b>31–47% reduction</b> in front-end build time; unblocks 10+ months of stalled work tied to revenue; adoption climbing from ~25% toward a 60%+ target; framed as recovering ARR currently lost to poor first impressions.<span class="gate gate-D">D</span><span class="note">Source: ADL-2093 Value/Outcome table.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-2093" target="_blank">ADL-2093</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-scale)">
+          <div class="wn"><span class="dot" style="background:var(--ws-scale)"></span>Partner Console &amp; multitenancy<span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>Multi-tenant Partner Console IA + scale pattern language</li><li>Partner multi-hierarchy migration; tenant/partner APIs</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Existing customers are scattered across legacy tenant patterns, faked into a hierarchy via an "associated tenant" field — partners can't manage or provision as true parent/child structures.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Scored as indirect ARR protection via churn/retention, plus removes a structural blocker to consumption billing.<span class="gate gate-D">D</span><span class="note">Source: ADL-1742/1833 prioritization scorecards.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1742" target="_blank">ADL-1742</a><a href="https://n-able.atlassian.net/browse/ADL-1833" target="_blank">ADL-1833</a><a href="https://n-able.atlassian.net/browse/ADL-1357" target="_blank">ADL-1357</a><a href="https://n-able.atlassian.net/browse/ADL-1356" target="_blank">ADL-1356</a><a href="https://n-able.atlassian.net/browse/ADL-1869" target="_blank">ADL-1869</a><a href="https://n-able.atlassian.net/browse/ADL-870" target="_blank">ADL-870</a><a href="https://n-able.atlassian.net/browse/PUT-720" target="_blank">PUT-720</a><a href="https://n-able.atlassian.net/browse/PUT-990" target="_blank">PUT-990</a><a href="https://n-able.atlassian.net/browse/PUT-932" target="_blank">PUT-932</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-pat)">
+          <div class="wn"><span class="dot" style="background:var(--ws-pat)"></span>Catalog + SOAR patterns<span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>Define shared pattern set: status, enablement, adoption</li><li>Detections Catalog v1; SOAR Phase 1 re-arch complete</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Customers can't see what detection models exist or why they fired, which "increases reliance on support for basic understanding" and blocks self-managed exemptions.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Reduces support inquiries tied to detection questions; this is also the pattern set Next/Later inherit instead of rebuilding — avoids duplicate design + eng spend downstream.<span class="gate gate-D">D</span><span class="gate gate-A">A</span><span class="note">Support-reduction stated in PUT-1200/ADL-2025; downstream-reuse framing is assumed.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-2025" target="_blank">ADL-2025</a><a href="https://n-able.atlassian.net/browse/PUT-1200" target="_blank">PUT-1200</a><a href="https://n-able.atlassian.net/browse/PUT-1163" target="_blank">PUT-1163</a><a href="https://n-able.atlassian.net/browse/ADL-1792" target="_blank">ADL-1792</a><a href="https://n-able.atlassian.net/browse/ADL-1016" target="_blank">ADL-1016</a><a href="https://n-able.atlassian.net/browse/ADL-713" target="_blank">ADL-713</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-set)">
+          <div class="wn"><span class="dot" style="background:var(--ws-set)"></span>Settings IA<span class="thread-badge">Thread · Step 1/2</span></div>
+          <ul><li>Inventory + keep / move / kill audit</li><li>Relocation plan (license → License Mgmt)</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Settings navigation (and the underlying Partner Relations page) is a slow, monolithic, inconsistently named surface — support and partners can't reliably find or trust where a setting lives.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Faster page loads reduce abandonment and support load; sets up a clean foundation so Next's slimmer IA isn't built on top of the current mess.<span class="gate gate-A">A</span><span class="note">No $ figure stated in PUT-720 — framed qualitatively.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/PUT-720" target="_blank">PUT-720</a><a href="https://n-able.atlassian.net/browse/PUT-248" target="_blank">PUT-248</a><a href="https://n-able.atlassian.net/browse/PUT-564" target="_blank">PUT-564</a><a href="https://n-able.atlassian.net/browse/PUT-614" target="_blank">PUT-614</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-rbac)">
+          <div class="wn"><span class="dot" style="background:var(--ws-rbac)"></span>RBAC<span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>S1 role-model audit; role / scope expression pattern</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">No middle-tier role exists between full global admin and read-only — MSPs either over-grant admin risk to clients or create onboarding friction delegating tenant control.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Reduces support escalations tied to role misconfiguration and global-admin risk exposure — a real Jan 2026 incident changed SKU/retention for 600+ tenants from an over-privileged Ops action.<span class="gate gate-D">D</span><span class="gate gate-A">A</span><span class="note">Incident is cited in ADL-743; ticket-volume savings not quantified.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1441" target="_blank">ADL-1441</a><a href="https://n-able.atlassian.net/browse/ADL-744" target="_blank">ADL-744</a><a href="https://n-able.atlassian.net/browse/ADL-745" target="_blank">ADL-745</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-lic)">
+          <div class="wn"><span class="dot" style="background:var(--ws-lic)"></span>License<span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>License v1 drill-down (pulled into Q3); partner-level view</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Manual provisioning reconciliation and no partner-facing usage visibility delays revenue recognition; a real Oct 2025 case shows partners misreading a retention toggle, leading to "surprise unwanted charges."<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Named directly in the ticket: "accelerates billing cycles and reduces leakage through accurate consumption tracking" — a precondition for consumption-based billing.<span class="gate gate-D">D</span><span class="note">Source: ADL-665 Value/Outcome.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-665" target="_blank">ADL-665</a><a href="https://n-able.atlassian.net/browse/ADL-603" target="_blank">ADL-603</a><a href="https://n-able.atlassian.net/browse/ADL-165" target="_blank">ADL-165</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-dr)">
+          <div class="wn"><span class="dot" style="background:var(--ws-dr)"></span>Detection &amp; response<span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>Incident Dashboard (internal MDR); correlation groundwork</li><li>Phone-call action; Defender/cloud detection expansion; noise spike</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">One real incident produces 3–4 separate tickets (detection + response action + SOAR action) because Adlumin is event-driven, not incident-driven — customers see fragments, not a story.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Scored internally as indirect ARR via churn reduction, plus a named competitive differentiator versus MDRs "relying on static rules."<span class="gate gate-D">D</span><span class="note">Source: ADL-1838 prioritization scorecard.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1838" target="_blank">ADL-1838</a><a href="https://n-able.atlassian.net/browse/ADL-1384" target="_blank">ADL-1384</a><a href="https://n-able.atlassian.net/browse/ADL-803" target="_blank">ADL-803</a><a href="https://n-able.atlassian.net/browse/ADL-1635" target="_blank">ADL-1635</a><a href="https://n-able.atlassian.net/browse/ADL-1408" target="_blank">ADL-1408</a><a href="https://n-able.atlassian.net/browse/ADL-801" target="_blank">ADL-801</a><a href="https://n-able.atlassian.net/browse/ADL-1145" target="_blank">ADL-1145</a><a href="https://n-able.atlassian.net/browse/ADL-1279" target="_blank">ADL-1279</a><a href="https://n-able.atlassian.net/browse/ADL-1292" target="_blank">ADL-1292</a><a href="https://n-able.atlassian.net/browse/ADL-1765" target="_blank">ADL-1765</a><a href="https://n-able.atlassian.net/browse/ADL-1849" target="_blank">ADL-1849</a><a href="https://n-able.atlassian.net/browse/PUT-1223" target="_blank">PUT-1223</a><a href="https://n-able.atlassian.net/browse/ADL-779" target="_blank">ADL-779</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-int)">
+          <div class="wn"><span class="dot" style="background:var(--ws-int)"></span>Integration<span class="thread-badge">Thread · Step 1/2</span></div>
+          <ul><li>Apply-to-All hardening; partner PSA multi-tenant mapping</li><li>Self-service tenant CRUD; network-health baseline</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">PSA integrations configure per-tenant only, with zero real-time feedback on bad credentials — "every other support ticket" ties back to integration status.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Ticket targets <b>50%+ reduction</b> in integration-related support tickets and <b>90%</b> first-attempt validation success.<span class="gate gate-D">D</span><span class="note">Source: ADL-1298 Success Criteria (delivered across Now/Next).</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/PUT-1165" target="_blank">PUT-1165</a><a href="https://n-able.atlassian.net/browse/ADL-1801" target="_blank">ADL-1801</a><a href="https://n-able.atlassian.net/browse/ADL-2021" target="_blank">ADL-2021</a><a href="https://n-able.atlassian.net/browse/ADL-1795" target="_blank">ADL-1795</a><a href="https://n-able.atlassian.net/browse/PUT-1162" target="_blank">PUT-1162</a><a href="https://n-able.atlassian.net/browse/ADL-873" target="_blank">ADL-873</a><a href="https://n-able.atlassian.net/browse/ADL-2008" target="_blank">ADL-2008</a><a href="https://n-able.atlassian.net/browse/ADL-2125" target="_blank">ADL-2125</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-onb)">
+          <div class="wn"><span class="dot" style="background:var(--ws-onb)"></span>Onboarding <span class="tag-new">new</span><span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>Discovery: journey map, service blueprint, doc analysis</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Onboarding requires scheduling live sessions with N-able staff for agent/forwarder/integration setup — slow, and per the ticket "80% [of prospects] don't have anything similar to MDR," so there's no mental model to lean on.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Frees N-able staff from routine onboarding calls (direct cost-to-serve reduction) and speeds time-to-value, which the ticket ties to conversion and retention — no dollar figure modeled yet.<span class="gate gate-R">R</span><span class="gate gate-A">A</span><span class="note">Cost-to-serve direction stated in ADL-1271; $ sizing is Unknown: gap.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1271" target="_blank">ADL-1271</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-ai)">
+          <div class="wn"><span class="dot" style="background:var(--ws-ai)"></span>AI-native <span class="tag-new">new</span><span class="thread-badge">Thread · Step 1/3</span></div>
+          <ul><li>Define lightweight AI intake model</li><li>AI SOC assistant + NLP log search discovery</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Analysts without Lucene syntax can't search logs effectively, and SOC investigation is manual across fragmented modules — slows response and drives support dependency for custom detections.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Linked ticket targets <b>80% reduction</b> in time-to-triage and a <b>50% decrease</b> in MDR support tickets for detection creation — but flagging a tension: ADL-1291's own notes say it was "determined not to be a good candidate for 2026 roadmap... low confidence of success," so what ships Now is the discovery/intake-model slice, not the full assistant.<span class="gate gate-D">D</span><span class="gate gate-U">U</span><span class="note">[WOBBLY] Verify scope-vs-ticket-status with eng/product before committing this card as-is.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1291" target="_blank">ADL-1291</a><a href="https://n-able.atlassian.net/browse/ADL-1855" target="_blank">ADL-1855</a><a href="https://n-able.atlassian.net/browse/ADL-1395" target="_blank">ADL-1395</a><a href="https://n-able.atlassian.net/browse/ADL-784" target="_blank">ADL-784</a><a href="https://n-able.atlassian.net/browse/ADL-1269" target="_blank">ADL-1269</a></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <div class="col c-next">
+      <div class="col-head">
+        <span class="conf">Planned</span>
+        <div class="nnl">Next</div>
+        <div class="hz">Scale the Platform</div>
+        <div class="win">Horizon 2 · ~Q1–Q2 2027</div>
+        <div class="outcome"><b>Outcome:</b> Partners manage 200+ tenants from one Partner Console, with granular control, bulk actions, and deeper license and detection coverage.</div>
+      </div>
+      <div class="col-body">
+
+        <div class="wcard" style="border-left-color:var(--ws-apex)">
+          <div class="wn"><span class="dot" style="background:var(--ws-apex)"></span>Apex foundation<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>Nav shell + forms onto Apex; adopt AI-ready patterns</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Continues ADL-2093: nav and forms are still on the legacy kit, which keeps blocking consistent delivery of AI-native surfaces planned for Later.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Same build-time and adoption gains as Step 1, compounding as more surfaces move — plus this step is the explicit unlock for AI-ready UI patterns.<span class="gate gate-D">D</span><span class="note">Source: ADL-2093 "Should Have" — AI-ready UI patterns.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-2093" target="_blank">ADL-2093</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-scale)">
+          <div class="wn"><span class="dot" style="background:var(--ws-scale)"></span>Partner Console &amp; multitenancy<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>Partner Console for the full book: 200+ tenants, decisions-first</li><li>API platform layer; partner modify/delete tenants</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Partner integrations rely on direct system access with no self-serve API for partner/tenant/user management — doesn't scale past a handful of tenants.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">A named partner is already asking and attaching revenue to it: Tomorrow's Technology Today, quoted at <b>$12K MRR</b> (requested May 2025).<span class="gate gate-D">D</span><span class="note">Source: ADL-857 "Partners Requested."</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-857" target="_blank">ADL-857</a><a href="https://n-able.atlassian.net/browse/ADL-2008" target="_blank">ADL-2008</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-pat)">
+          <div class="wn"><span class="dot" style="background:var(--ws-pat)"></span>Catalog + SOAR patterns<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>SOAR 2.0 UI + Catalog on shared patterns; granular control</li><li>OU-aware + M365 exemptions; automated remediation; SOAR API</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">SOAR actions today need engineering/code changes for any tuning — security experts can't self-serve automation, which slows innovation.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Ticket target: <b>90% reduction</b> in engineering support tickets for SOAR changes, <b>3x increase</b> in automation coverage across tenants.<span class="gate gate-D">D</span><span class="note">Source: ADL-1379 Success Criteria.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1379" target="_blank">ADL-1379</a><a href="https://n-able.atlassian.net/browse/ADL-1017" target="_blank">ADL-1017</a><a href="https://n-able.atlassian.net/browse/ADL-1018" target="_blank">ADL-1018</a><a href="https://n-able.atlassian.net/browse/ADL-856" target="_blank">ADL-856</a><a href="https://n-able.atlassian.net/browse/ADL-1380" target="_blank">ADL-1380</a><a href="https://n-able.atlassian.net/browse/ADL-1300" target="_blank">ADL-1300</a><a href="https://n-able.atlassian.net/browse/ADL-1299" target="_blank">ADL-1299</a><a href="https://n-able.atlassian.net/browse/ADL-1414" target="_blank">ADL-1414</a><a href="https://n-able.atlassian.net/browse/ADL-1410" target="_blank">ADL-1410</a><a href="https://n-able.atlassian.net/browse/ADL-1404" target="_blank">ADL-1404</a><a href="https://n-able.atlassian.net/browse/ADL-729" target="_blank">ADL-729</a><a href="https://n-able.atlassian.net/browse/ADL-1266" target="_blank">ADL-1266</a><a href="https://n-able.atlassian.net/browse/ADL-1920" target="_blank">ADL-1920</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-set)">
+          <div class="wn"><span class="dot" style="background:var(--ws-set)"></span>Settings IA<span class="thread-badge">Thread · Step 2/2</span></div>
+          <ul><li>Redesign destinations + slim settings IA; migrate / deprecate</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Same root cause as Now: settings are scattered and inconsistently named, which is why this step exists (redesign) rather than a patch.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Closes the thread — fewer support tickets asking "where is X setting," faster page loads, and a clean IA the AI-native work in Later can build on without rework.<span class="gate gate-A">A</span><span class="note">No $ figure in PUT-720 — qualitative framing.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/PUT-720" target="_blank">PUT-720</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-rbac)">
+          <div class="wn"><span class="dot" style="background:var(--ws-rbac)"></span>RBAC<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>Granular RBAC design → build; internal staff RBAC</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Roles today are effectively binary (Admin vs. Read-Only). Real partner quotes: Magna5 calls role granularity "convoluted"; UEN filed a production bug (ST-27242) where one tenant admin globally locked out another partner's user.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Directly reduces risk exposure from incidents like the Jan 2026 case (600+ tenants mis-configured by one Ops action) — named in the ticket as a lockdown driver.<span class="gate gate-D">D</span><span class="note">[WOBBLY] ADL-743's own notes say it was "no longer a good candidate for 2026" pending Fusion RBAC dependencies (UMS, SSO, Common Audit) — confirm this Next-horizon placement still holds before committing.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-743" target="_blank">ADL-743</a><a href="https://n-able.atlassian.net/browse/PUT-857" target="_blank">PUT-857</a><a href="https://n-able.atlassian.net/browse/ADL-831" target="_blank">ADL-831</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-lic)">
+          <div class="wn"><span class="dot" style="background:var(--ws-lic)"></span>License<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>License v2 deepen; SKU provisioning; License Usage API</li><li>Unified audit — adopt Fusion pattern; report scheduling</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Partners can't assign/deallocate licenses across multiple tenants at once, and biz-apps "pro users" lack the bulk workflows they need at scale.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Mostly operational efficiency (fewer manual reallocation steps, faster tables) — no $ figure stated for this step specifically.<span class="gate gate-A">A</span><span class="note">Source: PUT-860; $ sizing is Unknown: gap.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/PUT-860" target="_blank">PUT-860</a><a href="https://n-able.atlassian.net/browse/ADL-1872" target="_blank">ADL-1872</a><a href="https://n-able.atlassian.net/browse/ADL-858" target="_blank">ADL-858</a><a href="https://n-able.atlassian.net/browse/ADL-844" target="_blank">ADL-844</a><a href="https://n-able.atlassian.net/browse/FSN-80128" target="_blank">FSN-80128</a><a href="https://n-able.atlassian.net/browse/ADL-1798" target="_blank">ADL-1798</a><a href="https://n-able.atlassian.net/browse/PUT-1160" target="_blank">PUT-1160</a><a href="https://n-able.atlassian.net/browse/ADL-2108" target="_blank">ADL-2108</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-dr)">
+          <div class="wn"><span class="dot" style="background:var(--ws-dr)"></span>Detection &amp; response<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>Correlation / incident-story UX; cross-tenant coverage governance</li><li>Multi-event + OCSF + RMM detection; customer tuning; DRAIN</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Detection logic is single-event only — misses lateral movement/privilege-escalation chains, driving false positives and analyst alert fatigue.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Ticket frames this as enhancing "customer trust and competitive differentiation" against MITRE-ATT&amp;CK-aligned rivals — no revenue number attached.<span class="gate gate-R">R</span><span class="gate gate-A">A</span><span class="note">Source: ADL-1295; financial sizing is assumed.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1295" target="_blank">ADL-1295</a><a href="https://n-able.atlassian.net/browse/ADL-1296" target="_blank">ADL-1296</a><a href="https://n-able.atlassian.net/browse/ADL-2005" target="_blank">ADL-2005</a><a href="https://n-able.atlassian.net/browse/ADL-1288" target="_blank">ADL-1288</a><a href="https://n-able.atlassian.net/browse/ADL-1401" target="_blank">ADL-1401</a><a href="https://n-able.atlassian.net/browse/ADL-1407" target="_blank">ADL-1407</a><a href="https://n-able.atlassian.net/browse/ADL-1412" target="_blank">ADL-1412</a><a href="https://n-able.atlassian.net/browse/ADL-802" target="_blank">ADL-802</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-int)">
+          <div class="wn"><span class="dot" style="background:var(--ws-int)"></span>Integration<span class="thread-badge">Thread · Step 2/2</span></div>
+          <ul><li>Reversible bulk actions; integration health (tenant + MSP-global)</li><li>Integration validation; PSA onto the stepper</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Continues ADL-1298: even after validation ships in Now, there's no bulk or global view of integration health across a partner's whole book.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Extends the same 50%+ support-ticket reduction target to the multi-tenant case — this is where the savings actually compound at 200+ tenants.<span class="gate gate-D">D</span><span class="note">Source: ADL-1298 Success Criteria.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1298" target="_blank">ADL-1298</a><a href="https://n-able.atlassian.net/browse/ADL-1012" target="_blank">ADL-1012</a><a href="https://n-able.atlassian.net/browse/ADL-1014" target="_blank">ADL-1014</a><a href="https://n-able.atlassian.net/browse/ADL-1283" target="_blank">ADL-1283</a><a href="https://n-able.atlassian.net/browse/ADL-1284" target="_blank">ADL-1284</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-onb)">
+          <div class="wn"><span class="dot" style="background:var(--ws-onb)"></span>Onboarding<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>Guided onboarding v1 (self-service wizard)</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Builds directly on the Now discovery work — the wizard is the fix for the scheduling/staff-time bottleneck named in ADL-1271.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Same framing as Now — cost-to-serve reduction + faster time-to-value — with UX research already flagging "Time Sensitive password email" as a historical pain point to fix here.<span class="gate gate-R">R</span><span class="note">Source: ADL-1271 "Additional Details."</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1271" target="_blank">ADL-1271</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-ai)">
+          <div class="wn"><span class="dot" style="background:var(--ws-ai)"></span>AI-native<span class="thread-badge">Thread · Step 2/3</span></div>
+          <ul><li>AI-assisted triage; NLP log search; AI report builder</li><li>NL custom-detection generator</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">MSP techs spend real time hand-building recurring reports; exec-facing summaries require manual synthesis of raw event data into a risk narrative — "Custom Reports are currently just a csv export... without telling a story."<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Framed as reducing report-build time and differentiating vs. competitors — no % or $ target stated in this ticket specifically.<span class="gate gate-R">R</span><span class="gate gate-A">A</span><span class="note">Source: ADL-2099 Problem Statement; sizing assumed.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-2099" target="_blank">ADL-2099</a><a href="https://n-able.atlassian.net/browse/ADL-764" target="_blank">ADL-764</a><a href="https://n-able.atlassian.net/browse/ADL-765" target="_blank">ADL-765</a><a href="https://n-able.atlassian.net/browse/ADL-1270" target="_blank">ADL-1270</a></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- LATER -->
+    <div class="col c-later">
+      <div class="col-head">
+        <span class="conf">Directional</span>
+        <div class="nnl">Later</div>
+        <div class="hz">Differentiate the Experience</div>
+        <div class="win">Horizon 3 · ~Q3–Q4 2027</div>
+        <div class="outcome"><b>Outcome:</b> AI-native triage, guided onboarding, and posture management reduce cognitive load and close the SUS gap (48 → 76).<span class="gate gate-U" style="margin-left:6px;">U</span></div>
+      </div>
+      <div class="col-body">
+
+        <div class="wcard" style="border-left-color:var(--ws-apex)">
+          <div class="wn"><span class="dot" style="background:var(--ws-apex)"></span>Apex foundation<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>Remaining surfaces migrated; MDB retired; build-time readout</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Closes the thread: whatever hasn't moved off MDB by now is still costing the 19-month blocked-work tax named at Step 1.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">This is the step that lets N-able actually report the full 31–47% build-time reduction and ARR-recovery claim from ADL-2093 — it's a running total, not a one-time win.<span class="gate gate-D">D</span><span class="note">Source: ADL-2093 Success Criteria (build-time readout).</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-2093" target="_blank">ADL-2093</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-scale)">
+          <div class="wn"><span class="dot" style="background:var(--ws-scale)"></span>Partner Console &amp; multitenancy<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>Partner Console at 200-tenant scale; multitenancy audit + SUS</li><li>Tenant classification; central multi-tenant report configs; N-able ecosystem</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">No standardized way to classify/group tenants by attribute (vertical, region, compliance) — partners like Integris can't filter or report at scale.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Framed as helping MDR "hunt/prioritize threats faster" — ties partner efficiency to retention/stickiness, not a direct revenue line.<span class="gate gate-R">R</span><span class="gate gate-A">A</span><span class="note">Source: ADL-534 Value/Outcome.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-534" target="_blank">ADL-534</a><a href="https://n-able.atlassian.net/browse/ADL-2108" target="_blank">ADL-2108</a><a href="https://n-able.atlassian.net/browse/ADL-1753" target="_blank">ADL-1753</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-pat)">
+          <div class="wn"><span class="dot" style="background:var(--ws-pat)"></span>Catalog + SOAR patterns<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>Multi-persona shared framework; internal Threat Research phase</li><li>Detection test mode</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Detection changes are validated in pre-prod only — doesn't reflect real production behavior, so enabling a new detection live risks alert noise or unintended SOAR actions.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Reduces alert noise and SOC disruption, raising confidence before full enforcement — an operational risk/support-cost reducer, not a revenue line.<span class="gate gate-R">R</span><span class="gate gate-A">A</span><span class="note">Source: ADL-1693 Problem Statement.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1693" target="_blank">ADL-1693</a><a href="https://n-able.atlassian.net/browse/ADL-713" target="_blank">ADL-713</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-rbac)">
+          <div class="wn"><span class="dot" style="background:var(--ws-rbac)"></span>RBAC<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>Granular controls GA; access-at-a-glance + audit surfacing</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">GA closes the gap opened at Step 1 — until this ships, MSPs are still stuck choosing between over-privileged admins or support-heavy delegation.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Same risk-reduction framing as Steps 1–2, now at GA scale across all tenants — no incremental $ figure stated for this step.<span class="gate gate-A">A</span><span class="note">[WOBBLY] Carries the same ADL-743 dependency flag as Step 2 — Fusion RBAC prerequisites (UMS, SSO, Common Audit) gate this timing.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-743" target="_blank">ADL-743</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-lic)">
+          <div class="wn"><span class="dot" style="background:var(--ws-lic)"></span>License<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>Consolidated license / audit / reporting into the Partner Console</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Today users must contact a sales rep to start a trial or expand licenses — friction that, per the ticket, "can result in lost revenue and customer frustration."<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Stated directly: "accelerates trial-to-paid conversion and revenue realization." This is the clearest direct-revenue claim in the whole roadmap.<span class="gate gate-D">D</span><span class="note">Source: ADL-1274 Value/Outcome.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1274" target="_blank">ADL-1274</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-dr)">
+          <div class="wn"><span class="dot" style="background:var(--ws-dr)"></span>Detection &amp; response<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>D&amp;R surfaces on Apex + cohesive; SOAR handoffs on the pattern language</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">SOAR configuration today lacks a guided stepper — multi-user/multi-endpoint actions and cross-tenant audit logs are set up ad hoc.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Framed as operational consistency and audit transparency, not a direct revenue line in the ticket.<span class="gate gate-R">R</span><span class="gate gate-A">A</span><span class="note">Source: PUT-977 Epic Summary.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1838" target="_blank">ADL-1838</a><a href="https://n-able.atlassian.net/browse/PUT-977" target="_blank">PUT-977</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-onb)">
+          <div class="wn"><span class="dot" style="background:var(--ws-onb)"></span>Onboarding<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>Resource libraries + in-product education; time-to-value measured</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Even with a wizard, customers unfamiliar with MDR concepts (the same "80% have nothing like this" gap) need ongoing in-product education, not just a one-time setup flow.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">This step is where time-to-value finally gets measured end to end — closes the loop on whether the Now/Next onboarding investment actually paid off.<span class="gate gate-A">A</span><span class="note">Measurement intent stated in ADL-1271; no baseline TTV number exists yet — Unknown: gap.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-1271" target="_blank">ADL-1271</a></div>
+        </div>
+
+        <div class="wcard" style="border-left-color:var(--ws-ai)">
+          <div class="wn"><span class="dot" style="background:var(--ws-ai)"></span>AI-native<span class="thread-badge">Thread · Step 3/3</span></div>
+          <ul><li>AI-native triage v1; Shadow AI + posture; cognitive-load reduction</li><li>Compliance intelligence; native EDR eval; model governance</li></ul>
+          <div class="pu">
+            <div class="row"><span class="lbl2">Problem</span><span class="txt">Compliance reporting is time-consuming and requires specialized knowledge that midmarket IT teams/MSPs don't have in-house.<span class="gate gate-R">R</span></span></div>
+            <div class="row"><span class="lbl2">$ Upside</span><span class="txt">Stated directly: "reduce time spent on compliance tasks by up to <b>70%</b>," plus framed as enhancing MSP platform stickiness through a differentiated, value-added service.<span class="gate gate-D">D</span><span class="note">Source: ADL-763 Value/Outcome.</span></span></div>
+          </div>
+          <div class="tix"><span class="lbl">Jira</span><a href="https://n-able.atlassian.net/browse/ADL-763" target="_blank">ADL-763</a><a href="https://n-able.atlassian.net/browse/ADL-1270" target="_blank">ADL-1270</a><a href="https://n-able.atlassian.net/browse/ADL-1286" target="_blank">ADL-1286</a><a href="https://n-able.atlassian.net/browse/ADL-1764" target="_blank">ADL-1764</a><a href="https://n-able.atlassian.net/browse/ADL-963" target="_blank">ADL-963</a><a href="https://n-able.atlassian.net/browse/ADL-1290" target="_blank">ADL-1290</a></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <b>Reading this the agile way:</b> commit to Now, shape Next, hold Later loosely. Items move left as they earn confidence, and the workstream colors let you follow one theme end to end. Ticket chips link the related Jira initiatives and epics per horizon; some (Apex, the onboarding wizard, granular RBAC) recur across columns because the initiative spans horizons — see the Threads panel above for the full multi-step view. Dates are directional, since these initiatives have no fixed release versions yet. The shared Catalog + SOAR pattern framework sits in Now on purpose so Next and Later inherit patterns rather than reinvent them.
+    <br><br>
+    <b>On the Problem / $ Upside additions:</b> every claim tagged <span class="gate gate-D">D</span> is quoted from a number the linked Jira ticket itself states — I did not calculate or invent any figure. Claims tagged <span class="gate gate-A">A</span> are my inference from the ticket's framing, not a stated fact — treat them as hypotheses for Beth, Meaghan, and Nicole to validate, not settled numbers. Two tensions surfaced during sourcing and are flagged inline: ADL-1291 (AI-native, Now) carries a ticket note calling it a weak 2026 candidate, and ADL-743 (RBAC, Next/Later) carries a similar deferral note pending Fusion RBAC dependencies — both are worth a gut-check before this roadmap goes out the door.
+  </div>
+
+  <div class="meta">ADLUMIN UX ROADMAP · NOW / NEXT / LATER · AGILE VIEW · ANNOTATED WITH PROBLEM + $ UPSIDE · TICKETS SOURCED FROM ADL / PUT / FSN INITIATIVES &amp; EPICS · COMPANION TO THE PLANNING DOCUMENT</div>
+
+</div>
+</body>
+</html>

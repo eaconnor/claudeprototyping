@@ -1,0 +1,212 @@
+[
+  {
+    "id": "B1",
+    "label": "Someone pays for governance (not free/expected)",
+    "probability": 0.35,
+    "required": true,
+    "stage": "launch",
+    "kill_criterion": "If MSPs treat agent governance as a hygiene expectation owed for free by whoever created the agent, no standalone revenue attaches to the governance capability.",
+    "test_that_resolves_it": "Pricing conversation with 5 MSPs: 'would you pay a distinct line item for agent governance, or expect it bundled with the tool that runs the agent?'",
+    "evidence": "[A] Shawn (advises 200+ MSPs): governance is 'probably not something you're going to get someone to pay for' [CS: HIGH-against, offerings:62]. The offering already concedes governance is NOT a SKU (offerings:171)."
+  },
+  {
+    "id": "B2",
+    "label": "Agent-management seat ARPU exists at a defensible price",
+    "probability": 0.40,
+    "required": true,
+    "stage": "launch",
+    "kill_criterion": "If no price point holds for an agent-management seat (buyer anchors to per-tech RMM pricing or to zero), the seat pillar of monetization has no floor.",
+    "test_that_resolves_it": "Same 5-MSP pricing conversation; probe a number for a per-tech agent-management seat and compare to Atera $129-219/tech/mo RMM anchor.",
+    "evidence": "[?] Agent-seat ARPU has NO price precedent, tagged 'MOST FRAGILE' [CS: UNKNOWN, tam-control-plane:57]. Only per-tech benchmark is single-vendor Atera [WOBBLY]."
+  },
+  {
+    "id": "B3",
+    "label": "Can govern externally-built agents (the moat)",
+    "probability": 0.30,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "If ACP can only audit externally-built agents after the fact (no pre-screen, no intercept-and-gate), it does not govern them, and the 'control plane' framing is false for anything the MSP didn't build in ACP.",
+    "test_that_resolves_it": "G4 Action Proxy spec run: can the proxy technically intercept+gate a third-party agent's actions? Plus 3 operator interviews: 'would you route your Cloud/Claude-built agents through our gate, and why?'",
+    "evidence": "[?] Nicole's own BIG QUESTION; today 'audit-after, no pre-screen... not specced' [CS: VERIFIED, why-nable-build-map:66]. Vision doc: 'does not pre-screen or approve runbooks before use... a big unknown.'"
+  },
+  {
+    "id": "B4",
+    "label": "Gated autonomy is wanted",
+    "probability": 0.92,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "If MSPs do NOT want gated autonomy (want either full autonomy or none), the risk-tier model is over-engineered. No evidence supports this; strong evidence against.",
+    "test_that_resolves_it": "Already answered. Any further test would be confirmatory only.",
+    "evidence": "[R] 5/5 transcripts + 13/17 Condens + all-17-expect-human-control [CS: HIGH, offerings:57]. 'Governance + rollback = price of entry' [blind-interviews:55]. NOTE: strong need = table stakes (Kano risk), not premium."
+  },
+  {
+    "id": "B5",
+    "label": "Governance-as-bill-enablement works (MSPs pay for the ability to charge their clients)",
+    "probability": 0.50,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "If the 'charge my clients' motive is idiosyncratic to one buyer and doesn't generalize, the reframe from cost-to-revenue-enabler collapses.",
+    "test_that_resolves_it": "In the 5-MSP pricing conversation, probe whether governance is valued as a client-billing enabler independent of the person who raised it.",
+    "evidence": "[A] Jonathan, unprompted: buys control plane for 'the ability to charge on a monthly basis... a recurring revenue generator' [CS: MEDIUM, offerings:60]. Single source."
+  },
+  {
+    "id": "B6",
+    "label": "Determinism demand aligns with the Deterministic Substitution Engine",
+    "probability": 0.70,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "If customers want AI that reasons freely rather than locked deterministic workflows, the DSE alignment narrows the product's positioning instead of strengthening it.",
+    "test_that_resolves_it": "Probe Shawn/Vikram-type buyers on whether they want locked-deterministic or free-reasoning agents, and for which job types.",
+    "evidence": "[A]/MEDIUM Shawn + Vikram want 'locked deterministic' workflows (offerings:65). Also flagged as possibly narrowing 'AI Coworker that reasons freely' positioning (offerings:74)."
+  },
+  {
+    "id": "B7",
+    "label": "MSPs want to build their own agents (build-your-own = retention)",
+    "probability": 0.55,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "If MSPs only want pre-spec'd agents and never build their own, the retention thesis (build-your-own keeps them) fails and B is just a pre-built catalog.",
+    "test_that_resolves_it": "Track, in a pilot, whether MSPs progress from pre-spec'd coworkers to authoring their own; measure the ratio.",
+    "evidence": "[A] Pre-spec'd on-ramp / build-your-own retention split (offerings:169). Assumption, not tested."
+  },
+  {
+    "id": "B8",
+    "label": "Per-run metering does not trigger bill-shock",
+    "probability": 0.45,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "If usage-coupled per-run billing produces unpredictable bills that scale with the MSP's success, bill-shock drives exactly the self-build the model was meant to prevent.",
+    "test_that_resolves_it": "Model a 200-agent MSP's monthly run volume at candidate per-run prices; test the bill against MSP tolerance in interview.",
+    "evidence": "[A] Bill-shock is named as 'the fear that drives self-build' (prompt). Per-run metering unpriced [tam-control-plane:58]."
+  },
+  {
+    "id": "B9",
+    "label": "EU AI Act makes the audit trail a compliance asset (net tailwind)",
+    "probability": 0.50,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "If mandatory logging commoditizes audit trails (every runtime must ship it to be sellable), the regulation is a commoditizing force, not a differentiator; and if the schema is only accidentally compliant, it is a liability not an asset.",
+    "test_that_resolves_it": "Assigned compliance owner (currently <TBD>) verifies schema against actual EU AI Act requirements; assess whether logging is differentiator or table-stakes.",
+    "evidence": "[CS: LOW - outside model training window, do not assert as fact]. Schema is 'only accidentally AI-Act-shaped'; compliance owner <TBD> (offerings:182)."
+  },
+  {
+    "id": "H1",
+    "label": "Governing an agent does not increase N-able's liability",
+    "probability": 0.50,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "If assuming a governance role (approve/log/permit) establishes a duty of care, then a governed-agent error makes N-able's audit trail a discovery document that indicts rather than protects.",
+    "test_that_resolves_it": "Legal review: does operating a governance-of-record plane create duty-of-care / product-liability exposure when a governed action still errs? Route to compliance owner.",
+    "evidence": "[?] Derek: 'AIs cannot be taken to court... there has to be a human in the loop' [CS: HIGH]. Batch approval default 'Approve all' (findings JSON) reads as rubber-stamp in litigation. Unexamined."
+  },
+  {
+    "id": "H2",
+    "label": "Governor-of-all-agents is technically and commercially viable",
+    "probability": 0.30,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "If externally-built agents won't voluntarily route through ACP, or ACP can't safely be trusted with intercept/block scope across everyone's critical path, the governor-of-all-agents moat cannot exist and B is a walled garden with no moat.",
+    "test_that_resolves_it": "G4 Action Proxy architecture spike (can it intercept-and-gate) + operator willingness interviews (would they route third-party agents through it). Same test as B3 from the strategy side.",
+    "evidence": "[?] The moat and the deepest hole are the same fact. Action Proxy 'must sit in the action path (latency, adoption)' [word-sketches:104]. Walled-garden vs governor 'load-bearing decision' unmade (offerings:172)."
+  },
+  {
+    "id": "H3",
+    "label": "Metering the MSP's own / cross-tenant agent runs is legal and desirable",
+    "probability": 0.55,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "If per-run metering bills for actions executed inside a third party's (the MSP's client's) environment without that client's consent, it is a DPA/consent problem, not just a pricing choice.",
+    "test_that_resolves_it": "Legal/contract review of metering actions that touch client-owned infrastructure; MSP interview on whether metering their own agents is acceptable.",
+    "evidence": "[?] Unexamined. Runs execute against the MSP's clients' infrastructure under the client's contract; metering cross-tenant actions has no consent scoping surfaced."
+  },
+  {
+    "id": "H4",
+    "label": "B is not confused with / cannibalized by N-central's existing automation",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "If MSPs already inside N-central see governed automation as 'what my RMM policies already do', B faces channel/positioning confusion and its honest value narrows to the AI-reasoning wrapper.",
+    "test_that_resolves_it": "Position-test B against N-central automation with existing N-central MSPs: 'why is this a separate product from your RMM policies?'",
+    "evidence": "[A] N-central already runs rule-based automation: patch via group policy, service control, scripted remediation [CS: VERIFIED, 06-ncentral-automation-patterns.md]. Internal substitute unmodeled."
+  },
+  {
+    "id": "H5",
+    "label": "Action-proxy latency is acceptable in the critical path",
+    "probability": 0.55,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "If routing every governed action through ACP's gate (itself calling external LLMs) adds latency that degrades time-sensitive automation (threat response, alert-flood suppression), the proxy tax makes B unusable for the highest-value jobs.",
+    "test_that_resolves_it": "Benchmark added latency of an action routed through the proxy vs direct; set an SLA; test against the fastest-cadence use case.",
+    "evidence": "[?] Risk named — 'you must sit in the action path (latency, adoption)' [word-sketches:104] — but never measured. No latency budget, SLA, or benchmark exists."
+  },
+  {
+    "id": "H6",
+    "label": "The operator can safely configure a governed agent",
+    "probability": 0.55,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "If a non-programmer MSP admin cannot hold the mental model of risk tiers + batch approvals + promotion criteria + scope guardrails, they misconfigure the safety, and the governance is theater.",
+    "test_that_resolves_it": "Watch 3-5 real MSP admins configure the 9-field Coworker Brief cold; measure misconfiguration of the risk ceiling and scope.",
+    "evidence": "[A] The operator/daily user was never studied; ~93% [A] on the daily user (vision-synthesis). B's safety depends on correct configuration by an unstudied operator."
+  },
+  {
+    "id": "H7",
+    "label": "The autonomy-promotion criterion is definable safely",
+    "probability": 0.50,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "Too-liberal criterion promotes an untrustworthy agent to auto-execute ('one miss kills the relationship'); too-conservative criterion never delivers the autonomy payoff that justifies the seat. Undefined = both risks live.",
+    "test_that_resolves_it": "Design spike defining the evidence standard for Manual->Assisted->Autonomous; risk-tolerance call routed to Beth/Meaghan/Nicole.",
+    "evidence": "[?] Approval model 'does not decide when to promote'; separate system governs it, criterion undefined [findings JSON; council-mini-alert-flood]. Safety-critical, unspecced."
+  },
+  {
+    "id": "H8",
+    "label": "Drift detection for locked deterministic runbooks is solvable",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "A locked runbook that keeps executing after the environment drifts (patched OS, changed API, renamed field) confidently does the wrong thing at scale - worse than no automation.",
+    "test_that_resolves_it": "Spec the drift-detection + unfreeze mechanic ('lock it once it works, until something goes wrong'); test against a deliberately drifted environment.",
+    "evidence": "[?] Determinism is B's best superpower-alignment but the drift-detection mechanic is unspecced (offerings:170). Silent + scaled failure mode."
+  },
+  {
+    "id": "H9",
+    "label": "The Expert/Vendor marketplace supply side ignites",
+    "probability": 0.35,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "A two-sided marketplace with no committed vendor supply and [A]-only demand fails to reach critical mass (classic cold-start); any TAM ceiling leaning on rev-share collapses to the floor.",
+    "test_that_resolves_it": "Secure named committed vendor-Expert supply commitments before counting marketplace rev-share in TAM.",
+    "evidence": "[A] Marketplace ranked last, 6/6, demand [A] (offerings:167); 'needs supply side first... heavy + slow' [word-sketches:113]. No vendor partners named as committed."
+  },
+  {
+    "id": "H10",
+    "label": "Per-run metering is priceable at all",
+    "probability": 0.45,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "If no legitimate per-run price can be derived (no benchmark for metering governed autonomous infrastructure actions), per-run metering is not a viable revenue pillar, not just an unset number.",
+    "test_that_resolves_it": "Attempt to derive a defensible per-run price from a real cost model + willingness test; if none holds, drop the pillar.",
+    "evidence": "[?] 'EXCLUDED. No public benchmark. [CS: FABRICATION RISK if numeric]... unquantifiable from public data' [tam-control-plane:58,80]. n8n/Zapier meter integration steps, not governed infra actions - wrong analog."
+  },
+  {
+    "id": "H11",
+    "label": "The versioned/guardrail governance registry actually gets built",
+    "probability": 0.60,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "Without a versioned registry, B cannot answer 'what was this agent permitted to do on the date it erred' - the core audit and liability question. The 'lowest build risk' boast is true for the engine, false for the registry.",
+    "test_that_resolves_it": "Migrate the designed versioned/guardrail registry from flat pre-registry tables; verify it answers the point-in-time-permission audit query.",
+    "evidence": "[A]/[?] Coworker/Expert are 'flat pre-registry tables (versioned/guardrail registry designed, not migrated)' [why-nable-build-map:65]. Build-state gap hidden inside a build-readiness boast."
+  },
+  {
+    "id": "H12",
+    "label": "B survives as a standalone offering (not merely the seat under A/C)",
+    "probability": 0.35,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "If standalone governance WTP is ~zero (B1 fails), B is not an offering - it is the priced seat/infrastructure under A and C. Fatal to B-as-a-standalone-bet, though not to N-able.",
+    "test_that_resolves_it": "Resolve B1 + B2. If standalone WTP is zero, reposition B as the seat under A/C rather than a standalone offering with its own TAM.",
+    "evidence": "[?] The offering itself half-concedes this: governance 'NOT a SKU' (offerings:171); price B 'as the seat under A/C' (offerings:164). Treating B as a standalone $3B-TAM product may be the category error."
+  }
+]

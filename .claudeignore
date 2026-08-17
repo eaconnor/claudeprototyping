@@ -1,0 +1,19 @@
+# .claudeignore — Band Protocol
+# Binary and output files Claude shouldn't load unless explicitly requested
+
+# Binaries
+*.dmg
+*.zip
+*.pdf
+*.pptx
+*.pptx.txt
+*.docx
+
+# Presentation artifacts
+Bethproto.html
+indexa.html
+The Band*.html
+The Band*.pdf
+
+# Prototype outputs (build agent writes here; critic reads on request)
+# prototypes/ — leave accessible for critic reviews

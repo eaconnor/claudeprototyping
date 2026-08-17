@@ -1,0 +1,485 @@
+{
+  "_source_md": "acp-vision-from-pdfs.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-ACP-VISION-PDFS",
+    "title": "ACP Vision \u2014 Synthesized from Nicole's Source PDFs",
+    "version": "0.2.0",
+    "status": "Hybrid \u00b7 Pattern Applied",
+    "date": "2026-06-05",
+    "relationship": "This doc is the source-grounded catalog (what the PDFs actually say).\nStrategic implications of these findings \u2192 see HANDOFF-NICOLE-VISION (nicole-actual-acp-vision.md)\n",
+    "source_files": [
+      {
+        "id": "SRC-NICOLE-001",
+        "title": "Headless IT Tech in the AI Agent world",
+        "file": "nicole-acp-datadump/AI-AI Coworker Description-040626-153628.pdf",
+        "pages": 17,
+        "read_in_full": true
+      },
+      {
+        "id": "SRC-NICOLE-002",
+        "title": "AI Coworker Description",
+        "file": "nicole-acp-datadump/AI-AI Coworker Description-040626-153628.pdf",
+        "pages": 16,
+        "read_in_full": true
+      },
+      {
+        "id": "SRC-NICOLE-003",
+        "title": "AI-Runbooks Definition",
+        "file": "nicole-acp-datadump/AI-Runbooks definition-040626-153631.pdf",
+        "pages": 3,
+        "read_in_full": true
+      }
+    ],
+    "confidence_baseline": "All claims [CS: VERIFIED \u2014 Nicole's source materials] unless flagged otherwise",
+    "open_questions_nicole_flags": [
+      "OPENQ-VENDOR-AGENT-GOVERNANCE"
+    ],
+    "tensions_surfaced": [
+      "TENSION-VALUE-LEDGER-FRAMING",
+      "TENSION-CONSUMPTION-PRICING",
+      "TENSION-GRADUATED-AUTONOMY",
+      "TENSION-RUNBOOK-NOT-PRESCREENED",
+      "TENSION-HEADLESS-VS-DISCOVERABILITY",
+      "TENSION-DATA-ACCURACY-GAP"
+    ]
+  },
+  "sections": [
+    {
+      "level": 2,
+      "title": "1. ACP Core Positioning",
+      "id": "ACP-CORE-POSITIONING"
+    },
+    {
+      "level": 3,
+      "title": "Three structural functions of the control plane",
+      "id": "ACP-FUNCTIONS"
+    },
+    {
+      "level": 3,
+      "title": "Headless IT \u2014 the ultimate aspiration",
+      "id": "ACP-HEADLESS"
+    },
+    {
+      "level": 3,
+      "title": "N-able does NOT build or host its own AI models",
+      "id": "ACP-LLM-EXTERNAL"
+    },
+    {
+      "level": 2,
+      "title": "2. AI Coworker Definition",
+      "id": "COWORKER-DEFINITION"
+    },
+    {
+      "level": 3,
+      "title": "What a Coworker does (three things well)",
+      "id": "COWORKER-DOES"
+    },
+    {
+      "level": 3,
+      "title": "Composition of a Coworker",
+      "id": "COWORKER-COMPOSITION"
+    },
+    {
+      "level": 3,
+      "title": "Three agent types",
+      "id": "AGENT-TYPES"
+    },
+    {
+      "level": 3,
+      "title": "Coworker-as-MCP-server export pattern",
+      "id": "COWORKER-AS-MCP"
+    },
+    {
+      "level": 2,
+      "title": "3. Runbook Architecture",
+      "id": "RUNBOOK-ARCH"
+    },
+    {
+      "level": 3,
+      "title": "Runbook definition",
+      "id": "RUNBOOK-DEFINITION"
+    },
+    {
+      "level": 3,
+      "title": "Four core principles",
+      "id": "RUNBOOK-PRINCIPLES"
+    },
+    {
+      "level": 3,
+      "title": "Runbook vs. Workflow",
+      "id": "RUNBOOK-VS-WORKFLOW"
+    },
+    {
+      "level": 3,
+      "title": "Runbooks are NOT pre-screened",
+      "id": "RUNBOOK-NOT-PRESCREENED"
+    },
+    {
+      "level": 2,
+      "title": "4. Trust / Autonomy Promotion Model",
+      "id": "TRUST-MODEL"
+    },
+    {
+      "level": 3,
+      "title": "L4 Earned Autonomy hypothesis (Ewan Cameron)",
+      "id": "L4-AUTONOMY"
+    },
+    {
+      "level": 3,
+      "title": "Three trust-execution levels",
+      "id": "TRUST-LEVELS"
+    },
+    {
+      "level": 3,
+      "title": "Permissions and Risk Model",
+      "id": "PERMISSIONS"
+    },
+    {
+      "level": 2,
+      "title": "5. Value Ledger",
+      "id": "VALUE-LEDGER"
+    },
+    {
+      "level": 3,
+      "title": "Value Ledger is customer-facing",
+      "id": "VALUE-LEDGER-CUSTOMER-FACING"
+    },
+    {
+      "level": 3,
+      "title": "Value Ledger metrics (extensive list)",
+      "id": "VALUE-LEDGER-METRICS"
+    },
+    {
+      "level": 2,
+      "title": "6. Monetization \u2014 Seven Revenue Layers",
+      "id": "MONETIZATION"
+    },
+    {
+      "level": 3,
+      "title": "MSP-to-customer pricing vocabulary",
+      "id": "MSP-CUSTOMER-PRICING"
+    },
+    {
+      "level": 3,
+      "title": "The Seth Godin framing",
+      "id": "SETH-GODIN-FRAMING"
+    },
+    {
+      "level": 2,
+      "title": "7. Identity, Audit, Observability",
+      "id": "IDENTITY-AUDIT"
+    },
+    {
+      "level": 3,
+      "title": "Agent identity",
+      "id": "AGENT-IDENTITY"
+    },
+    {
+      "level": 3,
+      "title": "Audit is the only line of defense for customer runbooks",
+      "id": "AUDIT-LINE-OF-DEFENSE"
+    },
+    {
+      "level": 3,
+      "title": "Telemetry scope (operations, finance, compliance)",
+      "id": "TELEMETRY-SCOPE"
+    },
+    {
+      "level": 3,
+      "title": "Deterministic Substitution Engine",
+      "id": "DETERMINISTIC-SUBSTITUTION-ENGINE"
+    },
+    {
+      "level": 2,
+      "title": "8. Marketplace / Vendor Onboarding",
+      "id": "MARKETPLACE"
+    },
+    {
+      "level": 3,
+      "title": "Vendor submission (four items)",
+      "id": "VENDOR-SUBMISSION"
+    },
+    {
+      "level": 3,
+      "title": "Marketplace UX",
+      "id": "MARKETPLACE-UX"
+    },
+    {
+      "level": 3,
+      "title": "Ongoing governance (three mechanisms)",
+      "id": "MARKETPLACE-GOVERNANCE"
+    },
+    {
+      "level": 2,
+      "title": "9. Open Question Nicole Explicitly Flags",
+      "id": "OPENQ"
+    },
+    {
+      "level": 3,
+      "title": "OPENQ-VENDOR-AGENT-GOVERNANCE",
+      "id": "OPENQ-VENDOR-AGENT-GOVERNANCE"
+    },
+    {
+      "level": 2,
+      "title": "10. Tensions Scout Surfaces from Comparing Across Nicole's Docs",
+      "id": "TENSIONS"
+    },
+    {
+      "level": 3,
+      "title": "TENSION-VALUE-LEDGER-FRAMING",
+      "id": "TENSION-VALUE-LEDGER-FRAMING"
+    },
+    {
+      "level": 3,
+      "title": "TENSION-CONSUMPTION-PRICING",
+      "id": "TENSION-CONSUMPTION-PRICING"
+    },
+    {
+      "level": 3,
+      "title": "TENSION-GRADUATED-AUTONOMY",
+      "id": "TENSION-GRADUATED-AUTONOMY"
+    },
+    {
+      "level": 3,
+      "title": "TENSION-RUNBOOK-NOT-PRESCREENED",
+      "id": "TENSION-RUNBOOK-NOT-PRESCREENED"
+    },
+    {
+      "level": 3,
+      "title": "TENSION-HEADLESS-VS-DISCOVERABILITY",
+      "id": "TENSION-HEADLESS-VS-DISCOVERABILITY"
+    },
+    {
+      "level": 3,
+      "title": "TENSION-DATA-ACCURACY-GAP",
+      "id": "TENSION-DATA-ACCURACY-GAP"
+    },
+    {
+      "level": 2,
+      "title": "Confidence Notes",
+      "id": "CONFIDENCE-NOTES"
+    }
+  ],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Type ID",
+        "Type",
+        "Definition"
+      ],
+      "is_id_table": true,
+      "row_count": 3,
+      "rows": [
+        {
+          "Type ID": "AGENTTYPE-EXPERT",
+          "Type": "**AI Agent Experts**",
+          "Definition": "N-able-authored, fully preconfigured, fixed runbook, N-able-managed identity. No customer config needed."
+        },
+        {
+          "Type ID": "AGENTTYPE-VENDOR-EXPERT",
+          "Type": "**Approved Vendor Experts**",
+          "Definition": "Built by third-party vendor partners, certified by N-able. Managed through management plane."
+        },
+        {
+          "Type ID": "AGENTTYPE-COWORKER",
+          "Type": "**AI Coworkers**",
+          "Definition": "User-assembled super-agents. Customer combines runbooks, MCPs, Agent Experts, and Vendor Experts."
+        }
+      ]
+    },
+    {
+      "headers": [
+        "ID",
+        "Principle",
+        "Meaning"
+      ],
+      "is_id_table": true,
+      "row_count": 4,
+      "rows": [
+        {
+          "ID": "RBP-TEXT-FIRST",
+          "Principle": "Text-first",
+          "Meaning": "Begins as plain language intent. May remain text-only or expand into structured execution."
+        },
+        {
+          "ID": "RBP-COMPOSABLE",
+          "Principle": "Composable",
+          "Meaning": "May include one or more workflows. Workflows may be reused. Runbooks can call other Runbooks."
+        },
+        {
+          "ID": "RBP-COWORKER-INVOKED",
+          "Principle": "Coworker-invoked",
+          "Meaning": "Executed by AI Agents, not users directly. Agent decides when to invoke; Runbook governs how execution proceeds."
+        },
+        {
+          "ID": "RBP-DETERMINISTIC-ISH",
+          "Principle": "Deterministic-ish",
+          "Meaning": "AI reasoning explicitly bounded. **Deterministic steps exit the AI context as early as possible.**"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "ID",
+        "Level",
+        "Behavior"
+      ],
+      "is_id_table": true,
+      "row_count": 3,
+      "rows": [
+        {
+          "ID": "TRUST-MANUAL",
+          "Level": "**Manual**",
+          "Behavior": "Human does it"
+        },
+        {
+          "ID": "TRUST-ASSISTED",
+          "Level": "**Assisted**",
+          "Behavior": "AI suggests, human approves"
+        },
+        {
+          "ID": "TRUST-AUTONOMOUS",
+          "Level": "**Autonomous**",
+          "Behavior": "AI executes, human audits"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Risk",
+        "Behavior"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Risk": "Low",
+          "Behavior": "Auto-execute"
+        },
+        {
+          "Risk": "Medium",
+          "Behavior": "Require approval"
+        },
+        {
+          "Risk": "High",
+          "Behavior": "Manual only / block auto-execution"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Layer ID",
+        "Layer",
+        "Bills",
+        "Precedent"
+      ],
+      "is_id_table": true,
+      "row_count": 7,
+      "rows": [
+        {
+          "Layer ID": "REV-LAYER-1",
+          "Layer": "Platform Access",
+          "Bills": "Subscription to control plane, builder, audit, key service",
+          "Precedent": "Standard SaaS"
+        },
+        {
+          "Layer ID": "REV-LAYER-2",
+          "Layer": "Workflow Execution",
+          "Bills": "Every Coworker run is a billable event",
+          "Precedent": "n8n: \u20ac20/mo for 2,500 runs"
+        },
+        {
+          "Layer ID": "REV-LAYER-3",
+          "Layer": "Expert Licensing",
+          "Bills": "Each Expert carries recurring license",
+          "Precedent": "Catalogue revenue"
+        },
+        {
+          "Layer ID": "REV-LAYER-4",
+          "Layer": "Vendor Ecosystem",
+          "Bills": "Rev share on Vendor Expert transactions + certification fees",
+          "Precedent": "Shopify: 0% first $50K, 15% to $5M, 10% above"
+        },
+        {
+          "Layer ID": "REV-LAYER-5",
+          "Layer": "MCP/Tool Transactions",
+          "Bills": "Every MCP call, API call, script execution metered",
+          "Precedent": "Zapier: per-operation"
+        },
+        {
+          "Layer ID": "REV-LAYER-6",
+          "Layer": "LLM Inference Pass-Through",
+          "Bills": "Bedrock customers pay inference + margin; BYOK skips",
+          "Precedent": "Cost recovery + margin"
+        },
+        {
+          "Layer ID": "REV-LAYER-7",
+          "Layer": "Outcome-Based Pricing",
+          "Bills": "Per resolved incident, per onboarded employee, per QBR",
+          "Precedent": "Zendesk: $1.50/automated resolution"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Mechanism",
+        "Behavior"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Mechanism": "Runtime monitoring",
+          "Behavior": "Audit layer tracks scope compliance"
+        },
+        {
+          "Mechanism": "Annual re-certification",
+          "Behavior": "Lighter; automated validation"
+        },
+        {
+          "Mechanism": "Emergency delisting",
+          "Behavior": "Immediate pull + notify affected MSPs on critical vuln/data violation"
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [
+    "AGENTTYPE-COWORKER",
+    "AGENTTYPE-EXPERT",
+    "AGENTTYPE-VENDOR-EXPERT",
+    "BLOCKER-DATA-ACCURACY",
+    "BLOCKER-DISCOVERABILITY",
+    "OPENQ-VENDOR-AGENT-GOVERNANCE",
+    "RBP-COMPOSABLE",
+    "RBP-COWORKER-INVOKED",
+    "RBP-DETERMINISTIC-ISH",
+    "RBP-TEXT-FIRST",
+    "REV-LAYER-1",
+    "REV-LAYER-2",
+    "REV-LAYER-3",
+    "REV-LAYER-4",
+    "REV-LAYER-5",
+    "REV-LAYER-6",
+    "REV-LAYER-7",
+    "SRC-NICOLE-001",
+    "SRC-NICOLE-002",
+    "SRC-NICOLE-003",
+    "TENSION-CONSUMPTION-PRICING",
+    "TENSION-DATA-ACCURACY-GAP",
+    "TENSION-GRADUATED-AUTONOMY",
+    "TENSION-HEADLESS-VS-DISCOVERABILITY",
+    "TENSION-RUNBOOK-NOT-PRESCREENED",
+    "TENSION-VALUE-LEDGER-FRAMING",
+    "TRUST-ASSISTED",
+    "TRUST-AUTONOMOUS",
+    "TRUST-LEVELS",
+    "TRUST-MANUAL",
+    "TRUST-MODEL"
+  ],
+  "cs_tag_histogram": {
+    "VERIFIED": 47,
+    "HIGH": 1
+  }
+}

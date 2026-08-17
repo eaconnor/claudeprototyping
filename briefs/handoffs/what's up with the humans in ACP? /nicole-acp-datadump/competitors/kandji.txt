@@ -1,0 +1,53 @@
+# Kandji
+slug: kandji
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Kandji is a modern Apple MDM platform built for security-conscious enterprise and mid-market organizations, with growing MSP channel adoption. It differentiates through a library of pre-built compliance blueprints (CIS, NIST, SOC 2, CMMC), automated remediation, and Liftoff — a zero-touch Mac onboarding experience. Kandji is gaining MSP channel traction as an alternative to Jamf, particularly following uncertainty around Jamf's Francisco Partners acquisition.
+
+## MSP Relevance
+Kandji is relevant to MSPs serving enterprise clients with significant Apple fleets and compliance requirements. Its pre-built compliance blueprints reduce the manual effort of configuring security policies from scratch. The MSP channel program is growing, and Kandji is increasingly positioned as the modern, security-first Jamf alternative for MSPs who want Apple MDM with built-in compliance automation.
+
+## Key Offerings & Capabilities
+- Apple MDM — macOS, iOS, iPadOS, tvOS management
+- Pre-built compliance blueprints — CIS, NIST, SOC 2, CMMC, and custom baselines, auto-enforced
+- Automated remediation — detects and corrects drift from compliance baselines without manual intervention
+- Liftoff — zero-touch Mac onboarding and enrollment experience
+- Library of pre-built app and configuration catalog items
+- Endpoint security — integrated EDR-lite capabilities alongside MDM
+- MSP multi-tenant management portal
+
+## Recent Announcements
+- Continuing to expand compliance blueprint library — adding new frameworks (CMMC, industry-specific)
+- Growing MSP channel program with dedicated partner resources
+- Positioned as primary beneficiary of uncertainty from Jamf's Francisco Partners acquisition
+- Apple DDM (Declarative Device Management) support being added as Apple shifts management framework
+- Continued investment in automated remediation as core differentiator
+
+## Pricing Model
+Per-device per-year subscription. Pricing starts around $8–10/device/year for basic MDM. Pricing transparent on website for standard tiers. Enterprise and MSP pricing requires sales engagement. Generally priced similarly to or slightly above Jamf for comparable feature sets.
+
+## Strengths
+- Pre-built compliance blueprints with automated remediation — the strongest compliance automation of any Apple MDM
+- Modern UI — cleaner and faster than Jamf Pro
+- Liftoff zero-touch onboarding reduces MSP deployment time significantly
+- Security-first architecture appeals to compliance-heavy clients
+- Gaining MSP channel momentum as Jamf's direction becomes uncertain under private equity
+
+## Weaknesses / Gaps
+- Smaller ecosystem and community than Jamf (Jamf Nation is massive)
+- Less mature in larger, more complex enterprise environments than Jamf Pro
+- Apple-only — irrelevant for cross-platform or Windows-heavy MSP environments
+- MSP program still maturing relative to Jamf's more established channel
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Kandji focuses on Apple MDM with compliance automation. No meaningful overlap with NZO's AI agent platform. Kandji's automated remediation is compliance-scoped (MDM policy drift), not broader IT workflow automation.
+
+## Notes
+- Jamf acquisition by Francisco Partners (October 2025) is creating a real window for Kandji in the MSP market
+- Compliance blueprint automated remediation is a strong MSP value proposition for clients in regulated industries
+- CMMC compliance blueprint is strategically important for defense-adjacent MSPs

@@ -1,0 +1,53 @@
+# Atera
+slug: atera
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Atera is an all-in-one RMM + PSA platform with a per-technician, unlimited-device pricing model. It positions itself as an AI-first IT management platform, having shipped IT Autopilot (autonomous L1 resolution) in May 2025 — rebranded as Robin by Atera in March 2026 to reflect expanded enterprise-focused autonomous capabilities. Atera's AI Copilot assists technicians with ticket drafts, summarization, and triage. Atera integrates with Azure OpenAI Service for its AI features.
+
+## MSP Relevance
+Atera is highly relevant to MSPs who want per-technician pricing with unlimited device management. The unlimited endpoint model makes it cost-effective for MSPs with large device counts. Robin (formerly IT Autopilot) is one of the most advanced shipped autonomous L1 resolution products in the MSP market — resolving password resets, reboots, and basic troubleshooting without human intervention.
+
+## Key Offerings & Capabilities
+- All-in-one RMM + PSA — monitoring, patching, remote access, ticketing, billing, time tracking
+- Per-technician, unlimited-device pricing — no per-endpoint fees
+- AI Copilot — assists technicians with ticket drafts, thread summarization, triage
+- Robin by Atera (formerly IT Autopilot) — autonomous L1 resolution: password resets, reboots, software installs, and complex multi-step issues (March 2026 rebrand, enterprise focus)
+- Azure OpenAI Service integration — powers AI features across the platform
+- Remote access (AnyDesk partnership integrated)
+- Integration with major security, backup, and documentation tools
+
+## Recent Announcements
+- May 2025: IT Autopilot launched — AI agent for autonomous L1 ticket resolution (password resets, reboots, basic troubleshooting)
+- March 2026: IT Autopilot rebranded as Robin by Atera — expanded to handle complex technical issues on device, network, and cloud
+- April 2026: Pricing update — some automation features moved from Growth to Power tier (effectively $40/technician/month upsell for some MSPs)
+- Azure OpenAI Service integration for AI features across the platform
+- Recognized as per-technician pricing model leader vs. Syncro, NinjaOne, and Kaseya
+
+## Pricing Model
+Per-technician per-month, unlimited devices. Tiers: Growth (~$149/tech/month), Power (~$189/tech/month), Superpower (custom). Robin by Atera / AI Autopilot available at Power tier and above. April 2026 pricing change moved some automation triggers from Growth to Power. Free trial available.
+
+## Strengths
+- Unlimited device model — highly cost-effective for device-heavy MSPs
+- Robin by Atera is a shipped, production autonomous L1 resolver — not vaporware
+- Per-technician pricing is simple and predictable
+- All-in-one reduces vendor count (no separate RMM and PSA vendors)
+- Azure OpenAI integration provides enterprise-grade AI infrastructure
+
+## Weaknesses / Gaps
+- Robin's autonomous resolution scope still limited to simpler L1 tasks — complex issues still escalate
+- April 2026 pricing change moved features to higher tiers — created friction with existing Growth customers
+- Enterprise features (advanced ITSM, complex billing) less mature than HaloPSA or ConnectWise
+- Fewer integrations than larger platforms like NinjaOne or ConnectWise
+
+## Competitive Threat to NZO
+Level: High
+Reason: Robin by Atera is directly in NZO's autonomous AI technician space. It is shipped, production-ready, and evolving toward more complex autonomous resolution. Atera's per-technician pricing makes it accessible to a wide range of MSPs. If Robin continues to expand its autonomous scope and Atera's pricing remains competitive, it is one of the most direct NZO competitors in the L1 automation category.
+
+## Notes
+- Robin rebrand from IT Autopilot (March 2026) signals Atera's intent to position this as enterprise-capable autonomous IT
+- Azure OpenAI integration mirrors Kaseya Intelligence's AI infrastructure approach
+- Unlimited device pricing is a strong MSP anchor — if Atera's AI is good enough, MSPs may not need NZO's AI on top

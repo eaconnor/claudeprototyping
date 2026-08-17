@@ -1,0 +1,55 @@
+# Kaseya VSA
+slug: kaseya-vsa
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Kaseya VSA is one of the most widely deployed RMM platforms in the MSP market, part of the broader Kaseya IT Complete stack. Kaseya VSA 10 is the current-generation cloud-native version, succeeding the legacy VSA 9. At Kaseya Connect 2026, CEO Rania Succar unveiled Kaseya Intelligence — an AI engine delivering connected, automated operations and real-time insight across the entire Kaseya platform. Kaseya is pursuing FIPS 140-3 and CMMC Level 2 certifications across 15 products by fall 2026.
+
+## MSP Relevance
+Kaseya's strategy is full MSP stack consolidation — bundling RMM (VSA), PSA (Autotask or BMS), documentation (IT Glue), backup (Datto), security (MDR, SIEM), and more in Kaseya 365 subscriptions. For MSPs who buy into the stack, Kaseya becomes deeply embedded. VSA is the anchor RMM product at the center of this strategy.
+
+## Key Offerings & Capabilities
+- Kaseya VSA 10 — cloud-native RMM with endpoint monitoring, patching, remote access, scripting
+- Kaseya Intelligence — AI engine across the platform for automated operations and real-time insights (Connect 2026)
+- Kaseya 365 — subscription bundle combining VSA, PSA, IT Glue, backup, security, and more
+- Integration with Datto RMM (also Kaseya-owned) for MSPs preferring Datto's interface
+- VSA + IT Glue + BMS workflow integration — single pane of glass across RMM, documentation, PSA
+- Compliance-ready: FIPS 140-3 and CMMC Level 2 certifications in progress for 2026
+
+## Recent Announcements
+- Kaseya Connect 2026: Unveiled Kaseya Intelligence — AI engine for automated operations across the platform
+- Kaseya 365 Ops launched at Connect 2025 — bundles PSA, documentation, billing, automation, vCIO, quoting at $119–129/user/month
+- AI assistant built into IT Glue — technicians find documentation and create runbooks via plain English
+- 15 products to achieve FIPS 140-3 validation by fall 2026 (IT Glue, Datto RMM, VSA 10, INKY, SIEM, MDR, others)
+- CMMC Level 2 audit-ready across 7 platforms by September 2026 (Datto RMM, Autotask, IT Glue, Datto BCDR, SaaS Protection, SaaS Alerts, KaseyaOne)
+- Pia AI technician (acquired) integrated into the Kaseya stack for Level 1 ticket automation
+
+## Pricing Model
+Kaseya 365 bundle pricing — $119–129/user/month for Kaseya 365 Ops (PSA + documentation + billing + automation + vCIO + quoting). VSA standalone pricing per device. Significant volume discounts for multi-year contracts. Historically aggressive discounting during Kaseya Connect events.
+
+## Strengths
+- Largest MSP software company by revenue and installed base
+- Kaseya 365 bundles deliver high per-user value and make switching very costly
+- FIPS 140-3 and CMMC certifications will be critical differentiators for compliance-focused MSPs
+- Kaseya Intelligence AI investment signals serious long-term AI platform commitment
+- Datto + VSA + IT Glue integration gives unmatched breadth in a single vendor relationship
+
+## Weaknesses / Gaps
+- Reputation issues from 2021 VSA ransomware attack linger among security-conscious MSPs
+- Aggressive pricing and contract tactics have created resentment in the MSP community
+- Product quality varies across the stack — some acquired products poorly integrated
+- NinjaOne and ConnectWise actively targeting Kaseya customers for migration
+- VSA 10 migration from VSA 9 has been slow and painful for many partners
+
+## Competitive Threat to NZO
+Level: High
+Reason: Kaseya Intelligence is an AI platform play across the entire MSP stack — the exact territory NZO operates in. If Kaseya delivers credible AI agent automation within their existing bundle, MSPs already on Kaseya 365 have zero incentive to add NZO. The install base alone makes this a top-tier threat.
+
+## Notes
+- Kaseya Connect is the major annual announcement event — April each year, key to monitor
+- Rania Succar (CEO since 2024) is shifting Kaseya's tone from aggressive acquirer to platform company
+- FIPS and CMMC certifications are table stakes for government-adjacent MSP opportunities
+- Pia acquisition means Kaseya now has AI technician automation built into the stack

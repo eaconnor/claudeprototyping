@@ -1,0 +1,38 @@
+{
+  "_source_md": "problems-ranked.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-PROBLEMS-RANKED",
+    "title": "MSP + End User Problems Ranked \u2014 Why N-able Can Win",
+    "version": "0.2.0",
+    "status": "Hybrid \u00b7 Pattern Applied (frontmatter only; body unchanged from v0.1)",
+    "date": "2026-06-05",
+    "owners": {
+      "product": "Beth Schwindt"
+    },
+    "ranking_criteria": [
+      "impact_usd_or_business_risk",
+      "urgency_percent_experiencing",
+      "nable_positioning_strength"
+    ],
+    "known_issues": [
+      "CLAIM-MATH-DISPUTED-001 \u2014 $33,600/month figure does not reconcile with stated formula"
+    ],
+    "related_docs": [
+      "HANDOFF-NICOLE-VISION (strategic reframing)",
+      "HANDOFF-PRIMARY-RESEARCH (primary partner voices)",
+      "HANDOFF-CRITIC-PASS-1 (math dispute audit)"
+    ]
+  },
+  "sections": [],
+  "structured_blocks": [],
+  "tables": [],
+  "inline_id_references": [
+    "CLAIM-MATH-DISPUTED-001"
+  ],
+  "cs_tag_histogram": {
+    "HIGH": 19,
+    "VERIFIED": 27,
+    "MEDIUM": 32
+  }
+}

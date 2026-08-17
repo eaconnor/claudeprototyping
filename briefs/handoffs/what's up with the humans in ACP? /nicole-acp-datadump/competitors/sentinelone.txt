@@ -1,0 +1,56 @@
+# SentinelOne
+slug: sentinelone
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+SentinelOne is an AI-native cybersecurity platform offering EDR, XDR, SIEM, CNAPP, and identity protection through its Singularity platform. Its Purple AI assistant — now attaching to over 50% of new licenses — provides conversational threat hunting, agentic investigation, and autonomous security workflows. In 2026, SentinelOne positioned itself as the "autonomous AI security" platform, with One-Click Auto Investigation as its flagship agentic capability.
+
+## MSP Relevance
+SentinelOne is a top-three EDR platform used by MSSPs and security-focused MSPs as their premium endpoint protection offering. Its mid-market focus (via MSP/MSSP partners) and growing Purple AI attach rate make it a strong competitor in AI-driven security. For MSPs, the platform offers multi-tenant management and consumption-based MSSP licensing.
+
+## Key Offerings & Capabilities
+- Singularity EDR/XDR — AI-native endpoint and cross-domain detection
+- Purple AI — conversational AI security analyst for threat hunting and investigation
+- One-Click Auto Investigation — single click launches a complete agentic security investigation (GA RSAC 2026)
+- Singularity AI SIEM — next-gen SIEM with Observo AI integration for data pipelines
+- Wayfinder — AI-powered managed threat detection and response service (launched OneCon 2025)
+- Singularity Cloud (CNAPP) — cloud workload and container security
+- Singularity Identity — ITDR and Active Directory protection
+- Hyperautomation — security workflow automation layer across the platform
+
+## Recent Announcements
+- OneCon 2025: Expanded Purple AI with agentic triaging, investigations, and autonomous workflows; launched Wayfinder managed services
+- Purple AI attach rate surpassed 50% of all new licenses in Q4 2025 (up from 40% earlier in the year)
+- GA of One-Click Auto Investigation at RSAC 2026 — complete agentic security investigation from a single click
+- FedRAMP High authorization achieved for Purple AI, CNAPP, and Hyperautomation solutions
+- Integrations with AWS at re:Invent 2025 to accelerate AI security initiatives
+- "Billion-Dollar Pivot to Autonomous AI Security" positioning in March 2026 analyst coverage
+
+## Pricing Model
+Per-endpoint per-year subscription. Modular — EDR base with add-ons for SIEM, Cloud, Identity, Purple AI. MSSP/MSP tier available with consumption-based and per-tenant billing. Enterprise discounts at volume. Purple AI is an add-on license.
+
+## Strengths
+- Purple AI is one of the most advanced security AI assistants in the market with 50%+ attach rate
+- One-Click Auto Investigation is a genuine agentic security capability
+- Strong MITRE ATT&CK evaluation performance
+- Fast-growing SIEM with AI-native data pipelines
+- FedRAMP High authorization opens public sector MSP opportunities
+- Mid-market focus aligns well with MSP customer base
+
+## Weaknesses / Gaps
+- Purple AI is an add-on — not included in base pricing, requiring upsell
+- Less established than CrowdStrike in large enterprise security programs
+- SIEM is newer and competes in a crowded market
+- Mid-market customers (core MSP segment) are price-sensitive and vulnerable to economic pressure
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: SentinelOne's Hyperautomation and agentic investigation capabilities are building toward automated security operations — adjacent to NZO's workflow automation territory. As Purple AI becomes a standard feature, it sets expectations for AI-driven automation in the security stack that will influence MSPs' expectations of other AI tools.
+
+## Notes
+- Purple AI's 50%+ attach rate is a strong leading indicator — security AI is becoming table stakes
+- One-Click Auto Investigation at RSAC 2026 is worth tracking as the benchmark for agentic security UX
+- FedRAMP High authorization positions SentinelOne for government-adjacent MSP work

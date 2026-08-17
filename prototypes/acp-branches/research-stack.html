@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ACP Concept Directions — Research Stack (no rails)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --surface-bg:#ffffff; --surface-container:#ffffff; --surface-tertiary:#fafafa;
+  --surface-status:#f2f2f2; --surface-active-wash:#f8ebff;
+  --border-default:#d5d5d5; --border-active:#c046ff;
+  --brand:#8500cc; --brand-strong:#c046ff; --brand-wash:#f8ebff;
+  --extended-phlox:#f2d6ff; --extended-blue:#3c5edd; --extended-neon-blue:#4c63e5; --extended-pink:#ed186b;
+  --success:#058142;
+  --text-heading:#18191a; --text-body:#2e2e33; --text-secondary:#404047; --text-placeholder:#5c5c66; --text-oncolor:#fafafa;
+  --radius-sm:4px; --radius-full:999px; --radius-xl:16px;
+  --font-ui:'Inter',-apple-system,sans-serif; --font-brand:'Manrope',sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--surface-tertiary);font-family:var(--font-ui);color:var(--text-body);font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--font-ui);color:var(--text-heading);letter-spacing:-0.02em;margin:0;}
+
+/* ===== page intro ===== */
+.page-intro{
+  max-width:1160px;margin:0 auto;padding:28px 32px 0;
+}
+.page-intro .kicker{font-family:var(--font-brand);font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;}
+.page-intro h1{font-size:24px;margin-bottom:8px;}
+.page-intro p{font-size:13.5px;color:var(--text-secondary);max-width:820px;margin:0;}
+.page-intro .scroll-note{
+  display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;color:var(--text-placeholder);
+  border:1px dashed var(--border-default);border-radius:var(--radius-full);padding:4px 12px;
+}
+
+/* ===== concept section ===== */
+.concept{max-width:1160px;margin:0 auto;padding:34px 32px 0;}
+.concept-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding-bottom:14px;border-bottom:2px solid var(--text-heading);margin-bottom:20px;
+}
+.concept-label{font-family:var(--font-brand);font-weight:800;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--brand);margin-bottom:4px;display:block;}
+.concept-head h2{font-size:22px;line-height:1.25;max-width:760px;}
+.concept-tier{
+  font-size:11px;font-weight:700;color:var(--text-secondary);background:var(--surface-status);
+  border:1px solid var(--border-default);border-radius:var(--radius-full);padding:3px 11px;white-space:nowrap;
+}
+.concept-sub{font-size:14px;color:var(--text-secondary);max-width:820px;margin-bottom:22px;}
+
+/* plain-language cards */
+.board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+@media(max-width:900px){.board-grid{grid-template-columns:1fr;}}
+.board-card{background:var(--surface-container);border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:16px 18px;}
+.board-card h3{font-size:13px;font-weight:700;margin-bottom:7px;}
+.board-card p{font-size:12.8px;color:var(--text-secondary);margin:0;line-height:1.55;}
+.board-card .quote{font-style:italic;color:var(--text-heading);font-size:13.5px;border-left:2px solid var(--brand-strong);padding-left:10px;margin:8px 0;}
+.board-card cite{display:block;font-style:normal;font-size:11px;color:var(--text-placeholder);margin-top:3px;}
+
+/* ===== mock frame (sketch chrome) ===== */
+.mock-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-placeholder);margin-bottom:10px;}
+.mock-frame{
+  position:relative;border:1.5px dashed #9a9aa3;border-radius:var(--radius-xl);
+  background:var(--surface-bg);overflow:hidden;margin-bottom:24px;
+}
+.mock-frame::before{
+  content:"CONCEPT — REACT, DON'T BUILD";position:absolute;top:40%;left:-10%;width:120%;text-align:center;
+  transform:rotate(-13deg);font-family:var(--font-brand);font-weight:800;font-size:30px;letter-spacing:.08em;
+  color:rgba(133,0,204,0.06);pointer-events:none;z-index:1;white-space:nowrap;
+}
+.app-shell{display:grid;grid-template-columns:200px 1fr;position:relative;z-index:2;}
+.app-topbar{
+  grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;
+  border-bottom:1.5px dashed var(--border-default);background:var(--surface-bg);
+}
+.app-topbar .crumb{font-size:12px;color:var(--text-secondary);}
+.app-topbar .crumb b{color:var(--text-heading);font-weight:600;}
+.incident-badge{
+  background:var(--extended-pink);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:var(--radius-full);
+  text-transform:uppercase;letter-spacing:.04em;display:inline-flex;align-items:center;gap:5px;
+}
+.incident-badge .pulse{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.app-topbar .actions{display:flex;gap:8px;}
+.btn{font-family:var(--font-ui);font-size:12px;font-weight:600;border-radius:var(--radius-sm);padding:6px 13px;border:1px solid var(--border-default);background:var(--surface-bg);color:var(--text-body);}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--text-oncolor);}
+.btn.ghost-ai{border-color:var(--extended-phlox);color:var(--brand);background:var(--brand-wash);}
+.app-nav{grid-row:2;border-right:1.5px dashed var(--border-default);background:var(--surface-tertiary);padding:14px 10px;}
+.nav-group{margin-bottom:14px;}
+.nav-group-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-placeholder);margin:0 6px 5px;}
+.nav-item{font-size:12px;color:var(--text-secondary);padding:6px 8px;border-radius:var(--radius-sm);}
+.nav-item.active{background:var(--surface-active-wash);color:var(--brand);font-weight:600;}
+.app-main{grid-row:2;padding:20px 24px;overflow:hidden;}
+
+/* qbr doc payload */
+.doc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.doc-title{font-size:17px;font-weight:700;color:var(--text-heading);margin-bottom:3px;}
+.doc-sub{font-size:12px;color:var(--text-secondary);}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{font-family:var(--font-brand);font-weight:700;font-size:11px;padding:4px 11px;border-radius:var(--radius-full);border:1px solid var(--border-default);background:var(--surface-status);color:var(--text-body);}
+.chip.native{border-color:var(--extended-phlox);background:var(--brand-wash);color:var(--brand);}
+.normalize-note{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--brand);font-weight:600;margin:8px 0 16px;}
+.normalize-note .arrow{color:var(--text-placeholder);font-weight:400;}
+.doc-body{background:var(--surface-container);border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:16px 18px;}
+.doc-body h4{font-size:13px;font-weight:700;margin-bottom:8px;}
+.doc-body p{font-size:12.5px;color:var(--text-body);line-height:1.6;margin:0 0 9px;}
+.doc-body p:last-of-type{margin-bottom:0;}
+
+.tag{display:inline-flex;align-items:center;font-family:var(--font-ui);font-weight:700;font-size:10px;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:var(--radius-full);vertical-align:middle;margin-left:6px;border:1px solid transparent;}
+.tag.measured{background:#e6f5ee;color:var(--success);border-color:#bfe6d3;}
+.tag.benchmarked{background:#e8ecfc;color:var(--extended-blue);border-color:#cdd6f8;}
+.tag.estimated{background:var(--brand-wash);color:var(--brand);border-color:var(--extended-phlox);}
+.tag.unverified{background:#fde6ee;color:var(--extended-pink);border-color:#f9c4d8;}
+.tag.confirmed{background:#e6f5ee;color:var(--success);border-color:#bfe6d3;}
+.tag.inferred{background:#fef3e2;color:#b45309;border-color:#f2c98a;}
+
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--text-secondary);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-default);}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.legend .dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
+.legend .dot.measured{background:var(--success);}
+.legend .dot.benchmarked{background:var(--extended-blue);}
+.legend .dot.estimated{background:var(--brand);}
+.legend .dot.unverified{background:var(--extended-pink);}
+.legend .dot.confirmed{background:var(--success);}
+.legend .dot.inferred{background:#b45309;}
+
+/* IR split view */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.split > div{padding:0 14px 0 0;}
+.split .col-right{padding:0 0 0 14px;border-left:1px dashed var(--border-default);}
+.col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.col-head h4{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);}
+.col-head .chip{font-size:9.5px;padding:2px 8px;}
+.timeline-item{border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:9px 11px;margin-bottom:7px;background:#fff;}
+.timeline-item .ts{font-size:10px;color:var(--text-placeholder);font-weight:700;margin-bottom:3px;font-family:ui-monospace,monospace;}
+.timeline-item p{margin:0;font-size:12px;line-height:1.45;color:var(--text-body);}
+.narrative p{font-size:12px;line-height:1.55;color:var(--text-body);margin:0 0 8px;}
+.narrative .draft-flag{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;display:block;}
+.review-gate{margin-top:14px;padding:12px 14px;border-radius:var(--radius-sm);background:var(--surface-status);display:flex;align-items:center;gap:10px;}
+.review-gate .icon{width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--text-placeholder);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:var(--text-placeholder);}
+.review-gate .txt strong{display:block;font-size:12px;color:var(--text-heading);}
+.review-gate .txt span{font-size:11px;color:var(--text-secondary);}
+.review-gate .status{margin-left:auto;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:#fde8ef;color:#9d0f4f;padding:3px 9px;border-radius:var(--radius-full);flex-shrink:0;}
+
+/* ===== risk callout ===== */
+.risk-box{border:1.5px solid var(--extended-pink);background:#fff5f9;border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:12px;}
+.risk-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;user-select:none;}
+.risk-head .icon{width:22px;height:22px;border-radius:50%;background:var(--extended-pink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;}
+.risk-head h3{font-size:14px;font-weight:700;color:var(--text-heading);}
+.risk-head .reveal-hint{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--extended-pink);text-transform:uppercase;letter-spacing:.03em;}
+
+/* ===== collapsed risk state — click header, or the global toggle, to reveal ===== */
+.risk-box[data-collapsed="true"]{padding:12px 20px;background:#fff;border-style:dashed;}
+.risk-box[data-collapsed="true"] .risk-head{margin-bottom:0;}
+.risk-box[data-collapsed="true"] .risk-body{display:none;}
+.risk-box:not([data-collapsed="true"]) .risk-head .reveal-hint::after{content:"Hide";}
+.risk-box[data-collapsed="true"] .risk-head .reveal-hint::after{content:"Reveal";}
+
+/* ===== global toggle ===== */
+.risk-toggle-bar{
+  display:inline-flex;align-items:center;gap:10px;margin-top:14px;margin-left:12px;
+  font-size:12px;font-weight:700;color:var(--brand);background:var(--brand-wash);
+  border:1px solid var(--extended-phlox);border-radius:var(--radius-full);padding:5px 14px;
+  cursor:pointer;user-select:none;
+}
+.risk-toggle-bar .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);}
+.risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:1000px){.risk-grid{grid-template-columns:1fr 1fr;}}
+.risk-item{background:var(--surface-bg);border:1px solid #f9c4d8;border-radius:var(--radius-sm);padding:12px 14px;}
+.risk-item .k{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--extended-pink);margin-bottom:5px;}
+.risk-item .v{font-size:12.5px;color:var(--text-body);line-height:1.5;}
+.risk-item .v b{color:var(--text-heading);}
+
+.gate-c{background:var(--text-heading);color:var(--text-oncolor);border-radius:var(--radius-sm);padding:14px 16px;margin-top:14px;display:flex;align-items:flex-start;gap:12px;}
+.gate-c .gate-badge{background:var(--extended-pink);border-radius:var(--radius-full);padding:3px 11px;font-weight:800;font-size:10px;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;}
+.gate-c p{margin:0;font-size:12.5px;line-height:1.5;color:#f0f0f0;}
+.gate-c strong{color:#fff;}
+
+/* practice-builder payload (vCIO/vCISO) */
+.tier-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;}
+@media(max-width:900px){.tier-cols{grid-template-columns:1fr;}}
+.tier-card{border:1px solid var(--border-default);border-radius:var(--radius-sm);background:var(--surface-container);padding:14px 16px;}
+.tier-card.vciso{border-color:var(--extended-phlox);background:var(--brand-wash);}
+.tier-card .tier-name{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.tier-card h4{font-size:13px;font-weight:800;}
+.tier-card ul{margin:0;padding-left:0;list-style:none;}
+.tier-card li{font-size:12px;color:var(--text-body);padding:6px 0;border-top:1px dashed var(--border-default);}
+.tier-card li:first-child{border-top:none;}
+.tier-card li .status{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--text-placeholder);float:right;}
+.billing-row{display:flex;align-items:center;gap:14px;background:var(--surface-status);border-radius:var(--radius-sm);padding:12px 16px;margin-top:2px;flex-wrap:wrap;}
+.billing-row .lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);}
+.billing-row .val{font-size:12.5px;color:var(--text-heading);font-weight:600;}
+.billing-row .unresolved{margin-left:auto;font-size:10px;font-weight:800;text-transform:uppercase;background:#fde8ef;color:#9d0f4f;padding:3px 9px;border-radius:var(--radius-full);}
+
+.cs{font-family:ui-monospace,monospace;font-size:10px;color:var(--extended-blue);background:rgba(60,94,221,.07);padding:1px 5px;border-radius:3px;}
+
+/* divider between concepts */
+.divider{max-width:1160px;margin:40px auto 0;padding:0 32px;}
+.divider hr{border:none;border-top:6px solid var(--text-heading);margin:0;}
+
+.footer-note{max-width:1160px;margin:0 auto;padding:30px 32px 60px;font-size:11.5px;color:var(--text-placeholder);text-align:center;border-top:1px solid var(--border-default);margin-top:40px;padding-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="page-intro">
+  <div class="kicker">ACP Concept Directions · Research Stack</div>
+  <h1>Four concepts, no rails — just the ideas</h1>
+  <p>Branch A (cross-vendor QBR), Branch B (N-able native QBR), IR RCA (live incident root-cause), and the vCIO/vCISO Advisory Package, stacked for scrolling review. Bradley routing/rail scaffolding removed — this is the concept content only. Nothing below is a working product; every mock is illustrative.</p>
+  <div>
+    <div class="scroll-note">↓ scroll — Branch A → Branch B → IR RCA → vCIO/vCISO</div>
+    <span class="risk-toggle-bar" id="globalRiskToggle" onclick="toggleAllRisk()"><span class="dot"></span><span id="globalRiskToggleLabel">Reveal all risk reads</span></span>
+  </div>
+</div>
+
+<!-- ============ BRANCH A ============ -->
+<div class="concept">
+  <div class="concept-head">
+    <div>
+      <span class="concept-label">Branch A · Package 5 · Client-Facing Proof, Cross-Vendor</span>
+      <h2>A QBR coworker that tells one story across every vendor in the stack</h2>
+    </div>
+    <span class="concept-tier">Tier 0 — Concept</span>
+  </div>
+  <p class="concept-sub">Most MSPs run 6–8 competing tools per client and can't tell a single comparable story from them. This asks what it would take — legally and technically — for an AI coworker to normalize the whole mixed-vendor stack into one client-ready quarterly narrative.</p>
+
+  <div class="board-grid">
+    <div class="board-card">
+      <h3>The problem</h3>
+      <p>An MSP can't prove its value in one narrative because the evidence lives in 6+ vendor tools that don't talk to each other. The most convincing comparison — across the whole stack, not just N-able's slice — is also the one hardest to legally assemble.</p>
+    </div>
+    <div class="board-card">
+      <h3>The value prop</h3>
+      <p>For MSPs who assemble quarterly reviews by hand: a client-ready, evidence-tagged narrative across the full vendor stack in under 20 minutes — one normalized story with defensibility built in, not another single-vendor dashboard.</p>
+    </div>
+    <div class="board-card">
+      <h3>Why now</h3>
+      <p>#1 requested capability across all three Guidepoint research instruments — MSPs call it "the holy grail." No incumbent ships it. But demand has only been tested for the destination (a cross-stack QBR), never the mechanism (AI drafts, human edits).</p>
+    </div>
+  </div>
+
+  <div class="mock-label">What this could look like</div>
+  <div class="mock-frame">
+    <div class="app-shell">
+      <div class="app-topbar">
+        <div class="crumb">Coworkers / <b>QBR Coworker</b> / Client: Meridian IT Partners · Q2 Review</div>
+        <div class="actions"><button class="btn ghost-ai">✦ Ask N-zo</button><button class="btn primary">Save</button></div>
+      </div>
+      <div class="app-nav">
+        <div class="nav-group"><div class="nav-group-label">Control Plane</div><div class="nav-item active">Coworkers</div><div class="nav-item">Agents</div><div class="nav-item">In Flight</div></div>
+        <div class="nav-group"><div class="nav-group-label">Capabilities</div><div class="nav-item">Runbooks</div><div class="nav-item">Skills</div><div class="nav-item">Tools</div></div>
+        <div class="nav-group"><div class="nav-group-label">Governance</div><div class="nav-item">Value Ledger</div><div class="nav-item">Usage</div><div class="nav-item">Logs</div></div>
+      </div>
+      <div class="app-main">
+        <div class="doc-header">
+          <div>
+            <div class="doc-title">Quarterly Security Review — Meridian IT Partners</div>
+            <div class="doc-sub">Draft generated from full client stack · operator edit pending</div>
+          </div>
+          <div class="chip-row"><span class="chip">ConnectWise</span><span class="chip">SentinelOne</span><span class="chip">Adlumin</span></div>
+        </div>
+        <div class="normalize-note">3 vendors <span class="arrow">→ normalization layer →</span> 1 narrative</div>
+        <div class="doc-body">
+          <h4>Executive summary</h4>
+          <p>Across the client's full stack, the team closed 214 alerts this quarter and reduced mean time to containment.<span class="tag measured">Measured</span></p>
+          <p>Endpoint coverage held steady relative to peer MSPs running a comparable tool mix.<span class="tag benchmarked">Benchmarked</span></p>
+          <p>Estimated hours of manual triage avoided this quarter through automated correlation across tools.<span class="tag estimated">Estimated</span></p>
+          <p>Cross-vendor ticket-to-incident linkage for the ConnectWise leg of the stack.<span class="tag unverified">Unverified</span></p>
+          <div class="legend">
+            <span><i class="dot measured"></i>Measured</span><span><i class="dot benchmarked"></i>Benchmarked</span>
+            <span><i class="dot estimated"></i>Estimated</span><span><i class="dot unverified"></i>Unverified — normalization/legal path not yet cleared</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-box" data-collapsed="true">
+    <div class="risk-head" onclick="toggleRisk(this)"><span class="icon">!</span><h3>Honest risk read</h3><span class="reveal-hint"></span></div>
+    <div class="risk-body"><div class="risk-grid">
+      <div class="risk-item"><div class="k">Idea Chess survival</div><div class="v">~<b>0.43%</b> (cross-vendor floor) to ~<b>0.64%</b> (blended) — lowest naive survival of the five packages in the portfolio.</div></div>
+      <div class="risk-item"><div class="k">Where it dies</div><div class="v">At <b>Build — Ford 1</b>. Normalization is <b>"Not started."</b> Data-egress from competitor tools may be legally unavailable, not just unbuilt.</div></div>
+      <div class="risk-item"><div class="k">The lever</div><div class="v"><b>Buy</b> the normalization moat (an existing small-player category) and <b>partner</b> past the egress wall.</div></div>
+      <div class="risk-item"><div class="k">Riskiest assumption</div><div class="v">Three correlated beliefs, none tested: normalization clears legal [P≈0.30], operators want less verification not just output [P≈0.55], tiering survives legal review [P≈0.45].</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="divider"><hr></div>
+
+<!-- ============ BRANCH B ============ -->
+<div class="concept">
+  <div class="concept-head">
+    <div>
+      <span class="concept-label">Branch B · Package 3 · Client-Facing Proof, N-able Native</span>
+      <h2>The same QBR, scoped to what's already buildable</h2>
+    </div>
+    <span class="concept-tier">Tier 0 — Concept</span>
+  </div>
+  <p class="concept-sub">Same wicked problem as Branch A — client-ready proof of protection — but scoped to MSPs consolidated on N-central + Cove + Adlumin. No normalization dependency, no competitor ToS risk, "Measured" claims defensible on day one.</p>
+
+  <div class="board-grid">
+    <div class="board-card">
+      <h3>The problem</h3>
+      <p>MSPs author every QBR by hand — 2 to 4 hours per client, no consistent evidence framework. Even scoped to one stack, the MSP still has to decide what to say — the last mile of proof-of-value has never been automated.</p>
+    </div>
+    <div class="board-card">
+      <h3>The value prop</h3>
+      <p>For N-able-stack MSPs: a client-ready, defensibility-tagged quarterly review from first-party telemetry in under 20 minutes. No normalization needed — but limited to clients on an N-able stack.</p>
+    </div>
+    <div class="board-card">
+      <h3>Why now</h3>
+      <p>The plumbing already exists: Runbook Engine (49/49 built) and Value Ledger (52/52 built, renders $0 today). This is a runbook wired to existing infrastructure, not a new platform or a new data acquisition.</p>
+    </div>
+  </div>
+
+  <div class="mock-label">What this could look like</div>
+  <div class="mock-frame">
+    <div class="app-shell">
+      <div class="app-topbar">
+        <div class="crumb">Coworkers / <b>QBR Coworker</b> / Client: Harbor Ridge Managed Services · Q2 Review</div>
+        <div class="actions"><button class="btn ghost-ai">✦ Ask N-zo</button><button class="btn primary">Save</button></div>
+      </div>
+      <div class="app-nav">
+        <div class="nav-group"><div class="nav-group-label">Control Plane</div><div class="nav-item active">Coworkers</div><div class="nav-item">Agents</div></div>
+        <div class="nav-group"><div class="nav-group-label">Capabilities</div><div class="nav-item">Runbooks</div><div class="nav-item">Skills</div></div>
+        <div class="nav-group"><div class="nav-group-label">Governance</div><div class="nav-item active">Value Ledger</div><div class="nav-item">Usage</div></div>
+      </div>
+      <div class="app-main">
+        <div class="doc-header">
+          <div>
+            <div class="doc-title">Quarterly Business Review — Harbor Ridge Managed Services</div>
+            <div class="doc-sub">Draft — operator review pending</div>
+          </div>
+          <div class="chip-row"><span class="chip native">N-central</span><span class="chip native">Cove</span><span class="chip native">Adlumin</span></div>
+        </div>
+        <div class="normalize-note">First-party telemetry only <span class="arrow">→</span> no normalization layer needed</div>
+        <div class="doc-body">
+          <h4>Executive summary</h4>
+          <p>Endpoint patch compliance across the managed fleet.<span class="tag measured">Measured</span></p>
+          <p>Backup job success rate this billing period.<span class="tag measured">Measured</span></p>
+          <p>Threats detected and contained this quarter.<span class="tag measured">Measured</span></p>
+          <p>Risk reduction vs. peer MSP book of business — pattern only, no benchmark dataset committed.<span class="tag benchmarked">Benchmarked</span></p>
+          <p>Coverage on any non-N-able tooling the client may run — out of scope for this data model.<span class="tag unverified">Unverified</span></p>
+          <div class="legend">
+            <span><i class="dot measured"></i>Measured — first-party telemetry, defensible today</span>
+            <span><i class="dot benchmarked"></i>Benchmarked</span><span><i class="dot unverified"></i>Unverified — out of scope for this stack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-box" data-collapsed="true">
+    <div class="risk-head" onclick="toggleRisk(this)"><span class="icon">!</span><h3>Honest risk read</h3><span class="reveal-hint"></span></div>
+    <div class="risk-body"><div class="risk-grid">
+      <div class="risk-item"><div class="k">Idea Chess survival</div><div class="v">~<b>0.9%</b> naive — higher than Branch A precisely because it removes the two deadliest gates.</div></div>
+      <div class="risk-item"><div class="k">Where it dies</div><div class="v">At <b>Adopt</b> — mixed-stack MSPs may experience this as an <b>incomplete Branch A</b>, not a distinct, sufficient offering.</div></div>
+      <div class="risk-item"><div class="k">The lever</div><div class="v">Scope honestly to N-able-consolidated MSPs; treat it as the <b>foundation</b> that later expands — not a compromise.</div></div>
+      <div class="risk-item"><div class="k">Riskiest assumption</div><div class="v">Mixed-stack MSPs pay a premium for N-able-only scope [P≈0.35]. Demand was measured for cross-vendor, not native — unverified.</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="divider"><hr></div>
+
+<!-- ============ IR RCA ============ -->
+<div class="concept">
+  <div class="concept-head">
+    <div>
+      <span class="concept-label">Package 4 · Live IR/RCA Security Package</span>
+      <h2>The root cause, written during the incident — not days after it</h2>
+    </div>
+    <span class="concept-tier">Tier 0 — Concept</span>
+  </div>
+  <p class="concept-sub">When something gets through, a coworker builds the customer-ready root-cause report as the incident unfolds — cross-stack, confidence-tagged, defensible by morning. Tests whether a live RCA is trusted enough to send to a client and an insurer without a human rewrite, and whether the data to build it is even reachable.</p>
+
+  <div class="board-grid">
+    <div class="board-card">
+      <h3>The problem</h3>
+      <p>Post-incident, MSPs reconstruct what happened by hand, days later, from fragmented logs across six tools and three threads. The report is a liability artifact — a wrong root cause narrated confidently destroys credibility in one sentence.</p>
+    </div>
+    <div class="board-card">
+      <h3>The wedge — during, not after</h3>
+      <p class="quote">"Doing the RCA during the incident is equivalent to helping resolve it."<cite>— MSP, source interview</cite></p>
+      <p>Post-hoc, the same report collapses into a smaller, commoditizable text-synthesizer. During, it's part of the response — that's why a client pays.</p>
+    </div>
+    <div class="board-card">
+      <h3>Why now</h3>
+      <p>This is the #1 named driver on cyber-insurance policies — compliance-driven willingness to pay is real, not assumed. The gap is that a defensible version of the proof only exists days later, if at all.</p>
+    </div>
+  </div>
+
+  <div class="mock-label">What this could look like</div>
+  <div class="mock-frame">
+    <div class="app-shell">
+      <div class="app-topbar">
+        <div class="crumb"><span class="incident-badge"><span class="pulse"></span>Incident in progress</span> &nbsp;INC-2291 · Lateral movement, endpoint cluster 4</div>
+        <div class="actions"><button class="btn ghost-ai">✦ Ask N-zo</button><button class="btn primary">Save</button></div>
+      </div>
+      <div class="app-nav">
+        <div class="nav-group"><div class="nav-group-label">Control Plane</div><div class="nav-item active">Agents</div><div class="nav-item">In Flight</div></div>
+        <div class="nav-group"><div class="nav-group-label">Governance</div><div class="nav-item">Value Ledger</div><div class="nav-item">Logs</div></div>
+      </div>
+      <div class="app-main">
+        <div class="split">
+          <div class="col-left">
+            <div class="col-head"><h4>Technical evidence chain</h4><span class="chip">Live — building</span></div>
+            <div class="timeline-item"><div class="ts">14:02:11 UTC</div><p>Auth log shows privilege escalation on host WKS-0447, service account context.</p><span class="tag confirmed">Confirmed</span></div>
+            <div class="timeline-item"><div class="ts">14:04:53 UTC</div><p>Correlated EDR alert suggests initial access via phished credential, ~2hrs prior.</p><span class="tag inferred">Inferred</span></div>
+            <div class="timeline-item"><div class="ts">14:07:20 UTC</div><p>Possible data staging on file share — source path not yet corroborated.</p><span class="tag unverified">Unverified</span></div>
+          </div>
+          <div class="col-right">
+            <div class="col-head"><h4>Client / insurer narrative</h4><span class="chip">Draft</span></div>
+            <div class="narrative">
+              <span class="draft-flag">Draft — not sent</span>
+              <p><strong>What we know:</strong> an account on WKS-0447 was used to escalate privileges at 14:02 UTC — confirmed directly from authentication telemetry.</p>
+              <p><strong>What we believe, pending confirmation:</strong> the likely entry point was a phished credential roughly two hours earlier — pattern-based inference, labeled as such.</p>
+              <p><strong>Still open:</strong> possible data staging is flagged from a single source and has not been corroborated. Will not appear as a client-facing claim until it is.</p>
+            </div>
+          </div>
+        </div>
+        <div class="review-gate">
+          <div class="icon">✓</div>
+          <div class="txt"><strong>Human review gate</strong><span>No output above is client-facing until a person signs off.</span></div>
+          <span class="status">Not yet cleared</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-box" data-collapsed="true">
+    <div class="risk-head" onclick="toggleRisk(this)"><span class="icon">!</span><h3>Honest risk read</h3><span class="reveal-hint"></span></div>
+    <div class="risk-body"><div class="risk-grid">
+      <div class="risk-item"><div class="k">Idea Chess survival</div><div class="v">~<b>0.55%</b> naive — the conditional second of the three packages here.</div></div>
+      <div class="risk-item"><div class="k">Where it dies</div><div class="v">At <b>Build</b> — not the confidence-tag UI (solvable), but whether the <b>evidence chain exists at all</b>.</div></div>
+      <div class="risk-item"><div class="k">Riskiest assumption</div><div class="v">A reconstructable incident timeline exists in Adlumin and is reachable by a coworker without a separate product-lane decision.</div></div>
+      <div class="risk-item"><div class="k">Pricing signal</div><div class="v">One MSP mentioned "10–15% of SOC running expense"; another described per-incident. <span class="cs">[CS: MEDIUM — single source, not a market number]</span></div></div>
+    </div>
+    <div class="gate-c">
+      <span class="gate-badge">Gate C — unanswered</span>
+      <p><strong>Adlumin incident data access — technical and legal, cross-tenant.</strong> Binary and upstream of the entire design. If Adlumin is a separate product lane, there's no data for this coworker to reason over. Live zero-holes correlation is currently rated <strong>~30% feasible</strong>. Test Gate C before any design work — it's the whole existence question.</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="divider"><hr></div>
+
+<!-- ============ vCIO/vCISO ADVISORY PACKAGE ============ -->
+<div class="concept">
+  <div class="concept-head">
+    <div>
+      <span class="concept-label">Package 1 · vCIO/vCISO Advisory Package</span>
+      <h2>Not a coworker — a way to sell what the coworkers already prove</h2>
+    </div>
+    <span class="concept-tier">Tier 0 — Concept</span>
+  </div>
+  <p class="concept-sub">A positioning and billing layer that bundles proof coworkers — QBR + Environment Health + roadmap/planning as "vCIO," IR RCA + Tabletop + Alert Flood + identity as "vCISO" — into a flat-fee advisory retainer, priced by MSP practice size instead of per tool. Highest naive survival of any package in the portfolio, and it depends on Branch A/B existing underneath it first.</p>
+
+  <div class="board-grid">
+    <div class="board-card">
+      <h3>The problem</h3>
+      <p>MSPs want to expand from break-fix into advisory, but have no scalable proof layer and no billing mechanism for practice-based pricing. Today N-able's tooling is priced and packaged as tools, full stop.</p>
+    </div>
+    <div class="board-card">
+      <h3>The lever — flat fee, not revenue share</h3>
+      <p class="quote">~14% naive survival flat-fee vs. ~0.02% revenue-share — a 700× swing on one pricing decision.</p>
+      <p>No channel precedent exists for revenue-share, and the billing infrastructure for practice-based pricing doesn't exist in any N-able system today.</p>
+    </div>
+    <div class="board-card">
+      <h3>Why now</h3>
+      <p>vCISO/vCIO is the highest-value use case named in Guidepoint. Vendor-sponsored research (n=200) says MSPs offering vCISO tripled 21%→67% YoY, 81% already using AI/automation. <span class="cs">[CS: MEDIUM — WOBBLY, vendor-sponsored]</span></p>
+    </div>
+  </div>
+
+  <div class="mock-label">What this could look like</div>
+  <div class="mock-frame">
+    <div class="app-shell">
+      <div class="app-topbar">
+        <div class="crumb">Practice Builder / <b>Bundle Composer</b> · MSP: Meridian IT Partners</div>
+        <div class="actions"><button class="btn ghost-ai">✦ Ask N-zo</button><button class="btn primary">Save</button></div>
+      </div>
+      <div class="app-nav">
+        <div class="nav-group"><div class="nav-group-label">Control Plane</div><div class="nav-item active">Practice Packages</div><div class="nav-item">Coworkers</div><div class="nav-item">In Flight</div></div>
+        <div class="nav-group"><div class="nav-group-label">Capabilities</div><div class="nav-item">Bundle Composer</div><div class="nav-item">Billing Rules</div></div>
+        <div class="nav-group"><div class="nav-group-label">Governance</div><div class="nav-item">Contract Terms</div><div class="nav-item">Value Ledger</div></div>
+      </div>
+      <div class="app-main">
+        <div class="doc-header">
+          <div>
+            <div class="doc-title">Advisory practice bundle — draft</div>
+            <div class="doc-sub">Positioning layer over existing proof coworkers · no new coworker being built here</div>
+          </div>
+          <div class="chip-row"><span class="chip native">Flat fee</span><span class="chip">By practice size</span></div>
+        </div>
+        <div class="tier-cols">
+          <div class="tier-card">
+            <div class="tier-name"><h4>vCIO tier</h4><span class="chip" style="font-size:9.5px;padding:2px 8px;">Strategy-facing</span></div>
+            <ul>
+              <li>QBR Coworker <span class="status">Branch A/B</span></li>
+              <li>Environment Health <span class="status">Prerequisite</span></li>
+              <li>Roadmap / planning assist <span class="status">Unmade</span></li>
+            </ul>
+          </div>
+          <div class="tier-card vciso">
+            <div class="tier-name"><h4>vCISO tier</h4><span class="chip native" style="font-size:9.5px;padding:2px 8px;">Risk-facing</span></div>
+            <ul>
+              <li>IR RCA Coworker <span class="status">Package 4</span></li>
+              <li>Tabletop exercises <span class="status">Unmade</span></li>
+              <li>Alert flood + identity <span class="status">Unmade</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="billing-row">
+          <span class="lbl">Billing mechanism</span>
+          <span class="val">Flat fee, tiered by MSP practice size — not per seat, not revenue-share</span>
+          <span class="unresolved">Not built anywhere in N-able today</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-box" data-collapsed="true">
+    <div class="risk-head" onclick="toggleRisk(this)"><span class="icon">!</span><h3>Honest risk read</h3><span class="reveal-hint"></span></div>
+    <div class="risk-body"><div class="risk-grid">
+      <div class="risk-item"><div class="k">Idea Chess survival</div><div class="v">~<b>14%</b> naive flat-fee vs. ~<b>0.02%</b> revenue-share — highest survival of any package in the corpus, entirely conditional on the pricing model.</div></div>
+      <div class="risk-item"><div class="k">Where it dies</div><div class="v">At <b>Stage 3</b> — can't ship before QBR quality exists underneath it. This package is downstream of Branch A/B, not a standalone bet.</div></div>
+      <div class="risk-item"><div class="k">Riskiest assumption</div><div class="v">The billing mechanism clears PSA/channel norms — MSPs accept N-able-determined pricing tied to practice size rather than per-tool/seat. <b>P≈0.45</b> flat-fee, <b>P≈0.20</b> revenue-share.</div></div>
+      <div class="risk-item"><div class="k">TAM spread</div><div class="v">Per-tool floor ~<b>$1B</b> vs. share-of-services ceiling ~<b>$4.3B</b> — the spread <i>is</i> the pricing decision. <span class="cs">[CS: MEDIUM — WOBBLY]</span></div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="footer-note">ACP Concept Directions · research stack, no rails · Branch A + Branch B + IR RCA + vCIO/vCISO Advisory Package · all mock data fictional · 2026-07-23</div>
+
+<script>
+function toggleRisk(el){
+  var box = el.closest('.risk-box');
+  var collapsed = box.getAttribute('data-collapsed') === 'true';
+  box.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+}
+function toggleAllRisk(){
+  var boxes = document.querySelectorAll('.risk-box');
+  var anyRevealed = Array.prototype.some.call(boxes, function(b){ return b.getAttribute('data-collapsed') !== 'true'; });
+  var next = anyRevealed ? 'true' : 'false';
+  boxes.forEach(function(b){ b.setAttribute('data-collapsed', next); });
+  document.getElementById('globalRiskToggleLabel').textContent = next === 'true' ? 'Reveal all risk reads' : 'Hide all risk reads';
+}
+</script>
+</body>
+</html>

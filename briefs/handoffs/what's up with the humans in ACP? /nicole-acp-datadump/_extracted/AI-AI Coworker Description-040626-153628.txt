@@ -1,0 +1,158 @@
+
+--- PAGE 1 ---
+AI Coworker Description
+AI Coworkers:
+(for UEM only proposal:   )
+Example of Building an AI Coworker AI Coworker Interface - v0 by Vercel
+1. Problem Statement
+MSPs spend an enormous amount of time performing repeatable operational tasks. 
+While we will do our best to supple AI Agents and Experts to support their tasks, prebuilt
+experts will not cover all needs
+MSPs/customers will need to customize agents
+Customization will be tied to and their use cases and their scripts
+Many of these tasks are already scriptable, but scripts are risky to run, and often gated by
+expertise or permissions.
+UEM Only AI Coworkers
+their runbooks/SOPs
+--- PAGE 2 ---
+AI coworkers are the way we take AI Expert Agents and allow MSPs to modify their tasks,
+learn new skills, and call Scripts (or other deterministic action-taking devices). 
+Value Statement When MSPs can customize their AI agents in our secure environment, “The
+outcome for the MSP is you reduce the number of technicians that you need to deliver the
+services that you have.”
+2. Product Vision
+AI Coworkers are trusted, task-oriented AI agents that work alongside MSP technicians.
+They do three things well:
+Understand intent
+Choose the safest viable action
+Deliver measurable time savings
+They are not autonomous free-for-alls. They operate inside guardrails defined by N-able and the
+MSP.
+They:
+Take labor and turn it into software/automation
+Supply Business Resilience at machine speed
+Are supported by
+3. Core Concepts
+AI Coworkers
+An AI Coworker is a configurable AI agent designed to handle a specific category of work, such
+as patching, remediation, compliance, or scripting.
+Each coworker is composed of:
+One or more AI Experts
+Connections to one or more MCP servers   (N-able ships default coworkers for common MSP
+use cases. Customers can clone and customize them.)
+ a control pane for the MSPs and for internal efficiency
+A Runbook defined by N-able or the customer (AKA SKILLS)
+--- PAGE 3 ---
+One or more Tools (aka run Script or call action ) which may happen outside of the context of
+the AI Agent (to reduce token utilization and increase determinism
+AI Experts
+AI Experts are specialized AI agents with a clearly defined scope.
+Each AI Expert:
+Has an explicit runbook that defines how it reasons and acts
+Is attached to one or more MCP servers
+Can recommend or execute Actions based on risk and permissions 
+AI Experts do not act outside their runbook.
+Ai Experts are owned and managed by n-able 
+MCP Servers and Tools
+MCP servers expose data or access to secondary locations. They include tools.
+There may also be Tools associated with an AI agent that are not in the MCP Server that AI
+Agents can call.  
+Tools may:
+Retrieve data
+Make decisions
+Take action
+One important tool type is the Script Repository access
+The Script Repository is a curated, MSP-approved collection of scripts.
+Key properties:
+Scripts are explicitly approved by the MSP
+Each script has a risk classification: low, medium, or high
+Running a script is considered an action
+Scripts represent trusted automation
+Execution Flow where a Script is involved
+A. Script Exists and Is Approved
+User makes a request to an AI Coworker ( or it is a time trigger or otherwise triggered)
+The coworker routes the request to one or more  AI Experts to evaluate the request against its
+runbook. If the request requires it,
+The Expert searches the Script Repository
+--- PAGE 4 ---
+If a matching script exists:
+The Expert recommends the script
+The script is executed automatically if:
+The action is low risk (aka a risk  that is at or below the usersʼ risk tolerance), or
+The user has granted permission
+All action, reasoning, etc is logged and explained
+B. Script Does Not Exist
+If no existing script or tool can solve the request:
+The AI Expert calls a Script Generator Expert
+The Script Generator designs a new script
+The script is presented to the user for review
+The user can:
+Approve and run it (if permitted)
+Publish it to the Script Repository (if permitted)
+Submit it for approval if they lack permissions
+Once approved, the script becomes reusable for future requests.
+Permissions and Risk Model
+All actions respect:
+User permissions/token permissions
+MSP approval policies
+Script risk levels
+If a user cannot approve or run a script:
+The AI clearly explains why
+The AI suggests the appropriate next step, such as submitting the script for approval
+No hidden automation is allowed
+Customer Created Coworkers
+Customers can:
+Clone default N-able coworkers
+Modify the runbook(Adjust behavior and scope)
+Add or remove MCPs/tools
+Custom coworkers can be:
+Run on demand
+--- PAGE 5 ---
+Triggered by events
+Executed on a schedule
+This enables MSPs to encode their own SOPs workflows and other vendors into AI coworkers.
+We should build the UX to this up front. This does not need to be second 
+8. Value Tracking
+Each AI Coworker has an associated Value Score.
+Value is defined as:
+Estimated time to complete the task manually
+Versus time to complete the task with the AI Coworker
+There may be secondary values like ‘additional devices managedʼ , license fees saved, etc. we
+should design for this up front.  
+The coworkers ship w default values and are adjustable w permissions 
+A Value Ledger tracks:
+Time saved per action/value added on each run
+Aggregate value added per coworker
+Cumulative value over time
+This makes AI value visible, measurable, and defensible.
+Promoting Agent behavior from ‘Human in the loopʼ to ‘Autonomousʼ
+There is a trustworthiness issue when people first generate and utilize AI Agents and
+Coworkers.
+In an experiment done by @Ewan Cameron
+He Hypothesizes : “ We believe that… the concept of L4 earned autonomy — where an AI
+Expert co-worker graduates from "human confirms" to "AI executes, human audits" — can be
+represented as a coherent, self-evident UX concept that a mature MSP would immediately
+understand without explanation. Specifically, that one of three competing mental models (track
+record, graduated dial, or scope-based guardrail) will survive a 10-second comprehension test
+and provoke an instinctive opinion about whether they'd engage with it.”
+In this experiment, we see the AI Experts and AI Coworkers listed as a Task Category, and their
+outcomes/actions are assigned a trust-execution level.
+--- PAGE 6 ---
+And one can click into an individual Coworker to see:
+
+--- PAGE 7 ---
+Example Dashboard and AI Coworker manager creation wizard 
+
+--- PAGE 8 ---
+
+--- PAGE 9 ---
+Example UI to create an AI Coworker
+
+--- PAGE 10 ---
+
+--- PAGE 11 ---
+
+--- PAGE 12 ---
+
+--- PAGE 13 ---
+@Laura DuBois  image including the Data Substrate idea from @Joe LoPilato

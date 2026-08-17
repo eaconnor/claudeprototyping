@@ -1,0 +1,54 @@
+# Rewst
+slug: rewst
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Rewst is a no-code/low-code automation platform built specifically for MSPs. It provides a drag-and-drop workflow builder, a pre-built automation library (the Crate Marketplace), and 200+ integrations into common MSP tools. In 2025–2026, Rewst added AI-native capabilities including RoboRewsty (an AI co-pilot) and an MCP server that allows external AI agents to trigger and interact with Rewst automations — positioning it as an AI agent control plane for MSP workflows.
+
+## MSP Relevance
+Rewst addresses the #1 MSP operational pain point — repetitive manual work — through codeless automation that technicians can build without developer resources. The MCP Server and AI Workflow Builder make Rewst a potential AI agent control plane for MSP stacks, which is direct competitive territory for NZO. Their 2026 report found 97% of MSPs plan to automate more, but only 4% say they have — a gap Rewst is explicitly trying to close.
+
+## Key Offerings & Capabilities
+- Drag-and-drop automation workflow builder
+- Crate Marketplace — pre-built community-contributed automation templates
+- 200+ integrations with PSA, RMM, security, documentation, and cloud tools
+- RoboRewsty AI co-pilot — embedded throughout the workflow builder for documentation and suggestions
+- RoboRewsty AI Workflow Builder — build full automations via natural language conversation (GA March 2026)
+- MCP Server — allows external AI agents to trigger and consume Rewst automations via structured interface (rolling out Q3–Q4 2025)
+- ROC (Rewst Operations Center) — community-backed support model
+
+## Recent Announcements
+- Launched MCP Server (announced June 2025 FLOW conference, rolling out Q3–Q4 2025) — external AI agents can now call Rewst automations
+- RoboRewsty evolved into full automation lifecycle co-pilot (June 2025)
+- Launched RoboRewsty AI Workflow Builder — natural language workflow creation (March 2026)
+- Published 2026 State of MSP Automation report — 97% plan to automate more, only 4% have
+- FLOW 2026 conference scheduled June 23–25, 2026, Nashville, TN
+
+## Pricing Model
+Per-user per-month subscription. Scales with number of MSP technician seats, not endpoint count. Crate Marketplace content included. Community reports pricing in the $200–500/month range for small MSPs; exact pricing requires sales contact.
+
+## Strengths
+- Purpose-built for MSPs — integrations and templates are MSP-specific, not generic iPaaS
+- No-code — technicians build automations without engineering support
+- MCP Server is a genuine differentiator — makes Rewst an AI agent endpoint, not just a workflow tool
+- Strong community engagement (Discord, ROC) creates network effects and peer-driven content
+- Fast product velocity — shipping AI features aggressively in 2025–2026
+- Crate Marketplace reduces time-to-value for common automation use cases
+
+## Weaknesses / Gaps
+- Enterprise-grade governance features (audit logs, RBAC, compliance) still maturing
+- Value drops significantly if an MSP's key tools aren't in the integration catalog
+- AI Workflow Builder is early — quality of generated automations varies
+- Primarily North America focused
+
+## Competitive Threat to NZO
+Level: High
+Reason: Rewst's MCP Server and AI Workflow Builder make it a direct competitor to NZO's AI agent control plane vision. An MSP using Rewst + RoboRewsty has a credible AI-driven automation layer without needing NZO. This is the most direct competitive threat in the MSP automation space.
+
+## Notes
+- FLOW 2026 conference (June 23–25, Nashville) will likely include major AI announcements — monitor closely
+- MCP Server positions Rewst as infrastructure for AI agents, not just a workflow tool
+- The 97%/4% automation gap from their report is a powerful sales narrative — NZO needs a counter-narrative

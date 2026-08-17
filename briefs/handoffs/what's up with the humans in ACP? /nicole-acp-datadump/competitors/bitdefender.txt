@@ -1,0 +1,59 @@
+# Bitdefender GravityZone
+slug: bitdefender
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Bitdefender GravityZone is a unified endpoint security platform providing EDR, XDR, cloud-native security, and MDR services from a single console, targeting MSPs and enterprise organizations globally. In May 2026, Bitdefender was named "Champion" in the Omdia Global Cybersecurity MSP Ecosystems Leadership Matrix — recognized as a top-tier vendor for MSP partner ecosystems, innovation, and partner-first execution. GravityZone's continuous monthly release cadence (6-7 platform updates per year) provides rapid security capability expansion including AI-driven PHASR (Proactive Hardening and Attack Surface Reduction) and KSPM (Kubernetes Security Posture Management).
+
+## MSP Relevance
+Bitdefender GravityZone is a leading MSP security platform with monthly consumption-based billing through global distributor and RMM partner networks. No minimum commitments enable MSPs to start small and scale. Aggregate usage across all clients provides volume pricing benefits as an MSP's managed portfolio grows. The Omdia Champion status (May 2026) validates Bitdefender's commitment to MSP partner success — positioning it as a top-tier security stack choice alongside CrowdStrike Falcon and SentinelOne Singularity.
+
+## Key Offerings & Capabilities
+- GravityZone EDR — behavioral endpoint detection with automated threat correlation and incident response
+- GravityZone XDR — cross-environment detection spanning endpoint, network, email, cloud, and identity
+- PHASR (Proactive Hardening and Attack Surface Reduction) — AI-driven reduction of attack surface based on actual user behavior; expanded to Linux and macOS in April 2026
+- KSPM (Kubernetes Security Posture Management) — cloud Kubernetes configuration monitoring and auto-remediation (December 2025)
+- GravityZone MDR — 24/7 managed detection and response backed by Bitdefender's global security operations
+- External Attack Surface Management (EASM) — Internet-facing asset discovery and risk assessment
+- Compliance monitoring — NIST CSF 2.0, NCSC CAF v4.0 (UK), MAS TRM 2021 (Singapore), CIS, PCI DSS
+- GravityZone Security Data Lake — centralized telemetry storage for advanced threat hunting (GA January 2026 as yearly add-on)
+- HaloPSA integration — bidirectional billing, ticketing, and incident response automation (December 2025)
+- MSP multi-tenant console — centralized management across all client environments with flexible feature allocation
+
+## Recent Announcements
+- May 2026: Bitdefender named "Champion" in Omdia Global Cybersecurity MSP Ecosystems Leadership Matrix — highest recognition for MSP partner ecosystem quality
+- April 2026 (v6.72): PHASR expanded to Linux and macOS; NIST CSF 2.0 compliance support added; EASM DNS improvements; PHASR available as standalone monthly subscription
+- February 2026 (v6.70): Enhanced administrative capabilities and additional security controls
+- December 2025 (v6.69): KSPM for Kubernetes launched; YARA rule automation; HaloPSA integration; NCSC CAF v4.0 and MAS TRM 2021 compliance standards; hybrid licensing model; passkey authentication
+- January 2026: GravityZone Security Data Lake GA as first yearly add-on subscription
+
+## Pricing Model
+Monthly consumption-based billing through global distributor and RMM partner network. No minimum commitments. Aggregate usage across all clients qualifies for volume pricing — MSPs benefit from per-unit cost reduction as their managed portfolio grows. Hybrid licensing available: combine monthly subscriptions (core platform) with yearly add-ons (Security Data Lake, PHASR standalone). MSP pricing not publicly disclosed — negotiated through distributors and RMM platform partnerships.
+
+## Strengths
+- Omdia Champion status (May 2026) provides the strongest independent analyst validation for MSP channel programs in the security category
+- Monthly release cadence with 6-7 updates per year means MSPs consistently deliver new security capabilities to clients without waiting for annual releases
+- PHASR (Linux/macOS expansion, April 2026) is a genuinely differentiated capability — AI-driven attack surface reduction based on actual observed user behavior, not policy-based rules
+- KSPM fills a critical gap for MSPs with cloud-native enterprise clients running Kubernetes workloads
+- HaloPSA integration (December 2025) reduces MSP admin overhead for billing and incident management
+- No minimum commitments enables MSPs to onboard new clients immediately without pre-committing to volume
+
+## Weaknesses / Gaps
+- Lower brand recognition than CrowdStrike, SentinelOne, or Microsoft Defender in enterprise security evaluations
+- Pricing opacity — no public pricing; MSPs must negotiate through distributors, creating friction in initial evaluation
+- MDR service quality and threat intelligence network smaller than CrowdStrike's globally dominant telemetry base
+- KSPM is newly launched (December 2025) — production maturity in complex enterprise Kubernetes environments still being validated
+- Partner program details not fully public — MSPs must engage distributors to understand actual margin structures
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Bitdefender GravityZone is an endpoint security platform with no meaningful overlap with NZO's AI agent and workflow automation capabilities. It occupies the security detection layer in the MSP stack. NZO's AI agents could complement GravityZone by automating security response workflows triggered by GravityZone detections — a potential integration opportunity.
+
+## Notes
+- Omdia Champion status (May 2026) is a meaningful competitive differentiator in MSP sales conversations — few security vendors achieve this recognition specifically for MSP ecosystem quality
+- The PHASR capability (AI-driven attack surface reduction based on actual user behavior) is the most technically distinctive feature in GravityZone's portfolio — worth tracking for how this evolves into broader AI-driven security automation
+- HaloPSA integration signals Bitdefender is investing in the PSA ecosystem that NinjaOne and other RMM-focused vendors are building around
+- Monthly consumption billing with no minimums is the right pricing model for MSPs — competitors who require annual commitments create friction; Bitdefender's model reduces adoption barriers

@@ -1,0 +1,483 @@
+TRANSCRIPT: Boyd Smith - Ask N-zo Feedback Session
+Source: Boyd Smith - Ask N-zo Feedback Session.vtt
+============================================================
+
+[00:00:03] Boyd Smith:
+  So, Yep, cool. So this is Michael and this is Josh.
+
+[00:00:04] Nicole Reineke:
+  Thank you.
+
+[00:00:09] Boyd Smith:
+  Morning, so.
+
+[00:00:11] Nicole Reineke:
+  Hi, Michael and Josh. Thank you very much for taking the time to talk to us today. First, thank you very much for even bothering to try the the tool at all. We really appreciate it I know you had to go out of your way to do it, so I'm quite grateful for that So thank you. All right. So let's start with, have you been actively using Enso during the preview? and tell me a little bit about it.
+
+[00:00:33] Boyd Smith:
+  Yeah, so my experience is we wrote a bunch of notes down here. Definitely the most helpful was parsing
+
+[00:00:38] Nicole Reineke:
+  OK.
+
+[00:00:40] Boyd Smith:
+  and summarizing certain platform functions, so like health scores and things like that That's actually one of my jobs that our service writer has me doing is going over those health Checks and verifying because recently we've been experiencing some lower scores and so going over that and having it kind of look through everything and give us the exact breakdown of what the health scores are actually looking for, searching those knowledge base articles to be able to give us that information and then report back On changes that we make and whether or not those changes are going to affect that documentation search experiences, we've had kind of mixed reports on that Most of the time I would say it does do a good job at searching the knowledge base
+
+[00:01:25] Nicole Reineke:
+  Mhm.
+
+[00:01:29] Boyd Smith:
+  articles.
+
+[00:01:31] Nicole Reineke:
+  Mhm.
+
+[00:01:32] Boyd Smith:
+  But notice that there's some outdated knowledge base articles that are on there that it keeps pulling from. So kind of prompting it a little bit
+
+[00:01:38] Nicole Reineke:
+  OK.
+
+[00:01:40] Boyd Smith:
+  better and spending a little bit extra time on those prompts usually helps I wanna wanna pause and give Nicole a chance to ask follow up questions.
+
+[00:01:49] Nicole Reineke:
+  This is great. This is great. Can I ask about how long ago that was for the outdated knowledge free circles? Is that still happening today? Because we did just drop a new release.
+
+[00:01:59] Boyd Smith:
+  I would say last week I have.
+
+[00:02:02] Nicole Reineke:
+  Last week. Oh, OK. So that's bad. All right. Great. Thank you.
+
+[00:02:04] Boyd Smith:
+  Yeah And just kind of historical perspective on that, Enable Me has always been an outdated mess in my opinion. And you know,
+
+[00:02:12] Nicole Reineke:
+  Yeah.
+
+[00:02:14] Boyd Smith:
+  so it feels like the technical debt of Enable Me is just flowing straight through to Enzo.
+
+[00:02:20] Nicole Reineke:
+  Yeah, you're absolutely correct. So we had a support initiative that over the last quarter went through 15, 000 of those articles and they in theory they updated the majority of the articles and removed ones that were old and then we did a pull back in for Enzo It should have. I I thought it was released two weeks ago where we only took articles that had been touched over the last X number of months So if you're still experiencing that, then we've done something wrong and thank you.
+
+[00:02:52] Boyd Smith:
+  Well, I think, I think to be clear like it, it doesn't tell us that they're old, but it feeds us information that looks like it might be correct and we start looking at, you know, digging, trying to use it and then we realize that things have updated for the program,
+
+[00:03:05] Nicole Reineke:
+  Correct.
+
+[00:03:08] Boyd Smith:
+  stuff like that. And then we dig deeper and we realize
+
+[00:03:08] Nicole Reineke:
+  OK.
+
+[00:03:11] Boyd Smith:
+  that, yeah, it's outdated So Because that documentation effort isn't In Sync at all with any product development efforts or improvements. And I mean, documentation's the last place because the product development team would have to develop all kinds of new stuff before there's ever documentation done So it might that doesn't mean that that documentation review didn't do it still that by nature Documentation is a lagging older piece of the puzzle, right?
+
+[00:03:37] Nicole Reineke:
+  Yeah, yeah, you're absolutely correct. OK, fantastic. I will get on that And you've been doing thumbs down, right? Is that accurate? So when you see something that's bad, you just OK, perfect. Keep going.
+
+[00:03:46] Boyd Smith:
+  Yep, Yep Um, we've been. Do I get Josh a card? Yeah, sure. OK.
+
+[00:03:53] Nicole Reineke:
+  Yeah.
+
+[00:03:54] Boyd Smith:
+  We're working on the same document that we that we put together. I don't know. Um I don't know. I kind of had more of a I might be asking questions that it's not built to do and unfortunately,
+
+[00:04:07] Nicole Reineke:
+  OK.
+
+[00:04:09] Boyd Smith:
+  so I guess one of one of my my critiques is just there's no history right now So there's no like if you if you close the window accidentally or something And whenever you come back to it, there's no longer there So I I I don't have the specific questions I asked it, but I'll get a response. A lot of it saying that it errored out Just just a side note, the UI leaves a lot to be desired yet, you know, because the the UI for Enzo is Compared to what we're used to through paid for versions of ChatGPT, Cloud, copilot, you know the the UI, you know it's not a ongoing conversation It's like you ask it a question, it gives it a response, you're done You know, there's no, there's no history that's being built that we can see. There's no history of questions It's it's not It's not an ongoing dialogue like we have with other AI models we use in the business. It's almost like a one and done search function. Yeah, it's definitely beneficial for like
+
+[00:05:06] Nicole Reineke:
+  OK.
+
+[00:05:08] Boyd Smith:
+  copilot and ChatGPT and things like that, looking over and being like, hey, I just spent an hour prompting this to give me the exact Information that I want and now I'm gonna have to copy this down to a notepad through Enzo versus just going back into the application, looking at that chat history and finding exactly what I had missed. Yeah,
+
+[00:05:30] Nicole Reineke:
+  Yeah, yeah.
+
+[00:05:31] Boyd Smith:
+  I specifically like I was asking it to give me links to different documentation areas And it did. But then I accidentally clicked on the link and immediately just used my same tab that I had open to load the documentation. So when I went back, I lost my whole chat and everything.
+
+[00:05:49] Nicole Reineke:
+  Yeah, so we're not doing a new tab or new
+
+[00:05:49] Boyd Smith:
+  And yeah.
+
+[00:05:51] Nicole Reineke:
+  window on link clicks. That's terrible. And thank you for finding that You're the first person to tell me that.
+
+[00:05:56] Boyd Smith:
+  Yep. And and by the way, Nicole is super, super bright. You know, the the times I've met her and her reputation in the community and everything. I mean, she is. She is, yeah. I mean, she'll, she'll keep up with anything we share. I'm not worried about that So.
+
+[00:06:15] Nicole Reineke:
+  All right, I I owe a royalty check to Boyd now Now keep going. OK, so that's great feedback I can't believe we did not do that. Any other UI missing features?
+
+[00:06:29] Boyd Smith:
+  Well, I mean, I specifically, well, I guess from our perspective, it seems like Enzo has been focused specifically more on asset information I mean literally we can only access it within assets Yeah, I don't know. I guess the UI is more just kind of it's it's not you have to go to assets, you have to have that thing open and it's
+
+[00:06:51] Nicole Reineke:
+  Mhm.
+
+[00:06:53] Boyd Smith:
+  not very like you can't move it around you you it does you do preserve your chat if you're careful and you go to other areas within insight and come back But I have noticed that the the full screen function I do enjoy that being able to typically my SOP for that is load up Enzo, go to assets page, load up Enzo, go to full screen and then load everything else in a completely new tab or even new window And so I'll typically move that window over and then be able to work out of that And that way I don't, assuming that I don't click on a link that it provides, but and then I don't lose any of that
+
+[00:07:34] Nicole Reineke:
+  OK.
+
+[00:07:34] Boyd Smith:
+  data. But that's a big draw because I'm constantly having that open And we all know how Chrome and Edge work and and suck in that memory. So yeah, I I asked it if it could give me links that would prompt a new tab and it it just kind of flat out told me no, I don't do that You need to right click on this. Yeah, so.
+
+[00:07:52] Nicole Reineke:
+  That was very aggressive, Evanzo. We'll have to look at that as well. Like, sorry we are not here to be helpful. OK, that is fantastic. I actually, I love the the use case of the the two windows that's that's aligned with some of the other feedback that I've received. And so the idea of just making it a pop up so that you can have it act as a separate window is is a very good one. Okay, keep going.
+
+[00:08:16] Boyd Smith:
+  Especially since you know if you walk into, if you walk the floor in a typical knock, you know, a tech knock, you know that you know, I mean every everybody has. I mean, it seems like any business I walk into, you know, techs have at least three screens open, if not sometimes 4.
+
+[00:08:32] Nicole Reineke:
+  Yeah, mhm.
+
+[00:08:33] Boyd Smith:
+  No. So that's the natural way that you know techs working in a a knock capacity or help desk or service desk capacity to work that you know basically it's like if I were marketing Enzo, you know like you know like what a win would be is Enzo earns its own screen.
+
+[00:08:49] Nicole Reineke:
+  Yeah.
+
+[00:08:50] Boyd Smith:
+  Yeah, like if Enzo learned his own screen, you know that that would be what a win would be.
+
+[00:08:57] Nicole Reineke:
+  Yeah, that's great Uh, you mentioned that it just had asset data, which is a very true statement right now. What other data would you like to see in it?
+
+[00:09:12] Boyd Smith:
+  I don't know. I guess it well, I guess it's hard to identify at the moment as far as I mean when we've already been dabbling in in other AI's, you know, Chem CPT and and copilot where they're kind of very generalistic.
+
+[00:09:27] Nicole Reineke:
+  Mhm.
+
+[00:09:28] Boyd Smith:
+  So it's kind of an exercise for us to all of a sudden be dealing with an AI that's very specific. And so I mean, I guess I don't know it. So it is very asset specific It does also try to pull and give us information from uh documentation You know, both old and new. Um, it doesn't exactly I feel like it doesn't. Uh Do its own understanding of it, because it kind of tries to verbatim tell us what it found, but it still presents it as if it's it's coming up with it on the spot. I guess it just doesn't I the moment doesn't feel like it's Intelligently trying to figure out if it's is current information, if it if it could update it for our specific scenario I know we if we give it a specific computer name, I don't know Does it put that into the specific script it might give us? I don't know. I haven't tried that specifically. OK, yeah, I haven't tried it. Sorry. It was just a thought I mean like right now it almost feels like a replacement for enable me, you know, more, you know, as much as anything else, you know, from so I'm a non-technical business Business owner and you know, as I it it it's not feeding me the information I'm looking for. You know, whatever I'm saying, OK, like even simple questions like you know, give me a count of everything that has inside RMM on it. Give me a count of everything that has Cove on it You know, just asking for simple product counts, it it either errors out or it gives me false information You know that I can't tie the information out because just just knowing what my counts are, you know, it's very important for knowing, you know, cost of goods sold. You know, it's very important And then and then as far as one of my early hopes for it is I was hoping that I could ask it the right questions that OK, give me you know questions like give me my top 20 at risk devices or give me my top 20 problem devices You know thinking from a you know from like a service management standpoint that it's like OK because because ideally we've got all this data And just trying to turn it into knowledge that, you know, to queue up the work that it's like, you know, so it's like, you know, just like, you know, OK, Michael, you know, we, you know, we run these prompts and Michael's, you know, here, here's the two dozen computers Michael's gonna work with today, you know, and and.
+
+[00:11:49] Nicole Reineke:
+  Yes.
+
+[00:11:50] Boyd Smith:
+  And Michael does a lot of service desk work and and Josh does a lot of professional service install work. You know a lot of you know that that that sort of thing. So you know, but it would be, it'd be nice just to get clean counts. I mean clean, clean, clean.
+
+[00:12:06] Nicole Reineke:
+  Mhm.
+
+[00:12:06] Boyd Smith:
+  Get counts. Um That, that, that that'd just be huge. Or even I know Enzo's not tied to the billing database, but that'd be my ultimate dream is just to, you know, yeah.
+
+[00:12:17] Nicole Reineke:
+  Yeah Yeah, 100%, yes, I I hear you on that. OK. So so the top,
+
+[00:12:20] Boyd Smith:
+  Thanks.
+
+[00:12:23] Nicole Reineke:
+  the top systems that should be worked on today is definitely one of the questions What is the what accounts for my licenses across all the different license types? So it sounds like you want some sort of billing reporting. Does that seem true?
+
+[00:12:42] Boyd Smith:
+  Well It'd be nice to know what the active licenses are. So so the the problem is, is like at the software level, you know what what are actually the machines turned on in the field and the products turned on on those machines that for me to get that information I have to really dig and build spreadsheets and it is it is a very difficult problem to know What my actual consumption is, what my actual cost of goods sold is Because for me to solve that problem, I have to look at my billing contract on one hand to get the cost. Then I have to go in to enable me and SMP
+
+[00:13:14] Nicole Reineke:
+  Yeah.
+
+[00:13:16] Boyd Smith:
+  and some products give me more information than other products and I still don't have just a pane of glass that It'd just be nice to say, OK, how many workstations do I have Cove workstation backup on? How many servers? Just getting simple counts of deployed
+
+[00:13:29] Nicole Reineke:
+  Mhm.
+
+[00:13:33] Boyd Smith:
+  would be I have to work really hard for that right now. So that would be like, I feel like that's an asset thing, but I know that you'd have to also Tie that back to, well, it feels like it should just be an asset thing. I mean, at this point we're not solving building problems. That's not the scope of work we're talking about. But even if I could just get a clean, reliable count that whatever I wanted, how many devices do I have deployed in RMM today? I can't tie that out with any other data source, whoever I ask Enzo even Simple questions like that.
+
+[00:14:04] Nicole Reineke:
+  OK, fantastic. So you you want software information tied back to device information with activity information and accurate counts?
+
+[00:14:13] Boyd Smith:
+  Yeah, just just to know how many, how many machines we have turned on on the enable platform today, you know not not how many machines have we ever put in there, not how you know that that that'd be super, super useful. And then you know just ultimately from a service management standpoint, you know just You know what? What are my problem machines? You know, I mean, just, you know, we're running all these checks, you know, we're constantly dealing with alert fatigue, you know, just what what are the important, you know, sort of Another one would be the vulnerabilities. I mean, that's something that you guys are really working hard on on the asset screen, you know, just to be able to like, you know, like we get better, we get better When we go to the vulnerability screen, then what we get through ask Enzo that if we just said hey, ask Enzo, look at my assets, look at the current vulnerabilities and give me my work list of what are my Yeah, what? What? Cuz we got to prioritize things, you know, we just, you know, cuz you know, we yeah, especially on slower days going through and and saying, hey, you know, I got nothing to do today Give me a list of give me a work list for all of the the major things that we have to work on in this dashboard, not only through RMM but also code And things like that as well. And so looking in and actually 'cause I have noticed with the, for example, the health check scores when I ask it to, you know, what are the issues that it's looking at and it it seems like it's just looking at the checks And it's not actually going to the Cove database and seeing what's in there and what actually has backups and what are reporting properly, what's not reporting properly. And we have noticed and that's something that we just have to work with through with support through is some of the checks, even if it is in Cove, the checks will still report as if If there is no backup, there's no anything And so if it's just looking at those checks, that could also be false reporting as well. And so no matter what, we're finding that we're having to go back and double check all this work and verify that this is actually what it what it is Which is essentially like doing it manually and getting rid of Enzo altogether in general. So those are definitely one of the big things that that I would like to see in it is just not only just looking at the checks, but also comparing those two. And I know it's not a troubleshooting task or anything like that, so that might be a little bit more complicated, but That's a good segue, Josh. The other day we had a good conversation around, you know, like we were talking about how how you're using copilot. You know, if you're looking for something to work on solving tech problems, you know, if you're looking for an AI companion to help you think through an issue and solve problems Even go into Microsoft Copilot where you try to use Enzo for that, you know, give,
+
+[00:16:57] Nicole Reineke:
+  Yeah.
+
+[00:16:59] Boyd Smith:
+  give, give Nicole some feedback on just what it what's like to try and because at the end of the day we're trying to equip the technicians to be able to do the job better and.
+
+[00:17:10] Nicole Reineke:
+  Yeah.
+
+[00:17:10] Boyd Smith:
+  And a good and if a human technician's involved going forward, it's because something needs to be troubleshot, you know, because given enough time, all this AI stuff, you know the the systems should be getting better and better to just take care of the, you know when when we turn agentic, you know it's going to be humans are going to be doing more problem solving than actually doing work. And and I thought Josh had some good Early feedback on that I I guess I'm not sure if I really stressed it and tested that as much it's it's at least last last week So I can't remember a specific scenario if it just couldn't do it or if it only can really access documents like it can't like I don't know. I I guess I unfortunately can't remember I didn't get the impression it was gonna be good at it Just like general troubleshooting anything kind of thing So like like it gives, it gives up pretty quick It's like all all it seems to do is reference the documentation You know, like it's not, it's not helping, it's not helping us think it just, it's just a documentation, um, interface. Does that make sense?
+
+[00:18:13] Nicole Reineke:
+  Yeah, yeah, I OK. So yes, it makes sense. I'm super disappointed in it I feel like it's like a problem child right now I sorry you had that experience. So if you could ask it a question,
+
+[00:18:24] Boyd Smith:
+  Yeah.
+
+[00:18:27] Nicole Reineke:
+  can you just tell me?
+
+[00:18:28] Boyd Smith:
+  Well, Michael had a child on deck. You know,
+
+[00:18:29] Nicole Reineke:
+  You and I.
+
+[00:18:30] Boyd Smith:
+  he doesn't know what it's like to be a father yet.
+
+[00:18:31] Nicole Reineke:
+  OK.
+
+[00:18:33] Boyd Smith:
+  He's he's he's married and they got one in the cooker and.
+
+[00:18:35] Nicole Reineke:
+  Wait until you feel that like deep existential like just disappointment.
+
+[00:18:38] Boyd Smith:
+  3 Yeah, we we've never seen what it's like to
+
+[00:18:41] Nicole Reineke:
+  It's fantastic.
+
+[00:18:43] Boyd Smith:
+  raise up children. So yeah, or Michael. Michael's gonna try so.
+
+[00:18:48] Nicole Reineke:
+  It's it's great. So if you could ideally ask it like a
+
+[00:18:50] Boyd Smith:
+  So.
+
+[00:18:51] Nicole Reineke:
+  troubleshooting question, can you give me some examples of how you would want to talk to it?
+
+[00:18:56] Boyd Smith:
+  Um, for me it would be For example, this is the error that we're having look over for example like the the failed checks and things like that.
+
+[00:19:08] Nicole Reineke:
+  Mhm.
+
+[00:19:10] Boyd Smith:
+  When we know that it is in Cove and Cove should be reporting properly and things like that, asking it to say hey you know TKI 2274 shows up in Cove says back Backups is successful, yet we keep getting all these failed checks for these backup successful checks. Can you help me look into that? Can you help me troubleshoot that kind of thing? That's a great question. Yeah, because because we'll get within within enabled systems, we'll get disagreements, you know, like, so there's COVE and RMM disagreeing on Did this thing run right or what are some? What are some things that I can check on to verify that we have this set up properly or something to that point would always be helpful for me. That's a lot of the time, like for example when I'm in copilot.
+
+[00:20:14] Nicole Reineke:
+  Oh.
+
+[00:20:15] Boyd Smith:
+  You know, 475. Um, give me a breakdown of that and possible
+
+[00:20:15] Nicole Reineke:
+  Oh.
+
+[00:20:19] Boyd Smith:
+  steps to fix.
+
+[00:20:21] Nicole Reineke:
+  OK, yeah, absolutely. We may just have increased those guardrails a little bit too much because it should be allowing you to do that basic error look up and troubleshooting. OK Any other examples of of questions that you would wish to ask it that we just? You were afraid we didn't support or just didn't work.
+
+[00:20:41] Boyd Smith:
+  I don't know nothing that comes to mind. I know I try to go to It looked like you had possibly set up a forum for people to like like talk about it, but that formally doesn't work.
+
+[00:20:56] Nicole Reineke:
+  Yes, we ran into a technical issue. That doesn't. That is a me issue. Yes, we'll be up in our public forum soon, but yes, sorry.
+
+[00:21:08] Boyd Smith:
+  Well and and even in the forum though, I mean as you're working on that, it's if if there's any way you can get that feedback in tools that we use everyday like if it were like a teams channel, you know that we like a private preview teams channel that you know any any way that we can kind of communicate stream of consciousness instead of having to To log into a separate system or a system that's not tied to any other communication that we're doing that that that would increase the quantity and possibly the quality of feedback. You know, if we didn't have to, you know, log into the the system we wouldn't otherwise log into.
+
+[00:21:45] Nicole Reineke:
+  Are you part of the and the Slack community?
+
+[00:21:48] Boyd Smith:
+  Yeah, we run. We run Slack internally. Yep.
+
+[00:21:52] Nicole Reineke:
+  OK, so we do have a a slot community that's really quite active. Let me see if I can get you on that For sure.
+
+[00:22:01] Boyd Smith:
+  Yeah, he here has access to Slack, but you know, just the. Yeah, I I can't even imagine the challenge that you have trying to quantify and summarize all this feedback from such a varied community that yeah.
+
+[00:22:17] Nicole Reineke:
+  It's fun. It actually it brings me back to my
+
+[00:22:19] Boyd Smith:
+  Yeah.
+
+[00:22:21] Nicole Reineke:
+  engineering days where I've actually created a a ingestion engine which normalizes the data. It's really quite exciting Nobody needs to hear about that. OK, were there any examples where Enzo saved you time?
+
+[00:22:36] Boyd Smith:
+  Health scores definitely versus or just looking up very specific documentation.
+
+[00:22:42] Nicole Reineke:
+  OK.
+
+[00:22:42] Boyd Smith:
+  So it's like best practices for installing Cove on a device, best practices for setting up checks, script manager, things like that has definitely helped speed up My my workflow.
+
+[00:22:58] Nicole Reineke:
+  Fantastic The other answer is no. Yeah, that's OK. No is OK.
+
+[00:23:03] Boyd Smith:
+  Oh, I mean, I I In general, I guess I I don't know. I I'm not still I'm a little stuck in my ways maybe, but I I don't use AI like every single day and so I it was I don't know. It's not as I did have a brief
+
+[00:23:23] Nicole Reineke:
+  Yeah, that's so.
+
+[00:23:26] Boyd Smith:
+  interaction with Enzo that was very good. I mean, I decided to ask it if it knew best recommendations for tasks, automated tasks to be run and it gave me a short list List of of pre-made tasks in enable that are recommended and that I should check them out. So you know that was that was pretty brief and quick. I wasn't absolutely you know needing it, but I was trying to think of an example and it was good stuff to look over. So no.
+
+[00:23:56] Nicole Reineke:
+  That's that's awesome. So we only have a few minutes left I just want to let you know what's going to be coming because you're part of the early tech preview. We are extending the tech preview all the way through June, so you will have unfettered access to it As we get better, you may find more value coming out in the next Sprint, so it's in the next Next two weeks, you're gonna have full chat history, so you'll be able to go back through all of your conversations and recover from that. So that is coming out. I do not have the new tab or window open for the links, but I will get that in there Other things that we have vulnerability is coming over the next sprint or two as well, so you'll have Access to all of the vulnerability information and Enzo will be prominent on that screen as well. So we're bringing that in. We are working So what you ran into with accurate counts, it's actually a bug on our part, so.
+
+[00:24:49] Boyd Smith:
+  OK.
+
+[00:24:50] Nicole Reineke:
+  What's happening is we go and query the database and it's bringing back the top, you know X number of devices as opposed to bringing back the full device set and then doing the analysis. So we are working on that So that will be improved as we go out I will go back and check on all of the knowledge base articles That is fantastic feedback on that part. And I'm going to go back through all of the questions that you've submitted. So those higher level questions and add them to to testing to make sure that we start to solve those problems as well This has been incredible, incredible Feedback. Thank you so much. I really, really appreciate it.
+
+[00:25:30] Boyd Smith:
+  I'm I'm glad we're useful. I wasn't sure if we were gonna hit the or
+
+[00:25:34] Nicole Reineke:
+  Yeah.
+
+[00:25:36] Boyd Smith:
+  not so.
+
+[00:25:36] Nicole Reineke:
+  Yeah, whatever we can do to make your experience better, right? Like just toss me You have my e-mail address now. You gentlemen should as well Just toss me a note as you come across things that are broken If you don't want to submit it via the form, not a problem They, yeah, the the Enable Me forum is a challenge I apologize for that. It's it's attached to your Salesforce
+
+[00:25:58] Boyd Smith:
+  So.
+
+[00:25:59] Nicole Reineke:
+  accounts. And so if you're not given approval within the Salesforce account, you can't get access to that forum And that's not something I have full control over, but I am working through So yeah, I think those are the main things and I will start sending you notes as new releases come out because they will be coming out over the next month or two.
+
+[00:26:21] Boyd Smith:
+  Well, and if you can get us in that Slack
+
+[00:26:23] Nicole Reineke:
+  Yeah, yes.
+
+[00:26:24] Boyd Smith:
+  channel too, um, that so um.
+
+[00:26:27] Nicole Reineke:
+  I'll add you to that. All right. Anything else I didn't ask you that you wanted to tell me?
+
+[00:26:35] Boyd Smith:
+  I did notice that follow-up questions, especially if I'm correcting a previous statement that Enzo made and errors out almost every time. So if I noticed, for example, I was doing the health scores and I had made some changes that I did recommended and then I had asked it To refresh what it was looking at and verify that the changes that I made were good essentially and it would error out or it would tell me that I made no changes. So I continually ask it to re prompt to refresh that and to actually look over it in real time Time and eventually I would get it, but it would take a lot of prodding to be able to get that to work a lot of the there out.
+
+[00:27:23] Nicole Reineke:
+  OK. All right. I will go. I will go look at that I wonder if we had some kind of a a timeout issue going on with your account This is also the first time I've heard that So I really appreciate you letting me know. OK.
+
+[00:27:37] Boyd Smith:
+  Actually, I'm sorry, I just thought of one of the It doesn't seem it's it's completely ignorant of when it errors out So if I ask it a question that it errors out on and then I try to reprompt, it doesn't even know that I had already prompted and doesn't Know it had error. I mean, maybe it's not necessarily in any AI to necessarily tell me exactly why they erred, but I tried asking it and it's just like, what do you mean? And it just goes back to its earlier prompts before the error even happened, as if it didn't And and it was just kind of, yeah, how about hallucinating? Have you guys seen examples of the model hallucinating that that's that's common shaking out new AI models? Yeah, I mean, I don't know between like potentially the old information and or like We can't figure out where it pulled some incorrect information seemingly from documentation. OK, so it's not hallucinating. It's not It's not coming up. It's not trying to create AI We're not sure it's trying to create Some trying to like creatively pull together documentation and and make it unique to us or not, but it it gives us information sometimes where we're not sure where it got it, but we know it's wrong. So OK Yeah, actually, if there's just an easy way when we get that, can you source this information for me? That'd be a great question to be able to ask the model Just can you tell me where you found this answer so we can understand I think I did try to ask that a little bit and it just kind of gives me like the general documentation URLs The specific document it might have pulled it from. Yeah, it sounds like it's biased towards documentation instead of the actual assets. So if there's some bias switch that you can flip on the back end to make it, you know, go towards the actual live assets in our ecosystem versus the static documentation, that that would be kind of cool, yeah.
+
+[00:29:39] Nicole Reineke:
+  OK, yeah, that's great. It's almost like a select your MCP server feature. Yeah. Did you do you use MCP servers at all?
+
+[00:29:47] Boyd Smith:
+  OK, Yep SAP servers.
+
+[00:29:54] Nicole Reineke:
+  MCP Simult.
+
+[00:29:55] Boyd Smith:
+  We're we're not yet. No, we're at this point we're using AI in the business is being used in advisory capacity with Ask Enzo and then and then I use it. I I use it as a constant companion, especially as a writing companion as a As a whiteboard, you know I'll think through ideas with it So so I I use it as a sounding board. I mean just constantly I mean I've got a ChatGPT that I've been running for over a year now that is getting pretty good because it's trained on my data side and then I've also got a cloud that is a newer that Claude's pretty bright. You know, there's some, there's some really,
+
+[00:30:36] Nicole Reineke:
+  Yes.
+
+[00:30:38] Boyd Smith:
+  I think, I think Claude has some real potential, but I I just use it as my whiteboarding companion for everything from writing to, you know, trying to figure out just just all the stuff that comes across the business owner's desk every day. You know, it's my thinking companion But but you know, we're, I guess that's just a we're not doing any agentic AI in the business right now in any function.
+
+[00:31:01] Nicole Reineke:
+  OK, I sent an e-mail to you yesterday. So what we've done is we've released all of the data Enzo can ask as an MCP server and that's basically it's like a an API call.
+
+[00:31:16] Boyd Smith:
+  Mhm.
+
+[00:31:16] Nicole Reineke:
+  That Claude or ChatGPT or Teams Copilot can access So I don't know if it's interesting to you,
+
+[00:31:23] Boyd Smith:
+  Alright.
+
+[00:31:23] Nicole Reineke:
+  but when you're doing some of those more advanced use cases, those more advanced diagnostic use cases if if you're looking to do things like automation.
+
+[00:31:33] Boyd Smith:
+  Yep.
+
+[00:31:34] Nicole Reineke:
+  Being able to do that using Claud that calls the Enzo MCP server that then runs scripts is much much easier to build Agentic A I that way than to just use a
+
+[00:31:46] Boyd Smith:
+  OK.
+
+[00:31:46] Nicole Reineke:
+  chat interface for the level one stuff and for the diagnostics within the system The Enzo, we will continue to improve it and that will be sort of the primary path there. But when you're starting to do those automations that are larger and across more than one vendor, you may want to take a look at the MCP server attached to Claud.
+
+[00:32:07] Boyd Smith:
+  Could you, could you have somebody walk me through hooking my cloud up to an MCP server? I'm not much of A programmer. Could could.
+
+[00:32:13] Nicole Reineke:
+  Yeah, of course. Do you know it would either be Paul Kelly or Jason Murphy? Are you friendly with them? Yeah.
+
+[00:32:21] Boyd Smith:
+  I'm not matching the name with face by the way, so hopefully I'm yeah, no, yeah,
+
+[00:32:23] Nicole Reineke:
+  OK I will send an introduction.
+
+[00:32:28] Boyd Smith:
+  but but if they could, I I I'd gladly hook my claw up to that just to Just just to see how that would work out, yeah.
+
+[00:32:39] Nicole Reineke:
+  Yeah.
+
+[00:32:39] Boyd Smith:
+  OK, so that's part of your vision then is so through the MCP servers we can use other models to to do It's like an old ODDC database connection in the old SQL date, you know, only it's we're connecting to AI models. Got it, OK Cool.
+
+[00:32:57] Nicole Reineke:
+  Yep, and that's what it makes it so much easier for you to work across all the vendors. So that's where catnip comes in,
+
+[00:33:04] Boyd Smith:
+  Yeah.
+
+[00:33:04] Nicole Reineke:
+  right? Because you attach that MCP server, you attach our dictionary, and now you can work across all of your vendors in your own way.
+
+[00:33:08] Boyd Smith:
+  Yeah Yeah.
+
+[00:33:12] Nicole Reineke:
+  That's that's that large vision.
+
+[00:33:15] Boyd Smith:
+  That's cool. That's very cool.
+
+[00:33:19] Nicole Reineke:
+  Awesome. Well, this has been incredible for me.
+
+[00:33:19] Boyd Smith:
+  Wow.
+
+[00:33:21] Nicole Reineke:
+  I hope it wasn't complete torture for you, but I'm going to take all of this feedback and we will get it into our backlog Hm OK.

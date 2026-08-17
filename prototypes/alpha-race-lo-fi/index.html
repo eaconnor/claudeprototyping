@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alpha RACE — Incident-Driven Concept (Tier 1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+/* Apply mode before first paint — avoids FOUC */
+(function () {
+  try {
+    var pref = localStorage.getItem('apx-mode-pref') || 'dark';
+    var resolved = pref;
+    if (pref === 'system') {
+      resolved = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    document.documentElement.setAttribute('data-theme', resolved);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+<style>
+:root {
+  /* ===== canvas ===== */
+  --bg-app: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-elevated: #182238;
+  --bg-deep: #070d18;
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  /* ===== text ===== */
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  /* ===== brand (Adlumin blue) ===== */
+  --brand: #3b82f6;
+  --brand-strong: #2563eb;
+  --brand-soft: rgba(59,130,246,0.14);
+
+  /* ===== status ===== */
+  --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+  --low: #22c55e;       --low-soft: rgba(34,197,94,0.12);
+
+  /* ===== Bradley / council accent (violet) ===== */
+  --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+  /* ===== DISTINCT SURFACES ===== */
+  --topbar-bg: #0a1730;
+  --topbar-border: var(--brand);
+  --rail-bg: #16112e;
+  --rail-border: var(--alpha-accent);
+
+  /* ===== shape + type ===== */
+  --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 8px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+[data-theme="light"] {
+  --bg-app: #f4f6fb;  --bg-surface: #ffffff;  --bg-elevated: #eef1f8;
+  --bg-deep: #e6eaf3; --border: #d8deeb;  --border-strong: #c3ccdd;
+  --text-primary: #0d1424; --text-secondary: #45506b;
+  --text-tertiary: #6b7790; --text-muted: #94a0b8;
+  --topbar-bg: #0a1730;
+  --rail-bg: #f0eafa;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono { font-family: var(--font-mono); }
+
+a { color: inherit; }
+
+/* ============ TOPBAR — distinct surface ============ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 22px;
+  height: 54px;
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  color: #e6edf7;
+}
+.topbar .logo {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.topbar .logo .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 10px var(--brand);
+}
+.topbar .logo .sub {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  color: #8ea3c7;
+  letter-spacing: 0.5px;
+}
+.topbar nav {
+  display: flex;
+  gap: 4px;
+  margin-left: 10px;
+}
+.topbar nav a {
+  font-size: 12.5px;
+  color: #9aa8c2;
+  padding: 6px 11px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 500;
+}
+.topbar nav a.active { color: #e6edf7; background: rgba(59,130,246,0.18); }
+.topbar nav a:hover { color: #e6edf7; }
+.topbar .spacer { flex: 1; }
+.topbar .env-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.4);
+  background: rgba(167,139,250,0.12);
+  padding: 3px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.4px;
+}
+.topbar .who {
+  font-size: 12px; color: #9aa8c2;
+  display: flex; align-items: center; gap: 8px;
+}
+.topbar .who .avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-strong), var(--alpha-accent));
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: #fff;
+}
+
+/* ============ FIDELITY BANNER ============ */
+.fidelity {
+  position: sticky;
+  top: 54px;
+  z-index: 55;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  border-left: 4px solid var(--alpha-accent);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  padding: 11px 22px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.fidelity .fid-left { display: flex; align-items: center; gap: 14px; }
+.fid-tier {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--alpha-accent);
+  background: var(--alpha-soft);
+  border: 1px solid rgba(167,139,250,0.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pips { display: inline-flex; gap: 5px; align-items: center; }
+.pip { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--alpha-accent); }
+.pip.on { background: var(--alpha-accent); }
+.fid-label { font-size: 12px; color: var(--text-secondary); max-width: 380px; }
+.fid-label strong { color: var(--text-primary); font-weight: 600; }
+.fid-matrix {
+  display: flex;
+  gap: 6px 16px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.fid-matrix span { color: var(--text-secondary); white-space: nowrap; }
+.fid-matrix .yes { color: var(--low); font-weight: 600; }
+.fid-matrix .partial { color: var(--medium); font-weight: 600; }
+.fid-matrix .no { color: var(--text-muted); font-weight: 600; }
+.fid-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.readiness-chip {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+.readiness-chip b { color: var(--alpha-accent); }
+
+/* mode toggle */
+.mode-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--bg-deep);
+}
+.mode-toggle button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  padding: 5px 11px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+.mode-toggle button[aria-pressed="true"] {
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 600;
+}
+.mode-toggle button:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+
+/* ============ LAYOUT ============ */
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 372px;
+  gap: 0;
+  align-items: start;
+}
+.main { padding: 26px 28px 60px; min-width: 0; }
+
+/* ============ HERO STAT ============ */
+.hero {
+  background: linear-gradient(135deg, var(--bg-surface), var(--bg-elevated));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.hero .h-head { flex: 1; min-width: 260px; }
+.hero h1 {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+.hero .race-mark { color: var(--brand); }
+.hero p { font-size: 13px; color: var(--text-secondary); max-width: 520px; }
+.hero .lineage {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  margin-top: 9px;
+  letter-spacing: 0.4px;
+}
+.consolidation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.consolidation .big {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.5px;
+}
+.consolidation .from { color: var(--high); }
+.consolidation .arrow { color: var(--text-tertiary); font-size: 22px; }
+.consolidation .to { color: var(--low); }
+.consolidation .c-meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.illus-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--medium);
+  background: var(--medium-soft);
+  border: 1px solid rgba(234,179,8,0.4);
+  padding: 2px 7px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ============ SECTION HEADS ============ */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+.section-head h2 {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.section-head .svc {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border: 1px solid rgba(59,130,246,0.3);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.section-head .hint { font-size: 11.5px; color: var(--text-tertiary); margin-left: auto; }
+
+/* ============ INCIDENT LIST ============ */
+.incident-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+.incident-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.incident-card:hover { background: var(--bg-elevated); border-color: var(--border-strong); }
+.incident-card:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.incident-card.expanded {
+  border-color: var(--brand);
+  background: var(--bg-elevated);
+}
+.score-badge {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 19px;
+  border: 1.5px solid;
+}
+.score-badge .lab {
+  font-size: 8px; font-weight: 600; letter-spacing: 0.5px; opacity: 0.8; margin-top: -2px;
+}
+.sev-critical { color: var(--critical); background: var(--critical-soft); border-color: rgba(239,68,68,0.5); }
+.sev-high { color: var(--high); background: var(--high-soft); border-color: rgba(249,115,22,0.5); }
+.sev-medium { color: var(--medium); background: var(--medium-soft); border-color: rgba(234,179,8,0.5); }
+.sev-low { color: var(--low); background: var(--low-soft); border-color: rgba(34,197,94,0.5); }
+.inc-body { min-width: 0; }
+.inc-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.4px;
+}
+.inc-title { font-size: 14.5px; font-weight: 600; margin: 2px 0 4px; }
+.inc-summary { font-size: 12.5px; color: var(--text-secondary); }
+.inc-meta {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+}
+.inc-meta .det-count { color: var(--alpha-accent); }
+.inc-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.sev-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.pill-critical { color: var(--critical); background: var(--critical-soft); }
+.pill-high { color: var(--high); background: var(--high-soft); }
+.pill-medium { color: var(--medium); background: var(--medium-soft); }
+.pill-low { color: var(--low); background: var(--low-soft); }
+.inc-time { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-tertiary); }
+.expand-cue { font-family: var(--font-mono); font-size: 10.5px; color: var(--brand); }
+
+/* ============ INCIDENT DETAIL ============ */
+.detail {
+  background: var(--bg-surface);
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-lg);
+  margin: -4px 0 30px;
+  overflow: hidden;
+}
+.detail-head {
+  padding: 18px 22px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.10), transparent);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.detail-head .d-score {
+  width: 60px; height: 60px;
+  flex-shrink: 0;
+}
+.detail-head .d-info { flex: 1; min-width: 0; }
+.detail-head .d-info .inc-id { font-size: 12px; }
+.detail-head .d-info h3 { font-size: 18px; font-weight: 700; margin: 3px 0 6px; }
+.detail-head .d-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.d-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.detail-block { padding: 18px 22px; border-bottom: 1px solid var(--border); }
+.detail-block:last-child { border-bottom: none; }
+.block-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--alpha-accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.block-label .svc-mini {
+  font-size: 9.5px;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border: 1px solid rgba(59,130,246,0.3);
+  padding: 1px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+  text-transform: none;
+}
+
+/* Incident Story */
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.story-col {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 15px;
+}
+.story-col h4 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+.story-col h4 .num {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--alpha-soft); color: var(--alpha-accent);
+  font-size: 10px; display: grid; place-items: center; font-weight: 700;
+}
+.story-col p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+.story-col p .ent { color: var(--brand); font-family: var(--font-mono); font-size: 11.5px; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 4px; }
+.tl-item {
+  display: grid;
+  grid-template-columns: 92px 18px 1fr;
+  gap: 12px;
+  padding: 9px 0;
+  align-items: start;
+  position: relative;
+}
+.tl-time { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); text-align: right; padding-top: 2px; }
+.tl-node-col { display: flex; flex-direction: column; align-items: center; }
+.tl-node {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid;
+  margin-top: 4px;
+  flex-shrink: 0;
+  z-index: 2;
+}
+.tl-line { width: 2px; flex: 1; background: var(--border); margin-top: 2px; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-node.n-critical { background: var(--critical); border-color: var(--critical); }
+.tl-node.n-high { background: var(--high); border-color: var(--high); }
+.tl-node.n-medium { background: var(--medium); border-color: var(--medium); }
+.tl-node.n-low { background: var(--low); border-color: var(--low); }
+.tl-node.n-soar { background: var(--alpha-accent); border-color: var(--alpha-accent); }
+.tl-body { padding-top: 1px; }
+.tl-det-id { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.3px; }
+.tl-det-name { font-size: 12.5px; font-weight: 500; color: var(--text-primary); }
+.tl-det-src { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-secondary); margin-top: 2px; }
+.tl-soar-flag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--alpha-accent);
+  background: var(--alpha-soft);
+  border: 1px solid rgba(167,139,250,0.3);
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+
+/* Entities */
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.entity {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.entity .e-type {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: flex; align-items: center; gap: 6px;
+}
+.entity .e-type .e-dot { width: 7px; height: 7px; border-radius: 2px; background: var(--brand); }
+.entity .e-val { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--text-primary); margin-top: 6px; word-break: break-all; }
+.entity .e-note { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+.std-note {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  margin-top: 12px;
+}
+
+/* Scoring Rationale — illustrative */
+.scoring-block { background: var(--bg-deep); }
+.illus-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--medium-soft);
+  border: 1px dashed rgba(234,179,8,0.5);
+  border-radius: var(--radius-md);
+  padding: 10px 13px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  color: var(--medium);
+}
+.illus-banner strong { color: var(--medium); }
+.illus-banner .tbd-icon {
+  font-family: var(--font-mono); font-weight: 700; font-size: 14px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(234,179,8,0.2); display: grid; place-items: center; flex-shrink: 0;
+}
+.weights { display: flex; flex-direction: column; gap: 10px; }
+.weight-row { display: grid; grid-template-columns: 200px 1fr 54px; gap: 12px; align-items: center; }
+.weight-label { font-size: 12px; color: var(--text-secondary); }
+.weight-label .src { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); display: block; }
+.weight-bar { height: 10px; background: var(--bg-app); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.weight-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--alpha-accent), var(--brand)); opacity: 0.65; }
+.weight-pct { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); text-align: right; }
+.scoring-foot {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  line-height: 1.5;
+}
+.scoring-foot .ticket-ref { font-family: var(--font-mono); color: var(--text-secondary); }
+
+/* ============ BRADLEY RAIL ============ */
+.rail {
+  position: relative;
+  align-self: stretch;
+  background: var(--rail-bg);
+  border-left: 4px solid var(--rail-border);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  padding: 22px 20px 50px;
+  min-height: 100%;
+  overflow: hidden;
+}
+.rail::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(135deg, rgba(167,139,250,0.04) 0 2px, transparent 2px 22px);
+  pointer-events: none;
+}
+.rail > * { position: relative; z-index: 1; }
+.rail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--alpha-accent);
+  background: var(--alpha-soft);
+  border: 1px solid rgba(167,139,250,0.4);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.rail-badge .pips { margin-left: 2px; }
+.rail h3 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 22px 0 9px;
+  display: flex; align-items: center; gap: 8px;
+}
+.rail .attribution {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.35);
+  padding: 1px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.rail-blurb { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+.rail-blurb b { color: var(--text-primary); }
+
+.dual {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+.dual-block {
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  border: 1px solid;
+}
+.dual-block.nailed { background: var(--low-soft); border-color: rgba(34,197,94,0.3); }
+.dual-block.hurt { background: var(--critical-soft); border-color: rgba(239,68,68,0.3); }
+.dual-block .db-head {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.dual-block.nailed .db-head { color: var(--low); }
+.dual-block.hurt .db-head { color: var(--critical); }
+.dual-block ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.dual-block li { font-size: 11.5px; color: var(--text-secondary); line-height: 1.45; padding-left: 15px; position: relative; }
+.dual-block li::before { content: ""; position: absolute; left: 0; top: 6px; width: 6px; height: 6px; border-radius: 50%; }
+.dual-block.nailed li::before { background: var(--low); }
+.dual-block.hurt li::before { background: var(--critical); }
+.dual-block li b { color: var(--text-primary); }
+
+/* routed cards */
+.routed { display: flex; flex-direction: column; gap: 12px; }
+.route-card {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 13px 14px;
+  border-top: 2px solid var(--brand);
+}
+.route-card.r-design { border-top-color: var(--alpha-accent); }
+.route-card.r-research { border-top-color: var(--medium); }
+.route-card.r-eng { border-top-color: var(--low); }
+.route-card .rc-team {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.route-card.r-product .rc-team { color: var(--brand); }
+.route-card.r-design .rc-team { color: var(--alpha-accent); }
+.route-card.r-research .rc-team { color: var(--medium); }
+.route-card.r-eng .rc-team { color: var(--low); }
+.rc-line { font-size: 11.5px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.45; }
+.rc-line .k {
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 600;
+  letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-tertiary);
+  display: block;
+}
+.rc-line b { color: var(--text-primary); }
+.rc-tag {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+  padding: 0 5px; border-radius: 3px;
+}
+.tag-a { color: var(--medium); background: var(--medium-soft); }
+.tag-r { color: var(--low); background: var(--low-soft); }
+.rc-roi {
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--border);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.rc-roi .roi-row { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+.rc-roi .roi-row .roi-k {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-tertiary);
+}
+.rc-roi .roi-row.unknown .roi-k { color: var(--high); }
+
+/* crosstalk */
+.crosstalk {
+  background: var(--bg-deep);
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: var(--radius-md);
+  padding: 13px 14px;
+}
+.crosstalk .ct-line {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.crosstalk .ct-line:last-of-type { border-bottom: none; }
+.crosstalk .ct-voice { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--alpha-accent); letter-spacing: 0.3px; }
+.council-btn {
+  width: 100%;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand-strong), var(--alpha-accent));
+  border: none;
+  padding: 11px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+.council-btn:hover { filter: brightness(1.08); }
+.council-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ============ COUNCIL MODAL ============ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(4,8,16,0.74);
+  backdrop-filter: blur(3px);
+  z-index: 200;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 20px;
+  overflow-y: auto;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  width: 100%;
+  max-width: 760px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-left: 4px solid var(--alpha-accent);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7);
+}
+.modal-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(167,139,250,0.10), transparent);
+}
+.modal-head h2 {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+.modal-head .m-sub { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.modal-close {
+  margin-left: auto;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 30px; height: 30px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  cursor: pointer;
+}
+.modal-close:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.modal-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.modal-body { padding: 20px 22px 24px; }
+
+.exec-summary {
+  background: var(--bg-deep);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: var(--radius-md);
+  padding: 16px 17px;
+  margin-bottom: 20px;
+}
+.exec-summary .es-head {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--alpha-accent);
+  margin-bottom: 11px;
+}
+.es-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.es-chip {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+  color: var(--text-secondary); background: var(--bg-surface);
+  border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px;
+}
+.es-chip b { color: var(--alpha-accent); }
+.synth-slot {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--high);
+  background: var(--high-soft);
+  border: 1px dashed rgba(249,115,22,0.5);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-top: 6px;
+}
+.synth-slot .sl-k { display: block; font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+.tensions { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.tension {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--critical);
+  padding: 13px 15px;
+}
+.tension .t-num {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700; color: var(--critical);
+  letter-spacing: 0.5px;
+}
+.tension h4 { font-size: 13px; font-weight: 600; margin: 4px 0 6px; }
+.tension p { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.tension .t-tag { font-family: var(--font-mono); font-size: 10px; color: var(--medium); }
+
+.mode-banner {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--alpha-soft);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 15px;
+}
+.mode-banner .mb-text { flex: 1; }
+.mode-banner .mb-text strong { font-family: var(--font-mono); font-size: 12px; color: var(--alpha-accent); }
+.mode-banner .mb-text span { display: block; font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+.hard-btn {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--alpha-accent);
+  background: var(--bg-surface);
+  border: 1px solid var(--alpha-accent);
+  padding: 9px 13px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.hard-btn:hover { background: var(--alpha-soft); }
+.hard-btn:focus-visible { outline: 2px solid var(--alpha-accent); outline-offset: 2px; }
+.hard-note {
+  display: none;
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  background: var(--bg-deep);
+  border: 1px dashed rgba(167,139,250,0.4);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  line-height: 1.5;
+}
+.hard-note.show { display: block; }
+.hard-note b { color: var(--alpha-accent); font-family: var(--font-mono); }
+
+.foot-note {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  padding: 20px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 1080px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { border-left: none; border-top: 4px solid var(--rail-border); }
+  .story-grid, .entity-grid { grid-template-columns: 1fr; }
+  .weight-row { grid-template-columns: 1fr; gap: 5px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOPBAR ============ -->
+<header class="topbar">
+  <div class="logo">
+    <span class="dot"></span>
+    Adlumin <span class="sub">/ Alpha · RACE</span>
+  </div>
+  <nav aria-label="Primary">
+    <a href="#" class="active">Incidents</a>
+    <a href="#">Detections</a>
+    <a href="#">Entities</a>
+    <a href="#">Reports</a>
+  </nav>
+  <span class="spacer"></span>
+  <span class="env-tag mono">CONCEPT · MDR INTERNAL</span>
+  <div class="who">
+    <span class="mono">Dana Okafor · MDR Analyst</span>
+    <span class="avatar mono">DO</span>
+  </div>
+</header>
+
+<!-- ============ FIDELITY BANNER ============ -->
+<div class="fidelity" role="region" aria-label="Fidelity and readiness">
+  <div class="fid-left">
+    <span class="fid-tier">TIER 1 · CONCEPT</span>
+    <span class="pips" aria-label="Fidelity 1 of 3">
+      <span class="pip on"></span><span class="pip"></span><span class="pip"></span>
+    </span>
+  </div>
+  <p class="fid-label">
+    <strong>Forward-looking concept — Phase 1 is MDR-only.</strong>
+    Customer-facing exposure is deferred (ADL-1838 / PUT-1166). This is not shipped capability.
+  </p>
+  <div class="fid-matrix" aria-label="Lo-fi check matrix">
+    <span><span class="yes">✓</span> Real copy</span>
+    <span><span class="partial">~</span> Seed data fictional</span>
+    <span><span class="yes">✓</span> Core interaction</span>
+    <span><span class="no">×</span> Full workflow</span>
+    <span><span class="yes">✓</span> Visual hierarchy</span>
+    <span><span class="no">×</span> Production ready</span>
+  </div>
+  <div class="fid-right">
+    <span class="readiness-chip mono">
+      Readiness: <b>Concept</b> · 41.5% [A]+[?] world-claims · idea score 15/20
+    </span>
+    <div class="mode-toggle" role="group" aria-label="Color mode">
+      <button type="button" data-mode="light" aria-pressed="false">Light</button>
+      <button type="button" data-mode="dark" aria-pressed="true">Dark</button>
+      <button type="button" data-mode="system" aria-pressed="false">System</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SHELL ============ -->
+<div class="shell">
+  <main class="main">
+
+    <!-- HERO STAT -->
+    <section class="hero">
+      <div class="h-head">
+        <h1><span class="race-mark">RACE</span> — Rapid Alert Correlation Engine</h1>
+        <p>
+          From event-driven to incident-driven. RACE consolidates related detections into a single
+          ranked Incident with one narrative story — replacing the three to four isolated tickets a
+          single intrusion produces today.
+        </p>
+        <div class="lineage mono">Fuzz → Alpha → RACE · Phase 1 beta: Black Team → Blue Team · no customer exposure</div>
+      </div>
+      <div class="consolidation" aria-label="Consolidation concept, illustrative">
+        <span class="big from">47</span>
+        <span class="arrow">→</span>
+        <span class="big to">12</span>
+        <div class="c-meta">
+          detections collapsed<br>into ranked incidents<br>
+          <span class="illus-tag">Illustrative — not measured</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RANKED INCIDENT LIST -->
+    <div class="section-head">
+      <h2>Ranked Incidents</h2>
+      <span class="svc mono">RankIncidents</span>
+      <span class="hint">Ordered by Score · higher risk above low-signal · independent of raw alert severity</span>
+    </div>
+
+    <div class="incident-list" id="incidentList">
+
+      <!-- Incident 1 — expanded -->
+      <div class="incident-card expanded" tabindex="0" role="button" aria-expanded="true" data-target="detail-1">
+        <div class="score-badge sev-critical">94<span class="lab mono">SCORE</span></div>
+        <div class="inc-body">
+          <div class="inc-id mono">INC-2026-0418</div>
+          <div class="inc-title">Credential theft → lateral movement, finance host</div>
+          <div class="inc-summary">Six Defender detections plus two SOAR response actions, all tied to one account and host, consolidated into a single incident.</div>
+          <div class="inc-meta mono">
+            <span class="det-count">8 detections grouped</span>
+            <span>user: m.albrecht</span>
+            <span>host: FIN-WS-07</span>
+            <span>CorrelateDetections ✓</span>
+          </div>
+        </div>
+        <div class="inc-right">
+          <span class="sev-pill pill-critical">Critical</span>
+          <span class="inc-time mono">opened 09:14</span>
+          <span class="expand-cue mono">▼ expanded</span>
+        </div>
+      </div>
+
+      <!-- DETAIL for Incident 1 -->
+      <section class="detail" id="detail-1" aria-label="Incident detail INC-2026-0418">
+        <div class="detail-head">
+          <div class="score-badge sev-critical d-score">94<span class="lab mono">SCORE</span></div>
+          <div class="d-info">
+            <div class="inc-id mono">INC-2026-0418 · opened 2026-06-25 09:14 UTC</div>
+            <h3>Credential theft → lateral movement, finance host</h3>
+            <div class="d-tags">
+              <span class="d-tag mono">8 detections grouped</span>
+              <span class="d-tag mono">2 SOAR actions suppressed</span>
+              <span class="d-tag mono">Customer: Cedarline Mutual (fictional)</span>
+              <span class="d-tag mono">Analyst: Dana Okafor</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+
+          <!-- INCIDENT STORY -->
+          <div class="detail-block">
+            <div class="block-label">Incident Story <span class="svc-mini mono">GenerateStory</span></div>
+            <div class="story-grid">
+              <div class="story-col">
+                <h4><span class="num">1</span> What happened</h4>
+                <p>
+                  A successful sign-in to <span class="ent">m.albrecht</span> from an unrecognized
+                  location was followed by token reuse on <span class="ent">FIN-WS-07</span> and an
+                  attempt to reach a domain controller. Defender raised six detections; two were
+                  automated isolation responses.
+                </p>
+              </div>
+              <div class="story-col">
+                <h4><span class="num">2</span> What we did</h4>
+                <p>
+                  RACE correlated all eight signals into one incident on the shared
+                  <span class="ent">user</span> and <span class="ent">host</span>. The endpoint was
+                  isolated and the session token revoked. Two SOAR-generated alerts were folded in
+                  rather than ticketed separately.
+                </p>
+              </div>
+              <div class="story-col">
+                <h4><span class="num">3</span> What to do next</h4>
+                <p>
+                  Force a password reset for <span class="ent">m.albrecht</span>, confirm MFA
+                  re-enrollment, and review DC authentication logs for the 09:00–09:20 window.
+                  Keep <span class="ent">FIN-WS-07</span> isolated until reimage is confirmed.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- TIMELINE -->
+          <div class="detail-block">
+            <div class="block-label">Timeline of contributing Detections <span class="svc-mini mono">CorrelateDetections</span></div>
+            <div class="timeline">
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:14:02</div>
+                <div class="tl-node-col"><span class="tl-node n-high"></span><span class="tl-line"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88412</div>
+                  <div class="tl-det-name">Sign-in from atypical location</div>
+                  <div class="tl-det-src mono">Microsoft Defender for Identity · user m.albrecht</div>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:15:37</div>
+                <div class="tl-node-col"><span class="tl-node n-high"></span><span class="tl-line"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88419</div>
+                  <div class="tl-det-name">OAuth token reuse on new device</div>
+                  <div class="tl-det-src mono">Microsoft Defender for Endpoint · host FIN-WS-07</div>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:16:05</div>
+                <div class="tl-node-col"><span class="tl-node n-critical"></span><span class="tl-line"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88421</div>
+                  <div class="tl-det-name">Credential dumping behavior detected (LSASS access)</div>
+                  <div class="tl-det-src mono">Microsoft Defender for Endpoint · host FIN-WS-07</div>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:16:48</div>
+                <div class="tl-node-col"><span class="tl-node n-soar"></span><span class="tl-line"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88422 <span class="tl-soar-flag mono">SOAR · operational</span></div>
+                  <div class="tl-det-name">Automated host isolation initiated</div>
+                  <div class="tl-det-src mono">SOAR response action · folded into incident, not separately ticketed</div>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:17:30</div>
+                <div class="tl-node-col"><span class="tl-node n-critical"></span><span class="tl-line"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88427</div>
+                  <div class="tl-det-name">Lateral movement attempt to domain controller</div>
+                  <div class="tl-det-src mono">Microsoft Defender for Identity · destination DC-CORE-01</div>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:18:11</div>
+                <div class="tl-node-col"><span class="tl-node n-soar"></span><span class="tl-line"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88431 <span class="tl-soar-flag mono">SOAR · operational</span></div>
+                  <div class="tl-det-name">Session token revoked automatically</div>
+                  <div class="tl-det-src mono">SOAR response action · folded into incident, not separately ticketed</div>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-time mono">09:19:44</div>
+                <div class="tl-node-col"><span class="tl-node n-medium"></span></div>
+                <div class="tl-body">
+                  <div class="tl-det-id mono">DET-88440</div>
+                  <div class="tl-det-name">Anomalous file access on finance share</div>
+                  <div class="tl-det-src mono">Adlumin cloud telemetry · source 198.51.100.42 (fictional)</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ENTITIES -->
+          <div class="detail-block">
+            <div class="block-label">Standardized Entities <span class="svc-mini mono">Standardized Fields</span></div>
+            <div class="entity-grid">
+              <div class="entity">
+                <div class="e-type mono"><span class="e-dot"></span> User</div>
+                <div class="e-val mono">m.albrecht</div>
+                <div class="e-note">finance dept · primary subject</div>
+              </div>
+              <div class="entity">
+                <div class="e-type mono"><span class="e-dot"></span> Host</div>
+                <div class="e-val mono">FIN-WS-07</div>
+                <div class="e-note">workstation · currently isolated</div>
+              </div>
+              <div class="entity">
+                <div class="e-type mono"><span class="e-dot"></span> Source</div>
+                <div class="e-val mono">198.51.100.42</div>
+                <div class="e-note">unrecognized origin (fictional IP)</div>
+              </div>
+              <div class="entity">
+                <div class="e-type mono"><span class="e-dot"></span> Destination</div>
+                <div class="e-val mono">DC-CORE-01</div>
+                <div class="e-note">domain controller · target</div>
+              </div>
+            </div>
+            <p class="std-note mono">
+              user · host · source · destination are the normalized fields RACE correlates on (ADL-1838 Must-Have).
+              Every detection above was tied to this incident by a shared value in these fields.
+            </p>
+          </div>
+
+          <!-- SCORING RATIONALE — illustrative -->
+          <div class="detail-block scoring-block">
+            <div class="block-label">Scoring Rationale <span class="svc-mini mono">ScoreIncident</span></div>
+            <div class="illus-banner">
+              <span class="tbd-icon mono">!</span>
+              <span><strong>Scoring model TBD — illustrative weighting only.</strong>
+              The probabilistic model and its weights are undefined (ADL-1838 / PUT-1166).
+              The contributions below are placeholders to show the intended transparency, not a real explanation of why this incident ranked highest.</span>
+            </div>
+            <div class="weights" aria-label="Illustrative score contributions">
+              <div class="weight-row">
+                <div class="weight-label">Credential access + lateral movement chain <span class="src mono">illustrative</span></div>
+                <div class="weight-bar"><div class="weight-fill" style="width:34%"></div></div>
+                <div class="weight-pct mono">~34%</div>
+              </div>
+              <div class="weight-row">
+                <div class="weight-label">Privileged target reached (domain controller) <span class="src mono">illustrative</span></div>
+                <div class="weight-bar"><div class="weight-fill" style="width:26%"></div></div>
+                <div class="weight-pct mono">~26%</div>
+              </div>
+              <div class="weight-row">
+                <div class="weight-label">Detection density on shared entities <span class="src mono">illustrative</span></div>
+                <div class="weight-bar"><div class="weight-fill" style="width:22%"></div></div>
+                <div class="weight-pct mono">~22%</div>
+              </div>
+              <div class="weight-row">
+                <div class="weight-label">Asset sensitivity (finance system) <span class="src mono">illustrative</span></div>
+                <div class="weight-bar"><div class="weight-fill" style="width:18%"></div></div>
+                <div class="weight-pct mono">~18%</div>
+              </div>
+            </div>
+            <p class="scoring-foot">
+              <span class="ticket-ref mono">[R requirement / ? mechanism]</span>
+              The Epic requires transparent scoring and annotation of which signals are shown vs hidden for analyst trust —
+              but the model that would produce these contributions does not exist yet. A real "why this ranked highest" cannot be rendered honestly until the model is defined.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Incident 2 -->
+      <div class="incident-card" tabindex="0" role="button" aria-expanded="false">
+        <div class="score-badge sev-high">81<span class="lab mono">SCORE</span></div>
+        <div class="inc-body">
+          <div class="inc-id mono">INC-2026-0417</div>
+          <div class="inc-title">Phishing landing → mailbox rule manipulation</div>
+          <div class="inc-summary">Four detections across email and identity collapsed onto a single user, with one redundant SOAR alert suppressed.</div>
+          <div class="inc-meta mono">
+            <span class="det-count">5 detections grouped</span>
+            <span>user: t.navarro</span>
+            <span>host: SALES-LT-22</span>
+            <span>CorrelateDetections ✓</span>
+          </div>
+        </div>
+        <div class="inc-right">
+          <span class="sev-pill pill-high">High</span>
+          <span class="inc-time mono">opened 08:51</span>
+          <span class="expand-cue mono">▶ open detail</span>
+        </div>
+      </div>
+
+      <!-- Incident 3 -->
+      <div class="incident-card" tabindex="0" role="button" aria-expanded="false">
+        <div class="score-badge sev-high">73<span class="lab mono">SCORE</span></div>
+        <div class="inc-body">
+          <div class="inc-id mono">INC-2026-0416</div>
+          <div class="inc-title">Unusual outbound data transfer, shared host</div>
+          <div class="inc-summary">Three detections on the same host and destination grouped into one incident instead of three tickets.</div>
+          <div class="inc-meta mono">
+            <span class="det-count">3 detections grouped</span>
+            <span>host: ENG-SRV-04</span>
+            <span>dest: 203.0.113.77</span>
+            <span>CorrelateDetections ✓</span>
+          </div>
+        </div>
+        <div class="inc-right">
+          <span class="sev-pill pill-high">High</span>
+          <span class="inc-time mono">opened 07:38</span>
+          <span class="expand-cue mono">▶ open detail</span>
+        </div>
+      </div>
+
+      <!-- Incident 4 -->
+      <div class="incident-card" tabindex="0" role="button" aria-expanded="false">
+        <div class="score-badge sev-medium">52<span class="lab mono">SCORE</span></div>
+        <div class="inc-body">
+          <div class="inc-id mono">INC-2026-0415</div>
+          <div class="inc-title">Repeated failed logins, single service account</div>
+          <div class="inc-summary">A burst of authentication failures correlated to one account and source, ranked below active-intrusion incidents.</div>
+          <div class="inc-meta mono">
+            <span class="det-count">4 detections grouped</span>
+            <span>user: svc-backup</span>
+            <span>source: 192.0.2.140</span>
+            <span>CorrelateDetections ✓</span>
+          </div>
+        </div>
+        <div class="inc-right">
+          <span class="sev-pill pill-medium">Medium</span>
+          <span class="inc-time mono">opened 06:12</span>
+          <span class="expand-cue mono">▶ open detail</span>
+        </div>
+      </div>
+
+      <!-- Incident 5 -->
+      <div class="incident-card" tabindex="0" role="button" aria-expanded="false">
+        <div class="score-badge sev-low">28<span class="lab mono">SCORE</span></div>
+        <div class="inc-body">
+          <div class="inc-id mono">INC-2026-0414</div>
+          <div class="inc-title">Low-signal policy notice, managed device</div>
+          <div class="inc-summary">Two low-severity configuration detections grouped and ranked at the bottom — visible but de-prioritized.</div>
+          <div class="inc-meta mono">
+            <span class="det-count">2 detections grouped</span>
+            <span>host: HR-LT-09</span>
+            <span>user: r.singh</span>
+            <span>CorrelateDetections ✓</span>
+          </div>
+        </div>
+        <div class="inc-right">
+          <span class="sev-pill pill-low">Low</span>
+          <span class="inc-time mono">opened 05:47</span>
+          <span class="expand-cue mono">▶ open detail</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot-note mono">
+      Apex Bridge · Tier 1 Concept · all customer / analyst / entity data is fictional seed data · no measured metrics on this surface
+    </div>
+
+  </main>
+
+  <!-- ============ BRADLEY RAIL ============ -->
+  <aside class="rail" aria-label="Bradley review rail">
+    <span class="rail-badge mono">
+      TIER 1 · CONCEPT
+      <span class="pips"><span class="pip on"></span><span class="pip"></span><span class="pip"></span></span>
+    </span>
+
+    <h3>The Probe <span class="attribution mono">0% PM</span></h3>
+    <p class="rail-blurb">
+      Tests one idea: does an <b>incident-driven</b> view — a ranked Incident built from grouped Detections, with one story —
+      read as more useful than the per-detection tickets analysts see today? Everything past that grouping is deliberately lo-fi.
+    </p>
+
+    <h3>Read</h3>
+    <div class="dual">
+      <div class="dual-block nailed">
+        <div class="db-head mono">What you nailed</div>
+        <ul>
+          <li><b>Sourced problem.</b> Per-event → per-ticket fan-out is verbatim from ADL-1838, not assumed.</li>
+          <li><b>Verbatim customer evidence (Mar 2026).</b> "Three to four separate tickets… same account, host, or IP" and SOAR-noise are first-party ticket claims.</li>
+          <li><b>Competitive wedge.</b> Probabilistic correlation + generated story is credited to neither Arctic Wolf (rules) nor CrowdStrike (no story).</li>
+        </ul>
+      </div>
+      <div class="dual-block hurt">
+        <div class="db-head mono">What will hurt you</div>
+        <ul>
+          <li><b>Undefined scoring model.</b> The score is shown but the model is [?]. A buyer asking "why 94?" gets hand-waving.</li>
+          <li><b>Scope tension.</b> Ticket scope is MDR-only; "customer demo" runs ahead of it. Wrong room reads this as shipped.</li>
+          <li><b>Unmeasured seed numbers.</b> 47→12 and any time-savings are illustrative, in no ticket. Don't let them read as data.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Routing <span class="attribution mono">0% PM</span></h3>
+    <div class="routed">
+
+      <div class="route-card r-product">
+        <div class="rc-team mono">Product</div>
+        <div class="rc-line"><span class="k mono">Does</span> Resolve Decision 0 — is this demo for internal stakeholders or external customers?</div>
+        <div class="rc-line"><span class="k mono">Why now <span class="rc-tag tag-r">R</span></span> Every live ticket scopes Phase 1 MDR-only; "customer demo" contradicts ticketed scope until decided.</div>
+        <div class="rc-line"><span class="k mono">If you ship without it</span> The fidelity banner means different things to different rooms; claims drift between concept and shipped.</div>
+        <div class="rc-roi">
+          <div class="roi-row"><span class="roi-k">Business:</span> protects demo credibility / avoids overstating readiness to a customer.</div>
+          <div class="roi-row"><span class="roi-k">User:</span> analysts get a tool scoped to their actual Phase 1 workflow.</div>
+          <div class="roi-row unknown"><span class="roi-k">Unknown:</span> conversion impact of internal vs external framing — no data.</div>
+        </div>
+      </div>
+
+      <div class="route-card r-design">
+        <div class="rc-team mono">Design</div>
+        <div class="rc-line"><span class="k mono">Does</span> Define what the Scoring Rationale shows vs hides, and the reading order across Story / Timeline / Score.</div>
+        <div class="rc-line"><span class="k mono">Why now <span class="rc-tag tag-r">R</span></span> ADL-1838 Should-Have requires showing "what contributed to the score"; show/hide is named a design deliverable.</div>
+        <div class="rc-line"><span class="k mono">If you ship without it</span> The rationale region stays placeholder weighting and erodes the analyst-trust the feature is sold on.</div>
+        <div class="rc-roi">
+          <div class="roi-row"><span class="roi-k">Business:</span> transparent scoring is the differentiation claim vs competitors.</div>
+          <div class="roi-row"><span class="roi-k">User:</span> analyst can defend a triage decision instead of guessing.</div>
+          <div class="roi-row unknown"><span class="roi-k">Unknown:</span> which anchors first cold — Story / Timeline / Score. Needs the comprehension test.</div>
+        </div>
+      </div>
+
+      <div class="route-card r-research">
+        <div class="rc-team mono">Research</div>
+        <div class="rc-line"><span class="k mono">Does</span> Run believability + comprehension tests; replace illustrative numbers with measured consolidation rate.</div>
+        <div class="rc-line"><span class="k mono">Why now <span class="rc-tag tag-a">A</span></span> 47→12 and time-savings appear in no ticket; ADL-1838 calls for correlation-accuracy / consolidation monitoring not yet available.</div>
+        <div class="rc-line"><span class="k mono">If you ship without it</span> A technical buyer asks for methodology behind the numbers and there is none.</div>
+        <div class="rc-roi">
+          <div class="roi-row"><span class="roi-k">Business:</span> a defensible consolidation metric becomes a real sales claim.</div>
+          <div class="roi-row"><span class="roi-k">User:</span> story believability confirmed before analysts rely on it.</div>
+          <div class="roi-row unknown"><span class="roi-k">Unknown:</span> actual alerts→incidents ratio and minutes saved — unmeasured. Do not fabricate.</div>
+        </div>
+      </div>
+
+      <div class="route-card r-eng">
+        <div class="rc-team mono">Eng</div>
+        <div class="rc-line"><span class="k mono">Does</span> Define enough of the probabilistic ScoreIncident model — inputs, weights — to explain a score honestly.</div>
+        <div class="rc-line"><span class="k mono">Why now <span class="rc-tag tag-r">R</span></span> The Score requirement exists; the algorithm and weights are [?]. CorrelateDetections grouping is the demonstrable core.</div>
+        <div class="rc-line"><span class="k mono">If you ship without it</span> Scoring Rationale can never move past "illustrative" and the transparency promise stays empty.</div>
+        <div class="rc-roi">
+          <div class="roi-row"><span class="roi-k">Business:</span> a defined model unblocks the trust + transparency narrative.</div>
+          <div class="roi-row"><span class="roi-k">User:</span> ranking the analyst can reason about, not a black box.</div>
+          <div class="roi-row unknown"><span class="roi-k">Unknown:</span> model accuracy / false-grouping rate — no implementation to measure yet.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3>Council cross-talk <span class="attribution mono">0% PM</span></h3>
+    <div class="crosstalk">
+      <div class="ct-line"><span class="ct-voice mono">Jobs-to-Be-Done:</span> the job is "tell me what's actually happening," not "show me more alerts." Grouping serves it; the score is a separate, unproven promise.</div>
+      <div class="ct-line"><span class="ct-voice mono">Service Blueprint:</span> consolidating SOAR actions removes backstage noise — but only if the customer-vs-MDR line is drawn first.</div>
+      <div class="ct-line"><span class="ct-voice mono">Self-Determination Theory:</span> a score without a rationale removes analyst competence, not adds it.</div>
+      <button type="button" class="council-btn mono" id="openCouncil">Hear the council ▸</button>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ============ COUNCIL MODAL ============ -->
+<div class="modal-backdrop" id="councilModal" role="dialog" aria-modal="true" aria-labelledby="councilTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2 id="councilTitle" class="mono">Council — Alpha RACE</h2>
+        <div class="m-sub mono">Fast Mode · stakeholder/exec round</div>
+      </div>
+      <button type="button" class="modal-close" id="closeCouncil" aria-label="Close council">×</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- EXEC SUMMARY FIRST -->
+      <div class="exec-summary">
+        <div class="es-head mono">Executive summary</div>
+        <div class="es-chips">
+          <span class="es-chip mono">Readiness: <b>Concept</b></span>
+          <span class="es-chip mono">Tier <b>1</b></span>
+          <span class="es-chip mono"><b>3</b> tensions named</span>
+          <span class="es-chip mono">idea score <b>15/20</b></span>
+        </div>
+        <div class="synth-slot mono">
+          <span class="sl-k">Synthesis</span>
+          [0% Claude — fill this in]
+        </div>
+      </div>
+
+      <!-- THREE TENSIONS -->
+      <div class="tensions">
+        <div class="tension">
+          <div class="t-num mono">TENSION 1</div>
+          <h4>Scope vs Sales pull</h4>
+          <p>
+            Every live ticket scopes Phase 1 as MDR-only with customer exposure explicitly out of scope; a "customer demo" is sales-motivated.
+            Which governs the artifact's claims — the ticket, or the pipeline? <span class="t-tag mono">[?]</span>
+          </p>
+        </div>
+        <div class="tension">
+          <div class="t-num mono">TENSION 2</div>
+          <h4>Signal vs honesty — the 47→12 anchor</h4>
+          <p>
+            "47 detections → 12 incidents" is a powerful narrative anchor but is measured nowhere in the tickets.
+            Anchor strength against evidentiary integrity. <span class="t-tag mono">[A]</span>
+          </p>
+        </div>
+        <div class="tension">
+          <div class="t-num mono">TENSION 3</div>
+          <h4>Transparency vs undefined scoring model</h4>
+          <p>
+            The Epic demands explainable scoring for analyst trust; the probabilistic model and weights are undefined.
+            The demo promises a virtue the system cannot yet demonstrate. <span class="t-tag mono">[R requirement / ? mechanism]</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- MODE BANNER -->
+      <div class="mode-banner">
+        <div class="mb-text">
+          <strong>Fast Mode — 7-tension pass</strong>
+          <span>Three tensions surfaced for this lo-fi stakeholder round. Full testimony deferred.</span>
+        </div>
+        <button type="button" class="hard-btn mono" id="hardModeBtn">⚡ Switch to Hard Mode — 44 voices waiting</button>
+      </div>
+      <div class="hard-note mono" id="hardNote">
+        <b>Hard Mode not loaded in this lo-fi build.</b> The full 44-voice council testimony is produced by the council subagent in the next pipeline step (<b>--council</b> pass). Run it once Decision 0 (audience) and the scoring model are resolved — voices will contradict, and that is the point.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== Mode toggle (light · dark · system), persisted ===== */
+(function () {
+  var buttons = document.querySelectorAll('.mode-toggle button');
+  var mql = window.matchMedia('(prefers-color-scheme: light)');
+
+  function resolve(pref) {
+    if (pref === 'system') return mql.matches ? 'light' : 'dark';
+    return pref;
+  }
+  function apply(pref) {
+    document.documentElement.setAttribute('data-theme', resolve(pref));
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.mode === pref ? 'true' : 'false');
+    });
+  }
+  var current = (function () {
+    try { return localStorage.getItem('apx-mode-pref') || 'dark'; } catch (e) { return 'dark'; }
+  })();
+  apply(current);
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      current = b.dataset.mode;
+      try { localStorage.setItem('apx-mode-pref', current); } catch (e) {}
+      apply(current);
+    });
+  });
+  mql.addEventListener('change', function () {
+    if (current === 'system') apply('system');
+  });
+})();
+
+/* ===== Incident expand/collapse ===== */
+(function () {
+  var detail = document.getElementById('detail-1');
+  var firstCard = document.querySelector('.incident-card.expanded');
+  var allCards = document.querySelectorAll('.incident-card');
+
+  function toggleFirst() {
+    var open = firstCard.classList.toggle('expanded');
+    firstCard.setAttribute('aria-expanded', open ? 'true' : 'false');
+    detail.style.display = open ? '' : 'none';
+    var cue = firstCard.querySelector('.expand-cue');
+    if (cue) cue.textContent = open ? '▼ expanded' : '▶ open detail';
+  }
+
+  firstCard.addEventListener('click', toggleFirst);
+  firstCard.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFirst(); }
+  });
+
+  /* other cards: lo-fi — scroll the open detail into view (single-detail prototype) */
+  allCards.forEach(function (card) {
+    if (card === firstCard) return;
+    function focusDetail() {
+      if (!firstCard.classList.contains('expanded')) toggleFirst();
+      detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    card.addEventListener('click', focusDetail);
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusDetail(); }
+    });
+  });
+})();
+
+/* ===== Council modal ===== */
+(function () {
+  var modal = document.getElementById('councilModal');
+  var openBtn = document.getElementById('openCouncil');
+  var closeBtn = document.getElementById('closeCouncil');
+  var hardBtn = document.getElementById('hardModeBtn');
+  var hardNote = document.getElementById('hardNote');
+  var lastFocus = null;
+
+  function open() {
+    lastFocus = document.activeElement;
+    modal.classList.add('open');
+    closeBtn.focus();
+    document.addEventListener('keydown', onKey);
+  }
+  function close() {
+    modal.classList.remove('open');
+    document.removeEventListener('keydown', onKey);
+    if (lastFocus) lastFocus.focus();
+  }
+  function onKey(e) { if (e.key === 'Escape') close(); }
+
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  hardBtn.addEventListener('click', function () { hardNote.classList.toggle('show'); });
+})();
+</script>
+
+</body>
+</html>

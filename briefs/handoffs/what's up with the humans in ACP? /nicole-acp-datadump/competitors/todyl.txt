@@ -1,0 +1,55 @@
+# Todyl
+slug: todyl
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Todyl is an MSP-focused unified cybersecurity platform combining SASE, SIEM, endpoint security, MXDR (Managed XDR), SOAR, and GRC in a single platform. In 2026, Todyl launched Janus — a purpose-built agentic AI for security analysts that delivers in-case analysis via natural language. Todyl's vision is "unified assurance" — enabling MSPs to move beyond fragmented security tools toward a single platform covering prevention, detection, response, compliance, and insurability.
+
+## MSP Relevance
+Todyl is purpose-built for MSPs as a unified security platform, directly addressing MSP pain points around managing multiple security vendor relationships. The unified assurance narrative gives MSPs a compelling client conversation — covering prevention, detection, compliance, and cyber insurance in one platform. Janus (the agentic AI) is a direct investment in AI-driven security operations for MSP analysts.
+
+## Key Offerings & Capabilities
+- SASE — secure access service edge with ZTNA, cloud firewall, and secure web gateway
+- Singularity SIEM — log management and threat detection
+- Endpoint Security — AV, EDR capabilities
+- MXDR — Managed Extended Detection and Response with 24/7 SOC
+- SOAR — security orchestration, automation, and response
+- GRC — governance, risk, and compliance management
+- Janus Agentic AI — purpose-built AI for security analysts; natural language in-case analysis (2026)
+- Todyl Spectra Certification Program — cyber insurance and risk management certification for MSP clients
+- Three-tier packaging starting at $250/month platform subscription (September 2025)
+
+## Recent Announcements
+- Launched Janus, Todyl's agentic AI for security analysts (2026) — natural language in-case analysis for analysts of any experience level
+- September 2025: Three-tier platform packaging launched at $250/month starting price
+- January 2026: RSA partnership — RSA selected Todyl to protect its own environments and power its SOC
+- Todyl Summit 2026: Platform vision keynote reinforcing commitment across SASE, SIEM, Endpoint, MXDR, SOAR, GRC
+- Todyl Spectra Certification Program launched — cyber insurance certification that MSPs can offer to clients
+
+## Pricing Model
+Platform subscription starting at $250/month for the entry tier (September 2025 packaging). Per-endpoint and per-user components at higher tiers. MSP-specific pricing with partner discounts. Exact per-tier pricing requires contact with sales.
+
+## Strengths
+- Genuinely unified platform — one vendor for SASE, SIEM, MDR, SOAR, GRC instead of 5–6 point solutions
+- Janus agentic AI is purpose-built for MSP security analysts, not a generic AI assistant
+- Todyl Spectra creates a cyber insurance revenue stream for MSP partners
+- RSA partnership validates enterprise credibility
+- "Unified assurance" narrative is compelling for MSP client conversations
+
+## Weaknesses / Gaps
+- Smaller brand recognition than CrowdStrike, Sophos, or even Huntress
+- Unified platform means each individual component may be less mature than best-of-breed alternatives
+- Three-tier packaging (September 2025) is relatively new — market adoption still building
+- SOAR and GRC are newer additions still proving out in production
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Todyl focuses on security unification, not MSP workflow automation. However, Janus (the agentic AI) is a purpose-built AI agent for MSP security workflows — conceptually adjacent to NZO's agentic automation. If Todyl extends Janus beyond security into broader MSP operations, the overlap increases.
+
+## Notes
+- Janus is worth tracking as a benchmark for purpose-built MSP agentic AI — its analyst-level UX design is worth studying
+- The cyber insurance certification program (Spectra) is a smart revenue expansion for MSPs — NZO should consider similar partner programs
+- RSA partnership signals Todyl can win enterprise validation despite being MSP-focused

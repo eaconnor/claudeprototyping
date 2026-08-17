@@ -1,0 +1,51 @@
+# Pulseway
+slug: pulseway
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Pulseway is a cloud-based RMM platform differentiated by its mobile-first design — the entire platform is accessible and operable from a smartphone app. It serves MSPs and IT teams who want to monitor and respond to IT issues from anywhere without being tethered to a laptop. Pulseway includes monitoring, automation, patch management, remote control, and backup capabilities in a single platform.
+
+## MSP Relevance
+Pulseway is relevant to smaller MSPs and solo technicians who manage client environments with a mobile-centric workflow. Its real-time notifications and mobile response capabilities make it popular with MSPs who are on-site frequently and need to react quickly. It is not typically a primary RMM for large MSPs but serves a loyal niche among mobile-first operators.
+
+## Key Offerings & Capabilities
+- Mobile-first RMM — full monitoring, alerting, and response via smartphone app (iOS and Android)
+- Real-time monitoring and alerts — instant push notifications with one-tap response
+- Patch management — Windows, macOS, and third-party application patching
+- Remote control — full remote desktop from mobile device or web browser
+- Automated scripting and remediation
+- Pulseway Backup — integrated endpoint backup
+- PSA integration — ticketing and basic service management
+
+## Recent Announcements
+- Continued platform development focused on mobile experience improvements
+- Automation and scripting library expansion
+- Integration updates with major PSA and security tools
+- Pulseway maintains its niche positioning as the mobile-first RMM for technicians on the go
+
+## Pricing Model
+Per-device per-month. Pulseway Team and Business tiers. Pricing starts around $27/month for up to 5 systems; scales per device. Free tier available for personal use (up to 2 systems). MSP pricing available with volume discounts.
+
+## Strengths
+- Best mobile RMM experience in the market — genuinely full-featured smartphone app
+- Real-time push notifications with immediate one-tap response actions
+- Affordable entry pricing for small MSPs
+- Simple setup with low technical overhead
+
+## Weaknesses / Gaps
+- Less feature depth than NinjaOne, ConnectWise, or Kaseya for larger MSP operations
+- Automation and scripting less mature than RMM-focused competitors
+- Limited AI or intelligent automation features
+- Not competitive for MSPs managing 500+ devices across multiple clients
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Pulseway serves a niche mobile-first segment and lacks the platform depth to compete with NZO's AI agent and automation capabilities. The overlap is minimal.
+
+## Notes
+- Mobile-first design is a genuine UX differentiator that larger RMM vendors have not matched
+- Pulseway MSPs who grow often migrate to NinjaOne, ConnectWise, or Kaseya — potential NZO customer journey
+- Worth monitoring for any AI automation announcements that could shift its positioning

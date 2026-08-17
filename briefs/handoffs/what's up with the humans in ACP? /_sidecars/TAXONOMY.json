@@ -1,0 +1,430 @@
+{
+  "_source_md": "TAXONOMY.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-TAXONOMY",
+    "title": "ID Taxonomy & Schema Reference",
+    "version": "0.2.0",
+    "status": "Hybrid \u00b7 Pattern Applied",
+    "date": "2026-06-05",
+    "purpose": "Master ID schema for the ACP market analysis handoff package"
+  },
+  "sections": [
+    {
+      "level": 2,
+      "title": "ID Prefix Map",
+      "id": "ID-PREFIXES"
+    },
+    {
+      "level": 2,
+      "title": "Cross-doc reference syntax",
+      "id": "CROSS-REF"
+    },
+    {
+      "level": 2,
+      "title": "Confidence Score (CS) tag enum",
+      "id": "CS-ENUM"
+    },
+    {
+      "level": 2,
+      "title": "Source Tier enum",
+      "id": "SOURCE-TIER-ENUM"
+    },
+    {
+      "level": 2,
+      "title": "Severity enum",
+      "id": "SEVERITY-ENUM"
+    },
+    {
+      "level": 2,
+      "title": "Doc inventory",
+      "id": "DOC-INVENTORY"
+    },
+    {
+      "level": 2,
+      "title": "Generator script",
+      "id": "GENERATOR"
+    },
+    {
+      "level": 2,
+      "title": "How to grep this package",
+      "id": "GREP-RECIPES"
+    }
+  ],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Prefix",
+        "Meaning",
+        "Example",
+        "Where to find"
+      ],
+      "is_id_table": false,
+      "row_count": 21,
+      "rows": [
+        {
+          "Prefix": "`HANDOFF-*`",
+          "Meaning": "Document IDs",
+          "Example": "`HANDOFF-PROBLEMS-RANKED`",
+          "Where to find": "YAML `doc_id` field at top of each doc"
+        },
+        {
+          "Prefix": "`PROBLEM-NNN`",
+          "Meaning": "MSP/end-user problems",
+          "Example": "`PROBLEM-001`",
+          "Where to find": "`problems-ranked.md`"
+        },
+        {
+          "Prefix": "`CLAIM-*`",
+          "Meaning": "Discrete factual claims",
+          "Example": "`CLAIM-001-A`, `CLAIM-MATH-DISPUTED-001`",
+          "Where to find": "Inside claim tables"
+        },
+        {
+          "Prefix": "`IMPACT-NNN`",
+          "Meaning": "Impact estimates",
+          "Example": "`IMPACT-002`",
+          "Where to find": "Inside problem records"
+        },
+        {
+          "Prefix": "`CAP-*`",
+          "Meaning": "N-able capabilities",
+          "Example": "`CAP-ADLUMIN-MDR`, `CAP-CAT-MIP`",
+          "Where to find": "Inside problem capability tables"
+        },
+        {
+          "Prefix": "`SRC-*`",
+          "Meaning": "Source citations",
+          "Example": "`SRC-001`, `SRC-NICOLE-001`",
+          "Where to find": "YAML `sources` field"
+        },
+        {
+          "Prefix": "`FW-*`",
+          "Meaning": "Council frameworks",
+          "Example": "`FW-JTBD`, `FW-WARDLEY`",
+          "Where to find": "`council-report.md`, `council-report-extended.md`"
+        },
+        {
+          "Prefix": "`TENSION-*`",
+          "Meaning": "Cross-framework / strategic tensions",
+          "Example": "`TENSION-AUG-VS-REPLACE`",
+          "Where to find": "Multiple docs"
+        },
+        {
+          "Prefix": "`OPENQ-*`",
+          "Meaning": "Open questions (research gaps)",
+          "Example": "`OPENQ-VENDOR-AGENT-GOVERNANCE`",
+          "Where to find": "`acp-vision-from-pdfs.md`"
+        },
+        {
+          "Prefix": "`CAT-*`",
+          "Meaning": "Competitor categories",
+          "Example": "`CAT-DIRECT-MSP`, `CAT-AI-INFRA`",
+          "Where to find": "`competitive-landscape.md`"
+        },
+        {
+          "Prefix": "`COMP-*`",
+          "Meaning": "Specific competitors",
+          "Example": "`COMP-NINJAONE`, `COMP-PIA-KASEYA`",
+          "Where to find": "`competitive-landscape.md`"
+        },
+        {
+          "Prefix": "`PATTERN-*`",
+          "Meaning": "Cross-vendor patterns",
+          "Example": "`PATTERN-MCP-CONVERGENCE`",
+          "Where to find": "`competitive-landscape.md`"
+        },
+        {
+          "Prefix": "`DIFF-*`",
+          "Meaning": "Category differentiators",
+          "Example": "`DIFF-AI-INFRA`",
+          "Where to find": "`competitive-landscape.md`"
+        },
+        {
+          "Prefix": "`ROI-*`",
+          "Meaning": "ROI evidence buckets",
+          "Example": "`ROI-QBR`, `ROI-ASSETS`",
+          "Where to find": "`primary-research-transcripts.md`"
+        },
+        {
+          "Prefix": "`PAIN-*`",
+          "Meaning": "Pain consensus signals",
+          "Example": "`PAIN-LICENSE`, `PAIN-PATCHING`",
+          "Where to find": "`primary-research-transcripts.md`"
+        },
+        {
+          "Prefix": "`BLOCKER-*`",
+          "Meaning": "Friction / data gaps",
+          "Example": "`BLOCKER-DATA-ACCURACY`",
+          "Where to find": "`primary-research-transcripts.md`"
+        },
+        {
+          "Prefix": "`ASK-*`",
+          "Meaning": "Platform capability asks",
+          "Example": "`ASK-MCP`",
+          "Where to find": "`primary-research-transcripts.md`"
+        },
+        {
+          "Prefix": "`REV-LAYER-N`",
+          "Meaning": "Revenue layer",
+          "Example": "`REV-LAYER-2`",
+          "Where to find": "`acp-vision-from-pdfs.md`"
+        },
+        {
+          "Prefix": "`RBP-*`",
+          "Meaning": "Runbook principles",
+          "Example": "`RBP-DETERMINISTIC-ISH`",
+          "Where to find": "`acp-vision-from-pdfs.md`"
+        },
+        {
+          "Prefix": "`TRUST-*`",
+          "Meaning": "Trust execution levels",
+          "Example": "`TRUST-AUTONOMOUS`",
+          "Where to find": "`acp-vision-from-pdfs.md`"
+        },
+        {
+          "Prefix": "`AGENTTYPE-*`",
+          "Meaning": "Agent types",
+          "Example": "`AGENTTYPE-EXPERT`",
+          "Where to find": "`acp-vision-from-pdfs.md`"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Value",
+        "Meaning",
+        "Verification action"
+      ],
+      "is_id_table": false,
+      "row_count": 7,
+      "rows": [
+        {
+          "Value": "`VERIFIED`",
+          "Meaning": "Matches primary source directly accessed",
+          "Verification action": "None \u2014 already verified"
+        },
+        {
+          "Value": "`HIGH`",
+          "Meaning": "Well-sourced secondary; not primary-verified",
+          "Verification action": "Verify before public quoting"
+        },
+        {
+          "Value": "`MEDIUM`",
+          "Meaning": "Plausible with partial sourcing",
+          "Verification action": "Always verify before action"
+        },
+        {
+          "Value": "`LOW`",
+          "Meaning": "Fluent but thin sourcing",
+          "Verification action": "Treat as unverified"
+        },
+        {
+          "Value": "`UNKNOWN`",
+          "Meaning": "Outside model knowledge; needs SME",
+          "Verification action": "Escalate to domain expert"
+        },
+        {
+          "Value": "`FABRICATION_RISK`",
+          "Meaning": "Model likely hallucinated",
+          "Verification action": "Discard"
+        },
+        {
+          "Value": "`LOW_OUTSIDE_TRAINING`",
+          "Meaning": "Beyond knowledge cutoff",
+          "Verification action": "Verify currency"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Tier",
+        "Meaning",
+        "Treat as"
+      ],
+      "is_id_table": false,
+      "row_count": 6,
+      "rows": [
+        {
+          "Tier": "`primary`",
+          "Meaning": "Original research, peer-reviewed, primary data",
+          "Treat as": "Authoritative"
+        },
+        {
+          "Tier": "`secondary`",
+          "Meaning": "Industry analyst report, trade publication",
+          "Treat as": "High confidence with verification"
+        },
+        {
+          "Tier": "`vendor-blog`",
+          "Meaning": "Vendor's own product blog",
+          "Treat as": "Directional; vendor has incentive"
+        },
+        {
+          "Tier": "`vendor-marketing`",
+          "Meaning": "Vendor survey/marketing report (e.g. Heimdal MSP report)",
+          "Treat as": "Treat as vendor marketing, not research"
+        },
+        {
+          "Tier": "`press-release`",
+          "Meaning": "Press release (e.g. Cat-MIP via Businesswire)",
+          "Treat as": "Vendor-distributed; verify claims"
+        },
+        {
+          "Tier": "`nicole-vision`",
+          "Meaning": "Nicole Reineke's source PDFs (authoritative for ACP intent)",
+          "Treat as": "Authoritative for N-able product direction"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Value",
+        "Meaning"
+      ],
+      "is_id_table": false,
+      "row_count": 4,
+      "rows": [
+        {
+          "Value": "`CRITICAL`",
+          "Meaning": "Existential / cross-cutting / high impact + high urgency"
+        },
+        {
+          "Value": "`HIGH`",
+          "Meaning": "Significant impact or urgency"
+        },
+        {
+          "Value": "`MEDIUM`",
+          "Meaning": "Notable but bounded"
+        },
+        {
+          "Value": "`LOW`",
+          "Meaning": "Edge case or future concern"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Doc ID",
+        "File",
+        "Hybrid status",
+        "Owner"
+      ],
+      "is_id_table": true,
+      "row_count": 12,
+      "rows": [
+        {
+          "Doc ID": "HANDOFF-README",
+          "File": "`README.md`",
+          "Hybrid status": "Light frontmatter only",
+          "Owner": "Beth"
+        },
+        {
+          "Doc ID": "HANDOFF-TAXONOMY",
+          "File": "`TAXONOMY.md`",
+          "Hybrid status": "This doc",
+          "Owner": "Beth"
+        },
+        {
+          "Doc ID": "HANDOFF-CS-TAGS",
+          "File": "`CS-TAGS.md`",
+          "Hybrid status": "Already structured (had JSON schema)",
+          "Owner": "Beth"
+        },
+        {
+          "Doc ID": "HANDOFF-PROBLEMS-RANKED",
+          "File": "`problems-ranked.md`",
+          "Hybrid status": "Full hybrid",
+          "Owner": "Beth"
+        },
+        {
+          "Doc ID": "HANDOFF-NICOLE-VISION",
+          "File": "`nicole-actual-acp-vision.md`",
+          "Hybrid status": "Strategic synthesis (light frontmatter)",
+          "Owner": "Beth"
+        },
+        {
+          "Doc ID": "HANDOFF-ACP-VISION-PDFS",
+          "File": "`acp-vision-from-pdfs.md`",
+          "Hybrid status": "Full hybrid",
+          "Owner": "Beth + Scout"
+        },
+        {
+          "Doc ID": "HANDOFF-PRIMARY-RESEARCH",
+          "File": "`primary-research-transcripts.md`",
+          "Hybrid status": "Full hybrid",
+          "Owner": "Beth + Scout"
+        },
+        {
+          "Doc ID": "HANDOFF-COMPETITIVE-LANDSCAPE",
+          "File": "`competitive-landscape.md`",
+          "Hybrid status": "Full hybrid",
+          "Owner": "Beth + Scout"
+        },
+        {
+          "Doc ID": "HANDOFF-COUNCIL-REPORT",
+          "File": "`council-report.md`",
+          "Hybrid status": "Light frontmatter (5 frameworks)",
+          "Owner": "Beth + Council"
+        },
+        {
+          "Doc ID": "HANDOFF-COUNCIL-EXTENDED",
+          "File": "`council-report-extended.md`",
+          "Hybrid status": "Needs Wardley fix + frontmatter",
+          "Owner": "Beth + Council"
+        },
+        {
+          "Doc ID": "HANDOFF-ETHNOGRAPHY",
+          "File": "`ethnography-ai-headless-cybersecurity.md`",
+          "Hybrid status": "Light frontmatter (Scout output preserved)",
+          "Owner": "Beth + Scout"
+        },
+        {
+          "Doc ID": "HANDOFF-CRITIC-PASS-1",
+          "File": "`critic-pass-1.md`",
+          "Hybrid status": "Audit artifact; no hybrid",
+          "Owner": "Critic"
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [
+    "AGENTTYPE-EXPERT",
+    "ASK-MCP",
+    "BLOCKER-DATA-ACCURACY",
+    "CAP-ADLUMIN-MDR",
+    "CAP-CAT-MIP",
+    "CAT-AI-INFRA",
+    "CAT-DIRECT-MSP",
+    "CLAIM-001-A",
+    "CLAIM-MATH-DISPUTED",
+    "CLAIM-MATH-DISPUTED-001",
+    "COMP-NINJAONE",
+    "COMP-PIA-KASEYA",
+    "DIFF-AI-INFRA",
+    "FW-JTBD",
+    "FW-WARDLEY",
+    "IMPACT-002",
+    "IMPACT-NNN",
+    "OPENQ-VENDOR-AGENT-GOVERNANCE",
+    "PAIN-LICENSE",
+    "PAIN-PATCHING",
+    "PATTERN-MCP-CONVERGENCE",
+    "PROBLEM-001",
+    "PROBLEM-NNN",
+    "RBP-DETERMINISTIC-ISH",
+    "REV-LAYER-2",
+    "REV-LAYER-7",
+    "REV-LAYER-N",
+    "ROI-ASSETS",
+    "ROI-QBR",
+    "SRC-001",
+    "SRC-NICOLE-001",
+    "TENSION-AUG-VS-REPLACE",
+    "TRUST-AUTONOMOUS"
+  ],
+  "cs_tag_histogram": {
+    "VERIFIED": 3
+  }
+}

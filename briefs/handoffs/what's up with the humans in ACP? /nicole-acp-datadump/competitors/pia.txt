@@ -1,0 +1,52 @@
+# Pia (Kaseya)
+slug: pia
+category: AI Purpose-Built for MSPs
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Pia is an AI technician automation platform for MSP service desks, acquired by Kaseya and deeply integrated into the Kaseya stack. Pia resolves Level 1 IT requests autonomously — password resets, account unlocks, software installs, reboots — without human intervention. In 2026, Pia launched Pia Chat (Microsoft Teams-native ticket submission) and was named to the CRN AI 100. Kaseya's April 2026 announcement of "Kaseya Intelligence" and AI-powered Digital Specialists (automated ticket triage) extends Pia's autonomous technician vision across the entire Kaseya platform.
+
+## MSP Relevance
+Pia is one of the most concrete examples of AI replacing Level 1 helpdesk work in an MSP context. For MSPs, autonomous L1 resolution directly reduces cost-per-ticket and allows technicians to focus on higher-value work. Pia's integration with Kaseya 365 means it reaches Kaseya's large MSP install base, making it a significant market force for AI-driven MSP service delivery automation.
+
+## Key Offerings & Capabilities
+- Autonomous Level 1 ticket resolution — password resets, account unlocks, software installs, reboots, and more
+- Pia Chat (2026) — end users report IT issues via natural language in Microsoft Teams; Pia resolves without human involvement for simple requests
+- Integration with Kaseya VSA, BMS, Autotask, and IT Glue — part of the Kaseya 365 stack
+- Kaseya Intelligence / Digital Specialists (April 2026) — AI-powered ticket triage and routing across the Kaseya platform
+- Self-service portal for end users
+- Escalation workflows — routes unresolvable tickets to human technicians with full context
+
+## Recent Announcements
+- Pia Chat launched (2026) — Microsoft Teams-native AI ticket submission and autonomous resolution
+- Named to 2026 CRN AI 100 in the Software category for service delivery automation
+- Kaseya Intelligence announced April 2026 — AI Digital Specialists autonomously handle ticket triage, categorization, and routing
+- Kaseya SIEM generally available — extends Kaseya's AI-driven platform beyond service desk into security
+- Pia increasingly positioned as the "autonomous technician" layer within Kaseya 365
+
+## Pricing Model
+Included or bundled within Kaseya 365 subscriptions for Kaseya partners. Standalone Pia pricing available for non-Kaseya MSPs. Pricing per resolution or per user — exact rates require sales engagement. Kaseya bundle pricing at $119–129/user/month for Kaseya 365 Ops includes Pia capabilities.
+
+## Strengths
+- Most mature autonomous L1 resolution product purpose-built for MSPs in market
+- Pia Chat (Teams integration) meets end users where they already work
+- Kaseya distribution — reaches Kaseya's large MSP install base without separate sales motion
+- CRN AI 100 recognition validates market credibility
+- Measurable ROI — MSPs report specific resolution rate and cost-per-ticket improvements
+
+## Weaknesses / Gaps
+- Deeply tied to Kaseya — MSPs outside the Kaseya ecosystem have less incentive to adopt
+- Resolution scope is primarily L1 — complex or multi-step issues still require human escalation
+- AI accuracy depends on quality of runbooks and documentation — garbage in, garbage out
+- Competitors (Atera Robin, NZO) are building similar autonomous resolution capabilities
+
+## Competitive Threat to NZO
+Level: High
+Reason: Pia is the most direct existing competitor to NZO's AI technician and autonomous workflow vision. It is already deployed at scale in Kaseya MSPs, resolves L1 tickets autonomously, and is expanding via Kaseya Intelligence into broader automated operations. If Kaseya Intelligence scales Pia's capabilities platform-wide, it represents NZO's most significant same-category competitor.
+
+## Notes
+- Kaseya Intelligence (April 2026) is the strategic move — extending Pia's autonomous resolution model across triage, containment, backup verification, and workflow optimization
+- Pia Chat (Teams-native) is a UX pattern NZO should evaluate — meeting end users in Teams is the right channel
+- CRN AI 100 recognition will increase awareness and adoption among MSPs evaluating AI tools

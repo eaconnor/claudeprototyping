@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en" data-apx-mode="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>QBR Analyst — Onboarding → Always Current → Draft Review · Laissez Faire Fellows · Apex Bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* ── APEX BRIDGE — TOKEN CONTRACT (ported verbatim from qbr-draft-flow.html — light-surface, purple-accent crib. Do not swap for the skill's generic dark-navy palette.) ── */
+:root {
+  --br-color-brand-primary:       #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint:  #e6f0fa;
+  --br-color-brand-accent:        #6d28d9;
+
+  --br-color-surface-app:         #f4f6fb;
+  --br-color-surface-panel:       #ffffff;
+  --br-color-surface-elevated:    #eef1f8;
+  --br-color-surface-sunken:      #e6eaf3;
+  --br-color-surface-hover:       #f0f3f8;
+
+  --br-color-ink-primary:         #0d1424;
+  --br-color-ink-secondary:       #45506b;
+  --br-color-ink-muted:           #6b7790;
+  --br-color-ink-inverse:         #ffffff;
+
+  --br-color-border-subtle:       #d8deeb;
+  --br-color-border-default:      #c3ccdd;
+  --br-color-border-strong:       #94a0b8;
+
+  --br-color-state-success:       #16a34a;
+  --br-color-state-success-tint:  #dcfce7;
+  --br-color-state-warning:       #d97706;
+  --br-color-state-warning-tint:  #fef3c7;
+  --br-color-state-danger:        #dc2626;
+  --br-color-state-danger-tint:   #fee2e2;
+  --br-color-state-info:          #0284c7;
+  --br-color-state-info-tint:     #e0f2fe;
+
+  --br-font-family-sans:  "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --br-font-family-brand: "Manrope", -apple-system, sans-serif;
+  --br-font-family-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  --br-radius-sm: 4px;
+  --br-radius-md: 6px;
+  --br-radius-lg: 10px;
+
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-lg: 0 4px 12px rgba(15,23,42,.10), 0 1px 4px rgba(15,23,42,.06);
+
+  --topbar-bg:     #0a1730;
+  --topbar-border: var(--br-color-brand-primary);
+  --rail-bg:       #f0eafa;
+  --rail-border:   #a78bfa;
+  --alpha-accent:  #a78bfa;
+  --alpha-soft:    rgba(167,139,250,0.13);
+}
+
+[data-apx-mode="dark"] {
+  --br-color-surface-app:        #0b1220;
+  --br-color-surface-panel:      #111827;
+  --br-color-surface-elevated:   #1e293b;
+  --br-color-surface-sunken:     #0f172a;
+  --br-color-surface-hover:      #1e293b;
+  --br-color-ink-primary:        #f1f5f9;
+  --br-color-ink-secondary:      #cbd5e1;
+  --br-color-ink-muted:          #94a3b8;
+  --br-color-border-subtle:      #1e293b;
+  --br-color-border-default:     #334155;
+  --br-color-border-strong:      #475569;
+  --br-color-brand-primary-tint: #0c2845;
+  --br-color-state-success-tint: rgba(22,163,74,.18);
+  --br-color-state-warning-tint: rgba(217,119,6,.18);
+  --br-color-state-danger-tint:  rgba(220,38,38,.18);
+  --br-color-state-info-tint:    rgba(2,132,199,.18);
+  --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+  --rail-bg: #16112e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary);
+  font-family: var(--br-font-family-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; cursor: pointer; }
+table { font-family: var(--br-font-family-sans); }
+
+/* ── TOPBAR ───────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 100; height: 48px;
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  display: flex; align-items: center; gap: 12px; padding: 0 24px;
+}
+.topbar-wordmark {
+  font-family: var(--br-font-family-brand);
+  font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.92);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.topbar-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+.topbar-title { font-size: 13px; color: rgba(255,255,255,0.65); }
+.topbar-spacer { flex: 1; }
+.topbar-badge {
+  font-family: var(--br-font-family-mono); font-size: 11px;
+  background: rgba(167,139,250,0.2); color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.35); border-radius: 4px; padding: 2px 8px;
+}
+.theme-btn {
+  font-family: var(--br-font-family-mono); font-size: 11px; color: rgba(255,255,255,0.45);
+  background: none; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; padding: 3px 10px;
+}
+.theme-btn:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.35); }
+
+/* ── APP SHELL: SIDE NAV + MAIN ───────────────────────── */
+.app-shell { display: flex; align-items: flex-start; }
+.side-nav {
+  width: 232px; flex-shrink: 0; background: var(--br-color-surface-panel);
+  border-right: 1px solid var(--br-color-border-subtle); padding: 20px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+  position: sticky; top: 48px; height: calc(100vh - 48px); overflow-y: auto;
+}
+.side-nav-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--br-color-ink-muted); padding: 4px 10px 8px;
+}
+.side-nav-item {
+  display: flex; flex-direction: column; gap: 2px; text-align: left; background: none;
+  border: none; border-radius: var(--br-radius-md); padding: 10px 12px;
+  color: var(--br-color-ink-secondary); font-size: 13px; font-weight: 600;
+}
+.side-nav-item:hover { background: var(--br-color-surface-hover); }
+.side-nav-item.active { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); }
+.side-nav-item .sn-sub { font-size: 11px; font-weight: 400; color: var(--br-color-ink-muted); }
+.side-nav-item.active .sn-sub { color: var(--br-color-brand-primary); opacity: .85; }
+.side-nav-foot {
+  margin-top: auto; font-size: 10.5px; color: var(--br-color-ink-muted); padding: 12px 10px 4px;
+  border-top: 1px solid var(--br-color-border-subtle); line-height: 1.5;
+}
+.main-view { flex: 1; min-width: 0; }
+.page { max-width: 1180px; margin: 0 auto; padding: 28px 24px 56px; display: flex; flex-direction: column; gap: 24px; }
+
+.section-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.section-title { font-family: var(--br-font-family-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-ink-muted); }
+.section-hr { flex: 1; height: 1px; background: var(--br-color-border-subtle); }
+.stage-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700;
+  color: var(--br-color-brand-accent); background: rgba(109,40,217,0.08);
+  border: 1px solid rgba(109,40,217,0.25); border-radius: 4px; padding: 2px 8px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ── PAGE TITLE BLOCK ─────────────────────────────────── */
+.page-title-block {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); padding: 20px 24px; box-shadow: var(--br-shadow-sm);
+  display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;
+}
+.page-title-block h1 { font-family: var(--br-font-family-brand); font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.page-title-block .sub { font-size: 13px; color: var(--br-color-ink-secondary); }
+
+/* ── DRAFT REVIEW TAB STRIP ───────────────────────────────── */
+.dr-tabstrip { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 2px solid var(--br-color-border-default); padding-bottom: 0; }
+.dr-tab {
+  font-family: var(--br-font-family-sans); font-size: 12.5px; font-weight: 700; cursor: pointer;
+  border: none; border-radius: var(--br-radius-sm) var(--br-radius-sm) 0 0; padding: 9px 14px;
+  background: var(--br-color-surface-panel); color: var(--br-color-ink-secondary); opacity: .72;
+  transition: opacity .15s;
+}
+.dr-tab:hover { opacity: 1; }
+.dr-tab.active { opacity: 1; box-shadow: inset 0 -3px 0 currentColor; }
+.dr-tab.finalized { opacity: 1; }
+.dr-tab.green { color: var(--br-color-state-success); }
+.dr-tab.blue { color: var(--br-color-brand-primary); }
+.dr-tab.gold { color: var(--br-color-state-warning); }
+.dr-tab.green.active, .dr-tab.green.finalized { background: var(--br-color-state-success-tint); }
+.dr-tab.blue.active, .dr-tab.blue.finalized { background: var(--br-color-brand-primary-tint); }
+.dr-tab.gold.active, .dr-tab.gold.finalized { background: var(--br-color-state-warning-tint); }
+
+.dr-finalize-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-md); padding: 10px 14px; margin-top: 4px;
+}
+.dr-finalize-bar .dfb-status { font-size: 12.5px; font-weight: 600; color: var(--br-color-ink-secondary); }
+.dr-finalize-bar.done { border-color: rgba(22,163,74,.4); background: var(--br-color-state-success-tint); }
+.dr-finalize-bar.done .dfb-status { color: var(--br-color-state-success); }
+
+#dr-followup-notes {
+  width: 100%; min-height: 90px; font-size: 12.5px; font-family: var(--br-font-family-sans); padding: 10px;
+  border: 1px solid var(--br-color-border-default); border-radius: var(--br-radius-sm); background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary); resize: vertical;
+}
+.meta-pills { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pill {
+  font-family: var(--br-font-family-mono); font-size: 11px; padding: 3px 10px; border-radius: 99px;
+  border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-secondary);
+  background: var(--br-color-surface-elevated); white-space: nowrap;
+}
+.pill.status {
+  border-color: var(--br-color-border-strong); color: var(--br-color-ink-secondary);
+  font-weight: 700; transition: all .3s ease;
+}
+.pill.status.ready { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.35); }
+
+.breadcrumb-link {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700;
+  color: var(--br-color-brand-primary); background: none; border: none; padding: 0;
+}
+.breadcrumb-link:hover { text-decoration: underline; }
+
+/* ── A-TAG NOTE ───────────────────────────────────────── */
+.a-tag-note {
+  font-family: var(--br-font-family-mono); font-size: 10.5px; color: var(--br-color-state-warning);
+  background: var(--br-color-state-warning-tint); border: 1px solid rgba(217,119,6,.35);
+  border-radius: var(--br-radius-md); padding: 7px 12px; width: fit-content;
+}
+
+.scope-banner {
+  font-size: 12.5px; color: var(--br-color-brand-primary); background: var(--br-color-brand-primary-tint);
+  border: 1px solid rgba(0,102,204,.3); border-radius: var(--br-radius-sm); padding: 9px 12px;
+}
+.scope-banner code { font-family: var(--br-font-family-mono); font-size: 11px; }
+
+/* ── WIZARD ───────────────────────────────────────────── */
+.wizard-wrap { display: flex; flex-direction: column; gap: 20px; }
+.stepper {
+  display: flex; align-items: center; background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-lg);
+  padding: 16px 20px; box-shadow: var(--br-shadow-sm); overflow-x: auto;
+}
+.step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.step-circle {
+  width: 26px; height: 26px; border-radius: 99px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--br-font-family-mono); font-size: 12px; font-weight: 700;
+  border: 2px solid var(--br-color-border-default); color: var(--br-color-ink-muted); flex-shrink: 0;
+}
+.step-label { font-size: 12px; color: var(--br-color-ink-muted); font-weight: 600; white-space: nowrap; }
+.step.active .step-circle { border-color: var(--br-color-brand-primary); background: var(--br-color-brand-primary); color: #fff; }
+.step.active .step-label { color: var(--br-color-brand-primary); }
+.step.done .step-circle { border-color: var(--br-color-state-success); background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+.step.done .step-label { color: var(--br-color-state-success); }
+.step-connector { flex: 0 0 28px; height: 2px; background: var(--br-color-border-subtle); margin: 0 4px; }
+.step-connector.done { background: var(--br-color-state-success); }
+
+.wizard-pane {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 24px 26px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.wizard-pane h2 { font-family: var(--br-font-family-brand); font-size: 17px; font-weight: 800; }
+.wizard-pane .pane-sub { font-size: 13px; color: var(--br-color-ink-secondary); margin-top: -8px; }
+.wizard-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.wizard-footer .wf-left { display: flex; gap: 10px; }
+
+.btn {
+  font-size: 12.5px; font-weight: 600; padding: 8px 16px; border-radius: var(--br-radius-md);
+  border: 1px solid var(--br-color-border-default); background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-secondary);
+}
+.btn:hover { background: var(--br-color-surface-hover); }
+.btn.accept { border-color: rgba(22,163,74,.4); color: var(--br-color-state-success); }
+.btn.accept:hover { background: var(--br-color-state-success-tint); }
+.btn.edit { border-color: rgba(0,102,204,.4); color: var(--br-color-brand-primary); }
+.btn.edit:hover { background: var(--br-color-brand-primary-tint); }
+.btn.dispute { border-color: rgba(220,38,38,.4); color: var(--br-color-state-danger); }
+.btn.dispute:hover { background: var(--br-color-state-danger-tint); }
+.btn.dispute-link {
+  border: none; background: none; text-decoration: underline; color: var(--br-color-ink-muted);
+  padding: 4px 0; font-weight: 500;
+}
+.btn.dispute-link:hover { color: var(--br-color-state-danger); }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn.ghost { background: none; }
+.btn.primary { background: var(--br-color-brand-primary); border-color: var(--br-color-brand-primary); color: #fff; font-weight: 700; padding: 10px 20px; }
+.btn.primary:hover { background: var(--br-color-brand-primary-hover); }
+.btn.save { border-color: rgba(0,102,204,.5); background: var(--br-color-brand-primary); color: #fff; }
+.btn.save:hover { background: var(--br-color-brand-primary-hover); }
+.btn.cancel { color: var(--br-color-ink-muted); }
+.btn.add-q { border-color: rgba(0,102,204,.4); color: var(--br-color-brand-primary); }
+
+.coworker-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+@media (max-width: 860px) { .coworker-grid { grid-template-columns: 1fr; } }
+.coworker-card {
+  border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); padding: 16px;
+  display: flex; flex-direction: column; gap: 8px; background: var(--br-color-surface-elevated);
+}
+.coworker-card.active { border-color: var(--br-color-brand-primary); background: var(--br-color-brand-primary-tint); }
+.coworker-card.done { border-color: rgba(22,163,74,.35); }
+.cc-name { font-weight: 700; font-size: 13.5px; }
+.cc-desc { font-size: 12px; color: var(--br-color-ink-secondary); line-height: 1.5; }
+.cc-status {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  padding: 3px 9px; border-radius: 99px; width: fit-content; border: 1px solid; font-weight: 700;
+}
+.cc-status.done { color: var(--br-color-state-success); background: var(--br-color-state-success-tint); border-color: rgba(22,163,74,.4); }
+.cc-status.active { color: var(--br-color-brand-primary); background: #fff; border-color: var(--br-color-brand-primary); }
+.cc-status.later { color: var(--br-color-ink-muted); background: var(--br-color-surface-panel); border-color: var(--br-color-border-default); }
+
+.onboard-card {
+  background: var(--br-color-surface-elevated); border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-md); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px;
+}
+.onboard-card h3 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--br-color-ink-secondary); }
+.onboard-card h4 { font-size: 12px; font-weight: 700; color: var(--br-color-ink-primary); margin-bottom: 4px; }
+.onboard-card .oc-lede { font-size: 13px; color: var(--br-color-ink-primary); }
+
+.upload-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;
+  border: 2px dashed var(--br-color-border-strong); border-radius: var(--br-radius-md);
+  padding: 22px 16px; text-align: center; background: var(--br-color-surface-panel);
+}
+.upload-drop:hover { border-color: var(--br-color-brand-primary); background: var(--br-color-brand-primary-tint); }
+.upload-drop .ud-icon { font-size: 22px; color: var(--br-color-brand-primary); }
+.upload-drop .ud-text { font-size: 13px; font-weight: 600; color: var(--br-color-ink-primary); }
+.upload-drop .ud-sub { font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+.upload-list { display: flex; flex-direction: column; gap: 6px; }
+.upload-row {
+  display: flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 6px 10px;
+  background: var(--br-color-surface-panel); border-radius: var(--br-radius-sm); border: 1px solid var(--br-color-border-subtle);
+}
+.upload-row .ul-name { flex: 1; font-weight: 600; }
+.upload-row .ul-size { color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); font-size: 11px; }
+.upload-row .ul-remove { background: none; border: none; cursor: pointer; color: var(--br-color-ink-muted); font-size: 13px; padding: 2px 4px; }
+.upload-row .ul-remove:hover { color: var(--br-color-state-danger); }
+#ob-notes {
+  width: 100%; min-height: 70px; font-size: 12.5px; font-family: var(--br-font-family-sans); padding: 10px;
+  border: 1px solid var(--br-color-border-default); border-radius: var(--br-radius-sm); background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary); resize: vertical;
+}
+.hist-section { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px solid var(--br-color-border-subtle); }
+.hist-section:first-of-type { border-top: none; padding-top: 0; }
+.hist-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--br-color-ink-primary); display: flex; flex-direction: column; gap: 6px; }
+.hist-promises { display: flex; flex-direction: column; gap: 8px; }
+.hist-promise-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  font-size: 13px; padding: 8px 10px; background: var(--br-color-surface-panel); border-radius: var(--br-radius-sm);
+}
+.hist-promise-row .hp-main { flex: 1; min-width: 200px; }
+.hp-untracked { font-size: 11px; color: var(--br-color-ink-muted); font-style: italic; }
+
+.mini-table { width: 100%; border-collapse: collapse; font-size: 12.5px; background: var(--br-color-surface-panel); border-radius: var(--br-radius-sm); }
+.mini-table th {
+  text-align: left; font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--br-color-ink-muted); padding: 7px 10px; border-bottom: 1px solid var(--br-color-border-default);
+}
+.mini-table td { padding: 8px 10px; border-bottom: 1px solid var(--br-color-border-subtle); }
+.mini-table tr:last-child td { border-bottom: none; }
+.mini-table .more-row td { color: var(--br-color-ink-muted); font-style: italic; font-size: 11.5px; }
+
+.field-select {
+  font-size: 12.5px; font-family: var(--br-font-family-sans); padding: 6px 10px; border-radius: var(--br-radius-sm);
+  border: 1px solid var(--br-color-border-default); background: var(--br-color-surface-app); color: var(--br-color-ink-primary);
+}
+
+.branch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 700px) { .branch-grid { grid-template-columns: 1fr; } }
+.branch-option {
+  border: 2px solid var(--br-color-border-default); border-radius: var(--br-radius-md); padding: 16px;
+  background: var(--br-color-surface-elevated); display: flex; flex-direction: column; gap: 6px; text-align: left;
+}
+.branch-option:hover { border-color: var(--br-color-brand-primary); }
+.branch-option.selected { border-color: var(--br-color-brand-primary); background: var(--br-color-brand-primary-tint); }
+.branch-option .bo-title { font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 6px; }
+.branch-option .bo-desc { font-size: 12px; color: var(--br-color-ink-secondary); line-height: 1.5; }
+.branch-option .bo-cs { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); }
+
+.vl-card {
+  background: var(--br-color-surface-elevated); border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-md); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
+}
+.vl-input-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vl-input-row label { font-size: 13px; font-weight: 600; color: var(--br-color-ink-primary); }
+.vl-input-row input {
+  width: 110px; font-size: 13px; font-family: var(--br-font-family-mono); padding: 8px 10px;
+  border-radius: var(--br-radius-md); border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-app); color: var(--br-color-ink-primary);
+}
+.vl-distinguish {
+  font-size: 11.5px; color: var(--br-color-ink-muted); border-top: 1px dashed var(--br-color-border-subtle);
+  padding-top: 10px; line-height: 1.55;
+}
+.vl-distinguish strong { color: var(--br-color-ink-secondary); }
+.vl-echo { font-size: 12.5px; color: var(--br-color-brand-primary); font-weight: 600; }
+
+.magic-panel {
+  background: linear-gradient(135deg, var(--br-color-brand-primary-tint), var(--br-color-surface-panel));
+  border: 1px solid rgba(0,102,204,.25); border-radius: var(--br-radius-lg); padding: 26px;
+  display: flex; flex-direction: column; gap: 18px; align-items: center; text-align: center;
+}
+.magic-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; width: 100%; }
+@media (max-width: 700px) { .magic-grid { grid-template-columns: 1fr; } }
+.magic-stat { display: flex; flex-direction: column; gap: 4px; }
+.magic-stat .ms-num { font-family: var(--br-font-family-mono); font-size: 34px; font-weight: 800; color: var(--br-color-brand-primary); }
+.magic-stat.risk .ms-num { color: var(--br-color-state-danger); }
+.magic-stat.overdue .ms-num { color: var(--br-color-state-warning); }
+.magic-stat .ms-label { font-size: 12px; color: var(--br-color-ink-secondary); }
+.compute-btn {
+  font-size: 14px; font-weight: 700; padding: 13px 26px; border-radius: var(--br-radius-md);
+  background: var(--br-color-brand-primary); color: #fff; border: none;
+}
+.compute-btn:hover { background: var(--br-color-brand-primary-hover); }
+.magic-tier-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+.cadence-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.cadence-table th {
+  text-align: left; font-family: var(--br-font-family-mono); font-size: 10.5px; text-transform: uppercase;
+  color: var(--br-color-ink-muted); padding: 8px 12px; border-bottom: 1px solid var(--br-color-border-default);
+}
+.cadence-table td { padding: 11px 12px; border-bottom: 1px solid var(--br-color-border-subtle); vertical-align: middle; }
+.cadence-note {
+  background: var(--br-color-state-warning-tint); border: 1px solid rgba(217,119,6,.3); border-radius: var(--br-radius-md);
+  padding: 12px 16px; font-size: 12.5px; color: var(--br-color-ink-primary);
+}
+
+/* ── ALWAYS CURRENT ───────────────────────────────────── */
+.ac-summary {
+  display: flex; gap: 22px; flex-wrap: wrap; background: var(--topbar-bg); border-radius: var(--br-radius-lg);
+  padding: 18px 22px; color: #fff; box-shadow: var(--br-shadow-md);
+}
+.ac-summary-stat { display: flex; flex-direction: column; gap: 2px; }
+.ac-summary-stat .val { font-family: var(--br-font-family-mono); font-size: 24px; font-weight: 800; }
+.ac-summary-stat .lbl { font-size: 11.5px; color: rgba(255,255,255,.68); max-width: 180px; }
+.ac-summary-note { margin-left: auto; align-self: center; font-size: 11px; color: rgba(255,255,255,.55); font-style: italic; }
+
+.ac-filter-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.ac-filter-chip {
+  font-family: var(--br-font-family-mono); font-size: 11.5px; padding: 6px 14px; border-radius: 99px;
+  border: 1px solid var(--br-color-border-default); background: var(--br-color-surface-panel); color: var(--br-color-ink-secondary);
+}
+.ac-filter-chip.active { background: var(--br-color-brand-primary); color: #fff; border-color: var(--br-color-brand-primary); }
+
+.ac-table-wrap {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); overflow: hidden;
+}
+.ac-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ac-table th {
+  text-align: left; font-family: var(--br-font-family-mono); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--br-color-ink-muted); padding: 10px 16px;
+  border-bottom: 1px solid var(--br-color-border-default); background: var(--br-color-surface-elevated);
+}
+.ac-table td { padding: 11px 16px; border-bottom: 1px solid var(--br-color-border-subtle); }
+.ac-row { }
+.ac-row-live { cursor: pointer; }
+.ac-row-live:hover { background: var(--br-color-surface-hover); }
+.ac-row-dim { cursor: pointer; }
+.ac-row-dim:hover { background: var(--br-color-surface-hover); }
+.ac-live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 99px; background: var(--br-color-state-success); margin-right: 6px; }
+.cadence-tag, .risk-tag {
+  font-family: var(--br-font-family-mono); font-size: 10.5px; padding: 2px 8px; border-radius: 99px; border: 1px solid; font-weight: 700;
+}
+.cadence-tag.on-track { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.cadence-tag.overdue { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.risk-tag.flagged { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); border-color: rgba(220,38,38,.4); }
+.risk-tag.clear { background: var(--br-color-surface-elevated); color: var(--br-color-ink-muted); border-color: var(--br-color-border-default); }
+
+.tierbadge {
+  display: inline-flex; align-items: center; gap: 3px; font-family: var(--br-font-family-mono);
+  font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 99px; border: 1px solid;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.tierbadge.measured    { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.tierbadge.benchmarked { background: var(--br-color-state-info-tint);    color: var(--br-color-state-info);    border-color: rgba(2,132,199,.4); }
+.tierbadge.estimated   { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.tierbadge.unverified  { background: var(--br-color-state-danger-tint);  color: var(--br-color-state-danger);  border-color: rgba(220,38,38,.4); }
+.tierbadge.tier-a { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.tierbadge.tier-b { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); border-color: rgba(2,132,199,.4); }
+.tierbadge.tier-c { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.tierbadge.tier-d { background: var(--br-color-surface-elevated); color: var(--br-color-ink-muted); border-color: var(--br-color-border-default); }
+
+.status-pill {
+  font-family: var(--br-font-family-mono); font-size: 9.5px; font-weight: 700; padding: 2px 7px;
+  border-radius: 4px; border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-muted);
+  background: var(--br-color-surface-elevated); white-space: nowrap;
+}
+.status-pill.accepted  { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.status-pill.edited    { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); border-color: rgba(0,102,204,.4); }
+.status-pill.escalated { background: rgba(109,40,217,0.10); color: var(--br-color-brand-accent); border-color: rgba(109,40,217,.4); }
+.status-pill.resolved  { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.status-pill.flagged   { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+
+.toast {
+  position: fixed; bottom: 24px; right: 24px; background: var(--br-color-ink-primary); color: #fff; font-size: 13px;
+  padding: 12px 18px; border-radius: var(--br-radius-md); box-shadow: var(--br-shadow-lg); z-index: 500;
+  max-width: 340px; opacity: 0; transform: translateY(10px); transition: all .25s ease; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── CYCLE MEMORY STRIP ───────────────────────────────── */
+.cycle-strip {
+  background: var(--topbar-bg); border-radius: var(--br-radius-md); padding: 12px 20px;
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center; cursor: pointer;
+  border: none; text-align: left; width: 100%;
+}
+.cycle-strip:hover { background: #0d1e3d; }
+.cycle-strip .cs-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(255,255,255,0.45); flex-shrink: 0;
+}
+.cycle-strip .cs-text { font-size: 13px; color: rgba(255,255,255,0.85); flex: 1; }
+.cycle-strip .cs-text strong { color: #fff; }
+.cycle-strip .cs-progress {
+  font-family: var(--br-font-family-mono); font-size: 12px; font-weight: 700;
+  color: var(--br-color-state-warning); background: rgba(217,119,6,0.18);
+  border: 1px solid rgba(217,119,6,0.35); border-radius: 99px; padding: 3px 10px;
+}
+.cycle-strip .cs-arrow { color: var(--alpha-accent); font-family: var(--br-font-family-mono); font-size: 12px; }
+
+/* ── GAP BANNER ───────────────────────────────────────── */
+.gap-banner {
+  display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: var(--br-radius-md);
+  background: var(--br-color-state-warning-tint); border: 1px solid rgba(217,119,6,0.35);
+  cursor: pointer; width: 100%; text-align: left;
+}
+.gap-banner:hover { border-color: rgba(217,119,6,0.55); }
+.gap-banner .gb-icon { font-size: 18px; }
+.gap-banner .gb-text { font-size: 13px; color: var(--br-color-ink-primary); flex: 1; }
+.gap-banner .gb-text strong { font-family: var(--br-font-family-mono); }
+.gap-banner .gb-cta { font-family: var(--br-font-family-mono); font-size: 11px; color: var(--br-color-state-warning); font-weight: 700; white-space: nowrap; }
+
+/* ── CARD GRID (stage 3 content blocks) ──────────────── */
+.block-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; }
+@media (max-width: 860px) { .block-grid { grid-template-columns: 1fr; } }
+
+.content-card {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); padding: 18px 20px; box-shadow: var(--br-shadow-sm);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.content-card h3 {
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--br-color-ink-muted); display: flex; align-items: center; gap: 8px;
+}
+.content-card p { font-size: 13px; color: var(--br-color-ink-secondary); line-height: 1.6; }
+.content-card .cs-tag { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); opacity: .7; }
+
+.ask-highlight {
+  background: var(--br-color-brand-primary-tint); border: 1px solid rgba(0,102,204,0.25);
+  border-radius: var(--br-radius-md); padding: 10px 14px; font-size: 13px; color: var(--br-color-ink-primary);
+}
+.ask-highlight strong { color: var(--br-color-brand-primary); }
+
+/* ── REHEARSE TOGGLE ──────────────────────────────────── */
+.rehearse-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rehearse-chip {
+  font-size: 12px; padding: 8px 14px; border-radius: 99px; border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-elevated); color: var(--br-color-ink-secondary);
+}
+.rehearse-chip:hover { border-color: var(--br-color-brand-primary); }
+.rehearse-chip.selected {
+  background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary);
+  border-color: var(--br-color-brand-primary); font-weight: 600;
+}
+.rehearse-chip.selected::before { content: '✓ '; }
+
+/* ── STAGE 4 HEADER ROW ───────────────────────────────── */
+.stage4-header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.stage4-eyebrow { font-size: 12px; color: var(--br-color-ink-muted); }
+
+/* ── EVIDENCE TRAIL ── */
+.evidence-trail {
+  background: var(--br-color-surface-sunken); border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.et-label {
+  display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px;
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--br-color-ink-muted);
+}
+.et-label .et-owner { color: var(--br-color-brand-accent); }
+.et-rows { display: flex; flex-direction: column; gap: 6px; }
+.et-row {
+  display: grid; grid-template-columns: 150px 1fr auto; gap: 10px; align-items: start;
+  font-family: var(--br-font-family-mono); font-size: 11.5px; padding-bottom: 6px;
+  border-bottom: 1px dashed var(--br-color-border-subtle);
+}
+.et-row:last-child { border-bottom: none; padding-bottom: 0; }
+.et-source { color: var(--br-color-ink-secondary); font-weight: 700; white-space: nowrap; }
+.et-source .et-src-type { display: block; font-size: 9.5px; color: var(--br-color-ink-muted); font-weight: 400; text-transform: uppercase; letter-spacing: .04em; }
+.et-reading { color: var(--br-color-ink-primary); font-family: var(--br-font-family-sans); font-size: 12px; line-height: 1.45; }
+.et-flag {
+  font-family: var(--br-font-family-mono); font-size: 9.5px; font-weight: 700; padding: 2px 8px;
+  border-radius: 99px; border: 1px solid; white-space: nowrap; align-self: start;
+}
+.et-flag.match    { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.et-flag.mismatch { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.et-flag.single   { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); border-color: rgba(220,38,38,.4); }
+.et-reconciliation {
+  font-family: var(--br-font-family-sans); font-size: 12px; color: var(--br-color-ink-secondary);
+  border-top: 1px solid var(--br-color-border-default); padding-top: 10px; line-height: 1.5;
+}
+.et-reconciliation strong { color: var(--br-color-ink-primary); }
+.et-cs { display: block; font-family: var(--br-font-family-mono); font-size: 9.5px; color: var(--br-color-ink-muted); opacity: .8; margin-top: 6px; }
+
+/* ── STAGE 4 GRID ─────────────────────────────────────── */
+.stage4-grid { display: grid; grid-template-columns: 300px 1fr; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .stage4-grid { grid-template-columns: 1fr; } }
+
+.findings-sidebar {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.fs-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--br-color-ink-muted); padding: 12px 16px 8px;
+}
+.finding-item {
+  display: flex; flex-direction: column; gap: 6px; width: 100%; text-align: left; background: none; border: none;
+  border-top: 1px solid var(--br-color-border-subtle); padding: 12px 16px; color: var(--br-color-ink-primary);
+}
+.finding-item:hover { background: var(--br-color-surface-hover); }
+.finding-item.active { background: var(--br-color-brand-primary-tint); border-left: 3px solid var(--br-color-brand-primary); padding-left: 13px; }
+.finding-item:focus-visible { outline: 2px solid var(--br-color-brand-primary); outline-offset: -2px; }
+.fi-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.fi-title { font-size: 12.5px; font-weight: 600; }
+.fi-cat { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); }
+
+/* ── FINDING DETAIL CANVAS ────────────────────────────── */
+.finding-canvas {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 22px 24px;
+  min-height: 420px; display: flex; flex-direction: column; gap: 16px;
+}
+.fd-header { display: flex; flex-direction: column; gap: 6px; }
+.fd-header-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.fd-header h2 { font-size: 17px; font-weight: 700; }
+.evidence-note {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--br-color-ink-muted); background: var(--br-color-surface-elevated);
+  border: 1px solid var(--br-color-border-subtle); border-radius: 4px; padding: 4px 10px; width: fit-content;
+}
+
+.four-part {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  background: var(--br-color-surface-elevated); border-radius: var(--br-radius-md); padding: 14px;
+}
+@media (max-width: 700px) { .four-part { grid-template-columns: 1fr; } }
+.fp-row { display: flex; flex-direction: column; gap: 4px; }
+.fp-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--br-color-brand-accent);
+}
+.fp-row p { font-size: 13px; color: var(--br-color-ink-primary); line-height: 1.55; }
+
+.fd-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+.fd-note {
+  font-size: 12.5px; padding: 10px 14px; border-radius: var(--br-radius-md); border: 1px solid;
+  display: none;
+}
+.fd-note.show { display: block; }
+.fd-note.accepted { background: var(--br-color-state-success-tint); border-color: rgba(22,163,74,.35); color: var(--br-color-state-success); }
+.fd-note.escalated { background: rgba(109,40,217,0.08); border-color: rgba(109,40,217,.35); color: var(--br-color-brand-accent); }
+.fd-note.resolved { background: var(--br-color-state-success-tint); border-color: rgba(22,163,74,.35); color: var(--br-color-state-success); }
+.fd-note.flagged { background: var(--br-color-state-warning-tint); border-color: rgba(217,119,6,.35); color: var(--br-color-state-warning); }
+
+.fd-edit-panel { display: none; flex-direction: column; gap: 8px; }
+.fd-edit-panel.show { display: flex; }
+.fd-edit-panel textarea {
+  width: 100%; min-height: 72px; font-family: var(--br-font-family-sans); font-size: 13px;
+  padding: 10px 12px; border-radius: var(--br-radius-md); border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-app); color: var(--br-color-ink-primary); resize: vertical;
+}
+.fd-edit-panel .edit-actions { display: flex; gap: 8px; }
+
+/* decision prompt */
+.decision-prompt {
+  background: var(--br-color-state-warning-tint); border: 1px solid rgba(217,119,6,0.35);
+  border-radius: var(--br-radius-md); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
+}
+.decision-prompt .dp-question { font-size: 14px; font-weight: 600; color: var(--br-color-ink-primary); }
+.dp-options { display: flex; gap: 10px; flex-wrap: wrap; }
+.dp-btn {
+  font-size: 12.5px; font-weight: 600; padding: 10px 16px; border-radius: var(--br-radius-md);
+  border: 1px solid var(--br-color-border-strong); background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary); flex: 1; min-width: 220px; text-align: left;
+}
+.dp-btn:hover { border-color: var(--br-color-brand-primary); }
+.dp-btn .dp-btn-label { display: block; font-weight: 700; margin-bottom: 2px; }
+.dp-btn .dp-btn-sub { display: block; font-size: 11px; color: var(--br-color-ink-muted); font-weight: 400; }
+.dp-btn.known .dp-btn-label { color: var(--br-color-state-success); }
+.dp-btn.unknown .dp-btn-label { color: var(--br-color-state-warning); }
+.dp-btn.repull .dp-btn-label { color: var(--br-color-brand-primary); }
+
+/* ── CONSULTATIVE QUESTIONS ───────────────────────────── */
+.consult-card {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 20px 22px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.consult-card h3 { font-size: 13px; font-weight: 700; }
+.consult-card .consult-sub { font-size: 12px; color: var(--br-color-ink-muted); }
+.question-list { display: flex; flex-direction: column; gap: 8px; list-style: none; }
+.question-list li {
+  font-size: 13px; color: var(--br-color-ink-primary); padding: 10px 14px; border-radius: var(--br-radius-md);
+  background: var(--br-color-surface-elevated); border-left: 3px solid var(--br-color-brand-accent);
+}
+.add-question-row { display: flex; gap: 8px; margin-top: 4px; }
+.add-question-row input {
+  flex: 1; font-size: 13px; font-family: var(--br-font-family-sans); padding: 9px 12px;
+  border-radius: var(--br-radius-md); border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-app); color: var(--br-color-ink-primary);
+}
+.add-question-row input:focus { outline: 2px solid var(--br-color-brand-primary); outline-offset: 1px; }
+
+/* ── BRADLEY RAIL ── */
+.bradley-rail {
+  background: var(--rail-bg); border: 1px solid var(--rail-border); border-radius: var(--br-radius-lg);
+  padding: 20px 24px; box-shadow: var(--br-shadow-md); display: flex; flex-direction: column; gap: 16px;
+}
+.rail-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.rail-title { font-family: var(--br-font-family-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-brand-accent); }
+.rail-badge { font-family: var(--br-font-family-mono); font-size: 10px; background: var(--alpha-soft); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,0.35); border-radius: 4px; padding: 2px 8px; }
+.rail-blurb { font-size: 13px; color: var(--br-color-ink-secondary); }
+.rail-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 580px) { .rail-dual { grid-template-columns: 1fr; } }
+.rail-block { background: var(--br-color-surface-panel); border-radius: var(--br-radius-md); padding: 12px 14px; border: 1px solid var(--br-color-border-subtle); }
+.rail-block-label { font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 700; }
+.rail-block.nailed .rail-block-label { color: var(--br-color-state-success); }
+.rail-block.hurt .rail-block-label { color: var(--br-color-state-danger); }
+.rail-block ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.rail-block li { font-size: 12px; color: var(--br-color-ink-secondary); padding-left: 14px; position: relative; }
+.rail-block.nailed li::before { content: '✓'; position: absolute; left: 0; color: var(--br-color-state-success); font-size: 11px; }
+.rail-block.hurt li::before { content: '!'; position: absolute; left: 0; color: var(--br-color-state-danger); font-size: 11px; font-weight: 700; }
+.cs-inline { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); opacity: .8; }
+
+.rail-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.route-card { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.route-card .rc-team { font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-brand-accent); margin-bottom: 4px; }
+.route-card .rc-action { font-size: 12px; font-weight: 600; color: var(--br-color-ink-primary); }
+.route-card .rc-why { font-size: 11px; color: var(--br-color-ink-muted); }
+.route-card .rc-risk { font-size: 11px; color: var(--br-color-state-danger); font-style: italic; }
+.route-card .rc-roi { font-size: 11px; color: var(--br-color-ink-secondary); background: var(--br-color-surface-elevated); border-radius: 4px; padding: 6px 8px; margin-top: 2px; }
+.route-card .rc-roi b { color: var(--br-color-ink-primary); }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ── NIST CSF 2.0 FUNCTION BADGES — six functions, six colors ── */
+.nist-fn {
+  display: inline-flex; align-items: center; gap: 4px; font-family: var(--br-font-family-mono);
+  font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 1px solid;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.nist-fn.gv { background: rgba(109,40,217,.08); color: #6d28d9; border-color: rgba(109,40,217,.35); }
+.nist-fn.id { background: rgba(2,132,199,.08); color: #0284c7; border-color: rgba(2,132,199,.35); }
+.nist-fn.pr { background: rgba(22,163,74,.08); color: #16a34a; border-color: rgba(22,163,74,.35); }
+.nist-fn.de { background: rgba(217,119,6,.08); color: #d97706; border-color: rgba(217,119,6,.35); }
+.nist-fn.rs { background: rgba(220,38,38,.08); color: #dc2626; border-color: rgba(220,38,38,.35); }
+.nist-fn.rc { background: rgba(15,23,42,.06); color: #45506b; border-color: rgba(69,80,107,.3); }
+
+/* ── RISK LEVEL — severity, distinct axis from defensibility tier ── */
+.risklevel {
+  display: inline-flex; align-items: center; gap: 3px; font-family: var(--br-font-family-mono);
+  font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 99px; border: 1px solid;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.risklevel.high   { background: var(--br-color-state-danger-tint);  color: var(--br-color-state-danger);  border-color: rgba(220,38,38,.4); }
+.risklevel.medium { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.risklevel.low     { background: var(--br-color-state-info-tint);   color: var(--br-color-state-info);    border-color: rgba(2,132,199,.4); }
+
+/* ── SECURITY SCORE PANEL ─────────────────────────────── */
+.score-panel {
+  background: linear-gradient(135deg, var(--topbar-bg), #14264a); border-radius: var(--br-radius-lg);
+  padding: 20px 24px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  box-shadow: var(--br-shadow-md); color: #fff;
+}
+.score-dial { display: flex; flex-direction: column; align-items: center; gap: 2px; flex-shrink: 0; }
+.score-dial .sd-num { font-family: var(--br-font-family-mono); font-size: 40px; font-weight: 800; line-height: 1; transition: color .3s ease; }
+.score-dial .sd-num.good { color: #4ade80; }
+.score-dial .sd-num.mid  { color: #fbbf24; }
+.score-dial .sd-num.bad  { color: #f87171; }
+.score-dial .sd-of { font-family: var(--br-font-family-mono); font-size: 11px; color: rgba(255,255,255,.5); }
+.score-body { flex: 1; min-width: 220px; }
+.score-body .sb-label { font-family: var(--br-font-family-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: rgba(255,255,255,.55); margin-bottom: 4px; }
+.score-body .sb-sources { font-size: 12px; color: rgba(255,255,255,.75); line-height: 1.5; }
+.score-tally { display: flex; gap: 14px; flex-wrap: wrap; }
+.score-tally .st-item { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 46px; }
+.score-tally .st-num { font-family: var(--br-font-family-mono); font-size: 18px; font-weight: 800; }
+.score-tally .st-num.high { color: #f87171; } .score-tally .st-num.medium { color: #fbbf24; } .score-tally .st-num.low { color: #38bdf8; }
+.score-tally .st-lbl { font-size: 9.5px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .04em; }
+.score-cs { width: 100%; font-family: var(--br-font-family-mono); font-size: 10px; color: rgba(255,255,255,.4); margin-top: -8px; }
+
+/* ── NEW HARNESS CAPABILITIES (growth/upsell roadmap) ─── */
+.capability-card {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cap-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.cap-table th {
+  text-align: left; font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--br-color-ink-muted); padding: 8px 10px; border-bottom: 1px solid var(--br-color-border-default);
+}
+.cap-table td { padding: 10px 10px; border-bottom: 1px solid var(--br-color-border-subtle); vertical-align: top; }
+.cap-table tr:last-child td { border-bottom: none; }
+.cap-gap { font-weight: 700; color: var(--br-color-ink-primary); }
+.cap-rec { color: var(--br-color-ink-secondary); font-size: 12px; line-height: 1.5; }
+.cap-source { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-brand-accent); display: block; margin-top: 3px; }
+.priority-pill { font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; border: 1px solid; white-space: nowrap; }
+.priority-pill.high { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); border-color: rgba(220,38,38,.4); }
+.priority-pill.medium { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.priority-pill.low { background: var(--br-color-surface-elevated); color: var(--br-color-ink-muted); border-color: var(--br-color-border-default); }
+
+/* ── ENVIRONMENT SUMMARY (Current Climate, condensed) ─── */
+.env-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; }
+.env-stat { background: var(--br-color-surface-elevated); border-radius: var(--br-radius-md); padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+.env-stat .es-num { font-family: var(--br-font-family-mono); font-size: 20px; font-weight: 800; color: var(--br-color-brand-primary); }
+.env-stat .es-lbl { font-size: 11px; color: var(--br-color-ink-muted); }
+.env-list { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+.env-row { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; padding: 6px 0; border-bottom: 1px dashed var(--br-color-border-subtle); }
+.env-row:last-child { border-bottom: none; }
+.env-row .er-name { color: var(--br-color-ink-primary); font-weight: 600; }
+.env-row .er-detail { color: var(--br-color-ink-muted); text-align: right; }
+
+/* ── ALWAYS CURRENT — risk reason ──────────────────────── */
+.risk-reason { font-size: 11px; color: var(--br-color-ink-muted); display: block; margin-top: 2px; max-width: 220px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <span class="topbar-wordmark">Apex Bridge</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-title" id="tb-title">QBR Analyst · Onboarding — Laissez Faire Fellows</span>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-badge" id="tb-badge">Tier 2 · Direction</span>
+  <button class="theme-btn" onclick="document.documentElement.setAttribute('data-apx-mode', document.documentElement.getAttribute('data-apx-mode')==='dark' ? 'light' : 'dark')">
+    Toggle dark
+  </button>
+</header>
+
+<div class="app-shell">
+  <!-- SIDE NAV -->
+  <nav class="side-nav" aria-label="QBR Analyst pages">
+    <div class="side-nav-label">Laissez Faire Fellows · QBR Analyst</div>
+    <button class="side-nav-item" data-view="onboarding" onclick="setView('onboarding')">
+      <span>① Onboarding</span>
+      <span class="sn-sub">Activate the Coworker — first time</span>
+    </button>
+    <button class="side-nav-item" data-view="alwaysCurrent" onclick="setView('alwaysCurrent')">
+      <span>② Always Current</span>
+      <span class="sn-sub">Portfolio · 142 clients</span>
+    </button>
+    <button class="side-nav-item" data-view="draftReview" onclick="setView('draftReview')">
+      <span>③ Draft Review</span>
+      <span class="sn-sub">Ridgemont Financial Services</span>
+    </button>
+    <div class="side-nav-foot">
+      Multi-page hi-fi extension of <code>qbr-draft-flow.html</code> (Tier 1). Onboarding shape adapted from FSN-82692 (a different Coworker) — see banner. <span style="opacity:.8;">[CS: MEDIUM]</span>
+    </div>
+  </nav>
+
+  <!-- MAIN VIEW MOUNT -->
+  <main class="main-view" id="main-view"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   SHARED STATE
+   ══════════════════════════════════════════════════════════ */
+let currentView = 'onboarding';
+
+const TOPBAR_META = {
+  onboarding:   { title: 'QBR Analyst · Onboarding — Laissez Faire Fellows', badge: 'Tier 2 · Direction' },
+  alwaysCurrent:{ title: 'QBR Analyst · Always Current — Laissez Faire Fellows', badge: 'Tier 2 · Direction' },
+  draftReview:  { title: 'QBR Coworker · Draft Review — Ridgemont Financial Services', badge: 'Tier 1 · Concept' }
+};
+
+function setView(name) {
+  currentView = name;
+  const main = document.getElementById('main-view');
+  main.innerHTML = views[name]();
+  document.querySelectorAll('.side-nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+  const meta = TOPBAR_META[name];
+  document.getElementById('tb-title').textContent = meta.title;
+  document.getElementById('tb-badge').textContent = meta.badge;
+  if (name === 'onboarding') initOnboarding();
+  if (name === 'alwaysCurrent') initAlwaysCurrent();
+  if (name === 'draftReview') initDraftReview();
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  main.querySelector('.page')?.scrollIntoView({ block: 'start' });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+const views = {};
+
+/* ══════════════════════════════════════════════════════════
+   PAGE 1 — ONBOARDING (wizard pattern, 5 panes)
+   Adapts FSN-82692's Steps 3–7 shape (a different Coworker's spec)
+   to QBR Analyst, per qbr-system-blueprint §11/§14.
+   ══════════════════════════════════════════════════════════ */
+
+let obStep = 1;
+const OB_STEP_LABELS = ['Choose Coworker', 'Configure', 'Import history', 'Value Ledger baseline', 'First computation', 'Schedule'];
+let obTemplateChoice = null;   // 'template' | 'import'
+let obBaselineHours = '';
+let obComputed = false;
+let obShowRaw = false;
+function obToggleRaw() { obShowRaw = !obShowRaw; renderOnboarding(); }
+
+let obUploadedFiles = [];
+let obHistoryExtracted = false;
+let obHistoryNotes = '';
+
+const EBR_HISTORY = {
+  lastCycle: 'Q2 2026 EBR — Ridgemont Financial Services',
+  takeaways: [
+    'Onboarded 2 new office locations mid-quarter; RMM coverage lagged the move by roughly 3 weeks before both sites were fully enrolled.',
+    'Board asked, informally, whether backup coverage would hold up under a GLBA audit — no formal answer was recorded either way.',
+    'Derek Iannotti (owner) said the IT risk policy conversation "needs to happen properly, not in a EBR slide" — opened, not closed.'
+  ],
+  promises: [
+    { who: 'Jordan Ellis (N-able)', what: 'Re-run the backup enrollment audit before the next review', linkedFindingId: 'f2' },
+    { who: 'Derek Iannotti (Ridgemont)', what: 'Circulate the draft IT risk management policy for review by end of quarter', linkedFindingId: 'f5' },
+    { who: 'Ridgemont IT lead', what: 'Look at MFA enforcement across remaining accounts next cycle', linkedFindingId: 'f12' }
+  ],
+  risks: [
+    { note: 'Legacy remote access appliance — logged as "monitor," no remediation plan committed.', linkedFindingId: 'f4' },
+    { note: 'A handful of dormant accounts came up in conversation but were never logged as a formal finding.', linkedFindingId: 'f10' }
+  ]
+};
+
+function obPromiseStatus(linkedFindingId) {
+  const f = findings.find(x => x.id === linkedFindingId);
+  if (!f) return { label: 'Not tracked this cycle', cls: '' };
+  if (f.status === 'pending') return { label: 'Not yet honored — still open this cycle', cls: 'high' };
+  if (f.status === 'flagged') return { label: 'Carried forward — named again, not closed', cls: 'medium' };
+  return { label: 'Honored — resolved this cycle', cls: 'low' };
+}
+
+function obHandleUpload(input) {
+  const files = Array.from(input.files || []);
+  files.forEach(file => obUploadedFiles.push({ name: file.name, size: file.size }));
+  renderOnboarding();
+}
+
+function obRemoveUpload(idx) {
+  obUploadedFiles.splice(idx, 1);
+  renderOnboarding();
+}
+
+function obExtractHistory() {
+  obHistoryExtracted = true;
+  renderOnboarding();
+}
+
+const OB_PREVIEW_CLIENTS = [
+  { name: 'Meridian Trust Credit Union', mrr: '$4,600/mo', tier: 'tier-a', tierLabel: 'A' },
+  { name: 'Ridgemont Financial Services', mrr: '$2,750/mo', tier: 'tier-b', tierLabel: 'B' },
+  { name: 'Cascade Dental Partners', mrr: '$2,900/mo', tier: 'tier-b', tierLabel: 'B' },
+  { name: 'Briarwood Outfitters', mrr: '$1,050/mo', tier: 'tier-c', tierLabel: 'C' },
+  { name: 'Maple & Co. Bookkeeping', mrr: '$610/mo', tier: 'tier-d', tierLabel: 'D' }
+];
+
+const OB_INDUSTRY_ROWS = [
+  { name: 'Meridian Trust Credit Union', industry: 'Financial Services', flag: 'GLBA · NCUA ACET · FFIEC CAT' },
+  { name: 'Ridgemont Financial Services', industry: 'Financial Services', flag: 'GLBA' },
+  { name: 'Briarwood Outfitters', industry: 'Retail', flag: '— none flagged' },
+  { name: 'Maple & Co. Bookkeeping', industry: 'Professional Services', flag: '— none flagged' }
+];
+
+function stepperHtml() {
+  return `
+    <div class="stepper">
+      ${OB_STEP_LABELS.map((label, i) => {
+        const n = i + 1;
+        const cls = n === obStep ? 'active' : (n < obStep ? 'done' : '');
+        const circle = n < obStep ? '✓' : n;
+        const connector = i < OB_STEP_LABELS.length - 1 ? `<div class="step-connector ${n < obStep ? 'done' : ''}"></div>` : '';
+        return `<div class="step ${cls}"><div class="step-circle">${circle}</div><span class="step-label">${label}</span></div>${connector}`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderOnboardingPane() {
+  if (obStep === 1) {
+    return `
+      <div class="wizard-pane">
+        <h2>Choose your Coworker</h2>
+        <p class="pane-sub">Priya's account already runs ACP for Ticket Triage & Dispatch, connected during that Coworker's own onboarding — your PSA, RMM, and MDR connections already exist. This step is just picking which Coworker to activate next. <span class="cs-inline">[CS: HIGH — FSN-82692 §3 Step 3 pattern]</span></p>
+        <div class="coworker-grid">
+          <div class="coworker-card done">
+            <div class="cc-name">Ticket Triage &amp; Dispatch</div>
+            <div class="cc-desc">Reviews open tickets, classifies them, routes to the right queue.</div>
+            <span class="cc-status done">✓ Active — already running</span>
+          </div>
+          <div class="coworker-card active">
+            <div class="cc-name">QBR Analyst</div>
+            <div class="cc-desc">Builds the Always Current portfolio view and drafts each client's quarterly review.</div>
+            <span class="cc-status active">● Setting up now</span>
+          </div>
+          <div class="coworker-card">
+            <div class="cc-name">Incident Response RCA</div>
+            <div class="cc-desc">Reviews a closed incident and produces a root cause analysis.</div>
+            <span class="cc-status later">Set up later</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  if (obStep === 2) {
+    return `
+      <div class="wizard-pane">
+        <h2>Configure QBR Analyst</h2>
+        <p class="pane-sub">Because HaloPSA is already connected (Ticket Triage's onboarding), the client list and each client's MRR are already in hand — QBR Analyst only needs three more inputs. <span class="cs-inline">[CS: HIGH — blueprint §14, "answered for her"]</span></p>
+
+        <div class="onboard-card">
+          <h3>(a) Client list &amp; tiers</h3>
+          <p class="oc-lede">142 clients found in HaloPSA, tiered by MRR × RiskScore — review before continuing.</p>
+          <table class="mini-table">
+            <thead><tr><th>Client</th><th>MRR</th><th>Tier</th></tr></thead>
+            <tbody>
+              ${OB_PREVIEW_CLIENTS.map(c => `<tr><td>${c.name}</td><td>${c.mrr}</td><td><span class="tierbadge ${c.tier}">${c.tierLabel}</span></td></tr>`).join('')}
+              <tr class="more-row"><td colspan="3">+ 137 more — full list reviewable after setup</td></tr>
+            </tbody>
+          </table>
+          <span class="cs-tag">[A — illustrative subset; fictional data, no real HaloPSA pull behind this]</span>
+        </div>
+
+        <div class="onboard-card">
+          <h3>(b) Industry — drives compliance framework flags</h3>
+          <p class="oc-lede">Each client's industry decides which framework(s) show up in their draft, and whether a countersign is required.</p>
+          <table class="mini-table">
+            <thead><tr><th>Client</th><th>Industry</th><th>Frameworks flagged</th></tr></thead>
+            <tbody>
+              ${OB_INDUSTRY_ROWS.map(r => `
+                <tr><td>${r.name}</td>
+                <td><select class="field-select"><option ${r.industry==='Financial Services'?'selected':''}>Financial Services</option><option ${r.industry==='Retail'?'selected':''}>Retail</option><option ${r.industry==='Healthcare'?'selected':''}>Healthcare</option><option ${r.industry==='Manufacturing'?'selected':''}>Manufacturing</option><option ${r.industry==='Professional Services'?'selected':''}>Professional Services</option></select></td>
+                <td style="font-family:var(--br-font-family-mono); font-size:11px; color:var(--br-color-ink-secondary);">${r.flag}</td></tr>
+              `).join('')}
+            </tbody>
+          </table>
+          <span class="cs-tag">[A — illustrative subset of 142; industry field per blueprint §14]</span>
+        </div>
+
+        <div class="onboard-card">
+          <h3>(c) Starting point — template or import?</h3>
+          <p class="oc-lede">Per blueprint §11's Stage 0 finding — cover both branches, no forced default.</p>
+          <div class="branch-grid">
+            <button class="branch-option ${obTemplateChoice === 'template' ? 'selected' : ''}" onclick="obSelectBranch('template')">
+              <span class="bo-title">📋 Start from Stefanie's 15-tab EBR template</span>
+              <span class="bo-desc">A new-start scaffold — no existing EBR process to migrate. QBR Analyst pre-fills the template structure and starts populating it from live data.</span>
+              <span class="bo-cs">[R — Stefanie Hammond template, cited in blueprint §11]</span>
+            </button>
+            <button class="branch-option ${obTemplateChoice === 'import' ? 'selected' : ''}" onclick="obSelectBranch('import')">
+              <span class="bo-title">📂 Import our existing deck / notes / client list / calendar</span>
+              <span class="bo-desc">Laissez Faire Fellows already has a process. QBR Analyst maps your own sections instead of the default template — the same import capability applies later when your process changes.</span>
+              <span class="bo-cs">[A — mechanism named, not built]</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  if (obStep === 3) {
+    return `
+      <div class="wizard-pane">
+        <h2>Import EBR history</h2>
+        <p class="pane-sub">Upload past EBR decks, notes, or exports for this client — QBR Analyst reads what was said and promised last cycle, so nothing gets re-discovered from scratch or quietly dropped. <span class="cs-inline">[A — mechanism named, illustrative extraction below; no real document parser behind this yet]</span></p>
+
+        <div class="onboard-card">
+          <h3>Upload past reviews</h3>
+          <p class="oc-lede">Decks, PDFs, meeting notes, spreadsheets — anything from Ridgemont's last few EBR cycles.</p>
+          <label class="upload-drop" for="ob-file-input">
+            <span class="ud-icon">⇪</span>
+            <span class="ud-text">Click to choose files, or drag them here</span>
+            <span class="ud-sub">.pdf, .docx, .xlsx, .pptx, .txt</span>
+          </label>
+          <input id="ob-file-input" type="file" multiple style="display:none;" onchange="obHandleUpload(this)" accept=".pdf,.docx,.xlsx,.pptx,.txt" />
+          ${obUploadedFiles.length ? `
+            <div class="upload-list">
+              ${obUploadedFiles.map((f, i) => `
+                <div class="upload-row">
+                  <span class="ul-name">${f.name}</span>
+                  <span class="ul-size">${Math.max(1, Math.round(f.size / 1024))} KB</span>
+                  <button class="ul-remove" onclick="obRemoveUpload(${i})" aria-label="Remove ${f.name}">✕</button>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          <label class="oc-lede" for="ob-notes" style="display:block; margin-top:14px;">No files handy? Paste notes instead —</label>
+          <textarea id="ob-notes" placeholder="Paste anything from last cycle's review — meeting notes, an email recap, a Slack thread..." oninput="obHistoryNotes=this.value;">${obHistoryNotes}</textarea>
+          ${(obUploadedFiles.length || obHistoryNotes) && !obHistoryExtracted ? `
+            <button class="compute-btn" style="margin-top:12px;" onclick="obExtractHistory()">Extract takeaways, promises &amp; risks →</button>
+          ` : ''}
+          ${!obUploadedFiles.length && !obHistoryNotes ? `<span class="cs-tag" style="display:block; margin-top:10px;">Nothing uploaded yet — you can also skip this step and add history later from Draft Review.</span>` : ''}
+        </div>
+
+        ${obHistoryExtracted ? `
+          <div class="onboard-card">
+            <h3>Pulled from ${EBR_HISTORY.lastCycle}</h3>
+            <p class="oc-lede">This is a simulated extraction for the prototype — illustrative content, not a real document parse. <span class="cs-inline">[CS: LOW — illustrative; no real parser behind this]</span></p>
+
+            <div class="hist-section">
+              <h4>Key takeaways</h4>
+              <ul class="hist-list">${EBR_HISTORY.takeaways.map(t => `<li>${t}</li>`).join('')}</ul>
+            </div>
+
+            <div class="hist-section">
+              <h4>Promises made last cycle</h4>
+              <div class="hist-promises">
+                ${EBR_HISTORY.promises.map(p => {
+                  const st = obPromiseStatus(p.linkedFindingId);
+                  return `
+                    <div class="hist-promise-row">
+                      <div class="hp-main"><strong>${p.who}:</strong> ${p.what}</div>
+                      ${st.cls ? `<span class="risklevel ${st.cls}">${st.label}</span>` : `<span class="hp-untracked">${st.label}</span>`}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+              <span class="cs-tag">[CS: MEDIUM — promise status is computed live against this session's findings register, not re-derived from the uploaded document]</span>
+            </div>
+
+            <div class="hist-section">
+              <h4>Risks recorded last cycle</h4>
+              <ul class="hist-list">
+                ${EBR_HISTORY.risks.map(r => `<li>${r.note} ${r.linkedFindingId ? `<span class="hp-untracked" style="margin-left:6px;">still in this cycle's register — see ${findings.find(f=>f.id===r.linkedFindingId)?.title || r.linkedFindingId}</span>` : ''}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+  if (obStep === 4) {
+    return `
+      <div class="wizard-pane">
+        <h2>Seed the Value Ledger baseline</h2>
+        <p class="pane-sub">This is the real Value Ledger mechanism (IC-2026-002, spec FR-008) — a tenant-configured baseline that overrides the N-able platform default for every future ROI calculation. <span class="cs-inline">[CS: VERIFIED — specs/003-value-ledger/spec.md FR-008]</span></p>
+        <div class="vl-card">
+          <div class="vl-input-row">
+            <label for="vl-hours">How long does a manual EBR prep take your team today, on average?</label>
+            <input id="vl-hours" type="number" min="0" step="0.5" placeholder="e.g. 3.5" oninput="obBaselineHours=this.value; obRenderEcho();" value="${obBaselineHours}" /> <span>hours per client, per cycle</span>
+          </div>
+          <div class="vl-echo" id="vl-echo">${obBaselineHours ? `Baseline set: <strong>${obBaselineHours} hours</strong> per manual EBR prep — this tenant-configured number will be used for QBR Analyst's ROI math instead of the platform default.` : "Enter a number to set your team's own baseline — leave blank to use the N-able platform default."}</div>
+          <div class="vl-distinguish">
+            <strong>Not the same thing as the evidence trail.</strong> This Value Ledger baseline measures time saved / ROI across every QBR cycle. The evidence trail you'll see per-finding in Draft Review (Jordan's register, source reconciliation) is a trust mechanism for that one finding — different job, same-sounding name. <span class="cs-inline">[CS: HIGH — spec vs. brief naming collision, worth the one-line note]</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  if (obStep === 5) {
+    return `
+      <div class="wizard-pane">
+        <h2>First computation — the magic moment</h2>
+        <p class="pane-sub">Run QBR Analyst against your real book for the first time. This is the payoff Beth named directly on the FigJam board. <span class="cs-inline">[CS: HIGH — Beth's own Stage 1 note, blueprint §14]</span></p>
+
+        <div class="onboard-card">
+          <h3>Auths &amp; permissions — what QBR Analyst can read, and who can see it</h3>
+          <p class="oc-lede">Per the real Coworker registry (<code>specs/004-ai-coworker-registry</code>): a Coworker holds <code>mcp_instance_ids</code>; each Expert step holds its own <code>mcp_scopes</code> (a per-instance <code>allowed_tools</code> allowlist). Scoping is enforced at the MCP gateway, not the prompt — an Expert never sees a tool outside its scope, regardless of what it's asked. <span class="cs-inline">[CS: VERIFIED — acp-core-main-3/CLAUDE.md, MCP gateway + tool scoping]</span></p>
+          <div class="scope-banner">
+            <strong>Every row below is scoped to Ridgemont Financial Services only</strong> — filtered by <code>tenant_id</code> at the source system, then by <code>client_id</code> at the gateway before an Expert ever sees it. This is not a mis-pull across Laissez Faire Fellows' other 141 clients; it's the same one-client scope every time, per client. <span class="cs-inline">[CS: HIGH — tenant/client scoping is the mechanism named in specs/004-ai-coworker-registry; this exact double-filter framing is illustrative]</span>
+          </div>
+          <table class="mini-table">
+            <thead><tr><th>Source</th><th>Scope requested</th><th>Visible to</th></tr></thead>
+            <tbody>
+              <tr><td>HaloPSA</td><td>read: Ridgemont's contracts &amp; tickets only</td><td>msp_admin, technician</td></tr>
+              <tr><td>N-central</td><td>read: Ridgemont's device inventory &amp; patch status only</td><td>msp_admin, technician</td></tr>
+              <tr><td>Cove</td><td>read: Ridgemont's backup job status only</td><td>msp_admin, technician</td></tr>
+              <tr><td>Adlumin</td><td>read: Ridgemont's detection &amp; compromise events only</td><td>msp_admin, technician</td></tr>
+              <tr><td>Microsoft Entra ID</td><td>read: Ridgemont's sign-in logs, MFA registration, conditional access only</td><td>msp_admin, technician</td></tr>
+              <tr><td>uSecure</td><td>read: Ridgemont's training completion only</td><td>msp_admin, technician</td></tr>
+              <tr><td>Inforcer</td><td>read: Ridgemont's M365 alignment score only</td><td>msp_admin, technician</td></tr>
+            </tbody>
+          </table>
+          <div class="a-tag-note" style="margin-top:2px;">[A — open gap, not built] The registry's <code>Actor</code> role model (platform_author / msp_admin / technician / service) governs who can trigger or configure QBR Analyst. It does <strong>not yet</strong> separate "internal working draft" visibility from "client-facing export" visibility — blueprint §10 names this exact gap directly and routes it to engineering, not design. Everyone with technician/admin access sees the same draft Jordan and Priya see; the dual-surface rule (Must 6) is a content-model requirement today, not yet an access-control one.</div>
+        </div>
+
+        <div class="onboard-card">
+          <h3>Comparable clients — for benchmarking, not blended</h3>
+          <p class="oc-lede">Same-industry, similar-tier clients QBR Analyst could compare Ridgemont against — context for "is this normal for a client like this," never merged into Ridgemont's own numbers.</p>
+          <table class="mini-table">
+            <thead><tr><th>Client</th><th>Tier</th><th>Industry</th><th>Why comparable</th></tr></thead>
+            <tbody>
+              <tr><td>Meridian Trust Credit Union</td><td><span class="tierbadge tier-a">A</span></td><td>Financial Services</td><td>Same GLBA/NCUA exposure, larger book</td></tr>
+              <tr><td>Fernbrook Wealth Management</td><td><span class="tierbadge tier-b">B</span></td><td>Financial Services</td><td>Same tier, same industry</td></tr>
+            </tbody>
+          </table>
+          <div class="a-tag-note" style="margin-top:2px;">[A — now partially computed] Three metrics (MFA coverage, training completion, patch compliance) are actually compared against Fernbrook's baseline now — see the "Baseline read" card in Draft Review → Risk Review. Still open: read-scope for a peer client's data needs its own consent/authorization model — comparing across tenants is not the same permission as reading one tenant. The numbers here are illustrative; the cross-tenant access question is real and unsolved.</div>
+        </div>
+
+        ${obComputed ? `
+          <div class="magic-panel">
+            <div class="magic-grid">
+              <div class="magic-stat"><span class="ms-num">142</span><span class="ms-label">clients found across your HaloPSA book</span></div>
+              <div class="magic-stat overdue"><span class="ms-num">6</span><span class="ms-label">overdue for their tier's cadence</span></div>
+              <div class="magic-stat risk"><span class="ms-num">3</span><span class="ms-label">carrying flagged risk nobody has raised yet</span></div>
+            </div>
+            <div class="magic-tier-row">
+              <span class="pill">A · 14 clients</span><span class="pill">B · 41 clients</span><span class="pill">C · 58 clients</span><span class="pill">D · 29 clients</span>
+            </div>
+            <p style="font-size:12.5px; color:var(--br-color-ink-secondary); max-width:520px;">Computed in seconds, from data already connected — never seen in one place before. <span class="cs-inline">[A — designed target, untested]</span></p>
+            <button class="btn ghost" onclick="obToggleRaw()" style="border-color:var(--br-color-border-strong);">${obShowRaw ? 'Hide raw pulls ▲' : 'Show raw pulls — check the math ▼'}</button>
+            ${obShowRaw ? `
+              <div class="evidence-trail" style="width:100%; text-align:left;">
+                <div class="et-label"><span>Raw field-level pulls — not narrative, not synthesized</span><span>Sample of 142</span></div>
+                <div class="et-rows">
+                  <div class="et-row"><span class="et-source">HaloPSA<span class="et-src-type">clients.list</span></span><span class="et-reading"><code>total_active_clients: 142</code></span><span class="et-flag match">Raw count</span></div>
+                  <div class="et-row"><span class="et-source">HaloPSA<span class="et-src-type">clients.abcd_tier</span></span><span class="et-reading"><code>{A:14, B:41, C:58, D:29}</code> — tier field, unmodified</span><span class="et-flag match">Raw count</span></div>
+                  <div class="et-row"><span class="et-source">HaloPSA<span class="et-src-type">ebr.last_completed</span></span><span class="et-reading"><code>6 clients where (today − last_ebr_date) &gt; tier_cadence_days</code></span><span class="et-flag match">Derived, formula shown</span></div>
+                  <div class="et-row"><span class="et-source">Cross-source join<span class="et-src-type">risk.unresolved_high</span></span><span class="et-reading"><code>3 clients with ≥1 finding at riskLevel:'high' AND status:'pending'</code></span><span class="et-flag match">Derived, formula shown</span></div>
+                </div>
+                <div class="et-reconciliation">Every number above traces to a named field and, where it's not a raw count, the exact formula used to derive it. Nothing here is prose the model wrote — it's a table anyone on the team can re-run against the source system and get the same answer. <span class="et-cs">[CS: LOW — illustrative field names; no real HaloPSA/N-central schema behind this yet]</span></div>
+              </div>
+            ` : ''}
+            <button class="btn ghost" onclick="setView('alwaysCurrent')" style="border-color:var(--br-color-brand-primary); color:var(--br-color-brand-primary); font-weight:700;">Peek at Always Current now →</button>
+          </div>
+        ` : `
+          <div class="magic-panel">
+            <p style="font-size:13.5px; color:var(--br-color-ink-secondary); max-width:480px;">Click below to compute your portfolio for the first time — this reads live from the client list and tiers you just confirmed.</p>
+            <button class="compute-btn" onclick="obCompute()">Compute my portfolio →</button>
+          </div>
+        `}
+      </div>
+    `;
+  }
+  // step 6
+  return `
+    <div class="wizard-pane">
+      <h2>Set your cadence — config, not schedule</h2>
+      <p class="pane-sub">Tier sets the default. Any client can be overridden individually, and a risk-triggered nudge can always pull a client forward regardless of tier. <span class="cs-inline">[CS: HIGH — blueprint §7, fork F-answer]</span></p>
+      <table class="cadence-table">
+        <thead><tr><th>Tier</th><th>Default cadence</th><th>Override</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tierbadge tier-a">A</span></td><td>Quarterly</td><td><select class="field-select"><option>Use tier default</option><option>Override per client</option></select></td></tr>
+          <tr><td><span class="tierbadge tier-b">B</span></td><td>Semi-annual</td><td><select class="field-select"><option>Use tier default</option><option>Override per client</option></select></td></tr>
+          <tr><td><span class="tierbadge tier-c">C</span></td><td>Semi-annual / annual</td><td><select class="field-select"><option>Use tier default</option><option>Override per client</option></select></td></tr>
+          <tr><td><span class="tierbadge tier-d">D</span></td><td>Annual or none</td><td><select class="field-select"><option>Use tier default</option><option>Override per client</option></select></td></tr>
+        </tbody>
+      </table>
+      <div class="cadence-note">A risk-triggered nudge always pulls a client forward, regardless of tier — this is config + interrupt, not a fixed schedule. <span class="cs-inline">[CS: HIGH — blueprint §7 fork resolution]</span></div>
+    </div>
+  `;
+}
+
+function obSelectBranch(choice) {
+  obTemplateChoice = choice;
+  renderOnboarding();
+}
+
+function obRenderEcho() {
+  document.getElementById('vl-echo').innerHTML = obBaselineHours
+    ? `Baseline set: <strong>${obBaselineHours} hours</strong> per manual EBR prep — this tenant-configured number will be used for QBR Analyst's ROI math instead of the platform default.`
+    : `Enter a number to set your team's own baseline — leave blank to use the N-able platform default.`;
+}
+
+function obCompute() {
+  obComputed = true;
+  renderOnboarding();
+}
+
+function obNext() { if (obStep < 6) { obStep++; renderOnboarding(); } }
+function obBack() { if (obStep > 1) { obStep--; renderOnboarding(); } }
+
+function obConfirmSchedule() {
+  showToast('Onboarding complete — QBR Analyst is now active. Routing to Always Current.');
+  setTimeout(() => setView('alwaysCurrent'), 500);
+}
+
+function renderOnboarding() {
+  const container = document.getElementById('ob-wizard');
+  if (!container) return;
+  container.innerHTML = `
+    ${stepperHtml()}
+    ${renderOnboardingPane()}
+    <div class="wizard-footer">
+      <div class="wf-left">
+        <button class="btn ghost" onclick="obBack()" ${obStep === 1 ? 'disabled' : ''}>← Back</button>
+      </div>
+      ${obStep < 6
+        ? `<button class="btn primary" onclick="obNext()">Continue →</button>`
+        : `<button class="btn primary" onclick="obConfirmSchedule()">Confirm &amp; finish onboarding →</button>`
+      }
+    </div>
+  `;
+}
+
+views.onboarding = () => `
+  <div class="page">
+    <div class="page-title-block">
+      <div>
+        <h1>Set up QBR Analyst — Laissez Faire Fellows</h1>
+        <p class="sub">Priya Shah is activating QBR Analyst for the first time. PSA, RMM, and MDR connections already exist from Ticket Triage's own onboarding — this flow starts at Coworker choice, not credentials.</p>
+      </div>
+      <div class="meta-pills">
+        <span class="pill">Net-new Coworker activation</span>
+        <span class="pill">Denver, CO</span>
+      </div>
+    </div>
+
+    <div class="a-tag-note">[A — designed target, untested] This onboarding shape adapts FSN-82692 (MSP Onboarding — Signup to First Coworker Run), a spec written for <strong>Ticket Triage &amp; Dispatch</strong>, not QBR Analyst. FSN-82692 itself names QBR Analyst onboarding as future work (FUT-006). Only the general shape — choose Coworker → configure → seed value baseline → first run → schedule — is inherited. The QBR-specific content (industry field, template/import branch, portfolio computation) is new, per blueprint §14.</div>
+
+    <div class="wizard-wrap" id="ob-wizard"></div>
+  </div>
+`;
+
+function initOnboarding() {
+  obStep = 1;
+  renderOnboarding();
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAGE 2 — ALWAYS CURRENT (portfolio view)
+   ══════════════════════════════════════════════════════════ */
+
+const AC_CLIENTS = [
+  { name: 'Meridian Trust Credit Union', tier: 'A', mrr: '$4,600/mo', lastEbr: 'Jul 30, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Alderwood Manufacturing', tier: 'A', mrr: '$3,950/mo', lastEbr: 'Jul 18, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Solstice Legal Group', tier: 'A', mrr: '$4,100/mo', lastEbr: 'Jun 22, 2026', cadence: 'on-track', risk: 'clear', live: false },
+
+  { name: 'Ridgemont Financial Services', tier: 'B', mrr: '$2,750/mo', lastEbr: 'Mar 12, 2026', cadence: 'overdue', risk: 'flagged', riskReason: '2 devices on end-of-life Windows 10 · 2 accounts without MFA — see Draft Review', live: true },
+  { name: 'Cascade Dental Partners', tier: 'B', mrr: '$2,900/mo', lastEbr: 'Jun 05, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Harborview Retail Co.', tier: 'B', mrr: '$2,600/mo', lastEbr: 'May 28, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Brightpath Logistics', tier: 'B', mrr: '$3,100/mo', lastEbr: 'Jul 02, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Fenwick & Cole LLP', tier: 'B', mrr: '$2,450/mo', lastEbr: 'Jun 30, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Union Peak Realty', tier: 'B', mrr: '$2,700/mo', lastEbr: 'Feb 20, 2026', cadence: 'overdue', risk: 'clear', live: false },
+
+  { name: 'Briarwood Outfitters', tier: 'C', mrr: '$1,050/mo', lastEbr: 'Jan 15, 2026', cadence: 'overdue', risk: 'clear', live: false },
+  { name: 'Silverline Clinic', tier: 'C', mrr: '$1,200/mo', lastEbr: 'May 10, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Northgate Auto Group', tier: 'C', mrr: '$980/mo', lastEbr: 'Dec 08, 2025', cadence: 'overdue', risk: 'clear', live: false },
+  { name: 'Wexford Insurance Advisors', tier: 'C', mrr: '$1,150/mo', lastEbr: 'Apr 22, 2026', cadence: 'on-track', risk: 'flagged', riskReason: 'MFA coverage below tier baseline per Entra ID sync (illustrative)', live: false },
+  { name: 'Pinehollow Nonprofit Alliance', tier: 'C', mrr: '$890/mo', lastEbr: 'Jun 14, 2026', cadence: 'on-track', risk: 'clear', live: false },
+  { name: 'Copperfield Construction', tier: 'C', mrr: '$1,100/mo', lastEbr: 'Mar 30, 2026', cadence: 'on-track', risk: 'clear', live: false },
+
+  { name: 'Maple & Co. Bookkeeping', tier: 'D', mrr: '$610/mo', lastEbr: 'Aug 2025', cadence: 'on-track', risk: 'flagged', riskReason: 'Backup enrollment gap flagged in last EBR, still unresolved (illustrative)', live: false },
+  { name: 'Thistle Creek Landscaping', tier: 'D', mrr: '$650/mo', lastEbr: 'Never', cadence: 'overdue', risk: 'clear', live: false },
+  { name: 'Hollow Ridge Veterinary', tier: 'D', mrr: '$700/mo', lastEbr: 'Never', cadence: 'overdue', risk: 'clear', live: false }
+];
+
+let acFilter = 'all';
+
+function acFilteredClients() {
+  if (acFilter === 'all') return AC_CLIENTS;
+  return AC_CLIENTS.filter(c => c.tier === acFilter);
+}
+
+function acSetFilter(t) {
+  acFilter = t;
+  renderAlwaysCurrentTable();
+}
+
+function acRowClick(client) {
+  if (client.live) {
+    setView('draftReview');
+  } else {
+    showToast(`Not built for this demo — ${client.name}'s row is illustrative. Ridgemont Financial Services is the only live row in this prototype.`);
+  }
+}
+
+function renderAlwaysCurrentTable() {
+  const wrap = document.getElementById('ac-table-body');
+  if (!wrap) return;
+  document.querySelectorAll('.ac-filter-chip').forEach(c => c.classList.toggle('active', c.dataset.tier === acFilter));
+  wrap.innerHTML = acFilteredClients().map((c, i) => {
+    const tierClass = 'tier-' + c.tier.toLowerCase();
+    const rowClass = c.live ? 'ac-row-live' : 'ac-row-dim';
+    return `
+      <tr class="${rowClass}" onclick='acRowClick(${JSON.stringify(c).replace(/'/g, "&#39;")})'>
+        <td>${c.live ? '<span class="ac-live-dot" title="Live row"></span>' : ''}${c.name}</td>
+        <td><span class="tierbadge ${tierClass}">${c.tier}</span></td>
+        <td>${c.mrr}</td>
+        <td>${c.lastEbr}</td>
+        <td><span class="cadence-tag ${c.cadence}">${c.cadence === 'overdue' ? 'Overdue' : 'On-track'}</span></td>
+        <td><span class="risk-tag ${c.risk}">${c.risk === 'flagged' ? 'Flagged' : 'Clear'}</span>${c.riskReason ? `<span class="risk-reason">${c.riskReason}</span>` : ''}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+views.alwaysCurrent = () => `
+  <div class="page">
+    <div class="page-title-block">
+      <div>
+        <h1>Always Current — your portfolio</h1>
+        <p class="sub">Priya Shah's standing view of every client QBR Analyst tracks — no more prep-night scramble. Replaces the discrete "Prep-Assemble" step with a live state. <span class="cs-inline">[CS: HIGH — blueprint §14, Stage 1]</span></p>
+      </div>
+      <div class="meta-pills">
+        <span class="pill">Laissez Faire Fellows</span>
+        <span class="pill">Denver, CO</span>
+      </div>
+    </div>
+
+    <div class="ac-summary">
+      <div class="ac-summary-stat"><span class="val">142</span><span class="lbl">clients found in HaloPSA</span></div>
+      <div class="ac-summary-stat"><span class="val">6</span><span class="lbl">overdue for their tier's cadence</span></div>
+      <div class="ac-summary-stat"><span class="val">3</span><span class="lbl">carrying flagged risk nobody has raised yet</span></div>
+      <span class="ac-summary-note">142 clients · showing a representative subset of 18 below</span>
+    </div>
+
+    <div class="ac-filter-bar">
+      <span class="section-title" style="margin-right:4px;">Filter by tier</span>
+      <button class="ac-filter-chip active" data-tier="all" onclick="acSetFilter('all')">All (18 shown)</button>
+      <button class="ac-filter-chip" data-tier="A" onclick="acSetFilter('A')">A (3 of 14)</button>
+      <button class="ac-filter-chip" data-tier="B" onclick="acSetFilter('B')">B (6 of 41)</button>
+      <button class="ac-filter-chip" data-tier="C" onclick="acSetFilter('C')">C (6 of 58)</button>
+      <button class="ac-filter-chip" data-tier="D" onclick="acSetFilter('D')">D (3 of 29)</button>
+    </div>
+
+    <div class="ac-table-wrap">
+      <table class="ac-table">
+        <thead>
+          <tr><th>Client</th><th>Tier</th><th>MRR</th><th>Last EBR</th><th>Cadence</th><th>Risk</th></tr>
+        </thead>
+        <tbody id="ac-table-body"></tbody>
+      </table>
+    </div>
+    <p class="ac-note">Only Ridgemont Financial Services (marked with the green dot) routes to a real draft. All other rows are illustrative, static seed data — clicking them is honest about that, not a dead click disguised as depth.</p>
+  </div>
+`;
+
+function initAlwaysCurrent() {
+  acFilter = 'all';
+  renderAlwaysCurrentTable();
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAGE 3+4 — DRAFT LANDS + CONFIRM & PERSONALIZE
+   Ported near-verbatim from qbr-draft-flow.html (already critiqued,
+   two bugs fixed: reconciliation text on tier-state change; the
+   Research routing card's "no tester named" copy). Do not re-litigate.
+   ══════════════════════════════════════════════════════════ */
+
+const NIST_FN = {
+  GV: { cls: 'gv', name: 'Govern' }, ID: { cls: 'id', name: 'Identify' }, PR: { cls: 'pr', name: 'Protect' },
+  DE: { cls: 'de', name: 'Detect' }, RS: { cls: 'rs', name: 'Respond' }, RC: { cls: 'rc', name: 'Recover' }
+};
+function nistBadge(code) {
+  const fn = NIST_FN[code.split('.')[0]];
+  return `<span class="nist-fn ${fn.cls}">${fn.name}</span>`;
+}
+
+const findings = [
+  {
+    id: 'f1',
+    title: 'Cycle Memory Follow-up',
+    templateCategory: 'Harness-native — not one of Technica\'s 11 template categories',
+    nistCode: 'RC.RP',
+    category: 'NIST CSF 2.0 · RC.RP — Recovery Planning',
+    tier: 'measured',
+    tierLabel: '✓ Measured',
+    riskLevel: 'medium',
+    data: 'March 2026 QBR committed to upgrading 3 servers to Cove Cloud+. Cove shows 1 of 3 completed as of this cycle.',
+    risk: "Two servers are still running the prior backup configuration — the exact gap flagged last cycle hasn't closed.",
+    meaning: "This isn't a new problem, it's the same promise, half-kept. Ridgemont agreed to this scope five months ago.",
+    consequence: 'If this shows up unresolved a second cycle in a row, it reads as neglect, not backlog — a harder conversation than the gap itself.',
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM · native', reading: "3 servers tagged \u201cCove Cloud+ migration.\u201d 1 shows the updated backup-agent profile; 2 still show the legacy profile.", flag: 'match' },
+        { source: 'Cove', type: 'Backup/DR · native', reading: '1 of 3 servers now reporting into the Cove Cloud+ tier. 2 remain on the prior Cove tier.', flag: 'match' },
+        { source: 'HaloPSA', type: 'PSA · cross-vendor', reading: "Project ticket \u201cServer backup migration \u2014 Ridgemont\u201d shows 1 of 3 tasks closed, 2 open.", flag: 'match' }
+      ],
+      reconciliation: "All three independent sources agree on <strong>1 of 3 complete</strong> \u2014 RMM, backup platform, and PSA ticket status all cross-verify the same count. No disagreement to resolve here, which is exactly why this tier reads Measured.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f2',
+    title: 'Backup Enrollment Gap',
+    templateCategory: 'Data Security',
+    nistCode: 'PR.DS',
+    category: 'NIST CSF 2.0 · PR.DS — Data Security',
+    tier: 'estimated',
+    tierLabel: '~ Estimated',
+    riskLevel: 'high',
+    data: 'Cove shows 47 of 50 managed devices enrolled in backup. 3 devices have no active backup job.',
+    risk: 'Those 3 devices have zero recovery point if they fail, are lost, or are hit by ransomware.',
+    meaning: "We can't tell yet whether this is by design (retired machines, BYOD, out of scope) or a missed enrollment step.",
+    consequence: "If one of the 3 is a production device and something happens before this is resolved, there's no restore path — and no record we flagged it.",
+    special: 'gap',
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM · native', reading: 'Reports 50 managed devices under contract for Ridgemont Financial Services.', flag: 'match' },
+        { source: 'HaloPSA', type: 'PSA · cross-vendor', reading: 'Reports 50 contracted / billed endpoints for the same client — agrees with N-central.', flag: 'match' },
+        { source: 'Cove', type: 'Backup/DR · native', reading: 'Reports 47 devices enrolled in an active backup job. 3-device shortfall against the other two sources.', flag: 'mismatch' }
+      ],
+      reconciliation: "Two independent sources (RMM + PSA) agree on <strong>50</strong>. The backup platform shows <strong>47</strong>. That 3-device delta is real and cross-verified as a count mismatch \u2014 but no source can say <em>why</em>. That unresolved \u201cwhy\u201d is what keeps this Estimated instead of Measured, and it's exactly what the Known/Unknown decision below is for.",
+      reconciliationResolved: "Two independent sources (RMM + PSA) agree on <strong>50</strong>. The backup platform shows <strong>47</strong>. Priya confirmed the 3-device gap is known, with remediation in progress \u2014 the \u201cwhy\u201d the sources couldn't answer on their own is now supplied by a human, which is what moved this from Estimated to <strong>Measured</strong>.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f3',
+    title: 'Microsoft 365 Security Baseline',
+    templateCategory: 'Logging & Monitoring',
+    nistCode: 'DE.CM',
+    category: 'NIST CSF 2.0 · DE.CM — Continuous Monitoring',
+    tier: 'benchmarked',
+    tierLabel: '≈ Benchmarked',
+    riskLevel: 'low',
+    data: 'Inforcer alignment score: 6 of 9, up from 5 of 9 last cycle.',
+    risk: "Ridgemont's 365 tenant is closer to baseline than last quarter, but 3 configuration gaps remain open against the benchmark.",
+    meaning: 'Real progress worth naming out loud — the kind of movement that makes the renewal conversation easier, not harder.',
+    consequence: "If we don't call this out, Ridgemont only ever hears what's wrong, never what improved — that's how trust erodes even when the work is landing.",
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'Inforcer', type: 'M365 posture score · cross-vendor', reading: 'Alignment score 6/9 this cycle, up from 5/9 \u2014 scored against a base-wide benchmark, not an absolute pass/fail.', flag: 'match' },
+        { source: 'Microsoft Entra ID', type: 'Identity/MFA · cross-vendor', reading: 'Conditional-access policy scope expanded to cover one additional user group since last cycle \u2014 consistent with the score movement.', flag: 'match' },
+        { source: 'uSecure', type: 'Security awareness · cross-vendor', reading: 'Not pulled for this finding \u2014 awareness training completion doesn\u2019t bear on the 365 config baseline.', flag: 'single' }
+      ],
+      reconciliation: "Inforcer's score is the primary signal here, and Entra ID's policy-scope change corroborates the direction \u2014 but nothing independently <em>recomputes</em> Inforcer's own score. That's the difference between Benchmarked (compared against base-wide data, directionally corroborated) and Measured (independently re-derived).",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f4',
+    title: 'Legacy Remote Access Appliance',
+    templateCategory: 'Architecture & Configuration',
+    nistCode: 'PR.PS',
+    category: 'NIST CSF 2.0 · PR.PS — Platform Security',
+    tier: 'unverified',
+    tierLabel: '! Unverified',
+    riskLevel: 'high',
+    data: "Network scan flagged a VPN appliance running firmware that reached end-of-life in 2024. Not confirmed whether it's still in active use.",
+    risk: "If it's live, it's an unpatched, internet-facing entry point. If it's dormant, it's still an unmanaged asset on the network.",
+    meaning: "We don't have enough to say which — this needs eyes on it before it goes in front of the client as a hard finding.",
+    consequence: "Presenting this as fact when it might be a decommissioned box makes the whole draft look sloppy. Presenting nothing and it's live is worse.",
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM · native', reading: 'Network discovery scan flagged one VPN appliance running end-of-life (2024) firmware. Device is outside the managed-agent fleet.', flag: 'single' },
+        { source: 'HaloPSA', type: 'PSA · cross-vendor', reading: 'No open or historical ticket references this appliance \u2014 no contracted record of it either way.', flag: 'single' },
+        { source: 'Adlumin', type: 'MDR · native', reading: 'No detection events tied to this appliance\u2019s IP in the lookback window \u2014 absence of alarm, not proof it\u2019s offline.', flag: 'single' }
+      ],
+      reconciliation: "Only one source surfaces this device at all, and the other two can neither confirm nor rule it out. No second source to reconcile against \u2014 that single-source, unconfirmed status is exactly what Unverified means.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f5',
+    title: 'IT Risk Management Policy',
+    templateCategory: 'Risk Management',
+    nistCode: 'GV.RM',
+    category: 'NIST CSF 2.0 \u00b7 GV.RM \u2014 Risk Management Strategy',
+    tier: 'unverified',
+    tierLabel: '! Unverified',
+    riskLevel: 'medium',
+    data: 'No system shows whether Ridgemont has a documented IT risk management policy \u2014 this is a question for the client, not a pull from any tool.',
+    risk: 'Without a documented policy, risk decisions live in individual heads, not in a process that survives someone leaving.',
+    meaning: "This is exactly the kind of thing Priya has to ask about directly in the room \u2014 no source system can answer it.",
+    consequence: "If Ridgemont has one and never shared it, this reads as us not knowing our own client. If they don't have one, it's a real gap worth naming.",
+    special: 'ask-client',
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No document or ticket on file referencing an IT risk management policy for this client.', flag: 'single' }
+      ],
+      reconciliation: "Only one source was checked, and it can only confirm absence-of-record, not absence-of-policy. This is a consultative question for the room, not a system finding \u2014 which is why it stays Unverified regardless of how the conversation goes.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f6',
+    title: 'Incident Response Plan',
+    templateCategory: 'Incident Management',
+    nistCode: 'RS.MA',
+    category: 'NIST CSF 2.0 \u00b7 RS.MA \u2014 Incident Management',
+    tier: 'unverified',
+    tierLabel: '! Unverified',
+    riskLevel: 'medium',
+    data: 'No formal incident response plan is on file for Ridgemont with Laissez Faire Fellows.',
+    risk: 'Without a shared plan, the first hour of a real incident is spent figuring out who does what instead of doing it.',
+    meaning: 'Same shape as the risk-policy question above \u2014 this is Priya asking Ridgemont directly, not a system pull.',
+    consequence: 'GLBA examiners increasingly expect a documented incident response process \u2014 this is worth raising before it becomes a compliance finding instead of a QBR talking point.',
+    special: 'ask-client',
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No incident response plan document referenced in any ticket or client file.', flag: 'single' }
+      ],
+      reconciliation: 'Single source, absence-of-record only. Flagged Unverified and routed to the consultative-questions list rather than presented as a confirmed gap.',
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f7',
+    title: 'Vendor Security Requirements',
+    templateCategory: 'Supply Chain Security',
+    nistCode: 'GV.SC',
+    category: 'NIST CSF 2.0 \u00b7 GV.SC \u2014 Supply Chain Risk Management',
+    tier: 'unverified',
+    tierLabel: '! Unverified',
+    riskLevel: 'low',
+    data: 'No record of whether Ridgemont requires its own vendors and partners to meet any IT security bar.',
+    risk: "Financial-services firms increasingly get asked this by their own regulators and clients \u2014 not having an answer is a bigger problem than having a modest one.",
+    meaning: "Low risk this cycle only because nothing points to an active incident \u2014 the actual exposure is unknown, not confirmed small.",
+    consequence: "Worth one question in the room rather than a hard finding \u2014 we don't have enough to say more than that.",
+    special: 'ask-client',
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No vendor security questionnaire or requirement document on file.', flag: 'single' }
+      ],
+      reconciliation: "Single source, no corroboration either way. Kept at Low risk this cycle specifically because there's no signal of active exposure \u2014 not because the question is answered.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f8',
+    title: 'Security Awareness Training Completion',
+    templateCategory: 'Engagement & Training',
+    nistCode: 'PR.AT',
+    category: 'NIST CSF 2.0 \u00b7 PR.AT \u2014 Awareness & Training',
+    tier: 'measured',
+    tierLabel: '\u2713 Measured',
+    riskLevel: 'high',
+    data: "18 of 22 licensed users completed this quarter's uSecure training. 4 users are at 0% completion.",
+    risk: "Four untrained users are four people who haven't seen this quarter's phishing patterns \u2014 the training exists specifically to close that gap.",
+    meaning: "This isn't a tooling problem \u2014 the licenses are assigned and the content is live. This is a completion problem, which is a people problem.",
+    consequence: "One successful phish from an untrained user costs more than the four hours of training would have. Worth naming by name in the internal draft, not the client-facing one.",
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'uSecure', type: 'Security awareness \u00b7 cross-vendor', reading: 'Reports 18 of 22 licensed users completed the Q3 module; 4 users at 0%.', flag: 'match' },
+        { source: 'Microsoft Entra ID', type: 'Identity/MFA \u00b7 cross-vendor', reading: 'All 4 incomplete users are active, licensed accounts \u2014 not stale/departed identities.', flag: 'match' }
+      ],
+      reconciliation: "uSecure's completion report and Entra's active-user list agree: these are 4 real, current employees who simply haven't completed training, not a data artifact. Two independent sources agreeing on an unambiguous count is exactly what Measured means \u2014 the tier is confident, the finding itself is still bad news.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f9',
+    title: 'End-of-Life Operating Systems',
+    templateCategory: 'Asset Management',
+    nistCode: 'ID.AM',
+    category: 'NIST CSF 2.0 \u00b7 ID.AM \u2014 Asset Management',
+    tier: 'measured',
+    tierLabel: '\u2713 Measured',
+    riskLevel: 'high',
+    data: '2 of 50 managed devices are still running Windows 10, which reached end-of-life in October 2025.',
+    risk: 'Devices on an unsupported OS stop receiving security patches entirely \u2014 every new vulnerability found after end-of-life stays open forever on that device.',
+    meaning: 'Small number, but the two devices in question are worth naming \u2014 this is a budget conversation, not a technical mystery.',
+    consequence: "If either device touches financial data and gets hit by a patched-elsewhere vulnerability, that's a straightforwardly avoidable incident to explain after the fact.",
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM \u00b7 native', reading: 'Inventory shows 2 of 50 managed devices on Windows 10 (build reached end-of-life Oct 2025); 48 on Windows 11.', flag: 'match' },
+        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No replacement or upgrade ticket open for either device.', flag: 'single' }
+      ],
+      reconciliation: "N-central's inventory is first-party, independently verifiable telemetry \u2014 the OS-version count itself is Measured. The absence of a replacement ticket is a separate, softer signal (no plan yet), not part of the tier determination.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f10',
+    title: 'Dormant User Accounts',
+    templateCategory: 'User Management',
+    nistCode: 'PR.AA',
+    category: 'NIST CSF 2.0 \u00b7 PR.AA \u2014 Identity Management & Access Control',
+    tier: 'measured',
+    tierLabel: '\u2713 Measured',
+    riskLevel: 'medium',
+    data: '6 user accounts have had no sign-in activity in over 90 days.',
+    risk: "Every dormant account is a credential that can be compromised without anyone noticing \u2014 nobody is watching for unusual activity on an account they've forgotten exists.",
+    meaning: "Dormant accounts are a housekeeping issue, not a crisis \u2014 but they're also the cheapest fix on this whole list.",
+    consequence: 'A dormant account is where the "why did not anyone notice" question lands hardest if it is ever the one that gets used.',
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'Microsoft Entra ID', type: 'Identity/MFA \u00b7 cross-vendor', reading: 'Sign-in log shows 6 licensed accounts with no authentication event in 90+ days.', flag: 'match' }
+      ],
+      reconciliation: "Single source, but it's the authoritative one \u2014 Entra's sign-in log is the first-party record of authentication activity, not an inference. Measured on that basis alone.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f11',
+    title: 'Patch Compliance Rate',
+    templateCategory: 'Vulnerability Management',
+    nistCode: 'ID.RA',
+    category: 'NIST CSF 2.0 \u00b7 ID.RA \u2014 Risk Assessment',
+    tier: 'benchmarked',
+    tierLabel: '\u2248 Benchmarked',
+    riskLevel: 'low',
+    data: '94% of devices patched within the SLA window this cycle, up from 88% last cycle.',
+    risk: 'The 6% still outside the window are where a known, already-patched-elsewhere vulnerability stays exploitable longest.',
+    meaning: 'Real, measurable improvement \u2014 worth calling out as progress, the same instinct as the M365 baseline finding above.',
+    consequence: 'If we only ever report the gap and never the trend, Ridgemont has no way to tell whether things are getting better or just differently bad.',
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM \u00b7 native', reading: "Patch compliance 94% this cycle vs. 88% last cycle, scored against Laissez Faire Fellows' base-wide patch SLA.", flag: 'match' }
+      ],
+      reconciliation: 'Compared against the base-wide benchmark rather than independently re-derived from a second source \u2014 directionally corroborated, not re-verified. That is Benchmarked, same logic as the M365 baseline finding.',
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f12',
+    title: 'Multi-Factor Authentication Coverage',
+    templateCategory: 'Identity & Access Management',
+    nistCode: 'PR.AA',
+    category: 'NIST CSF 2.0 \u00b7 PR.AA \u2014 Identity Management & Access Control',
+    tier: 'measured',
+    tierLabel: '\u2713 Measured',
+    riskLevel: 'high',
+    data: '2 accounts are not enrolled in MFA: one service account (scanner) and one named user.',
+    risk: 'An account without MFA is one leaked password away from full compromise \u2014 no second factor to stop it.',
+    meaning: 'The service account is a known, common exception pattern. The named user is the one that actually matters here.',
+    consequence: 'This is the single highest-priority item on this register \u2014 MFA gaps are the most common real-world initial-access vector, not a theoretical one.',
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'Microsoft Entra ID', type: 'Identity/MFA \u00b7 cross-vendor', reading: 'MFA registration report shows 2 accounts without a registered MFA method: 1 service account, 1 named user.', flag: 'match' },
+        { source: 'Adlumin', type: 'MDR \u00b7 native', reading: 'No compromise indicators tied to either account in the lookback window \u2014 gap is real but not (yet) exploited.', flag: 'match' }
+      ],
+      reconciliation: "Entra's MFA registration report is first-party and authoritative on enrollment status; Adlumin corroborates that this has not been exploited yet. Two independent sources, no disagreement \u2014 Measured, and urgent regardless of tier.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  }
+];
+
+const RISK_WEIGHTS = { high: 5, medium: 2, low: 1 };
+
+const RISK_TALLY = () => {
+  const t = { high: 0, medium: 0, low: 0 };
+  findings.forEach(f => { if (f.riskLevel && f.status === 'pending') t[f.riskLevel]++; });
+  return t;
+};
+
+function computeSecurityScore() {
+  let deduction = 0;
+  findings.forEach(f => {
+    if (f.riskLevel && f.status === 'pending') deduction += RISK_WEIGHTS[f.riskLevel] || 0;
+  });
+  return Math.max(0, Math.min(100, 100 - deduction));
+}
+
+let scoreShowWhy = false;
+function scoreToggleWhy() { scoreShowWhy = !scoreShowWhy; renderScorePanel(); }
+
+function renderScorePanel() {
+  const panel = document.getElementById('score-panel');
+  if (!panel) return;
+  const score = computeSecurityScore();
+  const tally = RISK_TALLY();
+  const cls = score >= 75 ? 'good' : score >= 50 ? 'mid' : 'bad';
+  const resolvedCount = findings.filter(f => f.status !== 'pending').length;
+  const pendingRisky = findings.filter(f => f.riskLevel && f.status === 'pending')
+    .sort((a, b) => RISK_WEIGHTS[b.riskLevel] - RISK_WEIGHTS[a.riskLevel]);
+  const deduction = 100 - score;
+  const bySeverity = ['high', 'medium', 'low'].map(lvl => {
+    const items = pendingRisky.filter(f => f.riskLevel === lvl);
+    return { lvl, items, subtotal: items.length * RISK_WEIGHTS[lvl] };
+  }).filter(g => g.items.length);
+  panel.innerHTML = `
+    <div class="score-dial">
+      <div class="sd-num ${cls}">${score}</div>
+      <div class="sd-of">/ 100</div>
+    </div>
+    <div class="score-body">
+      <div class="sb-label">Harness Security Score \u2014 Ridgemont Financial Services</div>
+      <div class="sb-sources">Composite rollup across N-central, Adlumin, Cove, Inforcer, Entra ID &amp; uSecure. Recalculates live as findings below are resolved in Stage 4. ${resolvedCount}/${findings.length} findings resolved so far.</div>
+    </div>
+    <div class="score-tally">
+      <div class="st-item"><span class="st-num high">${tally.high}</span><span class="st-lbl">High \u2014 open</span></div>
+      <div class="st-item"><span class="st-num medium">${tally.medium}</span><span class="st-lbl">Medium \u2014 open</span></div>
+      <div class="st-item"><span class="st-num low">${tally.low}</span><span class="st-lbl">Low \u2014 open</span></div>
+    </div>
+    <button class="btn ghost" onclick="scoreToggleWhy()" style="border-color:rgba(255,255,255,.35); color:#fff; margin-top:4px;">${scoreShowWhy ? 'Hide the math \u25b2' : `Why ${score}? Show the math \u25bc`}</button>
+    ${scoreShowWhy ? `
+      <div class="evidence-trail" style="width:100%; text-align:left; background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.2);">
+        <div class="et-label" style="color:#fff;"><span>100 starting points, minus every open finding still pending in Stage 4</span><span>Deducted: ${deduction}</span></div>
+        <div class="et-rows">
+          ${bySeverity.map(g => `
+            <div class="et-row" style="border-color:rgba(255,255,255,.12);">
+              <span class="et-source" style="color:#fff;">${g.lvl[0].toUpperCase()+g.lvl.slice(1)} risk<span class="et-src-type" style="color:rgba(255,255,255,.6);">${g.items.length} open \u00d7 ${RISK_WEIGHTS[g.lvl]} pts</span></span>
+              <span class="et-reading" style="color:rgba(255,255,255,.85);">${g.items.map(f => f.title).join(', ')}</span>
+              <span class="et-flag mismatch">\u2212${g.subtotal}</span>
+            </div>
+          `).join('')}
+          ${!bySeverity.length ? `<div class="et-row" style="border-color:rgba(255,255,255,.12);"><span class="et-reading" style="color:rgba(255,255,255,.85);">Every finding with a risk level has been resolved \u2014 nothing left deducting.</span></div>` : ''}
+        </div>
+        <div class="et-reconciliation" style="color:rgba(255,255,255,.85); border-color:rgba(255,255,255,.15);">
+          <strong>100 \u2212 ${deduction} = ${score}.</strong> Resolving a finding in Stage 4 (Accept, or an ask-client/gap resolution) removes it from this list and the score recalculates live \u2014 nothing here is a static illustration once you start working the register.
+        </div>
+      </div>
+    ` : ''}
+    <div class="score-cs">[CS: LOW \u2014 illustrative composite; Inforcer's real product scores M365 config only (see finding below) \u2014 this rollup number is a Harness-native synthesis, not a claim about any one vendor's actual scoring model]</div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DRAFT REVIEW — 8-tab structure, mirrors Technica's real EBR template
+   (Executive Business Review - Redacted.xlsx). Each tab finalizes
+   independently — "ready for the meeting" is derived, not a single switch.
+   ══════════════════════════════════════════════════════════ */
+
+const DR_TABS = [
+  { key: 'agenda',    label: '1. Agenda',                  color: 'green' },
+  { key: 'climate',   label: '2. Current Climate',          color: 'blue'  },
+  { key: 'risk',      label: '3. Risk Review',              color: 'blue'  },
+  { key: 'employee',  label: '4. Employee Review',          color: 'blue'  },
+  { key: 'hardware',  label: '5. Hardware',                 color: 'blue'  },
+  { key: 'roadmap',   label: '6. Technical Roadmap',        color: 'gold'  },
+  { key: 'referrals', label: '7. Referrals & Testimonials', color: 'gold'  },
+  { key: 'followup',  label: 'Follow Up Summary',           color: 'gold'  }
+];
+
+let drTab = 'agenda';
+let drFinalized = { agenda: false, climate: false, risk: false, employee: false, hardware: false, roadmap: false, referrals: false, followup: false };
+
+function drAllFinalized() { return DR_TABS.every(t => drFinalized[t.key]); }
+
+function drSetTab(key) {
+  drTab = key;
+  renderDraftReview();
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+
+function drToggleFinalize(key) {
+  drFinalized[key] = !drFinalized[key];
+  renderDraftReview();
+}
+
+function drFinalizeBar(key) {
+  const done = drFinalized[key];
+  return `
+    <div class="dr-finalize-bar ${done ? 'done' : ''}">
+      <span class="dfb-status">${done ? '✓ Finalized — locked for the meeting' : 'Not yet finalized'}</span>
+      <button class="btn ${done ? 'ghost' : 'primary'}" onclick="drToggleFinalize('${key}')">${done ? 'Reopen' : 'Finalize this section'}</button>
+    </div>
+  `;
+}
+
+const DR_USERS = [
+  { name: 'Alicia Ferro', email: 'aferro@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2' },
+  { name: 'Marcus Whitlow', email: 'mwhitlow@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'MFA not registered' },
+  { name: 'Dana Ostrowski', email: 'dostrowski@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2' },
+  { name: 'Kevin Nakamura', email: 'knakamura@ridgemontfinancial.example', licenses: 'Exchange Online (Plan 1)', flag: 'MFA not registered' },
+  { name: 'Renee Castellano', email: 'rcastellano@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'uSecure: 0% complete' },
+  { name: 'Tyler Bosch', email: 'tbosch@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'uSecure: 0% complete' }
+];
+
+const DR_DEVICES = [
+  { name: 'RGM-LT-014', cls: 'Laptop — Windows', os: 'Windows 11 Business', warranty: 'Mar 2027' },
+  { name: 'RGM-LT-021', cls: 'Laptop — Windows', os: 'Windows 11 Business', warranty: 'Jul 2026' },
+  { name: 'RGM-LT-006', cls: 'Laptop — Windows', os: 'Windows 10 Pro', warranty: 'Expired', flag: 'End-of-life OS' },
+  { name: 'RGM-LT-009', cls: 'Laptop — Windows', os: 'Windows 10 Pro', warranty: 'Expired', flag: 'End-of-life OS' },
+  { name: 'RGM-SVR-01', cls: 'Server', os: 'Windows Server 2022', warranty: 'Jan 2028' },
+  { name: 'RGM-FW-01', cls: 'Firewall/VPN appliance', os: 'Vendor firmware, EOL 2021', warranty: 'Expired', flag: 'Legacy remote access appliance' }
+];
+
+const DR_ROADMAP = [
+  { gap: 'Cove Cloud+ migration incomplete', rec: 'Finish migrating the remaining 2 of 3 servers to Cove Cloud+ — carried over from the March 2026 cycle memory.', priority: 'high', timeline: 'Q4 2026', cost: 'Included in current Cove contract', findingId: 'f1' },
+  { gap: 'No GLBA-specific compliance reporting activated', rec: 'Turn on Adlumin\'s GLBA One-Touch Compliance Reporting — Ridgemont already licenses Adlumin; this is an activation, not a new purchase.', priority: 'high', timeline: 'Next cycle', cost: 'Included in current Adlumin contract', findingId: 'f5' },
+  { gap: 'Patch compliance manual and inconsistent', rec: 'Enable N-central automated patch policies tenant-wide — closes the gap behind this cycle\'s 94% patch rate instead of relying on manual follow-up.', priority: 'medium', timeline: 'Q4 2026', cost: 'Included in current N-central contract', findingId: 'f11' },
+  { gap: 'Legacy remote access appliance, end-of-life since 2021', rec: 'Replace the legacy VPN/firewall appliance — vendor firmware is unsupported and it is the single riskiest device in the environment.', priority: 'high', timeline: 'Q1 2027', cost: '$2,400–$3,600 (device + install), quoted separately', findingId: 'f4' }
+];
+
+const DR_BASELINE = [
+  { metric: 'MFA coverage', ridgemont: '91% (20/22)', peer: '88%', stretch: '98%', reading: 'in line with peer', findingId: 'f12' },
+  { metric: 'Security training completion', ridgemont: '82% (18/22)', peer: '79%', stretch: '95%', reading: 'in line with peer, well behind stretch', findingId: 'f8' },
+  { metric: 'Patch compliance', ridgemont: '94%', peer: '91%', stretch: '97%', reading: 'ahead of peer', findingId: 'f11' }
+];
+
+let drFollowupNotes = '';
+
+let selectedId = null;
+let questions = [
+  "You mentioned onboarding two new locations this quarter — are those the same 2 endpoints we're seeing unenrolled, or something separate?",
+  "With GLBA audit season coming in Q4, does the board want a written confirmation on backup coverage, or is verbal sign-off enough this cycle?"
+];
+
+const statusText = {
+  pending: 'Pending',
+  accepted: 'Accepted',
+  edited: 'Edited',
+  escalated: 'Escalated → Jordan',
+  resolved: 'Resolved — ticket added',
+  flagged: 'Flagged for room'
+};
+
+function renderSidebar() {
+  const list = document.getElementById('findings-list');
+  if (!list) return;
+  list.innerHTML = findings.map(f => `
+    <button class="finding-item ${f.id === selectedId ? 'active' : ''}"
+            role="option" aria-selected="${f.id === selectedId}"
+            onclick="selectFinding('${f.id}')">
+      <div class="fi-top">
+        <span class="tierbadge ${f.tier}">${f.tierLabel}</span>
+        ${f.riskLevel ? `<span class="risklevel ${f.riskLevel}">${f.riskLevel}</span>` : ''}
+        <span class="status-pill ${f.status}">${statusText[f.status]}</span>
+      </div>
+      <div class="fi-title">${f.title}</div>
+      <div class="fi-cat">${f.nistCode ? nistBadge(f.nistCode) : ''} ${f.category}${f.templateCategory ? ` <span style="opacity:.6;">· ${f.templateCategory}</span>` : ''}</div>
+    </button>
+  `).join('');
+  renderScorePanel();
+}
+
+function renderCanvas() {
+  const canvas = document.getElementById('finding-canvas');
+  if (!canvas) return;
+  if (!selectedId) {
+    canvas.innerHTML = `<p style="color:var(--br-color-ink-muted); font-size:13px; margin:auto;">Select a finding from the list to review it here.</p>`;
+    return;
+  }
+  const f = findings.find(x => x.id === selectedId);
+
+  let actionsHtml = '';
+  if (f.special === 'ask-client') {
+    if (f.status === 'resolved') {
+      actionsHtml = `
+        <div class="fd-note resolved show">
+          <strong>Client confirmed.</strong> Tier updated to Benchmarked — self-reported, not a system pull, so it doesn't earn Measured.
+        </div>
+        <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this classification? Dispute → Jordan</button>
+      `;
+    } else if (f.status === 'flagged') {
+      actionsHtml = `
+        <div class="fd-note flagged show">
+          <strong>Genuine gap — added to roadmap.</strong> Stays Unverified. Priya carries this into the room as a named gap, not a guess.
+        </div>
+        <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this framing? Dispute → Jordan</button>
+      `;
+    } else if (f.status === 'escalated') {
+      actionsHtml = `<div class="fd-note escalated show"><strong>Escalated to Jordan Ellis.</strong> This classification is now his to resolve before the draft locks.</div>`;
+    } else {
+      actionsHtml = `
+        <div class="decision-prompt">
+          <div class="dp-question">No system has this — how should it resolve before the room?</div>
+          <div class="dp-options">
+            <button class="dp-btn known" onclick="resolveAskClient('${f.id}', 'confirmed')">
+              <span class="dp-btn-label">Client confirmed — mark as answered</span>
+              <span class="dp-btn-sub">Tier upgrades Unverified → Benchmarked (self-reported, not measured).</span>
+            </button>
+            <button class="dp-btn unknown" onclick="resolveAskClient('${f.id}', 'gap')">
+              <span class="dp-btn-label">Genuine gap — add to roadmap</span>
+              <span class="dp-btn-sub">Stays Unverified. Named for the room, not buried.</span>
+            </button>
+            <button class="dp-btn repull" onclick="resolveAskClient('${f.id}', 'repull')">
+              <span class="dp-btn-label">Re-check other sources first</span>
+              <span class="dp-btn-sub">Re-queries the stack before asking Ridgemont directly.</span>
+            </button>
+          </div>
+          <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this framing entirely? Dispute → Jordan</button>
+        </div>
+      `;
+    }
+  } else if (f.special === 'gap') {
+    if (f.status === 'resolved' || f.status === 'flagged') {
+      actionsHtml = `
+        <div class="fd-note ${f.status === 'resolved' ? 'resolved' : 'flagged'} show">
+          ${f.status === 'resolved'
+            ? '<strong>Known — remediation in progress.</strong> Tier updated to Measured. Added to follow-up ticket.'
+            : '<strong>Unknown — needs client input.</strong> Stays Estimated. Flagged for the room.'}
+        </div>
+        <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this classification? Dispute → Jordan</button>
+      `;
+    } else if (f.status === 'escalated') {
+      actionsHtml = `<div class="fd-note escalated show"><strong>Escalated to Jordan Ellis.</strong> This classification is now his to resolve before the draft locks.</div>`;
+    } else {
+      actionsHtml = `
+        <div class="decision-prompt">
+          <div class="dp-question">Are these intentionally excluded, or is this a missed enrollment?</div>
+          <div class="dp-options">
+            <button class="dp-btn known" onclick="resolveGap('known')">
+              <span class="dp-btn-label">Known — remediation in progress</span>
+              <span class="dp-btn-sub">Tier upgrades Estimated → Measured. Adds to follow-up ticket.</span>
+            </button>
+            <button class="dp-btn unknown" onclick="resolveGap('unknown')">
+              <span class="dp-btn-label">Unknown — needs client input</span>
+              <span class="dp-btn-sub">Stays Estimated. Flagged for discussion in the room.</span>
+            </button>
+          </div>
+          <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this framing entirely? Dispute → Jordan</button>
+        </div>
+      `;
+    }
+  } else {
+    if (f.status === 'escalated') {
+      actionsHtml = `<div class="fd-note escalated show"><strong>Escalated to Jordan Ellis.</strong> Priya disputed this finding — it now routes to the technician who built the register.</div>`;
+    } else if (f.status === 'accepted') {
+      actionsHtml = `<div class="fd-note accepted show"><strong>Accepted by Priya.</strong> This finding is confirmed as written for the room.</div>`;
+    } else {
+      actionsHtml = `
+        <div class="fd-actions">
+          <button class="btn accept" onclick="acceptFinding('${f.id}')">Accept</button>
+          <button class="btn edit" onclick="toggleEdit('${f.id}')">Edit</button>
+          <button class="btn dispute" onclick="disputeFinding('${f.id}')">Dispute → Jordan</button>
+        </div>
+        <div class="fd-edit-panel" id="edit-panel-${f.id}">
+          <label for="edit-text-${f.id}" class="visually-hidden">Edit the meaning for this finding</label>
+          <textarea id="edit-text-${f.id}">${f.meaning}</textarea>
+          <div class="edit-actions">
+            <button class="btn save" onclick="saveEdit('${f.id}')">Save edit</button>
+            <button class="btn cancel" onclick="toggleEdit('${f.id}')">Cancel</button>
+          </div>
+        </div>
+      `;
+    }
+    if (f.status === 'edited') {
+      actionsHtml = `<div class="fd-note edited show" style="display:block; background:var(--br-color-brand-primary-tint); border-color:rgba(0,102,204,.35); color:var(--br-color-brand-primary);"><strong>Edited by Priya.</strong> Meaning updated for the room. ${
+        `<div class="fd-actions" style="margin-top:8px;"><button class="btn dispute" onclick="disputeFinding('${f.id}')">Dispute → Jordan</button></div>`
+      }</div>`;
+    }
+  }
+
+  canvas.innerHTML = `
+    <div class="fd-header">
+      <div class="fd-header-top">
+        <span class="tierbadge ${f.tier}">${f.tierLabel}</span>
+        ${f.riskLevel ? `<span class="risklevel ${f.riskLevel}">${f.riskLevel} risk</span>` : ''}
+        ${f.nistCode ? nistBadge(f.nistCode) : ''}
+        <span class="fi-cat">${f.category}${f.templateCategory ? ` · Technica category: ${f.templateCategory}` : ''}</span>
+      </div>
+      <h2>${f.title}</h2>
+    </div>
+    ${renderEvidenceTrail(f)}
+    <div class="four-part">
+      <div class="fp-row" style="grid-column: 1 / -1;"><span class="fp-label">Translation for the room — Priya's read</span></div>
+      <div class="fp-row"><span class="fp-label">Data</span><p>${f.data}</p></div>
+      <div class="fp-row"><span class="fp-label">Risk</span><p>${f.risk}</p></div>
+      <div class="fp-row"><span class="fp-label">Meaning</span><p id="meaning-${f.id}">${f.meaning}</p></div>
+      <div class="fp-row"><span class="fp-label">Consequence</span><p>${f.consequence}</p></div>
+    </div>
+    ${actionsHtml}
+  `;
+}
+
+function renderEvidenceTrail(f) {
+  const ev = f.evidence;
+  if (!ev) return '';
+  const flagText = { match: 'Agrees', mismatch: 'Mismatch', single: 'Single source' };
+  const rows = ev.rows.map(r => `
+    <div class="et-row">
+      <span class="et-source">${r.source}<span class="et-src-type">${r.type}</span></span>
+      <span class="et-reading">${r.reading}</span>
+      <span class="et-flag ${r.flag}">${flagText[r.flag]}</span>
+    </div>
+  `).join('');
+  return `
+    <div class="evidence-trail">
+      <div class="et-label"><span>Jordan's evidence trail <span class="et-owner">— his register, read-only to Priya</span></span><span>Sourced from Laissez Faire Fellows' stack</span></div>
+      <div class="et-rows">${rows}</div>
+      <div class="et-reconciliation">
+        <strong>Reconciliation:</strong> ${(f.status === 'resolved' && ev.reconciliationResolved) ? ev.reconciliationResolved : ev.reconciliation}
+        <span class="et-cs">${ev.csTag}</span>
+      </div>
+    </div>
+  `;
+}
+
+function selectFinding(id) {
+  selectedId = id;
+  renderSidebar();
+  renderCanvas();
+  document.querySelector('.finding-canvas')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function acceptFinding(id) {
+  const f = findings.find(x => x.id === id);
+  f.status = 'accepted';
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function disputeFinding(id) {
+  const f = findings.find(x => x.id === id);
+  f.status = 'escalated';
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function toggleEdit(id) {
+  const panel = document.getElementById('edit-panel-' + id);
+  panel.classList.toggle('show');
+}
+
+function saveEdit(id) {
+  const f = findings.find(x => x.id === id);
+  const text = document.getElementById('edit-text-' + id).value;
+  f.meaning = text;
+  f.status = 'edited';
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function resolveGap(kind) {
+  const f = findings.find(x => x.id === 'f2');
+  if (kind === 'known') {
+    f.tier = 'measured';
+    f.tierLabel = '✓ Measured';
+    f.status = 'resolved';
+  } else {
+    f.status = 'flagged';
+  }
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function resolveAskClient(id, path) {
+  const f = findings.find(x => x.id === id);
+  if (path === 'confirmed') {
+    f.tier = 'benchmarked';
+    f.tierLabel = '≈ Benchmarked';
+    f.status = 'resolved';
+  } else if (path === 'gap') {
+    f.status = 'flagged';
+  } else if (path === 'repull') {
+    showToast('Re-checked ' + (f.evidence && f.evidence.rows.length ? f.evidence.rows[0].source : 'the stack') + ' — still no record. This stays a client question.');
+    return;
+  }
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function updateDraftStatus() {
+  const pill = document.getElementById('draft-status-pill');
+  if (!pill) return;
+  const doneCount = DR_TABS.filter(t => drFinalized[t.key]).length;
+  if (drAllFinalized()) {
+    pill.textContent = 'Draft status: Ready for the meeting';
+    pill.classList.add('ready');
+  } else {
+    pill.textContent = `Draft status: In review — ${doneCount}/${DR_TABS.length} sections finalized`;
+    pill.classList.remove('ready');
+  }
+}
+
+function renderQuestions() {
+  const list = document.getElementById('question-list');
+  if (!list) return;
+  list.innerHTML = questions.map(q => `<li>${q}</li>`).join('');
+}
+
+views.draftReview = () => `
+  <div class="page">
+    <button class="breadcrumb-link" onclick="setView('alwaysCurrent')">← Back to Always Current</button>
+
+    <div class="page-title-block">
+      <div>
+        <h1>Ridgemont Financial Services — Q3 2026 QBR draft</h1>
+        <p class="sub">Priya Shah · Delivery Lead · Laissez Faire Fellows (Denver, CO) — this is Priya's view. Jordan Ellis (technician) built the risk register behind it.</p>
+      </div>
+      <div class="meta-pills">
+        <span class="pill">B-tier client</span>
+        <span class="pill">GLBA applies</span>
+        <span class="pill">Denver, CO</span>
+        <span class="pill">Cycle: Aug 2026</span>
+        <span class="pill status" id="draft-status-pill">Draft status: In review</span>
+      </div>
+    </div>
+
+    <div class="cs-tag" style="margin-bottom:2px;">[A — structure adapted from Technica Solutions' real 8-tab EBR template (Executive Business Review - Redacted.xlsx); Ridgemont content is fictional]</div>
+
+    <div class="dr-tabstrip" role="tablist" aria-label="Draft Review sections">
+      ${DR_TABS.map(t => `
+        <button class="dr-tab ${t.color} ${drTab === t.key ? 'active' : ''} ${drFinalized[t.key] ? 'finalized' : ''}"
+                data-tab="${t.key}" role="tab" aria-selected="${drTab === t.key}" onclick="drSetTab('${t.key}')">
+          ${drFinalized[t.key] ? '✓ ' : ''}${t.label}
+        </button>
+      `).join('')}
+    </div>
+
+    <div id="dr-tab-mount"></div>
+
+    <!-- BRADLEY RAIL -->
+    <div class="bradley-rail">
+      <div class="rail-header">
+        <span class="rail-title">Bradley · Draft-to-Send Flow Assessment</span>
+        <span class="rail-badge">Tier 1 · Concept</span>
+      </div>
+      <p class="rail-blurb">Testing: does the translation layer + confirm gate read as a real human judgment moment, or as another approval checkbox? That's the one thing that matters here. <span class="cs-inline">[CS: MEDIUM — design hypothesis, not measured]</span></p>
+
+      <div class="rail-dual">
+        <div class="rail-block nailed">
+          <div class="rail-block-label">What you nailed</div>
+          <ul>
+            <li>Scope is tight and sourced from the deck's own stated prototype. <span class="cs-inline">[CS: HIGH]</span></li>
+            <li>Cycle memory and the 4-part translation come from primary research — the scenario is real enough to test. <span class="cs-inline">[CS: HIGH — Stefanie Hammond interview, verbatim formula]</span></li>
+            <li>Beth's "sharpie deck" register is the right tone target for Stage 4. <span class="cs-inline">[CS: UNKNOWN — Beth's own call]</span></li>
+          </ul>
+        </div>
+        <div class="rail-block hurt">
+          <div class="rail-block-label">What will hurt you</div>
+          <ul>
+            <li>Stage 4's consultative-question gate is the whole thesis ("ownership, not rubber-stamp") and the mechanism was undesigned going in. <span class="cs-inline">[CS: MEDIUM]</span></li>
+            <li>If the UI reads as a form to fill out, the finding will be "it feels like extra work" regardless of whether the concept is sound. <span class="cs-inline">[CS: MEDIUM]</span></li>
+            <li>The gate needs to feel like a natural pause, not a checkpoint — not yet tested with a real delivery lead. <span class="cs-inline">[CS: LOW — untested]</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rail-cards">
+        <div class="route-card">
+          <div class="rc-team">Product</div>
+          <div class="rc-action">Confirm whether countersign (Stage 6) should be tested in v1 or gated on legal counsel (Q3)</div>
+          <div class="rc-why">Why now: it's out of this prototype's scope, but the answer changes Stage 6 design before build freezes.</div>
+          <div class="rc-risk">If you ship without it: Stage 6 closes the loop without the "acknowledged" signal — the feature works but the defensibility thesis weakens.</div>
+          <div class="rc-roi"><b>ROI</b> — Business: Unknown — gap. User: Unknown — gap. <span class="cs-inline">[CS: UNKNOWN]</span></div>
+        </div>
+        <div class="route-card">
+          <div class="rc-team">Design</div>
+          <div class="rc-action">Decide the interaction pattern for Stage 4's consultative-question checklist — sidebar, step-through, overlay, or inline prompt</div>
+          <div class="rc-why">Why now: the "sharpie deck" analogy implies fast + low-ceremony; the prototype should reflect that intent, not default to a form. <span class="cs-inline">[CS: HIGH — Beth's analogy]</span> This build locked sidebar + main-canvas as the pattern to test — still the open item for what ships.</div>
+          <div class="rc-risk">If you ship without it: the gate reads as an approval form, not a judgment moment — the primary risk named above.</div>
+          <div class="rc-roi"><b>ROI</b> — Business: Unknown — gap. User: reduces rubber-stamping risk; actual load reduction unmeasured. <span class="cs-inline">[CS: UNKNOWN]</span></div>
+        </div>
+        <div class="route-card">
+          <div class="rc-team">Research</div>
+          <div class="rc-action">Test the confirm gate with a real delivery lead before the interaction pattern commits — no tester is named yet. David is Craig Fisher's technician-analog, not a delivery lead; Priya's real-world counterpart hasn't been identified or recruited. <span class="cs-inline">[CS: LOW — casting gap, flagged in critic-pass-1]</span></div>
+          <div class="rc-why">Why now: the gate's entire value is "ownership feels real" — that's a perception test, not a desk judgment. <span class="cs-inline">[CS: MEDIUM — hypothesis; needs lived experience to falsify]</span></div>
+          <div class="rc-risk">If you ship without it: you'll find out in the room whether the gate worked, which is too late.</div>
+          <div class="rc-roi"><b>ROI</b> — Business: Unknown — gap. User: Unknown — gap. <span class="cs-inline">[CS: UNKNOWN]</span></div>
+        </div>
+        <div class="route-card">
+          <div class="rc-team">Eng</div>
+          <div class="rc-action">Note that notification_recipients needs an SMS type before Stage 2 (Nudge) ships for C/D tier — confirmed direction, zero existing schema (data-model.md:129-132)</div>
+          <div class="rc-why">Why now: not a prototype blocker, but it's the only Stage 2 mechanism that doesn't exist in the current schema.</div>
+          <div class="rc-risk">If you ship without it: C/D tier gets email nudge only, not the sachet channel that was confirmed as the direction.</div>
+          <div class="rc-roi"><b>ROI</b> — Business: C/D tier revenue base currently unserviced (~$992K/yr on Laissez Faire Fellows comparable) <span class="cs-inline">[CS: UNKNOWN — fictional persona illustration, not real revenue]</span>. User: Unknown — gap.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+function drRenderAgenda() {
+  return `
+    <div class="onboard-card">
+      <h3>Meeting details</h3>
+      <table class="mini-table">
+        <tbody>
+          <tr><td><strong>Name of client</strong></td><td>Ridgemont Financial Services</td></tr>
+          <tr><td><strong>Meeting contact</strong></td><td>Derek Iannotti — Owner</td></tr>
+          <tr><td><strong>Date of EBR</strong></td><td>14th August 2026</td></tr>
+          <tr><td><strong>Location</strong></td><td>Microsoft Teams</td></tr>
+          <tr><td><strong>Last EBR</strong></td><td>12th March 2026</td></tr>
+          <tr><td><strong>EBR frequency</strong></td><td>Semi-annual (B-tier default — see Always Current cadence config)</td></tr>
+          <tr><td><strong>Client Advocate</strong></td><td>Priya Shah — Delivery Lead</td></tr>
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; header fields mirror the real template's Agenda tab structure]</span>
+    </div>
+
+    <div class="onboard-card">
+      <h3>Today's agenda</h3>
+      <ol class="hist-list" style="padding-left:22px;">
+        <li><a href="#" onclick="drSetTab('climate'); return false;">Current Climate</a> — environment summary, security score, contracts &amp; licenses</li>
+        <li><a href="#" onclick="drSetTab('risk'); return false;">Risk Review</a> — Jordan's findings register, the most important part of this deck</li>
+        <li><a href="#" onclick="drSetTab('employee'); return false;">Employee Review</a> — users, licenses, training &amp; MFA status</li>
+        <li><a href="#" onclick="drSetTab('hardware'); return false;">Hardware</a> — asset snapshot, end-of-life devices</li>
+        <li><a href="#" onclick="drSetTab('roadmap'); return false;">Technical Roadmap</a> — gaps, recommendations, and what Ridgemont isn't using yet</li>
+        <li><a href="#" onclick="drSetTab('referrals'); return false;">Referrals &amp; Testimonials</a></li>
+      </ol>
+      <p class="oc-lede" style="margin-top:6px;">Follow Up Summary is a post-meeting tab — it isn't part of today's agenda, but next quarter's onboarding reads it back in.</p>
+    </div>
+
+    <div class="onboard-card">
+      <h3>Next EBR dates</h3>
+      <table class="mini-table">
+        <thead><tr><th>Date</th></tr></thead>
+        <tbody>
+          <tr><td>Thursday 11th February 2027 at 10:00am</td></tr>
+          <tr><td>Thursday 12th August 2027 at 10:00am</td></tr>
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — two dates, spaced 6 months apart for B-tier's semi-annual cadence; the real template's own example uses 3 quarterly dates for a different client]</span>
+    </div>
+
+    <div class="content-card">
+      <h3>Rehearse toggle — "Prepare for the room"</h3>
+      <div class="rehearse-chips" id="rehearse-chips">
+        <button class="rehearse-chip" data-rehearse="crib">Crib sheet</button>
+        <button class="rehearse-chip" data-rehearse="roleplay">AI plays the client (roleplay)</button>
+        <button class="rehearse-chip" data-rehearse="both">Both</button>
+        <button class="rehearse-chip" data-rehearse="peer">Peer review</button>
+      </div>
+      <span class="cs-tag">Static selectable state — no engineered logic behind each option yet [A]</span>
+    </div>
+
+    ${drFinalizeBar('agenda')}
+  `;
+}
+
+function drRenderClimate() {
+  return `
+    <div class="score-panel" id="score-panel"></div>
+
+    <div class="content-card">
+      <h3>Environment summary — what Ridgemont has</h3>
+      <div class="env-grid">
+        <div class="env-stat"><span class="es-num">50</span><span class="es-lbl">managed devices</span></div>
+        <div class="env-stat"><span class="es-num">22</span><span class="es-lbl">licensed users</span></div>
+        <div class="env-stat"><span class="es-num">Nov 2023</span><span class="es-lbl">contract start</span></div>
+      </div>
+      <div class="env-list">
+        <div class="env-row"><span class="er-name">N-central</span><span class="er-detail">RMM · native · full deployment</span></div>
+        <div class="env-row"><span class="er-name">Adlumin</span><span class="er-detail">MDR · native · full deployment</span></div>
+        <div class="env-row"><span class="er-name">Cove</span><span class="er-detail">Backup/DR · native · 47/50 enrolled</span></div>
+        <div class="env-row"><span class="er-name">HaloPSA</span><span class="er-detail">PSA · cross-vendor</span></div>
+        <div class="env-row"><span class="er-name">Microsoft Entra ID</span><span class="er-detail">Identity/MFA · cross-vendor</span></div>
+        <div class="env-row"><span class="er-name">uSecure</span><span class="er-detail">Security awareness · cross-vendor · 18/22 trained</span></div>
+        <div class="env-row"><span class="er-name">Inforcer</span><span class="er-detail">M365 posture scoring · cross-vendor</span></div>
+      </div>
+      <span class="cs-tag">[A — illustrative snapshot; mirrors the "2. Current Climate" tab of Technica's real EBR template]</span>
+    </div>
+
+    <div class="onboard-card">
+      <h3>Current contracts</h3>
+      <table class="mini-table">
+        <thead><tr><th>Item</th><th>Cadence</th><th>Qty</th></tr></thead>
+        <tbody>
+          <tr><td>IT Support &amp; Extended Hours</td><td>Monthly</td><td>22 seats</td></tr>
+          <tr><td>Cove Backup</td><td>Monthly</td><td>50 devices</td></tr>
+          <tr><td>Adlumin 24/7 SOC &amp; MDR</td><td>Monthly</td><td>50 devices</td></tr>
+        </tbody>
+      </table>
+      <h4 style="margin-top:14px;">Current licenses</h4>
+      <table class="mini-table">
+        <thead><tr><th>Product</th><th>Qty assigned</th><th>Renewal</th></tr></thead>
+        <tbody>
+          <tr><td>Microsoft 365 Business Premium</td><td>18</td><td>Jan 2027</td></tr>
+          <tr><td>Microsoft Entra ID P2</td><td>22</td><td>Jan 2027</td></tr>
+          <tr><td>Exchange Online (Plan 1)</td><td>4</td><td>Jan 2027</td></tr>
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; grounded in the real template's Current Contracts / Licenses columns]</span>
+    </div>
+
+    ${drFinalizeBar('climate')}
+  `;
+}
+
+function drRenderRisk() {
+  const tally = RISK_TALLY();
+  return `
+    <div class="content-card">
+      <h3>Risk &amp; security review</h3>
+      <div class="score-tally" style="justify-content:flex-start; gap:24px;">
+        <div class="st-item"><span class="st-num high">${tally.high}</span><span class="st-lbl">High — open</span></div>
+        <div class="st-item"><span class="st-num medium">${tally.medium}</span><span class="st-lbl">Medium — open</span></div>
+        <div class="st-item"><span class="st-num low">${tally.low}</span><span class="st-lbl">Low — open</span></div>
+      </div>
+      <p class="oc-lede">This is the Jordan part — the most important section of the deck. Every finding below carries its own evidence trail, read-only to Priya.</p>
+      <span class="cs-tag">[A — the real template also tracks an "N/A — not applicable this cycle" bucket for retired risk items; not modeled here since every finding in this build carries a live risk level]</span>
+    </div>
+
+    <div class="content-card" style="margin-top:12px;">
+      <h3>Baseline read — is this number normal?</h3>
+      <p class="oc-lede">The Inforcer-style job: a raw percentage means nothing to Jordan until it's read against a baseline. This is what the Baseline Expert does — read the pull, compare it, tell the technician what it means, before Priya ever sees a translated finding.</p>
+      <table class="mini-table">
+        <thead><tr><th>Metric</th><th>Ridgemont</th><th>Peer baseline (Fernbrook, B-tier)</th><th>Stretch (Meridian, A-tier)</th><th>Reading</th></tr></thead>
+        <tbody>
+          ${DR_BASELINE.map(b => `
+            <tr>
+              <td>${b.metric}</td>
+              <td><strong>${b.ridgemont}</strong></td>
+              <td>${b.peer}</td>
+              <td>${b.stretch}</td>
+              <td><a href="#" onclick="selectFinding('${b.findingId}'); return false;">${b.reading} →</a></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; the comparable-client cohort was named in onboarding step 5 but not computed against until now. This is a Baseline Expert's job per specs/003-ai-expert-config-registry (versioned Expert, its own tool bindings) — naming the function, not the full Expert decomposition]</span>
+    </div>
+
+    <div class="block-grid" style="margin-top:12px;">
+      <div class="content-card">
+        <h3>Industry briefing</h3>
+        <p>Financial services stays a high-interest target for opportunistic attackers — less because the sector is careless, more because a compromised account there is simply worth more. GLBA doesn't ask for perfection, it asks that you can show your controls and your gaps in the same room. That's what this draft is built to do.</p>
+        <span class="cs-tag">[CS: LOW — directional register-setting only, no specific stats cited, per brief]</span>
+      </div>
+      <div class="content-card">
+        <h3>Cycle memory</h3>
+        <p>Every finding here traces to a source. Two carry forward from last cycle — see the cycle-memory strip and gap banner below before diving into the register.</p>
+        <span class="cs-tag">[CS: HIGH — continuity with EBR_HISTORY, Import History onboarding step]</span>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
+      <button class="cycle-strip" onclick="selectFinding('f1')">
+        <span class="cs-label">Cycle memory</span>
+        <span class="cs-text">March 2026 action: <strong>upgrade 3 servers to Cove Cloud+.</strong> Status: 1 of 3 complete.</span>
+        <span class="cs-progress">1/3</span>
+        <span class="cs-arrow">see finding →</span>
+      </button>
+
+      <button class="gap-banner" onclick="selectFinding('f2')">
+        <span class="gb-icon">⚠</span>
+        <span class="gb-text"><strong>3 devices not enrolled in backup</strong> · Estimated · Please confirm before room</span>
+        <span class="gb-cta">Resolve below →</span>
+      </button>
+    </div>
+
+    <div class="stage4-grid" style="margin-top:12px;">
+      <div class="findings-sidebar" role="listbox" aria-label="Findings">
+        <div class="fs-label">Findings — select one to review</div>
+        <div id="findings-list"></div>
+      </div>
+      <div class="finding-canvas" id="finding-canvas"></div>
+    </div>
+
+    <div class="consult-card" style="margin-top:16px;">
+      <h3>Consultative questions for the room</h3>
+      <p class="consult-sub">Priya drafts. Jordan and the team agree on which discussions are worth having before the draft locks — this is the thing the tool can't pull from any system.</p>
+      <ul class="question-list" id="question-list"></ul>
+      <form class="add-question-row" id="add-question-form">
+        <label for="new-question" class="visually-hidden">Add a consultative question</label>
+        <input type="text" id="new-question" placeholder="Draft a question for the room…" />
+        <button type="submit" class="btn add-q">Add question</button>
+      </form>
+    </div>
+
+    ${drFinalizeBar('risk')}
+  `;
+}
+
+function drRenderEmployee() {
+  return `
+    <div class="onboard-card">
+      <h3>Employee review — users &amp; licenses</h3>
+      <p class="oc-lede">Illustrative subset of Ridgemont's 22 licensed users.</p>
+      <table class="mini-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Licenses</th><th>Flag</th></tr></thead>
+        <tbody>
+          ${DR_USERS.map(u => `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.licenses}</td><td>${u.flag ? `<span class="risklevel medium">${u.flag}</span>` : '—'}</td></tr>`).join('')}
+          <tr class="more-row"><td colspan="4">+ 16 more — full list reviewable after setup</td></tr>
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; fictional names, no real HaloPSA/Entra pull behind this]</span>
+    </div>
+
+    <div class="content-card">
+      <h3>Findings that land here</h3>
+      <p>Two Risk Review findings tie directly to this list — <a href="#" onclick="drSetTab('risk'); selectFinding('f8'); return false;">Security Awareness Training Completion</a> (4 of 22 users at 0%) and <a href="#" onclick="drSetTab('risk'); selectFinding('f12'); return false;">Multi-Factor Authentication Coverage</a> (2 accounts without MFA — Marcus Whitlow and Kevin Nakamura above).</p>
+    </div>
+
+    ${drFinalizeBar('employee')}
+  `;
+}
+
+function drRenderHardware() {
+  return `
+    <div class="onboard-card">
+      <h3>Hardware &amp; asset review</h3>
+      <p class="oc-lede">Illustrative subset of Ridgemont's 50 managed devices.</p>
+      <table class="mini-table">
+        <thead><tr><th>Device</th><th>Class</th><th>OS</th><th>Warranty</th><th>Flag</th></tr></thead>
+        <tbody>
+          ${DR_DEVICES.map(d => `<tr><td>${d.name}</td><td>${d.cls}</td><td>${d.os}</td><td>${d.warranty}</td><td>${d.flag ? `<span class="risklevel high">${d.flag}</span>` : '—'}</td></tr>`).join('')}
+          <tr class="more-row"><td colspan="5">+ 44 more — full list reviewable after setup</td></tr>
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; fictional device names, no real N-central pull behind this]</span>
+    </div>
+
+    <div class="content-card">
+      <h3>Findings that land here</h3>
+      <p><a href="#" onclick="drSetTab('risk'); selectFinding('f9'); return false;">End-of-Life Operating Systems</a> (2 devices above still on Windows 10) and <a href="#" onclick="drSetTab('risk'); selectFinding('f4'); return false;">Legacy Remote Access Appliance</a> (RGM-FW-01 above, EOL since 2021) both tie directly to this inventory — see Technical Roadmap for the replacement plan.</p>
+    </div>
+
+    ${drFinalizeBar('hardware')}
+  `;
+}
+
+function drRenderRoadmap() {
+  const prLabel = { high: 'High', medium: 'Medium', low: 'Low' };
+  return `
+    <div class="onboard-card">
+      <h3>Technical roadmap — gaps &amp; recommendations</h3>
+      <p class="oc-lede">Where this deck earns its keep: naming what Ridgemont isn't using yet, not just what's broken. Trust us to be latest and greatest.</p>
+      <table class="mini-table">
+        <thead><tr><th>Gap</th><th>Recommendation</th><th>Priority</th><th>Timeline</th><th>Cost</th></tr></thead>
+        <tbody>
+          ${DR_ROADMAP.map(r => `
+            <tr>
+              <td>${r.gap}</td>
+              <td>${r.rec}</td>
+              <td><span class="risklevel ${r.priority}">${prLabel[r.priority]}</span></td>
+              <td>${r.timeline}</td>
+              <td>${r.cost}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; Cove Cloud+/Adlumin/N-central items are real N-able products Ridgemont already licenses, framed as activation not new purchase, per Beth's "trust us to be latest and greatest" ask]</span>
+    </div>
+
+    <div class="content-card">
+      <h3>The ask</h3>
+      <div class="ask-highlight">
+        Renewal comes up in <strong>September 2026</strong>. Two new endpoints from Ridgemont's recent hires aren't enrolled yet — worth raising in the same breath as backup coverage, not as a separate pitch.
+      </div>
+      <span class="cs-tag">[D — deck p11 scenario]</span>
+    </div>
+
+    ${drFinalizeBar('roadmap')}
+  `;
+}
+
+function drRenderReferrals() {
+  return `
+    <div class="onboard-card">
+      <h3>Referral requests &amp; testimonials</h3>
+      <table class="mini-table">
+        <thead><tr><th>Company</th><th>Contact</th><th>Position</th><th>Date contacted</th><th>Outcome</th></tr></thead>
+        <tbody>
+          <tr class="more-row"><td colspan="5">No referral conversations logged yet this cycle — an honest empty state, not a placeholder row.</td></tr>
+        </tbody>
+      </table>
+      <span class="cs-tag">[A — illustrative; real template tracks this as an ongoing log across cycles]</span>
+    </div>
+
+    <div class="content-card">
+      <h3>Next meeting planning</h3>
+      <p>See <a href="#" onclick="drSetTab('agenda'); return false;">Agenda</a> for the two scheduled EBR dates already on the books.</p>
+    </div>
+
+    ${drFinalizeBar('referrals')}
+  `;
+}
+
+function drRenderFollowup() {
+  return `
+    <div class="onboard-card">
+      <h3>This cycle's commitments</h3>
+      <p class="oc-lede">What gets recorded here becomes next quarter's "promises made last cycle" — the same mechanism QBR Analyst read Ridgemont's history from during onboarding.</p>
+      <div class="hist-promises">
+        <div class="hist-promise-row"><div class="hp-main"><strong>Laissez Faire Fellows:</strong> Complete the remaining Cove Cloud+ migration (2 of 3 servers).</div></div>
+        <div class="hist-promise-row"><div class="hp-main"><strong>Laissez Faire Fellows:</strong> Activate Adlumin's GLBA One-Touch Compliance Reporting.</div></div>
+        <div class="hist-promise-row"><div class="hp-main"><strong>Ridgemont:</strong> Confirm whether the IT risk management policy exists and share it.</div></div>
+      </div>
+      <span class="cs-tag">[A — auto-drafted from this cycle's roadmap items; illustrative, not wired to a real commit step]</span>
+    </div>
+
+    <div class="onboard-card">
+      <h3>Post-meeting summary email</h3>
+      <p class="oc-lede">Real template's instruction, kept literal: paste the summary email sent to the client here, for reference at the next EBR.</p>
+      <textarea id="dr-followup-notes" placeholder="Paste the post-meeting summary email here…" oninput="drFollowupNotes=this.value;">${drFollowupNotes}</textarea>
+    </div>
+
+    ${drFinalizeBar('followup')}
+  `;
+}
+
+const DR_RENDERERS = {
+  agenda: drRenderAgenda, climate: drRenderClimate, risk: drRenderRisk,
+  employee: drRenderEmployee, hardware: drRenderHardware, roadmap: drRenderRoadmap,
+  referrals: drRenderReferrals, followup: drRenderFollowup
+};
+
+function drWireAgendaTab() {
+  document.querySelectorAll('.rehearse-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.rehearse-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+  });
+}
+
+function drWireRiskTab() {
+  const form = document.getElementById('add-question-form');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const input = document.getElementById('new-question');
+      const val = input.value.trim();
+      if (!val) return;
+      questions.push(val);
+      input.value = '';
+      renderQuestions();
+    });
+  }
+}
+
+function renderDraftReview() {
+  document.querySelectorAll('.dr-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === drTab);
+    b.classList.toggle('finalized', !!drFinalized[b.dataset.tab]);
+    b.innerHTML = (drFinalized[b.dataset.tab] ? '✓ ' : '') + DR_TABS.find(t => t.key === b.dataset.tab).label;
+  });
+  const mount = document.getElementById('dr-tab-mount');
+  if (!mount) return;
+  mount.innerHTML = DR_RENDERERS[drTab]();
+  if (drTab === 'agenda') drWireAgendaTab();
+  if (drTab === 'climate') renderScorePanel();
+  if (drTab === 'risk') { renderSidebar(); renderCanvas(); renderQuestions(); drWireRiskTab(); }
+  updateDraftStatus();
+}
+
+function initDraftReview() {
+  selectedId = null;
+  findings.forEach(f => { if (f.id === 'f2') { f.tier = 'estimated'; f.tierLabel = '~ Estimated'; } f.status = 'pending'; });
+  questions = [
+    "You mentioned onboarding two new locations this quarter — are those the same 2 endpoints we're seeing unenrolled, or something separate?",
+    "With GLBA audit season coming in Q4, does the board want a written confirmation on backup coverage, or is verbal sign-off enough this cycle?"
+  ];
+  drTab = 'agenda';
+  drFinalized = { agenda: false, climate: false, risk: false, employee: false, hardware: false, roadmap: false, referrals: false, followup: false };
+  drFollowupNotes = '';
+  renderDraftReview();
+}
+
+/* ══════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════ */
+setView('onboarding');
+</script>
+
+</body>
+</html>

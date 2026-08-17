@@ -1,0 +1,61 @@
+# Druva
+slug: druva
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Druva is a SaaS-native cloud data protection platform providing backup, disaster recovery, and cyber resilience for endpoints, data centers, cloud workloads (AWS, Azure, GCP), and SaaS applications (Microsoft 365, Google Workspace, Salesforce). Unlike appliance-based backup vendors, Druva operates as fully managed infrastructure — no servers, no agents for modern cloud workloads, and no egress fees. Druva is valued at $2B+ with $147M Series H funding and is recognized as a Gartner Magic Quadrant Leader for Enterprise Backup and Recovery Software Solutions.
+
+## MSP Relevance
+Druva's PartnerSync MSP program is purpose-built for managed services providers seeking a SaaS backup product with high margins, minimal client onboarding overhead (15-minute setup), and strong cyber resilience positioning. Its consumption-based billing model aligns with MSP resale economics, and the >98% renewal rate provides predictable recurring revenue. For MSPs building managed backup offerings without infrastructure investment, Druva is a leading SaaS-native option.
+
+## Key Offerings & Capabilities
+- SaaS data protection — fully managed, agentless backup requiring no infrastructure deployment
+- Multi-cloud backup — AWS, Azure, Google Cloud workload protection including Azure SQL and Azure Blob (agentless)
+- Endpoint backup — Windows, macOS endpoint protection managed centrally
+- SaaS application backup — Microsoft 365 (Exchange, OneDrive, SharePoint, Teams), Google Workspace, Salesforce
+- DruAI — autonomous AI agents for proactive cyber resilience: anomaly detection, threat containment, recovery automation (launched August 2025)
+- Safe Mode — AI-driven rapid threat containment that isolates affected systems and data during active ransomware events
+- ReconX Labs — dedicated security research unit publishing ransomware threat intelligence
+- Advanced Cyber Recovery — malware scanning, IOC (Indicators of Compromise) detection integrated with backup recovery
+- Agentless S3 backup with airgap isolation
+- PartnerSync MSP program — tiered partner program with deal registration, dedicated business managers, and Elite MSP tier
+
+## Recent Announcements
+- August–November 2025: DruAI autonomous agents launched for proactive data security and recovery management
+- October 2025: Safe Mode launched for AI-driven ransomware containment
+- May 2025: Azure SQL and Azure Blob Storage protection added — agentless, zero egress fees
+- ReconX Labs launched as dedicated ransomware intelligence research unit
+- 2025: Ransomware Recovery Hub community launched for post-breach knowledge sharing
+- $147M Series H funding at $2B+ valuation — latest financing with CDPQ, Neuberger Berman, Viking Global Investors, Atreides Management
+- 2025 IDC MarketScape Leader for Worldwide Cyber Recovery
+
+## Pricing Model
+Consumption-based SaaS subscription using Druva Credits (1 credit = 1 TB compressed/deduplicated data per month). Data source pricing: approximately $7/resource/month (data center), $4/user/month (M365), $8/device/month (endpoints). Annual or multi-year subscription terms. No public list pricing — custom quote-based. MSP margins described as "highly competitive" with Elite tier providing highest margins; no specific percentages published.
+
+## Strengths
+- SaaS-native architecture with no infrastructure — 15-minute client onboarding eliminates deployment friction
+- >98% renewal rate is the highest in the backup category — indicates strong client satisfaction and stickiness
+- DruAI autonomous agents add AI-powered cyber resilience on top of backup — not just restore, but proactive threat containment
+- Zero egress fees and no infrastructure costs significantly reduce MSP total cost of delivery
+- Gartner Magic Quadrant Leader and IDC MarketScape Leader dual recognition provides enterprise credibility
+- PartnerSync Elite tier dedicated business manager support differentiates from transactional vendor relationships
+
+## Weaknesses / Gaps
+- Consumption-based pricing with Druva Credits adds complexity to MSP billing and margin forecasting
+- No public pricing — requires custom quotes; MSPs cannot self-serve pricing for client proposals
+- IPO has been speculated but not executed — private company dynamics create uncertainty around long-term strategy
+- Less name recognition in SMB market than Datto or Veeam for MSPs targeting smaller clients
+- Azure and cloud workload protection is strong; physical/tape-based infrastructure environments are outside Druva's sweet spot
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Druva operates in backup and cyber resilience — a different functional category than NZO's AI agent and workflow automation platform. No meaningful product overlap. The MSP relevance is as a complementary stack component that NZO could integrate with for automated backup monitoring and remediation workflows.
+
+## Notes
+- DruAI autonomous agents mark Druva's entry into AI-driven automation — monitor for expansion beyond cyber resilience into broader IT automation
+- The PartnerSync >98% renewal rate is the most compelling MSP retention metric in the backup category — worth studying the business model
+- Druva's agentless approach for cloud workloads sets a design philosophy NZO could learn from for MSP deployment simplicity
+- Watch for IPO activity — if Druva goes public, pricing and partner program terms may change to optimize for public market metrics

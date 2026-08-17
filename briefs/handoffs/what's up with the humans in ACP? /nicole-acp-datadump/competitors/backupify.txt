@@ -1,0 +1,56 @@
+# Backupify (Kaseya)
+slug: backupify
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Backupify is a cloud-to-cloud SaaS backup product for Microsoft 365 and Google Workspace, operating within Kaseya's backup portfolio as part of Datto SaaS Protection. Originally acquired by Datto in 2014, Backupify became part of the Kaseya ecosystem following Kaseya's 2022 acquisition of Datto. The product provides three daily automated backups of M365 (Exchange, OneDrive, SharePoint, Teams, Calendar, Contacts) and Google Workspace applications, managed through a multi-tenant dashboard designed for MSP resale.
+
+## MSP Relevance
+Backupify is a standard MSP offering for protecting Microsoft 365 and Google Workspace client data from accidental deletion, ransomware, and compliance gaps. For Kaseya-aligned MSPs, Backupify integrates directly into the Datto SaaS Protection portfolio with unified billing, Autotask PSA ticketing, and Kaseya 365 bundling. The product is increasingly being consolidated under the Datto SaaS Protection brand, with Backupify brand relevance declining as Kaseya unifies its backup portfolio.
+
+## Key Offerings & Capabilities
+- Microsoft 365 backup — Exchange Online, OneDrive, SharePoint Online, Teams, Calendar, Contacts — three daily automated backups
+- Google Workspace backup — Gmail, Drive, Contacts, Calendar protection
+- Multi-tenant management — centralized dashboard for MSP management of all client backup instances
+- Granular restore — item-level restore for individual emails, files, calendar items, and contacts
+- Unlimited storage — no per-GB storage caps within the subscription
+- Datto Backup for Microsoft Entra ID — backup and restoration of Entra ID identity objects (included in Kaseya 365 User at no additional cost; also available standalone)
+- PSA integration — automated ticketing and billing reconciliation with Autotask and Kaseya BMS
+- Kaseya 365 integration — bundled into Kaseya 365 User for MSPs on unified Kaseya platform
+
+## Recent Announcements
+- October 2025 (DattoCon): Datto Backup for Microsoft Entra ID announced — purpose-built identity data protection with rapid restoration; bundled into Kaseya 365 User
+- December 2025: Kaseya ends High Watermark pricing model; transitions to Committed Minimum Quantity + Variable Consumption model effective June 2026 — changes MSP billing flexibility
+- April 2026: New unified integration between Datto Backup for Entra ID, Datto SaaS Protection (Backupify), and Spanning — enables single-workflow restoration of Entra ID objects and M365 Exchange data
+- April 2026: Broader Kaseya Cyber Resiliency Platform preview — unified dashboard, flexible pricing, and pooled storage across all Kaseya backup products
+- INKY email security acquisition announced to add AI-assisted email security capabilities to backup portfolio
+
+## Pricing Model
+Per-user per-month billing. Typical pricing around $29/month per client environment (approximate; volume discounts apply). Volume discounts of 15-30% for 100+ users or multi-year commitments. Pricing model changed December 2025 from High Watermark (billed at peak user count) to Committed Minimum Quantity + Variable Consumption (pay for committed minimum, consume variably above that floor). Custom MSP pricing via Kaseya sales; not published publicly.
+
+## Strengths
+- Kaseya ecosystem integration — seamless connection with Autotask PSA, Datto RMM, and IT Glue reduces operational overhead
+- Three daily automated backups exceeds the once-daily cadence of many competitors
+- Entra ID backup integration (October 2025) fills a critical gap — M365 identity data was previously unprotected in most MSP stacks
+- Bundled in Kaseya 365 User reduces per-unit cost for Kaseya-committed MSPs
+- Pooled storage model (April 2026) enables more flexible capacity management across multiple clients
+
+## Weaknesses / Gaps
+- Brand consolidation into Datto SaaS Protection reduces Backupify's distinct identity — MSPs will increasingly reference "Datto SaaS Protection" rather than Backupify
+- Pricing model transition (High Watermark → Committed Minimum) creates short-term confusion and may disadvantage MSPs with variable client sizes
+- Limited differentiation from Spanning (also Kaseya-owned) — two overlapping SaaS backup products in the same portfolio creates internal channel conflict
+- Weaker name recognition than Veeam or Druva for M365 backup in non-Kaseya-aligned MSPs
+- Not a standalone competitive option for MSPs outside the Kaseya ecosystem
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Backupify is a SaaS data backup product with no meaningful overlap with NZO's AI agent and automation platform. The competitive relevance is indirect — as a Kaseya product, it is part of the broader Kaseya competitive ecosystem that NZO monitors. Specifically, Kaseya's unified cyber resilience platform and AI Digital Workforce are the more relevant Kaseya competitive vectors.
+
+## Notes
+- The Backupify/Spanning overlap within Kaseya's portfolio is an internal rationalization risk — Kaseya may consolidate the two products, creating channel disruption
+- The transition away from High Watermark pricing is a significant operational change for MSPs — worth monitoring how partner economics are affected
+- Entra ID backup as a bundled Kaseya 365 User feature (October 2025) is a strong competitive move — competitors offering standalone Entra ID backup as a paid add-on will face pricing pressure
+- Monitor Kaseya's unified Cyber Resiliency Platform launch (April 2026) — if it succeeds, it creates a compelling all-in-one Kaseya backup and cyber recovery story that replaces individual product evaluation

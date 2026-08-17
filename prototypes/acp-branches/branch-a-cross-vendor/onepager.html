@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Branch A — QBR Cross-Vendor · One-Pager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --surface-bg:#ffffff; --surface-container:#ffffff; --surface-tertiary:#fafafa;
+  --surface-status:#f2f2f2; --surface-active-wash:#f8ebff;
+  --border-default:#d5d5d5; --border-active:#c046ff;
+  --brand:#8500cc; --brand-strong:#c046ff; --brand-wash:#f8ebff;
+  --extended-phlox:#f2d6ff; --extended-blue:#3c5edd; --extended-neon-blue:#4c63e5; --extended-pink:#ed186b;
+  --success:#058142;
+  --text-heading:#18191a; --text-body:#2e2e33; --text-secondary:#404047; --text-placeholder:#5c5c66; --text-oncolor:#fafafa;
+  --radius-sm:4px; --radius-full:999px; --radius-xl:16px;
+  --font-ui:'Inter',-apple-system,sans-serif; --font-brand:'Manrope',sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--surface-tertiary);font-family:var(--font-ui);color:var(--text-body);font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--font-ui);color:var(--text-heading);letter-spacing:-0.02em;margin:0;}
+.page{max-width:880px;margin:0 auto;padding:56px 40px 64px;}
+
+/* masthead */
+.masthead{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border-default);}
+.brand-mark{display:flex;align-items:center;gap:10px;}
+.brand-mark .glyph{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-strong));}
+.brand-mark span{font-family:var(--font-brand);font-weight:800;font-size:15px;color:var(--text-heading);letter-spacing:-0.01em;}
+.masthead .tag{
+  font-family:var(--font-brand);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--brand);background:var(--brand-wash);border:1px solid var(--extended-phlox);
+  border-radius:var(--radius-full);padding:5px 12px;
+}
+
+/* hero */
+.hero{margin-bottom:8px;}
+.eyebrow{font-family:var(--font-brand);font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:10px;}
+.headline{font-size:38px;font-weight:800;line-height:1.12;letter-spacing:-0.02em;margin-bottom:16px;}
+.headline em{color:var(--brand);font-style:normal;}
+.subhead{font-size:16.5px;color:var(--text-secondary);max-width:680px;line-height:1.6;margin-bottom:28px;}
+
+.stat-row{display:flex;gap:28px;margin:28px 0 40px;padding:20px 0;border-top:1px solid var(--border-default);border-bottom:1px solid var(--border-default);}
+.stat{flex:1;}
+.stat .n{font-size:22px;font-weight:800;color:var(--text-heading);letter-spacing:-0.01em;}
+.stat .l{font-size:12px;color:var(--text-placeholder);margin-top:2px;}
+
+/* supporting points */
+.points{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;}
+.point{
+  border:1px solid var(--border-default);border-radius:var(--radius-sm);
+  padding:22px 24px;background:var(--surface-container);
+}
+.point .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:var(--radius-full);
+  background:var(--brand-wash);color:var(--brand);font-weight:800;font-size:12.5px;
+  margin-bottom:12px;
+}
+.point h3{font-size:15.5px;font-weight:700;margin-bottom:8px;}
+.point p{font-size:13.5px;color:var(--text-secondary);line-height:1.6;margin:0;}
+.point p b{color:var(--text-body);}
+
+/* superpower callout, full width */
+.superpower{
+  border:1px solid var(--extended-phlox);
+  background:var(--brand-wash);
+  border-radius:var(--radius-xl);
+  padding:24px 28px;margin-bottom:36px;
+}
+.superpower h3{font-size:15.5px;font-weight:700;margin-bottom:8px;color:var(--text-heading);}
+.superpower p{font-size:14px;color:var(--text-body);line-height:1.6;margin:0;max-width:720px;}
+.superpower .k{color:var(--brand);font-weight:700;}
+
+/* the ask */
+.ask{
+  border:1.5px solid var(--brand);
+  border-radius:var(--radius-sm);
+  padding:26px 28px;
+  background:linear-gradient(135deg, var(--surface-bg), var(--brand-wash));
+  margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.ask .askcopy{max-width:600px;}
+.ask .label{font-family:var(--font-brand);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;}
+.ask h3{font-size:17px;font-weight:700;line-height:1.4;}
+.btn-ask{
+  font-family:var(--font-ui);font-weight:700;font-size:13.5px;
+  background:var(--brand);color:var(--text-oncolor);
+  border:none;border-radius:var(--radius-sm);padding:12px 22px;
+  white-space:nowrap;
+}
+
+/* footnote */
+.footnote{
+  border-top:1px dashed var(--border-default);
+  margin-top:24px;padding-top:16px;
+  font-size:11.5px;color:var(--text-placeholder);line-height:1.6;
+}
+.footnote .flabel{
+  display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:10px;
+  color:var(--extended-pink);border:1px solid #f9c4d8;background:#fff5f9;border-radius:var(--radius-full);
+  padding:2px 8px;margin-right:8px;vertical-align:middle;
+}
+
+footer.foot{margin-top:20px;text-align:center;font-size:11px;color:var(--text-placeholder);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <div class="brand-mark"><span class="glyph"></span><span>N-able ACP</span></div>
+    <span class="tag">Branch A · Package 5</span>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Client-Facing Proof — Cross-Vendor</div>
+    <h1 class="headline">One story, <em>every vendor</em>, one QBR.</h1>
+    <p class="subhead">MSPs run 6&ndash;8 competing tools per client and still walk into the quarterly review without a single narrative that proves the value of the work. This is the coworker that normalizes the whole stack &mdash; not just N-able's slice of it &mdash; into one client-ready story.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="n">#1</div><div class="l">Requested capability, all 3 Guidepoint research instruments</div></div>
+    <div class="stat"><div class="n">6&ndash;8</div><div class="l">Vendor tools per client, MSP-reported average</div></div>
+    <div class="stat"><div class="n">&lt;20 min</div><div class="l">Target time to a client-ready draft, vs. hand-assembly today</div></div>
+  </div>
+
+  <div class="points">
+    <div class="point">
+      <span class="num">1</span>
+      <h3>The demand signal is loud</h3>
+      <p>MSPs call this <b>"the holy grail"</b> unprompted &mdash; no incumbent ships a QBR coworker that normalizes across competitor data. It's the top-requested capability across every research instrument we've run.</p>
+    </div>
+    <div class="point">
+      <span class="num">2</span>
+      <h3>Why it's hard</h3>
+      <p>The most defensible comparison for a client is also the legally hardest to assemble. Cross-vendor normalization is <b>not started</b>, and pulling competitors' data into a client-facing artifact raises a data-egress question no one has answered yet.</p>
+    </div>
+    <div class="point">
+      <span class="num">3</span>
+      <h3>The lever that changes the odds</h3>
+      <p><b>Buy</b> the normalization moat &mdash; it's an existing small-player category, not a multi-quarter build. <b>Partner</b> past the egress wall &mdash; a vendor relationship turns a ToS blocker into a marketplace integration.</p>
+    </div>
+    <div class="point">
+      <span class="num">4</span>
+      <h3>What N-able already has</h3>
+      <p>First-party telemetry across Adlumin, Cove, and UEM is already a normalized source N-able controls. "Measured" claims are defensible on day one for N-able-native clients &mdash; before any acquisition closes.</p>
+    </div>
+  </div>
+
+  <div class="superpower">
+    <h3>The N-able superpower isn't the AI. It's the telemetry.</h3>
+    <p><span class="k">Adlumin + Cove + UEM</span> give N-able a full-stack, first-party telemetry base that no competitor bundle matches. The acquisition or partnership extends that moat across the rest of the stack &mdash; but the moat itself already exists, and it's the reason this package is winnable despite starting from the lowest odds in the portfolio.</p>
+  </div>
+
+  <div class="ask">
+    <div class="askcopy">
+      <div class="label">The ask</div>
+      <h3>Fund the two cheap tests before funding the build: a Q1 legal read on cross-vendor data egress, and a Q2 operator study on whether MSPs want less verification work, not just more output.</h3>
+    </div>
+    <button class="btn-ask">Route to Legal + Product →</button>
+  </div>
+
+  <div class="footnote">
+    <span class="flabel">Caveat</span>Naive Idea Chess survival for this package is ~0.43% (cross-vendor floor) to ~0.64% (blended) — the lowest of the five packages in the portfolio, dying at Build (normalization "not started"; data-egress legality unexamined). It is the fleet synthesis's pick for <b>most winnable</b> specifically because its two failure points are buy/partner levers, not build lines — but three correlated, untested assumptions (normalization clears legal P≈0.30; operators want reduced verification P≈0.55; defensibility tiering survives legal review P≈0.45) mean this floor behaves as a ceiling until at least one is tested.
+  </div>
+
+  <footer class="foot">Branch A &middot; Package 5 &middot; Client-Facing Proof (Cross-Vendor) &middot; onepager.html &middot; concept-stage, not for external distribution</footer>
+</div>
+</body>
+</html>

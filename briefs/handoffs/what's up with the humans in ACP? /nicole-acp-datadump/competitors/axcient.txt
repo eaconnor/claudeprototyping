@@ -1,0 +1,54 @@
+# Axcient
+slug: axcient
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Axcient is an MSP-first BCDR (Business Continuity and Disaster Recovery) platform offering hybrid appliance-plus-cloud backup, continuity, and ransomware recovery. In September 2024, Axcient was acquired by ConnectWise, bringing it into the ConnectWise ecosystem alongside RMM, PSA, and remote access. ConnectWise is investing in Axcient's roadmap to add Azure cloud-to-cloud restore, incremental BMR, native Copilot+ PC backup, NAS backup, and Linux virtualization.
+
+## MSP Relevance
+Axcient is widely used by MSPs as an anti-ransomware BCDR solution, known for its simplicity, MSP-first design, and the "Chain-Free" backup technology that removes the fragility of traditional backup chains. The ConnectWise acquisition creates a distribution advantage through ConnectWise's large MSP base, but also raises questions about integration complexity and Kaseya/Datto competition.
+
+## Key Offerings & Capabilities
+- x360Recover — hybrid BCDR appliance + cloud for servers and endpoints
+- x360Cloud — cloud-to-cloud backup for Microsoft 365 and Google Workspace
+- x360Sync — file sync and sharing with backup
+- Chain-Free backup technology — eliminates backup chain corruption risks
+- Anti-ransomware protection — immutable backups and instant virtualization for recovery
+- Client Executive Summary Reports — client-facing reporting for MSPs to demonstrate backup value
+- ConnectWise integration (post-acquisition) — native workflows with ConnectWise PSA and RMM
+
+## Recent Announcements
+- Acquired by ConnectWise (September 2024) — integrated into ConnectWise ecosystem
+- x360Cloud named G2 2025 Best IT Management Software Product
+- 2025 Backup Compliance Handbook for MSPs published — compliance resources for MSP partners
+- ConnectWise investing in roadmap: Azure cloud-to-cloud restore, incremental BMR, Copilot+ PC backup, NAS backup, PST export, Linux virtualization
+- New Client Executive Summary Reports — helps MSPs demonstrate backup value to clients
+- x360Cloud Google Workspace backup improvements in 2025
+
+## Pricing Model
+Per-device per-month for x360Recover. Per-seat per-month for x360Cloud. Appliance hardware cost separate (or virtual appliance option). MSP partner pricing through ConnectWise. Volume discounts available. No public pricing.
+
+## Strengths
+- Chain-Free technology is a genuine technical differentiator for reliability
+- MSP-first design with clean partner portal and client management
+- Anti-ransomware positioning resonates with MSPs managing ransomware risk
+- ConnectWise acquisition provides distribution through ConnectWise's large MSP base
+- x360Cloud covers both M365 and Google Workspace
+
+## Weaknesses / Gaps
+- ConnectWise acquisition creates concern among MSPs about Kaseya-style consolidation tactics
+- Roadmap items (Azure cloud-to-cloud, NAS, Linux virtualization) not yet shipped
+- Less feature-complete than Datto BCDR under Kaseya for enterprise DR scenarios
+- Some MSPs may move away post-acquisition to maintain vendor independence
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Axcient competes in backup/DR. No meaningful overlap with NZO's AI agent and workflow automation platform.
+
+## Notes
+- ConnectWise acquisition creates an interesting dynamic — Axcient MSPs are now in the ConnectWise ecosystem, which could reduce openings for additional tools
+- Client Executive Summary Reports are a good MSP value-demonstration pattern worth noting for NZO
+- Anti-ransomware narrative is strong — Axcient consistently communicates the "recovered from ransomware" story

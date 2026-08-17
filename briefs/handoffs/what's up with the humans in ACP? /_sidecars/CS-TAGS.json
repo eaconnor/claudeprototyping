@@ -1,0 +1,72 @@
+{
+  "_source_md": "CS-TAGS.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": null,
+  "sections": [],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Tag",
+        "Meaning",
+        "When to trust it",
+        "When to verify"
+      ],
+      "is_id_table": false,
+      "row_count": 7,
+      "rows": [
+        {
+          "Tag": "**[CS: VERIFIED]**",
+          "Meaning": "Matches primary sources that were directly accessed during research",
+          "When to trust it": "Use as-is in strategy documents",
+          "When to verify": "Never \u2014 already verified"
+        },
+        {
+          "Tag": "**[CS: HIGH]**",
+          "Meaning": "Well-sourced from reputable secondary sources; not personally verified against primary",
+          "When to trust it": "Use for directional decisions",
+          "When to verify": "Verify before quoting publicly or basing pricing/ROI on it"
+        },
+        {
+          "Tag": "**[CS: MEDIUM]**",
+          "Meaning": "Plausible claim with partial sourcing; gaps exist",
+          "When to trust it": "Use for hypothesis generation",
+          "When to verify": "Always verify before acting on it"
+        },
+        {
+          "Tag": "**[CS: LOW]**",
+          "Meaning": "Fluent but thin sourcing; model may be pattern-matching from training data",
+          "When to trust it": "Flag as research question, do not use",
+          "When to verify": "Required \u2014 treat as unverified claim"
+        },
+        {
+          "Tag": "**[CS: FABRICATION RISK]**",
+          "Meaning": "Model likely hallucinated this; contradicts available sources or uses suspiciously precise details without citation",
+          "When to trust it": "Do not use",
+          "When to verify": "Discard or replace with researched claim"
+        },
+        {
+          "Tag": "**[CS: UNKNOWN]**",
+          "Meaning": "Outside model's knowledge domain; requires subject matter expert",
+          "When to trust it": "Bring to domain expert (Beth, Nicole, MSP customer)",
+          "When to verify": "Required \u2014 model cannot verify this"
+        },
+        {
+          "Tag": "**[CS: LOW \u2014 outside training window]**",
+          "Meaning": "Beyond model's April 2024 knowledge cutoff; may be outdated or incomplete",
+          "When to trust it": "Check if claim is still current",
+          "When to verify": "Required \u2014 verify against current data"
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [],
+  "cs_tag_histogram": {
+    "VERIFIED": 5,
+    "MEDIUM": 4,
+    "LOW": 4,
+    "HIGH": 2,
+    "FABRICATION": 1,
+    "UNKNOWN": 2
+  }
+}

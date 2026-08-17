@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>n-able | IT Management and Security Solutions for MSPs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ===== canvas ===== */
+      --bg-app: #0b1220;
+      --bg-surface: #121b2e;
+      --bg-elevated: #182238;
+      --bg-deep: #070d18;
+      --border: #1f2c47;
+      --border-strong: #2a3a5c;
+
+      /* ===== text ===== */
+      --text-primary: #e6edf7;
+      --text-secondary: #9aa8c2;
+      --text-tertiary: #6b7a96;
+      --text-muted: #4b5772;
+
+      /* ===== brand (Adlumin blue) ===== */
+      --brand: #3b82f6;
+      --brand-strong: #2563eb;
+      --brand-soft: rgba(59,130,246,0.14);
+
+      /* ===== status ===== */
+      --critical: #ef4444;
+      --critical-soft: rgba(239,68,68,0.13);
+      --high: #f97316;
+      --high-soft: rgba(249,115,22,0.13);
+      --medium: #eab308;
+      --medium-soft: rgba(234,179,8,0.12);
+      --low: #22c55e;
+      --low-soft: rgba(34,197,94,0.12);
+
+      /* ===== Bradley / council accent (violet) ===== */
+      --alpha-accent: #a78bfa;
+      --alpha-soft: rgba(167,139,250,0.13);
+
+      /* ===== DISTINCT SURFACES ===== */
+      --topbar-bg: #0a1730;
+      --topbar-border: var(--brand);
+      --rail-bg: #16112e;
+      --rail-border: var(--alpha-accent);
+
+      /* ===== shape + type ===== */
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      /* ===== elevation shadows ===== */
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.4);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    [data-theme="light"] {
+      --bg-app: #f4f6fb;
+      --bg-surface: #ffffff;
+      --bg-elevated: #eef1f8;
+      --bg-deep: #e6eaf3;
+      --border: #d8deeb;
+      --border-strong: #c3ccdd;
+      --text-primary: #0d1424;
+      --text-secondary: #45506b;
+      --text-tertiary: #6b7790;
+      --text-muted: #94a0b8;
+      --topbar-bg: #0a1730;
+      --rail-bg: #f0eafa;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.16);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg-app);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--topbar-bg);
+      border-bottom: 2px solid var(--topbar-border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-logo {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .mode-toggle {
+      display: flex;
+      gap: 0;
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      padding: 2px;
+      border: 1px solid var(--border);
+    }
+
+    .mode-toggle button {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+
+    .mode-toggle button.active {
+      background: var(--brand);
+      color: white;
+    }
+
+    /* ===== FIDELITY BANNER ===== */
+    .fidelity-banner {
+      position: sticky;
+      top: 64px;
+      z-index: 99;
+      background: var(--bg-elevated);
+      border-bottom: 2px solid var(--alpha-accent);
+      padding: 16px 32px;
+    }
+
+    .fidelity-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .fidelity-tier {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+    }
+
+    .fidelity-pips {
+      display: flex;
+      gap: 6px;
+    }
+
+    .fidelity-pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .fidelity-pip.filled {
+      background: var(--alpha-accent);
+    }
+
+    .fidelity-checks {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px 24px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .fidelity-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fidelity-check .icon {
+      width: 16px;
+      text-align: center;
+    }
+
+    /* ===== LAYOUT ===== */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+
+    .main-content {
+      flex: 1;
+      max-width: calc(100% - 440px);
+      padding: 48px 64px;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      max-width: 880px;
+      margin: 0 auto 96px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: var(--font-mono);
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subhead {
+      font-size: 20px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-primary {
+      background: var(--brand);
+      color: white;
+    }
+
+    .cta-primary:hover {
+      background: var(--brand-strong);
+      box-shadow: var(--shadow-md);
+    }
+
+    .cta-secondary {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+    }
+
+    .cta-secondary:hover {
+      background: var(--bg-elevated);
+      border-color: var(--brand);
+    }
+
+    /* ===== SECTION HEADERS ===== */
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ===== PRODUCT CARDS ===== */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: all 0.2s;
+    }
+
+    .product-card:hover {
+      background: var(--bg-elevated);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .product-card h3 {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .product-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .product-card .learn-more {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--brand);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .product-card .learn-more:hover {
+      color: var(--brand-strong);
+    }
+
+    /* ===== FEATURE SECTIONS ===== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--brand-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .feature-item h3 {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .feature-item p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .testimonial-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .testimonial-quote {
+      font-size: 16px;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .testimonial-attribution {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .testimonial-name {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .testimonial-company {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .final-cta h2 {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .final-cta p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* ===== BRADLEY RAIL ===== */
+    .bradley-rail {
+      width: 420px;
+      background: var(--rail-bg);
+      border-left: 4px solid var(--rail-border);
+      box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+      padding: 32px 24px;
+      overflow-y: auto;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+    }
+
+    .rail-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+      background: var(--alpha-soft);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+    }
+
+    .rail-blurb {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rail-section {
+      margin-bottom: 24px;
+    }
+
+    .rail-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 12px 0;
+      user-select: none;
+    }
+
+    .rail-section-title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .rail-section-toggle {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .rail-section-content {
+      padding: 12px 0;
+      display: none;
+    }
+
+    .rail-section-content.expanded {
+      display: block;
+    }
+
+    .rail-section-content ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .rail-section-content ul li {
+      margin-bottom: 8px;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .rail-section-content ul li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--alpha-accent);
+    }
+
+    .routed-card {
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .routed-card-header {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+      margin-bottom: 10px;
+    }
+
+    .routed-card-body {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .routed-card-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .routed-card-body p {
+      margin-bottom: 8px;
+    }
+
+    .routed-card-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .roi-block {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    .roi-block strong {
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 1400px) {
+      .main-content {
+        max-width: 100%;
+      }
+
+      .bradley-rail {
+        display: none;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-logo">n-able</div>
+    <div class="mode-toggle">
+      <button data-mode="light">Light</button>
+      <button data-mode="dark" class="active">Dark</button>
+      <button data-mode="system">System</button>
+    </div>
+  </div>
+
+  <!-- FIDELITY BANNER -->
+  <div class="fidelity-banner">
+    <div class="fidelity-header">
+      <div class="fidelity-tier">Tier 1 · Concept</div>
+      <div class="fidelity-pips">
+        <div class="fidelity-pip filled"></div>
+        <div class="fidelity-pip"></div>
+        <div class="fidelity-pip"></div>
+      </div>
+    </div>
+    <div class="fidelity-checks">
+      <div class="fidelity-check">
+        <span class="icon">✓</span>
+        <span>Real copy</span>
+      </div>
+      <div class="fidelity-check">
+        <span class="icon">~</span>
+        <span>Seed data</span>
+      </div>
+      <div class="fidelity-check">
+        <span class="icon">✓</span>
+        <span>Core interaction</span>
+      </div>
+      <div class="fidelity-check">
+        <span class="icon">×</span>
+        <span>Full workflow</span>
+      </div>
+      <div class="fidelity-check">
+        <span class="icon">✓</span>
+        <span>Visual hierarchy</span>
+      </div>
+      <div class="fidelity-check">
+        <span class="icon">×</span>
+        <span>Production ready</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      <!-- HERO SECTION -->
+      <section class="hero">
+        <h1>IT Management and Security Solutions Built for MSPs</h1>
+        <p class="subhead">Empower your MSP with integrated tools for remote monitoring, managed detection and response, and data protection — all from a single platform you can trust.</p>
+        <div class="cta-group">
+          <a href="#" class="cta-primary">Request Demo</a>
+          <a href="#" class="cta-secondary">Start Trial</a>
+        </div>
+      </section>
+
+      <!-- PRODUCT CARDS -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Solutions Built for Your Success</h2>
+          <p>Comprehensive tools to monitor, protect, and secure your customers' IT environments.</p>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <h3>N-central</h3>
+            <p>Remote monitoring and management platform designed for MSPs. Monitor, manage, and automate IT operations from a unified dashboard.</p>
+            <a href="#" class="learn-more">Learn more →</a>
+          </div>
+          <div class="product-card">
+            <h3>MDR powered by Adlumin</h3>
+            <p>Managed Detection and Response with 24/7 threat monitoring, investigation, and response — built specifically for the MSP channel.</p>
+            <a href="#" class="learn-more">Learn more →</a>
+          </div>
+          <div class="product-card">
+            <h3>Cove Data Protection</h3>
+            <p>Cloud-first backup and disaster recovery designed to protect critical business data across endpoints, servers, and Microsoft 365.</p>
+            <a href="#" class="learn-more">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURE SECTIONS -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Why MSPs Choose n-able</h2>
+          <p>Built on the pillars that matter most to your business and your customers.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <h3>Security</h3>
+            <p>Proactive threat detection, compliance monitoring, and layered security controls to protect your customers from evolving cyber threats.</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚙️</div>
+            <h3>Reliability</h3>
+            <p>Enterprise-grade uptime, redundant infrastructure, and automated failover to keep your operations running 24/7 without disruption.</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🤝</div>
+            <h3>Partnership</h3>
+            <p>Dedicated support, partner enablement programs, and a community of MSPs committed to shared growth and continuous improvement.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOMER TESTIMONIALS -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Trusted by MSPs Worldwide</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p class="testimonial-quote">"n-able's unified platform lets us monitor endpoints, respond to threats, and back up client data from one console. It's saved us hours every week and given our customers the confidence that their infrastructure is in good hands."</p>
+            <div class="testimonial-attribution">
+              <div class="testimonial-name">Marcus Chen</div>
+              <div class="testimonial-company">Director of Operations, FalconShield MSP</div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-quote">"The MDR powered by Adlumin has been a game-changer for us. We now offer enterprise-grade security to mid-market clients who couldn't afford a dedicated SOC. The ROI has been immediate."</p>
+            <div class="testimonial-attribution">
+              <div class="testimonial-name">Sarah Patel</div>
+              <div class="testimonial-company">CEO, Summit IT Partners</div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-quote">"Cove Data Protection gave us the reliability and speed we needed to move away from legacy backup solutions. Restores are fast, the interface is clean, and our clients trust the n-able name."</p>
+            <div class="testimonial-attribution">
+              <div class="testimonial-name">David Larson</div>
+              <div class="testimonial-company">CTO, Cascade Cyber</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section class="section">
+        <div class="final-cta">
+          <h2>Ready to Transform Your MSP?</h2>
+          <p>See how n-able's integrated platform can help you scale securely, operate efficiently, and deliver exceptional value to your customers.</p>
+          <div class="cta-group">
+            <a href="#" class="cta-primary">Request Demo</a>
+            <a href="#" class="cta-secondary">Start Trial</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- BRADLEY RAIL -->
+    <aside class="bradley-rail">
+      <div class="rail-badge">Tier 1 · Concept</div>
+      <div class="rail-blurb">
+        This prototype tests whether a gray-led palette (vs. saturated brand colors) increases perceived enterprise credibility and CTA prominence for MSP decision-makers.
+      </div>
+
+      <!-- What you nailed -->
+      <div class="rail-section">
+        <div class="rail-section-header" onclick="toggleSection(this)">
+          <div class="rail-section-title">What you nailed</div>
+          <div class="rail-section-toggle">+</div>
+        </div>
+        <div class="rail-section-content">
+          <ul>
+            <li>Gray-led palette with systematic Apex Bridge tokens</li>
+            <li>Elevation hierarchy (shadow tokens create depth without color saturation)</li>
+            <li>Mode toggle (light/dark/system) functional</li>
+            <li>Real n-able product messaging (N-central, MDR powered by Adlumin, Cove)</li>
+            <li>Fictional seed data (MSP names, testimonials) — Pete Hegseth test passed</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- What will hurt you -->
+      <div class="rail-section">
+        <div class="rail-section-header" onclick="toggleSection(this)">
+          <div class="rail-section-title">What will hurt you</div>
+          <div class="rail-section-toggle">+</div>
+        </div>
+        <div class="rail-section-content">
+          <ul>
+            <li>No problem statement: "Why gray?" unanswered beyond Beth's direction [?]</li>
+            <li>No customer research: What visual tone do MSPs respond to? [?]</li>
+            <li>No brand guidelines verification: Is gray permissible in n-able identity? [?]</li>
+            <li>No metric baseline: Current homepage conversion, bounce, time-on-page unknown [?]</li>
+            <li>No A/B test plan: How will this be validated? [A]</li>
+            <li>Gray may read as wireframe: Without strong type scale + elevation, neutral palette can look unfinished</li>
+            <li>Brand erasure risk: If n-able's equity is tied to saturated color, gray dilutes recognition</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Routed Cards -->
+      <div style="margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border);">
+
+        <div class="routed-card">
+          <div class="routed-card-header">PRODUCT</div>
+          <div class="routed-card-body">
+            <p><strong>Product does:</strong> Define business case for gray-led palette</p>
+            <p><strong>Why now:</strong> [A] Current homepage conversion rate unknown — no metric to optimize against</p>
+            <p><strong>If you ship without it:</strong> A/B test results will be uninterpretable (no baseline)</p>
+            <div class="roi-block">
+              <p><strong>Business:</strong> Unknown — no current conversion rate to compare gray-led variant against</p>
+              <p><strong>User:</strong> Unknown — no research on what visual tone MSP decision-makers respond to</p>
+              <p><strong>Unknown:</strong> What's the actual problem gray is solving? Why not saturated blue?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="routed-card">
+          <div class="routed-card-header">DESIGN</div>
+          <div class="routed-card-body">
+            <p><strong>Design does:</strong> Verify gray palette against n-able brand guidelines and competitive audit</p>
+            <p><strong>Why now:</strong> [?] Brand equity risk unknown — gray may weaken recognition if n-able identity is color-anchored</p>
+            <p><strong>If you ship without it:</strong> Prototype may test well but violate brand standards, forcing rebuild or strategic tension with marketing</p>
+            <div class="roi-block">
+              <p><strong>Business:</strong> Unknown — no data on whether gray vs. saturated brand colors affects MSP trust or conversion</p>
+              <p><strong>User:</strong> Unknown — no usability testing on whether gray reads as professional or unfinished</p>
+              <p><strong>Unknown:</strong> Does gray increase CTA prominence (hypothesis) or flatten visual hierarchy?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="routed-card">
+          <div class="routed-card-header">RESEARCH</div>
+          <div class="routed-card-body">
+            <p><strong>Research does:</strong> Validate gray hypothesis with MSP decision-makers (A/B or qualitative)</p>
+            <p><strong>Why now:</strong> [?] No evidence that gray increases enterprise credibility or CTA prominence — hypothesis untested</p>
+            <p><strong>If you ship without it:</strong> Design direction based on aesthetic preference, not user need — risk of investing in wrong direction</p>
+            <div class="roi-block">
+              <p><strong>Business:</strong> Unknown — no baseline conversion to measure lift</p>
+              <p><strong>User:</strong> Unknown — no research on visual preferences or trust signals for MSP buyers</p>
+              <p><strong>Unknown:</strong> What visual tone do MSPs associate with enterprise credibility? Is gray preferred, neutral, or off-brand?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="routed-card">
+          <div class="routed-card-header">ENGINEERING</div>
+          <div class="routed-card-body">
+            <p><strong>Eng does:</strong> Audit feasibility of gray palette in existing component library and CMS</p>
+            <p><strong>Why now:</strong> [A] Assumed this is a CSS token swap, but may require component refactor if color semantics are hard-coded</p>
+            <p><strong>If you ship without it:</strong> Design approved but unshippable without rework — timeline and budget blown</p>
+            <div class="roi-block">
+              <p><strong>Business:</strong> Unknown — implementation cost depends on component architecture (days vs. weeks)</p>
+              <p><strong>User:</strong> No direct user impact — this is delivery feasibility</p>
+              <p><strong>Unknown:</strong> Can gray palette be deployed incrementally (A/B test) or does it require full rebuild?</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+  <script>
+    // Mode toggle logic
+    const modeButtons = document.querySelectorAll('.mode-toggle button');
+    const body = document.body;
+
+    // Apply saved preference or default to dark
+    function applyMode(mode) {
+      if (mode === 'system') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        body.setAttribute('data-theme', mode);
+      }
+    }
+
+    // Load saved preference
+    const savedMode = localStorage.getItem('apx-mode-pref') || 'dark';
+    applyMode(savedMode);
+
+    // Update active button
+    modeButtons.forEach(btn => {
+      if (btn.dataset.mode === savedMode) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Handle mode toggle clicks
+    modeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const mode = button.dataset.mode;
+        localStorage.setItem('apx-mode-pref', mode);
+        applyMode(mode);
+
+        modeButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+
+    // Listen for system preference changes when in system mode
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      const currentMode = localStorage.getItem('apx-mode-pref');
+      if (currentMode === 'system') {
+        applyMode('system');
+      }
+    });
+
+    // Bradley rail section toggle
+    function toggleSection(header) {
+      const content = header.nextElementSibling;
+      const toggle = header.querySelector('.rail-section-toggle');
+
+      if (content.classList.contains('expanded')) {
+        content.classList.remove('expanded');
+        toggle.textContent = '+';
+      } else {
+        content.classList.add('expanded');
+        toggle.textContent = '−';
+      }
+    }
+  </script>
+
+</body>
+</html>

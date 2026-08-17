@@ -1,0 +1,368 @@
+TRANSCRIPT: Group (CAB) - Empower 2026 CAB Session
+Source: AI-AI session transcripts  Empower 2026-070526-120115 (1).pdf
+Session: CAB (Customer Advisory Board) — Empower 2026
+Facilitator: Nicole Reineke
+============================================================
+
+--- CONTRIBUTIONS BY GROUP (CAB) ---
+
+AI session transcripts  Empower 2026
+CAB 
+04-13 Strategy Meeting: AI Integration and Service Models
+Action Items
+-@[Nick] - Send the meeting recording output to Nicole Reineke.
+Key Decisions
+-The group is finding that the buyer for technology services is expanding beyond IT to
+anyone in the organization, and the scope of work is not limited by the underlying platform.
+-The company has appointed its own internal Head of AI to lead projects and scale out a
+dedicated AI team.
+-The agent is not allowed to push directly to the production environment, but it can make
+changes to the codebase in a pre-production environment without direct human supervision at
+that step. A human supervises before the change moves to production.
+-The consensus in the room was to prioritize open integration and the publication of skills.
+Pre-built "co-workers" should be targeted at less experienced partners.
+Detailed Minutes
+
+[18:57-19:51] A strategy for identifying internal AI utilization involves using tools like Prompt,
+which offer assessment and ongoing service packages.
+-The vendor "Prompt" is developing a two-track MSP model: an assessment pack and an
+ongoing service pack.
+-This addresses a significant gap where companies are unaware of internal AI usage.
+-The recommended positioning is not to police AI use but to identify "AI rockstars" and
+find ways to make them more effective.
+-An alternative, blunt-force method is to use existing tools like OpenDNS to generate
+reports on the top AI models being used within the company. This requires no new
+installations, as the data is likely already being collected.
+
+[19:53-20:18] Cisco Umbrella is being used as a fast, attention-getting tool to identify internal
+AI usage, similar to OpenDNS.
+-This method, while a "blunt instrument," provides a quick way to get leadership's
+attention regarding AI use.
+-The conversation notes a link between this kind of "shadow IT" discovery and the
+broader topic of generative AI.
+
+[20:21-21:41] ServiceNow and Microsoft platforms are the primary tools used for client AI
+orchestration, though custom development is often required.
+-Microsoft's capabilities are often "oversold," necessitating custom agency work.
+-Custom development is typically not greenfield but is built upon an established
+development framework and standard.
+-Back-end microservices are used, with a custom front-end built on top of the platform.
+-This involves adding agents to the client's existing cloud environment, whether it's Azure
+or AWS.
+-A new initiative is underway to explore a "cloud infrastructure, superstructure, managed
+agent infrastructure" to move away from locally running solutions.
+
+[22:40-24:39] A discussion was held on the necessity and methodology of backing up AI
+agents, concluding it's more of an application management issue than a traditional backup
+problem.
+-The need for backups arises because agents represent a layer of company data that
+must be protected, especially those with company-specific prompts.
+-User-created agents represent intellectual property (IP) that can be lost when an
+employee leaves or if an inactive workspace (e.g., in Power Platform) is deleted.
+-Configurations and attached workflows (e.g., in Co-pilot Studio) have been lost in the
+past due to a failure to restore a deleted workspace within the 7-day window.
+-The recommended approach is to manage agents like any other application, using a
+CI/CD pipeline rather than traditional backup methods.
+oGovernance can be implemented in platforms like Power Platform to prevent users from
+creating agents outside of a managed process.
+oA CI/CD process ensures agents are automatically pushed into Git repositories, allowing
+for redeployment if they are destroyed, similar to how API servers are managed.
+
+[24:39-25:23] The group discussed handling rollbacks for actions taken by AI agents,
+concluding it relies on existing infrastructure protections and change management.
+-For rollback actions an agent might take, the process should be part of a methodical
+CI/CD pipeline and change management strategy.
+-If an agent takes action on infrastructure (e.g., deleting a user), the hope is that existing
+infrastructure backups and protections are already in place to handle restoration.
+-The goal is to merge agent management and infrastructure protection into a more
+cohesive strategy.
+
+[25:32-26:50] AI projects are often perceived as lacking direct ROI, creating a challenge for
+service providers to monetize their offerings.
+-The industry is currently in the "trough of disillusionment" on the Gartner Hype Cycle for
+AI.
+-Many C-suite executives are questioning the value of their AI investments, as they have
+spent significant money without seeing a clear return.
+-The return is often framed as ROX (Return on Experience) rather than a direct, financial
+ROI.
+-This creates a key challenge for service providers: determining how to effectively
+monetize and wrap services around AI.
+-Current engagements are often project-based, typically involving a group of concepts.
+
+[26:55-27:05] A question was raised regarding whether Co-pilot currently enables the backup
+of identities.
+-The answer was that it does not do so by contract, but it is a feature that is being worked
+on.
+
+[27:09-27:57] The business model for project work involves charging a fixed fee for R&D-style
+engagements with clients.
+-Project work is structured as an R&D experience where the client is heavily involved in
+the experiment.
+-A fixed fee is charged for the project.
+-A question was asked for an example of a "business agent" and what it does.
+
+[28:31-29:15] The group discussed the significant financial opportunity in claiming R&D tax
+credits and exploring new service models.
+-One company's tax rebate service through the SHRED (Scientific Research and
+Experimental Development) program is a major source of revenue, at one point being their
+third-largest client from Canada.
+-The company only began pursuing these credits in the U.S. two years prior, indicating
+they were previously "leaving money on the table."
+-Another participant noted that their company collects R&D credits for their own work but
+has never offered it as a service to clients, acknowledging it as a good idea to fund projects.
+
+[29:15-30:11] An AI adoption service for recurring revenue is being explored.
+-This service is targeted at a lower-end market and focuses on individual-level AI tools
+like ChatGPT, Claude, and Gemini.
+-The goal is to establish and run an "AI council" for the customer, training their core team
+to drive AI adoption internally.
+-The service would include bringing in experts, holding keynotes, and building a
+community to prepare the customer's adoption team for the rapid evolution of AI.
+
+[30:11-31:50] A new commercial model for deployed AI agents is being tested to incentivize
+client usage.
+-The company has deployed proprietary agents to clients, similar to those used for
+internal ticketing processes.
+-The team is grappling with creating a commercial model that doesn't penalize clients for
+increased usage, which is a departure from traditional automation pricing.
+-The desired model ties pricing to the benefit the client receives, rather than transaction
+volume, to encourage adoption.
+-Current interim solution: After the initial release, the company is using a fixed-fee model
+with time blocks (e.g., a set price per month for six months of management).
+-The business case relies on the client realizing significant cost savings (e.g., reducing
+headcount) over the trial period, which justifies the ongoing cost for both parties.
+-This model is currently in an experimental phase with clients since January, and its long-
+term success is unknown.
+
+[31:50-32:37] The Data and AI team's composition has evolved from traditional BI and
+development roles.
+-The team doing this work includes business consultant and business analyst types.
+-Previously, these same team members were focused on traditional Business Intelligence
+(BI), dashboarding projects, and general development.
+-Some individuals have transitioned from development-focused roles to client-facing
+positions, evolving their skills into a blend of BI and development expertise.
+
+[32:39-32:58] Data cleanup and Databricks expertise are foundational to the team's AI/data
+projects.
+-The team gained a significant head start by bringing in Databricks consultants and
+general data scientists, with less focus on Snowflake.
+-A primary and initial focus for most projects is assisting clients with cleaning up their data
+estate, as this is a prerequisite for effective AI work.
+
+[33:04-34:04] A discussion was initiated on security vulnerabilities and response
+mechanisms in an AI-driven world.
+-A high-level question was posed about potential AI-related attacks.
+-Supply chain security, potentially referring to the software bill of materials (SBOM), was
+mentioned as a concern.
+-The group has internal signals to detect an attack, but a response still requires manual
+intervention from a small number of people to authorize a system shutdown.
+
+[34:33-37:15] The group debated the safety of allowing AI agents to perform non-
+deterministic execution versus deterministic automation.
+-It was asserted that workflows that can be solved deterministically are safe to fully
+automate.
+-A strong reluctance was expressed towards allowing non-deterministic workflows to end
+in an execution result, regardless of the perceived risk level.
+-The risk is dependent on the tools and capabilities given to the agent; a "read-only"
+agent is acceptable, but one with execution capabilities is considered scary.
+-A distinction was made between a non-deterministic agent making a decision (e.g.,
+choosing to reboot a machine based on loose guidelines) and an agent executing a pre-
+defined deterministic workflow where a human has already established the rules (e.g., "if X, Y,
+and Z are true, then reboot").
+-The consensus is that deterministic automation, where the logic is pre-defined by a
+human, is safe and is what is commonly practiced. Truly non-deterministic execution by an
+agent is viewed as risky because the outcome is unpredictable.
+
+[37:15-38:17] An example of a deterministic workflow for rebooting a machine was provided.
+-A system like Moveworks can process an intent to reboot a specific computer.
+-It performs a deterministic check to verify the requesting user is authorized based on
+CMDB data in ServiceNow.
+-If the authorization check passes, the reboot command is executed via an agent. If it
+fails, the user is informed they are not authorized.
+-This process is not considered truly "agentic" in the non-deterministic sense, but rather a
+standard, rule-based automation.
+
+[38:17-40:07] The group discussed examples of semi-supervised agentic workflows currently
+in use.
+-One participant described an agentic process for error monitoring where, if a specific
+type of error is detected, the agent can perform steps that result in creating a pull request
+with a code fix into an "edge" environment.
+-Key Decision: The agent is not allowed to push directly to the production environment,
+but it can make changes to the codebase in a pre-production environment without direct
+human supervision at that step. A human supervises before the change moves to production.
+-This is considered a step closer to autonomous operation but is not 100% unsupervised.
+
+[40:10-41:03] A cost-efficiency strategy for agentic workflows involves combining pattern
+matching with deterministic automation.
+-An agent first analyzes an inbound ticket or problem to see if it matches a known pattern.
+-If a match is found, the agent runs a purely deterministic and token-efficient automation
+workflow, pending human approval of the match's accuracy.
+-If the agent cannot find a match ("I've never seen this before"), it then invokes other,
+more expensive, "thinking" agents to devise a solution.
+-The primary driver for this two-step approach was cost-efficiency (token usage), not just
+safety.
+
+[41:07-43:03] A three-agent model is being used for Tier 1 triage in a Security Operations
+Center (SOC).
+-The process involves three agent types:
+o
+4. Triage Agent: The initial agent that performs the work.
+o
+5. QA Agent: An agent that double-checks the work of the first agent.
+o
+6. Supervisor Agent: An agent that checks for any out-of-bounds actions and provides the final
+output.
+-This structure is used for rudimentary tasks, such as investigating "impossible travel"
+alerts where a user's location appears anomalous.
+-It was confirmed that supervisors and monitors are deployed to oversee the actions of AI
+agents, especially in scenarios like a disgruntled employee misusing the system.
+
+[43:09-44:48] The discussion touched on the appropriate level of trust for AI in critical
+decision-making, such as in healthcare.
+-An example was given of a system in a medical suite like Epic, where AI could act as a
+co-pilot for a doctor.
+-The AI might notice a patient's allergy to a medication (e.g., ibuprofen) in the case notes
+and flag it for the doctor, who may not have noticed it immediately.
+-A consensus was expressed that the final decision, such as what medication to
+prescribe, must still reside with the human professional.
+-A key challenge identified is the difficulty in identifying which manual processes are good
+candidates for automation, as technicians are often accustomed to their workflows and don't
+proactively flag them.
+-A suggestion was made for a system layer that could monitor ticketing or other systems
+to identify repetitive issues that are consistently resolved the same way, recommending them
+as candidates for AI automation.
+
+[44:48-45:20] An example of a read-only AI agent for identifying automation opportunities
+was highlighted.
+-An AI agent was created to identify tickets that are "impossible to close," surfacing these
+as potential areas for process improvement or automation.
+-This was noted as a good example of a "read-only" use case for finding valuable
+insights.
+
+[47:31-48:24] The challenge of moving too slowly in AI adoption was identified as a primary
+concern.
+-When asked what to avoid, "being too slow" was stated as the number one concern.
+-The scale of operations (e.g., two people running 400 agents) was mentioned to
+underscore the massive potential impact and risk, highlighting the need for careful but timely
+action.
+
+[48:24-49:56] The organization's goals for AI implementation focus on value demonstration,
+operational efficiency, and customization.
+-The primary goal is to make operational complexity "real life" by not just automating
+existing work but finding fundamentally better ways of operating.
+-Value Ledger: A "value ledger" will be created for all AI-driven automation. This ledger
+will quantify the value generated (e.g., hours saved, money saved) to provide clear visibility
+and justification for AI initiatives.
+-Beyond Real-Time: The belief is that "real-time is not fast enough," and operations need
+to be predictive to stay ahead of issues.
+-On-Demand Customization: The future of services should be customized and built live
+on-demand, moving away from standardized offerings. The technology (e.g., HTML5 in the
+browser) exists to create and present data visualizations in real time.
+-This overall goal is being translated by each product line into specific applications and
+build plans for their respective products.
+
+[50:04-50:55] An "AI expert" is proposed as a solution to provide business outcome
+recommendations to MSPs.
+-An AI expert is defined as a narrowly scoped environment with a specific set of API
+access points.
+-This narrow scope is intended to create a highly focused and powerful tool.
+
+[50:57-52:02] The "Business Expert" is presented as an example of a controversial but
+powerful AI expert.
+-The "Business Expert" is designed to answer questions MSPs might have before a
+customer visit, such as:
+oIdentifying opportunities to save on license costs.
+oLocating underutilized servers to free up space.
+oDetermining how to help the customer grow their environment.
+oFinding opportunities to increase sales within the customer's environment.
+-It was questioned how this AI expert could understand licensing.
+-The response was that many vendors have their own MCP (management and control
+plane) releases, which could be integrated via custom vision AI, allowing the expert to access
+licensing data from the vendor's MCP servers.
+
+[52:11-53:47] N-Able is releasing free MCP servers to provide partners with direct access to
+asset information.
+-Partners will be given direct access to MCP servers, allowing them to do what they want
+without waiting for N-Able to build specific tools.
+-This week, FCP servers were released, providing free API-like access to asset
+information.
+-SDP servers are also planned for release, which will include "classic" information. This
+will be available for partners who do not want to wait for a pre-built "co-worker" tool.
+
+[53:47-54:40] A discussion was initiated on identifying high-value, automatable use cases for
+L1 technicians to increase efficiency.
+-A participant suggested focusing on narrow-scoped automation for mundane L1 tasks,
+like patching agents or vulnerability management.
+-The goal is to increase the ratio of devices managed per L1 technician, which currently
+varies widely among MSPs (estimated between 150 to 500 devices per technician).
+-The focus should be on identifying specific activities that can be automated to improve
+this ratio across the board.
+
+[54:42-56:14] The conversation shifted to whether automation should target L1 tasks or more
+strategic, senior-level functions.
+-One speaker argued that significant automation has already been applied at the L1 level,
+and the real power of new AI tools may lie in assisting senior-level staff.
+-The concept of an "onboarding agent" was discussed as a use case.
+-Paul Akkermans suggested leveraging an agent within N-central for deeper onboarding
+tasks, such as:
+oDetecting specific applications and settings.
+oIdentifying deviations from best practices across the customer base.
+oAutomating the setup of custom thresholds and best practices to accelerate the initial
+onboarding period (first three months).
+
+[56:14-57:00] The timing of the MCP server release was criticized as being too late.
+-A participant stated that if N-Able is just launching MCP servers now, they are "too late."
+-Another speaker noted their own company built an N-central MCP server eight months
+ago, suggesting it is not overly complex if the API endpoints are known.
+-Nicole Reineke countered that N-Able's offering would be integrated with backup and
+security functions.
+-The suggestion was made that N-Able should provide a "playbook" or instruction set to
+help MSPs stand up their own MCP servers if they wish.
+
+--- FACILITATOR CONTEXT (Nicole Reineke) ---
+
+[00:12-01:21] Nicole Reineke outlined the meeting agenda and requested a recording of the
+session.
+-Nicole stated she has a set of discussion questions, a presentation on the future of AI
+("noun escalator"), and the "enamel AI tenants" which guide the organization's approach to AI
+from an operational perspective.
+
+[01:21-02:55] Participants discussed their envisioned roles as trusted advisors to clients
+navigating the rapid evolution of AI over the next one to three years.
+-Nicole Reineke reframed the initial question from "What AI should we build?" to "What do
+you see as your future roles concerning your customers?"
+-A speaker (Christian Kelly) noted that a three-year AI forecast is difficult due to the rapid
+rate of innovation, but the short-to-medium term goal is to be in the conversation, guiding
+customer journeys, and having a compelling story about enabling AI for the business.
+-The primary aspiration is to become the "trusted advisor" clients turn to for navigating their
+AI journey, even without having all the answers.
+-A key concern is to avoid a scenario where external "AI consultants" are brought in,
+dictating strategy to both the company and their clients.
+-The speaker highlighted the uncertainty of whether "scaffolding tools" or the "core models"
+themselves will become the dominant force in AI development.
+
+[02:55-03:12] Nicole Reineke shared the company's strategic perspective on the future
+interaction of AI models.
+-In response to a point about the rapid evolution of AI models, Nicole stated the company's
+approach is based on the assumption that different models will communicate with each other.
+-This perspective is considered the "safest way" to approach future AI architecture.
+
+[10:30-11:15] A participant confirmed their company has formalized its AI efforts by creating a
+dedicated internal team.
+-Echoing the uncertainty of the AI landscape, a speaker (Nicole Reineke0) stated their
+company is working to help customers build AI solutions to streamline business operations.
+-Key Decision: The company has appointed its own internal Head of AI to lead projects and
+scale out a dedicated AI team.
+-The speaker acknowledged it is difficult to know if they are early or late in forming this
+dedicated team.
+
+[11:38-13:17] The group discussed the abstraction of technology, comparing the flow of data
+between AI systems to the historical flow of network packets.
+-A speaker (Nicole Reineke2) proposed that future work will focus on enabling data to flow
+between systems at a higher level of abstraction, similar to how networking evolved to just make
+data flow without needing deep expertise in the underlying packets.
+-The focus will be on orchestrating data flow to "encapsulate that job function in the
+infrastructure," making the infrastructure itself a platform.
+-Nicole Reineke agreed, referencing the business book "The E-Myth," which advocates for
+creating a detailed operating manual for every job function. She stated this level of process
+definition is essential for building effective AI.

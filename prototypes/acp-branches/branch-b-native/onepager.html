@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Client-Facing Proof, N-able Native — One-Pager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --surface-bg:#ffffff; --surface-container:#ffffff; --surface-tertiary:#fafafa;
+  --surface-status:#f2f2f2; --surface-active-wash:#f8ebff;
+  --border-default:#d5d5d5; --border-active:#c046ff;
+  --brand:#8500cc; --brand-strong:#c046ff; --brand-wash:#f8ebff;
+  --extended-phlox:#f2d6ff; --extended-blue:#3c5edd; --extended-neon-blue:#4c63e5; --extended-pink:#ed186b;
+  --success:#058142;
+  --text-heading:#18191a; --text-body:#2e2e33; --text-secondary:#404047; --text-placeholder:#5c5c66; --text-oncolor:#fafafa;
+  --radius-sm:4px; --radius-full:999px; --radius-xl:16px;
+  --font-ui:'Inter',-apple-system,sans-serif; --font-brand:'Manrope',sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--surface-tertiary);color:var(--text-body);font-family:var(--font-ui);font-size:14px;line-height:20px;}
+h1,h2,h3,h4{font-family:var(--font-ui);color:var(--text-heading);font-weight:700;letter-spacing:-0.02em;margin:0;}
+p{margin:0;}
+
+.page{max-width:880px;margin:0 auto;background:var(--surface-bg);min-height:100vh;box-shadow:0 0 0 1px var(--border-default);}
+
+.head{
+  background:var(--text-heading);color:#fff;padding:34px 48px 30px;position:relative;overflow:hidden;
+}
+.head::after{
+  content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle, rgba(197,70,255,.35), transparent 70%);
+}
+.wordmark{font-family:var(--font-brand);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-strong);margin-bottom:14px;position:relative;}
+.eyebrow-tag{
+  display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(197,70,255,.4);
+  color:#e9c9ff;font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:var(--radius-full);margin-bottom:16px;position:relative;
+}
+.headline{font-size:30px;line-height:36px;color:#fff;max-width:620px;position:relative;}
+.headline .accent{color:var(--brand-strong);}
+.subhead{font-size:15px;color:#c9c9d1;margin-top:12px;max-width:600px;position:relative;}
+
+.body{padding:36px 48px 8px;}
+.points{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px;}
+.point{border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:18px 20px;}
+.point .num{
+  display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
+  background:var(--brand-wash);color:var(--brand);font-weight:700;font-size:12px;margin-bottom:10px;
+}
+.point h3{font-size:14.5px;margin-bottom:6px;}
+.point p{font-size:13px;color:var(--text-secondary);}
+.point .cs{
+  display:inline-block;margin-top:8px;font-family:ui-monospace,monospace;font-size:10px;color:var(--extended-blue);
+  background:rgba(60,94,221,.07);padding:1px 6px;border-radius:3px;
+}
+
+.ask{
+  margin:26px 0 0;background:var(--brand-wash);border:1px solid var(--extended-phlox);border-left:4px solid var(--brand);
+  border-radius:var(--radius-sm);padding:20px 22px;
+}
+.ask h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--brand);margin-bottom:8px;}
+.ask p{font-size:15px;color:var(--text-heading);font-weight:500;line-height:22px;}
+
+.footnote{
+  margin:26px 48px 0;padding:14px 16px;background:var(--surface-tertiary);border:1px dashed var(--border-default);
+  border-radius:var(--radius-sm);font-size:11.5px;color:var(--text-placeholder);line-height:17px;
+}
+.footnote .label{font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;margin-bottom:6px;display:block;}
+
+.pagefoot{
+  padding:20px 48px 32px;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-placeholder);
+  border-top:1px solid var(--border-default);margin-top:22px;
+}
+.pagefoot .tier{
+  display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--brand);
+  background:var(--brand-wash);padding:3px 10px;border-radius:var(--radius-full);font-size:11px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="head">
+    <div class="wordmark">N-able · ACP Concept Package</div>
+    <div class="eyebrow-tag">● Branch B — Client-Facing Proof, N-able Native</div>
+    <h1 class="headline">Client-facing proof, built on what <span class="accent">already exists.</span></h1>
+    <p class="subhead">For N-able-stack MSPs who want to stop assembling QBRs by hand — a client-ready quarterly review from first-party telemetry, in under 20 minutes.</p>
+  </div>
+
+  <div class="body">
+    <div class="points">
+      <div class="point">
+        <div class="num">1</div>
+        <h3>The strongest demand signal in the dataset</h3>
+        <p>QBR is #1 across all three research instruments — the only offering that is. Branch B inherits that parent demand directly.</p>
+        <span class="cs">[CS: VERIFIED]</span>
+      </div>
+      <div class="point">
+        <div class="num">2</div>
+        <h3>Buildable now — not a new platform</h3>
+        <p>The Runbook Engine (49/49 built) and Value Ledger (52/52 built) already exist. This is a runbook wired to existing plumbing, not a new acquisition or a new normalization layer.</p>
+        <span class="cs">[CS: VERIFIED]</span>
+      </div>
+      <div class="point">
+        <div class="num">3</div>
+        <h3>Scoping honesty, as a feature</h3>
+        <p>No cross-vendor normalization dependency. No competitor ToS risk. Scoped deliberately to N-able-consolidated MSPs — the foundation to expand from, not a compromise.</p>
+      </div>
+      <div class="point">
+        <div class="num">4</div>
+        <h3>The N-able superpower</h3>
+        <p>First-party Adlumin + Cove + UEM telemetry — here, the telemetry <em>is</em> the product, not a prerequisite to it. "Measured" is defensible on day one, no external data dependency.</p>
+      </div>
+    </div>
+
+    <div class="ask">
+      <h4>The ask</h4>
+      <p>Fund one engineering cycle to wire the QBR runbook to the existing Runbook Engine and Value Ledger, and validate with N-able-consolidated MSPs — before committing to cross-vendor scope.</p>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span class="label">Honesty check — read before you commit</span>
+    ~0.9% naive Idea Chess survival. Dies at Adopt if mixed-stack MSPs experience this as an incomplete version of the cross-vendor offering (Branch A) rather than a distinct, sufficient one — the lever is to scope honestly and treat it as a foundation, not a compromise. Riskiest assumption: N-able-only scope is something mixed-stack MSPs will pay for (P≈0.35, unverified — demand was measured for cross-vendor, not native). TAM is not independently sized and is deliberately not estimated here.
+  </div>
+
+  <div class="pagefoot">
+    <span class="tier">Tier 0 — Concept, reacting only</span>
+    <span>Package 3 of 3 · ACP Concept Directions · 2026-07-23</span>
+  </div>
+
+</div>
+</body>
+</html>

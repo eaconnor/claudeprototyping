@@ -1,0 +1,53 @@
+# SuperOps
+slug: superops
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+SuperOps is an AI-first all-in-one PSA + RMM platform targeting small-to-mid-size MSPs. Launched as a modern challenger to legacy platforms like Kaseya and ConnectWise, SuperOps differentiates on a clean UI, per-technician pricing, and built-in AI features. Its AI Copilot drafts ticket replies and triages, and IT Autopilot (rebranded Robin by Atera — note: SuperOps has a similar feature under a different name) handles autonomous resolution of simple IT issues. Recognized as Category Leader in RMM for Q1 2025 by Channel Program.
+
+## MSP Relevance
+SuperOps targets MSPs looking for a modern, affordable alternative to legacy PSA+RMM stacks. Its all-in-one approach (PSA + RMM in one platform) and per-technician pricing make it particularly attractive to smaller MSPs who want to avoid the complexity of mixing multiple vendors. AI features are focused on technician productivity rather than autonomous operations at this stage.
+
+## Key Offerings & Capabilities
+- Unified PSA + RMM — ticketing, time tracking, billing, endpoint monitoring, patching in one platform
+- AI Copilot — drafts ticket replies, summarizes threads, assists with triage
+- Automated remediation scripts and policy-based patching
+- Client portal and self-service features
+- Business Intelligence and reporting dashboard
+- Integrations with major security, backup, and documentation tools
+- Per-technician pricing model (not per-device)
+
+## Recent Announcements
+- Recognized as Category Leader in RMM space for Q1 2025 by Channel Program
+- AI Copilot expanded in 2025 with improved ticket summarization, draft replies, and triage assistance
+- 2026 platform focus on profitability metrics and MSP business intelligence
+- "SuperOps 2026: Shaping the future of MSP management" blog outlines roadmap direction toward deeper AI automation
+- AI features as of early 2026 are in productive-assist mode — not yet autonomous ticket resolution
+
+## Pricing Model
+Per-technician per-month. SuperOps Starter, Growth, and Scale tiers. Pricing starts around $49–99/technician/month depending on tier and features. No per-device or per-endpoint fees. Free trial available.
+
+## Strengths
+- Modern UI — one of the cleaner PSA+RMM interfaces in the market
+- Per-technician pricing is simple and predictable for growing MSPs
+- All-in-one eliminates the need to integrate separate PSA and RMM platforms
+- AI features are practical and technician-facing (ticket drafts, summaries) rather than vaporware
+- Responsive product team and active community
+
+## Weaknesses / Gaps
+- Smaller ecosystem than ConnectWise, HaloPSA, or Kaseya — fewer integrations
+- AI autonomy is limited — assist mode only, not autonomous resolution as of early 2026
+- Less brand recognition than established PSA vendors — harder to sell to larger MSPs
+- Enterprise features (advanced reporting, complex billing) still maturing
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: SuperOps is primarily an all-in-one PSA+RMM for smaller MSPs. Its AI features are assist-level today, not agentic. However, as SuperOps matures its AI toward autonomy, it could encroach on NZO's territory for the small-to-mid MSP segment. Its per-technician pricing also competes for the same budget as NZO.
+
+## Notes
+- Watch for when SuperOps moves AI from "assist" to "autonomous" — that is the competitive inflection point
+- Per-technician pricing model is a differentiator vs. Kaseya and ConnectWise's per-device models
+- Category Leader recognition (Q1 2025) signals growing MSP adoption — will gain market share in 2025–2026

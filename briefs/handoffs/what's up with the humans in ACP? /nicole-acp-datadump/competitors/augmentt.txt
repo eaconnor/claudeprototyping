@@ -1,0 +1,57 @@
+# Augmentt
+slug: augmentt
+category: AI Purpose-Built for MSPs
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Augmentt is an MSP-native SaaS management platform that provides discovery, optimization, and security management for cloud applications across Microsoft 365 and other SaaS environments. Founded by MSP veterans, Augmentt gives MSPs visibility into which SaaS applications their clients use, identifies unused licenses, enforces security policies, and automates SaaS lifecycle management — all from a multi-tenant dashboard purpose-built for managed services operations.
+
+## MSP Relevance
+Augmentt is built exclusively for MSPs, addressing one of the fastest-growing cost and security challenges in the SMB market: unmanaged SaaS sprawl. As clients adopt more cloud applications independently, MSPs are accountable for security but lack visibility. Augmentt fills this gap by giving MSPs real-time SaaS inventory, license optimization recommendations, and security enforcement — creating a new billable managed service category (Managed SaaS) alongside traditional RMM and security offerings.
+
+## Key Offerings & Capabilities
+- SaaS Discovery — agentless discovery of all cloud applications in use across client environments (OAuth-connected and shadow IT)
+- License Optimization — identifies unused, underutilized, and redundant licenses across Microsoft 365 and discovered SaaS apps
+- SaaS Security — monitors risky OAuth app connections, over-privileged access, and policy violations
+- Microsoft 365 Management — deep M365 visibility including license assignment, user activity, and security configuration
+- Multi-tenant dashboard — single pane for MSPs to manage SaaS environments across all clients
+- Automated remediation — policy-driven actions to revoke OAuth tokens, remove licenses, and enforce compliance rules
+- Reporting and billing integration — usage and compliance reports that feed into MSP billing and QBR workflows
+- PSA integration — connects with ConnectWise, Autotask, and HaloPSA for ticket and billing automation
+
+## Recent Announcements
+- November 2025: Augmentt closes $18 million Series A funding round to accelerate product development and go-to-market expansion
+- Series A positions Augmentt to expand SaaS management capabilities beyond M365 to broader multi-cloud SaaS environments
+- Expanded AI-driven recommendations for license optimization and security posture improvements
+- New integrations announced with additional PSA and RMM platforms to deepen MSP workflow connectivity
+- Partnership expansions with distributors and MSP-focused marketplaces to accelerate channel reach
+
+## Pricing Model
+Per-user per-month pricing across the MSP's managed client base. Pricing structured for MSP resale with margin built in. Specific pricing requires partner account registration — not published publicly. MSP-tiered pricing with volume discounts for larger managed user counts. Free trial available for MSPs to evaluate against their existing client environments.
+
+## Strengths
+- Purpose-built for MSPs — multi-tenant architecture, MSP billing model, and PSA integrations from day one
+- Addresses a real and growing pain point — SaaS sprawl and license waste are top client concerns as SaaS spend escalates
+- $18M Series A (November 2025) provides runway for significant product and GTM expansion
+- Founded by MSP operators — product decisions reflect real MSP workflows rather than enterprise IT assumptions
+- Agentless discovery removes deployment friction; MSPs can onboard clients without infrastructure changes
+- License optimization creates immediate, quantifiable ROI for MSP clients (cost savings are visible and attributable)
+
+## Weaknesses / Gaps
+- M365-centric — deepest capabilities are for Microsoft 365; broader SaaS management for non-Microsoft apps still maturing
+- Smaller brand recognition than established MSP platform vendors (NinjaOne, ConnectWise, Kaseya)
+- Limited AI automation depth compared to broader MSP automation platforms
+- No RMM or endpoint management — Augmentt is a point solution that must integrate into the MSP's existing stack
+- Series A stage means some enterprise features (advanced compliance, custom reporting) still on roadmap
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Augmentt targets SaaS management and license optimization — a different problem space than NZO's AI agent and workflow automation platform. Some overlap exists in MSP visibility and automation workflows. The main risk is that Augmentt expands into broader IT automation as it grows, or that NZO needs SaaS management capabilities to be a complete MSP platform play.
+
+## Notes
+- SaaS management is one of the fastest-growing MSP service categories — the $18M Series A validates real market demand
+- Augmentt's MSP-native positioning is a strong GTM advantage; larger vendors are adapting enterprise tools for MSPs rather than building for MSPs first
+- Microsoft 365 Lighthouse (free from Microsoft) is the most direct competitive pressure — monitor for Microsoft deepening SaaS management capabilities in Lighthouse
+- Watch Augmentt's product roadmap post-Series A: if they add AI-driven SaaS automation, the competitive relevance to NZO increases

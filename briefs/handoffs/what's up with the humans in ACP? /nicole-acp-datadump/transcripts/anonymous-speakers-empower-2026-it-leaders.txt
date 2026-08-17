@@ -1,0 +1,302 @@
+TRANSCRIPT: Anonymous Participants - Empower 2026 IT Leaders Session
+Source: AI-AI session transcripts  Empower 2026-070526-120115 (1).pdf
+Session: IT Leaders Non-MSPs — Empower 2026
+Note: Speakers were not individually identified in this session.
+============================================================
+
+[0:12] Speaker 1:
+  As far as service, support side of things, I would love for the AI to go hey, based on your
+knowledge, articles, your SOPs, your scribe, general, Google, flu. The last 17 times we fix this
+problem, we use this as a solution so that my new rookie guy doesn't have to go out and
+spend two hours figuring out how to do that when we already solved it. Here. Just do this
+
+[0:48] Speaker 1:
+  Tickets? Okay, all right, we followed the vacation. Okay, but like we would, in theory, feed that
+all in and we're building this new wonderful thing, and say, This is your primary toy box. Go in
+there, find the solutions, offer it up to the tech so that he doesn't have to waste time doing
+that.
+
+[11:41] Speaker 1:
+  I totally, yeah. So much the same, where C suite says we need AI and Finance says what we
+want automated data analytics and dashboards through AI basically replace Power BI and
+then ops wants streamlined processes, and QA wants adherence to protocols and the teams
+that have to adhere to compliance, they want that automated to ensure take as much of the
+Human error out of all of these equations as humanly as possible, as quickly as possible, but
+AI is an IT thing, so we'll give it to the IT team to figure out that's what we're saying. And
+we're like, right? And they're like, well, we'll just get plugged. We'll get chat. GPT just getting it
+isn't going to do. Somebody needs to build it. You don't just have an architect draw a pretty
+picture and then say, there you go. There's a building they don't understand.
+
+[17:56] Speaker 1:
+  yeah, oh, sorry, I have, like, one last point. So if anybody's ever worked with an AI and said,
+Hey, build me a slide deck for PowerPoint that's eight slides using this company template for
+the backgrounds of the slides, and map out this process so that I could use it as a training
+thing, and then you get back a file that says it's PowerPoint, and it's one white sheet with five
+power five bullet points, and you want to shoot your computer. How am I supposed to trust
+that same AI to fix all my other problems in it?
+
+[1:15] Speaker 2:
+  for you, sure. So I guess two things, from an organizational perspective, we block AI. We are
+a Microsoft shop, so we only allow our users access to for the non licensed copilot chat. We
+use Cisco's umbrella to block any other AI, associated websites. We also have the auditing
+turned on so we can tell what's going on in our environment. We're trying to get our hands
+around and come up with a great strategy for that. Halo is our ticketing platform, and there's
+internal AI built into it that can give you some of the what you're looking for. It can give you,
+hey, this was answered before, and you know, here's a solution, but it has the capability of
+pointing it to llms. Our reservation is, what is the cost? We don't know the cost. Nobody can
+tell us the cost of what it's going to it's going to cost us from an organizational perspective, I
+hear $30 one company is doing, but, you know, we don't know what that costs.
+
+[10:30] Speaker 2:
+  going to work or not, just because it has the we're kind of going down that path we're getting
+so, you know, we have, we have real estate teams, we have development teams. You know,
+you got legal and, you know, everybody has their specific tools out there, and they're all
+rolling out AI in these tools. So we're kind of taking a look at that. We're trying to so we
+created an AI steering team, and now we're basically, we're creating a position that it's really
+a business development or a business analyst position to go out and meet with our internal
+business partners, you know, the different departments and and kind of find out what their
+pain points are. You know, what would they Well, in a great realm of things, how, how do you
+see AI interacting with your business, and then gathering that, that data, and then bringing it
+back to the kind of the steering committee and saying, hey, you know, do these tools, you
+know, what tools do we have out there? You know,
+
+[21:47] Speaker 2:
+  standpoint, you know, you can, you can take all the logs. You can have it create the code to
+gather all the logs off the machine that you're just having a hard time troubleshooting. You can
+take all those logs and throw it in the AI and just say, Hey, I'm having this issue. Help me
+figure out what it is. And 90 that's a 90 to 95% of the time, it's going to come back and tell
+you exactly what you need to do to fix the issue you're having
+
+[29:15] Speaker 2:
+  from our perspective, you know, we're looking at adding the AI into the initial call coming in,
+and so kind of turning that on. You know, end goal is, you know, if, if someone at one of our
+restaurants, they can't take gift cards, we know what the issue is. There's a service that
+stalled. Well, we're trying to keep people from having access to this machine that sits in their
+office. And if we can automate that, you know, some of these prompts that you can do, you
+can have the system based on what I saw Michaela today, you know is we could possibly
+automate it and actually restart that service so it's it's one less touch we have to do to our
+customers, you know, to the restaurants.
+Transcribed by Otter Meeting Agent - AI Notetaker, Transcription, Insights
+
+[3:57] Speaker 3:
+  Okay, the back left table has been quiet. It's suspicious. Who's the brave one in
+
+[24:22] Speaker 3:
+  We contact doesn't work. I know who you are, Josh.
+
+[25:49] Speaker 3:
+  that's really interesting, anybody else want to add to this? For us, the program three years
+from now?
+
+[28:02] Speaker 3:
+  Anything you want to add Brian, because that
+
+[4:03] Speaker 4:
+  the automotive space? So well, when AI first came out on the scene two years ago, car
+salesman was like, profit passes. So we immediately had to block it everywhere because they
+were using it and put customers information in kind of electricity. And that approach our
+executive team wanted to be at the forefront of the AI initiative. Kind of brought in a
+consortium to kind of bring us out into the deep end slowly. So at first we got enterprise
+models of Claude and Gemini, and we played around with them at first, how to solve those
+skills based on the department we work in, and how to utilize those skills. And it kind of
+helped you to give a lot of context to what you work with business to work with a little further,
+and then how we hook up our current systems and platforms. That's our follow up tools, our
+essential RMM or something one and our admin system to the AI that's better off than having
+our and giving it those MCP connections we kind of have, is that whenever an issue arising,
+like networking, it was kind of caused by something security did. It took us. It took them a lot
+of chasing around until they got back to us to find out we made a change or blocked
+something like their system is working well. And the same thing with security, something is
+something is throwing up a lot of alerts, but they created some type of policy, and we didn't
+know about it. And so, like, boy, not describing them alerts. And so it helped us to have a
+language model that has contextualized knowledge of our business and the different
+departments, and if something happens, it's able to correlate all this data from different
+platforms and then tell us fully on one pager, what's wrong changed, and then we go ahead
+and make those changes. We're not confident enough to give it that agentic power yet to
+reach in and make changes for us, but I was excited to see that the MCP connection come in
+central and being able to hook that up to our system to give us passive knowledge, also on
+what we do, and from there, we are interested also in the ability for it to create patches, but
+not push it, kind of serve it up for us, and serve all the scripts for us, for us to utilize. We will
+be interested in that
+
+[9:23] Speaker 4:
+  I think for us, it's not so much customers, it's vendors that are approaching our customers. So
+the vendors come out with chat models that can increase sales. For you, we have these new
+policy models that
+
+[9:41] Speaker 4:
+  can boost your agency, call service, appointment bookings, but the ones that we vetted and
+taken and stepped out on the limb with, they haven't produced any results, and going off of
+our problem approach, we know the issue with the contextualized knowledge of our business
+and how we handle customers. So it's kind of a pushback now with every vendor that's
+offering our customers some type of AI solution, and they're willing to take it on
+
+[20:33] Speaker 4:
+  to that, something we try to explain to our customers, whenever they want to adopt AI is like
+having AI is like having a student who wants to every Ivy League college but never worked
+somewhere before.
+
+[21:19] Speaker 4:
+  But then it's like, once you get it to a point where you have it knowing how you want your
+work done, and have it know how your business run, and have it know everything. Once you
+get it to that point, once you never have to do it here, ideally, once you have it there, we're
+able to ask it for a PowerPoint and give you the back exactly.
+
+[25:59] Speaker 4:
+  It's kind of far off that we don't like to think about, but with every job function looking to make
+their job goals, AI feel like as an IT level, we're going to spend less time worrying about the
+management of the systems and more work about different AI kind of job role. Being hooked
+into our business, facilitating that cooking. I feel like
+
+[7:22] Speaker 5:
+  It's insane. I'll go, I'll talk. I think, for me, and I think it's unique with ITW, my concerns and
+Brian concerns are a little bit different than Jacob and Jose's, because they're part of one of
+the ITW businesses. And so the ITW business has its own IT department, their own AI
+strategies, and we've had hundreds of businesses under the corporate umbrella. So with
+regards to AI, I think one of my immediate desires is to be able to much better understand in
+our environment whether something isn't working because and Central is not working, or
+something's not working because of a local issue that's causing the error. So a specific
+example is that we've been trying to get our assets view populated 100% accurately with the
+devices that we know we we have, and that has been a months long journey. It would be
+much better to use AI to leverage the ability to decide whether the agent or probe is at fault,
+whether there's a local setting or issue that we need to investigate, to assign to that local
+division, or whether there's something in our instance that we could control and fix. I think
+that's probably the most immediate because without that piece, we don't really know our own
+environment well enough to start doing the more advanced reporting and analytics that we'd
+like
+
+[26:39] Speaker 5:
+  Okay, yeah, that. My answer to that would be that we're going to be doing a lot very similar
+things that we do today, but we're going to be spending about a third of the time doing it, and
+we're going to be worrying about the smaller problems rather than the bigger problems.
+That's my goal for our AI strategy from our corporate perspective, because we have a lot of
+businesses that they don't have the resources, whether it's financial or technical or both, and
+they might be a smaller business unit, and so we might not pay as much attention to them as
+the bigger units that are having substantial issues. So the big problem that we have today is
+that we can't afford to have all those different businesses spending 30 hours a week working
+with an able you know, they have other jobs to do. And so our goal, really, with all of our
+strategy, is to shrink the amount of time and effort and energy it takes to maintain what we're
+doing from a day to day operations
+
+[27:48] Speaker 5:
+  It's very it's very hard to nail that down. Okay, we have hundreds of lab
+
+[27:57] Speaker 5:
+  a different Yeah, different regional demands, different constraints.
+
+[9:11] Unknown:
+  All right, we gonna chuckle all the above, everything, right now, last week, everything, yeah,
+
+[10:22] Unknown:
+  without whether it's
+
+[21:17] Unknown:
+  the growing pains aren't worth my job.
+
+[22:49] Unknown:
+  involved a lot with managing their networks, like in firewalls and everything.
+
+[23:30] Unknown:
+  part, I believe it will get
+
+[23:31] Unknown:
+  to a certain point where we are using AI to verify, troubleshoot the AI to verify troubleshooting
+and making sure that in
+
+[25:31] Unknown:
+  not, not for that? No, that's really interesting.
+
+[27:55] Unknown:
+  saying so each business has
+
+[29:11] Unknown:
+  most effective ticket of all. Yeah. So from,
+
+[13:02] Speaker 6:
+  No, no, I, actually, I agree with said, because we are in the healthcare industry, and so we are
+very careful about these things. As far as security is concerned, we're close to have, like,
+military grade. So when we get to AI and say, Oh yeah, let's get in there. We've got high, you
+know, direction to say, well, not now, but, you know, we're looking into that, but we are
+developing right now. AI for, you know, internal resources, either for pharmacy, actually, one in
+for the pharmacy part, and one in for our well, at HQ, for, like, say, customer support. You
+customer support, but we are starting. We're just starting. So it's not it's not equal.
+
+[13:54] Speaker 7:
+  his face exceedingly still, so I my, my company almost has the opposite problem, where,
+where most of our, the majority of our users, are not familiar with AI. Don't use AI, and we,
+we're looking to, to try to to to increase AI usage, but doing it in kind of a controlled fashion.
+So we started with with introducing it to the to the C suite, letting them know what the
+capabilities of because, and then, you know, on top of that, the the the exact same thing that
+he was saying, you know, we have a lot of once, once they understand what it can do. Then
+they want, then they want to say, okay, can it do this? Well, yes, it can. But how do you do
+that? You have to build, you have to, you have to build it. You have to. And that's where the
+learning curve, as far as you know, automation and and and building these things, you know,
+it's, it's one thing to go to a demonstration and somebody writing a prompt saying, here,
+create me this application. But in in practicality, it's much different, because I've I've tried to
+do it myself and and that's almost a full time job working with AI to try to get it to do what you
+want it to do in the way that you want to do it. Because either it's hallucinating, or it's coming
+up with something wrong, or it's coming up with a script version that doesn't work with the
+product that you're work, that you're working with, and it has to find different you have to you
+have to tell it, no, it's not working. And and so that's the that's the challenge is, is finding,
+
+[16:09] Speaker 7:
+  getting from ideas and conception to okay, how do we how do we get that with, with, you
+know, Without,
+
+[20:48] Speaker 7:
+  I used, I use the same analogy. I say, I say, having an AI is like having a 16 year old intern. So
+would you, would you want a 16 Would you turn in a 16 year old interns work as your own
+work. And the answer obviously should be no, because you have to, right? So, so you have to
+actually train, train it and and, and verify everything like that. That's a very good analogy.
+Yeah, just
+
+[16:31] Speaker 8:
+  I think a lot of organizations also don't go into AI projects with an understanding of what
+they're wanting to achieve and how to quantify that. I think there's very much a focus on
+procuring AI leadership is driving more investment in AI. It's very much focused on the front
+end. And then a lot of organizations get access to the AI technology that they want. And then
+the concept of AI tools for all is like a whole separate thing, because different departments
+are going to purchase purpose built AI tools, but there's not a whole lot of focus on how we're
+going to quantify this investment, how we're going to measure whether this is actually
+successful. Some of the fundamentals around IT project management, but we serve a whole
+variety of customers across public sector, private sector, MSPs, and that's the one thing that
+when we're crafting projects and, you know, developing AI strategy for customers, that's the
+one thing that most organizations have neglected.
+
+[23:01] Speaker 9:
+  Just add on to that. I think also, as far as our role in the AI part of it, I think we'll end up just
+being a judge for like, we get AI to do everything, and then we just
+
+[23:43] Speaker 10:
+  areas where we need to have low level like verification, as far as just having seen errors, as far
+as you know, clothes or say, We can
+
+[23:58] Speaker 10:
+  get to a quick where we can identify what we need to view, as far as just like hey, if there's an
+error in a certain device or server, we can generally identify what we can either Do or the AI
+itself can go in workforce.
+
+[24:39] Speaker 11:
+  I think from an AI standpoint, we're leveraging internally in it, although we're just getting
+started. I mean, building any tools, although playing with copilot studio and things like that,
+trying to connect it up to the speed local systems. But education, it was, I think, probably
+awareness. I mean, that's what we're struggling with right now. For our end users, is, you
+know, they see the buzz, but they don't understand it. They understand what's available to
+them. We've done a good job of, Microsoft has done a good job of what's available. You know,
+things show up thinking, you know, something changes, but why behind it?
+
+[25:35] Speaker 11:
+  Is that something you experience, they'll train somebody on a factory floor. They got
+programs and things for that, but when it comes to anything that's technology related
+
+[28:05] Speaker 12:
+  was, it's 100 businesses in one big enterprise too. So it's like everything's different constantly.
+I mean, even them, as a division, is very decentralized. They're still working with several
+different businesses and them coming up with strategies for stuff that's outside of patching
+and making stuff more efficient is still they have to approach each division, each separate
+business, uniquely, and for us, like from an N central focus, it's just trying to do that at scale
+While having some of the issues of like, you know, there might not be training on the particular
+processes out there, or may not be fully documented in all processes. And like, you know,
+everything, like with prompt engineering, but sometimes even with people, it's like, you can't
+tell someone, hey, just make this better. You have to be specific. Just let me, you know, with
+AI and people, and trying to get people to understand you need to be specific and just say,
+not just send a ticket to the Help Desk, saying, help the

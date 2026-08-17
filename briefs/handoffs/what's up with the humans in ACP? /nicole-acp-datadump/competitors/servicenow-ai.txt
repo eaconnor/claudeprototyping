@@ -1,0 +1,58 @@
+# ServiceNow AI Agents
+slug: servicenow-ai
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+ServiceNow is the dominant enterprise IT service management (ITSM) platform, and has rapidly evolved into an AI agent platform for enterprise IT operations. ServiceNow AI Agents are purpose-built autonomous agents embedded in the Now Platform that can resolve service requests, manage incidents, and orchestrate IT workflows without human intervention. Through its acquisitions of Moveworks ($2.85B, December 2025) and strategic MCP integration, ServiceNow is positioning itself as the enterprise AI control plane for IT operations.
+
+## MSP Relevance
+ServiceNow is highly relevant to MSPs managing enterprise ITSM environments for large clients. As ServiceNow adds autonomous AI agents for L1-L3 service desk resolution, MSPs need to understand how to implement, configure, and manage these agents for their enterprise clients. ServiceNow also competes directly with MSP-native AI automation tools by offering autonomous IT resolution within the enterprise's existing ITSM platform — reducing the need for external MSP tooling.
+
+## Key Offerings & Capabilities
+- Now Assist — AI-powered assistant embedded across ServiceNow modules (ITSM, CSM, HR, Field Service)
+- AI Agents for IT — autonomous agents that resolve incidents, fulfill requests, and manage changes
+- L1 Service Desk AI Specialist — autonomous agent resolving L1 tickets (password resets, access provisioning, basic troubleshooting) without human involvement (Q2 2026)
+- AI Control Tower — centralized orchestration and monitoring platform for all AI agents across the enterprise (with MCP Server integration)
+- Autonomous Workforce — enterprise framework for deploying specialized AI agents that collaborate on complex multi-step IT tasks (Knowledge 2026)
+- Moveworks integration — brings Moveworks' 100+ pre-built IT AI agents and agentic reasoning into the ServiceNow platform
+- Now Platform — underlying workflow orchestration, CMDB, and data layer supporting all agent actions
+- Employee Center — AI-enhanced self-service portal for automated request resolution
+
+## Recent Announcements
+- March 2025: ServiceNow announces acquisition of Moveworks for $2.85 billion (largest AI acquisition by ServiceNow to date)
+- December 2025: Moveworks acquisition closes; integration of Moveworks AI agents into ServiceNow platform begins
+- Knowledge 2026 (May 2026): Autonomous Workforce announced — specialized AI agents collaborating across IT, HR, Finance, and Customer Service workflows
+- Q2 2026: L1 Service Desk AI Specialist launched — autonomous agent targeting full first-contact resolution for routine IT requests
+- AI Control Tower with MCP Server launched — unified dashboard for managing, monitoring, and governing all enterprise AI agents; MCP Server enables standardized agent-to-tool communication
+- ServiceNow named Leader in Gartner Magic Quadrant for ITSM for 10th consecutive year
+
+## Pricing Model
+ServiceNow pricing is enterprise contract-based with no public list pricing. Licensing structured around platform tiers (ITSM Standard, Professional, Enterprise, Enterprise Plus) with per-user/per-seat pricing. Now Assist and AI Agent capabilities are add-ons to existing platform licenses. Enterprise contracts typically $500K–$5M+ annually for large deployments. SMB pricing not available — ServiceNow targets companies with 500+ employees.
+
+## Strengths
+- Dominant ITSM market position — installed in majority of Fortune 500 enterprises, giving AI agents a massive captive install base
+- Moveworks acquisition adds 100+ pre-built AI agents with proven enterprise deployments at scale
+- AI Control Tower with MCP provides the only enterprise-grade centralized agent governance layer in the market
+- L1 Service Desk AI Specialist directly addresses the highest-volume, lowest-value MSP work — ticket deflection
+- Deep CMDB and workflow integration means agents have rich context unavailable to external AI tools
+- Massive SI ecosystem (Deloitte, Accenture, IBM) trained on ServiceNow deployment
+
+## Weaknesses / Gaps
+- Enterprise-only pricing — not accessible for SMB clients or smaller MSPs
+- Platform complexity requires significant implementation investment before AI benefits are realized
+- Moveworks integration still maturing — combined platform not yet fully unified
+- AI Control Tower governance model is new — enterprise readiness still being validated in production
+- Not a real-time remediation tool — better suited for structured workflow automation than unstructured incident response
+
+## Competitive Threat to NZO
+Level: High
+Reason: ServiceNow with Moveworks AI agents is the most direct enterprise-grade threat to NZO's AI agent and IT automation positioning. The Autonomous Workforce vision, L1 Service Desk AI Specialist, and AI Control Tower with MCP Server mirror NZO's core capabilities. MSPs managing ServiceNow environments may route AI automation spend through ServiceNow rather than NZO. The primary differentiator is that ServiceNow requires existing platform investment and targets large enterprise; NZO serves the MSP/SMB segment that ServiceNow cannot reach.
+
+## Notes
+- The Moveworks acquisition at $2.85B signals that autonomous IT service desk agents are now strategic at the enterprise level
+- AI Control Tower + MCP Server is the product most worth tracking — it's building the same control plane NZO is building
+- ServiceNow's inability to serve SMB creates a persistent gap that NZO can exploit in the MSP market
+- Watch for ServiceNow to introduce a downmarket tier to capture mid-market via MSPs

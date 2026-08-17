@@ -1,0 +1,52 @@
+# Blackpoint Cyber
+slug: blackpoint-cyber
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Blackpoint Cyber is an MDR platform built exclusively for the MSP channel, offering 24/7 SOC-backed threat detection and response. In 2025, Blackpoint launched CompassOne — a unified security posture and response platform that extends beyond MDR into vulnerability management, asset inventory, and posture rating. The company's SOC disrupted 56% of incidents before attackers could deploy a payload in 2025, a core differentiator in their threat report messaging.
+
+## MSP Relevance
+Blackpoint is one of the highest-trust MDR vendors in the MSP community, known for speed of response and MSP-first delivery. CompassOne's posture management and asset visibility give MSPs a security maturity story to tell clients, not just incident response. The NinjaOne partnership (August 2025) creates a compelling bundled RMM + MDR narrative for MSPs.
+
+## Key Offerings & Capabilities
+- Managed Detection and Response (MDR) — 24/7 SOC with rapid containment
+- CompassOne platform (launched April 2025) — unified security posture and response
+- Security Posture Rating — quantifies MSP and customer security maturity
+- Unified Asset Inventory — attack surface visibility across endpoints
+- Vulnerability Management — integrated within CompassOne
+- Tenant Administrator — MSP oversight layer for multi-client management
+- NinjaOne integration (August 2025) — combined RMM + MDR in a single partner stack
+
+## Recent Announcements
+- Launched CompassOne at RSA Conference April 2025 — unified posture management platform
+- NinjaOne partnership announced August 2025 — integrated MDR with RMM management
+- Published 2026 Annual Threat Report (April 2026) — major finding: attackers shifting to trusted credentials and tools over exploits; SOC disrupted 56% of incidents pre-payload in 2025
+- Right of Boom 2026 event recap highlights credential abuse as the dominant attack vector
+
+## Pricing Model
+Per-endpoint per-month through MSP partner tier. MDR pricing is consumption-based on managed devices. CompassOne adds posture management at an additional per-endpoint fee. Exact pricing requires partner agreement.
+
+## Strengths
+- Exclusively MSP-focused — no direct enterprise sales competing with partners
+- SOC response speed — known for stopping attacks before payload deployment
+- CompassOne gives MSPs a proactive security story, not just reactive MDR
+- NinjaOne partnership creates distribution leverage across NinjaOne's large MSP base
+- Threat intelligence from 2026 report is actionable and well-communicated to MSPs
+
+## Weaknesses / Gaps
+- Smaller brand footprint than CrowdStrike, SentinelOne, or even Huntress
+- CompassOne is new and still maturing in feature depth
+- Limited outside of North America
+- Less AI automation in response workflows compared to CrowdStrike or SentinelOne
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Blackpoint is focused on security MDR and posture, not workflow automation or AI agent management. The NinjaOne partnership creates a bundled narrative that could reduce openings for additional tools, but the core overlap with NZO is minimal.
+
+## Notes
+- NinjaOne partnership is strategically important — if NinjaOne + Blackpoint becomes a default MSP bundle, it reduces stack openings for NZO
+- CompassOne posture rating gives MSPs a sellable security narrative — watch for similar features in competing platforms
+- 2026 threat report finding (credential abuse over exploits) is important context for MSP security strategy

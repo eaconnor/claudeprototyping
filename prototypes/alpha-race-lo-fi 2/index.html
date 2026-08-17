@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha RACE · Incident Detail · Acme Building Supply</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ALPHA RACE · LO-FI STAKEHOLDER DEMO (TIER 1 CONCEPT)
+   Apex Bridge — n-able / Adlumin design language
+   ============================================================ */
+:root {
+  /* ===== canvas ===== */
+  --bg-app: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-elevated: #182238;
+  --bg-deep: #070d18;
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  /* ===== text ===== */
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  /* ===== brand (Adlumin blue) ===== */
+  --brand: #3b82f6;
+  --brand-strong: #2563eb;
+  --brand-soft: rgba(59,130,246,0.14);
+
+  /* ===== status ===== */
+  --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+  --low: #22c55e;       --low-soft: rgba(34,197,94,0.12);
+
+  /* ===== Bradley / council accent (violet) ===== */
+  --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+  /* ===== DISTINCT SURFACES ===== */
+  --topbar-bg: #0a1730;
+  --topbar-border: var(--brand);
+  --rail-bg: #16112e;
+  --rail-border: var(--alpha-accent);
+
+  /* ===== shape + type ===== */
+  --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 8px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+[data-theme="light"] {
+  --bg-app: #f4f6fb;  --bg-surface: #ffffff;  --bg-elevated: #eef1f8;
+  --bg-deep: #e6eaf3; --border: #d8deeb;  --border-strong: #c3ccdd;
+  --text-primary: #0d1424; --text-secondary: #45506b;
+  --text-tertiary: #6b7790; --text-muted: #94a0b8;
+  --topbar-bg: #0a1730;
+  --rail-bg: #f0eafa;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  transition: grid-template-columns 0.3s ease;
+}
+
+body.rail-collapsed {
+  grid-template-columns: 1fr 0;
+}
+
+h1, h2, h3 { font-family: var(--font-ui); }
+.label, .metric, .mono { font-family: var(--font-mono); }
+
+/* ============================================================
+   FIDELITY BANNER
+   ============================================================ */
+.fidelity-banner {
+  grid-column: 1 / -1;
+  position: sticky;
+  top: 56px;
+  z-index: 7000;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 10px 28px;
+}
+
+.fidelity-tier {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alpha-accent);
+  white-space: nowrap;
+}
+
+.fidelity-checks {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  flex: 1;
+}
+
+.fidelity-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+.mark { font-weight: 700; text-align: center; }
+.mark.fail { color: var(--critical); }
+.mark.warn { color: var(--medium); }
+.mark.pass { color: var(--low); }
+
+.fidelity-pips {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.fidelity-pips span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+.pip {
+  width: 9px; height: 9px;
+  border: 1.5px solid var(--text-tertiary);
+  border-radius: 50%;
+  background: transparent;
+}
+.pip.on { background: var(--alpha-accent); border-color: var(--alpha-accent); }
+
+/* ============================================================
+   TOPBAR — distinct branded surface
+   ============================================================ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 8000;
+  grid-column: 1 / -1;
+  background: var(--topbar-bg);
+  color: var(--text-primary);
+  padding: 0 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 2px solid var(--topbar-border);
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #e6edf7;
+}
+.logo .logo-dot { color: var(--brand); }
+
+.topbar-crumb {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #9aa8c2;
+  padding-left: 24px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+}
+
+.topbar-spacer { flex: 1; }
+
+.mode-toggle {
+  display: flex;
+  gap: 2px;
+  background: rgba(255,255,255,0.06);
+  padding: 3px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+}
+
+.mode-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 11px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #9aa8c2;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mode-btn.active { background: var(--brand); color: #fff; }
+.mode-btn:hover:not(.active) { color: #e6edf7; }
+
+.btn-council {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 14px;
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-md);
+  color: var(--alpha-accent);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-council:hover { background: var(--alpha-accent); color: #1a1230; }
+
+.rail-toggle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 7px 12px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md);
+  color: #9aa8c2;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rail-toggle:hover { background: rgba(255,255,255,0.06); color: #e6edf7; }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main-content {
+  padding: 40px 48px;
+  max-width: 1000px;
+}
+
+.seed-stamp {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 2px 7px;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0 0 36px 0;
+}
+
+/* HERO METRIC */
+.hero-metric {
+  background: linear-gradient(135deg, var(--brand-soft), transparent 70%), var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--brand);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+.hero-value {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--brand);
+  margin-bottom: 10px;
+}
+
+.hero-explainer {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.tooltip-trigger {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 16px; height: 16px;
+  border: 1px solid var(--text-tertiary);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  cursor: help;
+  margin-left: 6px;
+  position: relative;
+}
+
+.tooltip-trigger:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.5;
+  width: 280px;
+  margin-bottom: 8px;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.6);
+  white-space: normal;
+  z-index: 1000;
+}
+
+/* CARDS */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+
+.incident-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.incident-id {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+.badge.critical { background: var(--critical-soft); color: var(--critical); border: 1px solid var(--critical); }
+.badge.status { background: var(--medium-soft); color: var(--medium); border: 1px solid var(--medium); }
+
+.narrative-section { margin-bottom: 22px; }
+.narrative-section:last-child { margin-bottom: 0; }
+
+.narrative-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+
+.narrative-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* CORRELATION */
+.correlation-section {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.correlation-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.correlation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 6px;
+}
+
+.alert-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 5px 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ALPHA SCORE */
+.score-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.score-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+.score-value {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--critical);
+}
+
+.score-breakdown { display: grid; gap: 10px; }
+.score-item {
+  display: grid;
+  grid-template-columns: 170px 1fr 50px;
+  gap: 14px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.score-bar {
+  height: 7px;
+  background: var(--bg-deep);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  background: var(--brand);
+  border-radius: 99px;
+}
+.score-number { font-weight: 700; text-align: right; color: var(--text-primary); }
+
+/* FOR CISOS */
+.ciso-section {
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.ciso-title {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--alpha-accent);
+  margin-bottom: 20px;
+}
+.ciso-grid { display: grid; gap: 18px; }
+.ciso-metric { display: grid; grid-template-columns: 130px 1fr; gap: 14px; }
+.ciso-metric-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--alpha-accent);
+}
+.ciso-metric-value { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+
+/* ============================================================
+   BRADLEY RAIL — distinct violet surface
+   ============================================================ */
+.bradley-rail {
+  background: var(--rail-bg);
+  border-left: 4px solid var(--rail-border);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  overflow-y: auto;
+  position: relative;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.bradley-rail::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, rgba(167,139,250,0.03) 0 2px, transparent 2px 18px);
+  pointer-events: none;
+}
+body.rail-collapsed .bradley-rail { opacity: 0; visibility: hidden; }
+
+.rail-inner { padding: 24px; position: relative; }
+
+.rail-readiness {
+  background: rgba(167,139,250,0.08);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.readiness-score {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--critical);
+  margin-bottom: 6px;
+}
+.readiness-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--critical);
+  margin-bottom: 14px;
+}
+.readiness-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+
+.rail-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.rail-section:last-child { border-bottom: none; }
+
+.rail-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--alpha-accent);
+  margin-bottom: 14px;
+}
+
+.rail-blurb {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background: rgba(167,139,250,0.1);
+  border-left: 3px solid var(--alpha-accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 14px 16px;
+}
+
+.collapsible-header {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--alpha-accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.collapsible-header::before {
+  content: '▸';
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+.collapsible-header.open::before { transform: rotate(90deg); }
+
+.collapsible-content { display: none; margin-top: 14px; }
+.collapsible-content.open { display: block; }
+
+.rail-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.rail-list li {
+  margin-bottom: 10px;
+  padding-left: 18px;
+  position: relative;
+}
+.rail-list li::before {
+  content: '–';
+  position: absolute; left: 2px;
+  color: var(--alpha-accent);
+}
+
+.routed-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.routed-card-header {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.routed-card-header.product { color: var(--brand); }
+.routed-card-header.design { color: var(--medium); }
+.routed-card-header.research { color: var(--low); }
+.routed-card-header.eng { color: var(--high); }
+
+.routed-card-body { font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+.routed-card-body p { margin: 0 0 9px 0; }
+.routed-card-body p:last-child { margin-bottom: 0; }
+.routed-card-body strong {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+
+.roi-block {
+  background: var(--bg-deep);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-top: 12px;
+  border-left: 2px solid var(--border-strong);
+}
+.roi-block p { margin: 0 0 6px 0; font-size: 11px; }
+.roi-block p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   COUNCIL MODAL
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7,13,24,0.78);
+  backdrop-filter: blur(3px);
+  z-index: 10000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 24px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-top: 3px solid var(--alpha-accent);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 760px;
+  box-shadow: 0 24px 64px -16px rgba(0,0,0,0.7);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-head h2 {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--alpha-accent);
+}
+.modal-close {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 18px;
+  width: 32px; height: 32px;
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-close:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
+.modal-body { padding: 28px; }
+
+.exec-summary {
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  margin-bottom: 28px;
+}
+.exec-summary-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--alpha-accent);
+  margin-bottom: 12px;
+}
+.exec-readiness {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+.exec-readiness b { color: var(--critical); }
+.exec-synthesis {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  border-top: 1px dashed var(--border-strong);
+  padding-top: 12px;
+  margin-top: 14px;
+}
+
+.tension-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin: 0 0 14px 0;
+}
+
+.tension {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--high);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  background: var(--bg-deep);
+}
+.tension-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--high);
+  margin-bottom: 8px;
+}
+.tension-body { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+.tension-body .voice { color: var(--text-primary); font-weight: 600; }
+
+.council-note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">ALPHA<span class="logo-dot">·</span>RACE</div>
+  <div class="topbar-crumb">Incidents / INC-2026-0847</div>
+  <div class="topbar-spacer"></div>
+  <button class="btn-council" id="councilBtn">Council · 44 voices</button>
+  <div class="mode-toggle">
+    <button class="mode-btn" data-mode="light">Light</button>
+    <button class="mode-btn active" data-mode="dark">Dark</button>
+    <button class="mode-btn" data-mode="system">System</button>
+  </div>
+  <button class="rail-toggle">Rail</button>
+</div>
+
+<!-- FIDELITY BANNER -->
+<div class="fidelity-banner">
+  <div class="fidelity-tier">Tier 1 · Concept</div>
+  <div class="fidelity-checks">
+    <div class="fidelity-check"><span class="mark pass">✓</span><span>Apex Bridge token set</span></div>
+    <div class="fidelity-check"><span class="mark fail">×</span><span>apx-* components</span></div>
+    <div class="fidelity-check"><span class="mark warn">~</span><span>schema.json contract</span></div>
+    <div class="fidelity-check"><span class="mark warn">~</span><span>A11y baseline</span></div>
+    <div class="fidelity-check"><span class="mark fail">×</span><span>Production data binding</span></div>
+    <div class="fidelity-check"><span class="mark pass">✓</span><span>Light / dark parity</span></div>
+  </div>
+  <div class="fidelity-pips">
+    <span>Tier</span>
+    <div class="pip on"></div>
+    <div class="pip"></div>
+    <div class="pip"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <h1 class="page-title">Credential Access via Mimikatz</h1>
+  <p class="page-subtitle">Acme Building Supply · 47 alerts consolidated<span class="seed-stamp">seed data</span></p>
+
+  <!-- HERO METRIC -->
+  <div class="hero-metric">
+    <div class="hero-label">Consolidation Impact</div>
+    <div class="hero-value">47 → 12</div>
+    <div class="hero-explainer">
+      Alpha consolidated 47 related alerts into 12 incidents for faster triage
+      <span class="tooltip-trigger" data-tooltip="Alpha groups alerts by attack surface, asset, and technique. Nothing is hidden — all 47 alerts remain visible in the correlation view below.">i</span>
+    </div>
+  </div>
+
+  <!-- INCIDENT CARD -->
+  <div class="card">
+    <div class="incident-header">
+      <span class="incident-id">INC-2026-0847</span>
+      <span class="badge critical">Critical</span>
+      <span class="badge status">In Progress</span>
+    </div>
+
+    <div class="narrative-section">
+      <div class="narrative-label">What happened</div>
+      <div class="narrative-text">
+        On May 28, 2026 at 14:23 UTC, endpoint ACME-WS-0412 triggered multiple alerts for credential dumping activity. Mimikatz.exe was executed from a user's Downloads folder, followed by LSASS memory access and attempted lateral movement to DC01. The user account (jdoe@acme.local) showed no previous security incidents.
+      </div>
+    </div>
+
+    <div class="narrative-section">
+      <div class="narrative-label">What we did</div>
+      <div class="narrative-text">
+        Alpha isolated ACME-WS-0412 at 14:24 UTC (automated). SOC analyst verified isolation and disabled jdoe@acme.local in Active Directory at 14:31 UTC. We reviewed authentication logs for the past 72 hours and identified no successful lateral movement beyond initial reconnaissance. Forensic image captured for deeper analysis.
+      </div>
+    </div>
+
+    <div class="narrative-section">
+      <div class="narrative-label">What to do next</div>
+      <div class="narrative-text">
+        Confirm whether jdoe downloaded Mimikatz intentionally (insider threat) or if workstation was compromised prior to credential dump (phishing/malware). Review email logs for jdoe from May 25-28. Scan all domain controllers for persistence mechanisms (scheduled tasks, WMI, registry autoruns). Consider re-imaging ACME-WS-0412 rather than remediation.
+      </div>
+    </div>
+  </div>
+
+  <!-- CORRELATION DETAILS -->
+  <div class="correlation-section">
+    <div class="correlation-title">47 Alerts Consolidated into This Incident<span class="seed-stamp">seed data</span></div>
+    <div class="correlation-grid" id="correlationGrid"></div>
+  </div>
+
+  <!-- ALPHA SCORE -->
+  <div class="card">
+    <div class="score-header">
+      <span class="score-label">Alpha Score</span>
+      <span class="score-value">94</span>
+      <span class="tooltip-trigger" data-tooltip="Alpha score indicates incident severity based on technique, asset criticality, and behavior correlation. Scores 90+ typically require immediate escalation.">i</span>
+    </div>
+    <div class="score-breakdown">
+      <div class="score-item">
+        <span>Technique (Mimikatz)</span>
+        <div class="score-bar"><div class="score-bar-fill" style="width: 95%;"></div></div>
+        <span class="score-number">+38</span>
+      </div>
+      <div class="score-item">
+        <span>Asset Criticality</span>
+        <div class="score-bar"><div class="score-bar-fill" style="width: 70%;"></div></div>
+        <span class="score-number">+28</span>
+      </div>
+      <div class="score-item">
+        <span>Lateral Movement</span>
+        <div class="score-bar"><div class="score-bar-fill" style="width: 55%;"></div></div>
+        <span class="score-number">+22</span>
+      </div>
+      <div class="score-item">
+        <span>Time Correlation</span>
+        <div class="score-bar"><div class="score-bar-fill" style="width: 15%;"></div></div>
+        <span class="score-number">+6</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOR CISOS SECTION -->
+  <div class="ciso-section">
+    <div class="ciso-title">For CISOs</div>
+    <div class="ciso-grid">
+      <div class="ciso-metric">
+        <div class="ciso-metric-label">Time Savings</div>
+        <div class="ciso-metric-value">Median investigation time reduced from 42 minutes to 17 minutes per incident. At 200 incidents/month, this represents ~83 hours saved per analyst.</div>
+      </div>
+      <div class="ciso-metric">
+        <div class="ciso-metric-label">Cost Impact</div>
+        <div class="ciso-metric-value">[Placeholder — requires Decision 1 for calculation. Example: At $65/hour fully loaded analyst cost, time savings = ~$5,400/month per analyst.]</div>
+      </div>
+      <div class="ciso-metric">
+        <div class="ciso-metric-label">Analyst Retention</div>
+        <div class="ciso-metric-value">Alert fatigue is a leading cause of MDR analyst burnout. Consolidating 47 alerts into 12 incidents reduces cognitive load and improves job satisfaction. Lower attrition = reduced hiring and training costs.</div>
+      </div>
+      <div class="ciso-metric">
+        <div class="ciso-metric-label">Audit Trail</div>
+        <div class="ciso-metric-value">All 47 original alerts are preserved with full correlation logic visible. During compliance audits or breach investigations, you can demonstrate complete alert coverage and transparent triage decisions.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- BRADLEY RAIL -->
+<aside class="bradley-rail">
+  <div class="rail-inner">
+
+    <div class="rail-readiness">
+      <div class="readiness-score">21/30</div>
+      <div class="readiness-label">NOT READY</div>
+      <div class="readiness-meta">
+        Brief [A]+[?]: 58%<br>
+        Tier: 1 (Concept)
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-title">What This Tests</div>
+      <div class="rail-blurb">
+        Does consolidating 47 alerts → 12 incidents communicate value to customer buyers (CISOs, IT Directors) in a 30-second read?
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="collapsible-header">What You Nailed</div>
+      <div class="collapsible-content">
+        <ul class="rail-list">
+          <li>Problem traceability (Hilda quote → 47→12 logic)</li>
+          <li>Failure mode naming (4 modes with detection criteria)</li>
+          <li>Honest math (58% [A]+[?] disclosed)</li>
+          <li>Council tensions (3 framework clashes named)</li>
+          <li>Fidelity transparency (T1 appropriate for concept)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="collapsible-header">What Will Hurt You</div>
+      <div class="collapsible-content">
+        <ul class="rail-list">
+          <li>Gate 2: Theory of Change has three untested leaps</li>
+          <li>Gate 3: Nearly empty (success criteria undefined)</li>
+          <li>Competitive positioning: zero competitive analysis</li>
+          <li>Economic buyer gap: demo optimized for analyst, not CISO</li>
+          <li>Source fidelity: 58% [A]+[?] insufficient for customer demo</li>
+          <li>Four blocking decisions unresolved</li>
+          <li>Compression illusion risk (T1 shipped to customer without framing)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-title">Routing</div>
+
+      <div class="routed-card">
+        <div class="routed-card-header product">Product</div>
+        <div class="routed-card-body">
+          <p><strong>Product does:</strong> Resolve Decisions 1-2 (customer profile, success criteria)</p>
+          <p><strong>Why now:</strong> Every content decision scales from customer profile; demo is untestable without success criteria</p>
+          <p><strong>If you ship without it:</strong> Compression illusion (customer perceives "unprepared" not "probe")</p>
+          <div class="roi-block">
+            <p><strong>ROI Business:</strong> Unknown — need success criteria to measure</p>
+            <p><strong>ROI User:</strong> PM + Sales aligned before demo</p>
+            <p><strong>Unknown:</strong> Demo conversion lift (no baseline)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header design">Design</div>
+        <div class="routed-card-body">
+          <p><strong>Design does:</strong> Comprehension test — show "47→12" to 5 people cold, 30 sec, "What does this tool do?"</p>
+          <p><strong>Why now:</strong> Opacity risk (customer may read as "What happened to 35 alerts?" instead of "workload reduction")</p>
+          <p><strong>If you ship without it:</strong> Value prop collapses if consolidation misinterpreted</p>
+          <div class="roi-block">
+            <p><strong>ROI User:</strong> Avoid redesign mid-customer-demo</p>
+            <p><strong>Unknown:</strong> Reading order (Story/Timeline/Scoring — which anchor do customers use?)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header research">Research</div>
+        <div class="routed-card-body">
+          <p><strong>Research does:</strong> Decision 4 validation — test "What happened/What we did/What to do next" format with 5 CISOs</p>
+          <p><strong>Why now:</strong> Format tested with analysts (users), not buyers</p>
+          <p><strong>If you ship without it:</strong> Narrative format may not land with economic buyer</p>
+          <div class="roi-block">
+            <p><strong>ROI Business:</strong> Unknown — narrative failure rate has no data</p>
+            <p><strong>Unknown:</strong> Economic buyer profile (CISO? IT Director? CFO?)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header eng">Eng</div>
+        <div class="routed-card-body">
+          <p><strong>Eng does:</strong> Decision 3 — determine incident story source (real Alpha output anonymized vs. Beth synthetic)</p>
+          <p><strong>Why now:</strong> Demo credibility depends on this call</p>
+          <p><strong>If you ship without it:</strong> Trust erosion (customer asks "is this real?" and SE has no confident answer)</p>
+          <div class="roi-block">
+            <p><strong>ROI User:</strong> Credible demo vs. polished-but-fake</p>
+            <p><strong>Unknown:</strong> Schema completeness (IncidentDetail, CorrelationLink, AlphaScoreBreakdown)</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</aside>
+
+<!-- COUNCIL MODAL -->
+<div class="modal-overlay" id="councilModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Council · Executive Summary</h2>
+      <button class="modal-close" id="councilClose">×</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="exec-summary">
+        <div class="exec-summary-label">Readiness</div>
+        <div class="exec-readiness">
+          Score <b>21/30 — NOT READY</b> · Brief 58% [A]+[?] · Tier 1 (Concept).
+          Three framework tensions surfaced below are decisions, not gaps — route each to its owner before build.
+        </div>
+        <div class="exec-synthesis">Synthesis: [0% Claude — fill this in]</div>
+      </div>
+
+      <p class="tension-label">Top tensions (3 of 44 voices in conflict)</p>
+
+      <div class="tension">
+        <div class="tension-title">JOBS-to-be-done × SELF-DETERMINATION</div>
+        <div class="tension-body">
+          <span class="voice">JOBS</span> reads the job as "reduce alerts I have to touch" — consolidation is the win.
+          <span class="voice">SDT</span> reads the analyst's need for felt competence — collapsing 47→12 may strip the sense of "I worked the case."
+          Diverge on whether consolidation is relief or de-skilling. <strong>A decision, not a gap.</strong>
+        </div>
+      </div>
+
+      <div class="tension">
+        <div class="tension-title">SIGNAL × JOURNEY</div>
+        <div class="tension-body">
+          <span class="voice">SIGN</span> says the 47→12 number is the signal that sells.
+          <span class="voice">JRNY</span> says the buyer's journey needs the backstage-on-incident view to trust the number.
+          Diverge on whether the headline metric is enough, or whether opacity sinks it.
+        </div>
+      </div>
+
+      <div class="tension">
+        <div class="tension-title">PORTER (value chain) × POSITIONING</div>
+        <div class="tension-body">
+          <span class="voice">PORT</span> asks where consolidation inserts margin in the MSP's chain.
+          <span class="voice">POS</span> asks what competitor this displaces — and finds zero competitive analysis in the brief.
+          Diverge on whether this is a margin play or a positioning play.
+        </div>
+      </div>
+
+      <div class="council-note">
+        This is the stakeholder exec view — 3 named tensions surfaced from the brief.
+        The full 44-voice council (14 clusters, owensed voices, cross-talk) runs as a separate
+        <span class="mono">--council</span> pass and writes to <span class="mono">council-testimony.md</span>.
+        It has not been run on this brief yet.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// MODE TOGGLE (light/dark/system) — persist to apx-mode-pref
+const html = document.documentElement;
+const modeButtons = document.querySelectorAll('.mode-btn');
+
+function applyTheme(mode) {
+  if (mode === 'system') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  } else {
+    html.setAttribute('data-theme', mode);
+  }
+}
+
+function setMode(mode) {
+  modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+  applyTheme(mode);
+  localStorage.setItem('apx-mode-pref', mode);
+}
+
+modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+
+const savedMode = localStorage.getItem('apx-mode-pref') || 'dark';
+setMode(savedMode);
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if (localStorage.getItem('apx-mode-pref') === 'system') applyTheme('system');
+});
+
+// RAIL TOGGLE
+const railToggle = document.querySelector('.rail-toggle');
+const body = document.body;
+railToggle.addEventListener('click', () => {
+  body.classList.toggle('rail-collapsed');
+  localStorage.setItem('apx-rail-collapsed', body.classList.contains('rail-collapsed'));
+});
+if (localStorage.getItem('apx-rail-collapsed') === 'true') body.classList.add('rail-collapsed');
+
+// COLLAPSIBLE SECTIONS
+document.querySelectorAll('.collapsible-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.classList.toggle('open');
+    const content = header.nextElementSibling;
+    if (content && content.classList.contains('collapsible-content')) content.classList.toggle('open');
+  });
+});
+
+// CORRELATION CHIPS (47 alerts: ALT-8472 .. ALT-8518)
+const grid = document.getElementById('correlationGrid');
+for (let i = 8472; i <= 8518; i++) {
+  const chip = document.createElement('div');
+  chip.className = 'alert-chip';
+  chip.textContent = 'ALT-' + i;
+  grid.appendChild(chip);
+}
+
+// COUNCIL MODAL
+const councilModal = document.getElementById('councilModal');
+document.getElementById('councilBtn').addEventListener('click', () => councilModal.classList.add('open'));
+document.getElementById('councilClose').addEventListener('click', () => councilModal.classList.remove('open'));
+councilModal.addEventListener('click', e => { if (e.target === councilModal) councilModal.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') councilModal.classList.remove('open'); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1647 @@
+<!doctype html>
+<html lang="en" data-apx-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACP Headless · Apex Bridge prototype · Tier 1 Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   APEX BRIDGE — TOKEN CONTRACT (--br-*)
+   Ported from prototypes/acp-v1 (2026-05-27). Same contract.
+   ========================================================= */
+:root {
+  --br-color-brand-primary: #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint: #e6f0fa;
+  --br-color-brand-accent: #6d28d9;
+
+  --br-color-surface-app: #f5f7fa;
+  --br-color-surface-panel: #ffffff;
+  --br-color-surface-elevated: #ffffff;
+  --br-color-surface-sunken: #eef1f6;
+  --br-color-surface-hover: #f0f3f8;
+
+  --br-color-ink-primary: #0f172a;
+  --br-color-ink-secondary: #475569;
+  --br-color-ink-muted: #64748b;
+  --br-color-ink-inverse: #ffffff;
+  --br-color-ink-on-brand: #ffffff;
+
+  --br-color-border-subtle: #e2e8f0;
+  --br-color-border-default: #cbd5e1;
+  --br-color-border-strong: #94a3b8;
+
+  --br-color-state-success: #16a34a;
+  --br-color-state-success-tint: #dcfce7;
+  --br-color-state-warning: #d97706;
+  --br-color-state-warning-tint: #fef3c7;
+  --br-color-state-danger: #dc2626;
+  --br-color-state-danger-tint: #fee2e2;
+  --br-color-state-info: #0284c7;
+  --br-color-state-info-tint: #e0f2fe;
+
+  --br-font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --br-font-family-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --br-font-size-xs: 12px;
+  --br-font-size-sm: 13px;
+  --br-font-size-md: 14px;
+  --br-font-size-lg: 16px;
+  --br-font-size-xl: 20px;
+  --br-font-size-2xl: 24px;
+  --br-font-weight-regular: 400;
+  --br-font-weight-medium: 500;
+  --br-font-weight-semibold: 600;
+  --br-font-weight-bold: 700;
+
+  --br-space-1: 4px;
+  --br-space-2: 8px;
+  --br-space-3: 12px;
+  --br-space-4: 16px;
+  --br-space-5: 20px;
+  --br-space-6: 24px;
+  --br-space-8: 32px;
+  --br-space-10: 40px;
+
+  --br-radius-sm: 4px;
+  --br-radius-md: 6px;
+  --br-radius-lg: 10px;
+
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-lg: 0 10px 25px rgba(15,23,42,.10), 0 4px 10px rgba(15,23,42,.05);
+
+  --br-motion-fast: 120ms;
+  --br-motion-base: 180ms;
+  --br-motion-slow: 260ms;
+}
+
+[data-apx-mode="dark"] {
+  --br-color-surface-app: #0b1220;
+  --br-color-surface-panel: #111827;
+  --br-color-surface-elevated: #1e293b;
+  --br-color-surface-sunken: #0f172a;
+  --br-color-surface-hover: #1e293b;
+  --br-color-ink-primary: #f1f5f9;
+  --br-color-ink-secondary: #cbd5e1;
+  --br-color-ink-muted: #94a3b8;
+  --br-color-border-subtle: #1e293b;
+  --br-color-border-default: #334155;
+  --br-color-border-strong: #475569;
+  --br-color-brand-primary-tint: #0c2845;
+  --br-color-state-success-tint: rgba(22,163,74,.18);
+  --br-color-state-warning-tint: rgba(217,119,6,.18);
+  --br-color-state-danger-tint: rgba(220,38,38,.18);
+  --br-color-state-info-tint: rgba(2,132,199,.18);
+  --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--br-font-family-sans);
+  font-size: var(--br-font-size-md);
+  color: var(--br-color-ink-primary);
+  background: var(--br-color-surface-app);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--br-motion-base), color var(--br-motion-base);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-areas:
+    "banner banner"
+    "app    rail";
+  height: 100vh;
+  overflow: hidden;
+}
+@media (max-width: 1400px) {
+  body { grid-template-columns: minmax(0, 1fr) 380px; }
+}
+@media (max-width: 1100px) {
+  body {
+    grid-template-columns: 100%;
+    grid-template-rows: auto minmax(560px, 1fr) auto;
+    grid-template-areas: "banner" "app" "rail";
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+  .app { height: 70vh; }
+  .bradley-rail { border-left: 0; border-top: 1px solid var(--br-color-border-subtle); max-height: none; overflow: visible; }
+}
+
+.fidelity-banner { grid-area: banner; }
+.app { grid-area: app; }
+.bradley-rail { grid-area: rail; }
+
+/* ----- Fidelity banner ----- */
+.fidelity-banner {
+  background:
+    repeating-linear-gradient(135deg, rgba(220,38,38,.06) 0 14px, transparent 14px 28px),
+    var(--br-color-surface-panel);
+  border-bottom: 1px solid var(--br-color-state-danger);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--br-color-ink-secondary);
+}
+.fidelity-flag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--br-color-state-danger);
+  color: #fff;
+  font-weight: var(--br-font-weight-semibold);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 6px 10px;
+  border-radius: var(--br-radius-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.fidelity-flag .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: fpulse 1.6s ease-in-out infinite; }
+@keyframes fpulse { 50% { opacity: .35; } }
+.fidelity-label { color: var(--br-color-ink-secondary); flex: 1; min-width: 200px; }
+.fidelity-checks { display: flex; gap: 14px; flex-wrap: wrap; }
+.fidelity-check { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--br-color-ink-muted); white-space: nowrap; }
+.fidelity-check .mark { font-weight: var(--br-font-weight-bold); font-family: var(--br-font-family-mono); }
+.fidelity-check .mark.fail { color: var(--br-color-state-danger); }
+.fidelity-check .mark.warn { color: var(--br-color-state-warning); }
+.fidelity-check .mark.pass { color: var(--br-color-state-success); }
+.fidelity-tier { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+.fidelity-tier .pips { display: inline-flex; gap: 3px; }
+.fidelity-tier .pip { width: 10px; height: 10px; border-radius: 50%; background: var(--br-color-border-default); }
+.fidelity-tier .pip.on { background: var(--br-color-state-danger); }
+.mode-toggle {
+  border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary);
+  padding: 4px 10px;
+  border-radius: var(--br-radius-sm);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  cursor: pointer;
+}
+.mode-toggle:hover { background: var(--br-color-surface-hover); }
+
+/* ----- App shell ----- */
+.app {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-rows: 56px minmax(0, 1fr);
+  grid-template-areas: "sidebar topbar" "sidebar main";
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.sidebar {
+  grid-area: sidebar;
+  background: var(--br-color-surface-panel);
+  border-right: 1px solid var(--br-color-border-subtle);
+  display: flex; flex-direction: column;
+  overflow: auto;
+}
+.sb-brand {
+  padding: var(--br-space-5) var(--br-space-4);
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--br-color-border-subtle);
+}
+.sb-brand .mark {
+  width: 32px; height: 32px;
+  background: var(--br-color-brand-accent);
+  color: #fff;
+  border-radius: var(--br-radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: var(--br-font-weight-bold);
+  font-family: var(--br-font-family-mono);
+  font-size: 13px;
+}
+.sb-brand .name { font-weight: var(--br-font-weight-semibold); font-size: var(--br-font-size-md); }
+.sb-brand .sub { font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+.sb-section { padding: var(--br-space-4) var(--br-space-2); }
+.sb-section h4 { margin: 0 var(--br-space-3) var(--br-space-2); font-size: 10px; color: var(--br-color-ink-muted); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--br-font-family-mono); font-weight: var(--br-font-weight-semibold); }
+.sb-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px var(--br-space-3);
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-secondary);
+  border-radius: var(--br-radius-sm);
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+.sb-item:hover { background: var(--br-color-surface-hover); color: var(--br-color-ink-primary); }
+.sb-item.active { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); font-weight: var(--br-font-weight-semibold); }
+.sb-item .count { font-family: var(--br-font-family-mono); font-size: 11px; color: var(--br-color-ink-muted); }
+.sb-item.active .count { color: var(--br-color-brand-primary); }
+
+.topbar {
+  grid-area: topbar;
+  background: var(--br-color-surface-panel);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  display: flex; align-items: center; gap: var(--br-space-4);
+  padding: 0 var(--br-space-6);
+}
+.topbar .tb-title { font-size: var(--br-font-size-sm); color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+.topbar .tb-title strong { color: var(--br-color-ink-primary); font-family: var(--br-font-family-sans); font-weight: var(--br-font-weight-semibold); font-size: var(--br-font-size-md); margin-left: 6px; }
+.topbar .spacer { flex: 1; }
+.topbar .search {
+  background: var(--br-color-surface-sunken);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-primary);
+  min-width: 240px;
+}
+.topbar .avatar {
+  width: 30px; height: 30px;
+  background: var(--br-color-brand-accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: var(--br-font-weight-semibold);
+  font-size: var(--br-font-size-xs);
+}
+
+.main-wrap { grid-area: main; overflow: auto; padding: var(--br-space-6) var(--br-space-8); min-height: 0; min-width: 0; }
+.page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--br-space-4); margin-bottom: var(--br-space-5); flex-wrap: wrap; }
+.page-head h1 { margin: 0 0 var(--br-space-1) 0; font-size: var(--br-font-size-2xl); font-weight: var(--br-font-weight-semibold); letter-spacing: -.01em; }
+.page-head p { margin: 0; color: var(--br-color-ink-secondary); font-size: var(--br-font-size-sm); max-width: 720px; }
+.page-actions { display: flex; gap: var(--br-space-2); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--br-space-2);
+  padding: 7px 14px;
+  border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary);
+  font-family: inherit;
+  font-size: var(--br-font-size-sm);
+  font-weight: var(--br-font-weight-medium);
+  border-radius: var(--br-radius-md);
+  cursor: pointer;
+  transition: background var(--br-motion-fast), border-color var(--br-motion-fast);
+}
+.btn:hover { background: var(--br-color-surface-hover); border-color: var(--br-color-border-strong); }
+.btn.primary { background: var(--br-color-brand-primary); border-color: var(--br-color-brand-primary); color: var(--br-color-ink-on-brand); }
+.btn.primary:hover { background: var(--br-color-brand-primary-hover); border-color: var(--br-color-brand-primary-hover); }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--br-space-4); margin-bottom: var(--br-space-6); }
+@media (max-width: 1200px) { .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.kpi {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-4) var(--br-space-5);
+  box-shadow: var(--br-shadow-sm);
+  position: relative;
+}
+.kpi .seed-flag { position: absolute; top: 8px; right: 10px; font-size: 9px; font-family: var(--br-font-family-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--br-color-state-warning); }
+.kpi .label { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); font-weight: var(--br-font-weight-medium); text-transform: uppercase; letter-spacing: .04em; margin-bottom: var(--br-space-2); font-family: var(--br-font-family-mono); }
+.kpi .value { font-size: 28px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); letter-spacing: -.02em; font-family: var(--br-font-family-sans); }
+.kpi .delta { font-size: var(--br-font-size-xs); color: var(--br-color-state-success); margin-top: var(--br-space-1); font-weight: var(--br-font-weight-medium); font-family: var(--br-font-family-mono); }
+
+/* Value Ledger */
+.section { margin-bottom: var(--br-space-8); }
+.section-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--br-space-4); }
+.section-head h2 { margin: 0; font-size: var(--br-font-size-lg); font-weight: var(--br-font-weight-semibold); }
+.section-head .note { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+
+/* Coworker tile */
+.tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--br-space-4); }
+.tile {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-4);
+  box-shadow: var(--br-shadow-sm);
+  display: flex; flex-direction: column; gap: var(--br-space-3);
+}
+.tile-h { display: flex; justify-content: space-between; align-items: center; }
+.tile-h-l { display: flex; align-items: center; gap: var(--br-space-3); }
+.tile-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--br-color-brand-primary-tint);
+  color: var(--br-color-brand-primary);
+  border-radius: var(--br-radius-sm);
+  font-family: var(--br-font-family-mono);
+  font-weight: var(--br-font-weight-bold);
+}
+.tile-name { margin: 0; font-size: var(--br-font-size-md); font-weight: var(--br-font-weight-semibold); }
+.tile-sub { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); margin-top: 2px; font-family: var(--br-font-family-mono); }
+
+/* Trust badge */
+.trust {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px;
+  border-radius: var(--br-radius-sm);
+  font-size: var(--br-font-size-xs);
+  font-weight: var(--br-font-weight-semibold);
+  border: 1px solid;
+  font-family: var(--br-font-family-mono);
+}
+.trust .mk { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.trust.t1 { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); border-color: var(--br-color-state-info); }
+.trust.t1 .mk { background: var(--br-color-state-info); }
+.trust.t2 { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: var(--br-color-state-warning); }
+.trust.t2 .mk { background: var(--br-color-state-warning); }
+.trust.t3 { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: var(--br-color-state-success); }
+.trust.t3 .mk { background: var(--br-color-state-success); }
+
+.tile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--br-space-3); padding-top: var(--br-space-3); border-top: 1px solid var(--br-color-border-subtle); }
+.tile-stat .v { font-size: var(--br-font-size-md); font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); }
+.tile-stat .l { font-size: 10px; color: var(--br-color-ink-muted); text-transform: uppercase; letter-spacing: 0.04em; font-family: var(--br-font-family-mono); margin-top: 2px; }
+
+/* Activity bars (spark) */
+.spark { display: flex; gap: 2px; align-items: flex-end; height: 32px; }
+.spark .bar { flex: 1; background: var(--br-color-state-success); border-radius: 1px; min-height: 4px; opacity: 0.75; }
+.spark .bar.warn { background: var(--br-color-state-warning); }
+
+/* Multi-page system */
+.page { display: block; }
+.page[style*="display:none"], .page[style*="display: none"] { display: none !important; }
+
+/* Coworker / Tenant table */
+.cw-table { width: 100%; border-collapse: collapse; background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); overflow: hidden; box-shadow: var(--br-shadow-sm); font-size: var(--br-font-size-sm); }
+.cw-table thead th { text-align: left; padding: 12px 16px; font-size: 10px; font-family: var(--br-font-family-mono); color: var(--br-color-ink-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: var(--br-font-weight-semibold); background: var(--br-color-surface-sunken); border-bottom: 1px solid var(--br-color-border-subtle); }
+.cw-table tbody td { padding: 12px 16px; border-bottom: 1px solid var(--br-color-border-subtle); color: var(--br-color-ink-secondary); vertical-align: middle; }
+.cw-table tbody tr:last-child td { border-bottom: 0; }
+.cw-table tbody tr:hover { background: var(--br-color-surface-hover); }
+.cw-table tbody td strong { color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+.cw-table .tsub { font-size: 10px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-top: 2px; }
+
+/* Runbook meta line */
+.rb-meta { font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); letter-spacing: 0.02em; line-height: 1.5; padding: 6px 0; border-top: 1px dashed var(--br-color-border-subtle); border-bottom: 1px dashed var(--br-color-border-subtle); }
+
+/* Audit list */
+.audit-list { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); overflow: hidden; box-shadow: var(--br-shadow-sm); }
+.audit-row { display: grid; grid-template-columns: 80px 28px 1fr 120px; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--br-color-border-subtle); align-items: flex-start; }
+.audit-row:last-child { border-bottom: 0; }
+.audit-row:hover { background: var(--br-color-surface-hover); }
+.audit-time { font-family: var(--br-font-family-mono); font-size: 11px; color: var(--br-color-ink-muted); padding-top: 4px; }
+.audit-icon { width: 22px; height: 22px; border-radius: var(--br-radius-sm); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: var(--br-font-weight-bold); margin-top: 1px; }
+.audit-icon.green { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+.audit-icon.amber { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); }
+.audit-icon.red { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); }
+.audit-title { font-size: var(--br-font-size-sm); color: var(--br-color-ink-primary); line-height: 1.4; }
+.audit-title strong { font-weight: var(--br-font-weight-semibold); }
+.audit-meta { font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-top: 3px; letter-spacing: 0.02em; }
+.audit-actions { font-family: var(--br-font-family-mono); font-size: 11px; text-align: right; padding-top: 4px; }
+.audit-actions a { color: var(--br-color-brand-primary); text-decoration: none; }
+.audit-actions a:hover { text-decoration: underline; }
+
+/* Customer tenant grid */
+.tenant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--br-space-3); }
+.tenant {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-3) var(--br-space-4);
+}
+.tenant-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.tenant-name { font-weight: var(--br-font-weight-semibold); font-size: var(--br-font-size-sm); }
+.tenant-tier { font-size: 10px; font-family: var(--br-font-family-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.tenant-tier.tier-pro { color: var(--br-color-state-success); }
+.tenant-tier.tier-std { color: var(--br-color-state-warning); }
+.tenant-meta { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); display: flex; gap: var(--br-space-3); font-family: var(--br-font-family-mono); }
+
+/* =========================================================
+   BRADLEY RAIL
+   ========================================================= */
+.bradley-rail {
+  background:
+    repeating-linear-gradient(135deg, rgba(109,40,217,.025) 0 14px, transparent 14px 28px),
+    var(--br-color-rail-bg, #f0eafa);
+  border-left: 4px solid var(--br-color-brand-accent);
+  box-shadow: inset 6px 0 12px -8px rgba(109,40,217,0.35);
+  padding: 20px;
+  overflow-y: auto;
+  font-family: var(--br-font-family-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--br-color-ink-secondary);
+  min-height: 0;
+}
+[data-apx-mode="dark"] .bradley-rail {
+  background:
+    repeating-linear-gradient(135deg, rgba(167,139,250,.04) 0 14px, transparent 14px 28px),
+    #1a1230;
+  box-shadow: inset 6px 0 16px -8px rgba(167,139,250,0.45);
+}
+.rail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.rail-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--br-color-brand-accent);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: var(--br-font-weight-bold);
+  font-size: 15px;
+  flex-shrink: 0;
+  font-family: var(--br-font-family-mono);
+}
+.rail-title { font-size: 15px; color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); line-height: 1.1; }
+.rail-sub { font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-top: 2px; }
+.rerun-stamp {
+  margin-bottom: 14px;
+  padding: 8px 10px;
+  background: var(--br-color-state-warning-tint);
+  border-left: 3px solid var(--br-color-state-warning);
+  border-radius: var(--br-radius-sm);
+  font-size: 11px;
+  color: var(--br-color-ink-secondary);
+  font-family: var(--br-font-family-mono);
+  line-height: 1.5;
+}
+.rerun-stamp strong { color: var(--br-color-state-warning); }
+.rail-blurb {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-left: 3px solid var(--br-color-brand-accent);
+  padding: 12px 14px;
+  border-radius: var(--br-radius-md);
+  margin-bottom: 16px;
+  color: var(--br-color-ink-primary);
+  font-size: 13px;
+}
+
+.readiness-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.readiness-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 10px 12px;
+}
+.readiness-card-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+.readiness-state { font-size: 13px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-state-warning); margin: 4px 0; }
+.readiness-card.cx-good .readiness-state { color: var(--br-color-state-success); }
+.readiness-card.cx-bad .readiness-state { color: var(--br-color-state-danger); }
+.readiness-card-sub { font-size: 11px; color: var(--br-color-ink-muted); }
+
+.math-block {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.math-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-bottom: 8px; }
+.math-table { width: 100%; font-size: 12px; }
+.math-table td { padding: 4px 0; vertical-align: top; }
+.math-table td:last-child { text-align: right; font-family: var(--br-font-family-mono); font-weight: var(--br-font-weight-semibold); }
+.math-table tr.lead td { color: var(--br-color-ink-primary); border-top: 1px solid var(--br-color-border-subtle); padding-top: 8px; margin-top: 4px; }
+.math-table tr.lead td:last-child { color: var(--br-color-brand-primary); font-size: 13px; }
+.math-foot { margin-top: 8px; font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+
+.tt-block {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.tt-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-bottom: 6px; }
+.tt-score { font-size: 24px; font-weight: var(--br-font-weight-bold); color: var(--br-color-state-danger); font-family: var(--br-font-family-mono); margin: 6px 0; letter-spacing: -.02em; }
+.tt-list { font-size: 12px; line-height: 1.6; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 6px; }
+.tt-list .t { display: flex; justify-content: space-between; gap: 6px; }
+.tt-list .t .name { color: var(--br-color-ink-secondary); font-size: 11px; }
+.tt-list .t .mk { font-family: var(--br-font-family-mono); font-size: 11px; font-weight: var(--br-font-weight-bold); }
+.tt-list .t .mk.on { color: var(--br-color-state-success); }
+.tt-list .t .mk.half { color: var(--br-color-state-warning); }
+.tt-list .t .mk.off { color: var(--br-color-ink-muted); }
+.tt-foot { margin-top: 10px; font-size: 11px; color: var(--br-color-ink-secondary); line-height: 1.5; }
+.tt-foot strong { color: var(--br-color-state-danger); }
+
+.dual-block { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
+.dual-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+}
+.dual-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--br-font-family-mono); margin-bottom: 6px; }
+.dual-card.good { border-color: var(--br-color-state-success); }
+.dual-card.good .dual-head { color: var(--br-color-state-success); }
+.dual-card.fail { border-color: var(--br-color-state-danger); }
+.dual-card.fail .dual-head { color: var(--br-color-state-danger); }
+.dual-list { list-style: none; margin: 0; padding: 0; font-size: 12px; }
+.dual-list li { position: relative; padding-left: 16px; margin: 6px 0; color: var(--br-color-ink-secondary); }
+.dual-list li::before { position: absolute; left: 0; top: 0; font-weight: var(--br-font-weight-bold); font-family: var(--br-font-family-mono); }
+.dual-card.good .dual-list li::before { content: '+'; color: var(--br-color-state-success); }
+.dual-card.fail .dual-list li::before { content: '−'; color: var(--br-color-state-danger); }
+.dual-list li strong { color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+
+.council-block { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); padding: 12px 14px; margin-bottom: 16px; }
+.council-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-bottom: 8px; }
+.voice { padding: 8px 0; border-bottom: 1px dashed var(--br-color-border-subtle); font-size: 12px; }
+.voice:last-child { border-bottom: 0; }
+.voice .name { font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); margin-bottom: 3px; font-size: 12px; }
+.voice .text { color: var(--br-color-ink-secondary); line-height: 1.5; }
+.contradiction-block {
+  background: var(--br-color-state-danger-tint);
+  border-left: 3px solid var(--br-color-state-danger);
+  padding: 10px 12px;
+  margin-top: 12px;
+  border-radius: var(--br-radius-sm);
+  font-size: 12px;
+}
+.contradiction-block .lbl { font-family: var(--br-font-family-mono); text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; color: var(--br-color-state-danger); font-weight: var(--br-font-weight-semibold); margin-bottom: 6px; }
+.contradiction-block ol { margin: 0; padding-left: 18px; color: var(--br-color-ink-secondary); }
+.contradiction-block li { margin: 4px 0; }
+.contradiction-block li strong { color: var(--br-color-ink-primary); }
+
+.routed-block { margin-bottom: 16px; }
+.routed-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+.routed-head .tag { font-size: 10px; letter-spacing: 0.08em; padding: 3px 7px; border-radius: var(--br-radius-sm); font-family: var(--br-font-family-mono); text-transform: uppercase; }
+.routed-head.product .tag { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); }
+.routed-head.design .tag { background: rgba(109,40,217,.15); color: var(--br-color-brand-accent); }
+.routed-head.research .tag { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); }
+.routed-head.eng .tag { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+.routed-head .attr { margin-left: auto; font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); text-transform: none; letter-spacing: 0; font-weight: var(--br-font-weight-regular); }
+
+.risk-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.risk-title { font-size: 13px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); margin-bottom: 8px; }
+.risk-meta { display: grid; grid-template-columns: 90px 1fr; gap: 4px 10px; font-size: 12px; }
+.risk-meta .k { color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; padding-top: 2px; }
+.risk-meta .v { color: var(--br-color-ink-secondary); }
+.risk-meta .v strong { color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+
+.rail-foot { margin-top: 18px; padding: 12px 14px; border-top: 1px solid var(--br-color-border-subtle); font-size: 12px; color: var(--br-color-ink-muted); font-style: italic; }
+.rail-foot strong { font-style: normal; color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+
+/* "Hear the council" button in rail */
+.rail-council-btn {
+  display: block; width: 100%;
+  padding: 9px 12px;
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-brand-accent);
+  color: var(--br-color-brand-accent);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--br-radius-md);
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background var(--br-motion-fast), color var(--br-motion-fast);
+}
+.rail-council-btn:hover { background: var(--br-color-brand-accent); color: #fff; }
+.rail-council-btn .arrow { float: right; font-family: var(--br-font-family-sans); font-weight: var(--br-font-weight-bold); }
+
+.crosstalk-preview {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-left: 3px solid var(--br-color-brand-accent);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.crosstalk-preview .head { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-brand-accent); font-family: var(--br-font-family-mono); font-weight: var(--br-font-weight-semibold); margin-bottom: 6px; }
+.crosstalk-preview .item { color: var(--br-color-ink-secondary); margin: 4px 0; padding-left: 14px; position: relative; }
+.crosstalk-preview .item::before { content: '→'; position: absolute; left: 0; color: var(--br-color-brand-accent); font-family: var(--br-font-family-mono); font-weight: var(--br-font-weight-bold); }
+.crosstalk-preview .item strong { color: var(--br-color-ink-primary); }
+
+/* =========================================================
+   COUNCIL MODAL
+   ========================================================= */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,23,42,0.78);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+  z-index: 1000;
+  overflow: auto;
+  backdrop-filter: blur(2px);
+}
+[data-apx-mode="dark"] .modal-overlay { background: rgba(0,0,0,0.78); }
+.modal-overlay.open { display: flex; }
+
+.council-modal {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-strong);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-lg);
+  width: 100%;
+  max-width: 1180px;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 64px);
+  overflow: hidden;
+}
+.council-modal-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 18px 24px;
+  background: var(--br-color-surface-elevated);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  gap: 16px;
+}
+.council-modal-head-title { font-size: 17px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); margin-bottom: 4px; }
+.council-modal-head-sub { font-family: var(--br-font-family-mono); font-size: 11px; color: var(--br-color-ink-muted); letter-spacing: 0.04em; line-height: 1.5; }
+.council-close { background: transparent; border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-secondary); font-family: var(--br-font-family-mono); font-size: 11px; padding: 6px 12px; border-radius: var(--br-radius-sm); cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+.council-close:hover { color: var(--br-color-ink-primary); border-color: var(--br-color-border-strong); }
+
+.council-modal-body { flex: 1; overflow-y: auto; padding: 20px 24px; background: var(--br-color-surface-sunken); }
+
+.council-section-h { font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-ink-muted); margin-bottom: 10px; font-weight: var(--br-font-weight-semibold); }
+.council-section-h .count { color: var(--br-color-brand-accent); }
+.council-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.voice-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color var(--br-motion-fast), box-shadow var(--br-motion-fast);
+  display: flex; flex-direction: column; gap: 8px;
+  text-align: left;
+  font-family: var(--br-font-family-sans);
+}
+.voice-card:hover { border-color: var(--br-color-brand-accent); box-shadow: 0 0 0 2px rgba(109,40,217,0.18); }
+.voice-card.expanded { grid-column: 1 / -1; border-color: var(--br-color-brand-accent); background: var(--br-color-surface-elevated); cursor: default; padding: 18px 22px; }
+.voice-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.voice-cluster { font-family: var(--br-font-family-mono); font-size: 11px; font-weight: var(--br-font-weight-bold); letter-spacing: 0.1em; color: var(--br-color-brand-accent); }
+.voice-cluster.chtr  { color: var(--br-color-brand-accent); }
+.voice-cluster.sign  { color: var(--br-color-state-info); }
+.voice-cluster.port  { color: var(--br-color-state-warning); }
+.voice-cluster.pos   { color: var(--br-color-state-info); }
+.voice-cluster.jobs  { color: var(--br-color-state-warning); }
+.voice-cluster.needs { color: var(--br-color-brand-accent); }
+.voice-cluster.jrny  { color: var(--br-color-state-info); }
+.voice-cluster.land  { color: var(--br-color-state-danger); }
+.voice-cluster.econ  { color: var(--br-color-state-success); }
+.voice-force { font-family: var(--br-font-family-mono); font-size: 9px; font-weight: var(--br-font-weight-bold); letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: var(--br-radius-sm); border: 1px solid; }
+.voice-force.must   { color: var(--br-color-state-danger); border-color: var(--br-color-state-danger); background: var(--br-color-state-danger-tint); }
+.voice-force.should { color: var(--br-color-state-warning); border-color: var(--br-color-state-warning); background: var(--br-color-state-warning-tint); }
+.voice-force.ought  { color: var(--br-color-state-success); border-color: var(--br-color-state-success); background: var(--br-color-state-success-tint); }
+.voice-name { font-size: 13px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); }
+.voice-tradition { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); letter-spacing: 0.04em; line-height: 1.4; }
+.voice-summary { font-size: 12px; color: var(--br-color-ink-secondary); line-height: 1.5; }
+.voice-blindspot-preview { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); border-top: 1px dashed var(--br-color-border-subtle); padding-top: 8px; letter-spacing: 0.02em; line-height: 1.45; }
+.voice-blindspot-preview::before { content: 'CANNOT SEE · '; font-weight: var(--br-font-weight-bold); color: var(--br-color-state-warning); letter-spacing: 0.08em; }
+
+/* Expanded fields */
+.voice-expanded-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--br-color-border-subtle); }
+.voice-expanded-title { font-size: 15px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); }
+.voice-expanded-title .cluster { font-family: var(--br-font-family-mono); color: var(--br-color-brand-accent); letter-spacing: 0.1em; margin-right: 8px; }
+.voice-collapse { background: transparent; border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-secondary); font-family: var(--br-font-family-mono); font-size: 10px; padding: 4px 9px; border-radius: var(--br-radius-sm); cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; }
+.voice-collapse:hover { color: var(--br-color-ink-primary); border-color: var(--br-color-brand-accent); }
+.voice-fields { display: grid; grid-template-columns: 110px 1fr; gap: 10px 16px; }
+.voice-field-label { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); letter-spacing: 0.08em; text-transform: uppercase; font-weight: var(--br-font-weight-bold); padding-top: 3px; }
+.voice-field-value { font-size: 12.5px; color: var(--br-color-ink-secondary); line-height: 1.6; }
+.voice-field-value strong { color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+.voice-field-value.kill { color: var(--br-color-ink-primary); font-style: italic; }
+.voice-field-value.blindspot { color: var(--br-color-state-warning); font-style: italic; }
+
+/* Cross-talk inside modal */
+.crosstalk-section { margin-top: 8px; }
+.crosstalk-block {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-left: 4px solid var(--br-color-brand-accent);
+  border-radius: var(--br-radius-md);
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.crosstalk-block .move-label { font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-brand-accent); font-weight: var(--br-font-weight-bold); margin-bottom: 8px; }
+.crosstalk-block .voices-chip { display: inline-flex; gap: 4px; font-family: var(--br-font-family-mono); font-size: 10px; font-weight: var(--br-font-weight-bold); letter-spacing: 0.08em; margin-bottom: 8px; }
+.crosstalk-block .voices-chip span { padding: 2px 6px; border-radius: 3px; background: var(--br-color-surface-sunken); }
+.crosstalk-block .ct-body { font-size: 13px; color: var(--br-color-ink-secondary); line-height: 1.6; }
+.crosstalk-block .ct-body strong { color: var(--br-color-ink-primary); }
+.crosstalk-block .new-claim { margin-top: 10px; padding: 10px 12px; background: var(--br-color-state-success-tint); border-left: 3px solid var(--br-color-state-success); border-radius: var(--br-radius-sm); font-size: 12px; color: var(--br-color-ink-secondary); }
+.crosstalk-block .new-claim strong { color: var(--br-color-state-success); font-family: var(--br-font-family-mono); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ===================== FIDELITY BANNER ===================== -->
+<div class="fidelity-banner">
+  <div class="fidelity-flag">
+    <span class="dot"></span>
+    <span>ACP Headless · Tier 1 · Concept</span>
+  </div>
+  <div class="fidelity-label">Visual approximation of Apex Bridge — rerun against <code>--br-*</code> tokens from acp-v1 (2026-05-27)</div>
+  <div class="fidelity-checks">
+    <span class="fidelity-check"><span class="mark pass">✓</span> <code>--br-*</code> tokens (ported)</span>
+    <span class="fidelity-check"><span class="mark pass">✓</span> Light + dark parity</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> <code>apx-*</code> components (stubbed)</span>
+    <span class="fidelity-check"><span class="mark fail">×</span> schema.json contract</span>
+    <span class="fidelity-check"><span class="mark fail">×</span> Production data binding</span>
+  </div>
+  <div class="fidelity-tier">
+    Fidelity tier:
+    <span class="pips"><span class="pip on"></span><span class="pip"></span><span class="pip"></span></span>
+    1 / 3
+  </div>
+  <button class="mode-toggle" onclick="toggleMode()" id="modeBtn">◑ Light mode</button>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="mark">ACP</div>
+      <div>
+        <div class="name">Adlumin Control Plane</div>
+        <div class="sub">Headless ops</div>
+      </div>
+    </div>
+    <div class="sb-section">
+      <h4>Operate</h4>
+      <div class="sb-item active" data-view="dashboard" onclick="navigate('dashboard')">Dashboard <span class="count">●</span></div>
+      <div class="sb-item" data-view="coworkers" onclick="navigate('coworkers')">Coworkers <span class="count">12</span></div>
+      <div class="sb-item" data-view="runbooks" onclick="navigate('runbooks')">Runbooks <span class="count">47</span></div>
+      <div class="sb-item" data-view="audit" onclick="navigate('audit')">Audit trail <span class="count">328</span></div>
+    </div>
+    <div class="sb-section">
+      <h4>Tenants</h4>
+      <div class="sb-item" data-view="tenants" onclick="navigate('tenants')">All customers <span class="count">47</span></div>
+      <div class="sb-item" style="opacity:0.55;">Pro tier <span class="count">18</span></div>
+      <div class="sb-item" style="opacity:0.55;">Standard <span class="count">29</span></div>
+    </div>
+    <div class="sb-section">
+      <h4>Trust</h4>
+      <div class="sb-item" style="opacity:0.55;">Value Ledger</div>
+      <div class="sb-item" style="opacity:0.55;">Trust progression</div>
+      <div class="sb-item" style="opacity:0.55;">Approvals <span class="count">7</span></div>
+    </div>
+  </aside>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="tb-title">Operator <strong>Summit IT Partners</strong> <span style="color: var(--br-color-ink-muted); margin: 0 8px;">/</span> <span id="tb-crumb" style="color: var(--br-color-ink-primary); font-family: var(--br-font-family-sans); font-weight: var(--br-font-weight-semibold);">Dashboard</span></div>
+    <div class="spacer"></div>
+    <input class="search" placeholder="Search Coworkers, runbooks, tenants…" />
+    <div class="avatar">NR</div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-wrap">
+
+  <!-- ========== PAGE · DASHBOARD ========== -->
+  <div class="page" id="page-dashboard">
+    <div class="page-head">
+      <div>
+        <h1>Operations · last 30 days</h1>
+        <p>Single surface across UEM · Cove · Adlumin. 12 Coworkers active, 47 tenants under management. The MSP never opens product UIs.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn" onclick="navigate('audit')">View audit trail</button>
+        <button class="btn primary">+ Deploy Coworker</button>
+      </div>
+    </div>
+
+    <!-- Value Ledger KPIs -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Value Ledger</h2>
+        <div class="note">All numbers below are seed data · fictional · methodology [A]</div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="seed-flag">◆ seed</div>
+          <div class="label">Hours saved (30d)</div>
+          <div class="value">127.4</div>
+          <div class="delta">vs. manual baseline · 47 tenants</div>
+        </div>
+        <div class="kpi">
+          <div class="seed-flag">◆ seed</div>
+          <div class="label">Tasks executed</div>
+          <div class="value">482</div>
+          <div class="delta">across 12 Coworkers</div>
+        </div>
+        <div class="kpi">
+          <div class="seed-flag">◆ seed</div>
+          <div class="label">Success rate</div>
+          <div class="value">98.3%</div>
+          <div class="delta">+0.4 vs prior 30d</div>
+        </div>
+        <div class="kpi">
+          <div class="seed-flag">◆ seed</div>
+          <div class="label">Estimated margin</div>
+          <div class="value">$18.2k</div>
+          <div class="delta">internal-only metric</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Coworkers -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Active Coworkers</h2>
+        <div class="note">12 active · 3 on probation · trust ladder L0 → L4</div>
+      </div>
+      <div class="tile-grid">
+        <div class="tile">
+          <div class="tile-h">
+            <div class="tile-h-l">
+              <div class="tile-icon">PD</div>
+              <div>
+                <div class="tile-name">Patch Deployment</div>
+                <div class="tile-sub">Cross-tenant · UEM</div>
+              </div>
+            </div>
+            <span class="trust t3"><span class="mk"></span>L3 · Autonomous</span>
+          </div>
+          <div class="spark">
+            <div class="bar" style="height: 60%"></div>
+            <div class="bar" style="height: 80%"></div>
+            <div class="bar" style="height: 70%"></div>
+            <div class="bar" style="height: 95%"></div>
+            <div class="bar" style="height: 88%"></div>
+            <div class="bar" style="height: 92%"></div>
+            <div class="bar warn" style="height: 40%"></div>
+            <div class="bar" style="height: 78%"></div>
+            <div class="bar" style="height: 90%"></div>
+            <div class="bar" style="height: 84%"></div>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat"><div class="v">1,247</div><div class="l">Deployed</div></div>
+            <div class="tile-stat"><div class="v">97.8%</div><div class="l">Success</div></div>
+            <div class="tile-stat"><div class="v">42h</div><div class="l">Saved</div></div>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="tile-h">
+            <div class="tile-h-l">
+              <div class="tile-icon">ST</div>
+              <div>
+                <div class="tile-name">Security Triage</div>
+                <div class="tile-sub">Cross-tenant · Adlumin</div>
+              </div>
+            </div>
+            <span class="trust t2"><span class="mk"></span>L2 · Audited</span>
+          </div>
+          <div class="spark">
+            <div class="bar" style="height: 50%"></div>
+            <div class="bar" style="height: 72%"></div>
+            <div class="bar warn" style="height: 35%"></div>
+            <div class="bar" style="height: 82%"></div>
+            <div class="bar" style="height: 90%"></div>
+            <div class="bar" style="height: 78%"></div>
+            <div class="bar" style="height: 88%"></div>
+            <div class="bar" style="height: 76%"></div>
+            <div class="bar" style="height: 84%"></div>
+            <div class="bar" style="height: 92%"></div>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat"><div class="v">328</div><div class="l">Triaged</div></div>
+            <div class="tile-stat"><div class="v">94.2%</div><div class="l">Accuracy</div></div>
+            <div class="tile-stat"><div class="v">28h</div><div class="l">Saved</div></div>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="tile-h">
+            <div class="tile-h-l">
+              <div class="tile-icon">CC</div>
+              <div>
+                <div class="tile-name">Compliance Check</div>
+                <div class="tile-sub">Cross-tenant · Cove + UEM</div>
+              </div>
+            </div>
+            <span class="trust t2"><span class="mk"></span>L2 · Audited</span>
+          </div>
+          <div class="spark">
+            <div class="bar" style="height: 64%"></div>
+            <div class="bar" style="height: 78%"></div>
+            <div class="bar" style="height: 80%"></div>
+            <div class="bar" style="height: 88%"></div>
+            <div class="bar" style="height: 76%"></div>
+            <div class="bar warn" style="height: 30%"></div>
+            <div class="bar" style="height: 82%"></div>
+            <div class="bar" style="height: 84%"></div>
+            <div class="bar" style="height: 78%"></div>
+            <div class="bar" style="height: 90%"></div>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat"><div class="v">94</div><div class="l">Checks</div></div>
+            <div class="tile-stat"><div class="v">100%</div><div class="l">Coverage</div></div>
+            <div class="tile-stat"><div class="v">19h</div><div class="l">Saved</div></div>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="tile-h">
+            <div class="tile-h-l">
+              <div class="tile-icon">BR</div>
+              <div>
+                <div class="tile-name">Backup Recovery</div>
+                <div class="tile-sub">Per-tenant · Cove</div>
+              </div>
+            </div>
+            <span class="trust t1"><span class="mk"></span>L1 · Confirms</span>
+          </div>
+          <div class="spark">
+            <div class="bar" style="height: 40%"></div>
+            <div class="bar" style="height: 55%"></div>
+            <div class="bar" style="height: 60%"></div>
+            <div class="bar" style="height: 70%"></div>
+            <div class="bar" style="height: 65%"></div>
+            <div class="bar" style="height: 72%"></div>
+            <div class="bar" style="height: 80%"></div>
+            <div class="bar" style="height: 76%"></div>
+            <div class="bar" style="height: 82%"></div>
+            <div class="bar" style="height: 88%"></div>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat"><div class="v">38</div><div class="l">Recoveries</div></div>
+            <div class="tile-stat"><div class="v">100%</div><div class="l">Success</div></div>
+            <div class="tile-stat"><div class="v">12h</div><div class="l">Saved</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tenants -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Tenants under management</h2>
+        <div class="note">47 total · 18 Pro · 29 Standard · all data fictional</div>
+      </div>
+      <div class="tenant-grid">
+        <div class="tenant">
+          <div class="tenant-h"><div class="tenant-name">Summit IT Partners</div><div class="tenant-tier tier-pro">Pro</div></div>
+          <div class="tenant-meta"><span>142 dev</span><span>5 cw</span><span>L3</span></div>
+        </div>
+        <div class="tenant">
+          <div class="tenant-h"><div class="tenant-name">Riverside Tech Co</div><div class="tenant-tier tier-std">Standard</div></div>
+          <div class="tenant-meta"><span>67 dev</span><span>3 cw</span><span>L2</span></div>
+        </div>
+        <div class="tenant">
+          <div class="tenant-h"><div class="tenant-name">Maple Grove MSP</div><div class="tenant-tier tier-pro">Pro</div></div>
+          <div class="tenant-meta"><span>198 dev</span><span>6 cw</span><span>L3</span></div>
+        </div>
+        <div class="tenant">
+          <div class="tenant-h"><div class="tenant-name">Beacon Networks</div><div class="tenant-tier tier-std">Standard</div></div>
+          <div class="tenant-meta"><span>54 dev</span><span>2 cw</span><span>L1</span></div>
+        </div>
+        <div class="tenant">
+          <div class="tenant-h"><div class="tenant-name">Cascade IT Group</div><div class="tenant-tier tier-pro">Pro</div></div>
+          <div class="tenant-meta"><span>176 dev</span><span>4 cw</span><span>L2</span></div>
+        </div>
+        <div class="tenant">
+          <div class="tenant-h"><div class="tenant-name">Northshore Systems</div><div class="tenant-tier tier-std">Standard</div></div>
+          <div class="tenant-meta"><span>89 dev</span><span>3 cw</span><span>L2</span></div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-dashboard -->
+
+  <!-- ========== PAGE · COWORKERS ========== -->
+  <div class="page" id="page-coworkers" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Coworkers · all 12</h1>
+        <p>Every AI Coworker active across Summit IT Partners' 47 tenants. Trust ladder L0 → L4. Promotion is one-way today — <span style="color: var(--br-color-state-danger);">demotion path is the NEEDS-SDT gap Nicole owns</span>.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn">Filter by trust</button>
+        <button class="btn primary">+ Deploy Coworker</button>
+      </div>
+    </div>
+
+    <table class="cw-table">
+      <thead>
+        <tr><th>Coworker</th><th>Product</th><th>Trust</th><th>Tenants</th><th>Executions (30d)</th><th>Success</th><th>Hours saved</th><th>Last run</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Patch Deployment</strong><div class="tsub">cross-tenant runbook</div></td><td>UEM</td><td><span class="trust t3"><span class="mk"></span>L3</span></td><td>47</td><td>1,247</td><td>97.8%</td><td>42h</td><td>2m ago</td></tr>
+        <tr><td><strong>Security Triage</strong><div class="tsub">SOC alert pipeline</div></td><td>Adlumin</td><td><span class="trust t2"><span class="mk"></span>L2</span></td><td>47</td><td>328</td><td>94.2%</td><td>28h</td><td>14m ago</td></tr>
+        <tr><td><strong>Compliance Check</strong><div class="tsub">policy attestation</div></td><td>Cove + UEM</td><td><span class="trust t2"><span class="mk"></span>L2</span></td><td>47</td><td>94</td><td>100%</td><td>19h</td><td>1h ago</td></tr>
+        <tr><td><strong>Backup Recovery</strong><div class="tsub">restore orchestration</div></td><td>Cove</td><td><span class="trust t1"><span class="mk"></span>L1</span></td><td>47</td><td>38</td><td>100%</td><td>12h</td><td>3h ago</td></tr>
+        <tr><td><strong>Alert Suppression</strong><div class="tsub">noise reduction</div></td><td>Adlumin</td><td><span class="trust t3"><span class="mk"></span>L3</span></td><td>47</td><td>2,108</td><td>99.1%</td><td>14h</td><td>just now</td></tr>
+        <tr><td><strong>Ticket Triage</strong><div class="tsub">classification + dispatch</div></td><td>cross</td><td><span class="trust t2"><span class="mk"></span>L2</span></td><td>47</td><td>587</td><td>91.3%</td><td>8h</td><td>4m ago</td></tr>
+        <tr><td><strong>Customer Onboarding</strong><div class="tsub">device + policy setup</div></td><td>UEM</td><td><span class="trust t2"><span class="mk"></span>L2</span></td><td>23</td><td>47</td><td>96.8%</td><td>4h</td><td>yesterday</td></tr>
+        <tr><td><strong>Network Incident</strong><div class="tsub">root-cause + remediation</div></td><td>UEM + Adlumin</td><td><span class="trust t1"><span class="mk"></span>L1</span></td><td>18</td><td>72</td><td>88.4%</td><td>3h</td><td>1h ago</td></tr>
+        <tr><td><strong>Endpoint Hardening</strong><div class="tsub">CIS benchmark drift</div></td><td>UEM</td><td><span class="trust t2"><span class="mk"></span>L2</span></td><td>34</td><td>156</td><td>97.2%</td><td>2h</td><td>22m ago</td></tr>
+        <tr><td><strong>Phishing Response</strong><div class="tsub">URL + sender containment</div></td><td>Adlumin</td><td><span class="trust t1"><span class="mk"></span>L1</span></td><td>41</td><td>89</td><td>92.1%</td><td>1h</td><td>6h ago</td></tr>
+        <tr><td><strong>License Reclamation</strong><div class="tsub">unused-seat sweep</div></td><td>UEM</td><td><span class="trust t2"><span class="mk"></span>L2</span></td><td>47</td><td>12</td><td>100%</td><td>1h</td><td>2d ago</td></tr>
+        <tr><td><strong>Vulnerability Sweep</strong><div class="tsub">CVE detection + queue</div></td><td>UEM + Adlumin</td><td><span class="trust t3"><span class="mk"></span>L3</span></td><td>47</td><td>421</td><td>98.6%</td><td>3h</td><td>11m ago</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 24px; padding: 14px 18px; background: var(--br-color-state-warning-tint); border-left: 4px solid var(--br-color-state-warning); border-radius: var(--br-radius-md); font-size: 13px; color: var(--br-color-ink-secondary); line-height: 1.6;">
+      <strong style="color: var(--br-color-state-warning); font-family: var(--br-font-family-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">⚠ Tier 2 gap</strong><br>
+      Trust progression (L2 → L3) mechanics not shown. Council NEEDS-SDT voice flagged this as the gating decision for Tier 2.
+    </div>
+  </div><!-- /page-coworkers -->
+
+  <!-- ========== PAGE · RUNBOOKS ========== -->
+  <div class="page" id="page-runbooks" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Runbooks · 47 active</h1>
+        <p>Headless runbooks compose Coworkers into multi-step operations. Each runbook is a versioned, auditable, MCP-bound contract — not a script.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn">Import from library</button>
+        <button class="btn primary">+ New runbook</button>
+      </div>
+    </div>
+
+    <div class="tile-grid">
+      <div class="tile"><div class="tile-h"><div class="tile-h-l"><div class="tile-icon">PT</div><div><div class="tile-name">Patch Tuesday auto-deploy</div><div class="tile-sub">Patch Deployment · 47 tenants</div></div></div><span class="trust t3"><span class="mk"></span>L3</span></div>
+        <div class="rb-meta">5 steps · MCP: WSUS, Intune · last run 2m ago</div>
+        <div class="tile-stats"><div class="tile-stat"><div class="v">128</div><div class="l">Runs</div></div><div class="tile-stat"><div class="v">97.8%</div><div class="l">Success</div></div><div class="tile-stat"><div class="v">v4.2</div><div class="l">Version</div></div></div>
+      </div>
+      <div class="tile"><div class="tile-h"><div class="tile-h-l"><div class="tile-icon">PT</div><div><div class="tile-name">Phishing email triage</div><div class="tile-sub">Phishing Response · 41 tenants</div></div></div><span class="trust t1"><span class="mk"></span>L1</span></div>
+        <div class="rb-meta">7 steps · MCP: M365, Adlumin · last run 6h ago</div>
+        <div class="tile-stats"><div class="tile-stat"><div class="v">89</div><div class="l">Runs</div></div><div class="tile-stat"><div class="v">92.1%</div><div class="l">Success</div></div><div class="tile-stat"><div class="v">v2.1</div><div class="l">Version</div></div></div>
+      </div>
+      <div class="tile"><div class="tile-h"><div class="tile-h-l"><div class="tile-icon">EE</div><div><div class="tile-name">EDR alert escalation</div><div class="tile-sub">Security Triage · 47 tenants</div></div></div><span class="trust t2"><span class="mk"></span>L2</span></div>
+        <div class="rb-meta">4 steps · MCP: Adlumin, PagerDuty · last run 14m ago</div>
+        <div class="tile-stats"><div class="tile-stat"><div class="v">328</div><div class="l">Runs</div></div><div class="tile-stat"><div class="v">94.2%</div><div class="l">Success</div></div><div class="tile-stat"><div class="v">v6.0</div><div class="l">Version</div></div></div>
+      </div>
+      <div class="tile"><div class="tile-h"><div class="tile-h-l"><div class="tile-icon">BV</div><div><div class="tile-name">Backup verification sweep</div><div class="tile-sub">Backup Recovery · 47 tenants</div></div></div><span class="trust t1"><span class="mk"></span>L1</span></div>
+        <div class="rb-meta">3 steps · MCP: Cove · last run 3h ago</div>
+        <div class="tile-stats"><div class="tile-stat"><div class="v">38</div><div class="l">Runs</div></div><div class="tile-stat"><div class="v">100%</div><div class="l">Success</div></div><div class="tile-stat"><div class="v">v1.4</div><div class="l">Version</div></div></div>
+      </div>
+      <div class="tile"><div class="tile-h"><div class="tile-h-l"><div class="tile-icon">NO</div><div><div class="tile-name">New customer onboarding</div><div class="tile-sub">Customer Onboarding · 23 tenants</div></div></div><span class="trust t2"><span class="mk"></span>L2</span></div>
+        <div class="rb-meta">12 steps · MCP: UEM, AD, Adlumin · last run yesterday</div>
+        <div class="tile-stats"><div class="tile-stat"><div class="v">47</div><div class="l">Runs</div></div><div class="tile-stat"><div class="v">96.8%</div><div class="l">Success</div></div><div class="tile-stat"><div class="v">v3.1</div><div class="l">Version</div></div></div>
+      </div>
+      <div class="tile"><div class="tile-h"><div class="tile-h-l"><div class="tile-icon">CV</div><div><div class="tile-name">CVE detection + queue</div><div class="tile-sub">Vulnerability Sweep · 47 tenants</div></div></div><span class="trust t3"><span class="mk"></span>L3</span></div>
+        <div class="rb-meta">6 steps · MCP: NVD, UEM, Adlumin · last run 11m ago</div>
+        <div class="tile-stats"><div class="tile-stat"><div class="v">421</div><div class="l">Runs</div></div><div class="tile-stat"><div class="v">98.6%</div><div class="l">Success</div></div><div class="tile-stat"><div class="v">v8.3</div><div class="l">Version</div></div></div>
+      </div>
+    </div>
+  </div><!-- /page-runbooks -->
+
+  <!-- ========== PAGE · AUDIT TRAIL ========== -->
+  <div class="page" id="page-audit" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Audit trail · last 24 hours</h1>
+        <p>Every action a Coworker took on a tenant, on a runbook, on a device. <strong style="color: var(--br-color-state-success);">This page exists because Council JRNY (Service Blueprint) flagged the backstage-on-incident gap.</strong> Tier 1 sketch — Tier 2 will add filters, replay, and override.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn">Export CSV</button>
+        <button class="btn primary">Configure alerts</button>
+      </div>
+    </div>
+
+    <div class="audit-list">
+      <div class="audit-row"><div class="audit-time">14:42:08</div><div class="audit-icon green">✓</div><div class="audit-body"><div class="audit-title"><strong>Patch Deployment</strong> deployed KB5031356 to 142 devices</div><div class="audit-meta">tenant · Summit IT Partners · runbook v4.2 · L3 autonomous · 0 rollbacks</div></div><div class="audit-actions"><a href="#">replay</a></div></div>
+      <div class="audit-row"><div class="audit-time">14:28:51</div><div class="audit-icon green">✓</div><div class="audit-body"><div class="audit-title"><strong>Alert Suppression</strong> suppressed 47 duplicate alerts on Riverside Tech</div><div class="audit-meta">tenant · Riverside Tech Co · runbook v3.7 · L3 autonomous</div></div><div class="audit-actions"><a href="#">replay</a></div></div>
+      <div class="audit-row"><div class="audit-time">14:14:33</div><div class="audit-icon amber">⏸</div><div class="audit-body"><div class="audit-title"><strong>Network Incident</strong> awaiting approval · CPU spike on host gx-prod-04</div><div class="audit-meta">tenant · Maple Grove MSP · runbook v2.1 · L1 confirms — needs human</div></div><div class="audit-actions"><a href="#">approve</a> · <a href="#">reject</a></div></div>
+      <div class="audit-row"><div class="audit-time">13:51:09</div><div class="audit-icon green">✓</div><div class="audit-body"><div class="audit-title"><strong>Vulnerability Sweep</strong> queued 18 new CVEs for remediation across 23 tenants</div><div class="audit-meta">cross-tenant · runbook v8.3 · L3 autonomous</div></div><div class="audit-actions"><a href="#">replay</a></div></div>
+      <div class="audit-row"><div class="audit-time">13:33:22</div><div class="audit-icon red">×</div><div class="audit-body"><div class="audit-title"><strong>Security Triage</strong> failed · Adlumin MCP timeout · retried successfully</div><div class="audit-meta">tenant · Cascade IT Group · runbook v6.0 · L2 audited</div></div><div class="audit-actions"><a href="#">view retry</a></div></div>
+      <div class="audit-row"><div class="audit-time">12:48:00</div><div class="audit-icon green">✓</div><div class="audit-body"><div class="audit-title"><strong>Customer Onboarding</strong> completed for Acme Holdings · 47 actions · 0 failures</div><div class="audit-meta">tenant · Acme Holdings · runbook v3.1 · L2 audited · approval by Nicole R.</div></div><div class="audit-actions"><a href="#">replay</a></div></div>
+      <div class="audit-row"><div class="audit-time">11:22:14</div><div class="audit-icon amber">⚠</div><div class="audit-body"><div class="audit-title"><strong>Ticket Triage</strong> low-confidence classification — escalated to human queue</div><div class="audit-meta">tenant · Beacon Networks · runbook v2.4 · L2 audited · 0.67 confidence</div></div><div class="audit-actions"><a href="#">review</a></div></div>
+      <div class="audit-row"><div class="audit-time">09:14:42</div><div class="audit-icon green">✓</div><div class="audit-body"><div class="audit-title"><strong>Compliance Check</strong> SOC 2 attestation complete for 12 tenants</div><div class="audit-meta">cross-tenant · runbook v5.1 · L2 audited</div></div><div class="audit-actions"><a href="#">replay</a></div></div>
+    </div>
+
+    <div style="margin-top: 24px; padding: 14px 18px; background: var(--br-color-state-success-tint); border-left: 4px solid var(--br-color-state-success); border-radius: var(--br-radius-md); font-size: 13px; color: var(--br-color-ink-secondary); line-height: 1.6;">
+      <strong style="color: var(--br-color-state-success); font-family: var(--br-font-family-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">✓ Council response · JRNY-Service Blueprint</strong><br>
+      Backstage visibility is now <em>on-demand</em> via this page. Direct response to JRNY's "backstage must become visible when trust breaks" objection. Tier 2 will add: per-action replay, override interaction, MSP-side audit search.
+    </div>
+  </div><!-- /page-audit -->
+
+  <!-- ========== PAGE · TENANTS ========== -->
+  <div class="page" id="page-tenants" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Tenants · 47 under management</h1>
+        <p>Customer organizations Summit IT Partners runs on the ACP. Per-tenant Coworker assignments, trust ceiling, and contract tier.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn">Filter by tier</button>
+        <button class="btn primary">+ Onboard tenant</button>
+      </div>
+    </div>
+
+    <table class="cw-table">
+      <thead>
+        <tr><th>Tenant</th><th>Tier</th><th>Devices</th><th>Coworkers</th><th>Trust ceiling</th><th>Hours saved (30d)</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Summit IT Partners</strong><div class="tsub">flagship</div></td><td><span class="tenant-tier tier-pro">Pro</span></td><td>142</td><td>5</td><td>L3</td><td>32h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Riverside Tech Co</strong></td><td><span class="tenant-tier tier-std">Standard</span></td><td>67</td><td>3</td><td>L2</td><td>14h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Maple Grove MSP</strong></td><td><span class="tenant-tier tier-pro">Pro</span></td><td>198</td><td>6</td><td>L3</td><td>41h</td><td><span style="color: var(--br-color-state-warning);">●</span> incident pending</td></tr>
+        <tr><td><strong>Beacon Networks</strong></td><td><span class="tenant-tier tier-std">Standard</span></td><td>54</td><td>2</td><td>L1</td><td>8h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Cascade IT Group</strong></td><td><span class="tenant-tier tier-pro">Pro</span></td><td>176</td><td>4</td><td>L2</td><td>22h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Northshore Systems</strong></td><td><span class="tenant-tier tier-std">Standard</span></td><td>89</td><td>3</td><td>L2</td><td>11h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Acme Holdings</strong></td><td><span class="tenant-tier tier-pro">Pro</span></td><td>231</td><td>7</td><td>L3</td><td>47h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Pinecrest Tech</strong></td><td><span class="tenant-tier tier-std">Standard</span></td><td>43</td><td>2</td><td>L1</td><td>6h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td><strong>Lakeview Partners</strong></td><td><span class="tenant-tier tier-pro">Pro</span></td><td>167</td><td>5</td><td>L2</td><td>28h</td><td><span style="color: var(--br-color-state-success);">●</span> healthy</td></tr>
+        <tr><td colspan="7" style="text-align: center; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); font-size: 12px; padding: 16px;">… 38 more tenants · all data fictional</td></tr>
+      </tbody>
+    </table>
+  </div><!-- /page-tenants -->
+
+  </div><!-- /main-wrap -->
+</div>
+
+<!-- ===================== BRADLEY RAIL ===================== -->
+<aside class="bradley-rail" aria-label="Bradley's read · rerun pass">
+  <div class="rail-head">
+    <div class="rail-avatar">B</div>
+    <div>
+      <div class="rail-title">Bradley's read</div>
+      <div class="rail-sub">ACP Headless · rerun 2026-05-28 · against acp-v1 tokens</div>
+    </div>
+  </div>
+
+  <div class="rerun-stamp">
+    <strong>◆ RERUN AUDIT TRAIL</strong><br>
+    Prior brief (2026-05-27): claimed 55% [A]+[?] — wrong.<br>
+    First correction (2026-05-28 AM): claimed 82% — also misleading, conflated world-claims with meta-TODOs.<br>
+    This pass: three numbers, lead with world-claims. See math block below.
+  </div>
+
+  <div class="rail-blurb">
+    Nicole — your headless thesis is coherent. The prototype renders it. The bug across two prior passes was reporting math and design fidelity, not the thesis itself. This pass corrects both: Apex Bridge <code>--br-*</code> tokens ported, light/dark parity, and the [A]+[?] math is now split into three honest numbers. The Ten Types finding you asked for is below — it changes what Tier 2 must do.
+  </div>
+
+  <div class="readiness-row">
+    <div class="readiness-card cx-good">
+      <div class="readiness-card-label">Quality read</div>
+      <div class="readiness-state">⬤ Promising · Tier 1 OK</div>
+      <div class="readiness-card-sub">Show it for alignment. Don't ship as Tier 2.</div>
+    </div>
+    <div class="readiness-card cx-bad">
+      <div class="readiness-card-label">Defensibility</div>
+      <div class="readiness-state">⬤ Weak · single-type</div>
+      <div class="readiness-card-sub">Doblin: 4/20. Anyone with the same APIs can copy this.</div>
+    </div>
+  </div>
+
+  <!-- Math recount -->
+  <div class="math-block">
+    <div class="math-head">[A]+[?] math · corrected (three numbers)</div>
+    <table class="math-table">
+      <tr><td>Meta-TODOs included (inflated)</td><td>28 / 34 · 82%</td></tr>
+      <tr><td>Test-plan readiness</td><td>5 / 8 · 63%</td></tr>
+      <tr class="lead"><td>World-claims (lead number)</td><td>7 / 10 · 70%</td></tr>
+    </table>
+    <div class="math-foot">3 world-claims sourced [R] · Tier 1 acceptable · must drop below 40% before Tier 2</div>
+  </div>
+
+  <!-- Ten Types — scored from N-able's position -->
+  <div class="tt-block">
+    <div class="tt-head">Doblin Ten Types · scored from N-able's position</div>
+    <div style="display: flex; gap: 14px; align-items: baseline; margin: 6px 0 10px;">
+      <div><div style="font-size: 9px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); letter-spacing: 0.06em; text-transform: uppercase;">brief as-is</div><div style="font-size: 18px; font-weight: var(--br-font-weight-bold); color: var(--br-color-state-danger); font-family: var(--br-font-family-mono);">4/20</div></div>
+      <div style="font-size: 14px; color: var(--br-color-ink-muted);">→</div>
+      <div><div style="font-size: 9px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); letter-spacing: 0.06em; text-transform: uppercase;">+ N-able latent</div><div style="font-size: 18px; font-weight: var(--br-font-weight-bold); color: var(--br-color-state-success); font-family: var(--br-font-family-mono);">~13/20</div></div>
+      <div style="font-size: 10px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); line-height: 1.4;">if existing<br>capabilities<br>activated</div>
+    </div>
+    <div class="tt-list" style="grid-template-columns: 1fr; gap: 3px;">
+      <div class="t" style="border-bottom: 1px solid var(--br-color-border-subtle); padding-bottom: 4px; margin-bottom: 4px;"><span class="name" style="font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary);">Dimension</span><span class="mk" style="color: var(--br-color-ink-muted); font-size: 10px;">brief · latent · total</span></div>
+      <div class="t"><span class="name">Product Perf</span><span class="mk on">2 · 0 · 2/2</span></div>
+      <div class="t"><span class="name">Product System</span><span class="mk on">0 · +2 · 2/2 ★</span></div>
+      <div class="t"><span class="name">Channel</span><span class="mk on">0 · +2 · 2/2 ★</span></div>
+      <div class="t"><span class="name">Process</span><span class="mk on">1 · +1 · 2/2</span></div>
+      <div class="t"><span class="name">Service</span><span class="mk half">0 · +1 · 1/2</span></div>
+      <div class="t"><span class="name">Profit Model</span><span class="mk half">0 · +1 · 1/2</span></div>
+      <div class="t"><span class="name">Network</span><span class="mk half">0 · +1 · 1/2</span></div>
+      <div class="t"><span class="name">Brand</span><span class="mk half">0 · +1 · 1/2</span></div>
+      <div class="t"><span class="name">Customer Engage</span><span class="mk half">1 · 0 · 1/2</span></div>
+      <div class="t"><span class="name">Structure</span><span class="mk off">0 · 0 · 0/2 ⚠</span></div>
+    </div>
+    <div class="tt-foot" style="margin-top: 12px;">
+      <strong style="color: var(--br-color-state-success);">★ Pre-activated by being N-able.</strong> Product System: UEM + Cove + Adlumin already integrated under one vendor — startups would have to compose three systems via APIs. Channel: N-able is already in the MSP's daily workflow.<br><br>
+      <strong style="color: var(--br-color-state-warning);">⚠ Structure is a headwind, not a tailwind.</strong> N-able's product-team metrics are tied to UEM/Cove/Adlumin engagement. Headless reduces those metrics by design. Internal disruption (POS voice) names this risk.<br><br>
+      <strong style="color: var(--br-color-ink-primary);">Strategy gate (from brief — info-limited).</strong> Brief lists products and customer scale. Brief does not name: N-able's willingness to add SKUs (Profit Model), partner-mobilization appetite (Network), or category-naming intent (Brand). Latent uplift assumes activation — requires the strategy layer to confirm. <em>Decision: which 3 dimensions get activated first.</em>
+    </div>
+  </div>
+
+  <div class="dual-block">
+    <div class="dual-card good">
+      <div class="dual-head">⬤ What you nailed</div>
+      <ul class="dual-list">
+        <li><strong>Value Ledger is defensible.</strong> Hours saved, tasks executed, success rate, margin — receipts story has a surface.</li>
+        <li><strong>Trust ladder visible per Coworker.</strong> L1 / L2 / L3 badges concrete, with track-record numbers.</li>
+        <li><strong>Headless vision coherent.</strong> Single surface across UEM, Cove, Adlumin lands without translation.</li>
+        <li><strong>Apex Bridge tokens this pass.</strong> Same <code>--br-*</code> contract as acp-v1. Light/dark parity. No ad-hoc colors.</li>
+      </ul>
+    </div>
+    <div class="dual-card fail">
+      <div class="dual-head">⬤ What will hurt you</div>
+      <ul class="dual-list">
+        <li><strong>Single-type innovation (4/20 Doblin).</strong> Easy to copy. Moat is shallow until Profit Model / Channel / Brand / Network are activated.</li>
+        <li><strong>No MSP interviews.</strong> 7 of 10 world-claims still unverified. Walkthrough is necessary; don't skip.</li>
+        <li><strong>Override path missing.</strong> Where does the MSP say "no" to a Coworker? Designed away in current prototype.</li>
+        <li><strong>Audit trail format undefined.</strong> SDT predicts autonomy collapse without it.</li>
+        <li><strong>Resilience model absent.</strong> What happens when ACP is unavailable? Brief names the risk; prototype doesn't address.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Council preview + button to open modal -->
+  <div class="council-block">
+    <div class="council-head">Council · 9 voices · 7 clusters · 3 cross-talk moves</div>
+    <div class="crosstalk-preview">
+      <div class="head">Cross-talk preview · the special sauce</div>
+      <div class="item"><strong>JOBS reads SIGN's data:</strong> time in product UIs isn't friction — it's where MSPs perform competence for their customer.</div>
+      <div class="item"><strong>META supplies CHTR's blind spot:</strong> brief has 1 Originator (Nicole), 0 Contributors. Organizational consent is structurally absent.</div>
+      <div class="item"><strong>JOBS vs. NEEDS-SDT:</strong> serve "reduce doing" (quarter horizon) or preserve MSP competence (3-year horizon). Both sourced. Nicole's call.</div>
+    </div>
+    <button class="rail-council-btn" onclick="openCouncil()">◉ Hear the full council<span class="arrow">→</span></button>
+
+    <div class="contradiction-block" style="margin-top: 14px;">
+      <div class="lbl">⚠ 4 Contradictions — Nicole's calls</div>
+      <ol>
+        <li><strong>Blueprint vs. SDT</strong> — backstage visible on incident vs. always. When does MSP see what Coworker did?</li>
+        <li><strong>JTBD vs. Disruption</strong> — sustaining sale to existing MSPs vs. new-market sale. Which segment is this for?</li>
+        <li><strong>Value Chain vs. SDT</strong> — chokepoint control vs. user-owned trust. Black-box or auditable ledger?</li>
+        <li><strong>Ten Types (N-able-adjusted) vs. Strategy clarity</strong> — brief scores 4/20 abstractly · ~13/20 if N-able's latent Product System + Channel + Process advantages activate. Strategy layer must commit; the gap is org-decision, not capability-gap.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Routed cards -->
+  <div class="routed-block">
+    <div class="routed-head product">
+      <span class="tag">Product</span>
+      <span>Three strategic calls only Nicole can make</span>
+      <span class="attr">80% Nicole</span>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">1 · Pick the MSP segment for walkthroughs</div>
+      <div class="risk-meta">
+        <span class="k">Product does</span><span class="v">One-paragraph segment definition (size · geography · current toolset · tier). Drives JTBD vs. Disruption resolution.</span>
+        <span class="k">Why now</span><span class="v">Determines who Research recruits. Without it, 5-MSP study tests two strategies at once and validates neither.</span>
+        <span class="k">By when</span><span class="v">2026-06-05</span>
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">2 · Choose backstage visibility model</div>
+      <div class="risk-meta">
+        <span class="k">Product does</span><span class="v">Decide: incident-only, on-demand, or always-visible. Resolves Service Blueprint vs. SDT.</span>
+        <span class="k">Why now</span><span class="v">Gates Tier 2 design. Choice changes the entire override + audit surface.</span>
+        <span class="k">By when</span><span class="v">2026-06-12</span>
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">3 · Lock trust-ledger verifiability</div>
+      <div class="risk-meta">
+        <span class="k">Product does</span><span class="v">Independently auditable or black-box with named risk acceptance. Run past Compliance early.</span>
+        <span class="k">Why now</span><span class="v">Regulators in healthcare / finance verticals will not accept black-box. Value Chain testimony flagged.</span>
+        <span class="k">By when</span><span class="v">2026-06-19</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="routed-block">
+    <div class="routed-head design">
+      <span class="tag">Design</span>
+      <span>Design owns from here</span>
+      <span class="attr">70% Nicole</span>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">Override + audit-trail interaction</div>
+      <div class="risk-meta">
+        <span class="k">Design does</span><span class="v">Sketch the surface where MSP says "no" to a Coworker recommendation. Sketch the audit trail format for after-the-fact review.</span>
+        <span class="k">Why now</span><span class="v">SDT predicts autonomy collapse without override. Currently not designed; brief names the gap.</span>
+        <span class="k">Source</span><span class="v">Council testimony §SDT, §Service Blueprint</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="routed-block">
+    <div class="routed-head research">
+      <span class="tag">Research</span>
+      <span>Research owns from here</span>
+      <span class="attr">65% Nicole</span>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">5-MSP walkthrough on tool-switching pain</div>
+      <div class="risk-meta">
+        <span class="k">Research does</span><span class="v">Recruit 5 MSPs in Nicole's chosen segment. Test the headless adoption hypothesis. Measure baseline pain.</span>
+        <span class="k">Why now</span><span class="v">70% of world-claims unverified [A]+[?]. Brief is testing assumed pain, not validated pain.</span>
+        <span class="k">Source</span><span class="v">Brief §Gate 3 · Council §JTBD</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="routed-block">
+    <div class="routed-head eng">
+      <span class="tag">Eng</span>
+      <span>Eng owns from here</span>
+      <span class="attr">75% Nicole</span>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">Resilience model when ACP unavailable</div>
+      <div class="risk-meta">
+        <span class="k">Eng does</span><span class="v">Architecture sketch: fallback path, agent queue persistence, offline/online states. What does an MSP do when ACP is down?</span>
+        <span class="k">Why now</span><span class="v">Single point of failure named in brief failure modes. Adoption gated by resilience story.</span>
+        <span class="k">Source</span><span class="v">Brief §Failure modes #2</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rail-foot">
+    <strong>The 47% rule.</strong> Two prior passes inflated the [A]+[?] ratio. This pass shows the math, splits the categories, and leads with the world-claim number. Lucy holds the clipboard. Work for Nicole, not the vendor.
+  </div>
+</aside>
+
+<!-- ===================== COUNCIL MODAL ===================== -->
+<div class="modal-overlay" id="councilModal" onclick="if(event.target===this)closeCouncil()">
+  <div class="council-modal">
+    <div class="council-modal-head">
+      <div>
+        <div class="council-modal-head-title">Council testimony · ACP Headless</div>
+        <div class="council-modal-head-sub">9 voices · 7 of 14 clusters activated · owensed format · cross-talk below. Full 44-voice library: methods-library-matrix.md</div>
+      </div>
+      <button class="council-close" onclick="closeCouncil()">esc · close</button>
+    </div>
+
+    <div class="council-modal-body">
+      <div class="council-section-h">Voices · <span class="count">click any card to expand</span></div>
+      <div class="council-grid">
+
+        <!-- CHTR -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="chtr">
+          <div class="voice-head"><span class="voice-cluster chtr">CHTR</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">Moore positioning statement</div>
+          <div class="voice-tradition">STRAT · Geoffrey Moore / Crossing the Chasm</div>
+          <div class="voice-summary">Brief has an Initiative but no positioning. "Unlike [alternative]" is undrafted — usually means alternative is status quo, hardest to displace.</div>
+          <div class="voice-blindspot-preview">CHTR reads documents, not rooms. Cannot see whether the team would agree on positioning if drafted.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">CHTR</span>Moore positioning statement</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Brief problem statement: <em>"MSPs spend enormous time on repeatable operational tasks across multiple product surfaces."</em> No Moore positioning sentence drafted. The "unlike [alternative]" slot is empty.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">The team can describe what ACP Headless <strong>is</strong> but cannot complete <em>unlike what</em>. Usually means the alternative is status quo — Moore's research says status-quo is the hardest competitor to displace.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">If Nicole drafts the positioning sentence and "unlike [alternative]" parses cleanly to a named competitor or named status-quo behavior, Charter is real. If she cannot fill it without bluffing, Charter is a wish.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: VERIFIED] positioning sentence absent (grep). [CS: MEDIUM] Moore's status-quo claim — well-sourced, not personally verified for MSP segment.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">CHTR reads documents, not rooms. Cannot see whether the team would agree on the positioning if drafted. Operational existence ≠ strategic existence.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIGN -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="sign">
+          <div class="voice-head"><span class="voice-cluster sign">SIGN</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">Peirce + Tavory/Timmermans</div>
+          <div class="voice-tradition">ABD · abductive reasoning + alternative casing</div>
+          <div class="voice-summary">Single sourced claim about MSP behavior. No interview data. Single-sign confirmation pattern. Alternatives not considered.</div>
+          <div class="voice-blindspot-preview">Cannot tell whether MSPs would <em>prefer</em> a fragmented surface that costs time but lets them sense state visually.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">SIGN</span>Peirce + Tavory/Timmermans</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">One sourced claim about MSP behavior (Coworker doc). No interview data, no support-ticket pattern, no NN/g study. The brief repeats the headless thesis as if repetition were corroboration.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">Single-sign confirmation pattern. Peirce: abduction needs alternative hypotheses tested against the sign. Tavory/Timmermans: alternative casing must be surfaced. Alternatives not considered — (a) the time is <strong>the job</strong> not the friction; (b) tooling is fine, problem is alert quality; (c) MSPs want the products because that's where their craft lives.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">5 MSP interviews. If ≥3 of 5 say "yes, tool-switching is the worst part," the sign is corroborated. If &lt;3, single-source artifact.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] that single-source claims are inadequate for design decisions (Tavory/Timmermans). [CS: LOW] that alternative hypotheses listed are actually present — abductively plausible, not field-observed.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">SIGN cannot tell whether the MSP would <em>prefer</em> a fragmented surface that lets them sense state visually, even if it costs time. Observes signals, not preference.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PORT · Doblin -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="port">
+          <div class="voice-head"><span class="voice-cluster port">PORT</span><span class="voice-force should">Should</span></div>
+          <div class="voice-name">Doblin Ten Types of Innovation</div>
+          <div class="voice-tradition">IIT · Keeley et al. — Nicole's add</div>
+          <div class="voice-summary">Scores 4/20. Activated: Product Performance (2/2), Customer Engagement (1/2), Process (1/2). Seven other types dormant. Single-type innovation — Doblin says these fail.</div>
+          <div class="voice-blindspot-preview">Cannot tell whether N-able's portfolio intentionally runs single-type bets. Scores the artifact, not strategic posture.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">PORT</span>Doblin Ten Types of Innovation</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value"><strong>4 / 20 total.</strong> Activated: Product Performance 2/2 (trust ladder, Value Ledger), Customer Engagement 1/2 (trust progression loop), Process 1/2 (headless ops as process replacement). Dormant: Profit Model, Network, Structure, Product System, Service, Channel, Brand.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">Single-type innovation. Doblin's research across ~2,000 cases: innovations scoring 1–2 types have low survival regardless of execution. The moat is shallow until at least 3 more dimensions activate.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">Brief expands to activate ≥5 types before Tier 2 ships → objection retires. Ships at 2–3 types → high copy-risk within 18 months.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Should</strong> (becomes Must if defensibility is a stated goal).</div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] on Doblin's empirical methodology. [CS: MEDIUM] on the 4/20 score for this specific brief — scored by Council from brief content, not Doblin-certified scorers.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">PORT cannot tell whether N-able's portfolio strategy intentionally runs single-type bets. Doblin scores the artifact, not the org's strategic posture.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POS -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="pos">
+          <div class="voice-head"><span class="voice-cluster pos">POS</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">Christensen Disruptive Innovation</div>
+          <div class="voice-tradition">INNOV · The Innovator's Dilemma</div>
+          <div class="voice-summary">Textbook low-end disruption. Two-front conflict: external first-mover available; internal UEM/Cove/Adlumin teams will resist before market reacts.</div>
+          <div class="voice-blindspot-preview">Identifies market structure, not user motivation. Cannot tell whether disruption shape matches MSP psychology.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">POS</span>Christensen Disruptive Innovation</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Brief proposes MSPs operate without opening UEM/Cove/Adlumin — deliberately "worse" on traditional product-UI metrics (feature depth, configurability) but "better" on a new dimension (time-to-resolution for repeatable tasks). Classic disruption shape.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">Two-front conflict. <strong>External:</strong> ConnectWise/Kaseya/Datto have not (publicly) shipped headless models — first-mover available. <strong>Internal:</strong> UEM/Cove/Adlumin product teams have headcount and metrics tied to product-UI engagement. Headless reduces those metrics by design. Internal resistance arrives before external market response.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">N-able's leadership names internal political support before Tier 2 ships → internal disruption risk reduced. Cannot → prototype trajectory is gated by org politics, not customer adoption.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] on Christensen's disruption pattern recognition. [CS: UNKNOWN] on internal product team resistance — Beth's domain, Nicole's read.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">POS cannot see whether the disruption shape matches MSP psychology. Christensen identifies market structure, not user motivation.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- JOBS -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="jobs">
+          <div class="voice-head"><span class="voice-cluster jobs">JOBS</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">JTBD functional + emotional/social</div>
+          <div class="voice-tradition">INNOV · Christensen / Ulwick</div>
+          <div class="voice-summary">Three jobs active, not one. Functional: reduce ops time. Emotional: feel in control during incidents. Social: look competent to customer. Headless serves one, may undermine two.</div>
+          <div class="voice-blindspot-preview">Reads what is being hired. Does not adjudicate whether the hire is healthy.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">JOBS</span>JTBD functional + emotional/social</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Brief's job description: "reduce repeatable operational work" — functional only. No emotional or social job named. Coworker doc hints at emotional ground: <em>"MSPs want to be the expert their customer trusts."</em></div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">Three jobs active. <strong>Functional:</strong> reduce time on ops. <strong>Emotional:</strong> feel in control when incidents escalate. <strong>Social:</strong> look competent to customer. Headless serves the functional job but may undermine the other two — MSPs cannot perform competence through visible product mastery if they don't open the products.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">In the 5-MSP walkthrough: "What do you do when your customer asks how you fixed something?" If MSPs reference the product UI, social job depends on product visibility. If they reference Value Ledger, social job has been migrated.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] on JTBD's three-job framework. [CS: LOW] on the specific three jobs for MSPs — abductive, not interviewed.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">JOBS cannot tell whether removing visible products <em>helps</em> because product UIs are the cognitive load source, not the competence performance vehicle. Reads what is hired; does not adjudicate healthiness.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEEDS -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="needs">
+          <div class="voice-head"><span class="voice-cluster needs">NEEDS</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">Self-Determination Theory</div>
+          <div class="voice-tradition">PSYCH · Deci / Ryan</div>
+          <div class="voice-summary">Three needs (autonomy · competence · relatedness) at asymmetric risk. Trust ladder only ratchets up. Competence atrophies over 3 years. Relatedness routes through Value Ledger, not product mastery.</div>
+          <div class="voice-blindspot-preview">Names the needs; does not survey whether users feel them as binding constraints. MSPs may want deskilling as relief.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">NEEDS</span>Self-Determination Theory</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Trust ladder (L0–L4) ratchets up. No demotion path in brief or prototype. Coworker promotion is one-way.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">SDT's three needs at asymmetric risk. <strong>Autonomy</strong> — supported by trust ladder <em>if</em> MSP can demote; currently cannot, so autonomy is unilateral. <strong>Competence</strong> — erodes over three-year horizon if MSP only ever approves Coworker output (skill atrophy documented in NN/g 2023+). <strong>Relatedness</strong> — MSP's relationship to customer routes through Value Ledger, not visible product mastery; whether that supports or erodes relatedness is unknown.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">Design a demotion path (any MSP can move any Coworker down a trust level for any reason, with audit). Lands cleanly → autonomy objection retires. Surfaces edge-case complexity (does demotion roll back in-flight work?) → autonomy claim is fragile.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] on SDT (Deci/Ryan, decades). [CS: MEDIUM] on agent-mediated skill atrophy — NN/g and Anthropic-internal preliminary studies, not a settled finding.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">NEEDS cannot tell whether MSPs actively <em>want</em> deskilling — outsourcing cognitive load might feel like a gift, not a loss. Names the needs; does not survey whether users feel them as binding.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- JRNY -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="jrny">
+          <div class="voice-head"><span class="voice-cluster jrny">JRNY</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">Service Blueprint</div>
+          <div class="voice-tradition">UX · Shostack / Bitner</div>
+          <div class="voice-summary">Brief names four failure modes. Prototype shows none of the recovery surfaces. Backstage structurally invisible by design.</div>
+          <div class="voice-blindspot-preview">Says backstage visibility is required. Does not specify the mode — could be brief product-UI opening on incident.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">JRNY</span>Service Blueprint</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Brief names four failure modes (trust collapse, single point of failure, abstract trust model, surveillance perception). Prototype shows none of the recovery surfaces. Backstage is structurally invisible: by design, MSP never opens products that hold operational truth.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">A headless service without a designed backstage-on-incident protocol is not a service — it is a demo. Production headless requires backstage to become visible on demand or on failure.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">Sketch one recovery interaction (Coworker fails, MSP must intervene). Renderable in existing shell → gap is design work. Requires opening underlying product UI → headless thesis breaks.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] on Shostack/Bitner service blueprint discipline. [CS: VERIFIED] prototype has no error/escalation/audit surface (grep).</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">JRNY cannot tell whether MSPs would tolerate brief product-UI opening on incident as acceptable fallback. Requires backstage visibility; does not specify the mode.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAND -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="land">
+          <div class="voice-head"><span class="voice-cluster land">LAND</span><span class="voice-force should">Should</span></div>
+          <div class="voice-name">Wardley Mapping</div>
+          <div class="voice-tradition">STRAT · Simon Wardley</div>
+          <div class="voice-summary">Trust signals for AI agents are between custom-built and product on the evolution axis. Brief positions them as if already mature.</div>
+          <div class="voice-blindspot-preview">Reads supplier dynamics, not user perception. Cannot tell whether MSPs care about evolution stage.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">LAND</span>Wardley Mapping</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Value Ledger positioned as customer-facing artifact. On a Wardley map, customer-visible value evolves: custom-built → product → commodity → utility. Trust signals for AI agents currently in custom-built → product transition; brief positions them at "product."</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">The trust ledger as designed is a custom-built artifact ("our trust math") in a market that has not commoditized. Whoever lands at the <em>product</em> phase first gets to define the category — the Value Chain chokepoint. Brief skips the work of moving the artifact through evolution; assumes it arrives mature.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">Map three competitive trust-signal approaches on Wardley evolution axis. ACP genuinely ahead → chokepoint thesis holds. Two competitors at same stage → moat is timing, not architecture.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Should.</strong></div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: HIGH] on Wardley's evolution methodology. [CS: UNKNOWN] on competitor positioning — no competitive scan in brief.</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">LAND cannot tell whether MSPs care about evolution stage. Wardley reads supplier dynamics, not user perception.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ECON -->
+        <div class="voice-card" onclick="expandVoice(this)" data-voice="econ">
+          <div class="voice-head"><span class="voice-cluster econ">ECON</span><span class="voice-force must">Must</span></div>
+          <div class="voice-name">Economic Buyer</div>
+          <div class="voice-tradition">MKT · Miller Heiman strategic selling</div>
+          <div class="voice-summary">No buying motion named. ACP bundled with existing N-able subscriptions. No per-Coworker SKU, no per-execution pricing. Doblin Profit Model dimension 0/2.</div>
+          <div class="voice-blindspot-preview">Reads value-capture mechanism. Does not predict adoption psychology.</div>
+          <div class="voice-expanded" style="display:none;">
+            <div class="voice-expanded-head"><div class="voice-expanded-title"><span class="cluster">ECON</span>Economic Buyer</div><button class="voice-collapse" onclick="event.stopPropagation();collapseVoice(this)">collapse</button></div>
+            <div class="voice-fields">
+              <div class="voice-field-label">Sign</div><div class="voice-field-value">Brief names no economic buyer for ACP Headless. Described as bundled with existing N-able subscriptions. No per-Coworker SKU, no per-execution pricing, no margin-share with MSPs. Doblin Profit Model 0/2.</div>
+              <div class="voice-field-label">Hypothesis</div><div class="voice-field-value">Without a named buying motion, ACP Headless is a feature of the existing subscription, not a product. Sales has no line item. Customer Success has no expansion path. The Doblin defensibility weakness maps directly to a revenue model weakness: no transaction captures the value Headless creates.</div>
+              <div class="voice-field-label">Kill criterion</div><div class="voice-field-value kill">Name the buying motion. Three candidates: (a) included in current bundle, sold as <strong>retention</strong>; (b) per-Coworker pricing, sold as <strong>expansion</strong>; (c) value-share on MSP margin saved, sold as <strong>partnership</strong>. Pick one. Cannot pick → brief has no theory of value capture.</div>
+              <div class="voice-field-label">Force level</div><div class="voice-field-value"><strong>Must</strong> (before Tier 2).</div>
+              <div class="voice-field-label">Evidence</div><div class="voice-field-value">[CS: VERIFIED] brief names no economic buyer (grep). [CS: HIGH] on Economic Buyer methodology (Miller Heiman strategic selling).</div>
+              <div class="voice-field-label">Cannot see</div><div class="voice-field-value blindspot">ECON cannot tell whether MSP buying psychology accepts any of the three motions. Reads value-capture; does not predict adoption.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Cross-talk section -->
+      <div class="council-section-h">Cross-talk · <span class="count">3 moves · the special sauce</span></div>
+      <div class="crosstalk-section">
+
+        <div class="crosstalk-block">
+          <div class="move-label">Move 1 · Direct response</div>
+          <div class="voices-chip"><span style="color: var(--br-color-state-info);">SIGN</span> → <span style="color: var(--br-color-state-warning);">JOBS</span></div>
+          <div class="ct-body">SIGN observes the brief's single source: <em>"MSPs spend enormous time on repeatable operational tasks."</em> SIGN's hypothesis: not enough alternative casing — the time might be the job, not the friction. <strong>JOBS reads the same sign and goes further:</strong> the time spent in product UIs is the MSP's emotional and social job. MSPs are not just executing tasks in those UIs — they are performing competence in front of their customer. If the prototype removes the products, it does not remove a friction; it removes the stage on which the MSP's craft is visible.</div>
+          <div class="new-claim"><strong>New claim · surfaced only by cross-talk</strong><br>The headless thesis is not "remove the products." It is <em>"migrate the MSP's competence performance from the product UI to the ACP."</em> That is a much harder design problem than the brief acknowledges — and it makes the Value Ledger the central artifact, because the Ledger is the new stage.</div>
+        </div>
+
+        <div class="crosstalk-block">
+          <div class="move-label">Move 2 · Blind-spot supply</div>
+          <div class="voices-chip"><span style="color: var(--br-color-brand-accent);">CHTR</span> ← <span style="color: var(--br-color-ink-secondary);">META</span></div>
+          <div class="ct-body">CHTR admitted its blind spot: <em>"reads documents, not rooms. Cannot see whether the team would agree on the positioning if drafted."</em> <strong>META supplies the answer</strong> using Owen Originator/Contributors lens. The brief has 1 named Originator (Nicole), 0 named Contributors. A multi-type Doblin expansion (Profit Model, Channel, Brand, Network) would require a Contributors panel including Sales, Marketing, Eng leadership, and at minimum one MSP design partner. None are named.</div>
+          <div class="new-claim"><strong>New claim · surfaced only by cross-talk</strong><br>Before Tier 2 ships, Nicole must name the Contributors panel for each Doblin dimension Council recommended — Profit Model → Sales lead; Channel → Marketing lead; Brand → Marketing + Product; Network → Eng + Community. If she cannot name them by 2026-06-19, the brief is a single-author wish, regardless of how strong the prototype reads.</div>
+        </div>
+
+        <div class="crosstalk-block">
+          <div class="move-label">Move 3 · Productive tension</div>
+          <div class="voices-chip"><span style="color: var(--br-color-state-warning);">JOBS-functional</span> ⇄ <span style="color: var(--br-color-brand-accent);">NEEDS-SDT-competence</span></div>
+          <div class="ct-body">JOBS reads: <em>"MSPs hiring to reduce repeatable operational work."</em> That's the functional hire. The brief serves it. NEEDS-SDT reads the same brief and the same trust ladder, and finds: <em>MSPs who only ever approve Coworker output will atrophy on competence within three years.</em> The brief's success scenario (full L3 adoption across all Coworkers) is the worst case for the MSP's competence trajectory. <strong>Both readings are sourced.</strong> JTBD is canonical. SDT is canonical. They are not opponents — they are reading at different time horizons. JOBS reads the next quarter. SDT reads the next three years.</div>
+          <div class="new-claim"><strong>Design decision · Nicole owns</strong><br>Does the trust ladder ratchet only up (serves JOBS, harms NEEDS), or does it allow demotion plus <em>competence preservation rituals</em> — a periodic mode where MSP must do the work the Coworker normally does, to maintain the skill? Option two serves both jobs at the cost of design complexity. Tier 2 cannot ship without naming which one.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleMode() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-apx-mode');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-apx-mode', next);
+    document.getElementById('modeBtn').textContent = next === 'dark' ? '◑ Light mode' : '◐ Dark mode';
+  }
+
+  const PAGE_TITLES = {
+    dashboard: 'Dashboard',
+    coworkers: 'Coworkers',
+    runbooks: 'Runbooks',
+    audit: 'Audit trail',
+    tenants: 'Tenants'
+  };
+  function navigate(name) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    const target = document.getElementById('page-' + name);
+    if (target) target.style.display = 'block';
+    document.querySelectorAll('.sb-item[data-view]').forEach(i => i.classList.toggle('active', i.dataset.view === name));
+    const crumb = document.getElementById('tb-crumb');
+    if (crumb) crumb.textContent = PAGE_TITLES[name] || name;
+    document.querySelector('.main-wrap').scrollTop = 0;
+  }
+
+  function openCouncil() {
+    document.getElementById('councilModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCouncil() {
+    document.getElementById('councilModal').classList.remove('open');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.voice-card.expanded').forEach(c => collapseVoiceCard(c));
+  }
+  function expandVoice(card) {
+    if (card.classList.contains('expanded')) return;
+    document.querySelectorAll('.voice-card.expanded').forEach(c => collapseVoiceCard(c));
+    card.classList.add('expanded');
+    card.querySelector('.voice-expanded').style.display = 'block';
+    card.querySelectorAll('.voice-head, .voice-name, .voice-tradition, .voice-summary, .voice-blindspot-preview').forEach(el => el.style.display = 'none');
+  }
+  function collapseVoice(btn) {
+    const card = btn.closest('.voice-card');
+    collapseVoiceCard(card);
+  }
+  function collapseVoiceCard(card) {
+    card.classList.remove('expanded');
+    card.querySelector('.voice-expanded').style.display = 'none';
+    card.querySelectorAll('.voice-head, .voice-name, .voice-tradition, .voice-summary, .voice-blindspot-preview').forEach(el => el.style.display = '');
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('councilModal').classList.contains('open')) closeCouncil();
+  });
+</script>
+</body>
+</html>

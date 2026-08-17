@@ -1,0 +1,256 @@
+﻿TRANSCRIPT: Jim Lapore - Ask N-zo Feedback Session
+Source: jameson.vtt
+============================================================
+
+What Jim Liked About N‑zo
+Strong value for lifecycle planning
+Jim repeatedly emphasized that N‑zo was especially helpful for lifecycle planning and asset evaluation.
+
+“I did use it several times in a kind of a light, we call it life cycle planning here.”
+“For our life cycle planning process that Enzo would be valuable to analyze.”
+“I can see us using that as part of our planning process.”
+
+High‑quality recommendations and breakdowns
+He was impressed with how clearly N‑zo explained why machines should be replaced.
+
+“It did a really good job at that.”
+“It gave us a nice breakdown of all the machines… I would recommend these because of age… four gigs of RAM… and broke it down.”
+
+Surfaced insights he would have missed manually
+N‑zo caught issues that did not stand out in his own review.
+
+“It was able to tell me, hey, you know what? This laptop only has a Celeron processor… You might want to replace that and that didn’t bubble up on my initial review.”
+
+Clear time savings
+Jim was very concrete about efficiency gains.
+
+“It saved definitely saved us time.”
+“I would say 20 minutes probably down to.”
+“It came back with the information… in less than a minute.”
+
+Scales across customers
+He didn’t just test once. He reused it across multiple environments.
+
+“I did it several times for several different customers over the course of the trial.”
+
+Speed met expectations
+Response time was solid and comparable to other AI tools he uses.
+
+“No, I was happy with the speed.”
+“I didn’t have any qualms about the response time.”
+
+Accuracy and reliability
+He explicitly called out confidence in the results.
+
+“I had no issues with speed or accuracy.”
+
+Useful for customer-facing planning conversations
+N‑zo supported the work he does to build and present technology plans to customers.
+
+“We’re evaluating their infrastructure and creating a technology plan for the upcoming year.”
+“Part of that is evaluating their computer infrastructure and making recommendations.”
+
+Willingness to adopt when generally available
+This wasn’t just a nice experiment. He sees it as something they would actually use.
+
+“Yeah, I can see us using that as part of our planning process.”
+
+Exportable outputs are acceptable
+He confirmed that simple export formats would work for their workflow.
+
+“Exportable into a Word format is fine.”
+
+ 
+WHAT DID JIM NOT LIKE
+
+ 
+
+Everything Jim Did Not Like or Found Limiting
+Missing access to software asset data
+This was his strongest and most repeated concern.
+
+“It didn’t have access to the software assets, but it did to the hardware.”
+“That would be nice.”
+“The data’s there, it must be somewhere different that it’s harder for it to grab.”
+
+He specifically wanted:
+
+Installed software visibility
+Versions
+Cross‑customer querying
+“It would be nice… to easily see across everybody who has this piece of software installed.”
+“Who has maybe… Adobe 2017 that’s gonna be going off support.”
+
+He emphasized this multiple times:
+
+“I really must have hit me with the software… I mentioned it three times in my notes here.”
+
+Inability to answer firmware‑related questions
+He tested this intentionally and noted the limitation.
+
+“I tried seeing if it could determine which computers needed a firmware update.”
+“It was not able to do that.”
+
+He clarified that this was not unexpected, but still a gap.
+
+Ambiguous categorization in memory breakdowns
+He found the way RAM ranges were grouped confusing and imprecise.
+
+“It broke down the computers into what I would consider ambiguous category.”
+“Here are the computers that have between 4 and 8 gigs of RAM.”
+“If they have eight, are they in the 4 to 8 or are they in the 8 to 16?”
+“That gave me some ambiguous data there.”
+
+No way to start a new chat / clear context
+This was framed as a UX issue and compared directly to Copilot.
+
+“When I’m using Copilot, there’s a button to start a new chat.”
+“There’s no button like that that I could find in Enzo.”
+“That would be a nice addition as well.”
+
+Poor discoverability / placement of N‑zo in the UI
+His team struggled to even find it.
+
+“Every time I was, ‘Where is it? I can’t find it.’”
+“It’s like it’s on the asset tab, guys.”
+
+He tied this directly to reduced usage:
+
+“If it was more prominent, it would get more use, I’m sure.”
+
+Team onboarding clarity (indirect issue)
+While Jim personally was fine, his team struggled.
+
+“I didn’t have any problem.”
+“They had a little bit more difficulty with it.”
+“It may have been that I didn’t communicate that great to my team.”
+
+This is still a signal of friction at scale.
+
+Lack of software‑side lifecycle planning
+He framed current value as hardware‑only and future‑incomplete.
+
+“The hardware side, at least for now, and eventually the software side.”
+
+ 
+Data We Should Add (In Order)
+1. Software asset inventory
+This was the most explicit and repeated gap.
+
+“It didn’t have access to the software assets.”
+“I mentioned the software… I mentioned it three times in my notes here.”
+
+Specifically:
+
+Installed software per machine
+Software visibility equivalent to hardware assets
+2. Software version data
+Not just what is installed, but which version.
+
+“You want to know the software that’s installed on a machine and the version.”
+
+This is foundational for lifecycle planning and risk conversations.
+
+3. Cross‑customer software querying
+He wants to ask questions across all clients, not one at a time.
+
+“Easily see across everybody who has this piece of software installed.”
+“Who has maybe… Adobe 2017 that’s gonna be going off support.”
+
+This is a scale requirement, not a convenience feature.
+
+4. Firmware status / firmware update data
+He tested this intentionally and noted the limitation.
+
+“I tried seeing if it could determine which computers needed a firmware update.”
+“It was not able to do that.”
+
+Even though he said he didn’t expect it, it is still a clearly stated data gap.
+
+5. More precise memory (RAM) categorization
+The issue here is data clarity, not absence.
+
+“It broke down the computers into what I would consider ambiguous category.”
+“If they have eight, are they in the 4 to 8 or are they in the 8 to 16?”
+
+This implies the need for:
+
+Exact values
+Non‑overlapping ranges
+Clear thresholds
+6. Expanded lifecycle data beyond hardware
+He framed current value as incomplete without software.
+
+“The hardware side, at least for now, and eventually the software side.”
+
+This reinforces that lifecycle planning data must include:
+
+Hardware + software together
+End‑of‑support signals tied to both
+7. Vulnerability data (forward‑looking confirmation)
+This came up at the end as something he was told was coming and responded positively to.
+
+“We are including vulnerability information over the next sprint.”
+
+While not a complaint, it is implicitly validated as expected and relevant data for his use case.
+
+ UI Issues to Fix (From Jim’s Feedback)
+1. No way to start a new chat / clear conversation context
+Jim explicitly compared this to Copilot and called it out as missing functionality.
+
+“When I’m using like Copilot, there’s a button to, you know, start a new chat so it forgets the history of your previous chat.”
+“There’s no button like that that I could find in Enzo.”
+“That would be a nice addition as well.” [James Lapo...Recording | Video]
+
+UI implication:
+Users need a clear, intentional way to reset context when switching tasks.
+
+2. Poor discoverability of N‑zo in the product UI
+This was a repeated issue, especially for his team.
+
+“Every time I was, ‘Where is it? I can’t find it. Where is it?’”
+“It’s like it’s on the asset tab, guys.” [James Lapo...Recording | Video]
+
+UI implication:
+N‑zo’s current placement is unintuitive and easy to miss.
+
+3. Low visibility directly impacts adoption
+He tied placement issues directly to reduced usage.
+
+“If it was more prominent, it would get more use, I’m sure.” [James Lapo...Recording | Video]
+
+UI implication:
+This is not cosmetic. Visibility is a primary driver of engagement.
+
+4. Asset‑only placement is a constraint
+While not framed as a complaint, he validated that asset‑scoped placement limited usage.
+
+“My guys did not do as much testing as I would like.”
+“They would go in and… I don’t even know what they asked other than the basic things.” [James Lapo...Recording | Video]
+
+UI implication:
+Users don’t naturally associate “AI assistant” with “asset tab.” Placement conflicts with mental models.
+
+5. Team‑level onboarding friction (UX clarity)
+Jim personally understood onboarding, but his team struggled.
+
+“I did because we had the call.”
+“They had a little bit more difficulty with it.” [James Lapo...Recording | Video]
+
+UI implication:
+The UI alone is not self‑explanatory enough for first‑time users without guided context.
+
+ 
+
+ 1. Output format expectations (light but explicit)
+
+He confirmed Word export would work, which implicitly sets a bar for actionable outputs, not just chat responses.
+
+“Exportable into a Word format is fine.” [James Lapo...Recording | Video]
+
+ 
+
+Seasonality of value
+He noted that N‑zo is more valuable at certain times of year.
+
+“There’s probably certain times of the year when it’s going to be more handy.” [James Lapo...Recording | Video]

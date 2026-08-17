@@ -1,0 +1,30 @@
+{
+  "_source_md": "README.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-README",
+    "title": "ACP Market Analysis \u00b7 Handoff Package",
+    "version": "1.0.0",
+    "status": "Hybrid \u00b7 Consolidated \u00b7 Anonymized",
+    "date": "2026-06-05",
+    "owners": {
+      "product": "Beth Schwindt",
+      "ai_strategy": "Nicole Reineke",
+      "recipient": "N-able Spec-Driven Design Team"
+    },
+    "top_level_md_count": 11,
+    "critic_score": "19/30 \u2014 strong analysis, some delivery gaps (improving)",
+    "known_issues": [
+      "CLAIM-MATH-DISPUTED-001 \u2014 $33,600/month figure doesn't reconcile with formula",
+      "Wardley framework body still truncated"
+    ]
+  },
+  "sections": [],
+  "structured_blocks": [],
+  "tables": [],
+  "inline_id_references": [
+    "CLAIM-MATH-DISPUTED",
+    "CLAIM-MATH-DISPUTED-001"
+  ],
+  "cs_tag_histogram": {}
+}

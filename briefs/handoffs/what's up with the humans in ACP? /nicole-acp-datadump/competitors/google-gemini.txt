@@ -1,0 +1,59 @@
+# Google Gemini / Vertex AI
+slug: google-gemini
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Google's Gemini platform is the company's flagship AI ecosystem spanning frontier models (Gemini 3.1 Pro, Flash, Flash Lite), developer APIs, and enterprise AI products. At Google Cloud NEXT 2026, Google consolidated its AI offerings into the Gemini Enterprise Agent Platform — unifying Vertex AI, Agentspace, and Dialogflow CX into a single enterprise agent development and deployment environment. Gemini models are available via Google AI Studio (developer), the Gemini API, and Google Cloud (enterprise), with Workspace AI integration embedded in Gmail, Docs, Sheets, and Meet.
+
+## MSP Relevance
+Google Gemini is relevant to MSPs that manage Google Workspace environments or operate on Google Cloud infrastructure. MSPs reselling Workspace now deliver embedded Gemini AI to clients as part of the standard offering. The Gemini Enterprise Agent Platform and Agent Development Kit (ADK) provide MSPs with tools to build custom AI agent solutions for enterprise clients. Google's partnership model for AI (via Cloud Select Partners) enables MSPs to offer Gemini-powered managed AI services.
+
+## Key Offerings & Capabilities
+- Gemini models — Gemini 3.1 Pro (2M token context, $2.00/$12.00 per MTok), Gemini 3 Flash (mid-range), Gemini 3.1 Flash Lite (cost-efficient at $0.25/$1.00 per MTok)
+- Gemini API — developer access via Google AI Studio; batch processing at 50% discount; context caching at 90% discount on cached tokens
+- Agent Development Kit (ADK) — open-source multi-language (Python, TypeScript, Go, Java) framework for building enterprise agents; 100+ pre-built enterprise connectors
+- Gemini Enterprise Agent Platform — unified platform consolidating Vertex AI, Agentspace, and Dialogflow CX (launched April 2026)
+- Agent Studio — low-code visual builder for creating agents without code
+- Agent Engine Runtime — fully managed runtime for deploying production agents on Google Cloud
+- Agentspace — enterprise internal agent deployment for employee productivity workflows
+- Google Workspace AI — Gemini embedded in Business/Enterprise plans across Gmail, Docs, Sheets, Meet, Chat, Vids
+- 200+ foundation models in model garden — Gemini, Claude, Lyria, Gemma, open-source options
+
+## Recent Announcements
+- April 22, 2026: Gemini Enterprise Agent Platform launched at Google Cloud NEXT 2026 — consolidates Vertex AI, Agentspace, and Dialogflow CX into unified enterprise agent environment
+- Gemini 3.1 Pro (February 2026) with 2 million token context window — largest context of any generally available model
+- Gemini 3.1 Flash Lite (March 2026) for cost-efficient, high-volume workloads
+- Dialogflow CX standalone console deprecated October 31, 2025 — users transitioned to unified Conversational Agents console
+- Google Workspace pricing: Business plans now include Gemini AI at $14/user/month (increased from $12/user/month, March 2025)
+- RapidScale (Cox Business) announced three-tiered Gemini AI managed service suite as Google Cloud Select Partner
+
+## Pricing Model
+Tiered model across consumer, developer, and enterprise. Gemini API (developer): Gemini 3.1 Pro at $2.00/$12.00 per MTok (under 200K context); Flash Lite at $0.25/$1.00 per MTok; batch processing 50% off; context caching 90% discount on cached inputs. Google AI Studio free for prototyping (no per-token billing in Studio). Workspace Business Plus includes Gemini at $14/user/month standard. Gemini Enterprise Agent Platform pricing custom via Google Cloud sales — production compute at $0.0864 per vCPU-hour.
+
+## Strengths
+- 2M token context window on Gemini 3.1 Pro — largest available; reduces chunking and retrieval complexity for enterprise workloads
+- ADK open-source with 100+ enterprise connectors — lowers custom integration burden for MSPs building on Google Cloud
+- Workspace integration is seamless for Google-native clients — Gemini is already there, no separate deployment
+- Agent Engine Runtime removes infrastructure management burden — MSPs focus on agent logic, not compute
+- Cost optimization tools (batch, caching) make Gemini price-competitive with alternatives for high-volume use cases
+- RapidScale model validates that managed AI service offerings built on Gemini are viable for MSP channel
+
+## Weaknesses / Gaps
+- No dedicated MSP program — channel access requires Google Cloud partnership (Select or Premium tier); indirect path for independent MSPs
+- Pricing complexity across multiple billing dimensions (compute, memory, models, queries) creates unpredictable cost models
+- Workspace-centric value is limited to clients already on Google Workspace; Windows/M365-heavy MSP clients see less value
+- Gemini Enterprise Agent Platform is newly launched (April 2026) — enterprise production maturity still being validated
+- Apple-only equivalent: MCP support not prominently featured in Google's public documentation as of mid-2026
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Google Gemini is an AI model and platform provider — infrastructure that MSP AI tools are built on, not a direct MSP product. The threat vector is Google Workspace MSPs choosing to build AI automation directly on ADK/Agent Engine rather than NZO. For Google Workspace-centric MSPs, Gemini embedded in Workspace may reduce the perceived need for additional AI automation tooling. NZO's positioning needs to address Workspace-native AI clearly.
+
+## Notes
+- The RapidScale managed AI service suite is worth studying as a model for MSP GTM on Google Cloud AI
+- ADK's 100+ pre-built connectors are a real differentiator for MSPs who build on Google Cloud — reduces integration work significantly
+- Context caching (90% discount) and batch processing (50% discount) make Gemini competitive on cost for high-volume MSP automation use cases
+- Monitor ADK adoption in the MSP developer community — if it gains traction, it becomes the standard for Google-based MSP AI tooling

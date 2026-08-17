@@ -1,0 +1,172 @@
+[
+  {
+    "id": "D1",
+    "label": "Demand intensity is real (8.3 per-mention, most enthusiastic open-text)",
+    "probability": 0.85,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "Independent quant (n=39 and larger) shows the enthusiasm was an artifact of the shared 8-person qual base, not a durable signal.",
+    "test_that_resolves_it": "Cross-check intensity against the independent survey cut and any n=119 open-text; separate category-enthusiasm from feature-switch intent.",
+    "evidence": "[R/D] CS:HIGH on enthusiasm - 8.3 n=8 + most enthusiastic open-text. But n=8 shares the qual base with the #3 qual rank (H8); only n=39 adds independence."
+  },
+  {
+    "id": "D2",
+    "label": "Diagnostic delta beats Rost/Thread/PIA/incumbents (THE CORE BET)",
+    "probability": 0.30,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "On real anonymized tickets, ACP's diagnosis is not measurably better than Rost/Thread/PIA or a PSA-native classifier - no wedge, only a commodity router.",
+    "test_that_resolves_it": "Blind bench-test ACP diagnosis vs Rost/Thread/PIA on a corpus of real anonymized tickets; measure accuracy and time-to-context delta with MSP judges.",
+    "evidence": "[A - untested, Beth-tagged core bet]. CS:LOW. Compounded by the fact the diagnostic capability is not in the day-1 build (FSN-82692)."
+  },
+  {
+    "id": "D3",
+    "label": "The wedge is live diagnostics, not classification (classification = table stakes)",
+    "probability": 0.75,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "Buyers value the classification/routing enough on its own that diagnostics are not needed to differentiate - OR classification turns out NOT to be table stakes.",
+    "test_that_resolves_it": "Kano survey on classification vs diagnostics; confirm classification lands as must-be and diagnostics as performance/delighter.",
+    "evidence": "[R] CS:HIGH that classification is table-stakes (offerings labels it table-stakes-in-PSA; #6 forced-rank). The framing is sound; the risk is that the wedge half is unbuilt."
+  },
+  {
+    "id": "D4",
+    "label": "Superpower holds: SOC pattern data + PSA integration depth power the diagnosis",
+    "probability": 0.55,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "The SOC auto-remediation corpus does not generalize to PSA ticket diagnosis, or PSA integration depth is shallower than the pitch (see H5 single-PSA).",
+    "test_that_resolves_it": "Map SOC corpus categories to the actual ticket taxonomy; confirm coverage; audit PSA integration depth beyond ConnectWise.",
+    "evidence": "[A]/[R]. CS:MEDIUM. SOC corpus is a real superpower for A; its transfer to ticket-level diagnosis is assumed, not demonstrated."
+  },
+  {
+    "id": "D5",
+    "label": "Safe-auto vs human-sign-off line matches where MSPs expect it (MSP-C separation-of-duties)",
+    "probability": 0.55,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "MSPs want the auto/approve line drawn differently (more human sign-off, or different risk tiers), so the day-1 auto-execute either scares them or feels useless.",
+    "test_that_resolves_it": "Operator interviews (5-8 MSPs) on which triage/dispatch actions they'd allow auto vs require sign-off day-1.",
+    "evidence": "[A] CS:LOW - single MSP-C anchor for separation-of-duties. Auto/batch line is spec'd (FSN-82692) but not validated against buyer expectation."
+  },
+  {
+    "id": "D6",
+    "label": "Commodity risk is survivable (RMM/PSA won't fold triage in first)",
+    "probability": 0.35,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "ConnectWise/Autotask/Halo or the RMM ships native triage/classification free, commoditizing D before it monetizes.",
+    "test_that_resolves_it": "Track incumbent roadmaps; test whether the diagnostic delta (D2) is enough to survive a free native classifier.",
+    "evidence": "[R] CS:HIGH that the objection is real - 'it'll be built into my RMM/PSA' recurred >=4/5. Probability reflects how exposed D is, not how likely we survive."
+  },
+  {
+    "id": "D7",
+    "label": "Daily frequency compounds into habit/retention (the retention advantage)",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "Daily use produces daily wrong-answers that erode trust faster than habit forms (H2), OR users automate it away and forget it exists (no felt value).",
+    "test_that_resolves_it": "Longitudinal use study; track trust/NPS against error rate over 8-12 weeks of daily runs.",
+    "evidence": "[A - the retention advantage]. CS:LOW. Frequency is a double-edged sword: it's the retention thesis AND the trust-erosion and blast-radius multiplier."
+  },
+  {
+    "id": "D8",
+    "label": "Integration depth is the buying criterion and we can meet it",
+    "probability": 0.45,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "Buyers require deeper RMM/PSA integration than day-1 ships (ConnectWise-only, ticket-scope permissions), so 'deep integration' buyers won't adopt.",
+    "test_that_resolves_it": "Confirm required integration depth with Derek-type buyers; audit day-1 scope vs that bar.",
+    "evidence": "[R] CS:HIGH the criterion is real (Derek: 'only if deep integration into my RMM'). Meeting it day-1 is [A] - build is ConnectWise-only, PSA-scope only."
+  },
+  {
+    "id": "D9",
+    "label": "Triage converts MSPs into buyers of A / the platform (the on-ramp, the day-1 reason)",
+    "probability": 0.30,
+    "required": true,
+    "stage": "defend",
+    "kill_criterion": "Triage users do not trial or buy A at a rate that justifies leading go-live with the #6-ranked feature; D remains a standalone commodity with no independent TAM.",
+    "test_that_resolves_it": "Instrument the funnel: add conversion events to the existing build (triage-user -> A trial -> A purchase); run a cohort and measure lift vs non-triage entry.",
+    "evidence": "[A - the strategic reason it's day-1]. CS:LOW. ZERO conversion instrumentation in the spec today (FSN-82692 tracks time/completion/success only); other coworkers merely 'bookmarked' (H4)."
+  },
+  {
+    "id": "D10",
+    "label": "WTP supports the price (Derek max ~$300/mo flat)",
+    "probability": 0.40,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "MSPs won't pay a separate/meaningful price for triage because it's table-stakes and self-buildable; ceiling is flat, low, per-tech.",
+    "test_that_resolves_it": "Van Westendorp / Gabor-Granger on the target segment, isolating triage value from platform value.",
+    "evidence": "[MEDIUM, single-source] - Derek 'max ~$300/mo flat'. D has no independent TAM; carries A's per-tech TAM, so D double-taxes the same seat."
+  },
+  {
+    "id": "D-H1",
+    "label": "Safe auto-executed diagnostics don't create a blast-radius/liability incident",
+    "probability": 0.70,
+    "required": true,
+    "stage": "defend",
+    "kill_criterion": "An auto-executed low-risk action mis-routes/mis-acts at daily machine scale against a live client PSA, producing a customer-impacting incident.",
+    "test_that_resolves_it": "Staged rollout with kill-switch and per-action audit; measure auto-action error rate at scale before widening auto-execute scope.",
+    "evidence": "[A] - NEW HOLE. CS:LOW. Low-risk auto-executes with no human in loop by design (FSN-82692:203); daily frequency multiplies blast radius; unmodeled."
+  },
+  {
+    "id": "D-H2",
+    "label": "False-diagnosis trust erosion stays below the abandonment threshold",
+    "probability": 0.45,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "Wrong diagnoses (which the junior tech starts from) accumulate daily and cross the trust-abandonment threshold faster than habit forms.",
+    "test_that_resolves_it": "Measure diagnosis accuracy on real tickets; correlate error events with abandonment in a longitudinal cohort.",
+    "evidence": "[A] - NEW HOLE. CS:LOW. Asymmetric and frequency-weighted: a wrong start-point is worse than no start-point, and it happens daily not quarterly."
+  },
+  {
+    "id": "D-H3",
+    "label": "Leading go-live with the #6 feature does NOT poison the #1 (QBR) demand",
+    "probability": 0.50,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "First impression 'a router I could build myself' anchors buyer perception/price of the whole platform at commodity level, damaging the premium QBR story.",
+    "test_that_resolves_it": "Message-order test: does leading with triage vs leading with QBR change perceived platform value / WTP?",
+    "evidence": "[A] - NEW HOLE. CS:LOW. Offering doc names the sequencing bet (lead with #6, QBR #1 has no spec) but never tests the anchoring cost."
+  },
+  {
+    "id": "D-H5",
+    "label": "ConnectWise-only launch is acceptable coverage AND the PSA dependency is safe",
+    "probability": 0.50,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "Autotask/Halo MSPs can't onboard day-1 (coverage cap) OR ConnectWise throttles/reprices/deprecates the API D's core loop depends on.",
+    "test_that_resolves_it": "Confirm addressable share on ConnectWise vs Autotask/Halo; review ConnectWise API ToS and rate limits for the read/write scopes D needs.",
+    "evidence": "[VERIFIED] single-PSA fact (FSN-82692:175,251). [A] for dependency risk - D's core read/write loop lives inside a third party's API."
+  },
+  {
+    "id": "D-H6",
+    "label": "'Live diagnostics' is achievable within permissions MSPs grant a day-1 tool",
+    "probability": 0.35,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "Real live diagnostics need RMM/endpoint write-access MSPs won't grant a day-1 tool, so the wedge is not installable until trust is already earned (chicken-and-egg).",
+    "test_that_resolves_it": "Ask 5-8 MSPs what read/write access they'd grant a brand-new tool day-1; map against the access diagnostics actually require.",
+    "evidence": "[A] - NEW HOLE. CS:LOW. Day-1 scope is ticket read/write + queue/member read (FSN-82692:316) - enough to route, not to diagnose live."
+  },
+  {
+    "id": "D-H7",
+    "label": "Junior-tech deskilling does not become a retention-inverting cost",
+    "probability": 0.70,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "Over 12-18 months juniors lose diagnostic skill because they start from the tool's answer, creating a bench-capability gap the MSP blames on the tool.",
+    "test_that_resolves_it": "Longitudinal skills tracking in adopting MSPs; qualitative check on whether MSPs perceive deskilling as a risk.",
+    "evidence": "[A] - NEW HOLE. CS:LOW. Low probability of killing D, named as a second-order retention inversion of the core benefit."
+  },
+  {
+    "id": "D-H8",
+    "label": "The 8.3 intensity signal is independent, not the same 8 people twice",
+    "probability": 0.40,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "The intensity (8.3) and qual rank both draw on the same 8-person base; the only independent instrument (n=39) demotes D to #6.",
+    "test_that_resolves_it": "Rerun intensity on an independent sample disjoint from the original 8; compare to the n=39 forced-rank.",
+    "evidence": "[D] CS:HIGH on the base-overlap fact (offerings ranking). Small-n qual is directional not projectable - Beth's own triangulation rule."
+  }
+]

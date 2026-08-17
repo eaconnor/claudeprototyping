@@ -1,0 +1,57 @@
+# Tango
+slug: tango
+category: AI Purpose-Built for MSPs
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Tango is a workflow documentation and digital adoption platform (tango.ai) that automatically generates step-by-step SOPs, process guides, and interactive walkthroughs by recording a user clicking through a workflow. Install the Chrome extension, perform a workflow, and Tango auto-generates a polished guide with screenshots and annotations. Over 3 million process guides have been created on the platform, with enterprise customers including Salesforce, Gusto, and Rockwell Automation. Tango has raised $23.7M from investors including HubSpot Ventures, Salesforce Ventures, and Atlassian Ventures.
+
+## MSP Relevance
+Tango is relevant to MSPs focused on operational efficiency, client onboarding documentation, and internal process standardization. For MSPs managing complex client environments, Tango reduces the time to create and maintain runbooks, SOPs, and training guides from hours to minutes. MSPs that sell managed change management, digital adoption, or employee training services to enterprise clients can position Tango as a tool for accelerating software rollouts and reducing help desk tickets from user confusion. Tango addresses the "last mile of adoption" problem where technology is deployed but users resist or fail to adopt it.
+
+## Key Offerings & Capabilities
+- Automatic workflow capture — Chrome extension records user clicks and actions, auto-generating step-by-step guides with annotated screenshots
+- Interactive walkthroughs — documentation converts into live in-application guided tours for real-time employee training
+- SOP and runbook generation — structured process documentation with automatic formatting and screenshot annotation
+- AI-powered guides — automatic generation of polished documentation from raw recordings without manual editing
+- Automatic PII detection and blurring — captures workflows involving sensitive data without exposing credentials or personal information
+- Digital adoption analytics — usage analytics showing which guides are viewed, where users drop off, and overall adoption rates
+- Organizational usage reporting — MSP-level or enterprise-level view of guide creation and consumption patterns
+- SSO integration — Enterprise tier includes Single Sign-On for controlled user access
+- Subfolder organization — Enterprise tier folder management for structured guide libraries across teams or clients
+- Multi-language translation — workflow guides can be translated for international deployments
+
+## Recent Announcements
+- Salesforce Ventures, HubSpot Ventures, and Atlassian Ventures backing — $23.7M total raised from strategic investors with strong SaaS ecosystem connections
+- Enterprise customer case studies: SEARHC (1,400-employee Workday rollout using Tango guides), Clincierge (reduced guide creation from 20+ hours to self-service by 30 team members), SCW (same-day proficiency for new HubSpot users)
+- Continued platform expansion focused on interactive walkthrough capabilities and enterprise compliance features
+- AI-enhanced guide quality improvements — reducing manual editing time post-capture
+
+## Pricing Model
+Free tier: first process guide at no cost. Pro: $8/user/month (billed annually). Enterprise: $24/user/month (billed annually) plus per-application platform fee for Enterprise features (SSO, PII blurring, advanced analytics, interactive walkthroughs, subfolder organization, workflow translation). Custom pricing for large teams or unique organizational requirements.
+
+## Strengths
+- Zero-effort documentation creation — Tango's capture-to-guide workflow eliminates the primary barrier to SOP creation (time and effort)
+- Immediate enterprise adoption proof — Salesforce, Gusto, Rockwell Automation validation; 3M+ guides created demonstrates real-world traction
+- Strategic investor backing (Salesforce Ventures, HubSpot Ventures, Atlassian Ventures) provides ecosystem access and credibility
+- PII auto-detection protects sensitive workflows during capture — reduces security review burden for MSPs working in regulated environments
+- Pro pricing at $8/user/month is accessible for SMB clients — low barrier to enterprise software adoption
+
+## Weaknesses / Gaps
+- Chrome extension dependency — captures web-based workflows but has limited capabilities for desktop application documentation
+- Not a workflow automation tool — Tango documents processes but does not automate or execute them; adjacent to but not part of the RPA or iPaaS category
+- Limited MSP-specific features — no multi-tenant dashboard, client-level billing separation, or MSP resale program identified
+- Enterprise at $24/user/month plus per-application platform fee creates pricing complexity for large deployments
+- Competes with Scribe (direct competitor with similar automatic screenshot documentation) and Loom (video-based documentation alternative)
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Tango is a workflow documentation platform, not an AI agent or IT automation product. It addresses process documentation and user adoption — a different problem space from NZO's AI agent and workflow automation capabilities. Some conceptual overlap exists in the "understanding and automating MSP workflows" space, but Tango documents human workflows rather than automating them. If NZO were to add self-documenting workflow features, Tango's approach would be worth studying.
+
+## Notes
+- Tango's "zero effort to create documentation" model is a strong design philosophy — the best tools remove friction entirely rather than making hard things easier
+- The Rewst ecosystem (separate competitor in MSP automation) has a product sometimes also called "Tango" — these are entirely different companies; Tango.ai is not affiliated with Rewst
+- Interactive walkthroughs that convert documentation into live in-application guidance are the highest-value Tango feature — this is the "last mile of adoption" use case that has clearest ROI
+- Atlassian Ventures backing suggests potential for deeper Confluence/Jira integration that would strengthen Tango's position in enterprise IT documentation workflows

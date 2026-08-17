@@ -1,0 +1,54 @@
+# Moveworks
+slug: moveworks
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Moveworks was an enterprise agentic AI platform that autonomously resolved IT, HR, and Finance support requests end-to-end by combining conversational AI with multi-system orchestration. In December 2025, ServiceNow acquired Moveworks for $2.85 billion — the largest enterprise AI acquisition to that point. The Moveworks technology and 100+ pre-built AI agents are being integrated into the ServiceNow Now Platform, where they power the Autonomous Workforce and L1 Service Desk AI Specialist capabilities announced at Knowledge 2026.
+
+## MSP Relevance
+Moveworks/ServiceNow is directly relevant to MSPs managing enterprise IT service desks. Before the acquisition, Moveworks competed with MSP help desk services by autonomously resolving employee IT requests without human intervention. Post-acquisition, its capabilities are now embedded in ServiceNow — meaning enterprise clients on ServiceNow may reduce MSP-managed L1 help desk volume as Moveworks agents handle routine requests. MSPs should understand this as a displacement risk for L1 help desk revenue from ServiceNow-deployed enterprise clients.
+
+## Key Offerings & Capabilities
+- Agentic IT resolution — 100+ pre-built AI agents handling password resets, access provisioning, software requests, and network troubleshooting autonomously
+- Multi-system orchestration — native integrations with 100+ enterprise systems (ServiceNow, SAP, Workday, Salesforce, Azure AD, JAMF, Okta)
+- Conversational interface — employees interact via natural language chat across Slack, Teams, email, and web portal
+- L1 Service Desk AI Specialist (ServiceNow) — autonomous agent for full first-contact resolution of routine IT requests (Q2 2026, as part of ServiceNow integration)
+- Autonomous resolution engine — agentic reasoning that breaks complex requests into executable multi-step workflows
+- 88% autonomous resolution rate — validated in production enterprise deployments
+- Employee analytics — insights into help desk patterns, resolution rates, and deflection metrics
+
+## Recent Announcements
+- March 2025: ServiceNow announces acquisition of Moveworks for $2.85 billion
+- December 2025: Acquisition closes; Moveworks becomes a ServiceNow company
+- Knowledge 2026 (May 2026): Moveworks AI agents integrated into ServiceNow Autonomous Workforce framework
+- Q2 2026: Moveworks-powered L1 Service Desk AI Specialist launched in ServiceNow platform
+- Pre-acquisition: Moveworks was named Challenger in 2025 Gartner Magic Quadrant for AI Applications in ITSM
+
+## Pricing Model
+Pre-acquisition, Moveworks priced on total employee headcount with custom enterprise contracts. AWS Marketplace pricing approximately $150/user/year for 1,000–2,500 users. Implementation costs of $50K–$200K over 8–16 weeks. Three-year TCO for 5,000 employees: $1.5M–$3.5M. Post-acquisition, Moveworks capabilities are being bundled into ServiceNow Enterprise licenses — specific add-on pricing not yet finalized as of mid-2026.
+
+## Strengths
+- 88% autonomous resolution rate in production enterprise deployments — industry-leading IT help desk deflection
+- Pre-built agents for 100+ enterprise IT scenarios — fastest time-to-value for autonomous L1 resolution
+- Deep enterprise system integrations — 100+ pre-built connectors reduce custom integration work
+- ServiceNow backing provides enterprise distribution, platform integration, and long-term investment
+- Validated at Fortune 500 scale — 350+ enterprise customers including 10% of Fortune 500 companies
+
+## Weaknesses / Gaps
+- Post-acquisition integration risk — platform unification with ServiceNow is still in progress; feature parity and pricing not yet stabilized
+- Enterprise-only — pricing and complexity exclude SMB and smaller MSP client bases
+- ServiceNow bundling may reduce standalone availability, forcing clients to adopt full ServiceNow platform
+- Moveworks as an independent product is effectively sunset — customers buying Moveworks capabilities must commit to ServiceNow
+
+## Competitive Threat to NZO
+Level: High
+Reason: Moveworks (now ServiceNow) represents the most complete autonomous IT service desk agent in the enterprise market. The L1 Service Desk AI Specialist directly competes with MSP-delivered help desk services by removing the need for human L1 technicians. For NZO, the competitive question is whether NZO's AI agents can deliver equivalent autonomous resolution for MSP-managed SMB environments that ServiceNow/Moveworks cannot reach due to pricing and platform complexity.
+
+## Notes
+- The $2.85B acquisition price signals that autonomous IT help desk resolution is worth north of $2B as a market segment — validates NZO's bet on AI-driven IT automation
+- Moveworks' 88% autonomous resolution rate is the benchmark NZO's IT agents should be measured against
+- Watch for ServiceNow to introduce downmarket offerings that bring Moveworks capabilities to mid-market through MSP channels
+- The acquisition effectively removes Moveworks as an independent competitor and strengthens ServiceNow's position as the enterprise IT automation platform

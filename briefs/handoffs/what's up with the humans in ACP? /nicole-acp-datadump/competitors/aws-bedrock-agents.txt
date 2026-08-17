@@ -1,0 +1,60 @@
+# AWS Bedrock Agents
+slug: aws-bedrock-agents
+category: AI Agent Control Planes
+last_updated: 2026-05-14
+
+---
+
+## Overview
+AWS Bedrock Agents is Amazon's managed service for building and deploying autonomous AI agents on AWS infrastructure. It provides the orchestration layer that enables agents to break down natural language requests into executable steps, call APIs, query knowledge bases, and chain multi-step workflows across AWS and third-party services. In 2026, AWS expanded Bedrock into AgentCore — a comprehensive agentic AI runtime with memory, tool execution, and payment capabilities — making it the most complete managed agent infrastructure platform available on a major cloud.
+
+## MSP Relevance
+AWS Bedrock Agents is relevant to MSPs managing AWS environments for enterprise and mid-market clients, and to MSPs building proprietary AI agent solutions on top of AWS infrastructure. The managed runtime removes infrastructure complexity, enabling MSPs to focus on agent logic and client value rather than compute and orchestration infrastructure. AgentCore and its integrated payment capabilities open new opportunities for MSPs to build monetizable agent-driven services for clients.
+
+## Key Offerings & Capabilities
+- Bedrock Agents — managed multi-step agent orchestration with action groups, knowledge bases, and tool use
+- AgentCore — comprehensive agentic runtime launched 2026; includes memory management, tool execution sandbox, identity/auth, and browser control
+- AgentCore Payments — integrated payment capabilities via Coinbase (crypto) and Stripe (fiat), enabling agents to transact autonomously (May 2026)
+- Model catalog — access to frontier models including Anthropic Claude (Opus, Sonnet, Haiku), Meta Llama, Amazon Nova, Mistral, and OpenAI GPT-5.5/5.4 (partnership announced 2026)
+- Knowledge Bases — RAG integration with S3, RDS, OpenSearch, and third-party data sources
+- Guardrails — policy enforcement layer for content filtering, topic restrictions, PII protection, and grounding
+- Inline agents — dynamically configured agents created on-the-fly without pre-provisioning
+- Multi-agent collaboration — supervisor-subagent patterns for complex task decomposition
+- AWS Lambda integration — serverless action execution for agent tool calls
+- CloudWatch integration — observability, tracing, and monitoring for production agent workloads
+
+## Recent Announcements
+- 2026: AgentCore launched — full agentic runtime combining memory, identity, browser control, and tool sandbox in a single managed service
+- May 2026: AgentCore Payments announced — agents can initiate and complete financial transactions via Coinbase Commerce (crypto) and Stripe (fiat) with full audit trail
+- 2026: OpenAI partnership — GPT-5.5 and GPT-5.4 available in Bedrock model catalog alongside Anthropic Claude models
+- re:Invent 2025: Multi-agent collaboration framework generally available — enables supervisor agents coordinating specialized subagents for complex workflows
+- re:Invent 2025: Inline agents GA — dynamic agent creation without pre-configuration, reducing provisioning overhead
+- AWS Bedrock named in Forrester Wave as a Leader for AI Foundation Model APIs
+
+## Pricing Model
+Consumption-based pricing charged per API call and token processed. No minimum commitment required for standard usage; reserved capacity available for production workloads. Bedrock Agents charges per 1,000 tokens processed through the orchestration layer plus underlying model inference costs. Knowledge Bases billed per query and storage consumed. AgentCore billed per execution minute and memory tier. Enterprise discount programs available through AWS Enterprise Discount Program (EDP) and AWS MSP Partner Network.
+
+## Strengths
+- Managed infrastructure — no agent servers, orchestration clusters, or runtime management required
+- Broadest model selection of any managed agent platform — access to Claude, GPT, Llama, Nova, Mistral in one catalog
+- AgentCore payment integration is a genuine first — enables agent-initiated financial transactions at enterprise scale
+- Deep AWS ecosystem integration — native connections to Lambda, S3, RDS, DynamoDB, CloudWatch without custom code
+- Guardrails provide enterprise-grade policy enforcement without custom safety logic
+- AWS MSP Partner Network provides structured resale and managed services framework for AWS-focused MSPs
+
+## Weaknesses / Gaps
+- Requires AWS infrastructure — not viable for multi-cloud or non-AWS environments without significant abstraction
+- Complexity: Multiple overlapping Bedrock services (Agents, Knowledge Bases, Guardrails, AgentCore) require expertise to architect correctly
+- Pricing opacity — production costs difficult to estimate before deployment; requires careful architecture to avoid surprise bills
+- Primarily a developer platform — no low-code builder for non-technical agent creation
+- Enterprise support tier required for SLA guarantees; base support is insufficient for production workloads
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: AWS Bedrock Agents is infrastructure, not a competitive MSP product — it's what developers build agent platforms on, not what MSPs deliver directly to clients. However, MSPs that build their AI agent offerings on Bedrock may find AgentCore replaces custom orchestration layers. NZO built on Bedrock would be a partner relationship; NZO competing against Bedrock for MSP adoption is not a direct fight. The threat increases if AWS launches turnkey MSP-specific agent products on top of AgentCore.
+
+## Notes
+- AgentCore Payments is the announcement most worth tracking — autonomous payment capability is a new paradigm for IT service monetization
+- OpenAI availability in Bedrock alongside Claude signals AWS is positioning Bedrock as model-agnostic infrastructure
+- AWS MSP Competency program provides MSPs with structured pathways to resell and implement Bedrock-based solutions
+- Watch for AWS to bundle AgentCore capabilities into AWS Managed Services offerings targeting enterprise IT

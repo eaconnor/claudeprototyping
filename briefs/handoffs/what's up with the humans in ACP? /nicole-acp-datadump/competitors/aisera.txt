@@ -1,0 +1,56 @@
+# Aisera
+slug: aisera
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Aisera was an enterprise agentic AI platform providing AiseraGPT conversational AI and AISO (AI Service Operations) for automating IT, HR, Finance, and Customer Service workflows. In November 2025, Automation Anywhere acquired Aisera to combine conversational AI with robotic process automation (RPA) in a unified autonomous enterprise platform. Pre-acquisition, Aisera had reached $257M in 2024 revenue and was recognized as the highest-in-execution vendor in the Gartner Magic Quadrant for AI Applications in ITSM.
+
+## MSP Relevance
+Aisera (now Automation Anywhere) is relevant to MSPs managing enterprise IT service desks and those evaluating AI automation for client environments. Aisera's conversational AI + ServiceNow integration model — autonomous ticket resolution, knowledge retrieval, and multi-domain service automation — directly addresses what MSP L1 help desks deliver manually. Post-acquisition, Aisera capabilities combined with Automation Anywhere RPA create a broader autonomous enterprise automation platform that could reduce MSP-managed manual IT operations.
+
+## Key Offerings & Capabilities
+- AiseraGPT — conversational AI with multi-step "action bot" for complex, multi-turn request handling
+- AISO (AI Service Operations) — autonomous service operations platform spanning IT, HR, Finance, Legal, Facilities, and Customer Service
+- TRAPS Framework — enterprise security model (Trust, Responsibility, Auditability, Privacy, Security) for compliant AI deployment
+- ServiceNow integration — deep native integration for incident management, service requests, service catalogs, and knowledge bases
+- Multi-domain coverage — IT, HR, Finance, Legal, Facilities, Customer Service from a unified AI agent layer
+- Automation Anywhere integration — combined with APA (Agentic Process Automation) and RPA for end-to-end workflow automation post-acquisition
+- Fortune 1000 customer base — Zoom, Workday, McAfee, Chegg, Carta, 8×8, Autodesk, Dartmouth College, NJ Transit
+
+## Recent Announcements
+- August 2024: $90M Series D raised, led by Thoma Bravo and Goldman Sachs ($150M total raised)
+- November 4, 2025: Automation Anywhere completes acquisition of Aisera — combining conversational AI with RPA for autonomous enterprise operations
+- Post-acquisition vision: Automate up to 80% of enterprise work through combined Aisera conversational AI + Automation Anywhere RPA agents
+- 100+ AI engineers from Aisera team integrated into Automation Anywhere product organization
+- Pre-acquisition 2024 revenue: $257.3M (up from $50M in 2021 — 5x growth trajectory)
+
+## Pricing Model
+Pre-acquisition Aisera pricing was custom, enterprise-only. No public rate card. Estimates: $90K–$1M+ annually for organizations with 2,500+ employees. Implementation costs: $50K–$200K+ for setup and integration. Services typically 75-150% of first-year licensing cost. Annual or multi-year contracts standard. Post-acquisition pricing through Automation Anywhere sales — likely bundled with broader APA and RPA platform SKUs.
+
+## Strengths
+- Highest-in-execution Gartner Magic Quadrant recognition for AI Applications in ITSM — industry-leading validation
+- 5x revenue growth (2021-2024) validates product-market fit and enterprise demand
+- Multi-domain coverage (IT + HR + Finance + Legal) spans more of the enterprise service desk than IT-only competitors
+- Automation Anywhere combination creates the most complete autonomous enterprise automation stack (conversational AI + RPA + orchestration)
+- Deep ServiceNow integration provides ready-made deployment path for enterprise ServiceNow customers
+- TRAPS security framework addresses enterprise compliance concerns that prevent AI adoption in regulated industries
+
+## Weaknesses / Gaps
+- Acquisition integration risk — product roadmap and pricing are in flux post-Automation Anywhere acquisition
+- Enterprise-only pricing and complexity — not accessible for SMB or MSP-managed smaller clients
+- Post-acquisition: Aisera as a standalone product may be sunset in favor of bundled Automation Anywhere SKUs
+- No dedicated MSP channel or reseller program identified — GTM focused on direct enterprise sales
+- Automation Anywhere's RPA heritage creates a heavy-automation positioning that may not map to MSP help desk workflows
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: Aisera's autonomous IT service desk capabilities directly compete with what MSPs deliver as L1 help desk services. However, the enterprise-only pricing and post-acquisition integration uncertainty reduce the immediate MSP market risk. The Automation Anywhere combination creates a more complete enterprise automation platform that could eventually reach mid-market through MSP channels. NZO's advantage is the SMB/mid-market accessibility that Aisera has never prioritized.
+
+## Notes
+- The Automation Anywhere acquisition (November 2025) creates a combined platform that competes with both MSP help desk services and MSP RPA automation engagements
+- Aisera's $257M revenue at acquisition validates enterprise AI service desk as a large and growing market
+- Monitor how Automation Anywhere integrates Aisera into its product line — the combined platform roadmap will determine competitive direction
+- Gartner highest-in-execution recognition makes Aisera the benchmark for enterprise IT AI agent quality — NZO's agent quality should be evaluated against this bar

@@ -1,0 +1,52 @@
+# Kaseya BMS / IT Glue
+slug: kaseya-bms
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Kaseya BMS is a PSA (Professional Services Automation) platform bundled within the Kaseya 365 stack. IT Glue is Kaseya's IT documentation platform, tightly integrated with BMS and VSA. Together they form the core of Kaseya's MSP operations layer — ticketing, time tracking, billing, documentation, runbooks, and passwords in a unified workflow. In 2026, IT Glue added an AI assistant enabling technicians to find documentation and create runbooks via plain English prompts.
+
+## MSP Relevance
+BMS and IT Glue together cover two of the most critical MSP operational workflows — service delivery (ticketing, billing, SLAs) and knowledge management (documentation, runbooks, passwords). As part of Kaseya 365, they are often bundled at a price point that makes standalone alternatives difficult to justify. The IT Glue AI assistant is a direct move into AI-assisted MSP operations.
+
+## Key Offerings & Capabilities
+- Kaseya BMS — PSA with ticketing, time tracking, billing, SLA management, project management
+- IT Glue — IT documentation with runbooks, SOPs, password management, network diagrams
+- AI assistant in IT Glue — plain English documentation search, runbook creation, contextual answers
+- Integrated workflow: VSA → IT Glue → BMS — single pane of glass across RMM, docs, PSA
+- Kaseya 365 Ops bundle — includes BMS or Autotask PSA + IT Glue + additional tools at $119–129/user/month
+- vCIO and quoting tools included in Kaseya 365 Ops
+
+## Recent Announcements
+- IT Glue AI assistant launched (2026) — technicians find documentation, create runbooks, and get contextual answers in plain English
+- Kaseya 365 Ops bundle announced at Connect 2025 — bundles PSA, documentation, billing, automation, vCIO, quoting at $119–129/user/month
+- Enhanced BMS + IT Glue + VSA integrated workflows — single pane across all three products
+- CMMC Level 2 audit-ready status for IT Glue by September 2026
+- FIPS 140-3 validation for IT Glue by fall 2026
+
+## Pricing Model
+BMS is bundled within Kaseya 365. Kaseya 365 Ops: $119–129/user/month (promotional pricing at Connect events). IT Glue also available standalone (per user/month), but Kaseya pushes bundle adoption. Multi-year contracts with volume discounts.
+
+## Strengths
+- IT Glue is the market-leading IT documentation platform — deep MSP adoption and strong network effects
+- AI assistant in IT Glue directly addresses technician productivity (finding and writing documentation)
+- Bundle pricing in Kaseya 365 makes BMS + IT Glue extremely cost-competitive vs. standalone alternatives
+- FIPS 140-3 and CMMC certifications add compliance credibility
+- Deep VSA + BMS + IT Glue workflow integration reduces context switching for technicians
+
+## Weaknesses / Gaps
+- BMS PSA is less feature-rich than HaloPSA or ConnectWise Manage — Autotask is Kaseya's stronger PSA
+- IT Glue AI assistant is assistant-level, not agentic — does not automate workflows, only retrieves and generates documentation
+- Lock-in concerns — MSPs who adopt Kaseya 365 are deeply dependent on the entire Kaseya stack
+- IT Glue pricing outside the bundle is considered expensive by smaller MSPs
+
+## Competitive Threat to NZO
+Level: Medium-High
+Reason: IT Glue's AI assistant is the most direct current example of AI applied to MSP documentation and knowledge management — a capability NZO may need to match or surpass. If IT Glue AI evolves from assistant to agentic (triggering actions, not just answering questions), the overlap with NZO increases significantly.
+
+## Notes
+- IT Glue AI assistant is worth benchmarking closely as the baseline for AI documentation in MSP tools
+- The Kaseya 365 bundle creates strong retention — MSPs who are in are unlikely to swap individual components
+- CMMC and FIPS certifications are strategically important for Kaseya's enterprise and government-adjacent MSP push

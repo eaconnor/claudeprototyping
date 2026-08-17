@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha (RACE) · Incident View · MDR Beta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --vermillion: #D8472B;
+  --ultramarine: #1F3C96;
+  --ochre: #C99A2E;
+  --violet: #5B3A7E;
+  --green-earth: #5E7A3F;
+  --cadmium: #E8B93A;
+  --ink: #1a1612;
+  --paper: #efe7d6;
+  --card: #f7f0df;
+  --line: var(--ink);
+  --grid: rgba(26,22,18,.055);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 28px 28px,
+    var(--paper);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* ════════════════════════════════════════════════════════
+   HEADER
+   ════════════════════════════════════════════════════════ */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 28px;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.brand-mark {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.55;
+}
+.brand-mark::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--vermillion);
+  margin-right: 8px;
+  transform: translateY(1px);
+}
+.brand-title {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.brand-title .race {
+  color: var(--vermillion);
+}
+.brand-subtitle {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  color: var(--ink);
+  opacity: 0.7;
+  margin-left: 6px;
+}
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.beta-pill {
+  background: var(--cadmium);
+  color: var(--ink);
+  padding: 5px 11px;
+  border: 2px solid var(--ink);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.analyst {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.analyst-name {
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+.analyst-role {
+  font-size: 10px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ════════════════════════════════════════════════════════
+   COUNTERS
+   ════════════════════════════════════════════════════════ */
+.counters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.counter {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  padding: 16px 18px;
+  box-shadow: 6px 6px 0 var(--line);
+}
+.counter-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-bottom: 8px;
+}
+.counter-value {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1;
+}
+.counter-delta {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  margin-top: 8px;
+}
+.counter-delta.up { color: var(--vermillion); }
+.counter-delta.down { color: var(--green-earth); }
+.counter-delta::before {
+  content: '↳ ';
+  opacity: 0.5;
+}
+
+/* The big consolidation counter */
+.counter.consolidation {
+  grid-column: span 2;
+  background: var(--ink);
+  color: var(--paper);
+}
+.counter.consolidation .counter-label { color: var(--cadmium); opacity: 1; }
+.counter.consolidation .consol-eq {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: 'Space Mono', monospace;
+}
+.consol-num {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+}
+.consol-old { color: var(--vermillion); text-decoration: line-through; opacity: 0.85; }
+.consol-arrow {
+  font-size: 22px;
+  opacity: 0.5;
+  font-family: 'Kalam', cursive;
+}
+.consol-new { color: var(--green-earth); }
+.consol-unit {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  opacity: 0.85;
+  margin-left: 4px;
+}
+.consol-note {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  margin-top: 10px;
+  opacity: 0.85;
+  line-height: 1.45;
+}
+
+/* ════════════════════════════════════════════════════════
+   MAIN GRID
+   ════════════════════════════════════════════════════════ */
+.main {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ─── LEFT: incident list ─── */
+.list-panel {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--line);
+}
+.list-header {
+  padding: 18px 18px 14px;
+  border-bottom: 2px solid var(--ink);
+}
+.list-title {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 4px;
+}
+.list-sub {
+  font-family: 'Kalam', cursive;
+  font-size: 13px;
+  opacity: 0.7;
+}
+.list-sort {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.sort-chip {
+  border: 1.5px solid var(--ink);
+  padding: 3px 8px;
+  cursor: pointer;
+  background: transparent;
+}
+.sort-chip.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.incident {
+  padding: 16px 18px;
+  border-bottom: 1.5px solid rgba(26,22,18,0.2);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.08s ease;
+}
+.incident:last-child { border-bottom: none; }
+.incident:hover { background: rgba(199, 154, 46, 0.12); }
+.incident.selected {
+  background: var(--paper);
+  box-shadow: inset 5px 0 0 var(--vermillion);
+}
+
+.incident-row1 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.risk-score {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 18px;
+  min-width: 32px;
+}
+.risk-dots {
+  display: inline-flex;
+  gap: 2px;
+  margin-right: 4px;
+}
+.risk-dot {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+}
+.risk-dot.filled { background: var(--vermillion); }
+.risk-dot.med { background: var(--cadmium); }
+.risk-dot.low { background: var(--green-earth); }
+
+.incident-id {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+}
+.incident-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.incident-entities {
+  font-family: 'Kalam', cursive;
+  font-size: 13px;
+  opacity: 0.78;
+  margin-bottom: 6px;
+}
+.incident-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  opacity: 0.65;
+}
+.correlated-tag {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+.correlated-tag.three { background: var(--violet); }
+.correlated-tag.two { background: var(--ultramarine); }
+
+/* ─── RIGHT: detail panel ─── */
+.detail-panel {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--line);
+}
+.detail-header {
+  padding: 22px 26px 20px;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+}
+.detail-id-block {
+  flex: 1;
+}
+.detail-id {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 6px;
+}
+.detail-title {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 0.02em;
+  line-height: 1.18;
+  margin: 0;
+}
+.detail-title .accent { color: var(--vermillion); }
+
+.score-block {
+  text-align: right;
+  border-left: 2px solid var(--ink);
+  padding-left: 22px;
+  min-width: 180px;
+}
+.score-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+.score-value {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--vermillion);
+}
+.score-of {
+  font-size: 14px;
+  opacity: 0.45;
+  margin-left: 2px;
+}
+.score-band {
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--vermillion);
+}
+.score-confidence {
+  font-family: 'Kalam', cursive;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 2px;
+  text-align: right;
+}
+
+/* ─── STORY ─── */
+.story {
+  padding: 26px;
+  border-bottom: 2px dashed rgba(26,22,18,0.3);
+}
+.section-label {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.section-label-mark {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 4px 9px;
+}
+.section-label-name {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  opacity: 0.75;
+}
+
+.story-block {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 14px 20px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+.story-block:last-child { margin-bottom: 0; }
+.story-q {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  padding-top: 3px;
+}
+.story-a {
+  font-family: 'Kalam', cursive;
+  font-size: 17px;
+  line-height: 1.5;
+}
+.story-a strong {
+  background: var(--cadmium);
+  padding: 0 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.story-a .entity {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  background: rgba(31,60,150,0.13);
+  padding: 0 5px;
+  color: var(--ultramarine);
+  font-weight: 700;
+}
+
+/* ─── TIMELINE ─── */
+.timeline-section {
+  padding: 26px;
+  border-bottom: 2px dashed rgba(26,22,18,0.3);
+}
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--ink);
+}
+.tick {
+  position: relative;
+  padding-bottom: 18px;
+}
+.tick:last-child { padding-bottom: 0; }
+.tick-dot {
+  position: absolute;
+  left: -28px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+}
+.tick-dot.detect { background: var(--vermillion); }
+.tick-dot.soar { background: var(--ultramarine); }
+.tick-dot.correlate { background: var(--violet); }
+.tick-dot.recommend { background: var(--ochre); }
+.tick-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  margin-bottom: 2px;
+}
+.tick-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+.tick-body {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  opacity: 0.85;
+  line-height: 1.45;
+}
+.tick-source {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  padding: 2px 6px;
+  border: 1.5px solid var(--ink);
+}
+
+/* ─── ENTITIES + SOAR ─── */
+.split-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 2px dashed rgba(26,22,18,0.3);
+}
+.split-half {
+  padding: 26px;
+}
+.split-half + .split-half {
+  border-left: 2px dashed rgba(26,22,18,0.3);
+}
+
+.entity-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.entity-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(26,22,18,0.12);
+}
+.entity-row:last-child { border-bottom: none; }
+.entity-key {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.entity-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ultramarine);
+  word-break: break-all;
+}
+.entity-val .secondary {
+  font-weight: 400;
+  color: var(--ink);
+  font-size: 12px;
+  opacity: 0.6;
+  margin-left: 6px;
+}
+
+.soar-action {
+  border: 2px solid var(--ink);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  background: var(--paper);
+}
+.soar-action:last-child { margin-bottom: 0; }
+.soar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.soar-name {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+.soar-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1.5px solid var(--ink);
+}
+.soar-status.done { background: var(--green-earth); color: var(--paper); border-color: var(--green-earth); }
+.soar-status.pending { background: var(--cadmium); }
+.soar-body {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  opacity: 0.82;
+  line-height: 1.45;
+}
+.soar-suppression {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  margin-top: 6px;
+}
+
+/* ─── SCORING EXPLAINER ─── */
+.scoring {
+  padding: 26px;
+  border-bottom: 2px dashed rgba(26,22,18,0.3);
+  background: rgba(199, 154, 46, 0.08);
+}
+.score-bars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 10px;
+}
+.score-bar-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 60px;
+  gap: 14px;
+  align-items: center;
+}
+.score-bar-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.score-bar-track {
+  height: 14px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  position: relative;
+}
+.score-bar-fill {
+  height: 100%;
+  background: var(--vermillion);
+}
+.score-bar-fill.med { background: var(--cadmium); }
+.score-bar-fill.low { background: var(--green-earth); }
+.score-bar-num {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: right;
+}
+.score-explain {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  margin-top: 14px;
+  line-height: 1.5;
+  opacity: 0.88;
+  border-left: 3px solid var(--ochre);
+  padding-left: 14px;
+}
+
+/* ─── NEXT STEPS / ACTIONS ─── */
+.next {
+  padding: 26px;
+}
+.next-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+.next-item {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 14px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+}
+.next-num {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1;
+}
+.next-body { line-height: 1.45; }
+.next-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.next-note { font-family: 'Kalam', cursive; font-size: 14px; opacity: 0.85; }
+.next-cta {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  white-space: nowrap;
+  align-self: center;
+  box-shadow: 4px 4px 0 var(--violet);
+}
+.next-cta.secondary {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+/* ─── FOOTER ─── */
+.foot {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+.foot-note {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+
+/* Margin note (sparingly) */
+.margin-note {
+  position: absolute;
+  right: -10px;
+  top: 30px;
+  width: 140px;
+  font-family: 'Kalam', cursive;
+  font-size: 13px;
+  color: var(--vermillion);
+  transform: rotate(2deg);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+@media (max-width: 1180px) {
+  .main { grid-template-columns: 1fr; }
+  .counters { grid-template-columns: 1fr 1fr; }
+  .counter.consolidation { grid-column: span 2; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div>
+        <div class="brand-mark">Adlumin · MDR</div>
+        <div class="brand-title">ALPHA <span class="race">(RACE)</span> <span class="brand-subtitle">— rapid alert correlation engine</span></div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="beta-pill">MDR-only Beta · Black Team</span>
+      <div class="analyst">
+        <div>
+          <div class="analyst-name">Raj K.</div>
+          <div class="analyst-role">MDR Analyst · on shift</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTERS -->
+  <div class="counters">
+    <div class="counter">
+      <div class="counter-label">Open Incidents</div>
+      <div class="counter-value">12</div>
+      <div class="counter-delta down">↳ down from 34 yesterday (alerts)</div>
+    </div>
+    <div class="counter">
+      <div class="counter-label">Median Investigation Time</div>
+      <div class="counter-value">17m</div>
+      <div class="counter-delta down">↳ down from 42m pre-Alpha</div>
+    </div>
+    <div class="counter consolidation">
+      <div class="counter-label">Tickets · today's consolidation</div>
+      <div class="consol-eq">
+        <span class="consol-num consol-old">47</span>
+        <span class="consol-arrow">→ became</span>
+        <span class="consol-num consol-new">12</span>
+        <span class="consol-unit">incidents</span>
+      </div>
+      <div class="consol-note">3.9× consolidation ratio today. Three of these are correlated multi-event stories that would have been four to six tickets pre-Alpha.</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- LEFT: INCIDENT LIST -->
+    <div class="list-panel">
+      <div class="list-header">
+        <div class="list-title">Incidents</div>
+        <div class="list-sub">Ranked by Alpha risk score · today</div>
+        <div class="list-sort">
+          <button class="sort-chip active">Risk</button>
+          <button class="sort-chip">Recent</button>
+          <button class="sort-chip">Customer</button>
+        </div>
+      </div>
+
+      <div class="incident selected">
+        <div class="incident-row1">
+          <span class="risk-dots">
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot"></span>
+          </span>
+          <span class="risk-score">94</span>
+          <span class="incident-id">INC-2026-0834</span>
+        </div>
+        <div class="incident-title">Lateral movement → privilege escalation suspected</div>
+        <div class="incident-entities">user.acme@corp · 2 hosts · 1 SOAR isolation</div>
+        <div class="incident-foot">
+          <span class="correlated-tag three">3 correlated</span>
+          <span>18 min ago</span>
+        </div>
+      </div>
+
+      <div class="incident">
+        <div class="incident-row1">
+          <span class="risk-dots">
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot filled"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+          </span>
+          <span class="risk-score">72</span>
+          <span class="incident-id">INC-2026-0833</span>
+        </div>
+        <div class="incident-title">Suspicious OAuth grant + impossible travel</div>
+        <div class="incident-entities">finance.dept · 4 users</div>
+        <div class="incident-foot">
+          <span class="correlated-tag two">2 correlated</span>
+          <span>52 min ago</span>
+        </div>
+      </div>
+
+      <div class="incident">
+        <div class="incident-row1">
+          <span class="risk-dots">
+            <span class="risk-dot med"></span>
+            <span class="risk-dot med"></span>
+            <span class="risk-dot med"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+          </span>
+          <span class="risk-score">61</span>
+          <span class="incident-id">INC-2026-0831</span>
+        </div>
+        <div class="incident-title">Defender malware + SOAR isolation (repeated)</div>
+        <div class="incident-entities">helpdesk-lab-03 · 1 host</div>
+        <div class="incident-foot">
+          <span class="correlated-tag three">3 correlated</span>
+          <span>2h 14m ago</span>
+        </div>
+      </div>
+
+      <div class="incident">
+        <div class="incident-row1">
+          <span class="risk-dots">
+            <span class="risk-dot med"></span>
+            <span class="risk-dot med"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+          </span>
+          <span class="risk-score">48</span>
+          <span class="incident-id">INC-2026-0830</span>
+        </div>
+        <div class="incident-title">Brute-force attempt against external auth</div>
+        <div class="incident-entities">edge-vpn-eu1</div>
+        <div class="incident-foot">
+          <span class="correlated-tag two">2 correlated</span>
+          <span>3h 41m ago</span>
+        </div>
+      </div>
+
+      <div class="incident">
+        <div class="incident-row1">
+          <span class="risk-dots">
+            <span class="risk-dot low"></span>
+            <span class="risk-dot low"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+          </span>
+          <span class="risk-score">34</span>
+          <span class="incident-id">INC-2026-0829</span>
+        </div>
+        <div class="incident-title">Anomalous PowerShell on dev tenant</div>
+        <div class="incident-entities">dev-lab-east · 1 host</div>
+        <div class="incident-foot">
+          <span class="correlated-tag two">2 correlated</span>
+          <span>4h 03m ago</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: DETAIL PANEL -->
+    <div class="detail-panel">
+
+      <!-- header -->
+      <div class="detail-header">
+        <div class="detail-id-block">
+          <div class="detail-id">Incident · INC-2026-0834 · MDR-Black</div>
+          <h1 class="detail-title">Lateral movement → <span class="accent">privilege escalation</span> suspected</h1>
+        </div>
+        <div class="score-block">
+          <div class="score-label">Alpha Risk Score</div>
+          <div>
+            <span class="score-value">94</span>
+            <span class="score-of">/100</span>
+          </div>
+          <div class="score-band">High confidence</div>
+          <div class="score-confidence">model agrees with rules · scope locked</div>
+        </div>
+      </div>
+
+      <!-- THE STORY -->
+      <div class="story" style="position: relative;">
+        <div class="margin-note">the story, in 3.</div>
+        <div class="section-label">
+          <span class="section-label-mark">The Story</span>
+          <span class="section-label-name">what happened · what we did · what to do</span>
+        </div>
+
+        <div class="story-block">
+          <div class="story-q">What happened</div>
+          <div class="story-a">Between <strong>14:02</strong> and <strong>14:21 EST</strong>, the user <span class="entity">user.acme@corp</span> authenticated from an unusual ASN, escalated privileges on <span class="entity">host-east-04</span>, then attempted lateral movement to <span class="entity">host-east-09</span>. Microsoft Defender flagged the second host; Adlumin SOAR isolated it within 38 seconds.</div>
+        </div>
+
+        <div class="story-block">
+          <div class="story-q">What we did</div>
+          <div class="story-a">Three detections from two sources (Azure AD anomalous logon + Defender malicious activity + Adlumin SOAR isolation echo) were consolidated into this incident. Without Alpha, this would have generated <strong>four separate tickets</strong>. The isolation suppression rule fired correctly — no duplicate notification was sent to the customer.</div>
+        </div>
+
+        <div class="story-block">
+          <div class="story-q">What to do next</div>
+          <div class="story-a">Confirm whether <span class="entity">user.acme@corp</span> is a known traveller before unlocking. Pull the Defender quarantine report. If unfamiliar geography persists, escalate to customer Tier-2 with the consolidated incident timeline. <strong>Estimated time to close: 8 min.</strong></div>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="timeline-section">
+        <div class="section-label">
+          <span class="section-label-mark">Timeline</span>
+          <span class="section-label-name">five events · three correlated · one suppression</span>
+        </div>
+        <div class="timeline">
+          <div class="tick">
+            <span class="tick-dot detect"></span>
+            <div class="tick-time">14:02:11 EST</div>
+            <div class="tick-title">Azure AD · anomalous sign-in</div>
+            <div class="tick-body">Sign-in from ASN AS396982 (Google Cloud, US-Iowa). User profile last seen ASN AS7922 (Comcast, Chicago). Risk score from Entra: medium.</div>
+            <span class="tick-source">Azure AD</span>
+          </div>
+          <div class="tick">
+            <span class="tick-dot detect"></span>
+            <div class="tick-time">14:14:47 EST</div>
+            <div class="tick-title">Defender · privilege escalation attempt</div>
+            <div class="tick-body">PsExec invocation on host-east-04 originating from interactive logon session of user.acme@corp. Defender confidence: high.</div>
+            <span class="tick-source">MS Defender</span>
+          </div>
+          <div class="tick">
+            <span class="tick-dot detect"></span>
+            <div class="tick-time">14:20:31 EST</div>
+            <div class="tick-title">Defender · malicious binary on second host</div>
+            <div class="tick-body">cobalt-strike beacon variant identified on host-east-09. Same session lineage as host-east-04. Reputation hit on three vendor feeds.</div>
+            <span class="tick-source">MS Defender</span>
+          </div>
+          <div class="tick">
+            <span class="tick-dot soar"></span>
+            <div class="tick-time">14:21:09 EST</div>
+            <div class="tick-title">Adlumin SOAR · host isolation</div>
+            <div class="tick-body">host-east-09 isolated from network. Customer notification suppressed (consolidated into parent incident, per Alpha rule).</div>
+            <span class="tick-source">Adlumin SOAR</span>
+          </div>
+          <div class="tick">
+            <span class="tick-dot correlate"></span>
+            <div class="tick-time">14:21:14 EST</div>
+            <div class="tick-title">Alpha · incident created</div>
+            <div class="tick-body">Three detections + one SOAR action correlated into INC-2026-0834. Probabilistic score 94. Story narrative generated. Routed to Raj K. (on-shift Black Team).</div>
+            <span class="tick-source">Alpha</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENTITIES + SOAR -->
+      <div class="split-section">
+        <div class="split-half">
+          <div class="section-label">
+            <span class="section-label-mark">Entities</span>
+            <span class="section-label-name">standardized · user, host, source, destination</span>
+          </div>
+          <div class="entity-grid">
+            <div class="entity-row">
+              <div class="entity-key">User</div>
+              <div class="entity-val">user.acme@corp <span class="secondary">· Sales · Tier 2</span></div>
+            </div>
+            <div class="entity-row">
+              <div class="entity-key">Host (origin)</div>
+              <div class="entity-val">host-east-04 <span class="secondary">· Win11 · Sales-Floor</span></div>
+            </div>
+            <div class="entity-row">
+              <div class="entity-key">Host (target)</div>
+              <div class="entity-val">host-east-09 <span class="secondary">· Win11 · Sales-Floor · isolated</span></div>
+            </div>
+            <div class="entity-row">
+              <div class="entity-key">Source IP</div>
+              <div class="entity-val">35.224.7.221 <span class="secondary">· ASN 396982 · GCE US-Iowa</span></div>
+            </div>
+            <div class="entity-row">
+              <div class="entity-key">Destination</div>
+              <div class="entity-val">internal-only <span class="secondary">· lateral · no egress</span></div>
+            </div>
+            <div class="entity-row">
+              <div class="entity-key">Customer</div>
+              <div class="entity-val">Acme Bldg Supply <span class="secondary">· MDR / Black</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-half">
+          <div class="section-label">
+            <span class="section-label-mark">SOAR actions</span>
+            <span class="section-label-name">automated · noise-suppressed</span>
+          </div>
+
+          <div class="soar-action">
+            <div class="soar-head">
+              <div class="soar-name">Isolate host-east-09</div>
+              <div class="soar-status done">Done</div>
+            </div>
+            <div class="soar-body">Defender ATP isolation API. 38 seconds from detection to isolation. <br>
+              <span class="soar-suppression">notification suppressed · consolidated</span>
+            </div>
+          </div>
+
+          <div class="soar-action">
+            <div class="soar-head">
+              <div class="soar-name">Force re-auth · user.acme@corp</div>
+              <div class="soar-status pending">Pending analyst approval</div>
+            </div>
+            <div class="soar-body">Would terminate active sessions and require MFA challenge. Awaiting Raj's confirmation that user is not a known traveller.</div>
+          </div>
+
+          <div class="soar-action">
+            <div class="soar-head">
+              <div class="soar-name">Quarantine binary on host-east-09</div>
+              <div class="soar-status done">Done</div>
+            </div>
+            <div class="soar-body">Defender quarantine applied. Hash submitted to threat intel. <br>
+              <span class="soar-suppression">notification suppressed · consolidated</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORING EXPLAINER -->
+      <div class="scoring">
+        <div class="section-label">
+          <span class="section-label-mark">Why 94</span>
+          <span class="section-label-name">scoring is independent of raw alert severity</span>
+        </div>
+        <div class="score-bars">
+          <div class="score-bar-row">
+            <div class="score-bar-label">Cross-source corroboration</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width: 96%"></div></div>
+            <div class="score-bar-num">+38</div>
+          </div>
+          <div class="score-bar-row">
+            <div class="score-bar-label">Privilege-escalation pattern</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width: 88%"></div></div>
+            <div class="score-bar-num">+27</div>
+          </div>
+          <div class="score-bar-row">
+            <div class="score-bar-label">Anomalous geography (ASN)</div>
+            <div class="score-bar-track"><div class="score-bar-fill med" style="width: 64%"></div></div>
+            <div class="score-bar-num">+14</div>
+          </div>
+          <div class="score-bar-row">
+            <div class="score-bar-label">Lateral-movement target reached</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width: 78%"></div></div>
+            <div class="score-bar-num">+19</div>
+          </div>
+          <div class="score-bar-row">
+            <div class="score-bar-label">Asset criticality (Sales-Floor)</div>
+            <div class="score-bar-track"><div class="score-bar-fill low" style="width: 22%"></div></div>
+            <div class="score-bar-num">−4</div>
+          </div>
+        </div>
+        <div class="score-explain">
+          Sales-Floor assets aren't critical-tier, which is why the score landed at 94 instead of 99. If host-east-09 had been a domain controller, the same evidence would have scored 99+ and routed Tier-2 directly. The score doesn't depend on whether individual alerts were marked High or Low by their source — it depends on whether the pattern hangs together.
+        </div>
+      </div>
+
+      <!-- NEXT STEPS -->
+      <div class="next">
+        <div class="section-label">
+          <span class="section-label-mark">Next moves</span>
+          <span class="section-label-name">three steps · one call · close in ~8 min</span>
+        </div>
+        <div class="next-list">
+          <div class="next-item">
+            <div class="next-num">1</div>
+            <div class="next-body">
+              <div class="next-title">Verify travel for user.acme@corp</div>
+              <div class="next-note">Check Acme HR travel calendar (Workday connector). If user is a known traveller, the ASN signal collapses.</div>
+            </div>
+            <button class="next-cta">Open Workday</button>
+          </div>
+          <div class="next-item">
+            <div class="next-num">2</div>
+            <div class="next-body">
+              <div class="next-title">Approve force re-auth</div>
+              <div class="next-note">Requires explicit analyst confirmation. SOAR will terminate sessions and require MFA on next sign-in.</div>
+            </div>
+            <button class="next-cta">Approve</button>
+          </div>
+          <div class="next-item">
+            <div class="next-num">3</div>
+            <div class="next-body">
+              <div class="next-title">Escalate to Tier-2 with consolidated incident</div>
+              <div class="next-note">Sends INC-2026-0834 as a single ticket with full story, timeline, entities, and SOAR actions taken. No duplicate notifications.</div>
+            </div>
+            <button class="next-cta secondary">Escalate</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <span>Alpha (RACE) · v0.4 · MDR-only · Black Team beta · Adlumin</span>
+    <span class="foot-note">probabilistic scoring · transparent explanations · this is a prototype</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+Contents
+Business Report for your customer	1
+Alert Flood Suppression Coworker	2
+Security Tabletop Exercise Simulator	4
+Continuous Environment Health Coworker	5
+MSP Employee Onboarding Coworker	5
+Existing Customer New Employee Onboarding/Offboarding Coworker	6
+New Customer Onboarding Coworker	7
+Network Incident Resolution Coworker	8
+MSP Benchmarking & Threat Hardening Coworker	9
+Ticket Triage and Dispatch “Coworker” that:	10
+MSP Acquisition Integration Coworker	11
+Disaster Recovery Orchestration Coworker	11
+
+Business Report for your customer 
+Integrates: PSA, RMM/UEM, Security (MDR), Backup, Reporting , etc.
+Value Proposition:  Operational Efficiency (Profitability), Cross sell & Upsell Identification
+What do these agents do?
+Generate a customer-ready report with charts, summaries, and recommended next steps. It shows progress, risk reduction, and remaining gaps in clear business terms, using data pulled from across MSP tools to highlight trends in patching, vulnerabilities, incidents, backups, and ticket volume.
+
+Turns QBR prep from days of manual work into minutes. It helps shift customer conversations from ticket noise to business outcomes, clearly proving the MSP’s impact while naturally uncovering growth opportunities and building trust through professionalism and transparency.
+
+Explanation:
+	•	Pulls operational, security, and service data from across all MSP vendor tools
+	•	Normalizes metrics across vendors so results are consistent and comparable
+	•	Analyzes trends in patching, vulnerability exposure, incidents, backups, and ticket volume
+	•	Translates raw metrics into clear business‑level insights and narratives
+	•	Highlights risk reduction, improvements made, and gaps that remain
+	•	Generates a customer‑ready report with charts, summaries, and recommended next steps
+What’s in it for MSP:
+	•	QBRs take minutes instead of days of manual data gathering
+	•	Conversations shift from tickets and noise to outcomes and value delivered
+	•	The MSP clearly proves its impact on security, uptime, and risk reduction
+	•	Upsell and expansion opportunities are surfaced naturally through data
+	•	Customers see professionalism and transparency, increasing trust and retention
+Alert Flood Suppression Coworker
+Integrates: MDR tools, Backup tools, AlertOps, PSA tools, RMM alerts
+Value Proposition:  Operational Efficiency (Profitability), Talent retention/less fatigue
+Cuts alert noise by correlating duplicate events, suppressing known benign or cascading alerts, and grouping related issues into a single problem record. It escalates to a human when patterns change or confidence drops, helping the team stay focused on what actually needs attention.
+
+What’s in it for MSP? 
+	•	It reduces alert noise, lowers burnout, and improves response time.
+	•	Correlates duplicate alerts across tools and devices
+	•	Suppresses knownbenign or cascading alerts under policy
+	•	Groups alerts into a single problem record
+	•	Escalates when patterns shift or confidence drops
+	•	Less noise, lower burnout, better response time
+Incident Response Root Cause Analysis 
+Integrates: Adlumin XDR/MDR, RMM/UEM, Identity Provider, Backup (Cove), PSA, Documentation (Hudu)
+Value Proposition:   Prevention of Future Incidents, Reduce detection to prevention time, Operational efficiency (Profitability)
+Generates a customer-ready Root Cause Analysis report with a clear timeline, key findings, actions taken, and recommended hardening steps. It automatically captures the full incident as it happens, connects every detection and response into a single chain of evidence, and traces the root cause across security, identity, endpoint, and network data. It also identifies contributing factors and updates documentation with lessons learned and improved SOPs.
+
+Builds the RCA as the incident happens, so the report is ready in hours instead of days. Every action, decision, and tool call is automatically logged and traced, giving the MSP a professional, defensible report without the usual manual digging. The result is faster delivery, stronger customer trust, and a natural conversation about how to prevent the issue from happening again.
+
+Explanation:
+	•	Captures the full incident timeline automatically as events unfold across tools
+	•	Maps every detection, decision, approval, tool call, and remediation action to a single chain of evidence
+	•	Correlates the root cause by tracing backward from impact to origin across security, identity, endpoint, and network data
+	•	Identifies contributing factors: missed patches, policy drift, access gaps, configuration weaknesses
+	•	Generates a customerready Root Cause Analysis report with timeline, findings, actions taken, and recommended hardening steps
+	•	Updates documentation systems with lessons learned and revised SOPs
+
+What's in It for MSP: Today, writing an RCA takes hours of digging across tools, Slack threads, and ticket notes, and the result is inconsistent and often late. ACP builds the RCA as the incident happens, not after. Every action is already logged, every decision already traced, every tool call already timestamped. The MSP delivers a professional, defensible report to the customer within hours instead of days. That report becomes a trust builder, an insurance artifact, and a natural upsell conversation: "Here's what happened, here's what we did, and here's what we recommend to prevent it."
+Security Tabletop Exercise Simulator
+Integrates: Nable MDR, UEM, Backup, Vendor Security Expert, Nable Vulnerability Expert, Nable Script Expert, Script Repository
+Value Proposition:  Service expansion, Operational Efficiency (Profitability)
+Simulates a real security incident using the MSP’s actual tools, SOPs, and environment, with realistic alerts instead of hypothetical scenarios. It walks through detection, investigation, and response exactly as they would happen, evaluating decisions, approvals, and escalation paths along the way. The result is a clear record of what happened, where gaps exist, and where automation or controls should be improved.
+
+Allows teams rehearse real incidents before they happen, so gaps in SOPs, permissions, and tooling surface safely instead of during a breach. It builds muscle memory without risking customer environments, gives leadership clear proof of readiness, and helps the MSP strengthen customer trust by demonstrating real response maturity.
+
+Explanation:
+	•	Simulates a real security incident using the MSP’s actual tools, SOPs, and environment
+	•	Injects realistic alerts and signals instead of hypothetical scenarios
+	•	Uses AI reasoning to walk through detection, investigation, and response paths
+	•	Evaluates decision points, approvals, and escalation flows exactly as they would occur
+	•	Identifies when remediation actions would be deterministic versus require human approval
+	•	Documents actions taken, gaps found, and where automation or controls should improve
+
+What’s in It for the MSP: Rehearse real incidents before they happen  Gaps in SOPs, permissions, and tooling surface safely instead of during a breach Teams build muscle memory without risking customer environments Leadership gains clear evidence of readiness and improvement areas The MSP strengthens trust with customers by proving response maturity, not just claiming it
+Continuous Environment Health Coworker 
+Integrates: RMM/UEM, Security (Adlumin / EDR), Backup (Cove), PSA
+Value Proposition: Operational Efficiency (Profitability), Risk Reduction
+Runs continuous health sweeps across every customer environment to catch issues early and keep systems aligned with policy. It checks patching, backups, security posture, agent health, and core system performance, automatically fixing routine drift and opening tickets only when human judgment is needed. The result is a daily summary of what was found, what was fixed, and what still needs attention.
+
+Keeps your customer environments healthy without requiring technicians to start each day by checking dashboards across multiple tools. It automatically handles routine drift before anyone logs in, reducing manual effort and helping the MSP deliver more consistent operations at scale. The result is fewer missed issues, less repetitive work, and a more reliable service experience for customers.
+
+Explanation
+	•	Runs continuous health sweeps across every customer environment on a defined schedule
+	•	Checks patch compliance, agent health, backup success, security posture, disk/memory/CPU, and certificate expiry
+	•	Automatically remediates drift: restarts agents, retriggers backups, pushes missing patches, clears temp files
+	•	Opens tickets only for issues that require human judgment
+	•	Produces a daily operations summary: what was found, what was fixed, what needs attention
+
+What's in It for the MSP: Today a technician spends the first hour of every morning checking dashboards across tools. ACP eliminates that entirely. The environment is already healthy before anyone logs in. The MSP replaces a daily human ritual with a persistent, crossproduct coworker that never misses, never forgets, and never calls in sick.
+MSP Employee Onboarding Coworker
+Integrates: HR system, Identity Provider, PSA, RMM/UEM, Security tools
+Value Proposition: Reduce Time to Market, Operational Efficiency (Profitability)
+Automatically starts onboarding across all required systems when a new employee is added. It provisions identity, device, and application access based on role and policy, validates security posture before access is granted, and requires approval for any sensitive permissions. Every step is logged for traceability and compliance.
+
+Gets new hires productive on day one without manual coordination or missed steps. It reduces security risk by making access consistent and policy-driven, cuts repetitive setup work for the team, and gives leadership clear proof that onboarding was done correctly and safely.
+
+Explanation:
+When a new employee is added, this coworker automatically initiates onboarding across all required systems. It provisions identities, devices, and application access based on role and policy, enforces leastprivilege permissions, and validates device and security posture before access is granted. Any elevated or sensitive access requires approval, and every step is logged for traceability and compliance.
+What’s in It for the MSP: New hires are productive on day one without manual coordination or missed steps. Security risk is reduced because access is consistent and policydriven, not handled ad hoc. The team spends less time on repetitive setup, senior techs aren’t needed for every onboarding, and leadership has clear proof that access was granted correctly and safely.
+Existing Customer New Employee Onboarding/Offboarding Coworker
+Integrates: Customer HR System, Identity Provider (IdP), Backup, RMM/UEM, Security (EDR), M365/SaaS, PSA
+Value Proposition: Reduce Time to Market/Billing, Operational Efficiency (Profitability)
+Automatically detects when a customer adds or offboards an employee and starts the right onboarding or offboarding workflow based on customer and MSP policy. It provisions or removes access with least-privilege defaults, validates device and security readiness, and requires approval for any sensitive permissions. Every step is confirmed and logged for audit, compliance, and consistency.
+
+Gets customer employees productive faster without manual back-and-forth or inconsistent handoffs. It reduces security risk by making access and device readiness consistent across customers, helps the MSP scale onboarding and offboarding more safely, and provides clear proof that every step was completed correctly and compliantly.
+
+Explanation:
+	•	Detects when a customer adds / offboards a new employee via HR or service request
+	•	Resolves role, department, location, and risk profile using customer and MSP policy
+	•	Provisions identity, device access, and required SaaS applications with leastprivilege defaults
+	•	Validates device readiness and security posture before granting access
+	•	Requires approval for elevated or sensitive permissions Confirms completion and logs all actions for audit and compliance
+What’s in It for MSP: New customer employees are productive on day one without manual backandforth Security risk is reduced by enforcing consistent access and posture across customers Onboarding becomes repeatable and scalable instead of ticketdriven and errorprone Junior techs can handle onboarding safely without senior oversight The MSP demonstrates operational maturity with clear evidence of secure, compliant onboarding
+New Customer Onboarding Coworker
+Integrates: PSA, RMM/UEM, Security (MDR), Backup, Documentation, Reporting  
+Value Proposition: Reduce Time to Market/Billing, Operational Efficiency (Profitability)
+Starts a standardized onboarding flow across every connected system when a new customer is signed. It sets up the customer in the PSA, deploys baseline configurations across core tools, applies standard policies, verifies critical controls, and keeps risky changes behind approvals. It finishes with a customer-ready summary showing what was deployed, what was verified, and what still needs human input.  Gets new customers onboarded faster without relying on manual coordination across tools and teams. It makes onboarding more consistent, reduces the risk of missed controls or unsafe changes, and gives the MSP clear proof that standards were applied from.
+
+Explanation:
+	•	When the MSP signs a new customer, this coworker kicks off a standardized onboarding flow across every connected system. It creates the customer record and onboarding project in the PSA, then provisions the tenant and baseline configurations across RMM/UEM, security, and backup tools. 
+	•	It automatically deploys agents, applies standard policies, sets monitoring thresholds, and verifies critical controls are active (backup success, endpoint protection present, alert routing working). 
+	•	Risky changes (admin access, firewall modifications, exception policies, broad scripting) are gated behind approvals, and the coworker logs every step with timestamps for auditability. 
+	•	It finishes by generating a customerready onboarding summary: what was deployed, what was verified, what still needs human input, and the proof that standards were met.
+Network Incident Resolution Coworker 
+ Integrates: Nable, Vendor Network Expert, MDR, Backup, Vulnerability Expert, Nable Script Expert, Script Execution Engine
+Value Proposition:  Operational Efficiency (Profitability), Risk Reduction
+Detects network issues and triggers the customer’s AI Coworker using their SOPs, then gathers the topology, device state, and logs needed to diagnose the problem. It uses AI reasoning to choose the right remediation, then shifts to validated script execution as soon as the path is deterministic, avoiding generated commands. Every action and outcome is logged end to end for speed, safety, and auditability.  Resolves network incidents faster without manual triage or constant tool switching. It reduces risk by executing approved, validated scripts instead of generated commands, lowers AI costs by stopping model use once execution is deterministic, and creates a clear audit trail of what changed, why, and with what result.
+Explanation:
+	•	Detects network errors and triggers the customer’s AI Coworker using their SOPs
+	•	Orchestrates vendor and Nable experts to gather topology, device state, and logs
+	•	Uses AI reasoning to diagnose the issue and select the correct remediation
+	•	Identifies when an action can be executed deterministically
+	•	Executes validated scripts directly without LLMgenerated commands
+	•	Stops model usage once deterministic execution is possible
+	•	Logs execution results and outcomes endtoend
+What’s in It for MSP: Faster incident resolution without manual triage or tool switching Lower risk by executing knownsafe, approved scripts instead of generated commands Reduced AI costs by eliminating unnecessary token usage during execution Repeatable outcomes that don’t depend on senior technician intervention Clear audit trails that prove what changed, why, and how
+MSP Benchmarking & Threat Hardening Coworker
+Integrates: MDR, UEM, Vulnerability scanner, EDR/Security tools, Backup, PSA/Reporting   
+Value Proposition:  Operational Efficiency (Profitability), Talent retention/less fatigue, Risk Reduction
+Pulls together patching, vulnerability, and security posture data across your customer base and normalizes it so comparisons across vendors are actually meaningful. It places you into a peer group based on MSP profile and benchmarks you on key operational metrics, then highlights where you’re ahead, where you’re behind, and which controls will improve results fastest. It finishes with customer-ready charts and messaging for QBRs.  What's in it for you? Shows exactly how your MSP compares to similar peers, making it easier to prove progress and explain priorities to customers. It turns benchmarking into a practical hardening tool by spotlighting the gaps that matter most and giving you a clear story about what you’re improving next.
+Explanation:
+	•	Ingests your patching, vulnerability, and security posture across your full customer profile 
+	•	Normalizes data across vendors so “apples to apples” comparisons are actually possible 
+	•	Segments you into a “peer group” based on MSP size, customer mix, industry, endpoint count, and tool stack
+	•	Benchmarks you against peers on daily operational metrics, for example: patch compliance timelines, critical vuln exposure window, EDR coverage, backup success rate, MFA/identity hygiene
+	•	Flags where you’re outperforming, where you’re behind, and what specific controls would move the needle fastest
+	•	Produces a customerready narrative and charts for QBRs, including “here’s where you stand vs similar MSPs” and “here’s what we’re improving next 
+Ticket Triage and Dispatch “Coworker” that:
+Integrates: PSA/Helpdesk, RMM/UEM, Security (MDR), Backup, Identity
+Value Proposition:  Operational Efficiency (Profitability), Talent retention/less fatigue, Faster ticket close times
+Ingests new tickets from any PSA or helpdesk and adds live endpoint, user, and tenant context so triage starts with the right information. It uses bounded AI reasoning to classify severity, category, and likely root cause, then runs safe diagnostics automatically while stopping before any disruptive remediation. When confidence is low or policy requires separation of duties, it escalates to a human technician.  What's in it for you? Routes tickets correctly the first time, reducing bounce-around and wasted effort. It gives technicians the context and diagnostics they need up front, speeds up routine work without risking customer impact, and helps junior staff handle more tickets safely. The result is faster response, fewer mistakes, and clearer auditability for leadership.
+Explanation:
+	•	Ingests new tickets from any PSA or helpdesk and enriches them with live endpoint, user, and tenant context
+	•	Classifies severity, category, and likely root cause using bounded AI reasoning
+	•	Automatically runs safe, nondisruptive diagnostics such as log collection, service checks, and backup validation
+	•	Stops before any disruptive remediation and routes those actions for approval
+	•	Escalates to a human technician when confidence is low or separationofduties policies apply
+What’s in It for the MSP: Tickets get routed correctly the first time, reducing bouncearound and wasted effort Technicians start with context and diagnostics already done, cutting timetoresolution Automation speeds up routine work without risking customer impact Junior techs handle more tickets safely, easing pressure on senior staff Customers see faster responses and fewer mistakes, while leadership gets clear auditability
+MSP Acquisition Integration Coworker
+Integrates: PSA, RMM/UEM, Security (EDR), Backup, Identity, Documentation
+Value Proposition:  Integration time,  Operational Efficiency (Profitability), Talent retention/less fatigue
+Explanation: Detects the acquisition of a new MSP and initiates a controlled integration workflow Inventories tools, customers, technicians, and configurations from the acquired MSP Maps differences in SOPs, security posture, patching standards, and access models Safely migrates customers, endpoints, and technicians into the acquiring MSP’s standards Runs sidebyside validation to confirm monitoring, backup, and security are active Requires approval for destructive changes or policy overrides Logs every action and decision for audit, compliance, and postmerger review
+What’s in It for the MSP:
+	•	Acquisitions integrate faster without breaking customer service
+	•	Risk is reduced by standardizing security, patching, and access before changes go live
+	•	Operational consistency improves instead of inheriting chaos
+	•	Senior engineers aren’t pulled into weeks of manual cleanup
+	•	Leadership gains clear visibility into progress, gaps, and readiness
+	•	The MSP turns M&A into a repeatable playbook instead of a oneoff fire drill
+Disaster Recovery Orchestration Coworker  
+Integrates: Cove DR/Standby Image (incl. Azure recovery option), PSA, Approval Workflow, Customer Comms  
+Explanation:
+Detects an outage (ticket, monitoring event, or customer call) and initiates a DR workflow.  
+Enforces step-level approvals for failover, network changes, and “declare disaster” moments, then executes only what’s authorized.  
+Captures the full DR timeline: what was approved, what ran, where it recovered, and when service was restored. 

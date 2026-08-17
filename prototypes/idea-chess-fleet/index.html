@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idea Chess — The Fleet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1a1612;--paper:#efe7d6;--card:#f7f0df;--line:#1a1612;--grid:rgba(26,22,18,.06);--muted:#6b6459;
+    --r:#3f6d3f;--a:#b6892b;--q:#a23b26;--violet:#5B3A7E;--blue:#1F3C96;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:"Kalam",cursive;font-size:16px;line-height:1.4;padding:26px 18px 90px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .mono{font-family:"Space Mono",monospace}
+  h1{font-size:32px;margin:2px 0}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .banner{border:2px dashed var(--line);background:var(--card);padding:8px 14px;margin-bottom:18px;font-family:"Space Mono",monospace;font-size:11px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+  .banner b{background:var(--ink);color:var(--paper);padding:2px 7px}
+  h2.sec{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--line);padding-bottom:5px;margin:26px 0 14px}
+
+  /* fleet grid */
+  .fleet{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:840px){.fleet{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.fleet{grid-template-columns:1fr}}
+  .ship{background:var(--card);border:2.5px solid var(--line);box-shadow:5px 5px 0 var(--line);padding:13px 15px;cursor:pointer;position:relative;transition:transform .05s}
+  .ship:hover{transform:translate(-1px,-1px)}
+  .ship.sel{box-shadow:5px 5px 0 var(--violet);border-color:var(--violet)}
+  .ship .sid{font-family:"Space Mono",monospace;font-weight:700;font-size:12px;color:var(--muted)}
+  .ship h3{font-size:17px;margin:2px 0 4px;line-height:1.15}
+  .ship .win{font-family:"Space Mono",monospace;font-weight:700;font-size:30px;line-height:1}
+  .ship .winbar{height:8px;background:rgba(26,22,18,.1);margin:6px 0 4px;position:relative}
+  .ship .winbar i{position:absolute;left:0;top:0;bottom:0}
+  .ship .meta{font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between}
+  .ship .kill{font-size:13px;margin-top:7px;border-top:1.3px dotted var(--line);padding-top:6px}
+  .fallsat{position:absolute;top:-10px;right:8px;background:var(--q);color:#fff;font-family:"Space Mono",monospace;font-size:9px;padding:1px 6px;text-transform:uppercase}
+
+  /* detail */
+  #detail{margin-top:26px;display:none}
+  #detail.show{display:block}
+  .hero{display:flex;gap:20px;align-items:center;background:var(--card);border:2.5px solid var(--line);box-shadow:7px 7px 0 var(--line);padding:15px 20px;margin-bottom:16px;flex-wrap:wrap}
+  .surv{font-family:"Space Mono",monospace;font-weight:700;font-size:48px;line-height:1}
+  .surv small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:3px}
+  .hero .msg{flex:1;min-width:240px;font-size:14.5px}
+  .pill{display:inline-block;font-family:"Space Mono",monospace;font-size:10.5px;padding:2px 8px;border:1.5px solid var(--line);border-radius:2px}
+  .trail{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin-bottom:16px}
+  .ford{background:var(--card);border:2px solid var(--line);box-shadow:3px 3px 0 var(--line);padding:9px 11px;position:relative}
+  .ford h4{margin:0 0 3px;font-size:13px;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.05em}
+  .ford .sv{font-family:"Space Mono",monospace;font-size:18px;font-weight:700}
+  .ford .g{font-size:11px;color:var(--muted);margin-top:2px}
+  .ford.death{border-color:var(--q);box-shadow:3px 3px 0 var(--q);background:#f6e6e1}
+  .ford.death::after{content:"✦ falls first";position:absolute;top:-10px;right:6px;background:var(--q);color:#fff;font-family:"Space Mono",monospace;font-size:8.5px;padding:1px 5px}
+  .cols{display:grid;grid-template-columns:1.35fr 1fr;gap:18px}
+  @media(max-width:860px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:2.5px solid var(--line);box-shadow:6px 6px 0 var(--line);padding:13px 15px}
+  .panel h3{margin:0 0 9px;font-size:15px;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.07em;border-bottom:2px solid var(--line);padding-bottom:5px}
+  .row{border-bottom:1.3px dotted var(--line);padding:7px 0}
+  .row:last-child{border-bottom:none}
+  .rtop{display:flex;align-items:center;gap:7px}
+  .rid{font-family:"Space Mono",monospace;font-weight:700;font-size:11px;min-width:52px}
+  .rlabel{flex:1;font-size:13.5px}
+  .stage{font-family:"Space Mono",monospace;font-size:9px;padding:1px 5px;border:1.2px solid var(--muted);color:var(--muted);border-radius:2px;text-transform:uppercase}
+  .pbar{height:6px;background:rgba(26,22,18,.1);margin:4px 0 3px;position:relative}
+  .pbar i{position:absolute;left:0;top:0;bottom:0;background:var(--violet)}
+  .pmeta{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:var(--muted)}
+  .btns{display:flex;gap:3px}
+  .b{font-family:"Space Mono",monospace;font-size:10.5px;padding:2px 6px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;border-radius:2px}
+  .b.on-pass{background:var(--r);color:#fff;border-color:var(--r)}
+  .b.on-fail{background:var(--q);color:#fff;border-color:var(--q)}
+  .b.on-unk{background:var(--ink);color:var(--paper)}
+  .exp{display:none;font-size:12px;color:#4a4238;margin-top:5px;padding-left:20px}
+  .exp.show{display:block}
+  .exp b{color:var(--q)}
+  .caret{cursor:pointer;color:var(--muted);font-size:12px}
+  .first{background:var(--paper);border:2px solid var(--q);padding:7px 9px;margin-bottom:10px;font-size:12.5px}
+  .first b{color:var(--q)}
+  .sens li{margin:0 0 7px;font-size:13px}
+  .sens .lift{font-family:"Space Mono",monospace;color:var(--r);font-weight:700}
+  .mcbtn{font-family:"Space Mono",monospace;font-size:12px;padding:6px 12px;border:2px solid var(--line);background:var(--ink);color:var(--paper);cursor:pointer;box-shadow:3px 3px 0 var(--line)}
+  .mcout{margin-top:9px;font-size:12px;display:none}.mcout.show{display:block}
+  .hist{font-family:"Space Mono",monospace;font-size:10.5px;white-space:pre;line-height:1.3;margin-top:5px;color:#4a4238}
+  .reset{font-family:"Space Mono",monospace;font-size:10.5px;cursor:pointer;border:1.5px solid var(--line);padding:2px 8px;background:var(--paper);margin-left:8px}
+  footer{margin-top:30px;border-top:2px solid var(--line);padding-top:12px;font-size:11.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner mono"><b>IDEA CHESS · THE FLEET</b><span>play every idea against the board before the market does</span><span style="color:var(--violet)">6 ships · win-rate = product of required positions (naive)</span></div>
+  <h1>The Fleet</h1>
+  <div class="sub">Each ship's win-rate is how often it survives all its required positions at their pinned odds. Click a ship to play it — drag a position to <b>✓</b> (study passed) or <b>✗</b> (failed) and watch it move. Probabilities are Idea-Chess <b>[A]</b> estimates from the kill-sheets; argue with them.</div>
+
+  <h2 class="sec">The board — win-rates side by side</h2>
+  <div class="fleet" id="fleet"></div>
+
+  <div id="detail">
+    <h2 class="sec" id="detail-title">—</h2>
+    <div class="hero">
+      <div><div class="surv" id="surv">—</div><small id="survnote"></small></div>
+      <div class="msg" id="msg"></div>
+      <span class="reset" onclick="resetShip()">↺ reset ship</span>
+    </div>
+    <div class="trail" id="trail"></div>
+    <div class="cols">
+      <div class="panel"><h3>Positions <span style="font-size:10px;color:var(--muted);font-weight:400">(⊕ required · ⌄ for the refuting move)</span></h3><div id="rows"></div></div>
+      <div>
+        <div class="panel" style="margin-bottom:16px"><h3>Test first</h3><div class="first" id="first"></div><div style="font-size:11px;color:var(--muted);margin-bottom:5px">Biggest win-rate lift if resolved:</div><ul class="sens" id="sens"></ul></div>
+        <div class="panel"><h3>Monte Carlo</h3><div style="font-size:12px;margin-bottom:7px">Play this idea 10,000 times at the pinned odds.</div><button class="mcbtn" onclick="runMC()">▶ play 10,000 games</button><div class="mcout" id="mcout"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const FLEET={
+A:{name:"Client-Facing Proof (QBR + Ledger)",kill:"Strongest demand, weakest solution-readiness — the road isn't built.",A:[
+{id:"A1",label:"Data clean enough to normalize (75-80%)",probability:.30,required:true,stage:"build",kill:"Normalization error rate on real mixed-vendor data too high to defend a QBR number.",test:"Normalize 3 real mixed-vendor datasets; measure error rate.",ev:"[A] P0 unowned"},
+{id:"A2",label:"The 15-min edit fits",probability:.35,required:true,stage:"adopt",kill:"Operators take far longer, or discard and rewrite.",test:"Timed operator prototype session.",ev:"[A] P0 unowned"},
+{id:"A3",label:"WTP holds vs buy-vs-build",probability:.45,required:false,stage:"defend",kill:"Small self-build, large already-have.",test:"Van Westendorp on 20-100 client segment.",ev:"[A] MEDIUM"},
+{id:"A4",label:"ScalePad window open",probability:.80,required:false,stage:"launch",kill:"Window closes before ACP ships.",test:"Confirm roadmap 2nd source.",ev:"[?] single-source"},
+{id:"A5",label:"Review-before-send wanted",probability:.85,required:false,stage:"adopt",kill:"MSPs want autonomous send, or reject AI authorship.",test:"Confirmed n=8; watch if edit is cosmetic.",ev:"[R] HIGH"},
+{id:"A6",label:"QBR demand (the destination)",probability:.90,required:false,stage:"launch",kill:"Collapses under independent quant.",test:"Qualtrics n=500 (out).",ev:"[D] HIGH"},
+{id:"A7",label:"First-party normalization is a real moat",probability:.65,required:false,stage:"defend",kill:"Competitors normalize via 3rd-party APIs.",test:"Scope legal vendors (H2); compare quality.",ev:"[A] MEDIUM"},
+{id:"A10",label:"Demand is for THIS solution, not just the destination",probability:.55,required:true,stage:"adopt",kill:"They want the number handed over, not a draft to babysit.",test:"Solution-fit operator session.",ev:"[A] never tested"},
+{id:"H1",label:"No account-ending wrong-number event",probability:.60,required:false,stage:"adopt",kill:"A wrong figure in a client boardroom, caught, loses trust permanently.",test:"Add defensibility tiering to the narrative.",ev:"[A] asymmetric"},
+{id:"H2",label:"Cross-vendor data egress legally permitted",probability:.45,required:true,stage:"build",kill:"Competitors' ToS/DPA forbid normalizing their data → cross-vendor collapses to cross-N-able-stack.",test:"Legal/DPA review + read one competitor ToS.",ev:"[?] possibly fatal"},
+{id:"H3",label:"The operator (not just buyer) adopts",probability:.55,required:true,stage:"adopt",kill:"The vCIO routes around it → shelfware.",test:"Operator ethnography + prototype.",ev:"[A] ~93% [A]"},
+{id:"H4",label:"Quarterly cadence survives monthly sub",probability:.55,required:false,stage:"defend",kill:"4x/year forms no habit → churn.",test:"Model retention; bundle with daily Triage.",ev:"[A] cadence mismatch"},
+{id:"H5",label:"MSP brand not homogenized by AI voice",probability:.60,required:false,stage:"defend",kill:"QBRs read identically ('the ACP look').",test:"Blind read: tell two MSPs' QBRs apart?",ev:"[A]"},
+{id:"H6",label:"Edit paradox resolvable (fast AND defensible)",probability:.45,required:true,stage:"adopt",kill:"Trust-to-be-fast and understand-to-defend are opposites.",test:"Session measuring time-to-send AND defend-a-number.",ev:"[A] structural"},
+{id:"H7",label:"No cannibalization of N-able reporting",probability:.55,required:false,stage:"defend",kill:"Displaces UEM/Cove/Adlumin reporting revenue.",test:"Scope SKU overlap (strategy doc is placeholder).",ev:"[?]"},
+{id:"H8",label:"LLM COGS/QBR fits flat-WTP margin",probability:.50,required:false,stage:"build",kill:"Large-context gen × clients × 4q inverts margin.",test:"Model token cost × volume vs ceiling.",ev:"[?] unmodeled"},
+{id:"H9",label:"Output not in insurer/audit reliance chain",probability:.55,required:false,stage:"defend",kill:"A wrong relied-upon number → multi-party liability.",test:"Legal scoping: advisory vs relied-upon.",ev:"[?]"},
+{id:"H11",label:"Multi-tenant approval resolvable",probability:.65,required:false,stage:"build",kill:"Approval cascades to client admin → breaks frictionless draft.",test:"Resolve OQ-001..005.",ev:"[?]"}]},
+
+B:{name:"Governed Agent Control Plane",kill:"Best build-readiness, worst revenue-readiness — nobody pays for governance alone.",A:[
+{id:"B1",label:"Someone pays for governance (not free/expected)",probability:.35,required:true,stage:"launch",kill:"MSPs treat governance as hygiene owed for free → no standalone revenue.",test:"5-MSP pricing conversation: distinct line item or bundled?",ev:"[A] Shawn: 'won't get someone to pay'"},
+{id:"B2",label:"Agent-seat ARPU exists at a defensible price",probability:.40,required:true,stage:"launch",kill:"Buyer anchors to per-tech RMM pricing or zero.",test:"Probe a per-tech agent-mgmt seat vs Atera $129-219.",ev:"[?] no price precedent"},
+{id:"B3",label:"Can govern externally-built agents (the moat)",probability:.30,required:true,stage:"build",kill:"Audit-after only = doesn't govern; 'control plane' false for what MSP didn't build in ACP.",test:"G4 Action Proxy spec + 3 operator interviews.",ev:"[?] Nicole's BIG QUESTION"},
+{id:"B4",label:"Gated autonomy is wanted",probability:.92,required:false,stage:"adopt",kill:"MSPs want full autonomy or none.",test:"Answered; confirmatory only.",ev:"[R] 5/5 + 13/17 — but table stakes"},
+{id:"B5",label:"Governance-as-bill-enablement works",probability:.50,required:false,stage:"launch",kill:"'Charge my clients' motive is idiosyncratic to one buyer.",test:"Probe in 5-MSP pricing conversation.",ev:"[A] Jonathan, single source"},
+{id:"B6",label:"Determinism demand aligns with the DSE",probability:.70,required:false,stage:"defend",kill:"Customers want free-reasoning AI → DSE narrows positioning.",test:"Probe locked-deterministic vs free-reasoning.",ev:"[A]/MEDIUM"},
+{id:"B7",label:"MSPs want to build their own agents",probability:.55,required:false,stage:"adopt",kill:"Only want pre-spec'd → B is just a catalog.",test:"Pilot: do they progress to authoring their own?",ev:"[A]"},
+{id:"B8",label:"Per-run metering doesn't trigger bill-shock",probability:.45,required:false,stage:"launch",kill:"Unpredictable bills → drives the self-build it meant to prevent.",test:"Model 200-agent MSP's monthly volume × price.",ev:"[A]"},
+{id:"B9",label:"EU AI Act makes audit a net tailwind",probability:.50,required:false,stage:"defend",kill:"Mandatory logging commoditizes audit trails.",test:"Compliance owner verifies schema vs Act.",ev:"[CS:LOW outside window]"},
+{id:"H1",label:"Governing an agent doesn't increase N-able liability",probability:.50,required:false,stage:"defend",kill:"Governance role = duty of care; audit trail becomes the discovery document.",test:"Legal: does governance-of-record create liability exposure?",ev:"[?] 'Approve all' reads as rubber-stamp"},
+{id:"H2",label:"Governor-of-all-agents is technically+commercially viable",probability:.30,required:true,stage:"build",kill:"Externally-built agents won't route through ACP → walled garden, no moat.",test:"G4 architecture spike + willingness interviews.",ev:"[?] moat and deepest hole are same fact"},
+{id:"H3",label:"Metering cross-tenant runs is legal+desirable",probability:.55,required:false,stage:"launch",kill:"Meters actions in clients' environments without consent → DPA problem.",test:"Legal review of metering client-owned infra.",ev:"[?] unexamined"},
+{id:"H4",label:"Not confused with/cannibalized by N-central automation",probability:.55,required:false,stage:"defend",kill:"'My RMM policies already do this' → positioning confusion.",test:"Position-test vs N-central with existing MSPs.",ev:"[A] N-central runs rule-based automation"},
+{id:"H5",label:"Action-proxy latency acceptable in critical path",probability:.55,required:false,stage:"adopt",kill:"Gate adds latency that degrades threat response.",test:"Benchmark proxied vs direct; set SLA.",ev:"[?] never measured"},
+{id:"H6",label:"Operator can safely configure a governed agent",probability:.55,required:true,stage:"adopt",kill:"Non-programmer can't hold risk-tiers+approvals+promotion model → misconfig → governance theater.",test:"Watch 3-5 admins configure the Coworker Brief cold.",ev:"[A] operator unstudied"},
+{id:"H7",label:"Autonomy-promotion criterion definable safely",probability:.50,required:true,stage:"adopt",kill:"Too liberal promotes untrustworthy agent; too conservative never delivers payoff.",test:"Design spike defining Manual→Assisted→Autonomous standard.",ev:"[?] unspecced, safety-critical"},
+{id:"H8",label:"Drift detection for locked runbooks solvable",probability:.55,required:false,stage:"defend",kill:"Locked runbook keeps executing after env drifts → confident wrong at scale.",test:"Spec drift-detection + unfreeze; test on drifted env.",ev:"[?] unspecced"},
+{id:"H9",label:"Marketplace supply side ignites",probability:.35,required:false,stage:"defend",kill:"No committed vendor supply → cold-start fails → rev-share TAM collapses.",test:"Secure named vendor-Expert commitments first.",ev:"[A] ranked last 6/6"},
+{id:"H10",label:"Per-run metering is priceable at all",probability:.45,required:false,stage:"launch",kill:"No benchmark for metering governed infra actions.",test:"Derive from cost model + willingness; else drop.",ev:"[?] FABRICATION RISK if numeric"},
+{id:"H11",label:"Versioned/guardrail registry actually gets built",probability:.60,required:false,stage:"build",kill:"No registry = can't answer 'what was it permitted to do when it erred'.",test:"Migrate flat→family/version; verify point-in-time audit.",ev:"[A]/[?] flat pre-registry today"},
+{id:"H12",label:"B survives standalone (not merely the seat under A/C)",probability:.35,required:false,stage:"launch",kill:"If standalone WTP ~zero, B is infrastructure under A/C, not an offering.",test:"Resolve B1+B2; if zero, reposition as the seat.",ev:"[?] offering half-concedes 'not a SKU'"}]},
+
+C:{name:"Live IR / RCA",kill:"Rides on unconfirmed data access; the platform's already building the fallback, not the wedge.",A:[
+{id:"C-GATE",label:"Adlumin incident data can reach an ACP coworker",probability:.40,required:true,stage:"build",kill:"Adlumin is a separate lane / DPA forbids cross-tenant use → C collapses to a free-text synthesizer.",test:"Adlumin-eng review + legal/DPA review. Days, no build.",ev:"[?] Gate C UNCONFIRMED — the riskiest gate"},
+{id:"C-CORR",label:"Zero-holes cross-stack correlation, during, at scale",probability:.30,required:true,stage:"build",kill:"Completeness/false-linkage too low on a live degraded incident → the promise fails when the estate is under attack.",test:"Replay 3 historical incidents; measure completeness.",ev:"[?] ~30% P1; narration layer already commodity"},
+{id:"C-LIVE",label:"MSPs USE it DURING, not after (the wedge)",probability:.45,required:true,stage:"adopt",kill:"They run it post-hoc → 'live' evaporates → it's the ticket-RCA card already in the build.",test:"Contextual inquiry on real IR workflow + wizard-of-oz.",ev:"[?] ~50%, behavior untested"},
+{id:"C-TRUST",label:"MSP trusts an AI mid-incident enough to act on it",probability:.45,required:true,stage:"adopt",kill:"Under 2am stress the tech defaults to human judgment, ignoring the AI.",test:"Simulated-incident operator session.",ev:"[A] IR culture is human-trust-based"},
+{id:"C-LIABLE",label:"AI-authored RCA is admissible / insurer-acceptable",probability:.45,required:true,stage:"launch",kill:"Insurers require a human examiner sign-off, OR a wrong relied-upon RCA = severe multi-party liability.",test:"Legal scoping + 2-3 insurer conversations.",ev:"[?] designed for reliance, never scoped — potentially fatal"},
+{id:"C-SOLN",label:"Demand is for THIS mechanism, not just a fast RCA",probability:.50,required:true,stage:"adopt",kill:"They want a human SOC to hand them the report, not an AI to babysit mid-crisis.",test:"Solution-fit operator session.",ev:"[A] value-rating soft 3.13"},
+{id:"C-DEMAND",label:"RCA demand exists (the destination)",probability:.80,required:false,stage:"launch",kill:"Artifact of the shared n=8; softens under quant.",test:"Qualtrics n=500.",ev:"[D/R] #2 qual, value 3.13 soft"},
+{id:"C-PAY",label:"Per-incident / %-of-SOC WTP holds",probability:.55,required:false,stage:"defend",kill:"Anchors don't generalize; margin inverts on large breaches.",test:"Pricing test both models + COGS (H7).",ev:"[R] n=2 named"},
+{id:"C-EGRESS",label:"Correlation across non-N-able stack legally permitted",probability:.40,required:false,stage:"build",kill:"Rival SIEM/EDR ToS forbid it → shrinks to cross-Adlumin-estate.",test:"Legal + read one rival ToS (SentinelOne/Rapid7).",ev:"[?] data owners are competitors"},
+{id:"H1",label:"No claim-ending wrong-RCA / admissibility failure",probability:.50,required:false,stage:"launch",kill:"A wrong root cause relied on by client/insurer/court → liability lands on MSP + N-able.",test:"Confidence-tiering + mandatory human-attestation gate.",ev:"[?] designed to be relied on by an adversary"},
+{id:"H3",label:"2am reliability / degraded-mode design exists",probability:.50,required:false,stage:"launch",kill:"C is blind exactly when the incident degraded its own telemetry.",test:"Incident-grade SLA + chaos-test under telemetry loss.",ev:"[?] failure correlated with the event"},
+{id:"H5",label:"Alert-to-RCA trigger doesn't false-fire into erosion",probability:.55,required:false,stage:"adopt",kill:"Fires on false positives → cost + discoverable 'we had an incident' artifacts.",test:"Test trigger logic on a labeled alert stream.",ev:"[?] trigger dilemma unnamed"},
+{id:"H6",label:"Survives incumbents (Huntress/Blackpoint) who ship reports",probability:.45,required:false,stage:"defend",kill:"They fold live-RCA into managed SIEM where they own the telemetry + human SOC.",test:"Competitive teardown + win/loss.",ev:"[R] Huntress ships incident reports"},
+{id:"H7",label:"Per-incident LLM COGS fits per-incident price",probability:.45,required:false,stage:"build",kill:"Unbounded correlation over incident length inverts margin on big breaches.",test:"Model token cost over realistic incident durations.",ev:"[?] billed unit ≠ cost unit"},
+{id:"H8",label:"Build (ticket-RCA card) reconciles with offering (live cross-stack)",probability:.50,required:false,stage:"build",kill:"The ratified default (DEC-006) is post-hoc ticket-level; C must argue against its own platform's default.",test:"Product decision: which product is C? Name gap to Nicole.",ev:"[VERIFIED build read]"},
+{id:"H9",label:"Not absorbed as an Adlumin case-file feature",probability:.55,required:false,stage:"defend",kill:"Adlumin already makes 'audit-ready case files' → C shrinks to a formatted skin.",test:"Scope C's net-new above Adlumin case file.",ev:"[?] cannibalization unexamined"},
+{id:"H11",label:"Multi-tenant approval under incident time pressure",probability:.50,required:false,stage:"build",kill:"Human approver needed at 2am → bottleneck (kills speed) or skipped (kills liability shield).",test:"Define incident-mode approval path (OQ-001..005).",ev:"[?] C adds a 2am timing conflict"}]},
+
+D:{name:"Ticket Triage Wedge",kill:"The built thing isn't the wedge; the wedge isn't built. And no proof it converts.",A:[
+{id:"D1",label:"Demand intensity is real (8.3, most enthusiastic)",probability:.85,required:false,stage:"launch",kill:"Enthusiasm was an artifact of the shared n=8.",test:"Cross-check against n=39 + n=119 open-text.",ev:"[R/D] HIGH on enthusiasm"},
+{id:"D2",label:"Diagnostic delta beats Rost/Thread/PIA (THE CORE BET)",probability:.30,required:true,stage:"adopt",kill:"ACP diagnosis not measurably better → no wedge, just a commodity router.",test:"Blind bench-test vs incumbents on real tickets.",ev:"[A] untested; not in the day-1 build"},
+{id:"D3",label:"The wedge is live diagnostics, not classification",probability:.75,required:false,stage:"launch",kill:"Classification alone is valued enough / isn't table stakes.",test:"Kano survey classification vs diagnostics.",ev:"[R] classification = table stakes"},
+{id:"D4",label:"SOC data + PSA depth power the diagnosis",probability:.55,required:false,stage:"build",kill:"SOC corpus doesn't generalize to ticket diagnosis.",test:"Map SOC categories to ticket taxonomy.",ev:"[A]/[R] transfer assumed"},
+{id:"D5",label:"Safe-auto/sign-off line matches MSP expectation",probability:.55,required:true,stage:"adopt",kill:"MSPs want the line drawn differently → auto-execute scares or feels useless.",test:"Operator interviews on auto vs sign-off day-1.",ev:"[A] single MSP-C anchor"},
+{id:"D6",label:"Commodity risk survivable (RMM won't fold triage in first)",probability:.35,required:false,stage:"defend",kill:"ConnectWise/Autotask/Halo ship native triage free.",test:"Track incumbent roadmaps.",ev:"[R] 'it'll be in my RMM' ≥4/5"},
+{id:"D7",label:"Daily frequency compounds into retention",probability:.55,required:false,stage:"defend",kill:"Daily wrong answers erode trust faster than habit forms.",test:"Longitudinal trust/NPS vs error rate.",ev:"[A] double-edged"},
+{id:"D8",label:"Integration depth is the buying criterion and we meet it",probability:.45,required:false,stage:"adopt",kill:"Buyers need deeper than ConnectWise-only day-1.",test:"Confirm depth with Derek-type buyers.",ev:"[R] criterion real; meeting it [A]"},
+{id:"D9",label:"Triage CONVERTS MSPs into buyers of A / platform",probability:.30,required:true,stage:"defend",kill:"Triage users don't trial/buy A → leading with #6 unjustified, D is a standalone commodity.",test:"Instrument the funnel: triage→A trial→purchase.",ev:"[A] ZERO conversion instrumentation today"},
+{id:"D10",label:"WTP supports the price (~$300/mo flat)",probability:.40,required:false,stage:"defend",kill:"Table-stakes + self-buildable → flat low ceiling.",test:"Van Westendorp isolating triage from platform.",ev:"[MEDIUM] single-source; double-taxes A's seat"},
+{id:"D-H1",label:"Auto-executed diagnostics don't create a blast-radius incident",probability:.70,required:true,stage:"defend",kill:"Auto action mis-acts at daily machine scale against a live client PSA.",test:"Staged rollout with kill-switch + per-action audit.",ev:"[A] no human in loop by design"},
+{id:"D-H2",label:"False-diagnosis trust erosion stays below abandonment",probability:.45,required:false,stage:"adopt",kill:"Wrong daily start-points cross the abandonment threshold.",test:"Accuracy on real tickets × longitudinal cohort.",ev:"[A] frequency-weighted"},
+{id:"D-H3",label:"Leading with #6 doesn't poison the #1 (QBR) demand",probability:.50,required:false,stage:"launch",kill:"'A router I could build myself' anchors the platform at commodity level.",test:"Message-order test: triage-first vs QBR-first.",ev:"[A] anchoring cost untested"},
+{id:"D-H5",label:"ConnectWise-only launch is acceptable + PSA dependency safe",probability:.50,required:false,stage:"launch",kill:"Autotask/Halo MSPs can't onboard, or ConnectWise reprices the API.",test:"Confirm addressable share + review CW API ToS.",ev:"[VERIFIED] single-PSA fact"},
+{id:"D-H6",label:"'Live diagnostics' achievable within day-1 permissions",probability:.35,required:true,stage:"adopt",kill:"Real diagnostics need write-access MSPs won't grant day-1 → chicken-and-egg.",test:"Ask 5-8 MSPs what access they'd grant a new tool.",ev:"[A] day-1 scope is ticket read/write only"},
+{id:"D-H7",label:"Junior deskilling doesn't invert retention",probability:.70,required:false,stage:"defend",kill:"Juniors lose diagnostic skill starting from the tool's answer.",test:"Longitudinal skills tracking.",ev:"[A] second-order"},
+{id:"D-H8",label:"The 8.3 intensity is independent, not the same 8 twice",probability:.40,required:false,stage:"launch",kill:"Intensity + qual rank share the n=8; the only independent instrument demotes D to #6.",test:"Rerun intensity on a disjoint sample.",ev:"[D] base-overlap fact"}]},
+
+E:{name:"Cross-Tool Reconciliation",kill:"A research question in an offering's clothes — may not be ACP's job at all.",A:[
+{id:"E1",label:"It is ACP's job at all (not a finance/PSA product)",probability:.25,required:true,stage:"gate-0",kill:"Reconciliation is owned by the PSA/accounting system or the bookkeeper; MSPs expect it there, not from a platform vendor.",test:"Discovery (8-10 MSPs): whose job is it, would you buy it from us?",ev:"[?] the existential question"},
+{id:"E2",label:"Demand survives a forced-rank tradeoff",probability:.45,required:true,stage:"gate-0",kill:"Universal 'nice if free' but never 'trade budget for' when forced-ranked.",test:"Add it to a forced-rank instrument.",ev:"[A]/[R] never forced-ranked; show-of-hands only"},
+{id:"E2b",label:"Money-grade accuracy achievable at a WTP that funds it",probability:.35,required:true,stage:"build",kill:"Near-zero-error engineering costs more than the ~$30/user WTP can fund → margin inverts.",test:"Model validation cost vs WTP; error rate on real billing data.",ev:"[A] highest accuracy bar, lowest WTP; $33,600 omen"},
+{id:"E3",label:"Doesn't fatally conflict with PSA/billing partners",probability:.45,required:true,stage:"launch",kill:"Puts N-able in direct competition with HaloPSA/ConnectWise/Autotask — the partners A and B depend on.",test:"Map vs partner roadmaps; check conflict terms.",ev:"[?] PSA TAM $16.9B dwarfs ACP's"},
+{id:"E4",label:"Demand not idiosyncratic to two self-builders",probability:.50,required:false,stage:"gate-0",kill:"Jonathan/Derek are atypical high-sophistication self-builders; median demand weaker.",test:"Segment demand by sophistication/size.",ev:"[A] Derek 'build in Cloud in a day'"},
+{id:"E5",label:"Cross-tool FINANCIAL data egress obtainable",probability:.35,required:true,stage:"build",kill:"PSA/accounting ToS forbid extracting billing data; the PSA competitor refuses egress to a rival.",test:"Legal/DPA + read one PSA ToS on billing extraction.",ev:"[?] A's H2 compounded — worse"},
+{id:"E6",label:"A single buyer/user identifiable without fracturing product",probability:.55,required:true,stage:"launch",kill:"Owner(money) vs ops(tools) are two products, two accuracy bars, two competitors → no single spec.",test:"Force the buyer question in discovery.",ev:"[?] buyer choice fractures the spec"},
+{id:"E7",label:"'AI bookkeeper' frame doesn't over-promise regulated reliability",probability:.55,required:false,stage:"launch",kill:"'Bookkeeper' sets a professional-standard expectation → professional/financial liability.",test:"Legal/positioning review; define disclaimers.",ev:"[A] Derek's own term invites a regulated frame"},
+{id:"E8",label:"A pricing / metering path exists for E",probability:.45,required:false,stage:"build",kill:"Metering isn't even decided for A/B ahead of it.",test:"Depends on the Usage Logic decision for A/B first.",ev:"[?] premature by two steps"},
+{id:"E9",label:"Not commoditized by PSA bundling or DIY",probability:.45,required:false,stage:"defend",kill:"PSA bundles active-vs-billed free (they own the data); sophisticates self-build.",test:"Track PSA roadmaps; count DIY MSPs.",ev:"[R]/[A] an MSP already DIY-built it"},
+{id:"E10",label:"UC-B isn't already the correctly-sized version",probability:.40,required:false,stage:"gate-0",kill:"The buildable thing is the narrower UC-B 'License & Cost Optimization'; E is scope-inflation adding risk without validated demand.",test:"Compare UC-B scope vs E; test the incremental.",ev:"[R] UC-B already exists with a WTP anchor"}]},
+
+BUILD:{name:"The Build (as-is)",kill:"Shipped the substrate, zero lines of the promised day-1 thing. The ledger renders $0.",A:[
+{id:"BET1",label:"Ticket Triage is the right day-1 Coworker",probability:.35,required:true,stage:"adopt",kill:"Triage isn't in the researched top-five (QBR #1, DEC-006); it's absent from the built/specced catalog. Day-1 delight staged on a task chosen for ConnectWise buildability, not demand.",test:"A/B onboarding first-Coworker (Triage vs QBR) with 8-12 admins; measure 7-day 2nd-activation.",ev:"[SPECCED] 'triage' absent from app code"},
+{id:"BET2",label:"Engine-first before the top-demand runbooks",probability:.45,required:true,stage:"launch",kill:"A fully-built ledger has no value producer (only planned writer is unbuilt onboarding REQ-017) → ROI substrate renders $0. Plumbing you can't demo.",test:"Build ONE demanded runbook (QBR) end-to-end on the existing engine; demo a real time-saved number.",ev:"[BUILT] engine 49/49 + 52/52; QBR/IR-RCA no spec"},
+{id:"BET3",label:"Flat, non-orchestrated coworkers (v1 non-goal)",probability:.50,required:false,stage:"defend",kill:"'Let the Alert Suppressor feed the QBR' is the obvious next demand; NONGOAL-002 forbids it and the flat schema can't express it → orchestration retrofit.",test:"Ask design partners if they expect chaining in 90 days.",ev:"[SPECCED] NONGOAL-002"},
+{id:"BET4",label:"Risk-tier + admin-gated autonomy is the ratified model",probability:.75,required:false,stage:"adopt",kill:"Model is sound, but the 10-ticket first run surfaces only 1-2 medium-risk items → the educational approval moment under-delivers (OQ-004).",test:"Instrument beta first runs; count medium-risk items/onboarding.",ev:"[BUILT] guardrail three-tier present"},
+{id:"BET5",label:"Audit-after governance (no pre-screen)",probability:.60,required:false,stage:"defend",kill:"Weak at the Expert layer: specs contradict whether an Expert can act (HOLE-1). If Experts act, a tool call fires before the audit sees it.",test:"Resolve HOLE-1; red-team whether an Expert action reaches an external system pre-audit.",ev:"[BUILT] action layer gated; Expert layer unresolved"},
+{id:"BET6",label:"Normalization is deferrable",probability:.40,required:true,stage:"launch",kill:"The demo's core promise ('we can see N tickets' + live ConnectWise write) can't execute without normalization. DEP-002 'Not started'; no CW/normalize code. The value moment is theater.",test:"Stand up a minimal CW read→normalize→classify→write path in a sandbox; time it vs 20-min budget.",ev:"[SPECCED] 'ConnectWise'/'normaliz' absent from code"},
+{id:"BET7",label:"'Agent control plane / factory' positioning is right (not MSP-OS)",probability:.50,required:false,stage:"defend",kill:"Factory framing optimizes buyer-invisible substrate and cedes the outcome-led category story to whoever tells the MSP-OS narrative first.",test:"Message-test both framings; measure demo requests + differentiation.",ev:"[A] no category/story artifact in the build"},
+{id:"BET8",label:"<20-min onboarding / ≤15-min builder achievable",probability:.45,required:true,stage:"launch",kill:"Asserted, not derived; if the 'API-key-in-8-min' admin doesn't exist, PSA-step drop-off fails and there's no time in a 20-min budget to redesign the step.",test:"Timed usability test with 5+ admins on a CW sandbox signup→run; resolve OQ-001/007 first.",ev:"[SPECCED] onboarding 0% built"},
+{id:"BET9",label:"Flat pre-registry tables OK as interim",probability:.55,required:false,stage:"defend",kill:"Every downstream promise (immutable versions, autonomy attr, draft locks, reverse-refs) needs a family/version schema the flat tables lack — a core-entity migration after runs already reference flat IDs.",test:"Prototype flat→family/version migration + run-record backfill.",ev:"[BUILT flat / SPECCED versioned] 0/40, 0/46"},
+{id:"HOLE-1",label:"Whether an AI Expert can execute actions is settled",probability:.30,required:false,stage:"build",kill:"Two canonical specs contradict: FSN-82688 (Experts execute) vs FSN-83143 TEST-001 (read-only). Unresolved in code; changes the meaning of audit-after.",test:"Product decision + single canonical amendment before Expert Registry is built.",ev:"[?] both marked canonical"},
+{id:"HOLE-2",label:"The Value Ledger will have a producer wired at launch",probability:.40,required:true,stage:"launch",kill:"Ledger fully built (52/52) but writes only on run completion; only planned producer (onboarding REQ-017) is 0% built → ROI dashboard renders $0 at launch.",test:"Wire one built runbook to emit a real ledger entry; confirm non-zero aggregate.",ev:"[SPECCED] producers all unbuilt"}]}
+};
+
+const STAGES=["gate-0","build","launch","adopt","defend"];
+let cur=null;                 // selected ship key
+const S={};                   // S[ship][id] = state
+Object.keys(FLEET).forEach(k=>{S[k]={};FLEET[k].A.forEach(a=>S[k][a.id]='unknown');});
+
+const effOf=(k,a)=>{const s=S[k][a.id];return s==='pass'?1:s==='fail'?0:a.probability;};
+const reqOf=k=>FLEET[k].A.filter(a=>a.required);
+const survOf=k=>reqOf(k).reduce((p,a)=>p*effOf(k,a),1);
+const fmt=x=>x>=0.1?(x*100).toFixed(0)+'%':x>=0.01?(x*100).toFixed(1)+'%':(x*100).toFixed(2)+'%';
+const color=x=>x<0.05?'var(--q)':x<0.25?'var(--a)':'var(--r)';
+function deathStage(k){const present=STAGES.filter(st=>reqOf(k).some(a=>a.stage===st));let d=null,m=2;present.forEach(st=>{const p=reqOf(k).filter(a=>a.stage===st).reduce((x,a)=>x*effOf(k,a),1);if(p<m){m=p;d=st;}});return d;}
+
+function renderFleet(){
+  const ranked=Object.keys(FLEET).sort((a,b)=>survOf(a)-survOf(b));
+  document.getElementById('fleet').innerHTML=ranked.map(k=>{
+    const s=survOf(k),f=FLEET[k];
+    return `<div class="ship ${cur===k?'sel':''}" onclick="select('${k}')">
+      <span class="fallsat">falls at ${deathStage(k)}</span>
+      <div class="sid">${k} · ${reqOf(k).length} required</div>
+      <h3>${f.name}</h3>
+      <div class="win" style="color:${color(s)}">${fmt(s)}</div>
+      <div class="winbar"><i style="width:${Math.max(2,Math.round(s*100))}%;background:${color(s)}"></i></div>
+      <div class="meta"><span>win-rate</span><span>${f.A.length} positions</span></div>
+      <div class="kill">${f.kill}</div>
+    </div>`;
+  }).join('');
+}
+
+function select(k){cur=k;document.getElementById('detail').classList.add('show');document.getElementById('mcout').classList.remove('show');renderFleet();renderDetail();document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});}
+function resetShip(){if(!cur)return;FLEET[cur].A.forEach(a=>S[cur][a.id]='unknown');document.getElementById('mcout').classList.remove('show');renderFleet();renderDetail();}
+
+function renderDetail(){
+  const k=cur,f=FLEET[k],s=survOf(k);
+  document.getElementById('detail-title').textContent=`${k} · ${f.name}`;
+  const el=document.getElementById('surv');el.textContent=fmt(s);el.style.color=color(s);
+  const res=reqOf(k).filter(a=>S[k][a.id]!=='unknown').length;
+  document.getElementById('survnote').textContent=`win-rate · ${res}/${reqOf(k).length} required positions resolved`;
+  const failed=reqOf(k).filter(a=>S[k][a.id]==='fail');
+  let msg;
+  if(failed.length) msg=`<span class="pill" style="border-color:var(--q);color:var(--q)">CHECKMATE</span> ${failed.map(a=>a.id).join(', ')} failed — a required position at 0 ends the game.`;
+  else if(s>=0.25) msg=`<span class="pill" style="border-color:var(--r);color:var(--r)">HOLDING</span> you've answered the sharpest moves.`;
+  else msg=`<span class="pill" style="border-color:var(--q);color:var(--q)">losing position</span> a stack of unowned required positions. Answer the cheapest upstream ones and watch it climb.`;
+  document.getElementById('msg').innerHTML=msg;
+  // trail
+  const present=STAGES.filter(st=>reqOf(k).some(a=>a.stage===st));
+  const death=deathStage(k);
+  document.getElementById('trail').innerHTML=present.map(st=>{
+    const g=reqOf(k).filter(a=>a.stage===st);const p=g.reduce((x,a)=>x*effOf(k,a),1);
+    return `<div class="ford${st===death?' death':''}"><h4>${st}</h4><div class="sv" style="color:${color(p)}">${fmt(p)}</div><div class="g">${g.map(a=>a.id).join(' · ')}</div></div>`;
+  }).join('');
+  // rows
+  document.getElementById('rows').innerHTML=f.A.map(a=>{const st=S[k][a.id];return `<div class="row">
+    <div class="rtop"><span class="rid">${a.id}</span><span class="rlabel">${a.required?'⊕ ':''}${a.label}</span><span class="stage">${a.stage}</span><span class="caret" onclick="tg('${a.id}')">⌄</span></div>
+    <div class="pbar"><i style="width:${Math.round(a.probability*100)}%"></i></div>
+    <div class="pmeta"><span>${a.ev} · p=${a.probability}</span><span class="btns">
+      <span class="b ${st==='unknown'?'on-unk':''}" onclick="setS('${a.id}','unknown')">?</span>
+      <span class="b ${st==='pass'?'on-pass':''}" onclick="setS('${a.id}','pass')">✓</span>
+      <span class="b ${st==='fail'?'on-fail':''}" onclick="setS('${a.id}','fail')">✗</span></span></div>
+    <div class="exp" id="exp-${a.id}"><b>Beats it:</b> ${a.kill}<br><b style="color:var(--r)">Test:</b> ${a.test}</div></div>`;}).join('');
+  // sensitivity
+  const base=survOf(k);
+  const cand=reqOf(k).filter(a=>S[k][a.id]!=='pass').map(a=>{const sv=S[k][a.id];S[k][a.id]='pass';const l=survOf(k)-base;S[k][a.id]=sv;return{a,l};}).sort((x,y)=>y.l-x.l);
+  document.getElementById('sens').innerHTML=cand.map(c=>`<li><b>${c.a.id}</b> ${c.a.label} <span class="lift">+${fmt(c.l)}</span></li>`).join('')||'<li>all required positions passed — the idea holds.</li>';
+  const gate0=reqOf(k).filter(a=>a.stage==='gate-0'&&S[k][a.id]!=='pass');
+  const build=reqOf(k).filter(a=>a.stage==='build'&&S[k][a.id]!=='pass');
+  let first;
+  if(gate0.length) first=`<b>Play ${gate0[0].id} first</b> — a gate-0 "should we even do this" move. Upstream of everything; resolve it before spending a build move. ${gate0[0].test}`;
+  else if(build.length) first=`<b>Play ${build[0].id} first</b> — the cheapest upstream move, usually a read/legal check, not a build. ${build[0].test}`;
+  else if(cand.length) first=`<b>Play ${cand[0].id} first</b> — biggest win-rate lift. ${cand[0].test}`;
+  else first=`All required positions answered — the idea holds. Confirm the non-required ones before committing.`;
+  document.getElementById('first').innerHTML=first;
+  document.getElementById('foot').innerHTML=`Kill-sheet: <code>briefs/idea-chess-${k==='BUILD'?'build':'offering-'+k.toLowerCase()}.md</code> · model: <code>…assumptions.json</code>. Win-rate = product of required positions at pinned odds (naive; positions cluster, so true odds are higher — the sensitivity ranking, not the %, is the action). Probabilities are Idea-Chess [A] estimates.`;
+}
+
+function runMC(runs=10000){const k=cur,r=reqOf(k);let alive=0;const h={};
+  for(let i=0;i<runs;i++){let pa=0,ok=true;for(const a of r){const s=S[k][a.id];const p=s==='pass'?1:s==='fail'?0:a.probability;if(Math.random()<p)pa++;else ok=false;}if(ok)alive++;h[pa]=(h[pa]||0)+1;}
+  const pct=alive/runs;let bars='';for(let j=0;j<=r.length;j++){const c=h[j]||0;bars+=`${j} │${'█'.repeat(Math.round(c/runs*36))} ${(c/runs*100).toFixed(0)}%\n`;}
+  const o=document.getElementById('mcout');o.classList.add('show');
+  o.innerHTML=`<b style="color:${color(pct)};font-family:'Space Mono'">${(pct*100).toFixed(2)}% of games survive</b> (${alive}/${runs})<div class="hist">${bars}</div><div style="font-size:10.5px;color:var(--muted)">positions passed per game — how rarely all ${r.length} land together.</div>`;}
+
+function setS(id,v){S[cur][id]=v;renderFleet();renderDetail();}
+function tg(id){document.getElementById('exp-'+id).classList.toggle('show');}
+renderFleet();
+</script>
+</body>
+</html>

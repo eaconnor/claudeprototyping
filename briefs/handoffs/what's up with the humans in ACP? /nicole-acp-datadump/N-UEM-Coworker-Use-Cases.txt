@@ -1,0 +1,384 @@
+N-UEM AI Coworker Use Cases
+Detailed, Database-Ready Use Case Catalog
+Top 10 N-UEM Coworker Use Cases + 3 evidenced augmentations
+Augmented with evidence from 22 partner interviews (Ask N-zo feedback + Empower 2026 sessions)
+Prepared for Nicole Reineke, Chief AI Officer · N-able · June 2026
+
+1. Introduction & How to Read This Catalog
+This catalog fully fleshes out the N-UEM AI coworker use cases on Nicole’s “Top 10” list and augments each one with evidence drawn from 22 partner interviews — Ask N-zo tech-preview feedback sessions plus the Empower 2026 Customer Advisory Board and IT-Leaders roundtables. Three additional use cases (UC-A, UC-B, UC-C) emerged so consistently across the interviews that they are included as clearly-labeled augmentations beyond the original list.
+Every use case is described using the same consistent field schema so the catalog can be loaded into, and analyzed against, a database. The fields are:
+	•	Identity: ID, Name, Category
+	•	Audience: Primary Persona(s), Buyer / Beneficiary
+	•	Definition: Problem / Trigger, Description
+	•	Mechanics: Required Data Inputs, AI Actions / Capabilities, Outputs / Deliverables
+	•	Justification: Pain Points Addressed, Current State / Gaps, Supporting Interview Evidence
+	•	Prioritization: Value / ROI, Adoption Signal, Priority / Maturity, Dependencies / Enablers
+All quotes are attributed to the named partner or facilitator who said them. Where a quote was approved for external use it is marked “approved.”
+
+2. Use Case Summary Matrix
+One row per use case. UC-01 through UC-10 are the primary list; UC-A through UC-C are evidenced augmentations.
+ID
+Use Case
+Category
+Priority / Maturity
+Headline Value
+UC-01
+QBR / Customer Business Review & Reporting
+Business Advisor
+High / Partial
+1.5 hr → 15–20 min per report
+UC-02
+Patching Coworker
+Operations
+High / Emerging
+Automates top operational time-sink
+UC-03
+Script Coworker
+Automation
+High / Working
+Tiered scripts + CSV in minutes
+UC-04
+AI-Driven Ticket Resolution (E2E)
+Service Automation
+Med-High / Aspirational
+Removes manual screen-hunting
+UC-05
+Real-Time Vulnerability Assessment
+Security
+High / Emerging
+Replaces manual advisory triage
+UC-06
+Risk-Based Prioritization of Work
+Decision Support
+High / Aspirational
+Ranked daily work plan; noise cut
+UC-07
+Context-Aware Troubleshooting / RCA Root Cause Analysis
+Diagnostics
+High / Partial
+100% adoption signal (Jeff Z.)
+UC-08
+Asset Insights & Auto Recommendations
+Analytics
+High / Data-limited
+Half-day → minutes (Robby)
+UC-09
+Alert Flood Suppression & Correlation
+NOC Operations
+High / Aspirational
+~20 hrs/wk recoverable
+UC-10
+Endpoint Health & Lifecycle / Cohort
+Lifecycle
+High / Data-gap
+20 min → <1 min (Jim)
+UC-A
+Documentation / KB & How-To Assistant
+Knowledge
+High / Reliability bug
+~2 hrs/day; bypass support (Louis)
+UC-B
+License & Cost Optimization
+FinOps
+High / Not built
+Solves near-universal MSP pain
+UC-C
+Fast Asset / User Lookup
+Self-Service
+High / Working
+NL replaces manual filtering
+
+3. Cross-Cutting Themes
+Seven themes recur across the interviews and shape the gaps, dependencies and priorities recorded for the use cases below.
+1. Data accuracy & trust is the #1 blocker
+When results are wrong or incomplete, the whole workflow breaks because everything must be double-checked. Root cause is incomplete ingestion / scale time-outs (David's 1,300 devices read partially; John Joyce's 350 servers returned only 9; Win10/Win11 counts wrong). Customer-facing use cases require high-confidence accuracy, not “mostly right.”
+2. Structured, exportable output is required
+Chat-only output limits real-world use. Partners repeatedly asked for CSV (analysis), Word/PDF (QBRs), and branded layouts that drop into existing workflows.
+3. MCP access is the platform unlock
+Forward partners want to build their own tooling on the same data. MCP is framed as the “game changer” that lets MSPs solve their own specific problems and extend beyond out-of-box features.
+4. Broad / fuzzy queries fail — specificity required
+Specific questions work; broad ones under-return or time out. Prompt-engineering is often needed. Self-service prompt guidance (cheat sheet / sample prompts) and intent-confirmation were requested.
+5. Discoverability & memory gaps
+Enzo is buried on the asset tab, loses context on tab-switch, and has no chat history. Partners want a standalone, bookmarkable, over-the-top app, persistent chat history, and visible thinking/transparency.
+6. Persona split: data vs. narrative
+Technicians want raw data and lists; account managers and consultants want executive narratives that translate statistics into business value a CEO will value.
+7. Repeatedly-cited missing data fields
+Installed software, custom device properties (licensing), network devices, alerts/checks, events, historical (>24 hr) data, and last-logged-in user were the most-requested additions across interviews.
+
+4. Primary Use Cases (Top 10)
+UC-01 — QBR / Customer Business Review & Reporting
+Category: Business Advisor / Reporting
+Primary Persona(s): Account Manager, vCIO, business / non-technical user
+Buyer / Beneficiary: MSP owner & account team (buyer); end client (beneficiary)
+Problem / Trigger: Monthly / quarterly business review prep; renewal and upsell conversations
+Description: Analyze the client estate for gaps, risks and patterns, then generate client-ready QBR narratives and security/posture summaries framed as constructive recommendations (not salesy). Supports renewals and upsell positioning.
+Required Data Inputs: Full asset estate, patch posture, vulnerability posture, license / seat counts, device health, historical trend
+AI Actions / Capabilities: Analyze estate; summarize; frame recommendations; generate executive narrative; export to document
+Outputs / Deliverables: QBR narrative (Word / PDF, branded), executive-level report, posture summary
+Pain Points Addressed: Manual reports take 1–2 hours; teams are strong with numbers but weak at executive language; no cross-platform executive statistical report exists today
+Current State / Gaps: Chat-only output is insufficient; accuracy must be high-confidence for client-facing material; executive report layout / branding is missing
+Supporting Interview Evidence:
+“It would have taken me easily an hour, hour and a half to put something like this together, and I managed to do it in like 15–20 minutes.”  — David, Managed IT Experts
+“[I told it] don’t be salesy but at the same time give constructive information that could be used as almost natural recommendations… It actually did a good job.”  — David, Managed IT Experts
+“[My team is] great with numbers, they’re not great with putting those numbers into language that a CEO might value.”  — Aaron Betts
+Value / ROI: ~1–1.5 hr → 15–20 min per report (David); ~2 hrs saved per QBR (Taciano)
+Adoption Signal: David: “definitely have its place”; Aaron: would adopt and pay (~$30/user) if ROI is clear
+Priority / Maturity: High priority; partially working today (narrative strong; exec layout + accuracy gaps)
+Dependencies / Enablers: Structured export (Word / PDF / branding); accurate full-estate ingestion; license data
+
+UC-02 — Patching Coworker
+Category: Operations / Remediation
+Primary Persona(s): NOC engineer, patch admin, service desk
+Buyer / Beneficiary: MSP operations
+Problem / Trigger: Failed, pending or stuck patches on named device(s)
+Description: Identify failed / pending / stuck patches by named device, explain why a patch is missing or disabled, and approve / schedule / trigger remediation.
+Required Data Inputs: Patch status, patch level (custom device property was mentioned but we can put as tags), device list, maintenance schedules
+AI Actions / Capabilities: Query patch state; explain root cause; approve / schedule / trigger patch
+Outputs / Deliverables: Patch status list, remediation action, schedule
+Pain Points Addressed: Patching is the single biggest operational challenge; patch level lives in a custom property not exposed through the API
+Current State / Gaps: Patch / vulnerability data is only just arriving; custom-property patch level not in API
+Supporting Interview Evidence:
+“[Patch level is a] custom property… it’s not in the API.”  — Donald McKay
+“[Patches and vulnerabilities are] ever growing, ever changing… I can’t wait to see what Ask Enzo’s gonna be able to do with those.”  — Louis Oosthuizen
+Value / ROI: Targets a high-volume, automatable operational time-sink (Donald: 10,500 agents, ~$40k/mo spend)
+Adoption Signal: Strong demand across operations-led partners
+Priority / Maturity: High priority; emerging (data arriving)
+Dependencies / Enablers: Patch + vulnerability ingestion; custom device property exposure; action / trigger via MCP
+
+UC-03 — Script Coworker
+Category: Automation
+Primary Persona(s): Engineer, Tier-2, solution architect
+Buyer / Beneficiary: MSP engineering
+Problem / Trigger: Need a script for a reporting or configuration task
+Description: Write → upload → approve → run → check scripts; schedule them; and read from the scripting repository / cookbook.
+Required Data Inputs: Scripting cookbook / repository, device targets, parameters
+AI Actions / Capabilities: Generate script (tiered complexity); export CSV; schedule; run; check
+Outputs / Deliverables: Script (multiple complexity tiers), CSV export
+Pain Points Addressed: Writing scripts manually; finding the right cookbook script
+Current State / Gaps: General scripting queries sometimes need prompt-engineering to skip parameters
+Supporting Interview Evidence:
+“It gave us three different options on different varieties of complexity… even a CSV file export for you as well. That was amazing.”  — Louis Oosthuizen
+“[Loves the] new script repository… it’s changing our life to be honest.”  — Louis Oosthuizen
+Value / ROI: Faster than going deep with GitHub Copilot / Claude for basic scripts
+Adoption Signal: High enthusiasm; in active use
+Priority / Maturity: High priority; working today
+Dependencies / Enablers: Cookbook / repository read; upload-approve-run pipeline; scheduling
+
+UC-04 — AI-Driven Ticket Resolution (End-to-End)
+Category: Service Automation
+Primary Persona(s): Service desk / Tier-1, NOC
+Buyer / Beneficiary: MSP service operations
+Problem / Trigger: Inbound PSA ticket
+Description: Ingest a PSA ticket, pull device context via MCP, diagnose, and optionally remediate end-to-end with a human-in-the-loop approval step.
+Required Data Inputs: PSA ticket (MSP Manager / ConnectWise), device context via MCP, checks / alerts
+AI Actions / Capabilities: Ingest ticket; gather context; diagnose; remediate (human-in-loop)
+Outputs / Deliverables: Diagnosis, remediation, ticket update
+Pain Points Addressed: Tickets like “user’s PC having challenges” require manual hunting for which PC / user
+Current State / Gaps: No access to checks / alerts today; PSA integration via MCP required; human approval required
+Supporting Interview Evidence:
+“[Find] a specific user and the workstation that they were currently signed into… definitely saves time.”  — Aaron Betts / James (engineer)
+“You cannot ask Enzo… what I need to do as a NOC engineer.”  — David, Managed IT Experts
+Value / ROI: Removes manual screen-hunting in high-volume ticket triage
+Adoption Signal: Clear demand; gated on data + PSA integration
+Priority / Maturity: Medium-High; aspirational (needs checks/alerts + PSA via MCP)
+Dependencies / Enablers: Checks / alerts data; PSA MCP; remediation actions; human approval
+
+UC-05 — Real-Time Vulnerability Assessment & Exposure Tracking
+Category: Security
+Primary Persona(s): Security specialist, NOC, vCISO
+Buyer / Beneficiary: MSP / MSSP security practice
+Problem / Trigger: New CVE or vendor advisory; exposure question
+Description: Map CVE exposure across the estate, rank by CISA KEV / exploit / ransomware signals, and generate remediation plans and scripts.
+Required Data Inputs: Vulnerability data, CVE / KEV feeds, firmware / patch inventory, installed software
+AI Actions / Capabilities: Map exposure; rank by exploitability; generate remediation plan / script
+Outputs / Deliverables: Exposure list, ranked remediation plan, scripts
+Pain Points Addressed: Manual hunt for affected machines whenever an advisory lands
+Current State / Gaps: Vulnerability data only just arriving; needs firmware + installed-software inventory
+Supporting Interview Evidence:
+“If a certain advisory comes out… return to me all the machines that have this firmware or this patch. That would be hugely beneficial.”  — Aaron Betts
+“Vulnerability data is coming any minute now… right up on the top of the list.”  — Nicole Reineke (roadmap, to Louis & Wesley)
+Value / ROI: Replaces manual advisory triage; MSSP demand is growing (Lee Snyder)
+Adoption Signal: High
+Priority / Maturity: High priority; emerging (data arriving)
+Dependencies / Enablers: Vulnerability / CVE / KEV data; firmware + installed-software inventory
+
+UC-06 — Risk-Based Prioritization of Work
+Category: Operations / Decision Support
+Primary Persona(s): NOC engineer, service manager
+Buyer / Beneficiary: MSP operations
+Problem / Trigger: Daily “what should I work on?”
+Description: Rank devices by vulnerability scores, policy / config drift and patch gaps, and distill the result into a ranked action list rather than raw information.
+Required Data Inputs: Vulnerability scores, patch gaps, policy / config drift, alerts, health scores
+AI Actions / Capabilities: Score; rank; distill to action list; suppress noise
+Outputs / Deliverables: Ranked action list / daily work plan, top-N at-risk devices
+Pain Points Addressed: Time wasted clicking through screens for false positives; wants distilled insight and prioritization
+Current State / Gaps: Cannot reason over checks / alerts yet; cannot list workstations with active failed checks
+Supporting Interview Evidence:
+“If there was a way for it to distill it to insights… it gives you actually almost like an action list.”  — David, Managed IT Experts
+“[Wants the] top 20 at-risk devices [and a] vulnerability work list.”  — Boyd Smith
+“[It] cannot give me a list of workstations with active failed checks.”  — Sketch, Ditty
+Value / ROI: Noise reduction; ranked daily plan
+Adoption Signal: Strong
+Priority / Maturity: High priority; aspirational (needs checks / alerts)
+Dependencies / Enablers: Checks / alerts / health data; scoring model
+
+UC-07 — Context-Aware Troubleshooting / Root Cause Analysis
+Category: Service / Diagnostics
+Primary Persona(s): Service desk, engineer
+Buyer / Beneficiary: MSP service operations
+Problem / Trigger: “Why is X slow / broken?”
+Description: Pull full device context, explain the root cause of an issue, and produce a customer-ready report.
+Required Data Inputs: Full device context (CPU / memory / disk / events / history), last-logged-in user, network devices
+AI Actions / Capabilities: Gather context; diagnose root cause; explain; report
+Outputs / Deliverables: Root-cause explanation, customer report
+Pain Points Addressed: Monotonous screen-hunting; identifying which PC a user is on
+Current State / Gaps: Limited historical (>24 hr) data; missing events, network devices and last-logged-in user
+Supporting Interview Evidence:
+“[“Why is it slow” worked; wants] active-asset context awareness.”  — Jeff Zimbalist
+“[Last-logged-in user let us] shut down a rogue AD user… determine where it was going, where it logged in.”  — Louis Oosthuizen
+“100 alerts — how is the root cause? … Twenty-four [hours] is nothing.”  — Taciano Tavares
+Value / ROI: Replaces manual diagnosis; 100% adoption signal
+Adoption Signal: Jeff Zimbalist: 100% adopt
+Priority / Maturity: High priority; partially working
+Dependencies / Enablers: Events, historical >24 hr data, last-logged-in user, network devices
+
+UC-08 — Asset Insights & Auto-Generated Recommendations
+Category: Business Advisor / Analytics
+Primary Persona(s): Engineer, account manager, consultant
+Buyer / Beneficiary: MSP owner & account team
+Problem / Trigger: “Analyze my estate and recommend”
+Description: Stitch asset signals across the estate and auto-generate insights and recommendations — resource optimization, underutilization, lifecycle — ranked top-N.
+Required Data Inputs: Full asset pool, utilization (CPU / memory / disk), installed software, custom data properties, historical trend
+AI Actions / Capabilities: Correlate across estate; surface insights; recommend; rank top-N
+Outputs / Deliverables: Ranked insights, recommendations, optimization findings
+Pain Points Addressed: Hours of manual analysis and correlation across large datasets
+Current State / Gaps: Data breadth is the gating factor; broad queries fail at scale (350→9; 1,300 partial)
+Supporting Interview Evidence:
+“Ask N-zo quickly identified where resources could be freed across servers. What used to take hours of manual analysis now takes minutes.”  — Robby Swartenbroekx, b-inside (approved)
+“[Lifecycle planning surfaced a] Celeron… 20 minutes → under a minute.”  — Jim Lapore
+“[Asked for] 350 servers — [it] returned only 9.”  — John Joyce
+Value / ROI: Half-day → minutes (Robby); 20 min → <1 min (Jim)
+Adoption Signal: High
+Priority / Maturity: High priority; working but data-breadth / scale limited
+Dependencies / Enablers: Installed software, custom properties, historical trend; scale / ingestion fix
+
+UC-09 — Alert Flood Suppression & Root-Cause Alert Correlation
+Category: Operations / NOC
+Primary Persona(s): NOC engineer
+Buyer / Beneficiary: MSP operations
+Problem / Trigger: Alert flood
+Description: Suppress alert noise, correlate alerts to root cause across clients, and generate daily work plans. (Promoted from the original Asset Insights sub-items.)
+Required Data Inputs: Alerts, checks, event logs, device dependency / hierarchy
+AI Actions / Capabilities: Dedupe / suppress noise; correlate to root cause; synthesize cross-client
+Outputs / Deliverables: Suppressed / prioritized alert list, root-cause correlation, daily work plan
+Pain Points Addressed: A dedicated person spends ~20 hrs/wk on alerts; 80–90% is just checking; false positives
+Current State / Gaps: No checks / alerts access; no infrastructure hierarchy / dependency model
+Supporting Interview Evidence:
+“[A] dedicated person… spends probably 20 hours a week going through alerts… 80–90%… just checking… definitely automatable.”  — David, Managed IT Experts
+“[Wants the] top-10 alert-generating devices [and] infrastructure hierarchy / dependency.”  — Taciano Tavares
+Value / ROI: ~20 hrs/wk recoverable per NOC analyst
+Adoption Signal: Strong
+Priority / Maturity: High priority; aspirational (needs alerts + dependency model)
+Dependencies / Enablers: Alerts / checks data; device dependency / topology
+
+UC-10 — Endpoint Health Checks & Lifecycle / Cohort Analysis
+Category: Operations / Lifecycle
+Primary Persona(s): Engineer, account manager
+Buyer / Beneficiary: MSP operations & account team
+Problem / Trigger: Hardware refresh planning; health review; cohort threat
+Description: Run endpoint health checks, support lifecycle / refresh planning, and perform cohort-based threat detection and response across device groups.
+Required Data Inputs: Hardware specs (CPU / RAM / disk), OS version, health scores, device age, cohort grouping
+AI Actions / Capabilities: Health scoring; lifecycle / refresh recommendation; cohort analysis
+Outputs / Deliverables: Health scores, refresh / upgrade list, cohort findings
+Pain Points Addressed: Manual lifecycle planning; Windows 10 → 11 migration tracking
+Current State / Gaps: Ambiguous hardware buckets (RAM); Win10/11 data wrong or partial; missing software asset data
+Supporting Interview Evidence:
+“[Surfaced a] Celeron [for refresh]… [but] RAM buckets were ambiguous [and] software asset data was missing.”  — Jim Lapore
+“[Reported] all Windows 10, zero Windows 11 — which clearly does not match our current environment where Windows 11 is actually the majority.”  — David, Managed IT Experts
+Value / ROI: 20 min → <1 min (Jim)
+Adoption Signal: High
+Priority / Maturity: High priority; working but data-accuracy gaps
+Dependencies / Enablers: Accurate OS / hardware inventory; installed software; health model
+
+5. Evidenced Augmentation Use Cases (Beyond the Original List)
+These three use cases are not on the original Top 10 but surfaced repeatedly and with strong evidence across the interviews. They are recommended for inclusion in the analysis.
+UC-A — Documentation / KB & “How-To” Knowledge Assistant
+Category: Knowledge / Self-Service (augmentation)
+Primary Persona(s): Tier-1 / Tier-2 engineer, service desk
+Buyer / Beneficiary: MSP service operations
+Problem / Trigger: “How do I configure X / where’s the doc?”
+Description: Answer product and configuration questions from N-able documentation, KB and developer-portal docs; provide how-to guidance with clickable source links; reduce support escalations. (Beyond the original list; strongly evidenced.)
+Required Data Inputs: Product documentation, KB, developer-portal docs, scripting cookbook
+AI Actions / Capabilities: Retrieve docs; answer how-to; cite sources; link
+Outputs / Deliverables: Answer + source citations + clickable documentation links
+Pain Points Addressed: Support is slow / after-hours; documentation URLs change; engineers cannot find docs
+Current State / Gaps: Intermittent “cannot access documentation” causes a silent fall-back to trained data (confirmed bug); source citations and URL links are on the roadmap
+Supporting Interview Evidence:
+“[Valentine’s Day Sentinel One self-service let me] basically figure it out myself between myself and Ask Enzo… [saved] at least two hours per day.”  — Louis Oosthuizen
+“[It said] apologize for technical difficulties accessing documentation… based on knowledge of N-central. [It falls back to trained data.]”  — Wesley Harris
+“That is definitely an issue on our part. That should never be happening.”  — Nicole Reineke (acknowledging the bug)
+Value / ROI: ~2 hrs/day saved; bypasses support escalation
+Adoption Signal: Would adopt now (Louis)
+Priority / Maturity: High priority; working but has a reliability bug
+Dependencies / Enablers: Reliable doc / KB ingestion; source citations; clickable URLs
+
+UC-B — License & Cost Optimization (“Business Expert”)
+Category: Business Advisor / FinOps (augmentation)
+Primary Persona(s): Account manager, MSP owner
+Buyer / Beneficiary: MSP owner & finance
+Problem / Trigger: Monthly billing reconciliation; “active vs billed licenses”
+Description: Reconcile active versus billed licenses and seats, surface cost-optimization opportunities, and quantify ROI. (Beyond the original list; strongly evidenced.)
+Required Data Inputs: License counts (e.g., SentinelOne), seat / user / device counts, billing data
+AI Actions / Capabilities: Reconcile active vs billed; surface gaps; recommend optimization
+Outputs / Deliverables: License reconciliation, optimization findings, ROI quantification
+Pain Points Addressed: Accurate license counts are “the biggest pain point of all MSPs”; active never equals billed
+Current State / Gaps: License / billing data not yet integrated
+Supporting Interview Evidence:
+“If we asked at the conference how many MSPs have trouble getting an actual accurate count of licenses, ninety percent of the hands would go up.”  — Aaron Betts
+“[Wants] custom device properties [for] licensing.”  — Robby Swartenbroekx, b-inside
+Value / ROI: Addresses a near-universal MSP pain; ROI clarity gates paid adoption
+Adoption Signal: Would pay if ROI is clear (Aaron ~$30/user)
+Priority / Maturity: High demand; not yet built
+Dependencies / Enablers: License + billing data; custom device properties
+
+UC-C — Fast Asset / User Lookup & Tier-1 Enablement
+Category: Service / Self-Service (augmentation)
+Primary Persona(s): Tier-1 / service desk
+Buyer / Beneficiary: MSP service operations
+Problem / Trigger: “Which PC is user X on?”; quick stat requests
+Description: Natural-language lookup of assets, users and statistics that replaces manual filter-clicking, giving Tier-1 fast answers. (Beyond the original list; strongly evidenced.)
+Required Data Inputs: Asset inventory, user-device mapping, last-logged-in user, basic statistics
+AI Actions / Capabilities: Natural-language query → precise lookup; return stat / list fast
+Outputs / Deliverables: Device / user answer, quick statistics list
+Pain Points Addressed: Technicians are not creative with filters; monotonous lookups; natural language beats filters
+Current State / Gaps: Broad queries fail (specificity required); scale / ingestion gaps; discoverability (buried on the asset tab)
+Supporting Interview Evidence:
+“[Broad queries fail; specific ones work.] (~7,500 assets).”  — John Joyce
+“[Natural language] is better than filters.”  — Robby Swartenbroekx, b-inside
+Value / ROI: Replaces manual filtering; fast Tier-1 answers
+Adoption Signal: High; Jeff Zimbalist 100% adopt
+Priority / Maturity: High priority; working for specific queries
+Dependencies / Enablers: Natural-language robustness on broad queries; last-logged-in user; discoverability (standalone app, chat history)
+
+6. Appendix — Interview Sources
+Evidence in this catalog is drawn from the following 22 partner and advisory-board interviews conducted during the Ask N-zo tech preview and at Empower 2026.
+	•	Ask N-zo feedback — Aaron Betts
+	•	Ask N-zo feedback — David, Managed IT Experts
+	•	Ask N-zo feedback — Louis Oosthuizen & Wesley Harris
+	•	Ask N-zo feedback — Robby Swartenbroekx (b-inside)
+	•	Ask N-zo feedback — Sketch (Ditty)
+	•	Ask N-zo feedback — Taciano Tavares
+	•	Ask N-zo feedback — Donald McKay
+	•	Ask N-zo feedback — John Joyce
+	•	Ask N-zo feedback — Jim Lapore
+	•	Ask N-zo feedback — Jeff Zimbalist
+	•	Ask N-zo feedback — Boyd Smith
+	•	Empower 2026 CAB — Christian Kelly
+	•	Empower 2026 CAB — Chris Wendt
+	•	Empower 2026 CAB — Jeff Young
+	•	Empower 2026 CAB — Laura DuBois
+	•	Empower 2026 CAB — Lee Snyder
+	•	Empower 2026 CAB — Michael Bateman
+	•	Empower 2026 CAB — Thomas Collier
+	•	Empower 2026 IT Leaders (non-MSPs) roundtable — Nicole Reineke (facilitator)
+Note: several Empower 2026 CAB transcripts share an identical facilitator-context block; only each speaker’s unique contributions were used as evidence to avoid double-counting.

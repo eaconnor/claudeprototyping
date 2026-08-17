@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOTL Detection Dashboard — Adlumin Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ===== canvas ===== */
+      --bg-app: #0b1220;
+      --bg-surface: #121b2e;
+      --bg-elevated: #182238;
+      --bg-deep: #070d18;
+      --border: #1f2c47;
+      --border-strong: #2a3a5c;
+
+      /* ===== text ===== */
+      --text-primary: #e6edf7;
+      --text-secondary: #9aa8c2;
+      --text-tertiary: #6b7a96;
+      --text-muted: #4b5772;
+
+      /* ===== brand (Adlumin blue) ===== */
+      --brand: #3b82f6;
+      --brand-strong: #2563eb;
+      --brand-soft: rgba(59,130,246,0.14);
+
+      /* ===== status ===== */
+      --critical: #ef4444;
+      --critical-soft: rgba(239,68,68,0.13);
+      --high: #f97316;
+      --high-soft: rgba(249,115,22,0.13);
+      --medium: #eab308;
+      --medium-soft: rgba(234,179,8,0.12);
+      --low: #22c55e;
+      --low-soft: rgba(34,197,94,0.12);
+
+      /* ===== Bradley / council accent (violet) ===== */
+      --alpha-accent: #a78bfa;
+      --alpha-soft: rgba(167,139,250,0.13);
+
+      /* ===== DISTINCT SURFACES — topbar + Bradley rail are their OWN color ===== */
+      --topbar-bg: #0a1730;
+      --topbar-border: var(--brand);
+      --rail-bg: #16112e;
+      --rail-border: var(--alpha-accent);
+
+      /* ===== shape + type ===== */
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    /* Light mode */
+    [data-theme="light"] {
+      --bg-app: #f4f6fb;
+      --bg-surface: #ffffff;
+      --bg-elevated: #eef1f8;
+      --bg-deep: #e6eaf3;
+      --border: #d8deeb;
+      --border-strong: #c3ccdd;
+      --text-primary: #0d1424;
+      --text-secondary: #45506b;
+      --text-tertiary: #6b7790;
+      --text-muted: #94a0b8;
+      --topbar-bg: #0a1730;
+      --rail-bg: #f0eafa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg-app);
+      color: var(--text-primary);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      background: var(--topbar-bg);
+      border-bottom: 2px solid var(--topbar-border);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--brand);
+      letter-spacing: -0.02em;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .breadcrumb-sep {
+      color: var(--text-muted);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .beta-pill {
+      background: var(--alpha-soft);
+      color: var(--alpha-accent);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .theme-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-surface);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .theme-toggle button {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+
+    .theme-toggle button.active {
+      background: var(--brand);
+      color: var(--text-primary);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px;
+    }
+
+    /* ===== TOP FIDELITY BANNER ===== */
+    .top-fidelity-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10000;
+      background: var(--bg-elevated);
+      border-bottom: 2px solid var(--alpha-accent);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(167,139,250,0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Push topbar down when banner is present */
+    body.has-fidelity-banner .topbar {
+      margin-top: 44px;
+    }
+
+    .fidelity-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .fidelity-tier-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--alpha-accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fidelity-pips {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid var(--alpha-accent);
+      background: transparent;
+    }
+
+    .pip.filled {
+      background: var(--alpha-accent);
+    }
+
+    .fidelity-checks {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+    }
+
+    .fidelity-check {
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .fidelity-check.yes {
+      color: var(--low);
+    }
+
+    .fidelity-check.partial {
+      color: var(--medium);
+    }
+
+    /* ===== HERO STATS ===== */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-context {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .stat-trend {
+      color: var(--high);
+      font-weight: 600;
+    }
+
+    /* ===== SECTION HEADERS ===== */
+    .section-header {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-header::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: var(--brand);
+      border-radius: 2px;
+    }
+
+    /* ===== DETECTION FEED ===== */
+    .detection-feed {
+      margin-bottom: 32px;
+    }
+
+    .alert-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .alert-card:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-elevated);
+    }
+
+    .alert-card.active {
+      border-color: var(--brand);
+      background: var(--bg-elevated);
+    }
+
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .alert-title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .alert-subtitle {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .alert-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .confidence-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .confidence-high {
+      background: var(--critical-soft);
+      color: var(--critical);
+    }
+
+    .confidence-medium {
+      background: var(--high-soft);
+      color: var(--high);
+    }
+
+    .confidence-low {
+      background: var(--medium-soft);
+      color: var(--medium);
+    }
+
+    .risk-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-deep);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .alert-body {
+      background: var(--bg-deep);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .alert-detail {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .alert-detail:last-child {
+      margin-bottom: 0;
+    }
+
+    .alert-detail-label {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-tertiary);
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .alert-detail-value {
+      color: var(--text-primary);
+    }
+
+    .code-snippet {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      color: var(--text-secondary);
+      overflow-x: auto;
+      margin-top: 4px;
+    }
+
+    .translation-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--alpha-accent);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .translation-label::before {
+      content: '→';
+      font-weight: 700;
+    }
+
+    /* ===== EXPLAINABILITY PANEL ===== */
+    .explainability-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .panel-title {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-title::before {
+      content: '';
+      width: 6px;
+      height: 20px;
+      background: var(--brand);
+      border-radius: 3px;
+    }
+
+    .explain-section {
+      margin-bottom: 20px;
+    }
+
+    .explain-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .explain-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .explain-content {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .baseline-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .comparison-col {
+      background: var(--bg-deep);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .comparison-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .comparison-value {
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    .action-suggestion {
+      background: var(--brand-soft);
+      border-left: 3px solid var(--brand);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      margin-top: 8px;
+    }
+
+    .action-suggestion-text {
+      font-size: 13px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* ===== BRADLEY RAIL ===== */
+    .bradley-rail {
+      width: 420px;
+      background: var(--rail-bg);
+      border-left: 4px solid var(--rail-border);
+      box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+      overflow-y: auto;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .bradley-rail::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 40px,
+          rgba(167,139,250,0.02) 40px,
+          rgba(167,139,250,0.02) 80px
+        );
+      pointer-events: none;
+    }
+
+    .rail-content {
+      position: relative;
+      z-index: 1;
+      padding: 24px;
+    }
+
+    .fidelity-banner {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .fidelity-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--alpha-accent);
+      margin-bottom: 8px;
+    }
+
+    .fidelity-tier {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .fidelity-percentage {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .check-matrix {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .check-item {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .check-item.checked {
+      color: var(--text-secondary);
+    }
+
+    .check-icon {
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .rail-blurb {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .blurb-text {
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .rail-section {
+      margin-bottom: 20px;
+    }
+
+    .rail-section-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .dual-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .dual-block-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .dual-block-item.nailed {
+      border-color: var(--low);
+      background: var(--low-soft);
+    }
+
+    .dual-block-item.hurt {
+      border-color: var(--high);
+      background: var(--high-soft);
+    }
+
+    .dual-block-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .dual-block-item.nailed .dual-block-title {
+      color: var(--low);
+    }
+
+    .dual-block-item.hurt .dual-block-title {
+      color: var(--high);
+    }
+
+    .dual-block-content {
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .routed-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .routed-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .routed-card-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .routed-card-icon.product {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .routed-card-icon.design {
+      background: var(--alpha-soft);
+      color: var(--alpha-accent);
+    }
+
+    .routed-card-icon.research {
+      background: var(--medium-soft);
+      color: var(--medium);
+    }
+
+    .routed-card-icon.eng {
+      background: var(--low-soft);
+      color: var(--low);
+    }
+
+    .routed-card-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+    }
+
+    .routed-card-section {
+      margin-bottom: 10px;
+    }
+
+    .routed-card-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .routed-card-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .routed-card-text {
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .routed-card-claim {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .routed-card-consequence {
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .roi-block {
+      background: var(--bg-deep);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      margin-top: 8px;
+    }
+
+    .roi-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+
+    .roi-item {
+      font-size: 11px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    .roi-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .roi-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .council-button {
+      width: 100%;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 12px;
+      background: var(--alpha-soft);
+      border: 1px solid var(--alpha-accent);
+      border-radius: var(--radius-md);
+      color: var(--alpha-accent);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .council-button:hover {
+      background: rgba(167,139,250,0.2);
+      border-color: var(--alpha-accent);
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 800px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 32px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .modal-title {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .council-summary {
+      background: var(--bg-deep);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .council-summary-text {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .council-readiness {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--high);
+    }
+
+    /* ===== HARD MODE TOGGLE ===== */
+    .council-mode-toggle {
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .mode-notice {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .mode-notice strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hard-mode-button {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      background: linear-gradient(135deg, var(--alpha-accent), var(--brand));
+      border: none;
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(167,139,250,0.3);
+    }
+
+    .hard-mode-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(167,139,250,0.4);
+    }
+
+    .hard-mode-icon {
+      font-size: 16px;
+    }
+
+    .hard-mode-detail {
+      font-size: 11px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .tension-list {
+      margin-bottom: 24px;
+    }
+
+    .tension-item {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .tension-header {
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .tension-header:hover {
+      background: var(--bg-surface);
+    }
+
+    .tension-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tension-expand {
+      font-family: var(--font-mono);
+      color: var(--text-tertiary);
+      transition: transform 0.2s;
+    }
+
+    .tension-item.expanded .tension-expand {
+      transform: rotate(180deg);
+    }
+
+    .tension-body {
+      padding: 0 16px 16px;
+      display: none;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .tension-item.expanded .tension-body {
+      display: block;
+    }
+
+    .synthesis-block {
+      background: var(--brand-soft);
+      border-left: 3px solid var(--brand);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .synthesis-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--brand);
+      margin-bottom: 8px;
+    }
+
+    .synthesis-text {
+      font-size: 13px;
+      color: var(--text-primary);
+      font-style: italic;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-app);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body data-theme="dark" class="has-fidelity-banner">
+
+  <!-- TOP FIDELITY BANNER -->
+  <div class="top-fidelity-banner">
+    <div class="fidelity-left">
+      <div class="fidelity-tier-label">
+        <span>Tier 1 · Concept</span>
+        <div class="fidelity-pips">
+          <div class="pip filled"></div>
+          <div class="pip"></div>
+          <div class="pip"></div>
+        </div>
+      </div>
+      <div class="fidelity-checks">
+        <span class="fidelity-check yes">✓ Real copy</span>
+        <span class="fidelity-check partial">~ Seed data</span>
+        <span class="fidelity-check yes">✓ Core interaction</span>
+        <span class="fidelity-check">× Full workflow</span>
+        <span class="fidelity-check yes">✓ Visual hierarchy</span>
+        <span class="fidelity-check">× Production ready</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo">ADLUMIN</div>
+      <div class="breadcrumb">
+        <span>Detection</span>
+        <span class="breadcrumb-sep">/</span>
+        <span>LOTL Detection</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="beta-pill">Beta</div>
+      <div class="theme-toggle">
+        <button onclick="setTheme('light')">Light</button>
+        <button class="active" onclick="setTheme('dark')">Dark</button>
+        <button onclick="setTheme('system')">System</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+    
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- HERO STATS -->
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-label">PowerShell Analysis Volume</div>
+          <div class="stat-value">~1B</div>
+          <div class="stat-context">Commands analyzed per week across Northwind MSP</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">LOLBin Attack Trend</div>
+          <div class="stat-value"><span class="stat-trend">17% ↑</span></div>
+          <div class="stat-context">Increase in Q3 2025 (Cybereason TTP data)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Legitimate Tool Abuse</div>
+          <div class="stat-value">84%</div>
+          <div class="stat-context">Of high-severity attacks use LOTL techniques</div>
+        </div>
+      </div>
+
+      <!-- DETECTION FEED -->
+      <div class="detection-feed">
+        <div class="section-header">Live LOTL Detections</div>
+
+        <!-- Alert 1 -->
+        <div class="alert-card active" onclick="selectAlert(this)">
+          <div class="alert-header">
+            <div>
+              <div class="alert-title">PowerShell Execution at Unusual Time</div>
+              <div class="alert-subtitle">Jordan Chen · Northwind MSP · 2026-06-01 03:14 AM</div>
+            </div>
+            <div class="alert-badges">
+              <div class="confidence-badge confidence-high">High Confidence</div>
+              <div class="risk-badge">Critical Risk</div>
+            </div>
+          </div>
+          <div class="alert-body">
+            <div class="alert-detail">
+              <span class="alert-detail-label">Tool Used:</span>
+              <span class="alert-detail-value">powershell.exe</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Command:</span>
+              <span class="alert-detail-value">
+                <div class="code-snippet">powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBuAHYAbwBrAGUALQBXAGUAYgBSAGUAcQB1AGUAcwB0AA==</div>
+              </span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">User:</span>
+              <span class="alert-detail-value">j.chen@northwind.local (SOC Analyst)</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Context:</span>
+              <span class="alert-detail-value">Jordan has never executed PowerShell scripts. Last logon was 6:42 PM yesterday. This activity occurred at 3:14 AM from a machine with no scheduled tasks.</span>
+            </div>
+          </div>
+          <div class="translation-label">Looks like admin work — but suspicious</div>
+        </div>
+
+        <!-- Alert 2 -->
+        <div class="alert-card" onclick="selectAlert(this)">
+          <div class="alert-header">
+            <div>
+              <div class="alert-title">Unknown RMM Tool Installation</div>
+              <div class="alert-subtitle">Client: Fabrikam Industries · 2026-05-31 11:47 PM</div>
+            </div>
+            <div class="alert-badges">
+              <div class="confidence-badge confidence-high">High Confidence</div>
+              <div class="risk-badge">High Risk</div>
+            </div>
+          </div>
+          <div class="alert-body">
+            <div class="alert-detail">
+              <span class="alert-detail-label">Tool Used:</span>
+              <span class="alert-detail-value">Unknown RMM software (not in approved list)</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Executable:</span>
+              <span class="alert-detail-value">rmm_agent_v4.2.exe (C:\ProgramData\TempInstall\)</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Installed By:</span>
+              <span class="alert-detail-value">admin@fabrikam.local</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Context:</span>
+              <span class="alert-detail-value">Fabrikam's environment already has ScreenConnect and TeamViewer. This third RMM tool was installed outside business hours with no ticket or change request. Installation directory is non-standard.</span>
+            </div>
+          </div>
+          <div class="translation-label">Legitimate infrastructure — unauthorized deployment</div>
+        </div>
+
+        <!-- Alert 3 -->
+        <div class="alert-card" onclick="selectAlert(this)">
+          <div class="alert-header">
+            <div>
+              <div class="alert-title">WMIC Execution for Discovery</div>
+              <div class="alert-subtitle">Client: Contoso Ltd · 2026-06-01 02:33 AM</div>
+            </div>
+            <div class="alert-badges">
+              <div class="confidence-badge confidence-medium">Medium Confidence</div>
+              <div class="risk-badge">Medium Risk</div>
+            </div>
+          </div>
+          <div class="alert-body">
+            <div class="alert-detail">
+              <span class="alert-detail-label">Tool Used:</span>
+              <span class="alert-detail-value">wmic.exe</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Command:</span>
+              <span class="alert-detail-value">
+                <div class="code-snippet">wmic process get executablepath, processid</div>
+              </span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">User:</span>
+              <span class="alert-detail-value">svc_backup@contoso.local (Service Account)</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Context:</span>
+              <span class="alert-detail-value">This service account typically runs scheduled backup jobs. WMIC is not part of normal backup workflow. Command structure suggests reconnaissance — enumerating running processes.</span>
+            </div>
+          </div>
+          <div class="translation-label">Built-in tool — abnormal usage pattern</div>
+        </div>
+
+        <!-- Alert 4 -->
+        <div class="alert-card" onclick="selectAlert(this)">
+          <div class="alert-header">
+            <div>
+              <div class="alert-title">Rundll32 Execution with Suspicious Arguments</div>
+              <div class="alert-subtitle">Client: AdventureWorks · 2026-05-31 08:16 PM</div>
+            </div>
+            <div class="alert-badges">
+              <div class="confidence-badge confidence-high">High Confidence</div>
+              <div class="risk-badge">Critical Risk</div>
+            </div>
+          </div>
+          <div class="alert-body">
+            <div class="alert-detail">
+              <span class="alert-detail-label">Tool Used:</span>
+              <span class="alert-detail-value">rundll32.exe</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Command:</span>
+              <span class="alert-detail-value">
+                <div class="code-snippet">rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write()</div>
+              </span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">User:</span>
+              <span class="alert-detail-value">m.chang@adventureworks.local</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Context:</span>
+              <span class="alert-detail-value">Rundll32 is a legitimate Windows utility for loading DLLs. This specific command pattern matches known LOTL technique (T1218.011) — using rundll32 to execute arbitrary JavaScript, bypassing application whitelisting.</span>
+            </div>
+          </div>
+          <div class="translation-label">Legitimate Windows utility — weaponized syntax</div>
+        </div>
+
+        <!-- Alert 5 -->
+        <div class="alert-card" onclick="selectAlert(this)">
+          <div class="alert-header">
+            <div>
+              <div class="alert-title">Weekend PowerShell Activity from Non-Technical User</div>
+              <div class="alert-subtitle">Client: Northwind MSP HQ · 2026-05-31 Saturday 01:22 PM</div>
+            </div>
+            <div class="alert-badges">
+              <div class="confidence-badge confidence-medium">Medium Confidence</div>
+              <div class="risk-badge">Medium Risk</div>
+            </div>
+          </div>
+          <div class="alert-body">
+            <div class="alert-detail">
+              <span class="alert-detail-label">Tool Used:</span>
+              <span class="alert-detail-value">powershell.exe</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Command:</span>
+              <span class="alert-detail-value">
+                <div class="code-snippet">Get-ADUser -Filter * -Properties * | Export-Csv C:\Temp\users.csv</div>
+              </span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">User:</span>
+              <span class="alert-detail-value">a.martinez@northwind.local (HR Manager)</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Context:</span>
+              <span class="alert-detail-value">HR Manager with no history of PowerShell use. Command exports full Active Directory user list including sensitive attributes (last logon, password reset dates). Activity on Saturday when employee typically does not work.</span>
+            </div>
+          </div>
+          <div class="translation-label">Admin command — wrong user, wrong time</div>
+        </div>
+
+        <!-- Alert 6 -->
+        <div class="alert-card" onclick="selectAlert(this)">
+          <div class="alert-header">
+            <div>
+              <div class="alert-title">Credential Dumping via Task Manager Alternative</div>
+              <div class="alert-subtitle">Client: Tailspin Toys · 2026-06-01 04:11 AM</div>
+            </div>
+            <div class="alert-badges">
+              <div class="confidence-badge confidence-high">High Confidence</div>
+              <div class="risk-badge">Critical Risk</div>
+            </div>
+          </div>
+          <div class="alert-body">
+            <div class="alert-detail">
+              <span class="alert-detail-label">Tool Used:</span>
+              <span class="alert-detail-value">comsvcs.dll via rundll32</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Command:</span>
+              <span class="alert-detail-value">
+                <div class="code-snippet">rundll32.exe C:\windows\System32\comsvcs.dll, MiniDump 624 C:\Temp\lsass.dmp full</div>
+              </span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">User:</span>
+              <span class="alert-detail-value">admin_svc@tailspin.local</span>
+            </div>
+            <div class="alert-detail">
+              <span class="alert-detail-label">Context:</span>
+              <span class="alert-detail-value">This command creates a memory dump of lsass.exe (Local Security Authority Subsystem Service), which stores credential hashes. Technique is used by attackers to extract credentials for lateral movement. 100% legitimate tools, 100% malicious intent.</span>
+            </div>
+          </div>
+          <div class="translation-label">Standard Windows components — credential theft pattern</div>
+        </div>
+
+      </div>
+
+      <!-- EXPLAINABILITY PANEL -->
+      <div class="explainability-panel">
+        <div class="panel-title">Why This Was Flagged</div>
+        
+        <div class="explain-section">
+          <div class="explain-label">Selected Alert</div>
+          <div class="explain-content">
+            <strong>PowerShell Execution at Unusual Time</strong> — Jordan Chen, SOC Analyst at Northwind MSP, executed an encoded PowerShell command at 3:14 AM.
+          </div>
+        </div>
+
+        <div class="explain-section">
+          <div class="explain-label">Normal Baseline vs. What Drifted</div>
+          <div class="baseline-comparison">
+            <div class="comparison-col">
+              <div class="comparison-title">Normal Pattern</div>
+              <div class="comparison-value">
+                • Jordan works 9 AM – 6 PM weekdays<br>
+                • Has never executed PowerShell scripts<br>
+                • Typically uses GUI-based SOC tools<br>
+                • Last session ended at 6:42 PM yesterday
+              </div>
+            </div>
+            <div class="comparison-col">
+              <div class="comparison-title">What Changed</div>
+              <div class="comparison-value">
+                • Activity at 3:14 AM (9 hours after logoff)<br>
+                • First-ever PowerShell execution<br>
+                • Command was encoded (obfuscation technique)<br>
+                • No scheduled task or automation linked
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="explain-section">
+          <div class="explain-label">Risk Level</div>
+          <div class="explain-content">
+            <strong>Critical.</strong> Three high-confidence indicators: (1) off-hours activity inconsistent with user's work pattern, (2) first-time tool usage without training or ticket, (3) encoded command structure matches credential theft and data exfiltration patterns in MITRE ATT&CK T1059.001.
+          </div>
+        </div>
+
+        <div class="explain-section">
+          <div class="explain-label">Suggested Action</div>
+          <div class="action-suggestion">
+            <div class="action-suggestion-text">
+              <strong>Immediate:</strong> Isolate Jordan's workstation from network. Contact Jordan via secondary channel (phone) to verify if they initiated this activity. Decode PowerShell command to determine payload. Check for lateral movement attempts in surrounding 30-minute window.
+            </div>
+          </div>
+        </div>
+
+        <div class="explain-section">
+          <div class="explain-label">Why AI Is Required</div>
+          <div class="explain-content">
+            PowerShell.exe is executed thousands of times per day across Northwind's 47 client environments. A static rule cannot distinguish legitimate admin scripts from credential theft. Adlumin's AI learns each user's normal behavior — work hours, tool usage, command patterns — and detects statistically significant drift. This alert exists because the deviation from Jordan's baseline crossed multiple confidence thresholds simultaneously.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BRADLEY RAIL -->
+    <div class="bradley-rail">
+      <div class="rail-content">
+        
+        <!-- FIDELITY BANNER -->
+        <div class="fidelity-banner">
+          <div class="fidelity-title">Prototype Fidelity</div>
+          <div class="fidelity-tier">Tier 1 · Concept</div>
+          <div class="fidelity-percentage">30% Fidelity — Direction Test</div>
+          <div class="check-matrix">
+            <div class="check-item checked"><span class="check-icon">✓</span> Real copy</div>
+            <div class="check-item"><span class="check-icon">○</span> Real data</div>
+            <div class="check-item checked"><span class="check-icon">✓</span> Core interaction</div>
+            <div class="check-item"><span class="check-icon">○</span> Full workflow</div>
+            <div class="check-item checked"><span class="check-icon">✓</span> Visual hierarchy</div>
+            <div class="check-item"><span class="check-icon">○</span> Edge cases</div>
+          </div>
+        </div>
+
+        <!-- BLURB -->
+        <div class="rail-blurb">
+          <div class="blurb-text">
+            This prototype tests whether naming LOTL detection as a capability resonates with MSPs and SOC analysts. Core hypothesis: practitioners describe the problem ("can't tell legitimate from malicious") but don't always use vendor terminology ("Living Off The Land"). Prototype bridges the language gap.
+          </div>
+        </div>
+
+        <!-- DUAL BLOCK -->
+        <div class="dual-block">
+          <div class="dual-block-item nailed">
+            <div class="dual-block-title">What You Nailed</div>
+            <div class="dual-block-content">
+              Behavioral context as hero. Confidence scoring addresses alert fatigue. Translation labels bridge vendor/practitioner language gap. Explainability panel surfaces competence (SDT).
+            </div>
+          </div>
+          <div class="dual-block-item hurt">
+            <div class="dual-block-title">What Will Hurt You</div>
+            <div class="dual-block-content">
+              No actual AI detection yet. False positive rate unknown. 62% of brief is [A] assumed. Customer language untested. ROI claims unverified.
+            </div>
+          </div>
+        </div>
+
+        <!-- ROUTED CARDS -->
+        <div class="rail-section">
+          <div class="rail-section-title">Routing Cards</div>
+
+          <!-- PRODUCT -->
+          <div class="routed-card">
+            <div class="routed-card-header">
+              <div class="routed-card-icon product">P</div>
+              <div class="routed-card-title">Product</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Product Does:</div>
+              <div class="routed-card-text">Validate whether customers ask for LOTL coverage in competitive evals. Run Q4 workshops (PUT-1153) testing LOTL visibility concepts with 5+ MSP customers.</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Why Now:</div>
+              <div class="routed-card-text">84% of high-severity attacks use LOTL techniques [R]. Competitors (CrowdStrike, SentinelOne) market LOTL as headline capability [R]. Adlumin has PowerShell ensemble model (~1B commands/week) but doesn't name it [D].</div>
+              <div class="routed-card-claim">[R] = CybersecurityHQ 2025; CrowdStrike Threat Report 2025 · [D] = ADL-1381</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">If You Ship Without It:</div>
+              <div class="routed-card-consequence">MSPs assume Adlumin can't detect LOTL attacks. Lost deals where LOTL coverage is evaluation criterion. Positioning lags competitors even when tech exists.</div>
+            </div>
+            <div class="roi-block">
+              <div class="roi-title">ROI</div>
+              <div class="roi-item"><span class="roi-label">Business:</span> Win rate in competitive evals where LOTL is named criterion. Retention if positioning prevents "can you detect this?" objections.</div>
+              <div class="roi-item"><span class="roi-label">User:</span> Clarity on what Adlumin detects. Reduced "does this tool catch X?" uncertainty during threat response.</div>
+              <div class="roi-item"><span class="roi-label">Unknown:</span> Does LOTL terminology influence purchase decisions, or is it just industry noise? Q4 workshops will validate.</div>
+            </div>
+          </div>
+
+          <!-- DESIGN -->
+          <div class="routed-card">
+            <div class="routed-card-header">
+              <div class="routed-card-icon design">D</div>
+              <div class="routed-card-title">Design</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Design Does:</div>
+              <div class="routed-card-text">Validate practitioner language via Chorus call analysis (PUT-1109). Test whether "looks like admin work—but suspicious" resonates vs. "LOLBin detected." Map alert-to-action workflow in MSP SOC context.</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Why Now:</div>
+              <div class="routed-card-text">Language gap confirmed: vendors say "LOTL," practitioners say "can't distinguish legitimate from malicious" [R]. Alert fatigue is operational reality (11K/day, 81% noise) [R]. Design must bridge terminology and reduce cognitive load.</div>
+              <div class="routed-card-claim">[R] = Web research 2026-06-01; SANS SOC Survey 2024</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">If You Ship Without It:</div>
+              <div class="routed-card-consequence">Alerts use vendor jargon; analysts don't understand why they matter. UI doesn't surface context; high-confidence LOTL alerts get ignored in noise. Explainability gap erodes trust in AI recommendations.</div>
+            </div>
+            <div class="roi-block">
+              <div class="roi-title">ROI</div>
+              <div class="roi-item"><span class="roi-label">Business:</span> Reduced alert dismissal = fewer breaches = lower liability + customer retention.</div>
+              <div class="roi-item"><span class="roi-label">User:</span> Analysts spend time investigating real threats, not parsing jargon. Context-first UI reduces MTTR.</div>
+              <div class="roi-item"><span class="roi-label">Unknown:</span> What confidence threshold makes analysts trust AI recommendations? Needs user testing with real SOC analysts.</div>
+            </div>
+          </div>
+
+          <!-- RESEARCH -->
+          <div class="routed-card">
+            <div class="routed-card-header">
+              <div class="routed-card-icon research">R</div>
+              <div class="routed-card-title">Research</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Research Does:</div>
+              <div class="routed-card-text">Run Jobs-to-Be-Done interviews with MSP SOC analysts. Map mental models: how do they currently distinguish legitimate PowerShell from malicious? What context do they look for? Validate whether "LOTL" is a hiring/training term or just vendor speak.</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Why Now:</div>
+              <div class="routed-card-text">No validated personas yet [?]. Chorus analysis "just starting" [?]. One SME interview is not statistically meaningful [A]. Brief is 62% assumed. Cannot ship customer-facing capability on vendor assumptions alone.</div>
+              <div class="routed-card-claim">[?] = Unknown, per brief Gate 1 · [A] = Assumed</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">If You Ship Without It:</div>
+              <div class="routed-card-consequence">Adlumin builds for imagined users. LOTL positioning fails because customers don't recognize their own problem in the framing. Alert design optimizes for wrong context. Research debt compounds.</div>
+            </div>
+            <div class="roi-block">
+              <div class="roi-title">ROI</div>
+              <div class="roi-item"><span class="roi-label">Business:</span> Avoid building features customers don't value. Focus engineering on validated pain points.</div>
+              <div class="roi-item"><span class="roi-label">User:</span> Product reflects actual workflow, not vendor mental model. Reduced training burden if UI matches how analysts already think.</div>
+              <div class="roi-item"><span class="roi-label">Unknown:</span> How much does LOTL detection capability influence renewal decisions? Do customers currently churn due to undetected LOTL attacks?</div>
+            </div>
+          </div>
+
+          <!-- ENGINEERING -->
+          <div class="routed-card">
+            <div class="routed-card-header">
+              <div class="routed-card-icon eng">E</div>
+              <div class="routed-card-title">Engineering</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Engineering Does:</div>
+              <div class="routed-card-text">Establish detection performance baseline: false positive rate, coverage by MITRE ATT&CK technique (T1059, T1218, T1003), MTTR for LOTL-style attacks. Map which LOTL techniques current PowerShell model detects vs. misses. Scope explainability API.</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">Why Now:</div>
+              <div class="routed-card-text">PowerShell ensemble model exists (~1B commands/week) [D] but performance data is missing [?]. Cannot market LOTL detection without knowing false positive rate [A]. Alert fatigue is counter-metric: noisy detection becomes liability [A].</div>
+              <div class="routed-card-claim">[D] = ADL-1381 · [?] = Unknown · [A] = Assumed, per brief</div>
+            </div>
+            <div class="routed-card-section">
+              <div class="routed-card-label">If You Ship Without It:</div>
+              <div class="routed-card-consequence">Marketing names LOTL detection. Customers enable it. High false positives → analysts tune it down or disable it → capability becomes vaporware. Trust erosion. Competitive vulnerability if performance doesn't match claim.</div>
+            </div>
+            <div class="roi-block">
+              <div class="roi-title">ROI</div>
+              <div class="roi-item"><span class="roi-label">Business:</span> Verified detection performance = credible ROI claims in sales. Prevents overpromising.</div>
+              <div class="roi-item"><span class="roi-label">User:</span> High-confidence alerts analysts can trust. Explainability reduces "black box AI" skepticism. Tuning mechanisms prevent alert fatigue.</div>
+              <div class="roi-item"><span class="roi-label">Unknown:</span> What false positive rate is acceptable to MSP SOC teams? What explainability depth do analysts need to trust AI recommendations?</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COUNCIL BUTTON -->
+        <button class="council-button" onclick="openCouncil()">
+          Click Into Council Testimony
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COUNCIL MODAL -->
+  <div class="modal-overlay" id="councilModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Council Testimony — LOTL Detection</div>
+        <button class="modal-close" onclick="closeCouncil()">×</button>
+      </div>
+
+      <div class="council-summary">
+        <div class="council-summary-text">
+          <strong>Executive Summary:</strong> Readiness score <span class="council-readiness">18/30</span> (concept stage). Council identified <strong>7 major tensions</strong> across frameworks. Core insight: LOTL detection is not a feature—it's a capability that challenges MSP business models (manual SOC) and user mental models (trust in "legitimate" tools). Highest risk: alert fatigue erodes trust faster than accuracy builds it.
+        </div>
+      </div>
+
+      <!-- HARD MODE TOGGLE -->
+      <div class="council-mode-toggle">
+        <div class="mode-notice">
+          <strong>Fast Mode:</strong> 7 key tensions for decision-making · ~2 min read
+        </div>
+        <button class="hard-mode-button" id="hardModeBtn" onclick="activateHardMode()">
+          <span class="hard-mode-icon">⚡</span>
+          <span class="hard-mode-label">Switch to Hard Mode</span>
+          <span class="hard-mode-detail">44 voices · 14 clusters · Full cross-talk</span>
+        </button>
+      </div>
+
+      <div class="tension-list">
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">1. Jobs-to-Be-Done: Capability seeking a job</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> Adlumin has the technical capability (PowerShell ensemble model) but no validated job-to-be-done. What job is the MSP hiring LOTL detection to do? "Detect threats" is not a job—it's an output. Is the job "sleep at night knowing sophisticated attacks won't hide in admin noise"? Or "prove to clients we catch what competitors miss"? Or "reduce time spent chasing false positives in PowerShell alerts"?<br><br>
+            <strong>Implication:</strong> If the job is undefined, marketing will position against imagined pain. Sales will demo features customers didn't ask for. The capability will exist but not sell.
+          </div>
+        </div>
+
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">2. Service Blueprint: Human handoff gap</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> LOTL detection generates high-confidence alerts, but then what? Prototype shows "isolate workstation, contact user, decode command"—all manual steps. If Northwind MSP's SOC is already underwater (11K alerts/day, 44% uninvestigated), adding more high-quality alerts without backstage orchestration just moves the bottleneck.<br><br>
+            <strong>Implication:</strong> LOTL detection must ship with automated triage (RACE) or it becomes a cognitive load problem, not a solution. Service blueprint shows the alert is frontstage; the isolation/response workflow is backstage and currently manual.
+          </div>
+        </div>
+
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">3. Self-Determination Theory: Competence vs. autonomy</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> Explainability panel surfaces competence ("I understand why this was flagged"). But high-confidence alerts constrain autonomy ("AI says Critical—are you really going to ignore it?"). SDT predicts analysts will resist if they feel the system is overriding their judgment, even when the system is correct.<br><br>
+            <strong>Implication:</strong> UI must preserve analyst agency. "Suggested action" must feel like a recommendation, not a directive. Override mechanism must be low-friction and not shame the analyst. This is a trust design problem, not just an accuracy problem.
+          </div>
+        </div>
+
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">4. Disruptive Innovation: LOTL detection challenges MSP labor model</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> Manual MSP SOCs (Arctic Wolf, ConnectWise) sell labor-hours. Automated LOTL detection reduces the need for human triage—good for customers, threatening to labor-based competitors. If Adlumin's positioning is "AI does what manual SOCs miss," it's disruptive. But that requires Adlumin to win on outcomes (attacks caught, time saved), not features (PowerShell model exists).<br><br>
+            <strong>Implication:</strong> Competitive framing must be outcome-based. Don't say "we detect LOTL." Say "we catch the attacks that hide in your admin tools—automatically." This is a business model disruption, not a feature add.
+          </div>
+        </div>
+
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">5. Value Chain: Detection without response is incomplete value</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> LOTL detection is inbound logistics (threat data) + operations (AI model) + outbound logistics (alert). But the value chain doesn't end at the alert. Customer value is realized in service (response, remediation) and after-sales (learning, tuning). If Adlumin stops at the alert, MSPs bear the response cost. If competitors include MDR, they capture more value chain.<br><br>
+            <strong>Implication:</strong> LOTL detection must integrate with response workflow (RACE, playbooks, isolation) or it's an incomplete value prop. Alternatively, position as "detection for MSPs who do their own response"—but then value is constrained by MSP capability.
+          </div>
+        </div>
+
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">6. Language Gap: Vendor term vs. practitioner problem description</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> Web research confirms vendors say "LOTL," practitioners say "can't tell legitimate from malicious" or "looks like admin work." Prototype bridges this with translation labels ("looks like admin work—but suspicious"). But if sales decks use "LOTL" and customers don't recognize their own problem in that framing, positioning fails.<br><br>
+            <strong>Implication:</strong> Marketing must use dual framing: "LOTL" for industry credibility, practitioner language for resonance. Sales training must teach reps to ask "how do you currently distinguish legitimate PowerShell from malicious?" and listen for the pain, not the buzzword.
+          </div>
+        </div>
+
+        <div class="tension-item">
+          <div class="tension-header" onclick="toggleTension(this)">
+            <div class="tension-title">7. Alert Fatigue: Accuracy alone doesn't solve trust erosion</div>
+            <div class="tension-expand">▼</div>
+          </div>
+          <div class="tension-body">
+            <strong>Tension:</strong> Brief's counter-metric is correct: "If LOTL detection is noisy, customers will disable it." But web research shows alert fatigue is already endemic (11K/day, 81% noise, 44% uninvestigated). Even high-confidence LOTL alerts enter a system where analysts are burned out and skeptical. Accuracy is necessary but not sufficient.<br><br>
+            <strong>Implication:</strong> LOTL detection must ship with alert suppression, auto-triage, and feedback loops. If analysts can't easily mark false positives and see the system learn, trust erodes. This is an operational design problem: how does the system get better over time in each MSP's unique environment?
+          </div>
+        </div>
+      </div>
+
+      <div class="synthesis-block">
+        <div class="synthesis-label">[0% Claude — Synthesis Slot]</div>
+        <div class="synthesis-text">
+          This space is reserved for human synthesis. Council provides testimony, not conclusions. The human decision-maker integrates tensions, names tradeoffs, and chooses the path forward. Claude does not fill this gap.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-toggle button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+
+    // Alert selection
+    function selectAlert(card) {
+      document.querySelectorAll('.alert-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    }
+
+    // Council modal
+    function openCouncil() {
+      document.getElementById('councilModal').classList.add('active');
+    }
+
+    function closeCouncil() {
+      document.getElementById('councilModal').classList.remove('active');
+    }
+
+    // Tension toggle
+    function toggleTension(header) {
+      header.parentElement.classList.toggle('expanded');
+    }
+
+    // Close modal on background click
+    document.getElementById('councilModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCouncil();
+      }
+    });
+
+    // Hard Mode activation with loading state
+    function activateHardMode() {
+      const btn = document.getElementById('hardModeBtn');
+      const icon = btn.querySelector('.hard-mode-icon');
+      const label = btn.querySelector('.hard-mode-label');
+      const detail = btn.querySelector('.hard-mode-detail');
+
+      // Prompt for model choice
+      const useOpus = confirm(
+        '⚡ Hard Mode Recommendation\n\n' +
+        'Hard Mode analyzes 44 voices with full cross-talk. For best results:\n\n' +
+        '• Opus: Deeper cross-talk, better contradiction detection (~3-5x cost)\n' +
+        '• Sonnet: Faster, lighter, good for concept-tier briefs\n\n' +
+        'Switch to Opus for this council run?\n\n' +
+        'Click OK for Opus (recommended)\n' +
+        'Click Cancel for Sonnet (faster)'
+      );
+
+      // Show loading state
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      icon.textContent = '⏳';
+      label.textContent = useOpus ? 'Loading on Opus...' : 'Loading on Sonnet...';
+      detail.textContent = 'Rendering 44 voices';
+
+      // Simulate load (2 seconds)
+      setTimeout(() => {
+        icon.textContent = '✓';
+        label.textContent = 'Hard Mode Active';
+        detail.textContent = useOpus ? 'Opus · Full council' : 'Sonnet · Full council';
+        btn.style.background = 'var(--low)';
+
+        // Show message
+        setTimeout(() => {
+          alert(
+            'Hard Mode activated on ' + (useOpus ? 'Opus' : 'Sonnet') + '!\n\n' +
+            'In a production prototype, this would render:\n\n' +
+            '• 14 cluster sections\n' +
+            '• 44 individual voice cards (expandable)\n' +
+            '• Full owensing per voice (Sign, Hypothesis, Kill criterion, Force level, Evidence, Cannot see)\n' +
+            '• Cross-talk section (deeper on Opus)\n\n' +
+            'Current state: Fast Mode (7 tensions) displayed.\n\n' +
+            'Model choice: ' + (useOpus ? 'Opus (recommended for strategic briefs)' : 'Sonnet (faster for concept-tier)')
+          );
+        }, 500);
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

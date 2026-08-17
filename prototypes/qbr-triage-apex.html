@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en" data-apx-mode="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>QBR Coworker — Client Triage · Apex Bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* ── APEX BRIDGE — TOKEN CONTRACT ─────────────────────── */
+:root {
+  --br-color-brand-primary:       #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint:  #e6f0fa;
+  --br-color-brand-accent:        #6d28d9;
+
+  --br-color-surface-app:         #f4f6fb;
+  --br-color-surface-panel:       #ffffff;
+  --br-color-surface-elevated:    #eef1f8;
+  --br-color-surface-sunken:      #e6eaf3;
+  --br-color-surface-hover:       #f0f3f8;
+
+  --br-color-ink-primary:         #0d1424;
+  --br-color-ink-secondary:       #45506b;
+  --br-color-ink-muted:           #6b7790;
+  --br-color-ink-inverse:         #ffffff;
+
+  --br-color-border-subtle:       #d8deeb;
+  --br-color-border-default:      #c3ccdd;
+  --br-color-border-strong:       #94a0b8;
+
+  --br-color-state-success:       #16a34a;
+  --br-color-state-success-tint:  #dcfce7;
+  --br-color-state-warning:       #d97706;
+  --br-color-state-warning-tint:  #fef3c7;
+  --br-color-state-danger:        #dc2626;
+  --br-color-state-danger-tint:   #fee2e2;
+  --br-color-state-info:          #0284c7;
+  --br-color-state-info-tint:     #e0f2fe;
+
+  --br-font-family-sans:  "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --br-font-family-mono:  "JetBrains Mono", ui-monospace, monospace;
+  --br-font-size-xs:   11px;
+  --br-font-size-sm:   12px;
+  --br-font-size-md:   13px;
+  --br-font-size-base: 14px;
+  --br-font-size-lg:   16px;
+  --br-font-size-xl:   20px;
+  --br-font-size-2xl:  24px;
+
+  --br-radius-sm: 4px;
+  --br-radius-md: 6px;
+  --br-radius-lg: 10px;
+
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-lg: 0 4px 12px rgba(15,23,42,.10), 0 1px 4px rgba(15,23,42,.06);
+
+  --topbar-bg:     #0a1730;
+  --topbar-border: var(--br-color-brand-primary);
+  --rail-bg:       #f0eafa;
+  --rail-border:   #a78bfa;
+  --alpha-accent:  #a78bfa;
+  --alpha-soft:    rgba(167,139,250,0.13);
+}
+
+[data-apx-mode="dark"] {
+  --br-color-surface-app:        #0b1220;
+  --br-color-surface-panel:      #111827;
+  --br-color-surface-elevated:   #1e293b;
+  --br-color-surface-sunken:     #0f172a;
+  --br-color-surface-hover:      #1e293b;
+  --br-color-ink-primary:        #f1f5f9;
+  --br-color-ink-secondary:      #cbd5e1;
+  --br-color-ink-muted:          #94a3b8;
+  --br-color-border-subtle:      #1e293b;
+  --br-color-border-default:     #334155;
+  --br-color-border-strong:      #475569;
+  --br-color-brand-primary-tint: #0c2845;
+  --br-color-state-success-tint: rgba(22,163,74,.18);
+  --br-color-state-warning-tint: rgba(217,119,6,.18);
+  --br-color-state-danger-tint:  rgba(220,38,38,.18);
+  --br-color-state-info-tint:    rgba(2,132,199,.18);
+  --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+  --rail-bg: #16112e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary);
+  font-family: var(--br-font-family-sans);
+  font-size: var(--br-font-size-base);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TOPBAR ───────────────────────────────────────────── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 48px;
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+}
+.topbar-wordmark {
+  font-family: var(--br-font-family-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.topbar-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+.topbar-title {
+  font-family: var(--br-font-family-sans);
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+}
+.topbar-spacer { flex: 1; }
+.topbar-badge {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  background: rgba(167,139,250,0.2);
+  color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.35);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+.theme-btn {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 4px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.theme-btn:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.35); }
+
+/* ── PAGE LAYOUT ──────────────────────────────────────── */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── SECTION HEADER ───────────────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--br-color-ink-muted);
+}
+.section-hr {
+  flex: 1;
+  height: 1px;
+  background: var(--br-color-border-subtle);
+}
+
+/* ── PAGE TITLE BLOCK ─────────────────────────────────── */
+.page-title-block {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--br-shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.page-title-block h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--br-color-ink-primary);
+  margin-bottom: 4px;
+}
+.page-title-block .sub {
+  font-size: 13px;
+  color: var(--br-color-ink-secondary);
+}
+.page-title-block .meta-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.pill {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--br-color-border-default);
+  color: var(--br-color-ink-secondary);
+  background: var(--br-color-surface-elevated);
+  white-space: nowrap;
+}
+
+/* ── FORMULA BAR ──────────────────────────────────────── */
+.formula-bar {
+  background: var(--topbar-bg);
+  border-radius: var(--br-radius-md);
+  padding: 12px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+}
+.formula-bar .f-block { display: flex; flex-direction: column; gap: 2px; }
+.formula-bar .f-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.4);
+}
+.formula-bar .f-value {
+  font-family: var(--br-font-family-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--alpha-accent);
+}
+.formula-bar .f-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+.formula-bar .f-sep { color: rgba(255,255,255,0.2); }
+
+/* ── TIER GRID ────────────────────────────────────────── */
+.tier-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 860px) { .tier-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 500px) { .tier-grid { grid-template-columns: 1fr; } }
+
+.tier-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  padding: 18px;
+  box-shadow: var(--br-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.tier-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.tier-card.a-tier::before, .tier-card.b-tier::before {
+  background: var(--br-color-brand-primary);
+}
+.tier-card.c-tier::before {
+  background: var(--br-color-state-warning);
+}
+.tier-card.d-tier::before {
+  background: var(--br-color-border-strong);
+}
+
+.tier-card.a-tier, .tier-card.b-tier {
+  border-color: var(--br-color-border-default);
+}
+
+.tier-letter {
+  font-family: var(--br-font-family-mono);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+.a-tier .tier-letter, .b-tier .tier-letter { color: var(--br-color-brand-primary); }
+.c-tier .tier-letter { color: var(--br-color-state-warning); }
+.d-tier .tier-letter { color: var(--br-color-ink-muted); }
+
+.tier-name {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--br-color-ink-secondary);
+  margin-top: -6px;
+}
+
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid;
+  width: fit-content;
+}
+.badge-primary { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); border-color: rgba(0,102,204,0.3); }
+.badge-sachet  { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,0.3); }
+.badge-triage  { background: var(--br-color-surface-elevated); color: var(--br-color-ink-muted); border-color: var(--br-color-border-default); }
+
+.tier-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--br-color-surface-elevated);
+  border-radius: var(--br-radius-md);
+  padding: 10px 12px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  padding-bottom: 4px;
+  gap: 8px;
+}
+.stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+.stat-k { color: var(--br-color-ink-muted); flex-shrink: 0; }
+.stat-v { font-weight: 600; color: var(--br-color-ink-primary); text-align: right; }
+
+.tier-desc {
+  font-size: 12px;
+  color: var(--br-color-ink-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.tier-quote {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--br-color-ink-muted);
+  border-left: 2px solid var(--br-color-border-default);
+  padding-left: 8px;
+  margin-top: auto;
+}
+.tier-quote .qs { font-family: var(--br-font-family-mono); font-style: normal; font-size: 10px; color: var(--br-color-ink-muted); display: block; margin-top: 3px; }
+
+/* ── AXES GRID ────────────────────────────────────────── */
+.axes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 660px) { .axes-grid { grid-template-columns: 1fr; } }
+
+.axis-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  padding: 18px;
+  box-shadow: var(--br-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.axis-num {
+  font-family: var(--br-font-family-mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--br-color-brand-primary);
+  opacity: 0.25;
+  line-height: 1;
+}
+.axis-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--br-color-ink-primary);
+  margin-top: -6px;
+}
+.axis-question {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--br-color-ink-secondary);
+  border-left: 2px solid var(--br-color-brand-primary);
+  padding-left: 8px;
+}
+.axis-signals {
+  background: var(--br-color-surface-elevated);
+  border-radius: var(--br-radius-sm);
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--br-color-ink-secondary);
+  line-height: 1.6;
+}
+.axis-signals strong {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--br-color-ink-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ── BOTTLENECK CARD ──────────────────────────────────── */
+.bottleneck-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--br-shadow-md);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 600px) { .bottleneck-card { grid-template-columns: 1fr; } }
+
+.bn-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--br-color-ink-primary);
+  margin-bottom: 6px;
+}
+.bn-desc {
+  font-size: 13px;
+  color: var(--br-color-ink-secondary);
+  margin-bottom: 14px;
+}
+.bar-group { display: flex; flex-direction: column; gap: 8px; }
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: var(--br-color-ink-muted);
+}
+.bar-lbl { width: 44px; }
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--br-color-surface-sunken);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.bar-fill.now  { background: var(--br-color-state-danger); }
+.bar-fill.goal { background: var(--br-color-state-success); }
+.bar-pct { width: 32px; font-weight: 700; color: var(--br-color-ink-primary); }
+.bn-unlock {
+  background: var(--br-color-state-success-tint);
+  border: 1px solid rgba(22,163,74,0.25);
+  border-radius: var(--br-radius-md);
+  padding: 14px 18px;
+  text-align: center;
+  min-width: 120px;
+}
+.bn-unlock .unlock-num {
+  font-family: var(--br-font-family-mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--br-color-state-success);
+  line-height: 1;
+}
+.bn-unlock .unlock-lbl {
+  font-size: 11px;
+  color: var(--br-color-state-success);
+  margin-top: 4px;
+}
+
+/* ── EVIDENCE STRIP ───────────────────────────────────── */
+.evidence-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+.ev-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 14px;
+  box-shadow: var(--br-shadow-sm);
+}
+.ev-source {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--br-color-ink-muted);
+  margin-bottom: 4px;
+}
+.ev-stat {
+  font-family: var(--br-font-family-mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--br-color-brand-primary);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.ev-label {
+  font-size: 12px;
+  color: var(--br-color-ink-secondary);
+  line-height: 1.45;
+}
+.ev-cs {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-ink-muted);
+  opacity: 0.65;
+  margin-top: 6px;
+}
+
+/* ── DATA SOURCES TABLE ───────────────────────────────── */
+.ds-table {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--br-shadow-sm);
+}
+.ds-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  align-items: start;
+}
+.ds-row:last-child { border-bottom: none; }
+.ds-tier-cell {
+  padding: 14px;
+  border-right: 1px solid var(--br-color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--br-color-surface-elevated);
+}
+.ds-tier-letter {
+  font-family: var(--br-font-family-mono);
+  font-size: 18px;
+  font-weight: 700;
+}
+.a-t { color: var(--br-color-brand-primary); }
+.c-t { color: var(--br-color-state-warning); }
+.d-t { color: var(--br-color-ink-muted); }
+.ds-content {
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+}
+.ds-chip {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: var(--br-color-brand-primary-tint);
+  color: var(--br-color-brand-primary);
+  border: 1px solid rgba(0,102,204,0.2);
+}
+.ds-chip.manual {
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-state-warning);
+  border-color: rgba(217,119,6,0.2);
+}
+.ds-chip.light {
+  background: var(--br-color-surface-elevated);
+  color: var(--br-color-ink-secondary);
+  border-color: var(--br-color-border-default);
+}
+.ds-note {
+  font-size: 11px;
+  color: var(--br-color-ink-muted);
+  padding: 0 16px 10px;
+  font-style: italic;
+}
+
+/* ── CALLOUT ──────────────────────────────────────────── */
+.callout {
+  border-radius: var(--br-radius-md);
+  padding: 12px 16px;
+  font-size: 13px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1px solid;
+}
+.callout.warning {
+  background: var(--br-color-state-warning-tint);
+  border-color: rgba(217,119,6,0.3);
+  color: var(--br-color-state-warning);
+}
+.callout.info {
+  background: var(--br-color-state-info-tint);
+  border-color: rgba(2,132,199,0.3);
+  color: var(--br-color-state-info);
+}
+.callout.success {
+  background: var(--br-color-state-success-tint);
+  border-color: rgba(22,163,74,0.3);
+  color: var(--br-color-state-success);
+}
+.callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.callout-body { color: var(--br-color-ink-primary); }
+.callout-body strong { font-family: var(--br-font-family-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── BRADLEY RAIL ─────────────────────────────────────── */
+.bradley-rail {
+  background: var(--rail-bg);
+  border: 1px solid var(--rail-border);
+  border-radius: var(--br-radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--br-shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.rail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rail-title {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--br-color-brand-accent);
+}
+.rail-badge {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  background: var(--alpha-soft);
+  color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.35);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+.rail-blurb {
+  font-size: 13px;
+  color: var(--br-color-ink-secondary);
+}
+.rail-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 580px) { .rail-dual { grid-template-columns: 1fr; } }
+.rail-block {
+  background: var(--br-color-surface-panel);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+  border: 1px solid var(--br-color-border-subtle);
+}
+.rail-block-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+.rail-block.nailed .rail-block-label { color: var(--br-color-state-success); }
+.rail-block.hurt .rail-block-label { color: var(--br-color-state-danger); }
+.rail-block ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.rail-block li {
+  font-size: 12px;
+  color: var(--br-color-ink-secondary);
+  padding-left: 14px;
+  position: relative;
+}
+.rail-block.nailed li::before { content: '✓'; position: absolute; left: 0; color: var(--br-color-state-success); font-size: 11px; }
+.rail-block.hurt li::before   { content: '!'; position: absolute; left: 0; color: var(--br-color-state-danger); font-size: 11px; font-weight: 700; }
+
+.rail-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.route-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: 12px 14px;
+}
+.route-card .rc-team {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--br-color-brand-accent);
+  margin-bottom: 8px;
+}
+.route-card .rc-action {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--br-color-ink-primary);
+  margin-bottom: 4px;
+}
+.route-card .rc-why {
+  font-size: 11px;
+  color: var(--br-color-ink-muted);
+  margin-bottom: 4px;
+}
+.route-card .rc-risk {
+  font-size: 11px;
+  color: var(--br-color-state-danger);
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <span class="topbar-wordmark">Apex Bridge</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-title">QBR Coworker · Client Triage Model</span>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-badge">Tier 1 · Concept</span>
+  <button class="theme-btn" onclick="document.documentElement.setAttribute('data-apx-mode', document.documentElement.getAttribute('data-apx-mode')==='dark' ? 'light' : 'dark')">
+    Toggle dark
+  </button>
+</header>
+
+<main class="page">
+
+  <!-- PAGE TITLE -->
+  <div class="page-title-block">
+    <div>
+      <h1>Who gets what. In what order. And why D still needs a plan.</h1>
+      <p class="sub">Client triage model for QBR Coworker — A/B priority tier, C/D sachet model. Three-axis scoring.</p>
+    </div>
+    <div class="meta-pills">
+      <span class="pill">Craig Fisher · Technica Solutions</span>
+      <span class="pill">Stefanie Hammond</span>
+      <span class="pill">2026-08-07</span>
+      <span class="pill">ConnectWise ABCD framework</span>
+    </div>
+  </div>
+
+  <!-- FORMULA BAR -->
+  <div class="formula-bar">
+    <div class="f-block">
+      <span class="f-label">Triage formula</span>
+      <span class="f-value">WORTH = MRR × RISK SCORE</span>
+    </div>
+    <span class="f-sep">|</span>
+    <div class="f-block">
+      <span class="f-label">Risk score: three axes</span>
+      <span class="f-text">1. Risk to MSP &nbsp;&nbsp;·&nbsp;&nbsp; 2. Risk to client &nbsp;&nbsp;·&nbsp;&nbsp; 3. Growth opportunity</span>
+    </div>
+    <span class="f-sep">|</span>
+    <div class="f-block">
+      <span class="f-label">Cadence model</span>
+      <span class="f-text">Config + interrupt — tier sets default · per-client override · risk nudge can pull anyone forward</span>
+    </div>
+  </div>
+
+  <!-- TIER CARDS -->
+  <div>
+    <div class="section-header">
+      <span class="section-title">The four tiers</span>
+      <div class="section-hr"></div>
+    </div>
+    <div class="tier-grid">
+
+      <!-- TIER A -->
+      <div class="tier-card a-tier">
+        <div class="tier-letter">A</div>
+        <div class="tier-name">High-value · High-risk</div>
+        <span class="tier-badge badge-primary">Build for this first</span>
+        <div class="tier-stats">
+          <div class="stat-row"><span class="stat-k">Cadence (default)</span><span class="stat-v">Quarterly</span></div>
+          <div class="stat-row"><span class="stat-k">Prep (David)</span><span class="stat-v">1.5 – 3 hrs</span></div>
+          <div class="stat-row"><span class="stat-k">Format</span><span class="stat-v">Meeting + deck</span></div>
+          <div class="stat-row"><span class="stat-k">Coworker</span><span class="stat-v">Full draft + rehearse</span></div>
+        </div>
+        <p class="tier-desc">State-of-the-union meeting. Coworker drafts the risk review, cycle memory delta, the ask, and the coaching layer. Countersign on where HIPAA / compliance requires it.</p>
+      </div>
+
+      <!-- TIER B -->
+      <div class="tier-card b-tier">
+        <div class="tier-letter">B</div>
+        <div class="tier-name">High-value · Moderate-risk</div>
+        <span class="tier-badge badge-primary">Build for this first</span>
+        <div class="tier-stats">
+          <div class="stat-row"><span class="stat-k">Cadence (default)</span><span class="stat-v">Semi-annual</span></div>
+          <div class="stat-row"><span class="stat-k">Prep (David)</span><span class="stat-v">1.5 – 2 hrs</span></div>
+          <div class="stat-row"><span class="stat-k">Format</span><span class="stat-v">Meeting + deck (lighter)</span></div>
+          <div class="stat-row"><span class="stat-k">Coworker</span><span class="stat-v">Full draft · rehearse opt.</span></div>
+        </div>
+        <p class="tier-desc">Same Coworker flow as A. Risk-triggered nudge can pull to quarterly. Delta from last EBR foregrounded — "here's what changed since last time."</p>
+      </div>
+
+      <!-- TIER C -->
+      <div class="tier-card c-tier">
+        <div class="tier-letter">C</div>
+        <div class="tier-name">Mid-value · Variable risk</div>
+        <span class="tier-badge badge-sachet">Sachet model</span>
+        <div class="tier-stats">
+          <div class="stat-row"><span class="stat-k">Cadence (default)</span><span class="stat-v">Annual + interrupts</span></div>
+          <div class="stat-row"><span class="stat-k">Format</span><span class="stat-v">Async report · SMS option</span></div>
+          <div class="stat-row"><span class="stat-k">Coworker</span><span class="stat-v">Monthly micro-touch</span></div>
+          <div class="stat-row"><span class="stat-k">Risk trigger</span><span class="stat-v">Pulls to B cadence</span></div>
+        </div>
+        <p class="tier-desc">Several small, cheap, frequent touches. Monthly security pulse (SMS out → PSA reply). Annual doc for the record. Risk spike → upgrade path auto-suggested.</p>
+        <p class="tier-quote">"Ones getting once a year is ridiculous. They should be getting twice a year." <span class="qs">— Craig Fisher, Technica Solutions [CS: VERIFIED]</span></p>
+      </div>
+
+      <!-- TIER D -->
+      <div class="tier-card d-tier">
+        <div class="tier-letter">D</div>
+        <div class="tier-name">Lower-value · Exit-or-grow</div>
+        <span class="tier-badge badge-triage">Triage first</span>
+        <div class="tier-stats">
+          <div class="stat-row"><span class="stat-k">Cadence</span><span class="stat-v">Annual (minimum viable)</span></div>
+          <div class="stat-row"><span class="stat-k">Format</span><span class="stat-v">SMS / Slack async</span></div>
+          <div class="stat-row"><span class="stat-k">Coworker</span><span class="stat-v">Automated pulse only</span></div>
+          <div class="stat-row"><span class="stat-k">Risk flag</span><span class="stat-v">Auto-escalate or exit</span></div>
+        </div>
+        <p class="tier-desc">Not a scaled-down A-tier EBR — a different format entirely. High-risk D → conversation about moving up or exiting. Low-risk D → preserve, touch lightly, document.</p>
+        <p class="tier-quote">"If they're high-risk and paying very little, that's actually a business risk." <span class="qs">— Stefanie Hammond [CS: VERIFIED]</span></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- THREE AXES -->
+  <div>
+    <div class="section-header">
+      <span class="section-title">Triage axes — the three questions</span>
+      <div class="section-hr"></div>
+    </div>
+    <div class="axes-grid">
+
+      <div class="axis-card">
+        <div class="axis-num">1</div>
+        <div class="axis-title">Risk to the MSP</div>
+        <p class="axis-question">If this client gets breached and we missed a known hole — is that on us?</p>
+        <div class="axis-signals">
+          <strong>Signals to watch</strong>
+          Unaddressed findings from prior EBR · known documented exposure · high-sensitivity data (legal, financial, health, NGO with named targets)
+        </div>
+      </div>
+
+      <div class="axis-card">
+        <div class="axis-num">2</div>
+        <div class="axis-title">Risk to the Client</div>
+        <p class="axis-question">How bad is their actual exposure right now? Could they survive a breach?</p>
+        <div class="axis-signals">
+          <strong>Signals to watch</strong>
+          Inforcer alignment score (1–9) · phishing fail rate · end-of-life hardware · MFA gaps · unpatched or off-policy tenant · DLP / retention gaps
+        </div>
+      </div>
+
+      <div class="axis-card">
+        <div class="axis-num">3</div>
+        <div class="axis-title">Growth Opportunity</div>
+        <p class="axis-question">Is there a clear next step that improves their security AND generates revenue?</p>
+        <div class="axis-signals">
+          <strong>Signals to watch</strong>
+          On-prem moving to cloud · Business Standard → Premium gap · missing SOC / Usecure / Cyber Essentials · upsell path is clear and documented
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTLENECK -->
+  <div>
+    <div class="section-header">
+      <span class="section-title">The bottleneck — one senior resource, 250 EBRs</span>
+      <div class="section-hr"></div>
+    </div>
+    <div class="bottleneck-card">
+      <div>
+        <div class="bn-name">David — the irreplaceable senior resource</div>
+        <p class="bn-desc">
+          Can't delegate prep to a junior engineer — only a senior can read what the data means. Currently at 70–80% of his time on EBRs. That's the only reason quarterly clients stay semi-annual, and C-tier clients don't get what they need. Craig's goal: get David to 40–50% on EBR prep so he can sit in on more of them.
+        </p>
+        <div class="bar-group">
+          <div class="bar-row">
+            <span class="bar-lbl">Now</span>
+            <div class="bar-track"><div class="bar-fill now" style="width:80%"></div></div>
+            <span class="bar-pct">80%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-lbl">Goal</span>
+            <div class="bar-track"><div class="bar-fill goal" style="width:50%"></div></div>
+            <span class="bar-pct">50%</span>
+          </div>
+        </div>
+      </div>
+      <div class="bn-unlock">
+        <div class="unlock-num">–30%</div>
+        <div class="unlock-lbl">David's time<br>unlocked by Coworker</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVIDENCE STRIP -->
+  <div>
+    <div class="section-header">
+      <span class="section-title">From the field — Craig Fisher, Technica Solutions (2026-08-07)</span>
+      <div class="section-hr"></div>
+    </div>
+    <div class="evidence-strip">
+
+      <div class="ev-card">
+        <div class="ev-source">Craig Fisher</div>
+        <div class="ev-stat">£400K</div>
+        <p class="ev-label">Revenue lost in one month (3 clients, PE buyouts). Total book: £2.5M. = 16% overnight.</p>
+        <div class="ev-cs">[CS: VERIFIED — transcript 9:56–10:15]</div>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-source">Craig Fisher</div>
+        <div class="ev-stat">£300K</div>
+        <p class="ev-label">Recurring revenue brought back from existing clients via EBR upsells (SOC, cyber packages).</p>
+        <div class="ev-cs">[CS: VERIFIED — transcript 10:36–11:12]</div>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-source">Craig Fisher</div>
+        <div class="ev-stat">250+</div>
+        <p class="ev-label">EBRs per year across 100 clients. 2 dedicated people (Vanessa + David) run this full-time.</p>
+        <div class="ev-cs">[CS: VERIFIED — transcript 12:07–13:14]</div>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-source">Craig Fisher</div>
+        <div class="ev-stat">1.5–3h</div>
+        <p class="ev-label">Prep time per EBR. David manually pulls from N-able, Inforcer, Roost, Usecure, Halo, Cloud Capsule.</p>
+        <div class="ev-cs">[CS: VERIFIED — transcript 0:37 + 3:18]</div>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-source">Craig Fisher</div>
+        <div class="ev-stat">~30%</div>
+        <p class="ev-label">Clients who've been attacked at some point. Most stopped, but not all.</p>
+        <div class="ev-cs">[CS: MEDIUM — estimated in conversation, not measured]</div>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-source">Craig Fisher</div>
+        <div class="ev-stat">2 hrs</div>
+        <p class="ev-label">Average EBR meeting length. No tickets, no project reviews — those are out of scope.</p>
+        <div class="ev-cs">[CS: VERIFIED — transcript 20:33]</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DATA SOURCES -->
+  <div>
+    <div class="section-header">
+      <span class="section-title">What the Coworker needs to pull — by tier</span>
+      <div class="section-hr"></div>
+    </div>
+    <div class="ds-table">
+      <div class="ds-row">
+        <div class="ds-tier-cell"><span class="ds-tier-letter a-t">A/B</span></div>
+        <div>
+          <div class="ds-content">
+            <span class="ds-chip">N-able Central — device inventory</span>
+            <span class="ds-chip">Inforcer — 365 baseline score (1–9)</span>
+            <span class="ds-chip">Roost — license export</span>
+            <span class="ds-chip">Usecure — phishing fail + awareness</span>
+            <span class="ds-chip">Halo PSA — tickets, SLA %</span>
+            <span class="ds-chip">Cloud Capsule — guest users, MFA</span>
+            <span class="ds-chip manual">Manual 365 — DLP, retention, conditional access</span>
+          </div>
+          <p class="ds-note">Compliance framing: NCSC 10 Steps to Cyber Security + Cyber Essentials (UK). [CS: VERIFIED — Craig Fisher transcript]</p>
+        </div>
+      </div>
+      <div class="ds-row">
+        <div class="ds-tier-cell"><span class="ds-tier-letter c-t">C</span></div>
+        <div>
+          <div class="ds-content">
+            <span class="ds-chip">Inforcer score delta since last touch</span>
+            <span class="ds-chip">N-able alerts</span>
+            <span class="ds-chip">Adlumin detection events</span>
+            <span class="ds-chip light">Usecure: phishing fail rate (headline only)</span>
+          </div>
+        </div>
+      </div>
+      <div class="ds-row" style="border-bottom:none;">
+        <div class="ds-tier-cell"><span class="ds-tier-letter d-t">D</span></div>
+        <div>
+          <div class="ds-content">
+            <span class="ds-chip light">Active Adlumin detection / critical unpatched</span>
+            <span class="ds-chip light">MRR × RiskScore recalc — move-up or exit flag</span>
+            <span class="ds-chip light">SMS out → PSA reply (or Slack if configured)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALLOUTS -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="callout warning">
+      <span class="callout-icon">⚠</span>
+      <div class="callout-body">
+        <strong>UK compliance framing · [CS: VERIFIED]</strong> — Craig's EBR risk review runs against <strong>NCSC 10 Steps to Cyber Security + Cyber Essentials</strong>, not NIST/CIS. These are the UK government's recommended standards. This is UK-specific. The brief's NIST CSF 2.0 framing covers N-able's product-level executive narrative — both are correct, different jobs. <span style="font-size:11px;opacity:0.75;">[A] — confirm with Nicole whether the product should ship an NCSC tab for the UK market.</span>
+      </div>
+    </div>
+    <div class="callout success">
+      <span class="callout-icon">✓</span>
+      <div class="callout-body">
+        <strong>Craig's ask · [CS: VERIFIED]</strong> — "If you could tie in with Inforcer and populate this document at a touch of a button, that would be worth money to us." RMM may not be the anchor in two years (Intune). Products like Adlumin and Cove keep N-able relevant. QBR Coworker lands in exactly the right spot on that roadmap.
+      </div>
+    </div>
+  </div>
+
+  <!-- BRADLEY RAIL -->
+  <div class="bradley-rail">
+    <div class="rail-header">
+      <span class="rail-title">Bradley · Triage Model Assessment</span>
+      <span class="rail-badge">Tier 1 · Concept</span>
+    </div>
+    <p class="rail-blurb">Testing: triage logic · cadence model · data source map · D-tier sachet model · NCSC/Cyber Essentials framing for UK market.</p>
+
+    <div class="rail-dual">
+      <div class="rail-block nailed">
+        <div class="rail-block-label">What you nailed</div>
+        <ul>
+          <li>Two-source corroboration on prep time (Craig + Stefanie independently)</li>
+          <li>C/D distinction is now fully sourced — Craig himself says C tier should be more frequent</li>
+          <li>Senior bottleneck framing is tight and specific (David as constraint, not abstract "resource")</li>
+          <li>UK compliance framing (NCSC/CE) is new and matters — brief needs the note</li>
+        </ul>
+      </div>
+      <div class="rail-block hurt">
+        <div class="rail-block-label">What will hurt you</div>
+        <ul>
+          <li>RiskScore taxonomy still unresolved — [A] placeholder in the Worth formula, asked twice</li>
+          <li>SMS channel has no schema yet — notification_recipients doesn't support it today</li>
+          <li>D-tier sachet cadence is a direction, not a tested model — needs a C/D persona equivalent of Priya</li>
+          <li>NONGOAL-002 tension (cross-coworker data) still live — countersign flow gates on RA-014</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rail-cards">
+      <div class="route-card">
+        <div class="rc-team">Product</div>
+        <div class="rc-action">Validate Worth formula with real MRR × risk data</div>
+        <div class="rc-why">Why now: formula drives all tier assignments; [A] assumptions in the model today</div>
+        <div class="rc-risk">If you ship without it: tier assignments will be wrong for edge cases</div>
+      </div>
+      <div class="route-card">
+        <div class="rc-team">Design</div>
+        <div class="rc-action">Build A/B storyboard panels 9–12 (Meridian Trust CU)</div>
+        <div class="rc-why">Why now: D-tier storyboard (Priya) is complete — A/B is half-done</div>
+        <div class="rc-risk">If you ship without it: only half the priority tier story is testable</div>
+      </div>
+      <div class="route-card">
+        <div class="rc-team">Research</div>
+        <div class="rc-action">UK market check — NCSC/CE tab alongside NIST?</div>
+        <div class="rc-why">Why now: Craig surfaced this; Nicole needs to decide product direction</div>
+        <div class="rc-risk">If you ship without it: UK MSP demo will feel out-of-market</div>
+      </div>
+      <div class="route-card">
+        <div class="rc-team">Eng</div>
+        <div class="rc-action">Scope SMS channel in notification_recipients schema</div>
+        <div class="rc-why">Why now: sachet model for C/D depends on it; it's a new build surface</div>
+        <div class="rc-risk">If you ship without it: C/D tier delivery has no actual channel to run on</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

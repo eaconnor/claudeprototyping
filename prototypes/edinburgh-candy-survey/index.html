@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edinburgh Office Vending Survey · Wave 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ===== canvas ===== */
+      --bg-app: #0b1220;
+      --bg-surface: #121b2e;
+      --bg-elevated: #182238;
+      --bg-deep: #070d18;
+      --border: #1f2c47;
+      --border-strong: #2a3a5c;
+
+      /* ===== text ===== */
+      --text-primary: #e6edf7;
+      --text-secondary: #9aa8c2;
+      --text-tertiary: #6b7a96;
+      --text-muted: #4b5772;
+
+      /* ===== brand (Adlumin blue) ===== */
+      --brand: #3b82f6;
+      --brand-strong: #2563eb;
+      --brand-soft: rgba(59,130,246,0.14);
+
+      /* ===== status ===== */
+      --critical: #ef4444;
+      --critical-soft: rgba(239,68,68,0.13);
+      --high: #f97316;
+      --high-soft: rgba(249,115,22,0.13);
+      --medium: #eab308;
+      --medium-soft: rgba(234,179,8,0.12);
+      --low: #22c55e;
+      --low-soft: rgba(34,197,94,0.12);
+
+      /* ===== Bradley / council accent (violet) ===== */
+      --alpha-accent: #a78bfa;
+      --alpha-soft: rgba(167,139,250,0.13);
+
+      /* ===== DISTINCT SURFACES ===== */
+      --topbar-bg: #0a1730;
+      --topbar-border: var(--brand);
+      --rail-bg: #16112e;
+      --rail-border: var(--alpha-accent);
+
+      /* ===== shape + type ===== */
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-app: #f4f6fb;
+      --bg-surface: #ffffff;
+      --bg-elevated: #eef1f8;
+      --bg-deep: #e6eaf3;
+      --border: #d8deeb;
+      --border-strong: #c3ccdd;
+      --text-primary: #0d1424;
+      --text-secondary: #45506b;
+      --text-tertiary: #6b7790;
+      --text-muted: #94a0b8;
+      --topbar-bg: #0a1730;
+      --rail-bg: #f0eafa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg-app);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+      gap: 0;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px 24px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .survey-container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .fidelity-banner {
+      background: var(--bg-elevated);
+      border: 2px solid var(--alpha-accent);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .fidelity-left {
+      flex: 1;
+    }
+
+    .fidelity-tier {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pip-indicator {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    .pip.filled {
+      background: var(--alpha-accent);
+    }
+
+    .check-matrix {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .check-icon {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .check-icon.yes { color: var(--low); }
+    .check-icon.partial { color: var(--medium); }
+    .check-icon.no { color: var(--text-muted); }
+
+    .mode-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-surface);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .mode-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    .mode-btn:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .mode-btn.active {
+      background: var(--alpha-soft);
+      color: var(--alpha-accent);
+    }
+
+    .survey-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      padding: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .survey-header {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .survey-title {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .survey-meta {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .time-estimate {
+      color: var(--alpha-accent);
+    }
+
+    .question-block {
+      margin-bottom: 36px;
+    }
+
+    .question-label {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .question-sublabel {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checkbox-item:hover {
+      background: var(--bg-deep);
+      border-color: var(--border-strong);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--alpha-accent);
+    }
+
+    .checkbox-item label {
+      font-size: 14px;
+      color: var(--text-primary);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .radio-item:hover {
+      background: var(--bg-deep);
+      border-color: var(--border-strong);
+    }
+
+    .radio-item input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--alpha-accent);
+    }
+
+    .radio-item label {
+      font-size: 14px;
+      color: var(--text-primary);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .textarea-field {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      resize: vertical;
+      transition: all 0.2s;
+    }
+
+    .textarea-field:focus {
+      outline: none;
+      border-color: var(--alpha-accent);
+      background: var(--bg-deep);
+    }
+
+    .textarea-field::placeholder {
+      color: var(--text-muted);
+    }
+
+    .submit-section {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .submit-btn {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 14px 28px;
+      background: var(--alpha-accent);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: not-allowed;
+      transition: all 0.2s;
+      opacity: 0.7;
+    }
+
+    .submit-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      text-align: center;
+    }
+
+    .results-panel {
+      margin-top: 32px;
+      padding: 20px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+
+    .results-title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .results-list {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.8;
+    }
+
+    .seed-stamp {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+    }
+
+    .attribution {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      text-align: center;
+    }
+
+    /* Bradley Rail */
+    .bradley-rail {
+      width: 420px;
+      background: var(--rail-bg);
+      border-left: 4px solid var(--rail-border);
+      box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px;
+    }
+
+    .rail-section {
+      margin-bottom: 28px;
+    }
+
+    .rail-header {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .readiness-block {
+      background: var(--bg-surface);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .readiness-score {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--critical);
+      margin-bottom: 4px;
+    }
+
+    .readiness-state {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .readiness-metric {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .readiness-metric strong {
+      color: var(--text-primary);
+    }
+
+    .readiness-reasoning {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .collapsible-section {
+      margin-bottom: 20px;
+    }
+
+    .collapsible-header {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding: 10px 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .collapsible-header:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .collapsible-content {
+      display: none;
+      padding: 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      margin-top: -1px;
+    }
+
+    .collapsible-content.open {
+      display: block;
+    }
+
+    .collapsible-list {
+      list-style: none;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .collapsible-list li {
+      margin-bottom: 6px;
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .collapsible-list li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--alpha-accent);
+    }
+
+    .routed-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--alpha-accent);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .card-team {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--alpha-accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .card-action {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .card-detail {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .card-detail strong {
+      color: var(--text-primary);
+    }
+
+    .card-roi {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+    }
+
+    .card-roi-label {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .bradley-rail {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-left: none;
+        border-top: 4px solid var(--rail-border);
+      }
+
+      .readiness-block {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .survey-card {
+        padding: 24px 20px;
+      }
+
+      .fidelity-banner {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .check-matrix {
+        grid-template-columns: 1fr;
+      }
+
+      .checkbox-group {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <main class="main-content">
+      <div class="survey-container">
+        <!-- Fidelity Banner -->
+        <div class="fidelity-banner">
+          <div class="fidelity-left">
+            <div class="fidelity-tier">
+              <span>Tier 1 · Concept</span>
+              <div class="pip-indicator">
+                <div class="pip filled"></div>
+                <div class="pip"></div>
+                <div class="pip"></div>
+              </div>
+            </div>
+            <div class="check-matrix">
+              <div class="check-item">
+                <span class="check-icon yes">✓</span>
+                <span>Real copy</span>
+              </div>
+              <div class="check-item">
+                <span class="check-icon partial">~</span>
+                <span>Seed data</span>
+              </div>
+              <div class="check-item">
+                <span class="check-icon yes">✓</span>
+                <span>Core interaction</span>
+              </div>
+              <div class="check-item">
+                <span class="check-icon no">×</span>
+                <span>Full workflow</span>
+              </div>
+              <div class="check-item">
+                <span class="check-icon yes">✓</span>
+                <span>Visual hierarchy</span>
+              </div>
+              <div class="check-item">
+                <span class="check-icon no">×</span>
+                <span>Production ready</span>
+              </div>
+            </div>
+          </div>
+          <div class="mode-toggle">
+            <button class="mode-btn" data-theme="light">light</button>
+            <button class="mode-btn active" data-theme="dark">dark</button>
+            <button class="mode-btn" data-theme="system">system</button>
+          </div>
+        </div>
+
+        <!-- Survey Card -->
+        <div class="survey-card">
+          <div class="survey-header">
+            <h1 class="survey-title">Edinburgh Office Vending Survey</h1>
+            <div class="survey-meta">
+              <span class="time-estimate">~60 seconds</span>
+              <span>Wave 1 · Monthly</span>
+              <span>Anonymous</span>
+            </div>
+          </div>
+
+          <form id="candy-survey">
+            <!-- Q1: Candy Options (multi-select) -->
+            <!-- Production version would randomize this order per respondent (RandomizeOptionOrder service) to mitigate primacy/recency bias. -->
+            <!-- Seeded order for this prototype: mix of UK top sellers + Scottish brands -->
+            <div class="question-block">
+              <label class="question-label">
+                Which candy options would you like to see in the vending machine?
+                <span class="question-sublabel">Select all that apply</span>
+              </label>
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt1" name="candy" value="Irn-Bru">
+                  <label for="opt1">Irn-Bru</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt2" name="candy" value="Tunnock's Caramel Wafers">
+                  <label for="opt2">Tunnock's Caramel Wafers</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt3" name="candy" value="KitKat 4 Finger">
+                  <label for="opt3">KitKat 4 Finger</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt4" name="candy" value="Walkers Cheese & Onion">
+                  <label for="opt4">Walkers Cheese & Onion</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt5" name="candy" value="Snickers">
+                  <label for="opt5">Snickers</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt6" name="candy" value="Coca-Cola">
+                  <label for="opt6">Coca-Cola</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt7" name="candy" value="Kinder Bueno">
+                  <label for="opt7">Kinder Bueno</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt8" name="candy" value="Walkers Ready Salted">
+                  <label for="opt8">Walkers Ready Salted</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt9" name="candy" value="Twix">
+                  <label for="opt9">Twix</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt10" name="candy" value="Cadbury Twirl">
+                  <label for="opt10">Cadbury Twirl</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt11" name="candy" value="Mars Bar">
+                  <label for="opt11">Mars Bar</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt12" name="candy" value="Tunnock's Teacakes">
+                  <label for="opt12">Tunnock's Teacakes</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt13" name="candy" value="Double Decker">
+                  <label for="opt13">Double Decker</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt14" name="candy" value="Aero">
+                  <label for="opt14">Aero</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="opt15" name="candy" value="Vimto">
+                  <label for="opt15">Vimto</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q2: Satisfaction (5-point Likert) -->
+            <div class="question-block">
+              <label class="question-label">
+                How satisfied are you with the current vending selection?
+              </label>
+              <div class="radio-group">
+                <div class="radio-item">
+                  <input type="radio" id="sat1" name="satisfaction" value="very-dissatisfied">
+                  <label for="sat1">Very dissatisfied</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="sat2" name="satisfaction" value="dissatisfied">
+                  <label for="sat2">Dissatisfied</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="sat3" name="satisfaction" value="neutral">
+                  <label for="sat3">Neutral</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="sat4" name="satisfaction" value="satisfied">
+                  <label for="sat4">Satisfied</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="sat5" name="satisfaction" value="very-satisfied">
+                  <label for="sat5">Very satisfied</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q3: Free text (optional) -->
+            <div class="question-block">
+              <label class="question-label" for="other-candy">
+                Any candy not listed that you'd like added?
+                <span class="question-sublabel">Optional</span>
+              </label>
+              <textarea
+                id="other-candy"
+                name="other-candy"
+                class="textarea-field"
+                placeholder="e.g., Boost, Ribena, Skips..."
+                aria-label="Optional candy suggestions"
+              ></textarea>
+            </div>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+              <button type="button" class="submit-btn" disabled>Submit Survey</button>
+              <p class="submit-note">Prototype — form does not submit</p>
+            </div>
+          </form>
+
+          <!-- Seed Results Panel -->
+          <div class="results-panel">
+            <div class="results-title">Results from last month</div>
+            <ul class="results-list">
+              <li>Irn-Bru (42%)</li>
+              <li>Tunnock's Caramel Wafers (38%)</li>
+              <li>KitKat (35%)</li>
+              <li>Walkers Cheese & Onion (32%)</li>
+              <li>Snickers (28%)</li>
+            </ul>
+            <div class="seed-stamp">🌱 Seed data — fictional</div>
+          </div>
+
+          <!-- Attribution -->
+          <div class="attribution">
+            0% Beth — survey design generated from brief, not written from scratch. Pilot testing will refine.
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bradley Rail -->
+    <aside class="bradley-rail">
+      <!-- Readiness Block -->
+      <div class="rail-section">
+        <div class="readiness-block">
+          <div class="readiness-score">12/30</div>
+          <div class="readiness-state">NOT READY</div>
+          <div class="readiness-metric">Brief <strong>[A]+[?]: 73%</strong></div>
+          <div class="readiness-reasoning">
+            World-claims ratio 73% [A]+[?]. Five critical gaps: headcount unknown, current stock unknown, baseline satisfaction [?], vendor agreement missing, small-population methodology not sourced. Coherent logic (survey → vendor adjusts → satisfaction improves) but feedback loop unconfirmed. Appropriate for 30% concept fidelity; not ready for 60% directional without resolving gaps.
+          </div>
+        </div>
+      </div>
+
+      <!-- What You Nailed -->
+      <div class="rail-section collapsible-section">
+        <div class="collapsible-header" onclick="toggleCollapse(this)">
+          <span>What you nailed</span>
+          <span>▼</span>
+        </div>
+        <div class="collapsible-content">
+          <ul class="collapsible-list">
+            <li>Evidence honesty: 73% [A]+[?] calculated and named, not hidden</li>
+            <li>Coherent feedback loop (if vendor cooperates)</li>
+            <li>Tight scope: one survey form, 3-5 questions, <90 seconds</li>
+            <li>Anonymity-first design (no demographic questions, anonymous_id proposed)</li>
+            <li>Scottish brand cultural relevance (Irn-Bru, Tunnock's grounded in research)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- What Will Hurt You -->
+      <div class="rail-section collapsible-section">
+        <div class="collapsible-header" onclick="toggleCollapse(this)">
+          <span>What will hurt you</span>
+          <span>▼</span>
+        </div>
+        <div class="collapsible-content">
+          <ul class="collapsible-list">
+            <li>Vendor agreement missing — survey becomes performative if results ignored</li>
+            <li>Baseline satisfaction unknown — cannot measure Key Result ("increase from [?] to [?]")</li>
+            <li>Headcount unknown — anonymity risk and sample validity undefined</li>
+            <li>Current vending stock unknown — Q2 ("How satisfied with current selection?") unanswerable</li>
+            <li>Survey methodology for small populations not sourced — validity thresholds missing</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Routed Cards -->
+      <div class="rail-section">
+        <div class="rail-header">Routed Cards</div>
+
+        <!-- Product Card -->
+        <div class="routed-card">
+          <div class="card-team">Product</div>
+          <div class="card-action">Product does: Secure vendor agreement to act on quarterly survey results</div>
+          <div class="card-detail">
+            <strong>Why now:</strong> [A] Survey is performative without vendor commitment. Respondent cynicism will kill response rates by Wave 3 if no action is taken.
+          </div>
+          <div class="card-detail">
+            <strong>If you ship without it:</strong> 12-wave longitudinal effort wasted, response rate collapses, Edinburgh office loses trust in feedback mechanisms.
+          </div>
+          <div class="card-roi">
+            <div class="card-roi-label">[ROI]</div>
+            <div><strong>Business:</strong> [?] Unknown — depends on whether improved satisfaction reduces turnover or boosts morale measurably</div>
+            <div><strong>User:</strong> Respondents see their input reflected in vending machine changes (closes feedback loop, builds trust in org responsiveness)</div>
+            <div><strong>Unknown:</strong> Does vending satisfaction actually matter to retention/morale, or is this nice-to-have? No data sourced.</div>
+          </div>
+        </div>
+
+        <!-- Design Card -->
+        <div class="routed-card">
+          <div class="card-team">Design</div>
+          <div class="card-action">Design does: Pilot-test survey with 10-15 Edinburgh respondents</div>
+          <div class="card-detail">
+            <strong>Why now:</strong> [A] Leading questions or >90-second duration will poison retention from Wave 1. Monthly surveys tolerable only if fast and clear.
+          </div>
+          <div class="card-detail">
+            <strong>If you ship without it:</strong> Survey fatigue from Wave 1, attrition exceeds threshold, questions misunderstood (e.g., Q2 assumes respondents know current stock).
+          </div>
+          <div class="card-roi">
+            <div class="card-roi-label">[ROI]</div>
+            <div><strong>Business:</strong> Prevents wasted 12-wave effort if survey design is flawed</div>
+            <div><strong>User:</strong> Respondents experience <90-second burden (tolerable monthly), questions are unambiguous</div>
+            <div><strong>Unknown:</strong> What completion time threshold causes fatigue in this population? 90 seconds assumed [A], not sourced.</div>
+          </div>
+        </div>
+
+        <!-- Research Card -->
+        <div class="routed-card">
+          <div class="card-team">Research</div>
+          <div class="card-action">Research does: Obtain Edinburgh office headcount, current vending stock list, baseline satisfaction score, and small-population survey methodology</div>
+          <div class="card-detail">
+            <strong>Why now:</strong> [R] Survey design depends on population size (anonymity risk if <30 people, sample validity if <20). Current stock required to measure satisfaction with "current selection" (Q2).
+          </div>
+          <div class="card-detail">
+            <strong>If you ship without it:</strong> Anonymity breach (GDPR risk in UK), invalid sample size, unanswerable questions, no baseline for Key Result measurement.
+          </div>
+          <div class="card-roi">
+            <div class="card-roi-label">[ROI]</div>
+            <div><strong>Business:</strong> Protects against GDPR fines, ensures survey results are statistically defensible</div>
+            <div><strong>User:</strong> Anonymity preserved (no re-identification risk in small office), survey questions make sense</div>
+            <div><strong>Unknown:</strong> Is headcount 15, 30, or 50? Each number changes survey validity and anonymity approach.</div>
+          </div>
+        </div>
+
+        <!-- Engineering Card -->
+        <div class="routed-card">
+          <div class="card-team">Engineering</div>
+          <div class="card-action">Eng does: Build longitudinal tracking system (anonymous_id persistence across 12 waves, attrition monitoring, auto-generated "Top 5" results summaries)</div>
+          <div class="card-detail">
+            <strong>Why now:</strong> [A] Google Forms does not track respondents across waves or auto-generate trend summaries. Manual effort per wave scales poorly over 12 months.
+          </div>
+          <div class="card-detail">
+            <strong>If you ship without it:</strong> Manual CSV merges per wave, no attrition alerts, no automated results-sharing (kills retention strategy).
+          </div>
+          <div class="card-roi">
+            <div class="card-roi-label">[ROI]</div>
+            <div><strong>Business:</strong> Saves [?] hours per month (manual CSV merge avoided), enables attrition tracking (early warning if response rate drops)</div>
+            <div><strong>User:</strong> Respondents see automated "Top 5 this month" summary within 1 week of wave close (feedback loop)</div>
+            <div><strong>Unknown:</strong> Build cost vs. Google Forms + manual effort — is custom tool justified for 12 waves only?</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Mode toggle functionality
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    const htmlElement = document.documentElement;
+
+    // Detect system preference
+    function getSystemTheme() {
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+
+    // Initialize theme (default to dark)
+    let currentMode = 'dark';
+    htmlElement.setAttribute('data-theme', currentMode);
+
+    modeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedTheme = button.getAttribute('data-theme');
+
+        // Remove active class from all buttons
+        modeButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Add active class to clicked button
+        button.classList.add('active');
+
+        // Apply theme
+        if (selectedTheme === 'system') {
+          const systemTheme = getSystemTheme();
+          htmlElement.setAttribute('data-theme', systemTheme);
+          currentMode = 'system';
+        } else {
+          htmlElement.setAttribute('data-theme', selectedTheme);
+          currentMode = selectedTheme;
+        }
+      });
+    });
+
+    // Listen for system theme changes when system mode is active
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+      if (currentMode === 'system') {
+        htmlElement.setAttribute('data-theme', e.matches ? 'light' : 'dark');
+      }
+    });
+
+    // Collapsible sections
+    function toggleCollapse(header) {
+      const content = header.nextElementSibling;
+      const arrow = header.querySelector('span:last-child');
+
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        arrow.textContent = '▼';
+      } else {
+        content.classList.add('open');
+        arrow.textContent = '▲';
+      }
+    }
+  </script>
+</body>
+</html>

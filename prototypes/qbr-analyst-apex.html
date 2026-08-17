@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en" data-apx-mode="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>QBR Analyst · Draft Landing · Apex Bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   APEX BRIDGE — TOKEN CONTRACT
+   ========================================================= */
+:root {
+  --br-color-brand-primary: #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint: #e6f0fa;
+  --br-color-brand-accent: #6d28d9;
+
+  --br-color-surface-app: #f4f6fb;
+  --br-color-surface-panel: #ffffff;
+  --br-color-surface-elevated: #eef1f8;
+  --br-color-surface-sunken: #e6eaf3;
+  --br-color-surface-hover: #f0f3f8;
+
+  --br-color-ink-primary: #0d1424;
+  --br-color-ink-secondary: #45506b;
+  --br-color-ink-muted: #6b7790;
+  --br-color-ink-inverse: #ffffff;
+  --br-color-ink-on-brand: #ffffff;
+
+  --br-color-border-subtle: #d8deeb;
+  --br-color-border-default: #c3ccdd;
+  --br-color-border-strong: #94a0b8;
+
+  --br-color-state-success: #16a34a;
+  --br-color-state-success-tint: #dcfce7;
+  --br-color-state-warning: #d97706;
+  --br-color-state-warning-tint: #fef3c7;
+  --br-color-state-danger: #dc2626;
+  --br-color-state-danger-tint: #fee2e2;
+  --br-color-state-info: #0284c7;
+  --br-color-state-info-tint: #e0f2fe;
+
+  --br-font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --br-font-family-mono: "JetBrains Mono", ui-monospace, monospace;
+  --br-font-size-xs: 12px;
+  --br-font-size-sm: 13px;
+  --br-font-size-md: 14px;
+  --br-font-size-lg: 16px;
+  --br-font-size-xl: 20px;
+  --br-font-size-2xl: 24px;
+  --br-font-size-3xl: 32px;
+  --br-font-weight-regular: 400;
+  --br-font-weight-medium: 500;
+  --br-font-weight-semibold: 600;
+  --br-font-weight-bold: 700;
+
+  --br-space-1: 4px;
+  --br-space-2: 8px;
+  --br-space-3: 12px;
+  --br-space-4: 16px;
+  --br-space-5: 20px;
+  --br-space-6: 24px;
+  --br-space-8: 32px;
+  --br-space-10: 40px;
+  --br-space-12: 48px;
+
+  --br-radius-sm: 4px;
+  --br-radius-md: 6px;
+  --br-radius-lg: 10px;
+
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-lg: 0 10px 25px rgba(15,23,42,.10), 0 4px 10px rgba(15,23,42,.05);
+
+  --br-motion-fast: 120ms;
+  --br-motion-base: 180ms;
+
+  --topbar-bg: #0a1730;
+  --topbar-border: var(--br-color-brand-primary);
+  --rail-bg: #f0eafa;
+  --rail-border: #a78bfa;
+  --alpha-accent: #a78bfa;
+  --alpha-soft: rgba(167,139,250,0.13);
+}
+
+[data-apx-mode="dark"] {
+  --br-color-surface-app: #0b1220;
+  --br-color-surface-panel: #111827;
+  --br-color-surface-elevated: #1e293b;
+  --br-color-surface-sunken: #0f172a;
+  --br-color-surface-hover: #1e293b;
+  --br-color-ink-primary: #f1f5f9;
+  --br-color-ink-secondary: #cbd5e1;
+  --br-color-ink-muted: #94a3b8;
+  --br-color-border-subtle: #1e293b;
+  --br-color-border-default: #334155;
+  --br-color-border-strong: #475569;
+  --br-color-brand-primary-tint: #0c2845;
+  --br-color-state-success-tint: rgba(22,163,74,.18);
+  --br-color-state-warning-tint: rgba(217,119,6,.18);
+  --br-color-state-danger-tint: rgba(220,38,38,.18);
+  --br-color-state-info-tint: rgba(2,132,199,.18);
+  --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+  --rail-bg: #16112e;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary);
+  font-family: var(--br-font-family-sans);
+  font-size: var(--br-font-size-md);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 52px;
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-4);
+  padding: 0 var(--br-space-6);
+}
+.topbar-brand {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: var(--br-color-ink-inverse);
+  opacity: 0.55;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+.topbar-nav {
+  display: flex;
+  gap: 2px;
+}
+.topbar-tab {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  padding: 6px var(--br-space-4);
+  border-radius: var(--br-radius-sm);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--br-motion-fast);
+  white-space: nowrap;
+}
+.topbar-tab:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.08); }
+.topbar-tab.active { color: #fff; background: var(--br-color-brand-primary); }
+.topbar-spacer { flex: 1; }
+.topbar-actions { display: flex; align-items: center; gap: var(--br-space-3); }
+.theme-toggle {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--br-radius-sm);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all var(--br-motion-fast);
+}
+.theme-toggle:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.35); }
+.topbar-badge {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--br-radius-sm);
+  background: var(--alpha-soft);
+  color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.3);
+}
+
+/* =========================================================
+   PAGE BODY
+   ========================================================= */
+.page-body {
+  padding-top: 52px;
+  min-height: 100vh;
+}
+.view { display: none; }
+.view.active { display: block; }
+
+/* =========================================================
+   SURFACE A — DRAFT LANDING LAYOUT
+   ========================================================= */
+.draft-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr 340px;
+  gap: var(--br-space-5);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--br-space-5) var(--br-space-6) var(--br-space-10);
+  align-items: start;
+}
+
+/* Entry banner */
+.entry-banner {
+  grid-column: 1 / -1;
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-left: 4px solid var(--br-color-brand-primary);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-md);
+  padding: var(--br-space-4) var(--br-space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-6);
+  flex-wrap: wrap;
+}
+.entry-meta { flex: 1; }
+.entry-customer {
+  font-size: var(--br-font-size-xl);
+  font-weight: var(--br-font-weight-semibold);
+  color: var(--br-color-ink-primary);
+  margin-bottom: 2px;
+}
+.entry-sub {
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-muted);
+  letter-spacing: 0.04em;
+}
+.entry-badges { display: flex; gap: var(--br-space-2); align-items: center; flex-wrap: wrap; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--br-radius-sm);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge-tier { background: var(--alpha-soft); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,0.3); }
+.badge-ready { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border: 1px solid rgba(22,163,74,0.3); }
+.badge-due { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border: 1px solid rgba(217,119,6,0.3); }
+.badge-native { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border: 1px solid rgba(22,163,74,0.3); }
+.badge-thirdparty { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); border: 1px solid rgba(2,132,199,0.3); }
+.badge-editable { background: var(--alpha-soft); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,0.3); }
+.badge-locked {
+  background: var(--br-color-surface-elevated);
+  color: var(--br-color-ink-muted);
+  border: 1px solid var(--br-color-border-subtle);
+}
+
+/* Nav rail */
+.nav-rail {
+  position: sticky;
+  top: calc(52px + var(--br-space-5));
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-4);
+}
+.nav-rail-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--br-color-ink-muted);
+  margin-bottom: var(--br-space-3);
+  padding-bottom: var(--br-space-2);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+}
+.nav-rail ul { list-style: none; }
+.nav-rail li { margin-bottom: 2px; }
+.nav-rail a {
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: var(--br-color-ink-secondary);
+  text-decoration: none;
+  padding: 6px var(--br-space-3);
+  border-left: 2px solid transparent;
+  border-radius: var(--br-radius-sm);
+  transition: all var(--br-motion-fast);
+}
+.nav-rail a:hover {
+  color: var(--br-color-ink-primary);
+  background: var(--br-color-surface-hover);
+  border-left-color: var(--br-color-brand-primary);
+}
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-native { background: var(--br-color-state-success); }
+.dot-thirdparty { background: var(--br-color-state-info); }
+.dot-gap { background: var(--br-color-state-warning); }
+.dot-editable { background: var(--alpha-accent); }
+
+/* Main content */
+.draft-main { min-width: 0; }
+
+/* Data section cards */
+.section-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-sm);
+  margin-bottom: var(--br-space-4);
+  overflow: hidden;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-3);
+  padding: var(--br-space-4) var(--br-space-5);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  background: var(--br-color-surface-elevated);
+  flex-wrap: wrap;
+}
+.section-card.native { border-left: 3px solid var(--br-color-state-success); }
+.section-card.thirdparty { border-left: 3px solid var(--br-color-state-info); }
+.section-card.gap-card { border-left: 3px solid var(--br-color-state-warning); }
+.section-card.editable-card { border-left: 3px solid var(--alpha-accent); }
+
+.section-title {
+  font-weight: var(--br-font-weight-semibold);
+  font-size: var(--br-font-size-md);
+  color: var(--br-color-ink-primary);
+  flex: 1;
+}
+.section-lock {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-ink-muted);
+  letter-spacing: 0.04em;
+}
+.section-body { padding: var(--br-space-5); }
+
+/* Stat grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--br-space-3);
+  margin-bottom: var(--br-space-4);
+}
+.stat-block {
+  background: var(--br-color-surface-elevated);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-3) var(--br-space-4);
+}
+.stat-value {
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xl);
+  font-weight: var(--br-font-weight-bold);
+  color: var(--br-color-ink-primary);
+  line-height: 1.2;
+}
+.stat-value.success { color: var(--br-color-state-success); }
+.stat-value.warning { color: var(--br-color-state-warning); }
+.stat-value.info { color: var(--br-color-state-info); }
+.stat-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--br-color-ink-muted);
+  margin-top: 2px;
+}
+
+/* Data row */
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--br-space-2) 0;
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  font-size: var(--br-font-size-sm);
+}
+.data-row:last-child { border-bottom: none; }
+.data-key { color: var(--br-color-ink-secondary); }
+.data-val {
+  font-family: var(--br-font-family-mono);
+  font-weight: var(--br-font-weight-medium);
+  color: var(--br-color-ink-primary);
+}
+
+/* Gap alert */
+.gap-alert {
+  background: var(--br-color-state-warning-tint);
+  border: 1px solid rgba(217,119,6,0.35);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-4);
+  margin-bottom: var(--br-space-4);
+}
+.gap-alert-header {
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  margin-bottom: var(--br-space-2);
+}
+.gap-sev {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--br-color-state-warning);
+}
+.gap-title {
+  font-weight: var(--br-font-weight-semibold);
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-primary);
+}
+.gap-devices {
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+  margin-bottom: var(--br-space-2);
+  line-height: 1.7;
+}
+.gap-action {
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-state-warning);
+  font-style: italic;
+}
+
+/* Cross-vendor note */
+.normalization-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--br-space-2);
+  background: var(--br-color-brand-primary-tint);
+  border: 1px solid rgba(0,102,204,0.2);
+  border-radius: var(--br-radius-sm);
+  padding: var(--br-space-3);
+  margin-top: var(--br-space-3);
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+}
+.normalization-note .icon {
+  color: var(--br-color-brand-primary);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Editable narrative */
+.narrative-zone {
+  background: var(--br-color-surface-sunken);
+  border: 1px dashed var(--alpha-accent);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-5);
+}
+.narrative-zone p {
+  font-size: var(--br-font-size-md);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.7;
+  font-style: italic;
+}
+.narrative-edit-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  margin-top: var(--br-space-3);
+  padding-top: var(--br-space-3);
+  border-top: 1px solid var(--br-color-border-subtle);
+}
+.btn-edit {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: var(--br-radius-sm);
+  border: 1px solid var(--alpha-accent);
+  background: var(--alpha-soft);
+  color: var(--alpha-accent);
+  cursor: pointer;
+  transition: all var(--br-motion-fast);
+}
+.btn-edit:hover { background: rgba(167,139,250,0.22); }
+.narrative-hint {
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-muted);
+}
+
+/* =========================================================
+   BRADLEY RAIL — shared
+   ========================================================= */
+.bradley-rail {
+  position: sticky;
+  top: calc(52px + var(--br-space-5));
+  background: var(--rail-bg);
+  border-left: 4px solid var(--alpha-accent);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-md);
+  padding: var(--br-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-4);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+.rail-section-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alpha-accent);
+  margin-bottom: var(--br-space-2);
+}
+.readiness-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  padding: 5px 12px;
+  background: var(--alpha-soft);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: var(--br-radius-sm);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.06em;
+  color: var(--alpha-accent);
+  text-transform: uppercase;
+}
+.rail-blurb {
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.6;
+}
+[data-apx-mode="dark"] .rail-blurb { color: rgba(255,255,255,0.65); }
+.nail-block, .hurt-block {
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-3) var(--br-space-4);
+  font-size: var(--br-font-size-sm);
+  line-height: 1.6;
+}
+.nail-block {
+  background: var(--br-color-state-success-tint);
+  border: 1px solid rgba(22,163,74,0.25);
+  color: var(--br-color-ink-primary);
+}
+.nail-block strong { color: var(--br-color-state-success); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--br-font-family-mono); }
+.hurt-block {
+  background: var(--br-color-state-danger-tint);
+  border: 1px solid rgba(220,38,38,0.25);
+  color: var(--br-color-ink-primary);
+}
+.hurt-block strong { color: var(--br-color-state-danger); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--br-font-family-mono); }
+[data-apx-mode="dark"] .nail-block, [data-apx-mode="dark"] .hurt-block { color: rgba(255,255,255,0.8); }
+
+/* Routed cards */
+.routed-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  overflow: hidden;
+}
+.routed-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  padding: var(--br-space-3) var(--br-space-4);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  background: var(--br-color-surface-elevated);
+}
+.routed-card-team {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--br-radius-sm);
+}
+.team-product { background: rgba(0,102,204,0.15); color: var(--br-color-brand-primary); border: 1px solid rgba(0,102,204,0.25); }
+.team-design { background: rgba(167,139,250,0.15); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,0.25); }
+.team-research { background: rgba(217,119,6,0.15); color: var(--br-color-state-warning); border: 1px solid rgba(217,119,6,0.25); }
+.team-eng { background: rgba(22,163,74,0.15); color: var(--br-color-state-success); border: 1px solid rgba(22,163,74,0.25); }
+.routed-card-body { padding: var(--br-space-3) var(--br-space-4); }
+.routed-line {
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--br-space-2);
+}
+[data-apx-mode="dark"] .routed-line { color: rgba(255,255,255,0.6); }
+.routed-line strong {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--br-color-ink-muted);
+}
+.roi-block {
+  border-top: 1px solid var(--br-color-border-subtle);
+  margin-top: var(--br-space-2);
+  padding-top: var(--br-space-2);
+}
+.roi-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--br-color-ink-muted);
+  margin-bottom: var(--br-space-1);
+}
+.roi-row {
+  font-size: 11px;
+  color: var(--br-color-ink-secondary);
+  line-height: 1.5;
+}
+[data-apx-mode="dark"] .roi-row { color: rgba(255,255,255,0.55); }
+
+/* =========================================================
+   SURFACE B — VISION / VALUE PROP
+   ========================================================= */
+.vision-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--br-space-5);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--br-space-5) var(--br-space-6) var(--br-space-10);
+  align-items: start;
+}
+
+.vision-main { min-width: 0; }
+
+/* Hero */
+.hero-section {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-md);
+  padding: var(--br-space-10) var(--br-space-8);
+  margin-bottom: var(--br-space-5);
+  border-left: 4px solid var(--br-color-brand-primary);
+}
+.hero-eyebrow {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--br-color-brand-primary);
+  margin-bottom: var(--br-space-4);
+}
+.hero-headline {
+  font-size: 36px;
+  font-weight: var(--br-font-weight-bold);
+  color: var(--br-color-ink-primary);
+  line-height: 1.15;
+  margin-bottom: var(--br-space-4);
+  letter-spacing: -0.02em;
+}
+.hero-sub {
+  font-size: var(--br-font-size-lg);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.65;
+  max-width: 560px;
+}
+
+/* Before/after */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--br-space-4);
+  margin-bottom: var(--br-space-5);
+}
+.ba-card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-6);
+}
+.ba-card.after {
+  background: var(--br-color-brand-primary);
+  border-color: var(--br-color-brand-primary);
+}
+.ba-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--br-color-ink-muted);
+  margin-bottom: var(--br-space-3);
+}
+.ba-card.after .ba-label { color: rgba(255,255,255,0.6); }
+.ba-time {
+  font-family: var(--br-font-family-mono);
+  font-size: 48px;
+  font-weight: var(--br-font-weight-bold);
+  line-height: 1;
+  color: var(--br-color-ink-primary);
+  margin-bottom: var(--br-space-2);
+}
+.ba-card.after .ba-time { color: #fff; }
+.ba-desc {
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.6;
+}
+.ba-card.after .ba-desc { color: rgba(255,255,255,0.8); }
+.ba-tools {
+  display: flex;
+  gap: var(--br-space-2);
+  flex-wrap: wrap;
+  margin-top: var(--br-space-4);
+}
+.ba-tool {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  background: var(--br-color-surface-elevated);
+  border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-sm);
+  color: var(--br-color-ink-muted);
+}
+.ba-source {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  margin-top: var(--br-space-4);
+}
+
+/* Six coworkers */
+.section-block {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-6);
+  margin-bottom: var(--br-space-5);
+}
+.block-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--br-color-ink-muted);
+  margin-bottom: var(--br-space-5);
+}
+.coworker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--br-space-3);
+}
+.coworker-card {
+  background: var(--br-color-surface-elevated);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-4);
+}
+.coworker-card.capstone {
+  background: var(--br-color-brand-primary-tint);
+  border-color: var(--br-color-brand-primary);
+}
+.coworker-num {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-ink-muted);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+.coworker-name {
+  font-weight: var(--br-font-weight-semibold);
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-primary);
+  margin-bottom: 2px;
+}
+.coworker-card.capstone .coworker-name { color: var(--br-color-brand-primary); }
+.coworker-role {
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-muted);
+}
+.coworker-tagline {
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+  margin-top: var(--br-space-2);
+  font-style: italic;
+}
+
+/* Playing cards */
+.playing-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--br-space-4);
+  margin-bottom: var(--br-space-5);
+}
+.playing-card {
+  background: var(--br-color-surface-sunken);
+  border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-md);
+  padding: var(--br-space-6);
+  position: relative;
+  overflow: hidden;
+}
+.card-suit {
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: var(--br-space-3);
+  opacity: 0.15;
+  position: absolute;
+  top: var(--br-space-4);
+  right: var(--br-space-4);
+}
+.card-rank {
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-3xl);
+  font-weight: var(--br-font-weight-bold);
+  color: var(--br-color-brand-primary);
+  line-height: 1;
+  margin-bottom: var(--br-space-2);
+}
+.card-name {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--br-color-ink-secondary);
+  margin-bottom: var(--br-space-3);
+}
+.card-desc {
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.6;
+}
+
+/* Market gap */
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--br-space-3);
+}
+.market-col-label {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--br-space-3);
+  padding-bottom: var(--br-space-2);
+  border-bottom: 2px solid;
+}
+.market-col-label.table-stakes { color: var(--br-color-ink-muted); border-color: var(--br-color-border-default); }
+.market-col-label.opportunity { color: var(--br-color-brand-primary); border-color: var(--br-color-brand-primary); }
+.market-col-label.threat { color: var(--br-color-state-danger); border-color: var(--br-color-state-danger); }
+.market-item {
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--br-color-border-subtle);
+}
+.market-item:last-child { border-bottom: none; }
+.opportunity-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  border: 2px dashed var(--br-color-brand-primary);
+  border-radius: var(--br-radius-md);
+  color: var(--br-color-brand-primary);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.05em;
+}
+
+/* The bar */
+.the-bar {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-top: 4px solid var(--br-color-brand-primary);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-md);
+  padding: var(--br-space-8);
+  text-align: center;
+  margin-bottom: var(--br-space-5);
+}
+.bar-number {
+  font-family: var(--br-font-family-mono);
+  font-size: 64px;
+  font-weight: var(--br-font-weight-bold);
+  color: var(--br-color-brand-primary);
+  line-height: 1;
+  margin-bottom: var(--br-space-2);
+}
+.bar-label {
+  font-size: var(--br-font-size-xl);
+  font-weight: var(--br-font-weight-semibold);
+  color: var(--br-color-ink-primary);
+  margin-bottom: var(--br-space-4);
+}
+.bar-sub {
+  font-size: var(--br-font-size-md);
+  color: var(--br-color-ink-secondary);
+  line-height: 1.65;
+  max-width: 460px;
+  margin: 0 auto var(--br-space-4);
+}
+.assumption-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  padding: 5px 12px;
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-state-warning);
+  border: 1px solid rgba(217,119,6,0.3);
+  border-radius: var(--br-radius-sm);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.05em;
+}
+
+/* Fidelity bar */
+.fidelity-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--br-color-surface-sunken);
+  border-top: 1px solid var(--br-color-border-subtle);
+  padding: 6px var(--br-space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-4);
+}
+.fidelity-pill {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-state-warning);
+  border: 1px solid rgba(217,119,6,0.3);
+  border-radius: var(--br-radius-sm);
+}
+.fidelity-text {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-ink-muted);
+  letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+
+<!-- ========================================================
+     TOPBAR
+     ======================================================== -->
+<header class="topbar">
+  <span class="topbar-brand">N-able Apex · QBR Analyst</span>
+  <div class="topbar-divider"></div>
+  <nav class="topbar-nav">
+    <button class="topbar-tab active" onclick="switchView('draft', this)">Draft Landing</button>
+    <button class="topbar-tab" onclick="switchView('vision', this)">Vision · Value Prop</button>
+  </nav>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-actions">
+    <span class="topbar-badge">Tier 1 · Concept</span>
+    <button class="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</header>
+
+<div class="page-body">
+
+<!-- ========================================================
+     SURFACE A — DRAFT LANDING
+     ======================================================== -->
+<div id="view-draft" class="view active">
+  <div class="draft-layout">
+
+    <!-- Entry banner -->
+    <div class="entry-banner">
+      <div class="entry-meta">
+        <div class="entry-customer">Hartwell Manufacturing · QBR Draft</div>
+        <div class="entry-sub">150 endpoints · ConnectWise + NinjaOne + SentinelOne + Cove + Adlumin · Q2 2026</div>
+      </div>
+      <div class="entry-badges">
+        <span class="badge badge-ready">● Draft Ready</span>
+        <span class="badge badge-due">⏱ Due in 3 days</span>
+        <span class="badge badge-tier">⊘ Tier 1 · Read-Only</span>
+      </div>
+    </div>
+
+    <!-- Left nav rail -->
+    <nav class="nav-rail">
+      <div class="nav-rail-label">Sections</div>
+      <ul>
+        <li><a href="#sec-security"><span class="nav-dot dot-native"></span>Security Posture</a></li>
+        <li><a href="#sec-backup"><span class="nav-dot dot-gap"></span>Backup &amp; Recovery</a></li>
+        <li><a href="#sec-patch"><span class="nav-dot dot-thirdparty"></span>Patch Compliance</a></li>
+        <li><a href="#sec-tickets"><span class="nav-dot dot-thirdparty"></span>Ticket Volume</a></li>
+        <li><a href="#sec-edr"><span class="nav-dot dot-thirdparty"></span>Endpoint Protection</a></li>
+        <li><a href="#sec-narrative"><span class="nav-dot dot-editable"></span>Executive Narrative</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="draft-main">
+
+      <!-- Security Posture — N-ABLE NATIVE -->
+      <div class="section-card native" id="sec-security">
+        <div class="section-header">
+          <div class="section-title">Security Posture</div>
+          <span class="badge badge-native">N-ABLE NATIVE · Adlumin MDR</span>
+          <span class="section-lock">🔒 Integration pull</span>
+        </div>
+        <div class="section-body">
+          <div class="stat-grid">
+            <div class="stat-block">
+              <div class="stat-value info">847</div>
+              <div class="stat-label">Alerts this quarter</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value warning">3</div>
+              <div class="stat-label">SOC escalations</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value success">0</div>
+              <div class="stat-label">Confirmed breaches</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value">4.2h</div>
+              <div class="stat-label">Mean time to contain</div>
+            </div>
+          </div>
+          <div class="data-row"><span class="data-key">Top threat category</span><span class="data-val">Living-off-the-Land (LOtL) — 61% of alerts</span></div>
+          <div class="data-row"><span class="data-key">Threat trend vs. Q1</span><span class="data-val">↑ 12% alert volume · containment rate unchanged</span></div>
+          <div class="data-row"><span class="data-key">Data source</span><span class="data-val">Adlumin MDR telemetry · real-time</span></div>
+        </div>
+      </div>
+
+      <!-- Backup & Recovery — N-ABLE NATIVE + GAP -->
+      <div class="section-card gap-card" id="sec-backup">
+        <div class="section-header">
+          <div class="section-title">Backup &amp; Recovery</div>
+          <span class="badge badge-native">N-ABLE NATIVE · Cove Backup</span>
+          <span class="section-lock">🔒 Integration pull</span>
+        </div>
+        <div class="section-body">
+          <div class="gap-alert">
+            <div class="gap-alert-header">
+              <span class="gap-sev">⚠ SEV-3 GAP</span>
+              <span class="gap-title">3 devices missing backup status</span>
+            </div>
+            <div class="gap-devices">
+              ACCOUNTING-PC-04 &nbsp;·&nbsp; ACCOUNTING-PC-07 &nbsp;·&nbsp; RECEPTION-01
+            </div>
+            <div class="gap-action">Status unknown — not a failure confirmation. Verify device connectivity before Thursday's meeting.</div>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-block">
+              <div class="stat-value success">147/150</div>
+              <div class="stat-label">Endpoints confirmed</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value success">99.1%</div>
+              <div class="stat-label">Backup success rate</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value success">Yes</div>
+              <div class="stat-label">RPO met</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value warning">3</div>
+              <div class="stat-label">Status unknown</div>
+            </div>
+          </div>
+          <div class="data-row"><span class="data-key">Last verified backup</span><span class="data-val">2026-07-09 02:14 UTC</span></div>
+          <div class="data-row"><span class="data-key">Data source</span><span class="data-val">Cove DR+Backup · direct integration</span></div>
+        </div>
+      </div>
+
+      <!-- Patch Compliance — THIRD-PARTY -->
+      <div class="section-card thirdparty" id="sec-patch">
+        <div class="section-header">
+          <div class="section-title">Patch Compliance</div>
+          <span class="badge badge-thirdparty">THIRD-PARTY PULL · NinjaOne RMM</span>
+          <span class="section-lock">🔒 Integration pull</span>
+        </div>
+        <div class="section-body">
+          <div class="stat-grid">
+            <div class="stat-block">
+              <div class="stat-value success">94%</div>
+              <div class="stat-label">Critical patches applied</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value">141/150</div>
+              <div class="stat-label">Endpoints compliant</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value warning">9</div>
+              <div class="stat-label">Pending critical</div>
+            </div>
+          </div>
+          <div class="data-row"><span class="data-key">Patch schema</span><span class="data-val">NinjaOne RMM endpoint count</span></div>
+          <div class="data-row"><span class="data-key">Non-critical patches</span><span class="data-val">88% compliance</span></div>
+          <div class="normalization-note">
+            <span class="icon">ⓘ</span>
+            <span>Cross-vendor normalized — NinjaOne and ConnectWise Automate report patch compliance differently. Platform normalized to endpoint count. Raw schema divergence logged.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Volume — THIRD-PARTY -->
+      <div class="section-card thirdparty" id="sec-tickets">
+        <div class="section-header">
+          <div class="section-title">Ticket Volume</div>
+          <span class="badge badge-thirdparty">THIRD-PARTY PULL · ConnectWise PSA</span>
+          <span class="section-lock">🔒 Integration pull</span>
+        </div>
+        <div class="section-body">
+          <div class="stat-grid">
+            <div class="stat-block">
+              <div class="stat-value">214</div>
+              <div class="stat-label">Total tickets Q2</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value success">92.5%</div>
+              <div class="stat-label">Closed rate</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value">3.1h</div>
+              <div class="stat-label">Avg resolution time</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value warning">16</div>
+              <div class="stat-label">Open tickets</div>
+            </div>
+          </div>
+          <div class="data-row"><span class="data-key">Top category</span><span class="data-val">Network connectivity — 41 tickets (19.2%)</span></div>
+          <div class="data-row"><span class="data-key">vs. Q1</span><span class="data-val">↓ 8% ticket volume · resolution time unchanged</span></div>
+        </div>
+      </div>
+
+      <!-- Endpoint Protection — THIRD-PARTY -->
+      <div class="section-card thirdparty" id="sec-edr">
+        <div class="section-header">
+          <div class="section-title">Endpoint Protection</div>
+          <span class="badge badge-thirdparty">THIRD-PARTY PULL · SentinelOne EDR</span>
+          <span class="section-lock">🔒 Integration pull</span>
+        </div>
+        <div class="section-body">
+          <div class="stat-grid">
+            <div class="stat-block">
+              <div class="stat-value success">149/150</div>
+              <div class="stat-label">Agents active</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value warning">1</div>
+              <div class="stat-label">Agent offline</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Threats quarantined</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-value success">3</div>
+              <div class="stat-label">False positives reviewed</div>
+            </div>
+          </div>
+          <div class="data-row"><span class="data-key">Offline endpoint</span><span class="data-val">WAREHOUSE-KIOSK-02 — last seen 2026-07-08</span></div>
+        </div>
+      </div>
+
+      <!-- Executive Narrative — EDITABLE -->
+      <div class="section-card editable-card" id="sec-narrative">
+        <div class="section-header">
+          <div class="section-title">Executive Narrative</div>
+          <span class="badge badge-editable">EDITABLE · Your layer</span>
+        </div>
+        <div class="section-body">
+          <div class="narrative-zone">
+            <p>Hartwell Manufacturing remains well-defended this quarter. Threat activity was detected and contained before any client impact — 847 alerts, zero breaches, mean time to contain under five hours. One area to address before our next meeting: three devices are missing backup confirmation. We're verifying connectivity now and will have resolution by Thursday.</p>
+            <div class="narrative-edit-bar">
+              <button class="btn-edit">✎ Edit narrative</button>
+              <span class="narrative-hint">This section is yours. The data above is locked to source. Your story here.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bradley Rail — Surface A -->
+    <aside class="bradley-rail">
+      <div>
+        <div class="rail-section-label">Bradley Rail</div>
+        <div class="readiness-badge">Tier 1 · Concept</div>
+      </div>
+      <div class="rail-blurb">Testing whether MSPs trust a platform-assembled QBR draft. Probing: provenance legibility, gap flag emotional register, and edit-layer findability.</div>
+      <div class="nail-block">
+        <strong>What you nailed</strong>
+        Two badge systems (green for N-able native, blue for third-party) create a scannable hierarchy without explanation. Gap flag uses warning color with a plain-language action: verify before Thursday — not alarm, not silence.
+      </div>
+      <div class="hurt-block">
+        <strong>What will hurt you</strong>
+        The 15-min edit assumption is entirely untested. Under real time pressure, MSPs may accept the draft unreviewed — meaning the narrative ships AI-written. Also: "Tier 1: Read-Only" is governance-speak. Test whether MSPs read it as permission or jargon.
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-product">Product</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Define the edit threshold — what % of MSPs must touch the narrative before this counts as trust vs. bypass?</div>
+          <div class="routed-line"><strong>Why now:</strong> The 15-min edit bar is a named design bet [A] with no behavioral baseline.</div>
+          <div class="routed-line"><strong>If skipped:</strong> You measure draft adoption, not trust in the process.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Business: Retention event if gap is caught before client meeting — Unknown: no QBR-to-upsell data</div>
+            <div class="roi-row">User: 90 min → ~17.5 min (directional, n=11)</div>
+            <div class="roi-row">Unknown: Whether MSPs read "edit" as permission or obligation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-design">Design</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Test provenance badge legibility — can MSP identify N-able native vs. third-party pull without prompting?</div>
+          <div class="routed-line"><strong>Why now:</strong> Provenance labels are the prototype's primary trust mechanism.</div>
+          <div class="routed-line"><strong>If skipped:</strong> You ship a governance model that works in Figma and fails in a live QBR review.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Business: Unknown — design validation gates the data architecture decision</div>
+            <div class="roi-row">Unknown: Whether green/blue distinction holds under color accessibility constraints</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-research">Research</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Source verbatim MSP language about QBR prep — "invisible labor" framing may be N-able-projected, not MSP-stated [?]</div>
+          <div class="routed-line"><strong>If skipped:</strong> You validate the UI on top of an unverified narrative frame.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Unknown: Whether gap flags land as insight or alarm on first view</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-eng">Eng</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Spike cross-vendor normalization — ConnectWise Automate and NinjaOne report patch compliance differently.</div>
+          <div class="routed-line"><strong>If skipped:</strong> A technically literate MSP will catch a wrong number in a client QBR. That's not a UX problem.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Business: Unknown — normalization viability gates the entire data pipeline</div>
+            <div class="roi-row">Unknown: Schema compatibility across ConnectWise, NinjaOne, SentinelOne at scale</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<!-- ========================================================
+     SURFACE B — VISION / VALUE PROP
+     ======================================================== -->
+<div id="view-vision" class="view">
+  <div class="vision-layout">
+
+    <main class="vision-main">
+
+      <!-- Hero -->
+      <div class="hero-section">
+        <div class="hero-eyebrow">N-able ACP · QBR Analyst · Vision Prototype · July 2026</div>
+        <h1 class="hero-headline">Your MSP's best analyst.<br>Already knows your customers.</h1>
+        <p class="hero-sub">QBR Analyst turns 90 minutes of prep into 15 — and makes your invisible competence visible to the clients who need to see it.</p>
+      </div>
+
+      <!-- Before / After -->
+      <div class="before-after">
+        <div class="ba-card">
+          <div class="ba-label">Before · The status quo</div>
+          <div class="ba-time">90m</div>
+          <div class="ba-desc">Six tabs open. Four tools, two spreadsheets, one prayer. You know this customer. You just have to prove it — again — from scratch.</div>
+          <div class="ba-tools">
+            <span class="ba-tool">ConnectWise PSA</span>
+            <span class="ba-tool">NinjaOne RMM</span>
+            <span class="ba-tool">SentinelOne EDR</span>
+            <span class="ba-tool">Cove Backup</span>
+            <span class="ba-tool">Adlumin MDR</span>
+          </div>
+        </div>
+        <div class="ba-card after">
+          <div class="ba-label">After · QBR Analyst</div>
+          <div class="ba-time">15m</div>
+          <div class="ba-desc">One draft. Every source, one story. No decoder ring. The platform already knows Hartwell. You show up as the expert you are.</div>
+          <div class="ba-source">N-Zo case study · 90 min → 17.5 min · n=11 · directional, not projectable [D]</div>
+        </div>
+      </div>
+
+      <!-- Six coworkers -->
+      <div class="section-block">
+        <div class="block-label">Six coworkers · One operating model</div>
+        <div class="coworker-grid">
+          <div class="coworker-card capstone">
+            <div class="coworker-num">01 · THE CAPSTONE</div>
+            <div class="coworker-name">QBR Analyst</div>
+            <div class="coworker-role">Normalizes all six agent outputs into one story</div>
+            <div class="coworker-tagline">Every data source. One QBR. No decoder ring.</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-num">02</div>
+            <div class="coworker-name">IR RCA</div>
+            <div class="coworker-role">Incident memory</div>
+            <div class="coworker-tagline">What happened, why, and what changed.</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-num">03</div>
+            <div class="coworker-name">Ticket Triage</div>
+            <div class="coworker-role">Dispatch logic</div>
+            <div class="coworker-tagline">Right ticket, right tech, right now.</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-num">04</div>
+            <div class="coworker-name">Alert Flood Suppression</div>
+            <div class="coworker-role">Signal / noise</div>
+            <div class="coworker-tagline">What matters. What doesn't. No guessing.</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-num">05</div>
+            <div class="coworker-name">Security Tabletop</div>
+            <div class="coworker-role">Rehearsal</div>
+            <div class="coworker-tagline">Run the scenario before the incident runs you.</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-num">06</div>
+            <div class="coworker-name">Employee Onboarding</div>
+            <div class="coworker-role">First day</div>
+            <div class="coworker-tagline">Day one, done right, every time.</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--br-color-ink-muted);margin-top:var(--br-space-4);font-style:italic;">They don't replace your team. They remember everything your team already knows.</p>
+      </div>
+
+      <!-- N-able advantage -->
+      <div class="section-block">
+        <div class="block-label">The hand no one else is holding</div>
+        <div class="playing-cards">
+          <div class="playing-card">
+            <div class="card-suit">♥</div>
+            <div class="card-rank">A</div>
+            <div class="card-name">Adlumin MDR</div>
+            <div class="card-desc">Threat telemetry your competitors are reading from a dashboard. We trained on it. SOC pattern data at scale — native, not a third-party pull.</div>
+          </div>
+          <div class="playing-card">
+            <div class="card-suit">♠</div>
+            <div class="card-rank">A</div>
+            <div class="card-name">Cove DR+Backup</div>
+            <div class="card-desc">Recovery point data, backup rates, gap detection. Direct integration. When three devices go missing, you know before your client does.</div>
+          </div>
+          <div class="playing-card">
+            <div class="card-suit">♣</div>
+            <div class="card-rank">A</div>
+            <div class="card-name">Script Repo</div>
+            <div class="card-desc">Deterministic execution. The runbook doesn't guess. It runs. Locked core — your data, your logic, your customer.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Market gap -->
+      <div class="section-block">
+        <div class="block-label">The chair nobody's sitting in</div>
+        <p style="font-size:15px;color:var(--br-color-ink-secondary);margin-bottom:var(--br-space-5);">ScalePad Lifecycle X was $300+/user/month. It's discontinued. The market is waiting. <span style="font-family:var(--br-font-family-mono);font-size:11px;color:var(--br-color-ink-muted);">$1.45B → $3.86B · 11.2% CAGR [R]</span></p>
+        <div class="market-grid">
+          <div>
+            <div class="market-col-label table-stakes">Table Stakes</div>
+            <div class="market-item">Thread</div>
+            <div class="market-item">PIA</div>
+            <div class="market-item">Rost</div>
+          </div>
+          <div>
+            <div class="market-col-label opportunity">Opportunity</div>
+            <div class="opportunity-slot">← N-able owns this</div>
+          </div>
+          <div>
+            <div class="market-col-label threat">Threat</div>
+            <div class="market-item">Shield (VC-backed)</div>
+            <div class="market-item">Titan (VC-backed)</div>
+            <div class="market-item">Treeline (VC-backed)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- The bar -->
+      <div class="the-bar">
+        <div class="bar-number">15</div>
+        <div class="bar-label">minutes · or we haven't solved it</div>
+        <p class="bar-sub">Not "generates a report." Editable. By the MSP. In 15 minutes. If it takes longer, the platform isn't done.</p>
+        <span class="assumption-flag">⚠ [A] Design bet · Not yet tested · This prototype is the test</span>
+      </div>
+
+    </main>
+
+    <!-- Bradley Rail — Surface B -->
+    <aside class="bradley-rail">
+      <div>
+        <div class="rail-section-label">Bradley Rail</div>
+        <div class="readiness-badge">Tier 1 · Concept</div>
+      </div>
+      <div class="rail-blurb">Testing whether the value prop narrative lands for stakeholders and sales conversations. Not testing interaction design — testing the story.</div>
+      <div class="nail-block">
+        <strong>What you nailed</strong>
+        The one-job frame makes six capabilities legible without a product demo. Playing cards give sales a shorthand for N-able's data moat. The market gap section names the ScalePad hole without overclaiming.
+      </div>
+      <div class="hurt-block">
+        <strong>What will hurt you</strong>
+        The 15-min bar ships as the promise and the bet simultaneously. You're selling the operating model before five of the six agents are built. If the [A] flag reads as a disclaimer rather than design transparency, it undercuts the page's authority.
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-product">Product</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Decide whether this page ships internally (Nicole/Meaghan alignment) or externally (MSP prospect conversations) — register is different for each.</div>
+          <div class="routed-line"><strong>If skipped:</strong> You conflate stakeholder alignment with prospect commitment.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Internal: Alignment accelerates roadmap decisions</div>
+            <div class="roi-row">Unknown: Conversion if used in sales conversations</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-design">Design</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Test whether the playing card section communicates "unfair advantage" or "marketing speak" — with a non-N-able MSP reader.</div>
+          <div class="routed-line"><strong>If skipped:</strong> You validate the frame with people who already believe it.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Unknown: Whether "N-able native" means anything to an MSP who's never used Adlumin or Cove</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-research">Research</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Run this past 2–3 MSPs who are NOT current N-able customers — does the story land cold?</div>
+          <div class="routed-line"><strong>If skipped:</strong> You validate the narrative with the converted.</div>
+          <div class="roi-block">
+            <div class="roi-label">ROI</div>
+            <div class="roi-row">Unknown: Whether the ScalePad gap framing is known to MSPs or only to N-able observers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="routed-card-header"><span class="routed-card-team team-eng">Eng</span></div>
+        <div class="routed-card-body">
+          <div class="routed-line"><strong>Does:</strong> Nothing at this stage. Vision prototype — no technical validation required yet.</div>
+          <div class="routed-line" style="color:var(--br-color-ink-muted);">This card activates after Gate 2 is passed.</div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+</div><!-- /page-body -->
+
+<!-- Fidelity bar -->
+<div class="fidelity-bar">
+  <span class="fidelity-pill">Vision Prototype</span>
+  <span class="fidelity-text">QBR Analyst · Band Protocol · Beth Connor · 2026-07-10 · Fictional data only · Not for client use</span>
+</div>
+
+<script>
+function switchView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-apx-mode') === 'dark';
+  html.setAttribute('data-apx-mode', isDark ? 'light' : 'dark');
+  document.querySelector('.theme-toggle').textContent = isDark ? '☾ Dark' : '☀ Light';
+}
+</script>
+</body>
+</html>

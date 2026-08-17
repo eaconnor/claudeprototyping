@@ -1,0 +1,56 @@
+# HaloPSA
+slug: halopsa
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+HaloPSA is a modern, cloud-native PSA platform built for MSPs and IT teams, known for rapid weekly release cadence driven by a public community voting roadmap. It is widely seen as the leading challenger to ConnectWise Manage, winning on UI quality, configuration flexibility, and responsiveness to MSP feedback. AI features shipped throughout 2025 include AI Report Analysis, AI-powered forecasting, and conversational ticket triage — with a stated roadmap toward autonomous AI agents for specialized tasks.
+
+## MSP Relevance
+HaloPSA is the fastest-growing PSA among MSPs migrating off ConnectWise Manage. Its combination of deep configurability, weekly shipping cadence, and active community roadmap make it the most trusted challenger PSA in the market. The AI roadmap — moving toward "suggest mode" today and autonomous agents tomorrow — is directly relevant to NZO's space.
+
+## Key Offerings & Capabilities
+- Full-featured PSA — ticketing, time tracking, billing, SLA management, project management, contracts
+- AI Report Analysis — custom AI prompts applied to report data for automated insights (Q1 2025)
+- AI-powered forecasting — ticket volume, sales pipeline, trend prediction embedded in reports (Q3 2025)
+- Full-screen Chat workspace — structured agent-facing conversation management (Q2 2025)
+- Configuration search — search all settings by name within Advanced Settings (Q4 2025)
+- Weekly release cadence with public roadmap voted by the community
+- Rich integration ecosystem with major RMMs, documentation tools, and security platforms
+
+## Recent Announcements
+- Q1 2025: AI Report Analysis — AI evaluates report data via custom prompts, report-by-report
+- Q1 2025: High-priority email indicators — flags urgent tickets (outages, security events) for faster response
+- Q1 2025: Redesigned UI with improved visual clarity and navigation
+- Q2 2025: Full-screen Chat area for structured conversation management with My Conversations, My Team, and All Conversations views
+- Q3 2025: AI-powered forecasting added to reports — automated trend detection without leaving the report
+- Q4 2025: Configuration search — find any setting by name and jump directly to it
+- Roadmap: Moving toward AI "agents" and bots for specialized task automation; exploring in-house AI engine
+
+## Pricing Model
+Per-agent per-month subscription. Pricing starts at approximately $35–45/agent/month for the base tier, scaling with features. No per-endpoint or per-device fees. Pricing disclosed on website. Free trial available.
+
+## Strengths
+- Weekly release cadence — fastest shipping in the PSA category
+- Public community roadmap — MSPs directly influence what gets built
+- UI quality — cleaner and more modern than ConnectWise Manage
+- Deep configurability without requiring professional services
+- Strong reputation and word-of-mouth in MSP community forums and peer groups
+- AI features shipping incrementally with a clear direction toward autonomy
+
+## Weaknesses / Gaps
+- Smaller install base and brand recognition than ConnectWise Manage or Autotask
+- AI features are currently in "suggest mode" — not yet autonomous agents
+- In-house AI engine still in exploration phase; currently relies on third-party AI
+- Less mature ecosystem of partner integrations than larger PSAs
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: HaloPSA's stated AI roadmap — moving from suggestion to autonomous agents — is heading toward NZO's territory. If HaloPSA ships AI agents that auto-resolve tickets, auto-generate documentation, and handle L1 workflows natively within the PSA, MSPs may not need a separate AI automation layer.
+
+## Notes
+- The "suggest mode" default is a deliberate trust-building approach — HaloPSA is educating the market on AI autonomy incrementally
+- Worth tracking when HaloPSA's AI moves from "suggest" to "act" — that is the competitive inflection point
+- Community roadmap at usehalo.com/halopsa/roadmap is publicly accessible — a useful ongoing signal

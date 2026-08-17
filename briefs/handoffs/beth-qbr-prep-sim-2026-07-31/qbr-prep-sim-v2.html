@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N-able Harness — qbr-prep-sim v2 · Prep-Assemble batch run · Tier 2 Direction</title>
+<script>
+/* apply mode pref before first paint — localStorage key: apx-mode-pref */
+(function () {
+  try {
+    var pref = localStorage.getItem('apx-mode-pref') || 'system';
+    var dark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ===== canvas — [CS: UNKNOWN], no dark-mode Apex pull yet ===== */
+  --bg-app: #0b1220;       /* main app canvas */
+  --bg-surface: #121b2e;   /* cards, panels */
+  --bg-elevated: #182238;  /* hover, raised */
+  --bg-deep: #070d18;      /* wells, insets */
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  /* ===== text — [CS: UNKNOWN], no dark-mode Apex pull yet ===== */
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  /* ===== brand — [CS: VERIFIED] live Figma pull, Apex 2.0, 2026-07-31 ===== */
+  --brand: #c046ff;        /* color/brand/base */
+  --brand-strong: #8500cc; /* surface/app/product-bar/product-block */
+  --brand-soft: rgba(192,70,255,0.14);
+
+  /* ===== status — [CS: UNKNOWN], only fill/active (#058142, maps to "low") verified ===== */
+  --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+  --low: #058142;       --low-soft: rgba(5,129,66,0.12);  /* [CS: VERIFIED] fill/active */
+
+  /* ===== Bradley / council accent (violet) — Band's own, not Apex ===== */
+  --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+  /* ===== DISTINCT SURFACES — topbar + Bradley rail are their OWN color ===== */
+  --topbar-bg: #0a1730;          /* brand cast, darker than app — [CS: UNKNOWN] dark variant */
+  --topbar-border: var(--brand); /* 2px brand line under topbar */
+  --rail-bg: #16112e;            /* violet-tinted — visibly NOT the app */
+  --rail-border: var(--alpha-accent);  /* 4px solid left border */
+
+  /* ===== shape + type — [CS: VERIFIED] radius; font family verified, JetBrains Mono is NOT Apex-sourced ===== */
+  --radius-sm: 2px;  --radius-md: 4px;  --radius-lg: 16px;  --radius-full: 999px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;      /* fonts/context/brand/family */
+  --font-brand: 'Manrope', -apple-system, sans-serif;                    /* product-bar/heading font, verified */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;                /* Band Protocol convention for metrics/code — not from Apex */
+}
+
+/* Light mode (3-way toggle: light · dark · system) — [CS: VERIFIED] live Figma pull, Apex 2.0, 2026-07-31 */
+[data-theme="light"] {
+  --bg-app: #fafafa;       /* surface/container/tertiary/default */
+  --bg-surface: #ffffff;   /* surface/container/default, surface/app/background/default */
+  --bg-elevated: #f8ebff;  /* surface/container/active/default — brand-tinted hover */
+  --bg-deep: #fafafa;
+  --border: #d5d5d5;       /* border/default */
+  --border-strong: #c046ff; /* border/container/active */
+  --text-primary: #18191a;  /* content/default/heading */
+  --text-secondary: #2e2e33; /* content/default/body */
+  --text-tertiary: #404047;  /* content/default/secondary */
+  --text-muted: #5c5c66;     /* content/default/placeholder */
+  --topbar-bg: #0a1730;          /* keep topbar dark + branded in both modes — [CS: UNKNOWN] */
+  --rail-bg: #f0eafa;            /* violet-tinted light surface */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+button:disabled { cursor: not-allowed; }
+a { color: var(--brand); }
+[data-theme="light"] a { color: var(--brand-strong); }
+
+/* ============ GENERIC CHIPS + BADGES + BUTTONS ============ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.chip.wrap { white-space: normal; }
+.chip.cs { border-color: var(--medium); color: var(--medium); background: var(--medium-soft); }
+.chip.cs-a { border-color: var(--high); color: var(--high); background: var(--high-soft); }
+.chip.cs-d { border-color: var(--low); color: var(--text-secondary); }
+.chip.wobbly { border-color: var(--critical); color: var(--critical); background: var(--critical-soft); }
+.chip.seed { border-style: dashed; color: var(--text-tertiary); }
+.chip.src {
+  border-color: var(--brand); color: var(--brand); background: var(--brand-soft);
+  text-transform: none;
+}
+[data-theme="light"] .chip.src { color: var(--brand-strong); }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-mono); font-size: 0.64rem;
+  padding: 2px 8px; border-radius: var(--radius-full); border: 1px solid;
+  white-space: nowrap;
+}
+.badge::before { content: "●"; font-size: 0.55rem; }
+.badge.ok { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .badge.ok { color: #34d399; }
+.badge.unbound { color: var(--medium); border-color: var(--medium); background: var(--medium-soft); }
+.badge.deprecated { color: var(--high); border-color: var(--high); background: var(--high-soft); }
+.badge.unresolvable { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.badge.conn-err { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.badge.conn-ok { color: var(--text-secondary); border-color: var(--border-strong); background: var(--bg-elevated); }
+
+.btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn:hover:not(:disabled) { border-color: var(--brand); }
+.btn.primary { background: var(--brand-strong); border-color: var(--brand-strong); color: #fff; }
+.btn.danger { background: transparent; border-color: var(--critical); color: var(--critical); }
+.btn:disabled { opacity: 0.45; }
+.btn .ico, .ico { display: inline-flex; width: 16px; height: 16px; align-items: center; }
+.ico svg { width: 16px; height: 16px; }
+
+h1 { font-family: var(--font-brand); font-size: 1.25rem; font-weight: 800; margin-bottom: 2px; }
+h2 { font-family: var(--font-brand); font-size: 0.98rem; font-weight: 700; margin-bottom: 8px; }
+h3 { font-size: 0.85rem; font-weight: 700; }
+.sub { color: var(--text-tertiary); font-size: 0.78rem; margin-bottom: 16px; }
+.section-note { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); margin-bottom: 10px; }
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: 0 2px 8px -4px rgba(0,0,0,0.25);
+}
+.mb8 { margin-bottom: 8px; } .mb16 { margin-bottom: 16px; } .mb22 { margin-bottom: 22px; }
+
+/* ============ TOPBAR (apx-productbar light-DOM content) — distinct surface, dark in both modes ============ */
+apx-productbar { position: sticky; top: 0; z-index: 60; display: block; }
+.topbar-inner {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  color: #e6edf7;
+}
+.topbar-inner .product {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  display: flex; align-items: center; gap: 8px;
+  color: #e6edf7;
+}
+.topbar-inner .product .block {
+  background: var(--brand-strong);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 2px 8px;
+  font-size: 0.8rem;
+}
+.topbar-inner .crumb { color: #9aa8c2; font-size: 0.82rem; }
+.topbar-inner .spacer { flex: 1; }
+.topbar-inner .chip { background: rgba(255,255,255,0.06); border-color: rgba(192,70,255,0.5); color: #cbb8e8; }
+.mode-toggle {
+  display: inline-flex;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.mode-toggle button {
+  background: transparent;
+  color: #9aa8c2;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+}
+.mode-toggle button[aria-pressed="true"] { background: var(--brand-strong); color: #fff; }
+
+/* ============ FRAME LAYOUT: sidebar | content | rail ============ */
+.frame {
+  display: grid;
+  grid-template-columns: 216px minmax(0, 1fr) 340px;
+  min-height: calc(100vh - 48px);
+}
+apx-sidebar { display: block; min-height: 0; }
+.content { min-width: 0; padding-bottom: 60px; }
+
+/* ============ FIDELITY BANNER — sticky, hi-fi matrix ============ */
+.fidelity {
+  position: sticky;
+  top: 48px;
+  z-index: 50;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-strong);
+  padding: 8px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 12px -8px rgba(0,0,0,0.4);
+}
+.fidelity .tier {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pips { display: inline-flex; gap: 4px; }
+.pips span { width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--border-strong); }
+.pips span.on { background: var(--brand); }
+.fid-matrix { display: inline-flex; flex-wrap: wrap; gap: 4px 12px; font-family: var(--font-mono); font-size: 0.66rem; }
+.fid-matrix .ok { color: var(--low); } [data-theme="dark"] .fid-matrix .ok { color: #34d399; }
+.fid-matrix .part { color: var(--medium); }
+.fid-matrix .no { color: var(--critical); }
+.fidelity .echo { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); }
+.fidelity .readiness { font-family: var(--font-mono); font-size: 0.66rem; color: var(--alpha-accent); }
+[data-theme="light"] .fidelity .readiness { color: #6d28d9; }
+
+/* ============ VIEW ROOT ============ */
+.view { padding: 20px 18px; }
+
+/* ============ PREMISE BANNER v2 ============ */
+.premise {
+  border: 1px solid var(--high);
+  background: var(--high-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  font-size: 0.82rem;
+}
+.premise strong { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; }
+.premise-compact {
+  border-left: 3px solid var(--high);
+  background: var(--high-soft);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+/* ============ ① RUN VIEW ============ */
+.run-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 14px; }
+.run-head .grow { flex: 1; min-width: 220px; }
+.run-status-chip {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-full);
+  padding: 4px 12px; color: var(--text-secondary); background: var(--bg-elevated);
+}
+.run-status-chip.running { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+[data-theme="light"] .run-status-chip.running { color: var(--brand-strong); }
+.run-status-chip.paused { border-color: var(--medium); color: var(--medium); background: var(--medium-soft); }
+.run-status-chip.complete { border-color: var(--low); color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .run-status-chip.complete { color: #34d399; }
+
+.run-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); gap: 14px; align-items: start; }
+
+.run-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.run-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary);
+  padding: 8px 10px; border-bottom: 1px solid var(--border-strong);
+}
+.run-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.run-table tr:last-child td { border-bottom: none; }
+.run-table tr.done-row { cursor: pointer; }
+.run-table tr.done-row:hover td { background: var(--bg-elevated); }
+.run-table .pullname { font-weight: 600; color: var(--text-primary); }
+.run-table .pullsrc { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); display: block; margin-top: 2px; }
+.run-table .ts { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); white-space: nowrap; }
+.run-table .rowchips { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+.rstat {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.64rem;
+  padding: 2px 9px; border-radius: var(--radius-full); border: 1px solid;
+  white-space: nowrap;
+}
+.rstat.queued { color: var(--text-tertiary); border-color: var(--border-strong); background: var(--bg-elevated); }
+.rstat.pulling { color: var(--brand); border-color: var(--brand); background: var(--brand-soft); }
+[data-theme="light"] .rstat.pulling { color: var(--brand-strong); }
+.rstat.done { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .rstat.done { color: #34d399; }
+.rstat.error { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.rstat.partial { color: var(--high); border-color: var(--high); background: var(--high-soft); }
+.rstat.declined { color: var(--medium); border-color: var(--medium); background: var(--medium-soft); }
+.rstat.waiting { color: var(--medium); border-color: var(--medium); background: var(--medium-soft); }
+.spin {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--brand-soft); border-top-color: var(--brand);
+  animation: apxspin 0.8s linear infinite; display: inline-block;
+}
+@keyframes apxspin { to { transform: rotate(360deg); } }
+
+/* run_audit artifact feed */
+.audit-feed { max-height: 520px; overflow-y: auto; }
+.audit-row {
+  display: flex; gap: 10px; padding: 7px 4px;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.72rem; color: var(--text-secondary);
+}
+.audit-row:last-child { border-bottom: none; }
+.audit-row .ats { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); white-space: nowrap; min-width: 62px; }
+.audit-row.kind-error .ats { color: var(--critical); }
+.audit-row.kind-gate .ats { color: var(--medium); }
+.audit-row.kind-human .ats { color: var(--alpha-accent); }
+.audit-row.kind-done .ats { color: var(--low); }
+[data-theme="dark"] .audit-row.kind-done .ats { color: #34d399; }
+
+/* approval gate card */
+.approval-card {
+  border: 1.5px solid var(--medium);
+  background: var(--medium-soft);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin: 12px 0;
+}
+.approval-card h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.approval-card p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 10px; }
+.approval-card .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.approval-resolved {
+  border-left: 3px solid var(--alpha-accent);
+  background: var(--alpha-soft);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 8px 12px; margin: 12px 0;
+  font-size: 0.74rem; color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* ============ ② PREP BOARD / JUDGE VIEW ============ */
+.judge {
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  margin-bottom: 22px;
+  box-shadow: 0 0 0 3px var(--brand-soft), 0 4px 14px -8px rgba(0,0,0,0.4);
+}
+.judge header { padding: 12px 14px 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.judge .caption { font-family: var(--font-mono); font-size: 0.7rem; color: var(--brand); }
+[data-theme="light"] .judge .caption { color: var(--brand-strong); }
+.judge-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.1fr) 1fr 0.7fr auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+.judge-row .gap-src { font-family: var(--font-mono); font-size: 0.64rem; color: var(--text-tertiary); display: block; margin-top: 2px; }
+.judge-field {
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  min-height: 40px;
+  padding: 6px 8px;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  background: var(--bg-deep);
+}
+.judge-field .label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.05em; text-transform: uppercase; display: block; color: var(--text-tertiary); margin-bottom: 2px; }
+.judge-field.filled { border-style: solid; border-color: var(--low); color: var(--text-primary); background: var(--low-soft); }
+.judge-row .attr { font-family: var(--font-mono); font-size: 0.62rem; color: var(--low); display: none; grid-column: 1 / -1; }
+[data-theme="dark"] .judge-row .attr { color: #34d399; }
+.judge-row.filled .attr { display: block; }
+.judge-row .reglink { font-family: var(--font-mono); font-size: 0.62rem; }
+
+/* health snapshot + micro-charts */
+.health-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+.health-card .score { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; }
+.health-card .wts { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); margin-top: 4px; }
+.chart-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px; }
+.chart-card .chart-title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.chart-card svg { width: 100%; height: auto; display: block; }
+
+/* pull result cards */
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.result-card { position: relative; transition: box-shadow 0.3s, border-color 0.3s; }
+.result-card .num {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--brand);
+  letter-spacing: 0.06em; display: block; margin-bottom: 4px;
+}
+[data-theme="light"] .result-card .num { color: var(--brand-strong); }
+.result-card h3 { margin-bottom: 4px; }
+.result-card .sor { font-size: 0.72rem; color: var(--text-tertiary); margin-bottom: 8px; }
+.result-card .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.result-card .seedline { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-secondary); margin-top: 8px; }
+.result-card.highlight, .trends-card.highlight {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-soft), 0 4px 18px -6px rgba(192,70,255,0.45);
+}
+.diff-card {
+  border: 1.5px dashed var(--high);
+  background: linear-gradient(0deg, var(--high-soft), var(--high-soft)), var(--bg-surface);
+}
+.diff-card .num { color: var(--high); }
+
+/* V15 trends card */
+.trends-card {
+  border: 1px solid var(--alpha-accent);
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 22px;
+  box-shadow: 0 0 0 3px var(--alpha-soft);
+}
+.trends-card header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.trend {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: var(--bg-app);
+  font-size: 0.78rem;
+}
+.trend h4 { font-size: 0.8rem; margin-bottom: 4px; }
+.trend p { color: var(--text-secondary); margin-bottom: 6px; }
+.trend .tchips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* ============ ③ WORKING DOCUMENT VIEW ============ */
+.exposure {
+  border: 1px solid var(--medium); background: var(--medium-soft);
+  border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 20px;
+  font-size: 0.8rem;
+}
+.exposure .n { font-family: var(--font-mono); font-weight: 700; }
+.register { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-surface); margin-bottom: 20px; overflow: hidden; }
+.register header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
+.reg-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  transition: box-shadow 0.3s;
+}
+.reg-row:last-child { border-bottom: none; }
+.reg-row .src { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); display: block; margin-top: 2px; }
+.reg-row.highlight { box-shadow: inset 0 0 0 2px var(--brand); }
+.tier {
+  font-family: var(--font-mono); font-size: 0.64rem; padding: 2px 8px;
+  border-radius: var(--radius-full); border: 1px solid; justify-self: start; white-space: nowrap;
+}
+.tier.measured { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .tier.measured { color: #34d399; }
+.tier.benchmarked { color: var(--alpha-accent); border-color: var(--alpha-accent); background: var(--alpha-soft); }
+.tier.estimated { color: var(--medium); border-color: var(--medium); background: var(--medium-soft); }
+.tier.unverified { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.gate-state { justify-self: end; text-align: right; }
+.gate-blocked { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.gate-blocked .stamp {
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700;
+  color: #fff; background: var(--critical);
+  padding: 3px 10px; border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+}
+.reg-row.blocked { background: var(--critical-soft); border-left: 4px solid var(--critical); }
+.reg-row.cleared-attr { border-left: 4px solid var(--low); }
+.gate-cleared { font-family: var(--font-mono); font-size: 0.64rem; color: var(--low); text-align: right; }
+[data-theme="dark"] .gate-cleared { color: #34d399; }
+.quarantine {
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 20px;
+  background: var(--bg-deep);
+  position: relative;
+}
+.quarantine > .q-label {
+  position: absolute; top: -10px; left: 12px;
+  background: var(--bg-deep);
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em;
+  color: var(--text-tertiary); padding: 0 8px; text-transform: uppercase;
+}
+.quarantine .q-caption { font-family: var(--font-mono); font-size: 0.66rem; color: var(--high); margin-top: 10px; }
+.coworker-card { border-left: 4px solid var(--brand); }
+.coworker-card .timechip { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+[data-theme="light"] .coworker-card .timechip { color: var(--brand-strong); }
+.notes { margin-bottom: 20px; }
+.notes .note { border-left: 3px solid var(--medium); padding: 8px 12px; margin-bottom: 8px; background: var(--bg-surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: 0.8rem; color: var(--text-secondary); }
+.notes .note .who { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); display: block; margin-top: 4px; }
+
+/* ============ ④ REPORT VIEW — deck-grade, print-beautiful ============ */
+.report-meta {
+  max-width: 900px; margin: 0 auto 14px;
+  display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center;
+  font-size: 0.72rem; color: var(--text-tertiary);
+}
+.report-doc {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 14px 40px -22px rgba(0,0,0,0.45);
+  overflow: hidden;
+}
+[data-theme="light"] .report-doc { box-shadow: 0 18px 50px -30px rgba(24,25,26,0.35); }
+
+/* cover block */
+.rpt-cover {
+  padding: 56px 64px 40px;
+  border-bottom: 4px solid var(--brand);
+  background:
+    radial-gradient(1200px 300px at 10% -20%, var(--brand-soft), transparent 70%),
+    var(--bg-surface);
+}
+.rpt-cover .eyebrow {
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--brand); margin-bottom: 14px;
+}
+[data-theme="light"] .rpt-cover .eyebrow { color: var(--brand-strong); }
+.rpt-cover h1 {
+  font-family: var(--font-brand); font-size: 2.1rem; font-weight: 800;
+  line-height: 1.15; margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.rpt-cover .period { font-size: 1rem; color: var(--text-secondary); margin-bottom: 22px; }
+.rpt-cover .prep-lines { font-size: 0.82rem; color: var(--text-tertiary); line-height: 1.7; margin-bottom: 18px; }
+.rpt-cover .prep-lines strong { color: var(--text-secondary); font-weight: 600; }
+.rpt-cover .cover-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* section anatomy */
+.rpt-section { padding: 40px 64px; border-bottom: 1px solid var(--border); }
+.rpt-section:last-of-type { border-bottom: none; }
+.rpt-kicker {
+  font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px;
+}
+.rpt-section h2 {
+  font-family: var(--font-brand); font-size: 1.4rem; font-weight: 800;
+  margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.rpt-section .rule { width: 44px; height: 3px; background: var(--brand); border-radius: var(--radius-full); margin: 10px 0 18px; }
+.rpt-sowhat {
+  font-size: 1.02rem; line-height: 1.65; color: var(--text-primary);
+  max-width: 64ch; margin-bottom: 16px; font-weight: 500;
+}
+.rpt-section p { font-size: 0.88rem; color: var(--text-secondary); max-width: 68ch; margin-bottom: 12px; }
+.rpt-section ul { padding-left: 20px; max-width: 68ch; margin-bottom: 12px; }
+.rpt-section li { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 6px; }
+.rpt-srcline { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 18px; }
+.rpt-srcline .lbl { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* talking-point strip — the love language of the business owner */
+.talk-strip {
+  border-left: 4px solid var(--brand);
+  background: var(--brand-soft);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 16px 22px;
+  margin: 20px 0 4px;
+  max-width: 66ch;
+}
+.talk-strip .tp-label {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--brand); display: block; margin-bottom: 6px;
+}
+[data-theme="light"] .talk-strip .tp-label { color: var(--brand-strong); }
+.talk-strip .tp-quote {
+  font-size: 1.02rem; font-style: italic; line-height: 1.6;
+  color: var(--text-primary); font-weight: 500;
+}
+
+/* RAG scorecard */
+.rag-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-bottom: 12px; }
+.rag-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary);
+  padding: 10px 12px; border-bottom: 2px solid var(--border-strong);
+}
+.rag-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+.rag-table tr:last-child td { border-bottom: none; }
+.rag-table .area { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+.rag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+  padding: 3px 12px; border-radius: var(--radius-full); border: 1.5px solid;
+  text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+}
+.rag::before { content: "●"; font-size: 0.6rem; }
+.rag.red { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.rag.amber { color: var(--high); border-color: var(--high); background: var(--high-soft); }
+.rag.green { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .rag.green { color: #34d399; }
+
+/* risk register — HER columns */
+.rr-wrap { overflow-x: auto; margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); }
+.rr-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; min-width: 880px; }
+.rr-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 0.6rem;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary);
+  padding: 9px 10px; border-bottom: 2px solid var(--border-strong);
+  background: var(--bg-app);
+  white-space: nowrap;
+}
+.rr-table td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+.rr-table tr:last-child td { border-bottom: none; }
+.rr-table .threat { font-weight: 600; color: var(--text-primary); min-width: 180px; }
+.rr-lvl { font-family: var(--font-mono); font-size: 0.64rem; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-full); border: 1px solid; white-space: nowrap; }
+.rr-lvl.hi { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.rr-lvl.med { color: var(--high); border-color: var(--high); background: var(--high-soft); }
+.rr-lvl.low { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .rr-lvl.low { color: #34d399; }
+.rr-note { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); }
+
+/* generic report tables (assets, budget, actions) */
+.rpt-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-bottom: 12px; }
+.rpt-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary);
+  padding: 10px 12px; border-bottom: 2px solid var(--border-strong);
+}
+.rpt-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+.rpt-table tr:last-child td { border-bottom: none; }
+.rpt-table .rowlead { font-weight: 600; color: var(--text-primary); }
+.rpt-table .money { font-family: var(--font-mono); white-space: nowrap; }
+.halo-tail { font-family: var(--font-mono); font-size: 0.66rem; color: var(--brand); white-space: nowrap; }
+[data-theme="light"] .halo-tail { color: var(--brand-strong); }
+
+/* roadmap lanes */
+.lane-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+.lane { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-app); padding: 14px; }
+.lane h4 { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand); margin-bottom: 8px; }
+[data-theme="light"] .lane h4 { color: var(--brand-strong); }
+.lane ul { padding-left: 16px; }
+.lane li { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 6px; }
+
+/* trend feature blocks inside report */
+.rpt-trend {
+  border: 1px solid var(--border); border-left: 4px solid var(--alpha-accent);
+  border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 10px;
+  background: var(--bg-app); max-width: 70ch;
+}
+.rpt-trend h4 { font-size: 0.9rem; margin-bottom: 4px; }
+.rpt-trend p { font-size: 0.82rem; margin-bottom: 8px; }
+.rpt-trend .tchips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* held-at-gate note inside report */
+.rpt-held {
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+  padding: 10px 14px; margin: 12px 0; font-family: var(--font-mono);
+  font-size: 0.68rem; color: var(--text-muted); max-width: 66ch;
+}
+
+/* report footer / send */
+.rpt-foot {
+  padding: 28px 64px 36px;
+  background: var(--bg-app);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.rpt-foot .label { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); }
+
+/* ============ BRADLEY RAIL — distinct violet surface ============ */
+.rail {
+  background: var(--rail-bg);
+  border-left: 4px solid var(--rail-border);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  padding: 16px 14px 40px;
+  font-size: 0.78rem;
+}
+.rail h2 { color: var(--alpha-accent); display: flex; align-items: center; gap: 8px; font-size: 0.9rem; flex-wrap: wrap; }
+[data-theme="light"] .rail h2 { color: #6d28d9; }
+.rail .readiness-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--alpha-accent); border-radius: var(--radius-full);
+  padding: 4px 12px; font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--alpha-accent); background: var(--alpha-soft); margin: 8px 0;
+}
+[data-theme="light"] .rail .readiness-badge { color: #6d28d9; }
+.rail .blurb { color: var(--text-secondary); margin-bottom: 14px; }
+.rail-block { border: 1px solid var(--border-strong); border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 10px; background: var(--bg-surface); }
+.rail-block h3 { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono); margin-bottom: 6px; }
+.rail-block.nailed h3 { color: var(--low); } [data-theme="dark"] .rail-block.nailed h3 { color: #34d399; }
+.rail-block.hurt h3 { color: var(--critical); }
+.rail-block ul { padding-left: 16px; }
+.rail-block li { margin-bottom: 4px; color: var(--text-secondary); font-size: 0.74rem; }
+.routed { margin-bottom: 10px; }
+.routed summary {
+  cursor: pointer; font-weight: 700; font-size: 0.78rem;
+  padding: 8px 10px; border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); background: var(--bg-surface);
+  list-style: none; display: flex; justify-content: space-between; align-items: center;
+}
+.routed summary::after { content: "+"; font-family: var(--font-mono); color: var(--alpha-accent); }
+.routed[open] summary::after { content: "–"; }
+.routed .routed-body { border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); padding: 10px 12px; background: var(--bg-surface); font-size: 0.72rem; color: var(--text-secondary); }
+.routed .routed-body p { margin-bottom: 6px; }
+.routed .roi { font-family: var(--font-mono); font-size: 0.64rem; border-top: 1px dashed var(--border-strong); padding-top: 6px; margin-top: 6px; }
+.routed .roi div { margin-bottom: 3px; }
+.rail .attribution { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); margin-top: 16px; border-top: 1px dashed var(--border-strong); padding-top: 10px; }
+
+/* ============ MODALS (council + reauth) ============ */
+.modal-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(3,6,14,0.72); align-items: flex-start; justify-content: center;
+  padding: 6vh 16px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg-surface); border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-lg); max-width: 640px; width: 100%;
+  max-height: 84vh; overflow-y: auto; padding: 22px 24px;
+  box-shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+}
+.modal h2 { color: var(--alpha-accent); }
+[data-theme="light"] .modal h2 { color: #6d28d9; }
+.modal.reauth { border-color: var(--brand); }
+.modal.reauth h2 { color: var(--brand); }
+[data-theme="light"] .modal.reauth h2 { color: var(--brand-strong); }
+.modal .exec {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  padding: 12px; font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text-secondary); margin: 12px 0;
+  background: var(--bg-deep);
+}
+.tension-slot {
+  border: 1.5px dashed var(--border-strong); border-radius: var(--radius-md);
+  padding: 14px; margin-bottom: 10px; text-align: center;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+}
+.synth-slot {
+  border: 1.5px dashed var(--medium); border-radius: var(--radius-md);
+  padding: 14px; margin: 14px 0; font-family: var(--font-mono);
+  font-size: 0.72rem; color: var(--medium); background: var(--medium-soft);
+}
+.modal-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+/* reauth form — get_field_template() grammar */
+.ft-grammar {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--bg-deep); padding: 10px 12px; margin: 10px 0 14px;
+  font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary);
+  white-space: pre-wrap;
+}
+.ft-field { margin-bottom: 12px; }
+.ft-field label { display: block; font-size: 0.74rem; font-weight: 600; margin-bottom: 4px; }
+.ft-field label .req { color: var(--critical); }
+.ft-field label .meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+.ft-field input {
+  width: 100%; font-family: var(--font-mono); font-size: 0.76rem;
+  padding: 8px 10px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong); background: var(--bg-deep);
+  color: var(--text-primary);
+}
+.ft-field input:focus { border-color: var(--brand); outline: none; }
+.test-echo {
+  display: none; border: 1px solid var(--low); background: var(--low-soft);
+  border-radius: var(--radius-md); padding: 10px 12px; margin: 12px 0;
+  font-size: 0.78rem; color: var(--text-primary);
+}
+.test-echo.show { display: block; }
+.test-echo .mono { font-family: var(--font-mono); font-size: 0.68rem; color: var(--low); display: block; margin-top: 4px; }
+[data-theme="dark"] .test-echo .mono { color: #34d399; }
+
+/* ============ RESPONSIVE + PRINT ============ */
+@media (max-width: 1180px) {
+  .frame { grid-template-columns: 64px minmax(0, 1fr) 320px; }
+}
+@media (max-width: 980px) {
+  .frame { grid-template-columns: 1fr; }
+  apx-sidebar { display: none; }
+  .rail { border-left: none; border-top: 4px solid var(--rail-border); }
+  .judge-row { grid-template-columns: 1fr; }
+  .health-row, .chart-row, .lane-grid { grid-template-columns: 1fr; }
+  .run-grid { grid-template-columns: 1fr; }
+  .rpt-cover, .rpt-section, .rpt-foot { padding-left: 24px; padding-right: 24px; }
+}
+@media print {
+  apx-productbar, apx-sidebar, .fidelity, .rail, .modal-backdrop, .report-meta, .rpt-foot { display: none !important; }
+  body { background: #fff; }
+  .frame { display: block; }
+  .view { padding: 0; }
+  .report-doc { border: none; box-shadow: none; border-radius: 0; max-width: none; }
+  .rpt-section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR — apx-productbar, distinct surface, dark in both modes ================= -->
+<apx-productbar>
+  <div class="topbar-inner">
+    <span class="product"><span class="block">N-able</span> Harness <span class="crumb">QBR Advisor (Coworker)</span></span>
+    <span class="chip" title="U6 — corpus naming divergence, carried visibly">product name "Harness" — Beth 2026-07-31 [D] · coworker: "QBR Advisor" (FSN-83143) vs "QBR Analyst" (onboarding spec) — divergence carried, unresolved [D]</span>
+    <span class="crumb">SuperN-able Shop · prepping EBR for Dibbler &amp; Sons Chartered Accountants Ltd</span>
+    <span class="spacer"></span>
+    <span class="chip">Prep-Assemble batch · 8 pulls + V9 diff + V15 trends</span>
+    <div class="mode-toggle" role="group" aria-label="Colour mode">
+      <button type="button" id="mode-light" onclick="setMode('light')">light</button>
+      <button type="button" id="mode-dark" onclick="setMode('dark')">dark</button>
+      <button type="button" id="mode-system" onclick="setMode('system')">system</button>
+    </div>
+  </div>
+</apx-productbar>
+
+<div class="frame">
+
+<!-- ================= SIDEBAR — apx-sidebar web component ================= -->
+<apx-sidebar id="sidebar"></apx-sidebar>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="content">
+
+  <!-- FIDELITY BANNER (hi-fi matrix) — sticky. No readiness score here: scores live on the
+       Bradley rail only (critic pass 2 override — a banner score is a critic-flagged FAIL). -->
+  <div class="fidelity" role="note" aria-label="Fidelity banner">
+    <span class="tier">Tier 2 · Direction <span class="pips" aria-label="tier 2 of 3"><span class="on"></span><span class="on"></span><span></span></span></span>
+    <span class="fid-matrix">
+      <span class="ok">✓ tokens from Apex source</span>
+      <span class="part">~ apx-* components (3 of 5 in use)</span>
+      <span class="no">× schema.json contract</span>
+      <span class="part">~ a11y baseline</span>
+      <span class="no">× production data binding</span>
+      <span class="ok">✓ dark mode parity</span>
+    </span>
+    <span class="echo">evidence regime unchanged: PROCEED-FLAGGED · n=1 · echo — hi-fi raises artifact fidelity, not evidence</span>
+  </div>
+
+  <!-- VIEW ROOT — views.* render here via setView() -->
+  <div id="view-root"></div>
+
+</main>
+
+<!-- ================= BRADLEY RAIL — persists all views ================= -->
+<aside class="rail" aria-label="Bradley rail — internal review rail">
+  <h2>◈ Bradley rail <span class="chip" style="border-color:var(--alpha-accent);color:var(--alpha-accent);background:var(--alpha-soft);">internal — never client-visible</span></h2>
+
+  <div class="readiness-badge">Tier 2 · Direction — readiness: see .bradley-ledger (scores go stale in copy)</div>
+  <p class="section-note">readiness score = [A] prototype device — not an evidenced metric. It lives on this rail only, as a pointer to the ledger; never baked into UI copy, never on client-facing content.</p>
+
+  <p class="blurb"><strong>What this sim tests — premise v2:</strong> the QBR Advisor Coworker takes the technician's pull labor — in the n=1 evidence the Head of Technical Overview does all 8 pulls, pulled off paying service-desk work for the whole batch — and the operator keeps the Judge step, the one moment with no tool at all. A tool inserted into the technician slot; the evidenced division of labor preserved. That premise is still [A]: the operator study (Q2) has not run, and no source shows an operator wanting the mechanism rather than the destination. This is the Q2 mechanism hypothesis made concrete — an instrument for the study, <em>not</em> a finding, and not evidence of demand.</p>
+
+  <div class="rail-block nailed">
+    <h3>What you nailed</h3>
+    <ul>
+      <li>Dual-surface stays structural at hi-fi — Working Document and Report are two artifact objects on two views; no redaction toggle anywhere (the prior Tier-1 failed exactly here).</li>
+      <li>Confirm-gate is still a hard block with attribution — and the report's held-item note is computed from gate state, never a static string.</li>
+      <li>The batch run shows its own audit trail — approval gate, reauth, endpoint-down, all in run_audit grammar; the human signal is recorded, not assumed.</li>
+      <li>Echo discipline holds under polish — the report carries zero time-saved framing; the one ratio (≈0.4×, SEED) is quarantined on the internal admin surface.</li>
+      <li>V15 trends render at Estimated/Unverified always — web-gathered content never masquerades as platform telemetry.</li>
+    </ul>
+  </div>
+
+  <div class="rail-block hurt">
+    <h3>What will hurt you</h3>
+    <ul>
+      <li><strong>Premise laundering, now with better production values.</strong> Hi-fi is more persuasive than lo-fi; if this run view convinces, the operator-pulls-via-Coworker [A] gets read back as evidence. A simulation is not a study — and a beautiful one is a more dangerous non-study.</li>
+      <li><strong>n=1, one transmission line.</strong> All operator evidence is Vanessa ← Stefanie — an echo measured twice. Representativeness (Nicole's altitude check) not run.</li>
+      <li><strong>The report's quality bar is one trainer's magic-wand list.</strong> Stefanie's asks are [CS: VERIFIED] as her asks — not as market requirements. A Stefanie-worthy report proves fit to Stefanie.</li>
+      <li><strong>Market unsettled.</strong> No shipping MSP-specific AI QBR tool with PSA writeback found — and Zomentum built and killed this exact category in July 2024. Opportunity or failed category: this sim must not pretend to settle it.</li>
+      <li><strong>Substrate gap.</strong> Value Ledger QBR producer not wired — the ledger renders nothing for QBR; every pull here would need a connector registered from scratch; spec 004 is 0/40 built. The run view is choreography, not integration.</li>
+    </ul>
+  </div>
+
+  <details class="routed">
+    <summary>Product</summary>
+    <div class="routed-body">
+      <p><strong>Product does:</strong> take the mechanism-vs-destination question to the Q2 operator study before spec 004 build sequencing locks; get DIV-001 (which branch DEC-006 assumed) answered by Nicole directly; decide whether the batch-run premise (v2: AI in the technician slot) is the version to field.</p>
+      <p><strong>Why now:</strong> DEC-006 ranks QBR Advisor #1 of 5 (priority 2.90) — but the score traces to a single 22-partner interview catalog [D] [WOBBLY], and the assumed branch is open [?].</p>
+      <p><strong>If you ship without it:</strong> v1 sequencing commits to buyer purchase-intent with zero operator evidence — you may build the right destination with an unwanted mechanism.</p>
+      <div class="roi">
+        <div>Business: Unknown: gap — no demand evidence beyond buyer intent; no willingness-to-pay data</div>
+        <div>User: Unknown: gap — the operator has never been studied</div>
+        <div>Unknown: whether the operator wants the batch run at all — that is the Q2 question itself</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="routed">
+    <summary>Design</summary>
+    <div class="routed-body">
+      <p><strong>Design does:</strong> run the three ux.md §6 quality-bar tests against this v2 — cognitive walkthrough (~2h solo), 5-second confirm-gate test ×3, ≥60/40 content audit on the report prose — and add a fourth pass: does the report read as strategic advisor or book report to a non-designer? File results as [R] by 2026-08-14.</p>
+      <p><strong>Why now:</strong> the report is now the star artifact; if its so-what framing fails the content audit, the whole "insights not data" bet fails with it. Warning-fatigue on the gate is sourced [R].</p>
+      <p><strong>If you ship without it:</strong> the gate ships as decoration and the report ships as a prettier data dump — the exact thing Stefanie's magic-wand asks name as the failure.</p>
+      <div class="roi">
+        <div>Business: counter-metric protection — zero internal content reachable from the report surface</div>
+        <div>User: the operator can trust what crosses the line of visibility without re-checking every row</div>
+        <div>Unknown: whether defensibility-tier grammar reads at a glance — untested; Apex Tenets &amp; Traps not yet pulled [?]</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="routed">
+    <summary>Research</summary>
+    <div class="routed-body">
+      <p><strong>Research does:</strong> field the Q2 operator study using this sim as the instrument — mechanism vs. destination, now with the batch run as the concrete mechanism — and run Nicole's altitude check on whether Vanessa is representative.</p>
+      <p><strong>Why now:</strong> the entire operator evidence base is one transmitted process measured twice (Vanessa ← Stefanie) — an echo, not triangulation [R]. Hi-fi raised the artifact, not the evidence.</p>
+      <p><strong>If you ship without it:</strong> this prototype's persuasiveness becomes the evidence — premise laundering, the exact failure mode the brief flags {F2}.</p>
+      <div class="roi">
+        <div>Business: Unknown: gap — cannot size the opportunity from n=1</div>
+        <div>User: Unknown: gap — observed pull order, judge workflow, and follow-up ticket ownership all unsourced [?]</div>
+        <div>Unknown: the mechanism question in its entirety; also real distribution of MSPs running structured QBRs (the "only 20%" figure is uncited vendor content)</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="routed">
+    <summary>Eng</summary>
+    <div class="routed-body">
+      <p><strong>Eng does:</strong> scope connector cost honestly — all 8 pulls plus the trends sweep need connectors registered from scratch; spec 004 is 0/40 built; no frontend and no auth exist in the repo [D]. Price the run_audit polling surface and the approval-gate signal path for the QBR runbook specifically.</p>
+      <p><strong>Why now:</strong> what IS built — Runbook Engine 49/49, Value Ledger 55/55 (QBR producer unwired, renders $0), full MCP connection lifecycle incl. get_field_template() [D] — is real, but the batch-run grammar is built for flat coworkers only; the QBR-specific runbook is not {G3-3}. The defensibility tier is NOT in code (grep 2026-07-31: zero hits; code has baseline_source only).</p>
+      <p><strong>If you ship without it:</strong> substrate claims inflate — "the run view works" gets read as "the run works," and the 9-connector cost surfaces mid-build instead of pre-commit.</p>
+      <div class="roi">
+        <div>Business: avoids committing sequencing to unpriced connector work</div>
+        <div>User: Unknown: gap — no operator latency/effort data exists for any pull</div>
+        <div>Unknown: per-source connector effort for Halo PSA, M365, phish-sim; MCP Configs spec (soft-delete, tool governance) not in tree [?]</div>
+      </div>
+    </div>
+  </details>
+
+  <div class="rail-block">
+    <h3 style="color:var(--alpha-accent);">Council cross-talk — preview</h3>
+    <p style="font-size:0.72rem;color:var(--text-secondary);margin-bottom:8px;">Council pass 2026-07-31 complete — 9 tensions named by the 44-voice council, routed not resolved. Full testimony: council-testimony-qbr-prep-sim.md.</p>
+    <button type="button" class="btn" onclick="openCouncil()">Hear the council</button>
+  </div>
+
+  <p class="attribution">Attribution: 0% Beth — accepted verbatim from pipeline. (Adjust after review.)</p>
+</aside>
+</div>
+
+<!-- ================= COUNCIL MODAL (Fast Mode shell) ================= -->
+<div class="modal-backdrop" id="council-backdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="council-title" id="council-modal">
+    <h2 id="council-title">⚖ Council — Fast Mode</h2>
+    <div class="exec">
+      <strong>Executive summary</strong><br>
+      Tier 2 · Direction · PROCEED-FLAGGED · readiness: see .bradley-ledger<br>
+      Tensions: 9 named — from the 44-voice council pass 2026-07-31 (council-testimony-qbr-prep-sim.md). Routed, not resolved.
+    </div>
+    
+    
+    <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">1 · JTBD × SDT — mechanism vs destination vs the confidence ceiling</strong>JTBD: pulls are a cost of the job — fire them. SDT: pulling may be how meeting-room confidence gets built; firing it may cap competence [WOBBLY — no operator studied]. The Q2 fork as a needs conflict.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">2 · Doblin × Christensen — lattice play vs failed-category corpse</strong>Doblin: the defensible innovation is the first-party integration lattice (MCP preview shipped, 49/49 + 55/55 built). Christensen: the growth read is nonconsumers, for whom the Stefanie-worthy bar is overshoot — and Zomentum died once. DIV-001 verbatim.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth → Nicole · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">3 · Moore × [CS:] tags — the demo needs a category name; the regime forbids one</strong>The positioning template cannot be completed honestly; demo pressure in front of Nicole will want a category anyway; copy bans say no.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth → Nicole · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">4 · Lean × Charter/Means-Ends — instrument vs pride artifact</strong>The more Stefanie-worthy the report becomes, the stronger the premise laundering {F2}: a beautiful report about an assumed premise reads as evidence for it. Three voices hit this independently.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">5 · Kano × {F3} — delight vs the must-be interruption</strong>Deck-grade flow wants the confirm-gate smoothed; doctrine says the gate must visibly interrupt or it is decoration. The 5-second test adjudicates.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">6 · V15 × evidence — the strategic-advisor heart fed by the weakest source</strong>Business Priorities carries the 'strategic advisor' promise and is fed by the only permanently-Unverified source (web-gathered trends). Strongest voice, weakest evidence — how loudly does the section wear its tier?<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">7 · Service Blueprint × eng — the pre-connected backstage</strong>First-party lanes assume pre-authed N-able MCPs; Jude Scally's question stays open (existence trending [A]→[D]; pre-auth not). Flagged on-screen; the answer is not a design deliverable.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: eng · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">8 · JTBD-social × [CS:] tags — epistemic chips on the status artifact</strong>Visible confidence chips on the client report vs the operator's competence display in the room; Stefanie's own template has no confidence column. Chip presence on E7, distinct from gate function on E6.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">9 · Cynefin × Mode 6 — what a passing test may not mean</strong>All three Gate-3 tests can pass and Q2 stays unanswered. '3/3 passed' must file as artifact legibility, never as demand evidence.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · Beth → Nicole · council 2026-07-31 · routed, not resolved</span></div>
+    <div class="synth-slot">Synthesis: [0% Beth — fill this in]</div>
+    <div class="modal-foot">
+      <button type="button" class="btn" disabled title="stub — non-functional at Tier 2">⚡ Hard Mode: all 44 voices (methods-library-matrix) — stub</button>
+      <button type="button" class="btn primary" id="council-close" onclick="closeCouncil()">Close (Esc)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= REAUTH MODAL — the ONE full interactive flow (Will's manage/reauth journey) ================= -->
+<div class="modal-backdrop" id="reauth-backdrop">
+  <div class="modal reauth" role="dialog" aria-modal="true" aria-labelledby="reauth-title" id="reauth-modal">
+    <h2 id="reauth-title">Reconnect MCP Instance — Halo PSA</h2>
+    <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:6px;">The account-scoped MCP <strong>Instance</strong> for Halo PSA holds expired credentials. Re-authenticate to resume Pull 4 (Ticket volume + SLA). <span class="chip cs-d wrap">connection lifecycle + get_field_template() — built in ACP [D] {G3-6}; this Halo connector itself is NOT built [D]</span></p>
+    <div class="ft-grammar">get_field_template('halo-psa') →
+[ { name: "instance_url",  label: "Halo PSA instance URL", type: "url",      required: true },
+  { name: "client_id",     label: "API client ID",         type: "text",     required: true },
+  { name: "client_secret", label: "API client secret",     type: "password", required: true } ]</div>
+    <form id="reauth-form" onsubmit="return false;">
+      <div class="ft-field">
+        <label for="ft-instance_url">Halo PSA instance URL <span class="req">*</span><span class="meta">name: instance_url · type: url · required</span></label>
+        <input type="url" id="ft-instance_url" name="instance_url" value="https://supernable.halopsa.example" required>
+      </div>
+      <div class="ft-field">
+        <label for="ft-client_id">API client ID <span class="req">*</span><span class="meta">name: client_id · type: text · required</span></label>
+        <input type="text" id="ft-client_id" name="client_id" value="snb-qbr-advisor" required>
+      </div>
+      <div class="ft-field">
+        <label for="ft-client_secret">API client secret <span class="req">*</span><span class="meta">name: client_secret · type: password · required</span></label>
+        <input type="password" id="ft-client_secret" name="client_secret" value="••••••••••••" required>
+      </div>
+    </form>
+    <div class="test-echo" id="test-echo">
+      <strong>✓ Connected.</strong> We can see <strong>96 tickets across 4 queues</strong>.
+      <span class="mono">Test Connection preview {S3} — live-validation + real-data echo convention, onboarding spec [D] · counts are SEED DATA — invented 2026-07-31</span>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn" id="reauth-test" onclick="testConnection()">Test Connection</button>
+      <span style="display:inline-flex;gap:8px;">
+        <button type="button" class="btn" onclick="closeReauth(false)">Cancel</button>
+        <button type="button" class="btn primary" id="reauth-save" onclick="closeReauth(true)" disabled title="run Test Connection first">Save &amp; resume pull</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ICON catalog — inline SVG, lucide-style, stroke=currentColor, 16px
+   ========================================================= */
+const ICON = {
+  play: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+  pause: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+  refresh: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+  check: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  alert: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  shield: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  lock: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+  user: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  doc: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+  board: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>',
+  report: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  zap: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  globe: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+  arrowRight: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+  ticket: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>',
+  plug: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>'
+};
+
+/* =========================================================
+   Shared component reset — Apex Bridge tokens cascade
+   through the shadow boundary as inherited custom properties
+   ========================================================= */
+const COMPONENT_RESET = `
+  :host { display: block; box-sizing: border-box; font-family: var(--font-ui); color: var(--text-primary); }
+  *, *::before, *::after { box-sizing: border-box; }
+`;
+
+/* ============ <apx-productbar> — the distinct topbar surface ============ */
+class ApxProductbar extends HTMLElement {
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          background: var(--topbar-bg);
+          border-bottom: 2px solid var(--topbar-border);
+          min-height: 48px;
+          padding: 8px 18px;
+          display: flex;
+          align-items: center;
+        }
+        ::slotted(*) { width: 100%; }
+      </style>
+      <slot></slot>
+    `;
+  }
+}
+customElements.define('apx-productbar', ApxProductbar);
+
+/* ============ <apx-sidebar> — pipeline navigation ============ */
+class ApxSidebar extends HTMLElement {
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() {
+    const items = [
+      { view: 'run',     num: '①', label: 'Run',              icon: ICON.zap,    sub: 'batch pull execution' },
+      { view: 'board',   num: '②', label: 'Prep Board',       icon: ICON.board,  sub: 'results + Judge queue' },
+      { view: 'working', num: '③', label: 'Working Document', icon: ICON.doc,    sub: 'internal · E6' },
+      { view: 'report',  num: '④', label: 'EBR Report',       icon: ICON.report, sub: 'client-facing · E7' }
+    ];
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          background: var(--bg-surface);
+          border-right: 1px solid var(--border);
+          min-height: 100%;
+          display: flex;
+          flex-direction: column;
+          position: sticky;
+          top: 48px;
+          height: calc(100vh - 48px);
+          overflow-y: auto;
+        }
+        .head {
+          padding: 14px 14px 10px;
+          border-bottom: 1px solid var(--border);
+        }
+        .head .shop { font-family: var(--font-brand); font-weight: 800; font-size: 0.82rem; }
+        .head .client { font-size: 0.68rem; color: var(--text-tertiary); margin-top: 2px; line-height: 1.4; }
+        nav { padding: 10px 8px; flex: 1; }
+        .sec {
+          font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em;
+          text-transform: uppercase; color: var(--text-muted); padding: 8px 8px 4px;
+        }
+        button {
+          appearance: none; width: 100%; display: flex; align-items: flex-start; gap: 9px;
+          padding: 9px 10px; border: 0; background: transparent; text-align: left;
+          color: var(--text-secondary); font-family: inherit; font-size: 0.78rem;
+          font-weight: 600; border-radius: var(--radius-md); cursor: pointer;
+        }
+        button:hover { background: var(--bg-elevated); color: var(--text-primary); }
+        button.active { background: var(--brand-soft); color: var(--brand); box-shadow: inset 2px 0 0 var(--brand); }
+        :host-context([data-theme="light"]) button.active { color: var(--brand-strong); }
+        button:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+        button .ico { display: inline-flex; width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+        button .num { font-family: var(--font-mono); font-size: 0.72rem; margin-top: 1px; }
+        button .lbl small { display: block; font-family: var(--font-mono); font-size: 0.58rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.03em; }
+        .foot {
+          padding: 10px 14px; border-top: 1px solid var(--border);
+          font-family: var(--font-mono); font-size: 0.58rem; color: var(--text-muted); line-height: 1.6;
+        }
+        @media (max-width: 1180px) {
+          .head, .foot, .sec, button .lbl, button .num { display: none; }
+          button { justify-content: center; }
+        }
+      </style>
+      <div class="head">
+        <div class="shop">SuperN-able Shop</div>
+        <div class="client">EBR prep · Dibbler &amp; Sons Chartered Accountants Ltd · 6-monthly · SEED</div>
+      </div>
+      <nav role="navigation" aria-label="Prototype views">
+        <div class="sec">Prep pipeline</div>
+        ${items.map(i => `
+          <button type="button" data-view="${i.view}">
+            <span class="ico">${i.icon}</span>
+            <span class="num">${i.num}</span>
+            <span class="lbl">${i.label}<small>${i.sub}</small></span>
+          </button>
+        `).join('')}
+      </nav>
+      <div class="foot">dual-surface: ③ and ④ are two artifact objects — never a toggle [R]<br>v2 hi-fi · qbr-prep-sim</div>
+    `;
+    this.shadowRoot.querySelectorAll('button[data-view]').forEach(b => {
+      b.addEventListener('click', () => {
+        this.dispatchEvent(new CustomEvent('apx-navigate', {
+          bubbles: true, composed: true, detail: { view: b.dataset.view }
+        }));
+      });
+    });
+  }
+  setActive(view) {
+    this.shadowRoot.querySelectorAll('button[data-view]').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === view);
+      if (b.dataset.view === view) { b.setAttribute('aria-current', 'page'); }
+      else { b.removeAttribute('aria-current'); }
+    });
+  }
+}
+customElements.define('apx-sidebar', ApxSidebar);
+
+/* ============ <apx-card> ============ */
+class ApxCard extends HTMLElement {
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          background: var(--bg-surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          box-shadow: 0 2px 8px -4px rgba(0,0,0,0.25);
+          overflow: hidden;
+        }
+        .head {
+          padding: 10px 14px;
+          border-bottom: 1px solid var(--border);
+          display: flex; justify-content: space-between; align-items: center; gap: 10px;
+          flex-wrap: wrap;
+        }
+        .head.empty { display: none; }
+        ::slotted([slot="header-title"]) {
+          margin: 0; font-family: var(--font-brand);
+          font-size: 0.9rem; font-weight: 700; color: var(--text-primary);
+        }
+        .body { padding: ${this.hasAttribute('no-pad') ? '0' : '14px'}; }
+      </style>
+      <div class="head" id="head">
+        <slot name="header-title"></slot>
+        <slot name="header-aside"></slot>
+      </div>
+      <div class="body"><slot></slot></div>
+    `;
+    const hasHeader = this.querySelector('[slot="header-title"], [slot="header-aside"]');
+    if (!hasHeader) { this.shadowRoot.getElementById('head').classList.add('empty'); }
+  }
+}
+customElements.define('apx-card', ApxCard);
+
+/* ============ <apx-badge> ============ */
+class ApxBadge extends HTMLElement {
+  static get observedAttributes() { return ['variant']; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { if (this.shadowRoot) this._render(); }
+  _render() {
+    const dot = this.hasAttribute('dot');
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 2px 9px; border-radius: var(--radius-full);
+          font-family: var(--font-mono); font-size: 0.64rem; font-weight: 600;
+          line-height: 1.5; border: 1px solid var(--border-strong);
+          background: var(--bg-elevated); color: var(--text-secondary);
+          white-space: nowrap;
+        }
+        :host([variant="success"]) { background: var(--low-soft); color: var(--low); border-color: var(--low); }
+        :host-context([data-theme="dark"])[variant="success"] { color: #34d399; }
+        :host([variant="warning"]) { background: var(--medium-soft); color: var(--medium); border-color: var(--medium); }
+        :host([variant="danger"])  { background: var(--critical-soft); color: var(--critical); border-color: var(--critical); }
+        :host([variant="high"])    { background: var(--high-soft); color: var(--high); border-color: var(--high); }
+        :host([variant="brand"])   { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
+        :host-context([data-theme="light"])[variant="brand"] { color: var(--brand-strong); }
+        :host([variant="accent"])  { background: var(--alpha-soft); color: var(--alpha-accent); border-color: var(--alpha-accent); }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+      </style>
+      ${dot ? '<span class="dot"></span>' : ''}<slot></slot>
+    `;
+  }
+}
+customElements.define('apx-badge', ApxBadge);
+
+/* ============ <apx-table> ============ */
+class ApxTable extends HTMLElement {
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          display: block;
+          background: var(--bg-surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          box-shadow: 0 2px 8px -4px rgba(0,0,0,0.25);
+          overflow: hidden;
+        }
+        .scroll { overflow-x: auto; }
+        ::slotted(table) { width: 100%; border-collapse: collapse; }
+      </style>
+      <div class="scroll"><slot></slot></div>
+    `;
+  }
+}
+customElements.define('apx-table', ApxTable);
+
+/* =========================================================
+   STATE — everything renders from here; views are functions of state.
+   All timestamps + counts: SEED DATA — invented 2026-07-31.
+   ========================================================= */
+const STATE = {
+  view: 'run',
+  gates: { g1: false, g2: false },   /* confirm-gate: backup-verification (g1), leaver accounts (g2) */
+  judgeFilled: false,
+  pendingHighlight: null             /* cross-page highlight target id */
+};
+
+const RUN = {
+  status: 'idle',                    /* idle | running | paused | complete */
+  idx: 0,
+  timer: null,
+  approval: null,                    /* null | 'approved' | 'declined' */
+  halo: 'expired',                   /* 'expired' | 'authed' */
+  feed: []
+};
+
+/* the batch — 10 rows: 8 pulls + V9 package-gap diff + V15 industry-trends sweep */
+const RUN_ROWS = [
+  { id: 'V1', num: 'PULL 1/8', name: 'Warranty / EOL', sor: 'N-central Warranty Expiry report (Reports › Status) [CS: VERIFIED — docs] · native warranty covers 5 OEMs; common practice routes via ScalePad Lifecycle Manager [CS: MEDIUM]', via: 'MCP Instance: N-central (account-scoped)', pre: true,
+    health: 'ok', note: '7 devices past warranty · 3 EOL OS builds', status: 'queued', ts: '' },
+  { id: 'V2', num: 'PULL 2/8', name: 'License utilization (no login 3–4 mo)', sor: 'M365 admin center "Active users" usage report [CS: VERIFIED] + Billing › Licenses [CS: HIGH — not re-verified]', via: 'MCP Instance: M365 (third-party)', pre: false,
+    health: 'ok', note: '6 licenses with no login in 3–4 months', status: 'queued', ts: '', extra: 'auth-rotated' },
+  { id: 'V3', num: 'PULL 3/8', name: 'User / staff reconcile', sor: 'Entra Sign-in logs / Graph signInActivity vs. HR roster (manual) [CS: VERIFIED/HIGH]', via: 'no bound source for HR roster — manual cross-check', pre: false,
+    health: 'unbound', note: '2 leaver accounts possibly still enabled — needs manual confirm', status: 'queued', ts: '', extra: 'url-blocked' },
+  { id: 'V4', num: 'PULL 4/8', name: 'Ticket volume + SLA', sor: 'HaloPSA Reports module — scheduled SLA report (module real; stock report names unconfirmed [WOBBLY])', via: 'MCP Instance: Halo PSA (third-party)', pre: false,
+    health: 'unresolvable', note: '96 tickets · 91 within agreed response times', status: 'queued', ts: '', extra: 'reauth' },
+  { id: 'V5', num: 'PULL 5/8', name: 'Patch + backup', sor: 'N-central Patch Status (Detailed) + Cove Backup Dashboard · Recovery Testing boot-verification [CS: VERIFIED]', via: 'MCP Instances: N-central, Cove', pre: true,
+    health: 'ok', note: 'critical patches overdue: 4 devices · backup jobs successful: 58 of 61 · restore tests: 1 ran, unverified — "ran ≠ verified restorable" is exactly the gap Cove Recovery Testing verification closes; its boot screenshot is the client-legible restore evidence [CS: LOW — community recollection]', status: 'queued', ts: '' },
+  { id: 'V6', num: 'PULL 6/8', name: 'Phish-sim + training', sor: 'security-awareness / phish-sim platform (fictional vendor — metric pattern borrowed: phish-prone rate; no vendor trade name)', via: 'MCP Instance: phish-sim (third-party)', pre: false,
+    health: 'unresolvable', note: 'phish-prone rate: incomplete (partial period — pull interrupted) · 214 phishing attempts blocked', status: 'queued', ts: '', extra: 'endpoint-down' },
+  { id: 'V7', num: 'PULL 7/8', name: 'Tenant config vs. baseline', sor: 'Adlumin health report vs. MSP-authored baseline (the baseline is judgment, not data) · no native baseline-drift report found — baseline is MSP-authored [WOBBLY]', via: 'MCP Instance: Adlumin', pre: true,
+    health: 'ok', note: '3 config drifts from MSP baseline', status: 'queued', ts: '' },
+  { id: 'V8', num: 'PULL 8/8', name: 'Compliance checklist', sor: 'Adlumin One-Touch Compliance Reporting — executive report [CS: HIGH — vendor; exact portal titles unverified, THIN] · standards per client unnamed in source [?]', via: 'MCP Instance: Adlumin', pre: true,
+    health: 'deprecated', note: 'checklist snapshot v2 superseded — re-pin before use', status: 'queued', ts: '' },
+  { id: 'V9', num: '+1 · V9', name: 'Package-gap diff', sor: 'sold package vs. deployed stack — the risk-register feed · no vendor ships this — the MSP’s own cross-sell analysis', via: 'cross-source diff (N-central inventory × agreement)', pre: false,
+    health: 'ok', note: 'managed EDR sold; 9 of 61 devices missing agent → feeds register R2', status: 'queued', ts: '', wobbly: true },
+  { id: 'V15', num: '+2 · V15', name: 'N-able Harness Trend Report', sor: 'businesses like yours — cohort-matched: UK accountancy · ~50 staff · North of England · agent web sweep, non-system source [A — proposed product surface, Beth 2026-07-31]', via: 'web · renders Estimated/Unverified ALWAYS', pre: false,
+    health: 'ok', note: 'top 3 UK-accountancy trends → Business Priorities & Goals', status: 'queued', ts: '', trends: true }
+];
+
+function rowById(id) { return RUN_ROWS.find(r => r.id === id); }
+
+/* ---------- run_audit-style feed ---------- */
+function feed(ts, txt, kind) {
+  RUN.feed.push({ ts: ts, txt: txt, kind: kind || 'sys' });
+  const box = document.getElementById('audit-feed');
+  if (box) {
+    const div = document.createElement('div');
+    div.className = 'audit-row kind-' + (kind || 'sys');
+    div.innerHTML = '<span class="ats">' + ts + '</span><span>' + txt + '</span>';
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+}
+
+function setRow(id, status, ts) {
+  const r = rowById(id);
+  r.status = status;
+  if (ts) r.ts = ts;
+  const cell = document.getElementById('rstat-' + id);
+  if (cell) { cell.outerHTML = statusPill(r); }
+  const tsCell = document.getElementById('rts-' + id);
+  if (tsCell) { tsCell.textContent = r.ts; }
+  const tr = document.getElementById('run-row-' + id);
+  if (tr) { tr.classList.toggle('done-row', r.status === 'done' || r.status === 'partial'); }
+}
+
+function statusPill(r) {
+  const map = {
+    queued:   ['queued', 'queued'],
+    pulling:  ['pulling', '<span class="spin" aria-hidden="true"></span> pulling'],
+    done:     ['done', '✓ done'],
+    error:    ['error', '✕ ' + (r.extra === 'reauth' ? 'reauth needed' : 'error')],
+    partial:  ['partial', '△ partial — flagged'],
+    declined: ['declined', '⊘ declined — skipped'],
+    waiting:  ['waiting', '⏸ awaiting approval']
+  };
+  const m = map[r.status] || map.queued;
+  return '<span class="rstat ' + m[0] + '" id="rstat-' + r.id + '">' + m[1] + '</span>';
+}
+
+function setRunChip() {
+  const chip = document.getElementById('run-status-chip');
+  if (!chip) return;
+  const map = {
+    idle: ['', 'idle — run not started'],
+    running: ['running', 'run in progress · run_audit polling (no token streaming) {S6}'],
+    paused: ['paused', 'RUN PAUSED — approval gate awaits human signal'],
+    complete: ['complete', runSummary()]
+  };
+  const m = map[RUN.status];
+  chip.className = 'run-status-chip ' + m[0];
+  chip.textContent = m[1];
+}
+
+function runSummary() {
+  let done = 0, partial = 0, parked = 0, declined = 0;
+  RUN_ROWS.forEach(r => {
+    if (r.status === 'done') done++;
+    else if (r.status === 'partial') partial++;
+    else if (r.status === 'error') parked++;
+    else if (r.status === 'declined') declined++;
+  });
+  let s = 'run complete · ' + done + ' done';
+  if (partial) s += ' · ' + partial + ' partial';
+  if (parked) s += ' · ' + parked + ' parked (reauth needed)';
+  if (declined) s += ' · ' + declined + ' declined';
+  return s;
+}
+
+/* ---------- the pre-scripted run (staged JS state; timestamps SEED) ---------- */
+const SCRIPT = [
+  { d: 400,  f: () => { feed('09:14:02', 'run started · Prep-Assemble batch · runbook grammar built for flat coworkers [D]; the QBR-specific runbook is NOT built {G3-3} — this sequence is choreography', 'sys'); } },
+  { d: 600,  f: () => { setRow('V1', 'pulling', '09:14:04'); feed('09:14:04', 'V1 Warranty/EOL — pull started via MCP Instance: N-central (pre-connected [A])', 'sys'); } },
+  { d: 1100, f: () => { setRow('V1', 'done', '09:14:09'); feed('09:14:09', 'V1 done — artifact: warranty_eol_snapshot.json · 7 past warranty, 3 EOL (SEED)', 'done'); } },
+  { d: 500,  f: () => { setRow('V2', 'pulling', '09:14:10'); feed('09:14:10', 'V2 License utilization — pull started via MCP Instance: M365', 'sys'); } },
+  { d: 800,  f: () => { feed('09:14:13', 'V2 — auth expired on M365 instance → token auto-rotated, no human action needed [R — Will\'s board: token-rotation sticky]', 'error'); } },
+  { d: 1100, f: () => { setRow('V2', 'done', '09:14:18'); feed('09:14:18', 'V2 done — artifact: license_dormancy.json · 6 dormant licenses (SEED)', 'done'); } },
+  { d: 500,  f: () => { setRow('V3', 'pulling', '09:14:19'); feed('09:14:19', 'V3 User/staff reconcile — pull started · IdP directory read OK', 'sys'); } },
+  { d: 700,  f: () => { feed('09:14:20', 'V3 — operator\'s custom HR-roster MCP server: URL blocked — allowlisted MCP servers only [R — Will\'s board: "potentially whitelisted MCPs only"] · falling back to HR roster file cross-check', 'error'); } },
+  { d: 800,  f: () => {
+      RUN.status = 'paused'; setRunChip();
+      setRow('V3', 'waiting', '09:14:21');
+      feed('09:14:21', 'RUN PAUSED — Coworker requests approval: HR roster cross-check touches employee PII. Awaiting human signal (approval gate, run_audit) {S6}', 'gate');
+      const slot = document.getElementById('approval-slot');
+      if (slot) slot.innerHTML = approvalCardHTML();
+    } },
+  /* — resumes via approveGate()/declineGate() — index APPROVAL_RESUME_IDX continues here — */
+  { d: 600,  f: () => { setRow('V4', 'pulling', '09:15:09'); feed('09:15:09', 'V4 Ticket volume + SLA — pull started via MCP Instance: Halo PSA', 'sys'); } },
+  { d: 900,  f: () => { setRow('V4', 'error', '09:15:12'); feed('09:15:12', 'V4 ERROR — Halo PSA instance credentials expired: reauth needed [R — Will\'s error grammar]. Run continues; row parked until a human re-authenticates.', 'error'); const b = document.getElementById('reauth-inline'); if (b) b.style.display = 'inline-flex'; } },
+  { d: 600,  f: () => { setRow('V5', 'pulling', '09:15:14'); feed('09:15:14', 'V5 Patch + backup — pull started via MCP Instances: N-central, Cove (pre-connected [A])', 'sys'); } },
+  { d: 1200, f: () => { setRow('V5', 'done', '09:15:23'); feed('09:15:23', 'V5 done — artifacts: patch_status.json, cove_job_log.json, restore_test_log.json · note: restore test RAN; restorability NOT verified — "ran" ≠ "verified restorable" [R] · Cove Recovery Testing boot-verification screenshot [CS: VERIFIED — docs] = the client-legible restore evidence [CS: LOW — community recollection]', 'done'); } },
+  { d: 500,  f: () => { setRow('V6', 'pulling', '09:15:25'); feed('09:15:25', 'V6 Phish-sim + training — pull started via MCP Instance: phish-sim', 'sys'); } },
+  { d: 900,  f: () => { setRow('V6', 'partial', '09:15:30'); feed('09:15:30', 'V6 ERROR — phish-sim platform endpoint down [R — Will\'s error grammar]. Row completes PARTIAL (period truncated) and stays flagged — no silent retry.', 'error'); } },
+  { d: 600,  f: () => { setRow('V7', 'pulling', '09:15:32'); feed('09:15:32', 'V7 Tenant config vs. baseline — pull started via MCP Instance: Adlumin (pre-connected [A]) · baseline_source: tenant_configured [D — built, in code]', 'sys'); } },
+  { d: 1100, f: () => { setRow('V7', 'done', '09:15:41'); feed('09:15:41', 'V7 done — artifact: adlumin_health_vs_baseline.json · 3 drifts from MSP-authored baseline (the baseline is judgment, not data)', 'done'); } },
+  { d: 500,  f: () => { setRow('V8', 'pulling', '09:15:42'); feed('09:15:42', 'V8 Compliance checklist — pull started via MCP Instance: Adlumin · reference_health: deprecated — snapshot v2 superseded, re-pin before use (FR-037 grammar, spec-only [D])', 'sys'); } },
+  { d: 1300, f: () => { setRow('V8', 'done', '09:15:55'); feed('09:15:55', 'V8 done — artifact: compliance_checklist_v2.json · which standards apply per client is unnamed in source [?]', 'done'); } },
+  { d: 500,  f: () => { setRow('V9', 'pulling', '09:15:57'); feed('09:15:57', 'V9 Package-gap diff — cross-source diff started: sold package vs. deployed stack [WOBBLY — single speaker, unnumbered by the blueprint]', 'sys'); } },
+  { d: 1300, f: () => { setRow('V9', 'done', '09:16:10'); feed('09:16:10', 'V9 done — artifact: package_gap_diff.json · managed EDR sold, 9 of 61 devices missing agent → feeds register R2 (SEED)', 'done'); } },
+  { d: 500,  f: () => { setRow('V15', 'pulling', '09:16:12'); feed('09:16:12', 'V15 N-able Harness Trend Report — agent web sweep on client public industry context [A — proposed product surface] · non-system source: output renders Estimated/Unverified ALWAYS', 'sys'); } },
+  { d: 2200, f: () => { setRow('V15', 'done', '09:16:39'); feed('09:16:39', 'V15 done — artifact: industry_trends.md · 3 UK-accountancy discussion points → Business Priorities & Goals (content SEED — invented; the sweep itself: [CS: VERIFIED as design conversation, NOT observed practice])', 'done'); } },
+  { d: 600,  f: () => { finishRun(); } }
+];
+const APPROVAL_PAUSE_IDX = 9; /* SCRIPT[8] pauses; resume continues from index 9 */
+
+function advance() {
+  if (RUN.status !== 'running') return;
+  const s = SCRIPT[RUN.idx];
+  if (!s) { return; }
+  RUN.idx++;
+  RUN.timer = setTimeout(() => { s.f(); advance(); }, s.d);
+}
+
+function startRun() {
+  if (RUN.status !== 'idle') return;
+  RUN.status = 'running';
+  setRunChip();
+  const btn = document.getElementById('run-start');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="ico">' + ICON.zap + '</span> run in progress…'; }
+  advance();
+}
+
+function approvalCardHTML() {
+  return '<div class="approval-card" role="alertdialog" aria-labelledby="approval-title">' +
+    '<h3 id="approval-title"><span class="ico" style="color:var(--medium);">' + ICON.lock + '</span> Coworker requests approval: HR roster cross-check touches employee PII</h3>' +
+    '<p>Pull 3 needs to read the Dibbler &amp; Sons HR roster to reconcile leavers against directory accounts. That file contains employee personal data. The run is paused until you signal — the Coworker does not decide this. <span class="chip cs-d">approval gate = built ACP grammar for flat coworkers [D] {S6}</span></p>' +
+    '<div class="acts">' +
+    '<button type="button" class="btn primary" onclick="approveGate()"><span class="ico">' + ICON.check + '</span> Approve — proceed with cross-check</button>' +
+    '<button type="button" class="btn danger" onclick="declineGate()"><span class="ico">' + ICON.x + '</span> Decline — skip this pull</button>' +
+    '</div></div>';
+}
+
+function approveGate() {
+  RUN.approval = 'approved';
+  feed('09:15:02', 'HUMAN SIGNAL — approval granted by J. Garlick (operator): HR roster cross-check may proceed. Signal recorded in run_audit.', 'human');
+  const slot = document.getElementById('approval-slot');
+  if (slot) slot.innerHTML = '<div class="approval-resolved">✓ approval granted — J. Garlick · 09:15:02 · the human signal is the record, not a formality (SEED timestamps)</div>';
+  setRow('V3', 'pulling', '09:15:03');
+  RUN.status = 'running'; setRunChip();
+  RUN.timer = setTimeout(() => {
+    setRow('V3', 'done', '09:15:07');
+    feed('09:15:07', 'V3 done — artifact: staff_reconcile.json · 2 leaver accounts possibly still enabled — lands Unverified; needs manual confirm (SEED)', 'done');
+    advance();
+  }, 1100);
+}
+
+function declineGate() {
+  RUN.approval = 'declined';
+  feed('09:15:02', 'HUMAN SIGNAL — approval DECLINED by J. Garlick (operator): HR roster not touched. Pull 3 skipped; roster reconcile stays manual; its register row remains Unverified.', 'human');
+  const slot = document.getElementById('approval-slot');
+  if (slot) slot.innerHTML = '<div class="approval-resolved">⊘ approval declined — J. Garlick · 09:15:02 · the roster is not read; the gap is carried, not hidden (SEED timestamps)</div>';
+  setRow('V3', 'declined', '09:15:02');
+  RUN.status = 'running'; setRunChip();
+  advance();
+}
+
+function finishRun() {
+  RUN.status = 'complete';
+  setRunChip();
+  feed('09:16:41', runSummary() + ' · timestamps invented — SEED DATA 2026-07-31', 'sys');
+  if (RUN.halo === 'expired') {
+    feed('09:16:41', 'V4 still parked: Halo PSA reauth needed — open the reauth flow from the row to resume the pull.', 'gate');
+  }
+  const btn = document.getElementById('run-start');
+  if (btn) { btn.innerHTML = '<span class="ico">' + ICON.check + '</span> run complete'; }
+}
+
+/* ---------- Halo reauth — the ONE full interactive flow ---------- */
+let reauthLastFocus = null;
+function openReauth() {
+  reauthLastFocus = document.activeElement;
+  document.getElementById('reauth-backdrop').classList.add('open');
+  document.getElementById('reauth-test').focus();
+}
+function testConnection() {
+  const btn = document.getElementById('reauth-test');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin" aria-hidden="true"></span> testing…';
+  setTimeout(() => {
+    document.getElementById('test-echo').classList.add('show');
+    document.getElementById('reauth-save').disabled = false;
+    document.getElementById('reauth-save').title = '';
+    btn.innerHTML = '✓ tested';
+  }, 900);
+}
+function closeReauth(saved) {
+  document.getElementById('reauth-backdrop').classList.remove('open');
+  if (reauthLastFocus) reauthLastFocus.focus();
+  if (saved && RUN.halo === 'expired') {
+    RUN.halo = 'authed';
+    feed('09:18:04', 'HUMAN SIGNAL — Halo PSA MCP Instance re-authenticated by J. Garlick · Test Connection echo: "we can see 96 tickets across 4 queues" {S3}', 'human');
+    setRow('V4', 'pulling', '09:18:06');
+    const b = document.getElementById('reauth-inline');
+    if (b) b.style.display = 'none';
+    setTimeout(() => {
+      setRow('V4', 'done', '09:18:15');
+      feed('09:18:15', 'V4 done — artifact: halo_tickets_sla.json · 96 tickets, 91 within agreed response times (SEED) · pull resumed after reauth', 'done');
+      if (RUN.status === 'complete') { setRunChip(); feed('09:18:15', runSummary() + ' — summary recomputed after reauth', 'sys'); }
+    }, 1400);
+  }
+}
+
+/* =========================================================
+   VIEWS — hi-fi page-as-function pattern: views.* + setView()
+   ========================================================= */
+const views = {};
+
+/* =========================================================
+   VIEW ① — RUN: batch-pull execution feed
+   ========================================================= */
+views.run = () => {
+  const rowsHTML = RUN_ROWS.map(r => {
+    const clickable = (r.status === 'done' || r.status === 'partial');
+    const chips = [];
+    if (r.pre) chips.push('<span class="chip cs-a wrap">pre-connected [A] — assumes N-able MCP servers ship with instances pre-authed (open question, J. Scally; U2: Server ≠ Instance)</span>');
+    if (r.wobbly) chips.push('<span class="chip wobbly">unnumbered by the blueprint · [WOBBLY — single speaker]</span>');
+    if (r.trends) { chips.push('<span class="chip cs">Estimated/Unverified — web-gathered, always</span>'); chips.push('<span class="chip cs-a wrap">[A — proposed product surface, Beth 2026-07-31]</span>'); }
+    if (r.extra === 'auth-rotated') chips.push('<span class="badge conn-ok">auth expired → auto-rotated [R — Will]</span>');
+    if (r.extra === 'url-blocked') chips.push('<span class="badge conn-err">custom MCP: URL blocked</span>');
+    if (r.extra === 'reauth' && r.status === 'error') {
+      chips.push('<button type="button" class="btn" id="reauth-inline" onclick="openReauth()" style="display:inline-flex;"><span class="ico">' + ICON.plug + '</span> Reauthenticate Halo PSA</button>');
+    } else if (r.extra === 'reauth') {
+      chips.push('<button type="button" class="btn" id="reauth-inline" onclick="openReauth()" style="display:none;"><span class="ico">' + ICON.plug + '</span> Reauthenticate Halo PSA</button>');
+    }
+    return '<tr id="run-row-' + r.id + '" class="' + (clickable ? 'done-row' : '') + '" ' +
+      (clickable ? 'tabindex="0" role="button" aria-label="Open ' + r.name + ' result on Prep Board" ' : '') +
+      'data-result="result-' + r.id + '" onclick="runRowClick(\'' + r.id + '\')" onkeydown="runRowKey(event, \'' + r.id + '\')">' +
+      '<td><span class="pullname">' + r.num + ' · ' + r.name + '</span>' +
+      '<span class="pullsrc">' + r.sor + ' · ' + r.via + '</span>' +
+      (chips.length ? '<span class="rowchips">' + chips.join('') + '</span>' : '') +
+      '</td>' +
+      '<td>' + statusPill(r) + '</td>' +
+      '<td class="ts" id="rts-' + r.id + '">' + (r.ts || '—') + '</td>' +
+      '</tr>';
+  }).join('');
+
+  const feedHTML = RUN.feed.map(f =>
+    '<div class="audit-row kind-' + f.kind + '"><span class="ats">' + f.ts + '</span><span>' + f.txt + '</span></div>'
+  ).join('');
+
+  let approvalHTML = '';
+  if (RUN.status === 'paused') approvalHTML = approvalCardHTML();
+  else if (RUN.approval === 'approved') approvalHTML = '<div class="approval-resolved">✓ approval granted — J. Garlick · 09:15:02 · the human signal is the record, not a formality (SEED timestamps)</div>';
+  else if (RUN.approval === 'declined') approvalHTML = '<div class="approval-resolved">⊘ approval declined — J. Garlick · 09:15:02 · the roster is not read; the gap is carried, not hidden (SEED timestamps)</div>';
+
+  const startLabel = RUN.status === 'idle'
+    ? '<span class="ico">' + ICON.play + '</span> Start Prep-Assemble run'
+    : (RUN.status === 'complete' ? '<span class="ico">' + ICON.check + '</span> run complete' : '<span class="ico">' + ICON.zap + '</span> run in progress…');
+
+  return `
+  <div class="view" aria-label="Run — batch pull execution">
+    <h1>① Run — Prep-Assemble batch</h1>
+    <p class="sub">The QBR Advisor Coworker executes all 10 rows — 8 pulls + V9 package-gap diff + V15 industry-trends sweep — as ONE run. You trigger it, watch the feed, answer the approval gate, then judge on the Prep Board. <span class="chip seed">SEED DATA — invented 2026-07-31 (all timestamps + counts)</span></p>
+
+    <div class="premise">
+      <strong>SIM PREMISE v2</strong> <span class="chip cs-a">[A — the Q2 mechanism hypothesis, tested-not-found]</span><br>
+      The Coworker takes the <em>technician's</em> pull labor: in the n=1 evidence, the Head of Technical Overview does all 8 pulls, pulled off paying service-desk work for the whole batch — and the delivery lead's role is the Judge step, the one moment with no tool at all. This run puts a tool in the technician slot and keeps the human in the judge slot. The evidenced division of labor is preserved — but whether the operator <em>wants</em> this mechanism (vs. only the destination) has never been studied. That is the Q2 question this sim exists to field. Not a finding.
+    </div>
+
+    <div class="run-head">
+      <div class="grow">
+        <button type="button" class="btn primary" id="run-start" onclick="startRun()" ${RUN.status !== 'idle' ? 'disabled' : ''}>${startLabel}</button>
+      </div>
+      <span class="run-status-chip" id="run-status-chip"></span>
+    </div>
+
+    <div class="run-grid">
+      <apx-card no-pad>
+        <h3 slot="header-title">Batch — 10 rows, one run</h3>
+        <span slot="header-aside" class="chip cs-d">run_audit polling, no token streaming — grammar built for flat coworkers [D] {S6}</span>
+        <table class="run-table" aria-label="Batch pull rows">
+          <thead><tr><th scope="col">Pull · source of record</th><th scope="col">Status</th><th scope="col">Timestamp</th></tr></thead>
+          <tbody>${rowsHTML}</tbody>
+        </table>
+      </apx-card>
+
+      <div>
+        <apx-card>
+          <h3 slot="header-title">run_audit — sequenced artifact feed</h3>
+          <span slot="header-aside" class="chip seed">SEED timestamps</span>
+          <div class="audit-feed" id="audit-feed" aria-live="polite" aria-label="Run audit feed">
+            ${feedHTML || '<div class="audit-row"><span class="ats">—</span><span>feed empty — start the run</span></div>'}
+          </div>
+        </apx-card>
+        <div id="approval-slot">${approvalHTML}</div>
+        <p class="section-note" style="margin-top:10px;">error grammar on this run [R — Will Mincher FigJam]: <strong>reauth needed</strong> (Halo — full flow, the one exercised journey) · <strong>endpoint down</strong> (phish-sim — partial, stays flagged) · <strong>auth expired → auto-rotated</strong> (M365) · <strong>URL blocked</strong> (custom HR-roster MCP server, allowlist). Completed rows are clickable → their result on the Prep Board.</p>
+      </div>
+    </div>
+  </div>`;
+};
+
+function runRowClick(id) {
+  const r = rowById(id);
+  if (!(r.status === 'done' || r.status === 'partial')) return;
+  STATE.pendingHighlight = 'result-' + id;
+  setView('board');
+}
+function runRowKey(e, id) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); runRowClick(id); }
+}
+
+/* =========================================================
+   micro-charts — token colors, no libraries
+   ========================================================= */
+function miniSparkline(values, labels, w, h) {
+  w = w || 420; h = h || 120;
+  const pad = 22;
+  const max = Math.max.apply(null, values);
+  const min = Math.min.apply(null, values);
+  const span = (max - min) || 1;
+  const step = (w - pad * 2) / (values.length - 1);
+  const pts = values.map((v, i) => {
+    const x = pad + i * step;
+    const y = h - pad - ((v - min) / span) * (h - pad * 2 - 10);
+    return [x, y];
+  });
+  const poly = pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const area = 'M' + pts[0][0] + ',' + (h - pad) + ' L' + pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L') + ' L' + pts[pts.length - 1][0] + ',' + (h - pad) + ' Z';
+  const dots = pts.map((p, i) =>
+    '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="var(--brand)"></circle>' +
+    '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] - 8).toFixed(1) + '" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--text-tertiary)">' + values[i] + '</text>' +
+    '<text x="' + p[0].toFixed(1) + '" y="' + (h - 6) + '" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--text-muted)">' + labels[i] + '</text>'
+  ).join('');
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Trend: ' + values.join(', ') + '">' +
+    '<path d="' + area + '" fill="var(--brand-soft)"></path>' +
+    '<polyline points="' + poly + '" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>' +
+    dots + '</svg>';
+}
+
+function miniBarChart(values, labels, w, h) {
+  w = w || 420; h = h || 120;
+  const pad = 22;
+  const max = Math.max.apply(null, values);
+  const slot = (w - pad * 2) / values.length;
+  const bw = slot - 10;
+  const bars = values.map((v, i) => {
+    const x = pad + i * slot + 5;
+    const bh = (v / max) * (h - pad * 2 - 12);
+    const y = h - pad - bh;
+    return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + bh.toFixed(1) + '" rx="3" fill="var(--brand)" opacity="0.85"></rect>' +
+      '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (y - 5).toFixed(1) + '" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--text-tertiary)">' + v + '</text>' +
+      '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (h - 6) + '" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--text-muted)">' + labels[i] + '</text>';
+  }).join('');
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Bar chart: ' + values.join(', ') + '">' +
+    '<line x1="' + pad + '" y1="' + (h - pad) + '" x2="' + (w - pad) + '" y2="' + (h - pad) + '" stroke="var(--border-strong)" stroke-width="1"></line>' +
+    bars + '</svg>';
+}
+
+/* =========================================================
+   VIEW ② — PREP BOARD / JUDGE
+   ========================================================= */
+views.board = () => {
+  const judged = STATE.judgeFilled;
+  const resultCards = RUN_ROWS.filter(r => !r.trends).map(r => {
+    const isDiff = r.wobbly;
+    const chips = [];
+    chips.push('<span class="badge ' + r.health + '">reference_health: ' + r.health + '</span>');
+    if (r.pre) chips.push('<span class="chip cs-a wrap">pre-connected [A] — assumes N-able MCP servers ship with instances pre-authed (open question, J. Scally)</span>');
+    if (r.extra === 'reauth' && RUN.halo === 'expired') chips.push('<span class="badge conn-err">connection: reauth needed</span>');
+    if (r.extra === 'reauth' && RUN.halo === 'authed') chips.push('<span class="badge conn-ok">connection: active (reauthed)</span>');
+    if (r.extra === 'endpoint-down') chips.push('<span class="badge conn-err">connection: endpoint down</span>');
+    if (r.extra === 'auth-rotated') chips.push('<span class="badge conn-ok">auth expired → auto-rotated [R — Will]</span>');
+    if (r.extra === 'url-blocked') chips.push('<span class="badge conn-err">custom MCP: URL blocked (allowlist)</span>');
+    if (isDiff) chips.push('<span class="chip wobbly">unnumbered by the blueprint · [WOBBLY — single speaker]</span>');
+    const state = r.status === 'done' ? '✓ pulled ' + r.ts
+      : r.status === 'partial' ? '△ partial ' + r.ts
+      : r.status === 'declined' ? '⊘ declined — pull skipped by human signal'
+      : r.status === 'error' ? '✕ parked — reauth needed'
+      : '… not pulled yet (run view)';
+    return '<div class="card result-card' + (isDiff ? ' diff-card' : '') + '" id="result-' + r.id + '">' +
+      '<span class="num">' + r.num + (isDiff ? ' — NOT one of the 8' : '') + '</span>' +
+      '<h3>' + r.name + '</h3>' +
+      '<p class="sor">' + r.sor + '</p>' +
+      '<div class="chips">' + chips.join('') + '</div>' +
+      '<p class="seedline">' + r.note + ' <span class="chip seed">SEED</span></p>' +
+      '<p class="section-note" style="margin:6px 0 0;">' + state + '</p>' +
+      '</div>';
+  }).join('');
+
+  return `
+  <div class="view" aria-label="Prep Board and Judge queue">
+    <h1>② Prep Board — Dibbler &amp; Sons EBR (6-monthly)</h1>
+    <p class="sub">Post-run: results land here; the judgment does not. Operator: J. Garlick, delivery lead, SuperN-able Shop · client: ~48 staff, Leeds + York, 61 managed endpoints <span class="chip seed">SEED DATA — invented 2026-07-31</span></p>
+
+    <div class="premise-compact"><strong>Premise v2 [A]:</strong> the Coworker pulled; you judge. AI in the technician slot, human in the judge slot — a hypothesis for the Q2 operator study, not a finding. Full statement on the Run view.</div>
+
+    <!-- JUDGE QUEUE — prime position, doctrine unchanged from v1 -->
+    <div class="judge" aria-label="Judge queue">
+      <header>
+        <h2>Judge queue — gap → business consequence → roadmap priority</h2>
+        <span class="chip cs">[R — blueprint: "the one moment with no tool at all"]</span>
+        <span class="caption">the one moment with no tool — this is where you come in</span>
+      </header>
+
+      <div class="judge-row ${judged ? 'filled' : ''}" id="judge-row-1">
+        <div>11 staff accounts without MFA <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+          <span class="gap-src">pulled: Identity &amp; MFA · metric name: MFA coverage (Northsignal, MIT, attribution retained) · <a href="#" class="reglink" onclick="gotoRegister('reg-row-mfa'); return false;">register row →</a></span>
+        </div>
+        <div class="judge-field ${judged ? 'filled' : ''}" id="judge-1-conseq"><span class="label">business consequence</span>${judged ? 'One phished password currently equals full mailbox access for client-money correspondence.' : '<span class="val">— empty · only the human fills this —</span>'}</div>
+        <div class="judge-field ${judged ? 'filled' : ''}" id="judge-1-prio"><span class="label">roadmap priority</span>${judged ? 'Next 30 days — before self-assessment season.' : '<span class="val">— empty —</span>'}</div>
+        <div><button type="button" class="btn primary" id="judge-1-btn" onclick="fillJudgeRow()" ${judged ? 'disabled' : ''}>${judged ? 'Judged — by the human' : 'Judge this gap (demo)'}</button></div>
+        <span class="attr">filled by J. Garlick (operator) · 2026-07-31 · sim demo — this judgment is the human's, not the Coworker's</span>
+      </div>
+
+      <div class="judge-row">
+        <div>Restore test "ran" — restorability not verified <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+          <span class="gap-src">pulled: Backup &amp; recovery · "ran" ≠ "verified restorable" [R] · <a href="#" class="reglink" onclick="gotoRegister('gate-row-1'); return false;">register row →</a></span>
+        </div>
+        <div class="judge-field"><span class="label">business consequence</span>— empty · only the human fills this —</div>
+        <div class="judge-field"><span class="label">roadmap priority</span>— empty —</div>
+        <div><button type="button" class="btn" disabled title="painted — one demo row">Judge this gap</button></div>
+      </div>
+
+      <div class="judge-row">
+        <div>Sold package includes managed EDR; 9 of 61 devices missing <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+          <span class="gap-src">pulled: Package-gap diff (V9) · the risk-register feed [WOBBLY — single speaker] · <a href="#" class="reglink" onclick="gotoRegister('reg-row-edr'); return false;">register row →</a></span>
+        </div>
+        <div class="judge-field"><span class="label">business consequence</span>— empty · only the human fills this —</div>
+        <div class="judge-field"><span class="label">roadmap priority</span>— empty —</div>
+        <div><button type="button" class="btn" disabled title="painted — one demo row">Judge this gap</button></div>
+      </div>
+    </div>
+
+    <!-- HEALTH SNAPSHOT + MICRO-CHARTS -->
+    <h2>Client health snapshot <span class="chip seed">SEED DATA — invented 2026-07-31</span></h2>
+    <p class="section-note">score shape: etop-am verbatim weightings (ISC) · row + metric names: Northsignal Labs template pack (MIT, attribution retained) · mapping those names onto N-central/Cove/Adlumin territory is our move, not the sources' [A] · every value invented</p>
+    <div class="health-row">
+      <div class="card health-card"><h3>Standards score</h3><div class="score">71</div><div class="wts">weights 20/30/20/15/15 · etop-am (ISC)</div></div>
+      <div class="card health-card"><h3>Risk score</h3><div class="score">63</div><div class="wts">weights 30/25/25/20 · etop-am (ISC)</div></div>
+      <div class="card health-card"><h3>Experience score</h3><div class="score">82</div><div class="wts">weights 25/20/25/15/15 · etop-am (ISC)</div></div>
+    </div>
+    <div class="chart-row">
+      <div class="card chart-card">
+        <div class="chart-title"><h3>Ticket volume — monthly, Jan–Jun</h3><span class="chip src">Halo PSA</span><span class="chip seed">SEED</span></div>
+        ${miniSparkline([14, 18, 15, 22, 13, 14], ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'])}
+        <p class="section-note" style="margin:6px 0 0;">96 total · the April spike is the year-end run — pattern, not problem${RUN.halo === 'expired' ? ' · pull currently parked (reauth needed) — values from last successful pull, 19 days stale' : ''}</p>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-title"><h3>Backup job success — % by month</h3><span class="chip src">Cove</span><span class="chip seed">SEED</span></div>
+        ${miniBarChart([96, 97, 93, 98, 95, 95], ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'])}
+        <p class="section-note" style="margin:6px 0 0;">jobs run ≠ restores verified — the register carries that distinction, the chart cannot</p>
+      </div>
+    </div>
+
+    <!-- V15 TRENDS RESULT CARD -->
+    <div class="trends-card" id="result-V15" aria-label="Industry trends sweep result">
+      <header>
+        <h2 style="margin:0;">V15 · N-able Harness Trend Report</h2>
+        <span class="chip cs-a wrap">[A — proposed product surface, Beth 2026-07-31]</span>
+        <span class="chip cs wrap">[CS: VERIFIED as design conversation, NOT observed practice — Chris Dunlop proposal, Stefanie endorsing]</span>
+        <span class="chip seed">trend content SEED — invented 2026-07-31</span>
+      </header>
+      <p class="section-note" style="margin:-2px 0 10px;">businesses like yours — cohort-matched: UK accountancy · ~50 staff · North of England</p>
+      <div class="trend">
+        <h4>1 · Making Tax Digital deadlines are forcing client digitisation</h4>
+        <p>MTD for Income Tax phases pull sole traders and landlords into quarterly digital filing — Dibbler &amp; Sons' client base will need records digitised, and the practice's own systems become the bottleneck or the differentiator.</p>
+        <div class="tchips"><span class="chip cs">Estimated/Unverified — web-gathered, always</span><span class="chip src">trends sweep</span></div>
+      </div>
+      <div class="trend">
+        <h4>2 · AI adoption in practice workflows raises the confidentiality bar</h4>
+        <p>Accountancy firms are adopting AI drafting and bookkeeping tools; clients and the ICAEW are asking harder questions about where client data goes. Firms that can evidence their controls win the nervous clients other firms lose.</p>
+        <div class="tchips"><span class="chip cs">Estimated/Unverified — web-gathered, always</span><span class="chip src">trends sweep</span></div>
+      </div>
+      <div class="trend">
+        <h4>3 · Cyber-insurance renewals now demand documented controls</h4>
+        <p>Insurers increasingly require documented MFA, endpoint coverage, and tested backups at renewal. What the practice can prove matters as much as what it runs.</p>
+        <div class="tchips"><span class="chip cs">Estimated/Unverified — web-gathered, always</span><span class="chip src">trends sweep</span></div>
+      </div>
+      <p class="section-note" style="margin:8px 0 0;">non-system source — feeds Business Priorities &amp; Goals in the report (brains-work discussion points, never platform telemetry)</p>
+    </div>
+
+    <!-- PULL RESULT CARDS -->
+    <h2>Pull results — 8 pulls + the V9 diff</h2>
+    <p class="section-note">one blueprint stage, eight separate backstage pulls, not one step [R] · each arrives via an MCP Instance (account-scoped) — "we're connecting to instances of MCPs, not a singular MCP" [D — U2 locked] · reference_health is spec-004 FR-037 UI grammar, spec-complete, 0/40 built — shown, not claimed running [D]</p>
+    <div class="result-grid">${resultCards}</div>
+  </div>`;
+};
+
+function fillJudgeRow() {
+  STATE.judgeFilled = true;
+  const row = document.getElementById('judge-row-1');
+  if (!row) return;
+  const c = document.getElementById('judge-1-conseq');
+  const p = document.getElementById('judge-1-prio');
+  c.classList.add('filled');
+  p.classList.add('filled');
+  c.innerHTML = '<span class="label">business consequence</span>One phished password currently equals full mailbox access for client-money correspondence.';
+  p.innerHTML = '<span class="label">roadmap priority</span>Next 30 days — before self-assessment season.';
+  row.classList.add('filled');
+  const btn = document.getElementById('judge-1-btn');
+  btn.disabled = true;
+  btn.textContent = 'Judged — by the human';
+}
+
+function gotoRegister(id) {
+  STATE.pendingHighlight = id;
+  setView('working');
+}
+
+/* =========================================================
+   VIEW ③ — WORKING DOCUMENT (internal artifact, E6)
+   ========================================================= */
+views.working = () => {
+  const g1 = STATE.gates.g1, g2 = STATE.gates.g2;
+  const gateRow = (n, cleared, body, src, clearedNote) => `
+      <div class="reg-row ${cleared ? 'cleared-attr' : 'blocked'}" id="gate-row-${n}">
+        <div>${body}
+          <span class="src">${src}</span>
+        </div>
+        <span class="tier unverified">Unverified</span>
+        <div class="gate-state">
+          <span class="gate-blocked" id="gate-${n}-blocked" ${cleared ? 'style="display:none;"' : ''}>
+            <span class="stamp">⛔ BLOCKED FROM REPORT</span>
+            <button type="button" class="btn primary" onclick="clearGate(${n})">Operator clears</button>
+          </span>
+          <span class="gate-cleared" id="gate-${n}-cleared" ${cleared ? '' : 'style="display:none;"'}>${clearedNote}</span>
+        </div>
+      </div>`;
+
+  return `
+  <div class="view" aria-label="Working Document">
+    <h1>③ Working Document — internal prep artifact</h1>
+    <p class="sub">Candid notes, operator risk judgments, "things that haven't happened yet." This is artifact object 1 of 2 — the client-facing EBR Report is a second object, never a redaction toggle on this one [R].</p>
+
+    <div class="exposure" role="note">
+      <span class="n">This draft documents 6 detected gaps.</span> Volume of detection is volume of exposure — cleared items enter the client-visible record. <span class="chip cs">[R — Must 8, machine-specific concern]</span>
+    </div>
+
+    <!-- RISK REGISTER + CONFIRM GATE -->
+    <div class="register">
+      <header>
+        <h2>Risk register — auto-drafted by QBR Advisor, human-cleared</h2>
+        <span class="chip cs-d wrap">defensibility tier = proposed grammar — not built substrate [D — grep 2026-07-31: zero hits in code; code has baseline_source only]</span>
+        <span class="chip cs wrap">confirm-gate {S4}: block is the default — a passive warning is a fail [R]</span>
+      </header>
+
+      <div class="reg-row cleared-attr" id="reg-row-mfa">
+        <div>11 staff accounts without MFA (Identity &amp; MFA) <span class="chip seed">SEED</span>
+          <span class="src">source: M365/IdP pull (V2) · first-party count</span>
+        </div>
+        <span class="tier measured">Measured</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row cleared-attr" id="reg-row-edr">
+        <div>9 of 61 endpoints missing EDR agent — sold package includes managed EDR <span class="chip seed">SEED</span>
+          <span class="src">source: package-gap diff (V9) vs. N-central inventory [WOBBLY — single speaker]</span>
+        </div>
+        <span class="tier measured">Measured</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row cleared-attr" id="reg-row-patch">
+        <div>Critical patches overdue on 4 devices vs. peer benchmark <span class="chip seed">SEED</span>
+          <span class="src">source: N-central patch status (V5) · benchmark set invented [A]</span>
+        </div>
+        <span class="tier benchmarked">Benchmarked</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row cleared-attr" id="reg-row-phish">
+        <div>Phishing exposure judged elevated from partial sim data (platform endpoint down mid-pull) <span class="chip seed">SEED</span>
+          <span class="src">source: phish-sim pull (V6), interrupted · operator's read, not a measurement</span>
+        </div>
+        <span class="tier estimated">Estimated</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      ${gateRow(1, g1,
+        'Backups presumed restorable — restore verification not completed ("ran" ≠ "verified restorable") <span class="chip seed">SEED</span>',
+        'source: Cove job success + restore-test log (V5)',
+        '✓ cleared by J. Garlick (operator) · 2026-07-31 · Unverified → released to the report under her name')}
+
+      ${gateRow(2, g2,
+        '2 leaver accounts possibly still enabled — HR roster unbound, not yet manually confirmed <span class="chip seed">SEED</span>',
+        'source: AD/IdP vs. HR roster (V3) · reference_health: unbound' + (RUN.approval === 'declined' ? ' · roster cross-check DECLINED at approval gate — pull skipped' : ''),
+        '✓ cleared by J. Garlick (operator) · 2026-07-31 · released — report copy not seeded at Tier 2 (mechanism shown once, on the backup row)')}
+    </div>
+
+    <!-- COWORKER ADMIN CARD — QUARANTINED -->
+    <div class="quarantine">
+      <span class="q-label">ACP admin surface</span>
+      <div class="card coworker-card">
+        <h3>QBR Advisor <span style="font-weight:400;color:var(--text-tertiary);font-size:0.72rem;">Coworker · DEC-006 v1 default · priority 2.90, rank 1 of 5</span></h3>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">
+          <span class="chip timechip wrap">⏱ prep this cycle ≈ 0.4× the self-reported baseline — ratio only; baseline is one echo, n=1, not a stat · SEED DATA — invented 2026-07-31</span>
+          <span class="chip cs-d wrap">time-saved framing = FSN-83143 §5 Coworker-card north star [D]</span>
+        </div>
+      </div>
+      <p class="q-caption">this framing never reaches the client surface → (DIV-004: Must 1 bans time-saved / percentage / graph framing inside client-facing QBR content — resolution owner Beth → Nicole, open [?])</p>
+    </div>
+
+    <!-- CANDID INTERNAL NOTES -->
+    <div class="notes">
+      <h2>Internal notes — candid, never client-visible <span class="chip cs">[Must 6: demonstrably absent from the report object]</span></h2>
+      <div class="note">Third cycle running that Dibbler have deferred the MFA rollout we scoped in January. Don't let C. Dibbler wave it off again — put it first in the decisions list and hold the silence after asking.
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+      <div class="note">The restore test "ran" but nobody opened the restored files. Until someone verifies, we do not know their recovery position — and neither do they. If they ask "are we safe," the honest answer is "we'll know after the verification we're proposing."
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+      <div class="note">S. Bonk (Practice Manager, York office) is the real decision-maker on spend, not the Leeds partners. Route the roadmap conversation through her.
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+      <div class="note">The trends sweep is web-gathered — keep it as conversation fuel in Business Priorities, never present it like our telemetry. If they ask "how do you know," the answer is "we read your industry, and we'd rather discuss than assert."
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+    </div>
+  </div>`;
+};
+
+/* confirm-gate clear — the load-bearing interaction; report content is
+   computed from STATE.gates, so the release is structural, not cosmetic */
+function clearGate(n) {
+  STATE.gates['g' + n] = true;
+  const row = document.getElementById('gate-row-' + n);
+  if (row) {
+    row.classList.remove('blocked');
+    row.classList.add('cleared-attr');
+    document.getElementById('gate-' + n + '-blocked').style.display = 'none';
+    document.getElementById('gate-' + n + '-cleared').style.display = 'inline';
+  }
+}
+
+/* =========================================================
+   VIEW ④ — THE REPORT (E7) — deck-grade, strategic-advisor voice.
+   Section spine = Stefanie's 15-tab template [CS: VERIFIED — EBR Template 1.xlsx]
+   (Agenda + KPIs compressed into Kick Off / scorecard per Amendment 2b).
+   Quality bar = her magic-wand asks [CS: VERIFIED]: populated register ·
+   insights not data · talking points in the love language of the business
+   owner · red/amber/green grade.
+   Only confirm-gate-cleared content renders — computed from STATE.gates.
+   ========================================================= */
+
+function srcChips(list) {
+  return '<div class="rpt-srcline"><span class="lbl">sources — simulated pulls</span>' +
+    list.map(s => '<span class="chip src">' + s + '</span>').join('') +
+    '<span class="chip seed">SEED DATA — invented 2026-07-31</span></div>';
+}
+function talkStrip(quote) {
+  return '<div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">' + quote + '</span></div>';
+}
+function sectionOpen(num, kicker, title) {
+  return '<section class="rpt-section" aria-label="' + kicker + '">' +
+    '<div class="rpt-kicker">Section ' + num + ' · ' + kicker + '</div>' +
+    '<h2>' + title + '</h2><div class="rule"></div>';
+}
+
+views.report = () => {
+  const g1 = STATE.gates.g1, g2 = STATE.gates.g2;
+  const heldCount = (g1 ? 0 : 1) + (g2 ? 0 : 1);
+  /* held-note computed from actual gate state — never a static string (critic pass 2, item 4) */
+  const heldNote = heldCount === 0
+    ? '<p class="rpt-held">All drafted register items have been cleared by a person, with their name on them — nothing remains held at the confirm-gate.</p>'
+    : '<p class="rpt-held">' + heldCount + (heldCount === 1 ? ' item is' : ' items are') + ' held at the confirm-gate and ' + (heldCount === 1 ? 'does not appear' : 'do not appear') + ' in this report. Clearing happens on the Working Document — by a person, with their name on it — not here.</p>';
+
+  const backupRagCell = g1
+    ? '<td>Copies run on all covered systems. The most recent restore exercise ran; <strong>restorability is not yet verified</strong> — we treat your recovery position as unconfirmed until it is, and we have scheduled the verification.</td>'
+    : '<td>Copies run on all covered systems; a restore-verification exercise is being reviewed internally before we report on it.</td>';
+
+  const backupRegisterRow = g1 ? `
+          <tr>
+            <td class="threat">Recovery position unconfirmed — backups run, restorability not verified</td>
+            <td class="rr-note">31 Jul 2026</td>
+            <td><span class="rr-lvl hi">High</span></td>
+            <td>Nightly Cove backup jobs on all covered systems; job success 58 of 61 this period</td>
+            <td>Complete a verified restore exercise — open the restored files, confirm completeness — this quarter</td>
+            <td>Scheduled — window to be agreed today</td>
+            <td><span class="rr-lvl med">Medium</span> once verified</td>
+            <td>SuperN-able Shop (J. Garlick)<br><span class="rr-note">released after operator review — J. Garlick, 2026-07-31 · restorability not yet verified</span></td>
+          </tr>` : '';
+
+  const backupRoadmap = g1 ? '<li>Backup restore verification — the "already known" answer.</li>' : '';
+  const backupBudget = g1 ? `
+          <tr>
+            <td class="rowlead">Backup restore-verification exercise</td>
+            <td class="money">£600 – £900</td>
+            <td>Buys a known recovery position before the season where you cannot afford an unknown one.</td>
+          </tr>` : '';
+  const backupAction = g1 ? `
+          <tr>
+            <td class="rowlead">Book the restore-verification window and confirm the files open</td>
+            <td>SuperN-able Shop</td>
+            <td>30 Sep 2026</td>
+            <td><span class="halo-tail">→ Halo ticket</span></td>
+          </tr>` : '';
+
+  return `
+  <div class="view" aria-label="EBR Report — client-facing artifact">
+    <div class="report-meta">
+      <span class="chip cs-a">artifact object 2 of 2 (E7) — assembled from confirm-gate-cleared Working Document content; never a toggle [R]</span>
+      <span class="chip cs">quality bar: Stefanie's magic-wand asks [CS: VERIFIED as her asks — not as market requirements]</span>
+      <span class="chip">register: "conversation with a side serving of structure" — strategic advisor, not book report</span>
+      <span class="chip cs-d">content audit target: ≥60/40 business-outcome vs. technical-metric sentences {G3-11}</span>
+    </div>
+
+    <article class="report-doc" aria-label="Executive Business Review document">
+
+      <!-- ============ COVER ============ -->
+      <div class="rpt-cover">
+        <div class="eyebrow">Executive Business Review · Prepared for Dibbler &amp; Sons</div>
+        <h1>Dibbler &amp; Sons<br>Chartered Accountants Ltd</h1>
+        <p class="period">January – June 2026 · Six-monthly review</p>
+        <div class="prep-lines">
+          <strong>Prepared by SuperN-able Shop</strong> · Presented by J. Garlick, Delivery Lead<br>
+          Meeting: 14 August 2026, 10:00 · Leeds office<br>
+          Attending: C. Dibbler (Managing Partner) · S. Bonk (Practice Manager, York) · J. Garlick (SuperN-able Shop)<br>
+          Offices covered: Leeds + York · 61 managed devices · ~48 staff
+        </div>
+        <div class="cover-chips">
+          <span class="lbl" style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;align-self:center;">assembled from</span>
+          <span class="chip src">Adlumin</span><span class="chip src">Cove</span><span class="chip src">N-central</span><span class="chip src">Halo PSA</span><span class="chip src">M365</span><span class="chip src">phish-sim</span><span class="chip src">industry-trends sweep</span>
+          <span class="chip seed">simulated — SEED DATA, invented 2026-07-31</span>
+        </div>
+      </div>
+
+      <!-- ============ 1 · MEETING KICK OFF (agenda compressed here) ============ -->
+      ${sectionOpen('01', 'Meeting Kick Off', 'What this review is for')}
+        <p class="rpt-sowhat">Six months ago you asked us for one thing: get the practice through self-assessment season without drama. Everything in this pack is judged against that goal — what protected it, what still threatens it, and what to fund next.</p>
+        <p>We will spend most of today on three decisions, not on charts. The data sits behind every page and we will show any of it on request — but the meeting belongs to what it means, the impact and consequences, and what you choose to do about it.</p>
+        <p><strong>Today's agenda</strong> — scorecard · current climate · risk &amp; security · compliance · your priorities and where your industry is heading · assets · people · roadmap · budget · actions and next steps.</p>
+        ${srcChips(['Halo PSA', 'living documents (register · roadmap · budget)'])}
+        ${talkStrip('Before we open a single chart — has anything changed in the business since January that we should know about?')}
+      </section>
+
+      <!-- ============ 2 · EXECUTIVE SCORECARD — RAG up front ============ -->
+      ${sectionOpen('02', 'Executive Scorecard', 'Five areas, graded red · amber · green')}
+        <p class="rpt-sowhat">Graded the way you would grade a client file: red needs a decision today, amber needs a date, green needs nothing but maintenance. One area is red, and it is the cheapest of the five to fix.</p>
+        <table class="rag-table">
+          <thead><tr><th scope="col">Area</th><th scope="col">Grade</th><th scope="col">What it means for the practice</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="area">Identity &amp; MFA</td>
+              <td><span class="rag red">Red</span></td>
+              <td>11 of 48 staff sign-ins can be opened with a password alone. For a practice holding client money and payroll records, this is the single decision we ask you to make today.</td>
+            </tr>
+            <tr>
+              <td class="area">Endpoint protection</td>
+              <td><span class="rag amber">Amber</span></td>
+              <td>9 of 61 devices are not yet covered by the managed threat detection your agreement already includes — mostly recent starter laptops in York. Closing it needs a maintenance window from you, not new spend.</td>
+            </tr>
+            <tr>
+              <td class="area">Backup &amp; recovery</td>
+              <td><span class="rag amber">Amber</span></td>
+              ${backupRagCell}
+            </tr>
+            <tr>
+              <td class="area">Patching &amp; vulnerability</td>
+              <td><span class="rag amber">Amber</span></td>
+              <td>4 devices are behind on important updates, and they sit in the payroll workflow. Out-of-date machines are the most common way problems get in; scheduling the updates costs an evening.</td>
+            </tr>
+            <tr>
+              <td class="area">IR readiness</td>
+              <td><span class="rag green">Green</span></td>
+              <td>Your incident-response contacts and escalation path were exercised in March and are current. Nothing needed here except keeping it that way.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="rr-note">scorecard rows: Northsignal Labs template pack (MIT, attribution retained) · grades and every value: SEED DATA — invented 2026-07-31</p>
+        ${srcChips(['Adlumin', 'N-central', 'Cove', 'M365', 'phish-sim'])}
+        ${talkStrip('Where would you like this board to be by January — and what is it worth to the practice to be there?')}
+      </section>
+
+      <!-- ============ 3 · CURRENT CLIMATE ============ -->
+      ${sectionOpen('03', 'Current Climate', 'The weather around your practice')}
+        <p class="rpt-sowhat">The people targeting accountancy practices know your calendar as well as you do. The attempts we stopped this period were not random — they were increasingly addressed to your accounts team by name, and they cluster toward the deadlines when your staff are busiest and most likely to click.</p>
+        <p>Over the last six months our monitoring stopped 214 phishing attempts before they reached your staff — a figure from a partially interrupted testing period, so we treat it as a floor, not a ceiling. Your systems stayed available through both the January self-assessment peak and the April year-end run.</p>
+        <p>Day to day, your team raised 96 support requests and 91 were resolved within the response times we agreed. The five that ran longer have been reviewed, and one of them — a recurring printing failure in York — is the reason a root-cause item appears on the roadmap rather than in the ticket queue.</p>
+        ${srcChips(['Adlumin', 'phish-sim', 'Halo PSA'])}
+        ${talkStrip('January is their busy season too. The question is whether your busiest fortnight is also your most exposed one.')}
+      </section>
+
+      <!-- ============ 4 · RISK & SECURITY REVIEW — her register columns ============ -->
+      ${sectionOpen('04', 'Risk &amp; Security Review', 'The register — what we found, what it means, what we do about it')}
+        <p class="rpt-sowhat">One decision on this table removes the highest risk your practice carries into self-assessment season: approving the MFA rollout before January. The rest of the register is sequenced behind it — each line carries its consequence for the practice, its treatment, and its named owner, so nothing here should ever be news twice. This is a working agreement about what we fix and in what order.</p>
+        <div class="rr-wrap">
+          <table class="rr-table">
+            <thead><tr>
+              <th scope="col">Threat / Risk</th><th scope="col">ID Date</th><th scope="col">Risk Level</th><th scope="col">Existing Controls</th><th scope="col">Treatment Plan</th><th scope="col">Progress Status</th><th scope="col">Residual Risk</th><th scope="col">Risk Owner</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td class="threat">Credential compromise — 11 staff accounts protected by password alone</td>
+                <td class="rr-note">31 Jul 2026</td>
+                <td><span class="rr-lvl hi">High</span></td>
+                <td>Password policy; sign-in monitoring; mailbox alerting</td>
+                <td>Second sign-in step (MFA) on all 11 accounts before self-assessment season</td>
+                <td>Proposed — decision requested today</td>
+                <td><span class="rr-lvl low">Low</span> once enrolled</td>
+                <td>C. Dibbler (Managing Partner)</td>
+              </tr>
+              <tr>
+                <td class="threat">Protection gap — 9 of 61 devices without the managed threat detection in your agreement</td>
+                <td class="rr-note">31 Jul 2026</td>
+                <td><span class="rr-lvl hi">High</span></td>
+                <td>Perimeter and mail filtering; the other 52 devices fully covered</td>
+                <td>Deploy agents in one maintenance window; fix the York starter-laptop process so new devices arrive covered</td>
+                <td>Awaiting maintenance window from practice</td>
+                <td><span class="rr-lvl low">Low</span></td>
+                <td>S. Bonk (Practice Manager, York)</td>
+              </tr>
+              <tr>
+                <td class="threat">Unpatched devices in the payroll workflow — 4 behind on critical updates</td>
+                <td class="rr-note">31 Jul 2026</td>
+                <td><span class="rr-lvl med">Medium</span></td>
+                <td>Managed patching on all other devices; compensating monitoring</td>
+                <td>Out-of-hours update window this month</td>
+                <td>Scheduled — date to confirm today</td>
+                <td><span class="rr-lvl low">Low</span></td>
+                <td>SuperN-able Shop (J. Garlick)</td>
+              </tr>
+              <tr>
+                <td class="threat">Elevated phishing exposure in the accounts team — our professional reading of an interrupted testing period</td>
+                <td class="rr-note">31 Jul 2026</td>
+                <td><span class="rr-lvl med">Medium</span></td>
+                <td>Mail filtering; monitoring; prior awareness training (Jan 2026)</td>
+                <td>Short refresher for the accounts team before January; re-run the interrupted test</td>
+                <td>Proposed</td>
+                <td><span class="rr-lvl med">Medium</span> — re-assess after re-test</td>
+                <td>SuperN-able Shop (J. Garlick)</td>
+              </tr>${backupRegisterRow}
+            </tbody>
+          </table>
+        </div>
+        ${heldNote}
+        <p class="rr-note">register columns verbatim from the practice template [CS: VERIFIED — EBR Template 1.xlsx] · every row value: SEED DATA — invented 2026-07-31 · this register documents and treats risk; it makes no other promise</p>
+        ${srcChips(['Adlumin', 'N-central', 'Cove', 'M365', 'phish-sim'])}
+        ${talkStrip('If January goes wrong, what does a day of downtime cost you at your busiest? That number is why this table exists.')}
+      </section>
+
+      <!-- ============ 5 · COMPLIANCY REVIEW ============ -->
+      ${sectionOpen('05', 'Compliancy Review', 'What you can prove, when someone asks')}
+        <p class="rpt-sowhat">Increasingly it is not what the practice runs that matters — it is what the practice can prove. Your insurer's renewal form, a client's due-diligence questionnaire, and a regulator's data-protection query all ask the same thing: show us. Today the honest answer to "is MFA enforced?" is "partially" — and that is the gap we most want closed before anyone asks.</p>
+        <p>Your configuration is checked against the security baseline we wrote for the practice — that baseline is our professional judgment about what a firm holding client financial records should run, reviewed with you annually. Three settings had drifted from it this period; two are already corrected, the third is scheduled with this month's updates.</p>
+        <p>The compliance checklist snapshot we assess against was superseded mid-period; we have re-pinned to the current version, and nothing in the change affects the findings above.</p>
+        ${srcChips(['Adlumin · One-Touch Compliance'])}
+        ${talkStrip('When the renewal form asks "is MFA enforced?", the answer you want to give is "yes — and here’s the evidence." Let’s make that true before renewal, not after.')}
+      </section>
+
+      <!-- ============ 6 · BUSINESS PRIORITIES & GOALS — V15 trends feed here ============ -->
+      ${sectionOpen('06', 'Business Priorities &amp; Goals', 'Where your industry is heading — and where you want to be')}
+        <p class="rpt-sowhat">This is the part of the meeting that belongs to you. We read your industry so the conversation starts warm — three forces below are moving every accountancy practice in the UK right now — but the priorities that come out of this page are yours, captured today, and they drive the roadmap and the budget that follow.</p>
+
+        <p style="margin-bottom:12px;"><strong>N-able Harness Trend Report</strong> — businesses like yours — cohort-matched: UK accountancy · ~50 staff · North of England <span class="chip cs-a wrap">[A — proposed product surface, Beth 2026-07-31]</span></p>
+
+        <p style="margin-bottom:14px;"><a class="btn" href="trend-report.html" style="text-decoration:none;">Open the full Trend Report &rarr;</a></p>
+
+        <div class="rpt-trend">
+          <h4>1 · Making Tax Digital deadlines are forcing client digitisation</h4>
+          <p>MTD for Income Tax pulls sole traders and landlords into quarterly digital filing. Your clients will need their records digitised — which makes your own systems either the bottleneck or the thing that wins you the work.</p>
+          <div class="tchips"><span class="chip cs">Estimated/Unverified — web-gathered, always</span><span class="chip src">industry-trends sweep</span></div>
+        </div>
+        <div class="rpt-trend">
+          <h4>2 · AI adoption in practice workflows raises the confidentiality bar</h4>
+          <p>Firms around you are adopting AI for bookkeeping and drafting — and clients are asking harder questions about where their data goes. The practices that can evidence their controls will win the nervous clients the others lose.</p>
+          <div class="tchips"><span class="chip cs">Estimated/Unverified — web-gathered, always</span><span class="chip src">industry-trends sweep</span></div>
+        </div>
+        <div class="rpt-trend">
+          <h4>3 · Cyber-insurance renewals now demand documented controls</h4>
+          <p>Insurers increasingly want documented MFA, endpoint coverage, and tested backups before they quote. What you can prove is becoming as commercially important as what you run.</p>
+          <div class="tchips"><span class="chip cs">Estimated/Unverified — web-gathered, always</span><span class="chip src">industry-trends sweep</span></div>
+        </div>
+
+        <p style="margin-top:14px;"><strong>Your goals from January</strong> — clean self-assessment season; open the third fee-earner desk in York; keep client onboarding under a week. <strong>Updated priorities</strong> — captured in this meeting; this section is a conversation, not a chart.</p>
+        <p class="rr-note">trends: agent web search on public industry context — a non-system source; discussion points, never platform telemetry [CS: VERIFIED as design conversation, NOT observed practice] · trend content: SEED DATA — invented 2026-07-31</p>
+        <p class="rr-note">fed by (real candidate feeds): NCSC Annual Review · ICO incident trends · Verizon DBIR sector cuts · KnowBe4 industry benchmark · Cyber Essentials updates [CS: HIGH — these exist as publications] · fleet-cohort aggregates via k-anonymity plumbing (Value Ledger spec T039–041) [D — in spec; a cross-tenant trend product would need its own privacy/GDPR review [?]]</p>
+        ${srcChips(['N-able Harness Trend Report (agent web sweep, non-system)', 'client website / LinkedIn (non-system)'])}
+        ${talkStrip('Which of these three, if you did nothing about it, would cost you a client by next spring?')}
+      </section>
+
+      <!-- ============ 7 · HARDWARE & SOFTWARE ASSET REVIEW ============ -->
+      ${sectionOpen('07', 'Hardware &amp; Software Asset Review', 'Predictable spend beats emergency spend')}
+        <p class="rpt-sowhat">Seven devices are past warranty and three are running software that will stop receiving fixes. None of this is an emergency today — the point of this page is that it never becomes one. A planned replacement is a line in the budget; an unplanned one is a Tuesday you lose in January.</p>
+        <table class="rpt-table">
+          <thead><tr><th scope="col">Finding</th><th scope="col">Count</th><th scope="col">What it means for the practice</th></tr></thead>
+          <tbody>
+            <tr><td class="rowlead">Devices past warranty</td><td>7 of 61</td><td>Repairs move from covered to billable, and lead times stretch — phased replacement keeps this off the busy-season calendar.</td></tr>
+            <tr><td class="rowlead">End-of-life operating systems</td><td>3 devices</td><td>No more security fixes arriving — these three go first in the replacement plan.</td></tr>
+            <tr><td class="rowlead">Licenses with no sign-in for 3–4 months</td><td>6</td><td>Roughly a desk's worth of software spend doing nothing — reclaim or reassign, your call today.</td></tr>
+          </tbody>
+        </table>
+        ${srcChips(['N-central · Warranty Expiry report', 'M365 · Active users + Licenses'])}
+        ${talkStrip('You would never let a client carry unused subscriptions and uninsured kit into their busiest quarter — this page is us being your accountant.')}
+      </section>
+
+      <!-- ============ 8 · EMPLOYEE REVIEW ============ -->
+      ${sectionOpen('08', 'Employee Review', 'People change faster than systems do')}
+        <p class="rpt-sowhat">Five people joined the practice this period and three left. Every joiner and leaver is a moment where access is granted or should be taken away — and the York starter laptops behind the endpoint gap show the joiner side of that process needs a firmer handshake between your HR file and our systems.</p>
+        <p>We propose a simple standard, agreed today: new starters receive a fully covered device before their first sign-in, and leavers have access closed the same day their departure takes effect. Both become checklist items on our side; both show up in this report every cycle so you can see the standard holding.</p>
+        ${heldNote ? heldNote.replace("held at the confirm-gate", "held at the confirm-gate (report-wide count)") : heldNote}
+        ${srcChips(['Entra · Sign-in logs', 'M365 · Active users', 'HR roster (manual cross-check — no bound source)'])}
+        ${talkStrip('When someone leaves the practice, how quickly do you want their keys back? Whatever you answer is the policy we will hold ourselves to.')}
+      </section>
+
+      <!-- ============ 9 · TECHNOLOGY ROADMAP ============ -->
+      ${sectionOpen('09', 'Technology Roadmap', 'Sequenced to protect the seasons that earn your year')}
+        <p class="rpt-sowhat">Everything below is ordered by one rule: what protects self-assessment season goes first, what builds the practice goes next, and nothing lands in the fortnights when your team cannot breathe.</p>
+        <div class="lane-grid">
+          <div class="lane">
+            <h4>Next 30 days</h4>
+            <ul>
+              <li>Second sign-in step for the 11 password-only accounts.</li>
+              <li>Maintenance window: deploy managed detection to the 9 uncovered devices.</li>
+              <li>Out-of-hours updates for the 4 devices behind on patches.</li>
+            </ul>
+          </div>
+          <div class="lane">
+            <h4>Next 90 days</h4>
+            <ul>
+              <li>Awareness refresher for the accounts team; re-run the interrupted phishing test.</li>
+              ${backupRoadmap}
+              <li>Starter/leaver same-day access standard in force and reported on.</li>
+              <li>Reclaim or reassign the 6 dormant licenses.</li>
+            </ul>
+          </div>
+          <div class="lane">
+            <h4>Toward next review</h4>
+            <ul>
+              <li>Phased replacement of the 7 past-warranty devices — EOL machines first.</li>
+              <li>MTD readiness check against your client-records workflow.</li>
+              <li>Insurance-renewal evidence pack — controls documented before the form arrives.</li>
+            </ul>
+          </div>
+        </div>
+        ${srcChips(['living documents (roadmap — carried cycle to cycle)', 'N-central', 'Adlumin'])}
+        ${talkStrip('Nothing on this roadmap is technology for its own sake — each line either protects January or builds the York desk you want to open.')}
+      </section>
+
+      <!-- ============ 10 · TECHNOLOGY BUDGET — ranges, not ledger figures ============ -->
+      ${sectionOpen('10', 'Technology Budget', 'Ranges for planning — costed options at the meeting')}
+        <p class="rpt-sowhat">These are planning ranges, not quotes — enough to let you budget with confidence today, with costed options following for anything you green-light. Nothing proceeds without your sign-off.</p>
+        <table class="rpt-table">
+          <thead><tr><th scope="col">Item</th><th scope="col">Planning range</th><th scope="col">What it buys the practice</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="rowlead">MFA rollout — 11 accounts, staff enrolment included</td>
+              <td class="money">£1,200 – £2,400</td>
+              <td>Takes the one red item off the board before self-assessment season.</td>
+            </tr>
+            <tr>
+              <td class="rowlead">Managed detection on 9 remaining devices</td>
+              <td class="money">£0 — within existing agreement</td>
+              <td>Closes the coverage gap you have already paid for; needs a window, not a budget.</td>
+            </tr>
+            <tr>
+              <td class="rowlead">Phased device refresh — 7 past-warranty, EOL first</td>
+              <td class="money">£5,600 – £8,400</td>
+              <td>Spread across two quarters; keeps replacement off the January calendar.</td>
+            </tr>${backupBudget}
+            <tr>
+              <td class="rowlead">Awareness refresher — accounts team</td>
+              <td class="money">£400 – £700</td>
+              <td>Aimed at the exact people the attempts we stopped were addressed to.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="rr-note">ranges are the practice template's budget content — SEED DATA, invented 2026-07-31 · NOT Value Ledger output (the QBR ledger producer is unwired) · budget is a living document, carried cycle to cycle</p>
+        ${srcChips(['living documents (budget)', 'N-central'])}
+        ${talkStrip('None of this is spend for its own sake — every line buys back a busy-season day. Which lines do you want costed first?')}
+      </section>
+
+      <!-- ============ 11 · REFERRALS & TESTIMONIALS ============ -->
+      ${sectionOpen('11', 'Referrals &amp; Testimonials', 'The ask we only make when we have earned it')}
+        <p class="rpt-sowhat">If the next six months go the way this plan intends — a quiet January, a closed scorecard — we would like two things from you, and we are asking now so it is not awkward later.</p>
+        <ul>
+          <li><strong>A referral:</strong> one practice in your network that deserves the January you are about to have. An introduction, nothing more.</li>
+          <li><strong>A testimonial:</strong> two lines, after the MFA rollout completes, in your words — what changed and what it let you stop worrying about.</li>
+        </ul>
+        ${srcChips(['living documents'])}
+        ${talkStrip('Is there a practice you know that is carrying the risks you just took off this board?')}
+      </section>
+
+      <!-- ============ 12 · POST-MEETING ACTION ITEMS — every row → Halo ticket ============ -->
+      ${sectionOpen('12', 'Post-Meeting Action Items', 'Nothing lives in the minutes')}
+        <p class="rpt-sowhat">Every action agreed today becomes a ticket in our system the same day — with an owner and a date — so the follow-up is trackable, not aspirational. You will see each one again, closed, in the next review.</p>
+        <table class="rpt-table">
+          <thead><tr><th scope="col">Action</th><th scope="col">Owner</th><th scope="col">Due</th><th scope="col">Tracked</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="rowlead">Approve MFA rollout and book staff enrolment sessions (Leeds + York)</td>
+              <td>C. Dibbler · SuperN-able Shop</td>
+              <td>15 Aug 2026</td>
+              <td><span class="halo-tail">→ Halo ticket</span></td>
+            </tr>
+            <tr>
+              <td class="rowlead">Agree the maintenance window for the 9 uncovered devices</td>
+              <td>S. Bonk</td>
+              <td>22 Aug 2026</td>
+              <td><span class="halo-tail">→ Halo ticket</span></td>
+            </tr>
+            <tr>
+              <td class="rowlead">Schedule out-of-hours updates for the 4 payroll-workflow devices</td>
+              <td>SuperN-able Shop</td>
+              <td>29 Aug 2026</td>
+              <td><span class="halo-tail">→ Halo ticket</span></td>
+            </tr>${backupAction}
+            <tr>
+              <td class="rowlead">Confirm the starter/leaver same-day access standard in writing</td>
+              <td>S. Bonk · J. Garlick</td>
+              <td>5 Sep 2026</td>
+              <td><span class="halo-tail">→ Halo ticket</span></td>
+            </tr>
+            <tr>
+              <td class="rowlead">Decide reclaim vs. reassign for the 6 dormant licenses</td>
+              <td>C. Dibbler</td>
+              <td>12 Sep 2026</td>
+              <td><span class="halo-tail">→ Halo ticket</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="rr-note">every action item → PSA ticket, per the practice's explicit instruction [CS: VERIFIED — followup transcript] · owners and dates: SEED DATA — invented 2026-07-31</p>
+        ${srcChips(['Halo PSA'])}
+        ${talkStrip('You should never have to chase us on any of these — if you do, that is a finding for the next review.')}
+      </section>
+
+      <!-- ============ 13 · NEXT MEETING PLANNING ============ -->
+      ${sectionOpen('13', 'Next Meeting Planning', 'When we sit down again, and what we bring')}
+        <p class="rpt-sowhat">We propose a short pre-season checkpoint in November — thirty minutes, scorecard only, before self-assessment season opens — and the next full review in February 2027, after the season closes, when the results of everything agreed today will be visible.</p>
+        <ul>
+          <li><strong>November 2026 — checkpoint (proposed 12 Nov):</strong> scorecard re-graded; MFA, endpoint, and patching items confirmed closed; anything red gets an emergency plan.</li>
+          <li><strong>February 2027 — full review (proposed 11 Feb):</strong> how January actually went; register re-scored; roadmap and budget reissued for the year ahead.</li>
+          <li><strong>What we bring:</strong> the re-graded scorecard, closed-ticket evidence for every action above, and the insurance-renewal evidence pack.</li>
+          <li><strong>What we ask you to bring:</strong> anything changing in the business — hires, the York desk, new client types — so the plan bends before it breaks.</li>
+        </ul>
+        ${srcChips(['living documents', 'Halo PSA'])}
+        ${talkStrip('Fair? If January is quiet, this meeting in February is a short round of good news and a plan for the York desk.')}
+      </section>
+
+    </article>
+
+    <div class="rpt-foot" style="max-width:900px;margin:0 auto;">
+      <button type="button" class="btn primary" disabled>Send to client</button>
+      <span class="label">Tier 2 direction — nothing sends. This surface contains only confirm-gate-cleared content; internal notes, tiers, and admin framing live on the Working Document and never render here.</span>
+    </div>
+  </div>`;
+};
+
+/* =========================================================
+   setView — page-as-function router + cross-page highlight
+   ========================================================= */
+function setView(name) {
+  if (!views[name]) return;
+  STATE.view = name;
+  const root = document.getElementById('view-root');
+  root.innerHTML = views[name]();
+  const sb = document.getElementById('sidebar');
+  if (sb && sb.setActive) sb.setActive(name);
+  if (name === 'run') { setRunChip(); }
+  if (STATE.pendingHighlight) {
+    const target = document.getElementById(STATE.pendingHighlight);
+    STATE.pendingHighlight = null;
+    if (target) {
+      target.classList.add('highlight');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => { target.classList.remove('highlight'); }, 3200);
+      return;
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener('apx-navigate', (e) => { setView(e.detail.view); });
+
+/* =========================================================
+   Council modal (Fast Mode shell — pending slots, zero invented tensions)
+   ========================================================= */
+let councilLastFocus = null;
+function openCouncil() {
+  councilLastFocus = document.activeElement;
+  document.getElementById('council-backdrop').classList.add('open');
+  document.getElementById('council-close').focus();
+}
+function closeCouncil() {
+  document.getElementById('council-backdrop').classList.remove('open');
+  if (councilLastFocus) councilLastFocus.focus();
+}
+document.getElementById('council-backdrop').addEventListener('click', function (e) {
+  if (e.target === this) closeCouncil();
+});
+document.getElementById('reauth-backdrop').addEventListener('click', function (e) {
+  if (e.target === this) closeReauth(false);
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('council-backdrop').classList.contains('open')) closeCouncil();
+  if (document.getElementById('reauth-backdrop').classList.contains('open')) closeReauth(false);
+});
+
+/* =========================================================
+   Mode manager — 3-way toggle, localStorage: apx-mode-pref (pre-paint script in <head>)
+   ========================================================= */
+function applyMode(pref) {
+  var dark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  var modes = ['light', 'dark', 'system'];
+  for (var i = 0; i < modes.length; i++) {
+    document.getElementById('mode-' + modes[i]).setAttribute('aria-pressed', modes[i] === pref ? 'true' : 'false');
+  }
+}
+function setMode(pref) {
+  try { localStorage.setItem('apx-mode-pref', pref); } catch (e) {}
+  applyMode(pref);
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+  var pref = 'system';
+  try { pref = localStorage.getItem('apx-mode-pref') || 'system'; } catch (e) {}
+  if (pref === 'system') applyMode('system');
+});
+
+/* =========================================================
+   init
+   ========================================================= */
+(function () {
+  var pref = 'system';
+  try { pref = localStorage.getItem('apx-mode-pref') || 'system'; } catch (e) {}
+  applyMode(pref);
+  setView('run');
+})();
+</script>
+</body>
+</html>

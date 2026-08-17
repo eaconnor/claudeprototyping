@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QBR Analyst — Draft Landing · Band Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --vermillion: #D8472B;
+    --ultramarine: #1F3C96;
+    --ochre: #C99A2E;
+    --violet: #5B3A7E;
+    --green-earth: #5E7A3F;
+    --cadmium: #E8B93A;
+    --ink: #1a1612;
+    --paper: #efe7d6;
+    --card: #f7f0df;
+    --grid: rgba(26,22,18,.055);
+    --line: rgba(26,22,18,.18);
+    --font-mono: 'Space Mono', ui-monospace, monospace;
+    --font-body: 'Kalam', cursive;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* ===== TOP NAV ===== */
+  .topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--ink);
+    border-bottom: 3px solid var(--vermillion);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 28px;
+    height: 52px;
+  }
+
+  .topnav-brand {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--paper);
+    opacity: 0.55;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-right: 32px;
+    white-space: nowrap;
+  }
+
+  .tab-btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.45;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0 20px;
+    height: 52px;
+    cursor: pointer;
+    transition: opacity 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover { opacity: 0.75; }
+
+  .tab-btn.active {
+    opacity: 1;
+    border-bottom: 3px solid var(--ultramarine);
+    color: var(--paper);
+  }
+
+  /* ===== LAYOUT SHELL ===== */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    min-height: 100vh;
+    padding-top: 52px;
+    padding-bottom: 44px; /* fidelity banner */
+  }
+
+  .main-content {
+    padding: 28px;
+    overflow-y: auto;
+  }
+
+  /* ===== SURFACE VISIBILITY ===== */
+  .surface { display: none; }
+  .surface.active { display: block; }
+
+  /* ===== ENTRY STATE BANNER ===== */
+  .entry-banner {
+    background: var(--ultramarine);
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--line);
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .entry-banner-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--paper);
+    line-height: 1.5;
+  }
+
+  .entry-banner-text strong {
+    font-size: 15px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .tier-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--ultramarine);
+    color: var(--paper);
+    border: 2px solid var(--paper);
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ===== QBR SECTION CARDS ===== */
+  .qbr-section {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--line);
+    margin-bottom: 20px;
+  }
+
+  .qbr-section-header {
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .qbr-section-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+
+  .qbr-section-body {
+    padding: 16px;
+  }
+
+  /* Source badges */
+  .source-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1.5px solid var(--ink);
+    display: inline-block;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-native {
+    background: var(--green-earth);
+    color: var(--paper);
+  }
+
+  .badge-third-party {
+    background: var(--ochre);
+    color: var(--ink);
+  }
+
+  .badge-editable {
+    background: var(--violet);
+    color: var(--paper);
+  }
+
+  .badge-locked {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink);
+    opacity: 0.45;
+    letter-spacing: 0.08em;
+    margin-left: auto;
+  }
+
+  /* Metrics grid */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .metric-cell {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    padding: 10px 12px;
+  }
+
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+
+  .metric-value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .metric-sub {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--ink);
+    opacity: 0.65;
+    margin-top: 2px;
+  }
+
+  /* Gap flag */
+  .gap-flag {
+    background: var(--cadmium);
+    border: 2px solid var(--ink);
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .gap-flag .gap-title {
+    font-size: 12px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gap-flag .gap-detail {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 4px;
+    color: var(--ink);
+  }
+
+  .gap-flag .gap-verify {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    margin-top: 6px;
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  /* Cross-vendor note */
+  .cross-vendor-note {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink);
+    opacity: 0.65;
+    border-left: 3px solid var(--ochre);
+    padding-left: 10px;
+    margin: 8px 0;
+    line-height: 1.5;
+  }
+
+  /* Locked notice */
+  .locked-notice {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink);
+    opacity: 0.45;
+    letter-spacing: 0.08em;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* Editable section */
+  .editable-field {
+    background: var(--paper);
+    border: 2px solid var(--violet);
+    padding: 14px 16px;
+    position: relative;
+    margin: 8px 0;
+  }
+
+  .editable-field-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .editable-field-text {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .edit-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--violet);
+    background: none;
+    border: 2px solid var(--violet);
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+
+  .edit-cta:hover { background: var(--violet); color: var(--paper); }
+
+  .editable-note {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--ink);
+    opacity: 0.6;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ===== BRADLEY RAIL ===== */
+  .bradley-rail {
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px - 44px);
+    overflow-y: auto;
+    background: var(--ink);
+    border-left: 4px solid var(--violet);
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .rail-readiness {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--ultramarine);
+    color: var(--paper);
+    border: 2px solid var(--paper);
+    padding: 5px 10px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .rail-blurb {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--paper);
+    opacity: 0.8;
+    line-height: 1.55;
+  }
+
+  .rail-divider {
+    border: none;
+    border-top: 1px solid rgba(239,231,214,0.15);
+    margin: 4px 0;
+  }
+
+  .rail-block-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .rail-nailed { color: var(--green-earth); }
+  .rail-hurt { color: var(--vermillion); }
+
+  .rail-block-text {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--paper);
+    opacity: 0.8;
+    line-height: 1.55;
+  }
+
+  /* Routed cards */
+  .routed-card {
+    background: rgba(239,231,214,0.05);
+    border: 1.5px solid rgba(239,231,214,0.15);
+    padding: 12px 12px 10px;
+    margin-bottom: 8px;
+  }
+
+  .routed-card-team {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cadmium);
+    margin-bottom: 6px;
+  }
+
+  .routed-card-team.team-product { color: var(--cadmium); }
+  .routed-card-team.team-design { color: var(--ochre); }
+  .routed-card-team.team-research { color: var(--vermillion); }
+  .routed-card-team.team-eng { color: var(--green-earth); }
+
+  .routed-card-line {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--paper);
+    opacity: 0.75;
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .routed-card-line strong {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    opacity: 0.55;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 1px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .roi-block {
+    border-top: 1px solid rgba(239,231,214,0.12);
+    margin-top: 8px;
+    padding-top: 6px;
+  }
+
+  .roi-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.4;
+    margin-bottom: 3px;
+  }
+
+  .roi-line {
+    font-family: var(--font-body);
+    font-size: 10px;
+    color: var(--paper);
+    opacity: 0.6;
+    line-height: 1.5;
+  }
+
+  /* ===== SURFACE B — VISION ===== */
+  .vision-hero {
+    background: var(--paper);
+    border-bottom: 3px solid var(--ink);
+    padding: 56px 28px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vision-hero::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: var(--vermillion);
+  }
+
+  .vision-hero-inner {
+    padding-left: 32px;
+    max-width: 640px;
+  }
+
+  .hero-headline {
+    font-family: var(--font-mono);
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-subhead {
+    font-family: var(--font-body);
+    font-size: 18px;
+    color: var(--ink);
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+
+  /* Before/After */
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--line);
+    margin: 28px 0;
+    background: var(--card);
+  }
+
+  .before-col, .after-col {
+    padding: 24px 20px;
+  }
+
+  .before-col {
+    border-right: 2px solid var(--ink);
+  }
+
+  .after-col {
+    background: var(--ultramarine);
+  }
+
+  .ba-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .before-col .ba-label { color: var(--ink); opacity: 0.55; }
+  .after-col .ba-label { color: var(--paper); opacity: 0.75; }
+
+  .ba-big-text {
+    font-family: var(--font-mono);
+    font-size: clamp(15px, 2vw, 20px);
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+
+  .before-col .ba-big-text { color: var(--ink); }
+  .after-col .ba-big-text { color: var(--paper); }
+
+  .ba-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .before-col .ba-body { color: var(--ink); opacity: 0.75; }
+  .after-col .ba-body { color: var(--paper); opacity: 0.85; }
+
+  .tool-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .tool-chip {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1.5px solid var(--ink);
+    padding: 3px 7px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .ba-source-note {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink);
+    opacity: 0.5;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* Section header (vision) */
+  .vision-section {
+    margin: 32px 0;
+  }
+
+  .vision-section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 6px;
+    margin-bottom: 20px;
+  }
+
+  /* Six coworkers grid */
+  .coworkers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .coworkers-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .coworker-card {
+    border: 2px solid var(--ink);
+    padding: 16px 14px;
+    background: var(--card);
+    position: relative;
+  }
+
+  .coworker-card.capstone {
+    background: var(--vermillion);
+    box-shadow: 6px 6px 0 var(--line);
+  }
+
+  .coworker-card:not(.capstone) {
+    box-shadow: 4px 4px 0 var(--line);
+  }
+
+  .coworker-name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .coworker-card.capstone .coworker-name { color: var(--paper); }
+  .coworker-card:not(.capstone) .coworker-name { color: var(--ink); }
+
+  .coworker-role {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .coworker-card.capstone .coworker-role { color: var(--paper); opacity: 0.7; }
+  .coworker-card:not(.capstone) .coworker-role { color: var(--ink); opacity: 0.5; }
+
+  .coworkers-tagline {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    opacity: 0.7;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Playing cards */
+  .playing-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .playing-card {
+    background: var(--ink);
+    border: 3px solid var(--ink);
+    padding: 24px 18px 20px;
+    box-shadow: 6px 6px 0 var(--line);
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-suit {
+    font-size: 42px;
+    line-height: 1;
+    color: var(--paper);
+    opacity: 0.15;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-family: serif;
+  }
+
+  .card-rank {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--vermillion);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .card-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .card-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.45;
+    margin-bottom: 12px;
+  }
+
+  .card-body {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--paper);
+    opacity: 0.75;
+    line-height: 1.55;
+    margin-top: auto;
+  }
+
+  /* Market gap */
+  .market-gap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--line);
+  }
+
+  .mgap-col {
+    padding: 20px 16px;
+    border-right: 2px solid var(--ink);
+  }
+
+  .mgap-col:last-child { border-right: none; }
+
+  .mgap-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .mgap-col.stakes { background: var(--card); }
+  .mgap-col.stakes .mgap-label { color: var(--ink); opacity: 0.55; }
+
+  .mgap-col.opportunity {
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .mgap-col.opportunity .mgap-label { color: var(--ink); opacity: 0.4; }
+
+  .mgap-col.threat { background: var(--vermillion); }
+  .mgap-col.threat .mgap-label { color: var(--paper); opacity: 0.75; }
+
+  .empty-chair {
+    width: 60px;
+    height: 60px;
+    border: 3px dashed var(--ink);
+    opacity: 0.3;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink);
+    opacity: 0.35;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.3;
+    padding: 6px;
+  }
+
+  .mgap-item {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .mgap-col.threat .mgap-item { color: var(--paper); opacity: 0.85; }
+
+  /* The Bar */
+  .the-bar {
+    background: var(--ink);
+    border: 3px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--line);
+    padding: 40px 28px 32px;
+    text-align: center;
+    margin: 32px 0;
+  }
+
+  .bar-headline {
+    font-family: var(--font-mono);
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 700;
+    color: var(--paper);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .bar-body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--paper);
+    opacity: 0.75;
+    line-height: 1.65;
+    max-width: 560px;
+    margin: 0 auto 16px;
+  }
+
+  .bar-flag {
+    display: inline-block;
+    background: var(--cadmium);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border: 2px solid var(--ink);
+  }
+
+  /* market gap scalePad note */
+  .mgap-scalePad-note {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.7;
+    font-style: italic;
+    margin: 12px 0 20px;
+  }
+
+  /* ===== FIDELITY BANNER ===== */
+  .fidelity-banner {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 44px;
+    background: var(--ink);
+    border-top: 2px solid var(--vermillion);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--paper);
+    opacity: 0.8;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 200;
+    padding: 0 28px;
+    text-align: center;
+  }
+
+  /* ===== UTILITY ===== */
+  .section-label-small {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  /* Scrollbar styling */
+  .bradley-rail::-webkit-scrollbar { width: 4px; }
+  .bradley-rail::-webkit-scrollbar-track { background: transparent; }
+  .bradley-rail::-webkit-scrollbar-thumb { background: rgba(239,231,214,0.2); }
+
+  /* ===== VISION MAIN ===== */
+  #surface-b .main-content {
+    padding: 0;
+  }
+
+  #surface-b .main-content > .vision-hero {
+    margin: 0;
+  }
+
+  #surface-b .main-content > *:not(.vision-hero) {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .vision-padded {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav" role="navigation" aria-label="Surface navigation">
+  <span class="topnav-brand">QBR Analyst · Band Protocol</span>
+  <button class="tab-btn active" id="tab-a" onclick="switchSurface('a')" aria-selected="true">Draft Landing</button>
+  <button class="tab-btn" id="tab-b" onclick="switchSurface('b')" aria-selected="false">Vision</button>
+</nav>
+
+<!-- SURFACE A — DRAFT LANDING -->
+<div id="surface-a" class="surface active" role="tabpanel" aria-labelledby="tab-a">
+  <div class="layout">
+
+    <!-- MAIN: QBR Draft -->
+    <main class="main-content" aria-label="QBR Draft Content">
+
+      <!-- Entry State Banner -->
+      <div class="entry-banner" role="region" aria-label="QBR status">
+        <div class="entry-banner-text">
+          <strong>QBR for Hartwell Manufacturing</strong>
+          Due in 3 days · Draft ready for review
+        </div>
+        <div class="tier-badge" aria-label="Access level: Read Only">Tier 1: Read-Only</div>
+      </div>
+
+      <!-- Section 1: Security Posture -->
+      <article class="qbr-section" aria-label="Security Posture section">
+        <header class="qbr-section-header">
+          <span class="qbr-section-title">Security Posture</span>
+          <span class="source-badge badge-native">N-ABLE NATIVE · Adlumin MDR</span>
+          <span class="badge-locked">⚲ LOCKED</span>
+        </header>
+        <div class="qbr-section-body">
+          <div class="metrics-row">
+            <div class="metric-cell">
+              <div class="metric-label">Threat Events</div>
+              <div class="metric-value">847</div>
+              <div class="metric-sub">alerts this quarter</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">SOC Escalations</div>
+              <div class="metric-value">3</div>
+              <div class="metric-sub">escalated to SOC</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Breaches</div>
+              <div class="metric-value">0</div>
+              <div class="metric-sub">confirmed breaches</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Mean Time to Contain</div>
+              <div class="metric-value">4.2h</div>
+              <div class="metric-sub">average containment</div>
+            </div>
+          </div>
+          <div class="metric-cell" style="margin-bottom:10px;">
+            <div class="metric-label">Top Threat Category</div>
+            <div class="metric-value" style="font-size:14px;line-height:1.3;">Living-off-the-Land (LOtL)</div>
+            <div class="metric-sub">61% of alerts this quarter</div>
+          </div>
+          <div class="locked-notice">⚲ This section pulls from Adlumin telemetry. Not editable.</div>
+        </div>
+      </article>
+
+      <!-- Section 2: Backup & Recovery -->
+      <article class="qbr-section" aria-label="Backup and Recovery section">
+        <header class="qbr-section-header">
+          <span class="qbr-section-title">Backup &amp; Recovery</span>
+          <span class="source-badge badge-native">N-ABLE NATIVE · Cove Backup</span>
+          <span class="badge-locked">⚲ LOCKED</span>
+        </header>
+        <div class="qbr-section-body">
+          <div class="metrics-row">
+            <div class="metric-cell">
+              <div class="metric-label">Endpoints Protected</div>
+              <div class="metric-value">147<span style="font-size:12px;opacity:0.5">/150</span></div>
+              <div class="metric-sub">devices covered</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Backup Success Rate</div>
+              <div class="metric-value">99.1%</div>
+              <div class="metric-sub">147 devices</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">RPO Met</div>
+              <div class="metric-value">Yes</div>
+              <div class="metric-sub">recovery point objective</div>
+            </div>
+          </div>
+
+          <div class="gap-flag" role="alert" aria-label="Gap detected: SEV3">
+            <div class="gap-title">
+              <span>⚠</span>
+              <span>GAP — SEV3: 3 Devices Missing Backup Status</span>
+            </div>
+            <div class="gap-detail">ACCOUNTING-PC-04 · ACCOUNTING-PC-07 · RECEPTION-01</div>
+            <div class="gap-verify">Status unknown — not a failure confirmation. Verify before Thursday.</div>
+          </div>
+
+          <div class="locked-notice">⚲ This section pulls from Cove. Not editable.</div>
+        </div>
+      </article>
+
+      <!-- Section 3: Patch Compliance -->
+      <article class="qbr-section" aria-label="Patch Compliance section">
+        <header class="qbr-section-header">
+          <span class="qbr-section-title">Patch Compliance</span>
+          <span class="source-badge badge-third-party">THIRD-PARTY PULL · NinjaOne RMM</span>
+          <span class="badge-locked">⚲ LOCKED</span>
+        </header>
+        <div class="qbr-section-body">
+          <div class="metrics-row">
+            <div class="metric-cell">
+              <div class="metric-label">Critical Patches Applied</div>
+              <div class="metric-value">141<span style="font-size:12px;opacity:0.5">/150</span></div>
+              <div class="metric-sub">endpoints patched</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Compliance Rate</div>
+              <div class="metric-value">94%</div>
+              <div class="metric-sub">critical severity</div>
+            </div>
+          </div>
+          <div class="cross-vendor-note">
+            <strong>⚠ Cross-vendor normalized:</strong> Patch compliance reported here is NinjaOne's schema. ConnectWise Automate reports differently. N-able normalized to endpoint count.
+          </div>
+          <div class="locked-notice">⚲ Integration pull. Not editable.</div>
+        </div>
+      </article>
+
+      <!-- Section 4: Ticket Volume -->
+      <article class="qbr-section" aria-label="Ticket Volume section">
+        <header class="qbr-section-header">
+          <span class="qbr-section-title">Ticket Volume</span>
+          <span class="source-badge badge-third-party">THIRD-PARTY PULL · ConnectWise PSA</span>
+          <span class="badge-locked">⚲ LOCKED</span>
+        </header>
+        <div class="qbr-section-body">
+          <div class="metrics-row">
+            <div class="metric-cell">
+              <div class="metric-label">Total Tickets Q2</div>
+              <div class="metric-value">214</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Closed</div>
+              <div class="metric-value">198</div>
+              <div class="metric-sub">92.5% close rate</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Open</div>
+              <div class="metric-value">16</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Avg Resolution</div>
+              <div class="metric-value">3.1h</div>
+            </div>
+          </div>
+          <div class="metric-cell" style="margin-bottom:10px;">
+            <div class="metric-label">Top Category</div>
+            <div class="metric-value" style="font-size:14px;">Network Connectivity</div>
+            <div class="metric-sub">41 tickets this quarter</div>
+          </div>
+          <div class="locked-notice">⚲ Integration pull. Not editable.</div>
+        </div>
+      </article>
+
+      <!-- Section 5: Endpoint Protection -->
+      <article class="qbr-section" aria-label="Endpoint Protection section">
+        <header class="qbr-section-header">
+          <span class="qbr-section-title">Endpoint Protection</span>
+          <span class="source-badge badge-third-party">THIRD-PARTY PULL · SentinelOne EDR</span>
+          <span class="badge-locked">⚲ LOCKED</span>
+        </header>
+        <div class="qbr-section-body">
+          <div class="metrics-row">
+            <div class="metric-cell">
+              <div class="metric-label">Agents Active</div>
+              <div class="metric-value">149<span style="font-size:12px;opacity:0.5">/150</span></div>
+              <div class="metric-sub">1 offline: WAREHOUSE-KIOSK-02</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Threats Quarantined</div>
+              <div class="metric-value">12</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">False Positives Reviewed</div>
+              <div class="metric-value">3</div>
+            </div>
+          </div>
+          <div class="locked-notice">⚲ Integration pull. Not editable.</div>
+        </div>
+      </article>
+
+      <!-- Section 6: Executive Narrative -->
+      <article class="qbr-section" aria-label="Executive Narrative section">
+        <header class="qbr-section-header">
+          <span class="qbr-section-title">Executive Narrative</span>
+          <span class="source-badge badge-editable">EDITABLE · Your narrative</span>
+        </header>
+        <div class="qbr-section-body">
+          <div class="editable-field">
+            <div class="editable-field-label">
+              <span>✎</span>
+              <span>Edit narrative</span>
+            </div>
+            <p class="editable-field-text">
+              Hartwell Manufacturing remains well-defended this quarter. Threat activity was detected and contained before any client impact. One area to address before our next meeting: three devices are missing backup confirmation — we're verifying status now and will have resolution by Thursday.
+            </p>
+            <button class="edit-cta" aria-label="Edit the executive narrative">
+              ✎ Edit narrative
+            </button>
+          </div>
+          <p class="editable-note">This section is yours. The data above is locked to source. Your story here.</p>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- BRADLEY RAIL — Surface A -->
+    <aside class="bradley-rail" aria-label="Bradley rail — prototype analysis">
+      <div>
+        <div class="rail-readiness">Tier 1 · Concept</div>
+        <p class="rail-blurb">Testing whether MSPs trust a platform-assembled QBR draft. Probing: provenance legibility, gap flag emotional register, and edit-layer findability.</p>
+      </div>
+
+      <hr class="rail-divider">
+
+      <div>
+        <div class="rail-block-label rail-nailed">What you nailed</div>
+        <p class="rail-block-text">N-able native data is visually distinct from third-party pulls — the two badge systems (green-earth vs. ochre) create a scannable hierarchy without explanation. The gap flag uses cadmium (warning, not alarm) and includes a plain-language action: verify before Thursday. The entry state frames this as readiness, not generation.</p>
+      </div>
+
+      <div>
+        <div class="rail-block-label rail-hurt">What will hurt you</div>
+        <p class="rail-block-text">The 15-minute edit assumption is entirely untested. If the MSP is under real time pressure, they will accept the draft unreviewed — which means the narrative layer ships as AI-written, not MSP-authored. That's the failure mode the prototype cannot detect. Also: "Tier 1: Read-Only" label is governance-speak. Test whether MSPs read it as permission or jargon.</p>
+      </div>
+
+      <hr class="rail-divider">
+
+      <!-- PRODUCT card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-product">▶ Product</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Define the edit threshold — what % of MSPs must touch the narrative layer before we call this a trust success vs. a bypass?
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          The 15-min edit bar is a named design bet [A] with no behavioral baseline.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You'll measure adoption of the draft, not trust in the process.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Retention event if gap caught before client meeting — Unknown: no QBR-to-upsell conversion data</div>
+          <div class="roi-line"><strong>User:</strong> 90 min → ~17.5 min (directional, n=11, not projectable)</div>
+          <div class="roi-line"><strong>Unknown:</strong> Whether MSPs read "edit" as permission or obligation</div>
+        </div>
+      </div>
+
+      <!-- DESIGN card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-design">▶ Design</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Test provenance badge legibility — can MSP identify N-able native vs. third-party pull without prompting in unmoderated session?
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          Provenance labels are the prototype's primary trust mechanism — if they don't scan, the whole surface fails.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You ship a governance model that looks good in Figma and fails in a live QBR review.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Unknown — design validation gates the entire data architecture decision</div>
+          <div class="roi-line"><strong>User:</strong> Reduces "where did this come from?" anxiety, time TBD</div>
+          <div class="roi-line"><strong>Unknown:</strong> Whether ochre/green-earth distinction holds under time pressure and color accessibility constraints</div>
+        </div>
+      </div>
+
+      <!-- RESEARCH card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-research">▶ Research</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Source verbatim MSP language about QBR prep experience — the "invisible labor" framing may be N-able-projected, not MSP-stated [?]
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          If the prototype's emotional frame is wrong, the right interaction design still fails.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You validate the UI on top of an unverified narrative frame.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Unknown</div>
+          <div class="roi-line"><strong>User:</strong> Framing determines whether the platform feels like a tool or a replacement</div>
+          <div class="roi-line"><strong>Unknown:</strong> Whether gap flags land as insight or alarm on first view</div>
+        </div>
+      </div>
+
+      <!-- ENG card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-eng">▶ Eng</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Spike cross-vendor normalization — ConnectWise Automate and NinjaOne RMM report patch compliance differently. Can platform normalize to endpoint count reliably?
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          If normalization is lossy, provenance labels become cosmetic. Trust collapses at the data layer, not the UI layer.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You ship a QBR that a technically literate MSP will catch as wrong.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Unknown — normalization viability gates the entire data pipeline</div>
+          <div class="roi-line"><strong>User:</strong> A wrong number in a client QBR is a trust-destroying event, not a UX problem</div>
+          <div class="roi-line"><strong>Unknown:</strong> Schema compatibility across ConnectWise, NinjaOne, SentinelOne at scale</div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- SURFACE B — VISION -->
+<div id="surface-b" class="surface" role="tabpanel" aria-labelledby="tab-b">
+  <div class="layout">
+
+    <main class="main-content" style="padding:0;" aria-label="Vision and value proposition">
+
+      <!-- Hero -->
+      <section class="vision-hero" aria-label="Hero section">
+        <div class="vision-hero-inner">
+          <h1 class="hero-headline">Your MSP's best analyst.<br>Already knows your customers.</h1>
+          <p class="hero-subhead">QBR Analyst turns 90 minutes of prep into 15 — and makes your invisible competence visible.</p>
+        </div>
+      </section>
+
+      <!-- Before / After -->
+      <section class="vision-padded" aria-label="Before and after comparison">
+        <div class="before-after">
+          <div class="before-col">
+            <div class="ba-label">Before</div>
+            <p class="ba-big-text">90 minutes. Six tabs open. Four tools, two spreadsheets, one prayer.</p>
+            <div class="tool-icons">
+              <span class="tool-chip">PSA</span>
+              <span class="tool-chip">RMM</span>
+              <span class="tool-chip">MDR</span>
+              <span class="tool-chip">Backup</span>
+              <span class="tool-chip">EDR</span>
+              <span class="tool-chip">Identity</span>
+            </div>
+            <p class="ba-body">You know this customer. You just have to prove it — again — from scratch.</p>
+          </div>
+          <div class="after-col">
+            <div class="ba-label">After</div>
+            <p class="ba-big-text">15 minutes. One draft. Every source, one story.</p>
+            <div class="tool-icons">
+              <span class="tool-chip" style="background:rgba(239,231,214,0.15);border-color:rgba(239,231,214,0.35);color:var(--paper);">Unified View</span>
+            </div>
+            <p class="ba-body">The platform already knows Hartwell. You show up as the expert you are.</p>
+          </div>
+        </div>
+        <div class="ba-source-note" style="margin-top:8px;">N-Zo case study · 90 min → 17.5 min · n=11 · Directional, not projectable [D]</div>
+      </section>
+
+      <!-- Six Coworkers -->
+      <section class="vision-padded vision-section" aria-label="Six coworkers section">
+        <div class="vision-section-label">Six Coworkers. One Operating System.</div>
+        <div class="coworkers-grid">
+          <div class="coworker-card capstone">
+            <div class="coworker-name">QBR Analyst</div>
+            <div class="coworker-role">The Capstone</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-name">IR RCA</div>
+            <div class="coworker-role">Incident Memory</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-name">Ticket Triage</div>
+            <div class="coworker-role">Dispatch Logic</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-name">Alert Flood Suppression</div>
+            <div class="coworker-role">Signal / Noise</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-name">Security Tabletop</div>
+            <div class="coworker-role">Rehearsal</div>
+          </div>
+          <div class="coworker-card">
+            <div class="coworker-name">Employee Onboarding</div>
+            <div class="coworker-role">First Day</div>
+          </div>
+        </div>
+        <p class="coworkers-tagline">They don't replace your team. They remember everything your team already knows.</p>
+      </section>
+
+      <!-- Playing Cards — N-able Unfair Advantage -->
+      <section class="vision-padded vision-section" aria-label="N-able unfair advantage">
+        <div class="vision-section-label">The Hand No One Else Is Holding</div>
+        <div class="playing-cards">
+          <div class="playing-card">
+            <div class="card-suit" aria-hidden="true">♥</div>
+            <div class="card-rank">A♥</div>
+            <div class="card-name">Adlumin MDR</div>
+            <div class="card-sub">N-able native telemetry</div>
+            <p class="card-body">Threat telemetry your competitors are reading from a dashboard. We trained on it.</p>
+          </div>
+          <div class="playing-card">
+            <div class="card-suit" aria-hidden="true">♠</div>
+            <div class="card-rank">A♠</div>
+            <div class="card-name">Cove DR+Backup</div>
+            <div class="card-sub">N-able native recovery</div>
+            <p class="card-body">Recovery point data, backup rates, gap detection. Native. Not a third-party pull.</p>
+          </div>
+          <div class="playing-card">
+            <div class="card-suit" aria-hidden="true">♣</div>
+            <div class="card-rank">A♣</div>
+            <div class="card-name">Script Repo</div>
+            <div class="card-sub">Deterministic execution</div>
+            <p class="card-body">The runbook doesn't guess. It runs.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Market Gap -->
+      <section class="vision-padded vision-section" aria-label="Market gap analysis">
+        <div class="vision-section-label">The Chair Nobody's Sitting In</div>
+        <p class="mgap-scalePad-note">ScalePad Lifecycle X was $300+/user/month. It's discontinued. The market is waiting.</p>
+        <div class="market-gap-grid">
+          <div class="mgap-col stakes">
+            <div class="mgap-label">Table Stakes</div>
+            <div class="mgap-item">Thread</div>
+            <div class="mgap-item">PIA</div>
+            <div class="mgap-item">Rost</div>
+          </div>
+          <div class="mgap-col opportunity">
+            <div class="mgap-label" style="opacity:0.4;">Opportunity</div>
+            <div class="empty-chair" aria-label="Empty chair — unclaimed market position">empty<br>chair</div>
+          </div>
+          <div class="mgap-col threat">
+            <div class="mgap-label">Threat</div>
+            <div class="mgap-item">Shield</div>
+            <div class="mgap-item">Titan</div>
+            <div class="mgap-item">Treeline</div>
+            <div class="mgap-item" style="font-size:11px;margin-top:6px;font-family:var(--font-mono);opacity:0.65;">VC-backed MSPs building it themselves</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Bar -->
+      <section class="vision-padded" aria-label="Design bar">
+        <div class="the-bar">
+          <div class="bar-headline">Editable in 15 minutes.<br>Or we haven't solved it.</div>
+          <p class="bar-body">That's the bar. Not "generates a report." Editable. By the MSP. In 15 minutes. If it takes longer, it's not done.</p>
+          <span class="bar-flag">[A] This is a design bet. Not yet tested. The prototype is the test.</span>
+        </div>
+      </section>
+
+      <div style="height:28px;"></div>
+    </main>
+
+    <!-- BRADLEY RAIL — Surface B -->
+    <aside class="bradley-rail" aria-label="Bradley rail — vision prototype analysis">
+      <div>
+        <div class="rail-readiness">Tier 1 · Concept</div>
+        <p class="rail-blurb">Testing whether the value prop narrative lands for stakeholders and sales conversations. Not testing interaction design — testing the story.</p>
+      </div>
+
+      <hr class="rail-divider">
+
+      <div>
+        <div class="rail-block-label rail-nailed">What you nailed</div>
+        <p class="rail-block-text">The one-job frame ("six coworkers, one operating model") makes the capability legible without requiring a product demo. The playing cards give sales a shorthand for N-able's data moat. The market gap section names the ScalePad hole without overclaiming.</p>
+      </div>
+
+      <div>
+        <div class="rail-block-label rail-hurt">What will hurt you</div>
+        <p class="rail-block-text">The 15-minute bar ships as the promise and the bet simultaneously. If the [A] flag reads as a disclaimer rather than honest design transparency, it undercuts the page's authority. Also: this page makes the QBR the capstone — but the other five agents don't exist yet. You're selling the operating model before the parts are built.</p>
+      </div>
+
+      <hr class="rail-divider">
+
+      <!-- PRODUCT card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-product">▶ Product</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Decide whether this page ships internally (Nicole/Meaghan alignment) or externally (MSP prospect conversations) — the register is different for each.
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          Internal = frame the investment. External = set a promise you have to keep.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You conflate stakeholder alignment with prospect commitment.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Internal use — alignment accelerates roadmap decisions. Unknown conversion if used in sales.</div>
+          <div class="roi-line"><strong>User:</strong> N/A — this is a pitch, not a product</div>
+          <div class="roi-line"><strong>Unknown:</strong> Whether the one-job frame is legible to MSPs who haven't seen the full deck</div>
+        </div>
+      </div>
+
+      <!-- DESIGN card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-design">▶ Design</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Test whether the playing card section communicates "unfair advantage" or "marketing speak" — with a non-N-able MSP reader.
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          The deck is doing real work only if MSPs recognize Adlumin and Cove as differentiated, not just branded.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You validate the frame with people who already believe it.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Unknown</div>
+          <div class="roi-line"><strong>User:</strong> Unknown</div>
+          <div class="roi-line"><strong>Unknown:</strong> Whether "N-able native" means anything to an MSP who's never used Adlumin or Cove</div>
+        </div>
+      </div>
+
+      <!-- RESEARCH card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-research">▶ Research</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Run the value prop page past 2–3 MSPs who are NOT current N-able customers — does the story land cold?
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          Current customer feedback is inflated by brand familiarity.
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          You validate the narrative with the converted.
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line"><strong>Business:</strong> Unknown — cold-read is the only honest signal at this stage</div>
+          <div class="roi-line"><strong>User:</strong> Unknown</div>
+          <div class="roi-line"><strong>Unknown:</strong> Whether the market gap framing (ScalePad hole) is known to MSPs or only to N-able observers</div>
+        </div>
+      </div>
+
+      <!-- ENG card -->
+      <div class="routed-card">
+        <div class="routed-card-team team-eng">▶ Eng</div>
+        <div class="routed-card-line">
+          <strong>Does</strong>
+          Nothing at this stage — this is a vision prototype, no technical validation required yet.
+        </div>
+        <div class="routed-card-line">
+          <strong>Why now</strong>
+          N/A
+        </div>
+        <div class="routed-card-line">
+          <strong>If you skip it</strong>
+          N/A
+        </div>
+        <div class="roi-block">
+          <div class="roi-label">ROI</div>
+          <div class="roi-line">The Eng card in the vision page is a placeholder. It activates after Gate 2 is passed.</div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- FIDELITY BANNER -->
+<footer class="fidelity-banner" role="contentinfo">
+  Vision Prototype · Band Protocol · QBR Analyst · Beth Connor · 2026-07-10 · Fictional data only · Not for client use
+</footer>
+
+<script>
+  function switchSurface(id) {
+    document.querySelectorAll('.surface').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.getElementById('surface-' + id).classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+    document.getElementById('tab-' + id).setAttribute('aria-selected', 'true');
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>

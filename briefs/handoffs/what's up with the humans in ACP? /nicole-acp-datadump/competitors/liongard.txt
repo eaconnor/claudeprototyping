@@ -1,0 +1,55 @@
+# Liongard
+slug: liongard
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Liongard is an MSP configuration inspection and change detection platform that automatically discovers, inspects, and tracks changes across client IT environments. LiongardIQ is the AI layer on top, providing real-time cyber visibility and AI-driven insights. In 2025, Liongard added the Roar Assistant (beta) — a natural language AI built into LiongardIQ for querying asset and configuration intelligence. The IT Glue Pro Sync (ITGPS) integration now automatically pushes Liongard asset data into IT Glue documentation.
+
+## MSP Relevance
+Liongard addresses a critical MSP blind spot: knowing what's actually in a client's environment and detecting unauthorized changes. By automating configuration inspection across 80+ systems (M365, Active Directory, firewalls, cloud, endpoints), Liongard reduces manual audit work and enables proactive alerts when something changes unexpectedly. The IT Glue integration makes Liongard data flow directly into the documentation MSPs already maintain.
+
+## Key Offerings & Capabilities
+- Automated configuration inspection — discovers and inspects 80+ systems and applications
+- Change detection — alerts when configurations change unexpectedly (security policies, admin accounts, firewall rules)
+- LiongardIQ — AI-powered cyber visibility layer with real-time insights
+- Roar Assistant (beta) — natural language AI for querying asset and configuration intelligence
+- IT Glue Pro Sync (ITGPS) — automatically creates and updates IT Glue assets from Liongard data
+- Visual Insights dashboards — expanded reporting with visual analytics (March 2026)
+- Axcient x360 Recover Inspector — backup infrastructure visibility with parent-child relationships
+- Proactive Ticket Initiative (PTI) — support process to reduce inspector setup failures
+
+## Recent Announcements
+- LiongardIQ launched (2025) — AI layer providing real-time cyber visibility and AI insights
+- Roar Assistant (beta, 2025) — natural language querying of asset and configuration data built into LiongardIQ
+- IT Glue Pro Sync (ITGPS) GA announced after successful beta — automatic IT Glue documentation from Liongard data
+- March 2026: Visual Insights dashboards — expanded reporting and enhanced inspector discovery models
+- February 2026: Proactive Ticket Initiative launched to reduce inspector setup failures
+- Axcient x360 Recover Inspector added with parent-child discovery model for backup visibility
+
+## Pricing Model
+Per-environment (tenant) per-month subscription through MSP partner tier. Pricing scales with number of managed client environments. Exact pricing requires contact with sales. Commonly referenced in the range of $10–25/environment/month depending on tier.
+
+## Strengths
+- Unique positioning — automated configuration inspection is a category Liongard largely owns in MSP
+- LiongardIQ AI insights give MSPs proactive risk visibility without manual audits
+- IT Glue Pro Sync creates automatic documentation flow — reduces one of the most manual MSP tasks
+- Roar Assistant natural language querying makes configuration data accessible to non-technical staff
+- Strong and growing inspector coverage (80+ systems)
+
+## Weaknesses / Gaps
+- Roar Assistant is still in beta — natural language querying is early
+- Less known outside the North American MSP community
+- Change detection generates alerts but does not auto-remediate — requires manual follow-up or integration with automation tools
+- Smaller company means fewer resources for rapid feature development vs. platform vendors
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Liongard competes in configuration visibility and change detection, not agentic workflow automation. However, LiongardIQ and Roar Assistant are building toward AI-driven configuration management — if Liongard adds automated remediation (not just alerting), the overlap with NZO increases. Liongard data is also a natural input for NZO's AI agents.
+
+## Notes
+- IT Glue Pro Sync is a strong integration — Liongard + IT Glue users have automated documentation, which is a key NZO use case area
+- Roar Assistant is worth tracking — natural language querying of configuration data is the right UX direction
+- Liongard is a potential NZO partner (feeding configuration data to NZO agents) as much as a competitor

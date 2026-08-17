@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Murder Board — Offering A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1a1612;--paper:#efe7d6;--card:#f7f0df;--line:#1a1612;--grid:rgba(26,22,18,.06);--muted:#6b6459;
+    --r:#3f6d3f;--a:#b6892b;--q:#a23b26;--violet:#5B3A7E;--blue:#1F3C96;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:"Kalam",cursive;font-size:16px;line-height:1.4;padding:26px 18px 80px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .mono{font-family:"Space Mono",monospace}
+  h1{font-size:30px;margin:2px 0}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .banner{border:2px dashed var(--line);background:var(--card);padding:8px 14px;margin-bottom:18px;font-family:"Space Mono",monospace;font-size:11px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+  .banner b{background:var(--ink);color:var(--paper);padding:2px 7px}
+
+  /* survival hero */
+  .hero{display:flex;gap:22px;align-items:center;background:var(--card);border:2.5px solid var(--line);box-shadow:7px 7px 0 var(--line);padding:16px 22px;margin-bottom:18px;flex-wrap:wrap}
+  .surv{font-family:"Space Mono",monospace;font-weight:700;font-size:52px;line-height:1}
+  .surv small{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:4px}
+  .hero .msg{flex:1;min-width:240px;font-size:15px}
+  .pill{display:inline-block;font-family:"Space Mono",monospace;font-size:11px;padding:2px 8px;border:1.5px solid var(--line);border-radius:2px}
+
+  /* oregon trail */
+  .trail{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  .ford{background:var(--card);border:2px solid var(--line);box-shadow:4px 4px 0 var(--line);padding:10px 12px;position:relative}
+  .ford h4{margin:0 0 4px;font-size:15px;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.06em}
+  .ford .sv{font-family:"Space Mono",monospace;font-size:20px;font-weight:700}
+  .ford .gates{font-size:12px;color:var(--muted);margin-top:4px}
+  .ford.death{border-color:var(--q);box-shadow:4px 4px 0 var(--q);background:#f6e6e1}
+  .ford.death::after{content:"✦ falls first here";position:absolute;top:-11px;right:8px;background:var(--q);color:#fff;font-family:"Space Mono",monospace;font-size:9.5px;padding:1px 6px}
+
+  .cols{display:grid;grid-template-columns:1.35fr 1fr;gap:20px}
+  @media(max-width:860px){.cols{grid-template-columns:1fr}.trail{grid-template-columns:1fr 1fr}}
+  .panel{background:var(--card);border:2.5px solid var(--line);box-shadow:6px 6px 0 var(--line);padding:14px 16px}
+  .panel h3{margin:0 0 10px;font-size:16px;font-family:"Space Mono",monospace;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--line);padding-bottom:5px}
+
+  .row{border-bottom:1.4px dotted var(--line);padding:8px 0}
+  .row:last-child{border-bottom:none}
+  .rtop{display:flex;align-items:center;gap:8px}
+  .rid{font-family:"Space Mono",monospace;font-weight:700;font-size:12px;min-width:26px}
+  .rlabel{flex:1;font-size:14.5px}
+  .req{font-size:12px}
+  .stage{font-family:"Space Mono",monospace;font-size:9.5px;padding:1px 5px;border:1.2px solid var(--muted);color:var(--muted);border-radius:2px;text-transform:uppercase}
+  .pbar{height:7px;background:rgba(26,22,18,.1);margin:5px 0 3px;position:relative}
+  .pbar i{position:absolute;left:0;top:0;bottom:0;background:var(--violet)}
+  .pmeta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+  .btns{display:flex;gap:4px}
+  .b{font-family:"Space Mono",monospace;font-size:11px;padding:2px 7px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;border-radius:2px}
+  .b.on-pass{background:var(--r);color:#fff;border-color:var(--r)}
+  .b.on-fail{background:var(--q);color:#fff;border-color:var(--q)}
+  .b.on-unk{background:var(--ink);color:var(--paper)}
+  .exp{display:none;font-size:12.5px;color:#4a4238;margin-top:6px;padding-left:34px}
+  .exp.show{display:block}
+  .exp b{color:var(--q)}
+  .caret{cursor:pointer;color:var(--muted);font-size:12px}
+
+  .sens li{margin:0 0 9px;font-size:14px}
+  .sens .lift{font-family:"Space Mono",monospace;color:var(--r);font-weight:700}
+  .first{background:var(--paper);border:2px solid var(--q);padding:8px 10px;margin-bottom:12px;font-size:13.5px}
+  .first b{color:var(--q)}
+  .mcbtn{font-family:"Space Mono",monospace;font-size:13px;padding:7px 14px;border:2px solid var(--line);background:var(--ink);color:var(--paper);cursor:pointer;box-shadow:3px 3px 0 var(--line)}
+  .mcout{margin-top:10px;font-size:13px;display:none}
+  .mcout.show{display:block}
+  .hist{font-family:"Space Mono",monospace;font-size:11px;white-space:pre;line-height:1.3;margin-top:6px;color:#4a4238}
+  details.guns{margin-top:20px;background:var(--card);border:2px solid var(--line);box-shadow:4px 4px 0 var(--line);padding:10px 14px}
+  details.guns summary{cursor:pointer;font-family:"Space Mono",monospace;font-size:13px;font-weight:700}
+  details.guns li{margin:6px 0;font-size:13px}
+  footer{margin-top:26px;border-top:2px solid var(--line);padding-top:12px;font-size:12px;color:var(--muted)}
+  .reset{float:right;font-family:"Space Mono",monospace;font-size:11px;cursor:pointer;border:1.5px solid var(--line);padding:2px 8px;background:var(--paper)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner mono"><b>IDEA CHESS</b><span>Tier 0 · play each idea against the board before the market does</span><span style="color:var(--violet)">18 positions · Offering A</span></div>
+  <h1>Offering A — Client-Facing Proof (QBR + Value Ledger) <span class="reset" onclick="reset()">↺ reset</span></h1>
+  <div class="sub">Six required gates. Drag a study from <b>?</b> to <b>✓ passed</b> (or <b>✗ failed</b>) and watch survival move. Probabilities are murder-board <b>[A]</b> estimates — argue with them.</div>
+
+  <div class="hero">
+    <div><div class="surv" id="surv">—</div><small id="survnote">naive survival · product of required gates</small></div>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="trail" id="trail"></div>
+
+  <div class="cols">
+    <div class="panel">
+      <h3>The assumption chain <span style="font-size:11px;color:var(--muted);font-weight:400">(⊕ required · click ⌄ for the kill)</span></h3>
+      <div id="rows"></div>
+    </div>
+    <div>
+      <div class="panel" style="margin-bottom:18px">
+        <h3>Test first — sensitivity</h3>
+        <div class="first" id="first"></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Biggest survival lift if resolved (math):</div>
+        <ul class="sens" id="sens"></ul>
+      </div>
+      <div class="panel">
+        <h3>Monte Carlo</h3>
+        <div style="font-size:13px;margin-bottom:8px">Sample every unresolved required gate 10,000× at its probability. Survival = all required pass.</div>
+        <button class="mcbtn" onclick="runMC()">▶ run 10,000 market runs</button>
+        <div class="mcout" id="mcout"></div>
+      </div>
+    </div>
+  </div>
+
+  <details class="guns">
+    <summary>♟ The openings — how the board attacks (12 traditions)</summary>
+    <ul>
+      <li><b>JTBD:</b> we studied the buyer's purchase-intent, never the operator doing the job — the real job may be "defend my price," not "draft faster."</li>
+      <li><b>SDT:</b> a 15-min edit that feels like ownership needs the draft 90% right AND leaving authorship room — too good = "I didn't write this," too rough = "I'll do it myself."</li>
+      <li><b>Service Blueprint:</b> the one frontstage promise ("defend every number") has no backstage — normalization is "Not started."</li>
+      <li><b>Value-based pricing:</b> every WTP anchor is flat/per-tech and low; the per-outcome model has no anchor that supports it.</li>
+      <li><b>Moore's chasm:</b> the enthusiastic technical segment self-builds; the beachhead pragmatists have no referenceable peer.</li>
+      <li><b>Christensen:</b> QBR is a sustaining feature for the RMM incumbent — their rational move is to bundle it free.</li>
+      <li><b>Porter:</b> buyer power HIGH (DIY), substitute threat HIGH (RMM bundle) — the only favorable force (first-party moat) is unbuilt.</li>
+      <li><b>Wardley:</b> effort is going into the near-commodity narrative layer while the genesis-stage moat (normalization) is unstarted.</li>
+      <li><b>Kano:</b> if QBR-drafting lands as must-be (≥4/5 "it'll be in my RMM"), it's a hygiene factor priced like a delighter.</li>
+      <li><b>Lean RAT:</b> the two riskiest assumptions (15-min edit, normalize-clean) are both unowned, no study — built before tested.</li>
+      <li><b>Doblin:</b> one-and-a-half innovation types, and the half (Product System / first-party stack) is unstarted.</li>
+      <li><b>Regulatory:</b> a number-bearing client artifact into an EU-AI-Act liability surface (live 2026-08-02) with compliance owner &lt;TBD&gt;.</li>
+    </ul>
+  </details>
+
+  <footer>Model: <code>briefs/idea-chess-offering-a.assumptions.json</code> · full kill-sheet: <code>briefs/idea-chess-offering-a.md</code>. Required gates: A1·A2·A10·H2·H3·H6. Naive product ≈0.6% — the assumptions cluster into 3 knots (data/legal · edit/operator · demand-fit), so true survival is higher; the <i>structure</i> (a stack of unowned P0s) is the point.</footer>
+</div>
+
+<script>
+const A = [
+{id:"A1",label:"Data clean enough to normalize (75-80%)",probability:0.30,required:true,stage:"build",kill:"Normalization error rate on real mixed-vendor data exceeds what a QBR number can defend → wrong figures in client output.",test:"Run normalization on 3 anonymized mixed-vendor datasets; measure field-level error rate.",ev:"[A] CS:LOW"},
+{id:"A2",label:"The 15-minute edit fits",probability:0.35,required:true,stage:"adopt",kill:"Operators take far longer than 15 min, or discard the draft and write from scratch.",test:"Timed operator prototype session: measure time-to-send and trust.",ev:"[A] CS:LOW · P0 unowned"},
+{id:"A3",label:"WTP holds vs buy-vs-build",probability:0.45,required:false,stage:"defend",kill:"Target MSPs decline to pay — small self-build, large already-have.",test:"Van Westendorp / Gabor-Granger pricing test on the 20-100 client segment.",ev:"[A] CS:MEDIUM"},
+{id:"A4",label:"ScalePad displacement window open",probability:0.80,required:false,stage:"launch",kill:"Lifecycle Manager X isn't being discontinued, or the window closes before ACP ships.",test:"Confirm ScalePad roadmap via second source.",ev:"[A]/[?] single-source"},
+{id:"A5",label:"Review/edit-before-send is wanted",probability:0.85,required:false,stage:"adopt",kill:"MSPs want fully-autonomous send, or reject AI authorship entirely.",test:"Confirmed (n=8); watch whether edit is cosmetic or substantive.",ev:"[R] CS:HIGH"},
+{id:"A6",label:"QBR demand exists (the destination)",probability:0.90,required:false,stage:"launch",kill:"Demand collapses under independent quant or proves an artifact of the shared 8-person base.",test:"Independent Qualtrics survey (Meaghan, 500-target, still out).",ev:"[D] CS:HIGH"},
+{id:"A7",label:"First-party telemetry is a real, defensible moat",probability:0.65,required:false,stage:"defend",kill:"Competitors normalize via 3rd-party APIs, or the moat only covers N-able's own stack.",test:"Scope legally-accessible vendors (H2); compare normalization first-party vs API.",ev:"[A] CS:MEDIUM"},
+{id:"A10",label:"Demand is for THIS solution, not just the destination",probability:0.55,required:true,stage:"adopt",kill:"Operators want the outcome but reject 'AI drafts, you edit and defend' — they want the number handed over.",test:"Solution-fit operator session on the draft-then-edit mechanic.",ev:"[A] CS:MEDIUM · never tested"},
+{id:"H1",label:"No account-ending wrong-number event",probability:0.60,required:false,stage:"adopt",kill:"A normalized figure is wrong in a client boardroom, caught, and the MSP loses trust in A permanently.",test:"Add defensibility tiering to the NARRATIVE (not just the ledger); test error-surfacing UX.",ev:"[A] asymmetric, unmodeled"},
+{id:"H2",label:"Cross-vendor data egress is legally/contractually permitted",probability:0.45,required:true,stage:"build",kill:"Competitors' ToS/DPA forbid N-able normalizing their data into a client artifact → cross-vendor collapses to cross-N-able-stack.",test:"Legal/DPA review + read one competitor ToS (ThreatLocker/Rapid7); confirm client-consent path.",ev:"[?] unexamined · possibly fatal"},
+{id:"H3",label:"The operator (not just the buyer) adopts",probability:0.55,required:true,stage:"adopt",kill:"The vCIO/tech who runs the QBR routes around A → owner-bought shelfware.",test:"Operator ethnography + prototype (collapses with A10/A2).",ev:"[A] CS:HIGH · ~93% [A]"},
+{id:"H4",label:"Quarterly cadence survives a monthly subscription",probability:0.55,required:false,stage:"defend",kill:"A 4x/year tool forms no habit; MSPs feel monthly cost vs quarterly value → churn.",test:"Model retention for a 4x/year tool; consider bundling with daily-use Triage.",ev:"[A] cadence mismatch"},
+{id:"H5",label:"MSP brand not homogenized by AI house style",probability:0.60,required:false,stage:"defend",kill:"QBRs from different MSPs read identically ('the ACP look') → the differentiation they pay for erodes.",test:"Blind read: can a client tell two MSPs' ACP QBRs apart?",ev:"[A] unexamined"},
+{id:"H6",label:"The edit paradox is resolvable (fast AND defensible)",probability:0.45,required:true,stage:"adopt",kill:"Trust-enough-to-be-fast and understand-enough-to-defend are mutually exclusive — pick one, break a claim.",test:"Operator session measuring BOTH time-to-send AND ability to answer a challenge to a number.",ev:"[A] structural tension"},
+{id:"H7",label:"Doesn't cannibalize N-able's own reporting",probability:0.55,required:false,stage:"defend",kill:"A displaces UEM/Cove/Adlumin reporting revenue → internal margin/channel conflict.",test:"Cannot fully test until FY27 strategy loads; scope SKU overlap internally.",ev:"[?] strategy doc is v0 placeholder"},
+{id:"H8",label:"LLM cost per QBR fits the flat-WTP margin",probability:0.50,required:false,stage:"build",kill:"Large-context generation × clients × 4 quarters × edit loops inverts gross margin at $25-50/tech.",test:"Model token cost of one full QBR + edit loop × realistic volume vs WTP ceiling.",ev:"[?] unit economics unmodeled"},
+{id:"H9",label:"Output not pulled into an insurer/audit reliance chain",probability:0.55,required:false,stage:"defend",kill:"A client's insurer/auditor relies on a wrong ACP-QBR number → multi-party reliance liability.",test:"Legal scoping: advisory vs relied-upon? Define disclaimer + tiering.",ev:"[?] legal scope undefined"},
+{id:"H11",label:"Multi-tenant approval authority is resolvable",probability:0.65,required:false,stage:"build",kill:"Approval must cascade to the end-customer admin → breaks the frictionless-draft promise at the tenancy boundary.",test:"Resolve build approval-model OQ-001..005; test multi-tenant data-use approval.",ev:"[?] 5 open build questions"}
+];
+const STAGES=["build","launch","adopt","defend"];
+let state={}; A.forEach(a=>state[a.id]='unknown');
+const eff=a=>{const s=state[a.id];return s==='pass'?1:s==='fail'?0:a.probability;};
+const req=()=>A.filter(a=>a.required);
+const survival=()=>req().reduce((p,a)=>p*eff(a),1);
+const survWith=(id,v)=>{const s=state[id];state[id]=v;const r=survival();state[id]=s;return r;};
+const fmt=x=>x>=0.1?(x*100).toFixed(0)+'%':x>=0.01?(x*100).toFixed(1)+'%':(x*100).toFixed(2)+'%';
+
+function color(x){return x<0.05?'var(--q)':x<0.25?'var(--a)':'var(--r)';}
+
+function render(){
+  const s=survival();
+  const el=document.getElementById('surv'); el.textContent=fmt(s); el.style.color=color(s);
+  const resolved=A.filter(a=>a.required&&state[a.id]!=='unknown').length;
+  document.getElementById('survnote').textContent=`naive survival · ${resolved}/${req().length} required gates resolved`;
+  const failed=req().filter(a=>state[a.id]==='fail');
+  let msg;
+  if(failed.length) msg=`<span class="pill" style="border-color:var(--q);color:var(--q)">CHECKMATE</span> ${failed.map(a=>a.id).join(', ')} failed — a required position at 0 ends the game. The board wins.`;
+  else if(s>=0.25) msg=`<span class="pill" style="border-color:var(--r);color:var(--r)">HOLDING</span> resolve the rest to confirm — but you've answered the sharpest moves.`;
+  else msg=`<span class="pill" style="border-color:var(--q);color:var(--q)">losing position</span> A is a stack of unowned P0s. It doesn't have a demand problem — it has an unresolved-assumption problem. Answer the two cheapest moves (H2, A1) and watch it climb.`;
+  document.getElementById('msg').innerHTML=msg;
+  renderTrail(); renderRows(); renderSens();
+}
+
+function renderTrail(){
+  // per-stage product of required gates; death ford = stage with lowest stage-product (biggest drag)
+  const data=STAGES.map(st=>{const g=req().filter(a=>a.stage===st);const p=g.reduce((x,a)=>x*eff(a),1);return{st,g,p};});
+  const alive=data.filter(d=>d.g.length);
+  let death=null,min=2; alive.forEach(d=>{if(d.p<min){min=d.p;death=d.st;}});
+  document.getElementById('trail').innerHTML=data.map(d=>{
+    const dead=d.st===death;
+    return `<div class="ford${dead?' death':''}"><h4>${d.st}</h4><div class="sv" style="color:${d.g.length?color(d.p):'var(--muted)'}">${d.g.length?fmt(d.p):'—'}</div><div class="gates">${d.g.length?d.g.map(a=>a.id).join(' · '):'no required gate'}</div></div>`;
+  }).join('');
+}
+
+function renderRows(){
+  document.getElementById('rows').innerHTML=A.map(a=>{
+    const s=state[a.id];
+    return `<div class="row">
+      <div class="rtop">
+        <span class="rid">${a.id}</span>
+        <span class="rlabel">${a.required?'<span class="req">⊕</span> ':''}${a.label}</span>
+        <span class="stage">${a.stage}</span>
+        <span class="caret" onclick="toggle('${a.id}')">⌄</span>
+      </div>
+      <div class="pbar"><i style="width:${Math.round(a.probability*100)}%"></i></div>
+      <div class="pmeta">
+        <span>${a.ev} · p=${a.probability}</span>
+        <span class="btns">
+          <span class="b ${s==='unknown'?'on-unk':''}" onclick="setS('${a.id}','unknown')">?</span>
+          <span class="b ${s==='pass'?'on-pass':''}" onclick="setS('${a.id}','pass')">✓ pass</span>
+          <span class="b ${s==='fail'?'on-fail':''}" onclick="setS('${a.id}','fail')">✗ fail</span>
+        </span>
+      </div>
+      <div class="exp" id="exp-${a.id}"><b>Beats it:</b> ${a.kill}<br><b style="color:var(--r)">Test:</b> ${a.test}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSens(){
+  const base=survival();
+  const cand=req().filter(a=>state[a.id]!=='pass').map(a=>({a,lift:survWith(a.id,'pass')-base})).sort((x,y)=>y.lift-x.lift);
+  document.getElementById('sens').innerHTML=cand.map(c=>`<li><b>${c.a.id}</b> ${c.a.label} <span class="lift">+${fmt(c.lift)}</span></li>`).join('')||'<li>all required gates passed — ship survives.</li>';
+  // test-first = cheapest+upstream (murder board's call), not just biggest lift
+  const h2=state['H2']!=='pass', a1=state['A1']!=='pass';
+  let first;
+  if(h2) first=`<b>Test first: H2</b> — the legal/DPA read on cross-vendor data egress. Not the biggest math lift (that's A1), but the <i>cheapest and most upstream</i>: if N-able can't legally normalize competitors' data, the whole cross-vendor premise — and A1's ceiling — fall with it. A read, not a build.`;
+  else if(a1) first=`<b>Test first: A1</b> — normalization on 3 real mixed-vendor datasets. Now the biggest lever; H2 cleared the legal path, this proves the data path.`;
+  else first=`<b>H2 + A1 cleared</b> — the data/legal knot is untied. Next: the edit/operator knot (A2, H6, H3) — one operator session resolves all three.`;
+  document.getElementById('first').innerHTML=first;
+}
+
+function runMC(runs=10000){
+  const r=req();let alive=0;const hist={};
+  for(let i=0;i<runs;i++){let passed=0,ok=true;
+    for(const a of r){const s=state[a.id];const p=s==='pass'?1:s==='fail'?0:a.probability;const hit=Math.random()<p;if(hit)passed++;else ok=false;}
+    if(ok)alive++;hist[passed]=(hist[passed]||0)+1;}
+  const pct=alive/runs;
+  let bars='';for(let k=0;k<=r.length;k++){const c=hist[k]||0;const w=Math.round(c/runs*40);bars+=`${k} gates │${'█'.repeat(w)} ${(c/runs*100).toFixed(0)}%\n`;}
+  const o=document.getElementById('mcout');o.classList.add('show');
+  o.innerHTML=`<b style="color:${color(pct)};font-family:'Space Mono'">${(pct*100).toFixed(2)}% of markets survive</b> (${alive}/${runs})<div class="hist">${bars}</div><div style="font-size:11px;color:var(--muted)">Matches the naive product for pure AND-gates — the value is seeing how rarely all ${r.length} land together.</div>`;
+}
+
+function setS(id,v){state[id]=v;render();}
+function toggle(id){document.getElementById('exp-'+id).classList.toggle('show');}
+function reset(){A.forEach(a=>state[a.id]='unknown');document.getElementById('mcout').classList.remove('show');render();}
+render();
+</script>
+</body>
+</html>

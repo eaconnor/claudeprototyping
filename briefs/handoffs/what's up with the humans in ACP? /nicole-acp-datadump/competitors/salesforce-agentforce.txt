@@ -1,0 +1,60 @@
+# Salesforce Agentforce
+slug: salesforce-agentforce
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Salesforce Agentforce is Salesforce's autonomous AI agent platform that enables organizations to deploy AI agents across sales, service, marketing, and operations workflows without writing code. Agentforce agents can reason, plan, and take action across Salesforce data and third-party systems, operating autonomously within guardrails set by the business. It represents Salesforce's pivot from Copilot-style AI assistance toward full agentic automation embedded in CRM workflows.
+
+## MSP Relevance
+Agentforce is relevant to MSPs that manage Salesforce environments for enterprise customers, or that build managed service offerings around CRM and customer operations automation. As Salesforce-savvy clients adopt Agentforce for service desk deflection, sales automation, and operations, MSPs need to understand and support these deployments. Additionally, Agentforce competes with MSP-native AI automation tools for IT service desk and customer support workflows.
+
+## Key Offerings & Capabilities
+- Agentforce — low-code agent builder within Salesforce platform (no code required for standard agents)
+- Agent Builder — visual drag-and-drop configuration of agent actions, triggers, and guardrails
+- Atlas Reasoning Engine — proprietary reasoning layer that enables multi-step planning and action
+- Agentforce for Service — autonomous case resolution, knowledge retrieval, and customer self-service
+- Agentforce for Sales — lead qualification, outreach, follow-up automation
+- Agentforce Operations — IT operations automation and workflow orchestration (April 2026)
+- Agentforce 360 — cross-cloud agent framework spanning Service, Sales, Marketing, and Commerce clouds (GA October 2025)
+- MuleSoft integration — connects agents to non-Salesforce systems and APIs
+- Data Cloud — unified customer data layer underpinning agent context and retrieval
+- Einstein Trust Layer — security and compliance layer for agent data access
+
+## Recent Announcements
+- October 2025: Agentforce 360 generally available — unified agent framework across all Salesforce clouds
+- October 2025: Agentforce hit 1,000+ enterprise customers within weeks of general availability
+- April 2026: Agentforce Operations launched — AI-driven automation for IT service management and business operations workflows
+- Agentforce Partner Network expanded with ISV and SI ecosystem support for agent distribution
+- Salesforce AI Research published benchmarks showing Agentforce outperforming competing enterprise AI agents on service deflection tasks
+- Integration with Slack for in-channel agent interactions now generally available
+
+## Pricing Model
+Consumption-based billing per agent conversation/action rather than per seat. Agentforce conversations priced at $2 per conversation (standard pricing; enterprise contracts negotiate down significantly at volume). Platform access requires an existing Salesforce license (Enterprise or Unlimited tier). Agentforce for Service and Agentforce for Sales sold as add-on SKUs. Data Cloud credits required for retrieval-augmented generation use cases.
+
+## Strengths
+- Native Salesforce integration — agents run inside the CRM with full context on customers, cases, and opportunities
+- No-code agent builder lowers adoption barrier for non-technical Salesforce admins
+- Atlas Reasoning Engine enables genuine multi-step agentic planning (not just retrieval)
+- Einstein Trust Layer provides enterprise-grade security and data governance for agent actions
+- Rapid enterprise adoption — over 1,000 customers within weeks of GA validates real demand
+- Massive Salesforce ecosystem of SIs and ISVs building Agentforce-native solutions
+
+## Weaknesses / Gaps
+- Requires Salesforce as the underlying data and workflow platform — not viable for non-Salesforce shops
+- $2/conversation pricing escalates quickly at scale without negotiated enterprise contracts
+- Atlas Reasoning Engine is proprietary — harder for customers to understand or audit agent logic
+- Focused on Salesforce ecosystem; limited appeal for IT operations or infrastructure management use cases
+- Partner channel still maturing relative to Salesforce's traditional CRM channel
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Agentforce targets CRM and customer operations workflows on Salesforce infrastructure. NZO operates in IT/MSP workflow automation. The overlap is primarily in IT service desk automation — Agentforce Operations competes with MSP AI agents for L1 ticket resolution. However, Agentforce requires Salesforce as the underlying platform, limiting its reach in typical MSP environments that are not Salesforce-centric.
+
+## Notes
+- The $2/conversation pricing model will be a point of customer friction at scale — monitor for pricing changes
+- Agentforce Operations is the product to watch most closely — it represents Salesforce moving into IT ops territory
+- Salesforce's enterprise CRM dominance gives Agentforce a captive install base that no competitor can match
+- Watch for Agentforce + MuleSoft combinations that could enable non-Salesforce IT workflow automation

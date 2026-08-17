@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en" data-review-depth="looks-good">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness — EBR v2 (Tier 1 Concept) — Holt Technology Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   HARNESS EBR v2 — DESIGN TOKENS
+   Source: prototypes/harness-ebr-v2/design.md — Apex 2.0, fileKey K9CTAzip5gwJmhOQpyfbvM
+   NOT Apex v1 (blue). NOT Band Protocol/Itten palette.
+   Provenance tagged per token below. [A] = not found in the 2.0 pull, estimated for
+   this build and flagged so nobody mistakes it for a verified swatch later.
+   Dark mode is NOT implemented — design.md states dark-mode values were not found
+   in the Apex 2.0 file ("treat as unspecified rather than inventing"). Light mode
+   is the verified surface. Topbar + Bradley rail are deliberately their own surfaces
+   per CLAUDE.md §9b and are not claimed as Apex-sourced.
+   ========================================================================== */
+:root{
+  /* brand — [VERIFIED] border/container/active, node 23635:75103 */
+  --brand:#8500cc;
+  --brand-soft:rgba(133,0,204,.10);
+  --brand-hero:#a90aff;      /* [OBSERVED] directional, not a resolved token */
+  --brand-logo:#c046ff;      /* [OBSERVED] directional, not a resolved token */
+
+  /* surfaces — [VERIFIED] surface/container/default, surface/status/default/subtle/hover */
+  --bg-app:#fafafa;
+  --bg-surface:#ffffff;
+  --bg-elevated:#f8ebff;     /* [A] brand-tinted hover, no distinct elevated tier found in 2.0 file */
+  --bg-deep:#f3f3f5;         /* [A] */
+  --border:#e2e2e6;          /* [A] no neutral default-border token resolved in 2.0 pull */
+  --border-strong:#5c5c66;   /* [VERIFIED] border/status/default/down */
+
+  /* text — [VERIFIED] content/default/heading; others [A] derived, not separately resolved */
+  --text-primary:#18191a;
+  --text-secondary:#3a3b3f;
+  --text-tertiary:#6b6c72;
+  --text-muted:#9a9ba2;
+
+  /* status — success/critical [OBSERVED]; warning/medium/low have no Apex 2.0 token, [A] estimated */
+  --critical:#d93333;        --critical-soft:rgba(217,51,51,.10);
+  --high:#c9740f;            --high-soft:rgba(201,116,15,.10);   /* [A] no warning token found */
+  --medium:#a8790a;          --medium-soft:rgba(168,121,10,.10); /* [A] */
+  --low:#1a8c4c;             --low-soft:#e8f7ed;                 /* [OBSERVED] success text / success-subtle fill */
+
+  /* cycle-learning ladder — Band-authored state vocabulary, not Apex-sourced; see build note */
+  --state-raw:#8a8b91;       --state-raw-soft:#f1f1f3;
+  --state-reconciled:#1a8c4c;--state-reconciled-soft:#e8f7ed;
+  --state-cleared:#8500cc;   --state-cleared-soft:rgba(133,0,204,.09);
+  --state-short:#b3261e;     --state-short-soft:#fdecea;
+  --state-ask:#a8790a;       --state-ask-soft:#fbf1de;
+  --state-learning:#6d28d9;  --state-learning-soft:#f1eaff;
+  --state-automate:#0d7a41;  --state-automate-soft:#e3f6ea;
+  --state-draft:#b3261e;     --state-draft-soft:#fdecea;
+
+  /* shape — [VERIFIED, OBSERVED] radius scale */
+  --radius-sm:2px; --radius-md:4px; --radius-lg:8px; --radius-xl:16px; --radius-full:999px;
+
+  /* type — [VERIFIED] families. design.md: "No monospace typeface found in the 2.0
+     file... v1 has apx-font-jetBrains-mono... do not borrow." So there is no mono
+     face here. Metadata/label text uses Inter with tabular numerals + tracking to
+     stay visually distinct from body copy without borrowing the v1 typeface. */
+  --font-ui:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-brand:'Manrope',-apple-system,sans-serif;
+  --font-mono:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+
+  /* space — [VERIFIED] */
+  --space-xs:8px; --space-sm:12px; --space-md:16px; --space-lg:20px; --space-xl:26px; --space-2xl:32px; --space-3xl:40px; --space-4xl:48px;
+
+  /* distinct surfaces — Band Protocol convention (CLAUDE.md §9b), not Apex-verified */
+  --topbar-bg:#160021;
+  --topbar-border:var(--brand);
+  --rail-bg:#f4edfc;
+  --rail-border:#7c3aed;
+
+  --shadow-sm:0 1px 2px rgba(20,10,30,.06), 0 1px 1px rgba(20,10,30,.04);
+  --shadow-md:0 4px 14px rgba(20,10,30,.09);
+  --shadow-lg:0 12px 32px rgba(20,10,30,.14);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg-app);
+  color:var(--text-primary);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,h5{font-family:var(--font-brand);margin:0;color:var(--text-primary);font-weight:700;}
+p{margin:0;}
+button{font-family:inherit;cursor:pointer;}
+a{color:var(--brand);}
+code,.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:.02em;}
+.cs-tag,.a-flag,.good-for,.part-num,.step-n,.stage-eyebrow,.ladder-node,.stage-btn .n,.q-label,.dc-label,.learn-log .stamp{font-variant-numeric:tabular-nums;}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+::selection{background:var(--brand-soft);}
+
+/* ===== layout shell ===== */
+.app-shell{display:flex;flex-direction:column;min-height:100vh;}
+
+.topbar{
+  background:linear-gradient(120deg,var(--topbar-bg) 0%, #26063d 100%);
+  border-bottom:2px solid var(--topbar-border);
+  color:#f4ecff;
+  display:flex;align-items:center;gap:var(--space-lg);
+  padding:10px var(--space-xl);
+  position:sticky;top:0;z-index:50;
+}
+.topbar .brand-mark{font-family:var(--font-brand);font-weight:800;font-size:19px;letter-spacing:.2px;color:#fff;display:flex;align-items:center;gap:8px;}
+.topbar .brand-mark .dot{width:9px;height:9px;border-radius:50%;background:var(--brand-logo);box-shadow:0 0 0 4px rgba(192,70,255,.25);}
+.topbar .msp-name{font-size:12.5px;color:#cfa6ef;padding-left:var(--space-lg);border-left:1px solid rgba(255,255,255,.18);}
+.topbar .msp-name b{color:#fff;font-weight:600;}
+.topbar-spacer{flex:1;}
+.topbar-client-select{display:flex;align-items:center;gap:8px;font-size:12px;color:#dcc3f2;}
+.topbar select{
+  background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.25);
+  border-radius:var(--radius-md);padding:6px 10px;font-family:var(--font-ui);font-size:12.5px;
+}
+.topbar .persona-pill{
+  display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-full);
+  padding:5px 12px 5px 6px;font-size:12px;color:#f4ecff;
+}
+.persona-pill .avatar{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;}
+
+/* ===== fidelity + confidence banner ===== */
+.fidelity-banner{
+  background:repeating-linear-gradient(135deg,#fdecea,#fdecea 10px,#fdf3ef 10px,#fdf3ef 20px);
+  border-bottom:1px solid #f0b8b3;
+  color:#7a2a20;
+  font-size:12.5px;
+  padding:9px var(--space-xl);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  position:sticky;top:52px;z-index:49;
+}
+.fidelity-banner strong{font-weight:700;}
+.fidelity-banner .badge-tier1{
+  background:#b3261e;color:#fff;font-weight:700;font-size:10.5px;letter-spacing:.4px;
+  padding:3px 8px;border-radius:var(--radius-sm);text-transform:uppercase;
+}
+.fidelity-banner .sep{opacity:.45;}
+.fidelity-banner button{
+  margin-left:auto;background:none;border:1px solid #d99089;color:#7a2a20;
+  border-radius:var(--radius-sm);padding:3px 9px;font-size:11px;font-weight:600;
+}
+
+/* ===== stage stepper ===== */
+.stage-nav{
+  display:flex;gap:2px;background:var(--bg-surface);border-bottom:1px solid var(--border);
+  padding:0 var(--space-xl);overflow-x:auto;position:sticky;top:96px;z-index:48;
+}
+.stage-btn{
+  background:none;border:none;border-bottom:3px solid transparent;
+  padding:12px 14px 10px;font-size:12.5px;font-weight:600;color:var(--text-tertiary);
+  white-space:nowrap;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  transition:color .15s;
+}
+.stage-btn .n{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);font-weight:600;}
+.stage-btn:hover{color:var(--text-primary);}
+.stage-btn.active{color:var(--brand);border-bottom-color:var(--brand);}
+.stage-btn.active .n{color:var(--brand);}
+
+/* ===== main grid: content + Bradley rail ===== */
+.main-grid{display:flex;flex:1;align-items:flex-start;}
+.stage-content{flex:1;min-width:0;padding:var(--space-2xl) var(--space-xl) var(--space-4xl);}
+.stage-content > .stage-head{margin-bottom:var(--space-xl);}
+.stage-content h2.stage-title{font-size:26px;}
+.stage-eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--brand);font-weight:600;margin-bottom:6px;display:block;
+}
+.stage-desc{color:var(--text-secondary);max-width:760px;margin-top:8px;font-size:13.5px;}
+
+/* ===== Bradley rail — distinct violet surface, council/reflection space ===== */
+.bradley-rail{
+  width:360px;flex-shrink:0;background:var(--rail-bg);
+  border-left:4px solid var(--rail-border);
+  box-shadow:inset 6px 0 14px -10px rgba(124,58,237,.45);
+  min-height:calc(100vh - 96px);
+  padding:var(--space-lg) var(--space-lg) var(--space-4xl);
+  position:sticky;top:96px;align-self:flex-start;
+  background-image:
+    linear-gradient(var(--rail-bg),var(--rail-bg)),
+    repeating-linear-gradient(45deg, rgba(124,58,237,.035) 0 2px, transparent 2px 14px);
+  background-blend-mode:normal;
+  overflow-y:auto;max-height:calc(100vh - 96px);
+}
+.rail-brand{display:flex;align-items:center;gap:8px;margin-bottom:var(--space-md);}
+.rail-brand .avatar{
+  width:30px;height:30px;border-radius:50%;background:var(--rail-border);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-brand);font-weight:800;font-size:13px;
+}
+.rail-brand .who{font-family:var(--font-brand);font-weight:700;font-size:14px;}
+.rail-brand .who span{display:block;font-family:var(--font-ui);font-weight:500;font-size:11px;color:var(--text-tertiary);}
+.readiness-badge{
+  display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--rail-border);
+  color:#5b21b6;border-radius:var(--radius-full);padding:5px 12px;font-size:11.5px;font-weight:700;
+  margin-bottom:var(--space-md);
+}
+.readiness-badge .dot{width:7px;height:7px;border-radius:50%;background:#5b21b6;}
+.rail-block{background:#fff;border:1px solid rgba(124,58,237,.18);border-radius:var(--radius-lg);padding:var(--space-md);margin-bottom:var(--space-md);}
+.rail-block h4{font-size:12.5px;text-transform:uppercase;letter-spacing:.4px;color:#5b21b6;margin-bottom:8px;font-family:var(--font-ui);font-weight:700;}
+.rail-block p{font-size:12.5px;color:var(--text-secondary);}
+.rail-block.nailed{border-color:rgba(26,140,76,.3);}
+.rail-block.nailed h4{color:#0d7a41;}
+.rail-block.hurt{border-color:rgba(217,51,51,.3);}
+.rail-block.hurt h4{color:#b3261e;}
+.rail-block ul{margin:0;padding-left:16px;}
+.rail-block li{font-size:12px;color:var(--text-secondary);margin-bottom:6px;}
+.route-card{background:#fff;border:1px solid rgba(124,58,237,.18);border-radius:var(--radius-lg);padding:var(--space-md);margin-bottom:var(--space-sm);}
+.route-card .team{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#fff;background:var(--rail-border);border-radius:var(--radius-sm);padding:2px 7px;margin-bottom:8px;}
+.route-card dl{margin:0;font-size:11.5px;}
+.route-card dt{font-weight:700;color:var(--text-primary);margin-top:6px;}
+.route-card dd{margin:2px 0 0;color:var(--text-secondary);}
+.route-card .roi{margin-top:8px;background:var(--rail-bg);border-radius:var(--radius-md);padding:8px;font-size:11px;}
+.route-card .roi div{margin-bottom:3px;}
+.rail-toggle{display:flex;gap:4px;margin-bottom:var(--space-md);background:#fff;border:1px solid rgba(124,58,237,.18);border-radius:var(--radius-full);padding:3px;}
+.rail-toggle button{flex:1;border:none;background:none;border-radius:var(--radius-full);padding:6px 4px;font-size:11px;font-weight:600;color:var(--text-tertiary);}
+.rail-toggle button.active{background:var(--rail-border);color:#fff;}
+
+/* ===== generic components ===== */
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);}
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-md);padding:8px 14px;font-size:12.5px;font-weight:600;border:1px solid var(--border-strong);background:#fff;color:var(--text-primary);}
+.btn:hover{background:var(--bg-app);}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff;}
+.btn-primary:hover{background:#6f00a8;}
+.btn-ghost{border-color:transparent;background:none;color:var(--brand);}
+.btn-sm{padding:5px 10px;font-size:11.5px;}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.3px;padding:2px 8px;border-radius:var(--radius-full);text-transform:uppercase;}
+.cs-tag{
+  font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.2px;
+  background:#f1f1f3;color:var(--text-tertiary);border:1px dashed var(--border-strong);
+  border-radius:var(--radius-sm);padding:1px 6px;white-space:nowrap;
+}
+.a-flag{font-family:var(--font-mono);font-size:9.5px;font-weight:700;color:#a8790a;background:#fbf1de;border-radius:var(--radius-sm);padding:1px 5px;letter-spacing:.3px;}
+
+/* status/state pills — the five-rung ladder + the base data states, deliberately distinct from each other */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.3px;padding:3px 9px;border-radius:var(--radius-full);text-transform:uppercase;white-space:nowrap;}
+.pill-raw{background:var(--state-raw-soft);color:var(--state-raw);border:1px solid var(--state-raw);}
+.pill-reconciled{background:var(--state-reconciled-soft);color:var(--state-reconciled);border:1px solid var(--state-reconciled);}
+.pill-cleared{background:var(--state-cleared-soft);color:var(--state-cleared);border:1px solid var(--state-cleared);}
+.pill-short{background:repeating-linear-gradient(135deg,var(--state-short-soft),var(--state-short-soft) 4px,#fff 4px,#fff 8px);color:var(--state-short);border:1.5px dashed var(--state-short);}
+.pill-ask{background:var(--state-ask-soft);color:var(--state-ask);border:1px solid var(--state-ask);animation:askpulse 2.4s ease-in-out infinite;}
+.pill-learning{background:var(--state-learning-soft);color:var(--state-learning);border:1px solid var(--state-learning);}
+.pill-automate{background:var(--state-automate-soft);color:var(--state-automate);border:1px solid var(--state-automate);}
+.pill-kit{background:var(--state-automate-soft);color:var(--state-automate);border:1px dashed var(--state-automate);}
+.pill-draft{
+  background:repeating-linear-gradient(135deg,var(--state-draft-soft),var(--state-draft-soft) 5px,#fff 5px,#fff 10px);
+  color:var(--state-draft);border:2px dashed var(--state-draft);font-weight:800;
+}
+.pill-cannottell{background:#f1eaff;color:#5b21b6;border:1px solid #5b21b6;}
+@keyframes askpulse{0%,100%{box-shadow:0 0 0 0 rgba(168,121,10,.35);}50%{box-shadow:0 0 0 5px rgba(168,121,10,0);}}
+
+.good-for{
+  display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10.5px;
+  color:var(--text-tertiary);border:1px dashed var(--border-strong);border-radius:var(--radius-sm);padding:2px 7px;
+}
+.good-for .est{color:#a8790a;font-weight:700;}
+
+/* ===== part card (KIT parts) ===== */
+.part-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-md);}
+.part-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-md);display:flex;flex-direction:column;gap:8px;}
+.part-card.is-short{border-color:var(--state-short);background:linear-gradient(180deg,#fff, #fffaf9);}
+.part-card .part-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.part-card .part-num{font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted);}
+.part-card h5{font-size:13px;line-height:1.35;}
+.part-card .picked-from{font-size:11.5px;color:var(--text-tertiary);}
+.part-card .picked-from b{color:var(--text-secondary);font-weight:600;}
+.part-card .judgment{font-size:11.5px;color:var(--text-secondary);background:var(--bg-app);border-left:2px solid var(--border-strong);padding:6px 8px;border-radius:var(--radius-sm);}
+.part-card .foot{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:auto;flex-wrap:wrap;}
+
+/* ===== stage-specific: picking sequence ===== */
+.picking-track{display:flex;gap:0;margin-bottom:var(--space-xl);overflow-x:auto;}
+.pick-step{flex:1;min-width:170px;position:relative;padding:var(--space-md);border:1px solid var(--border);background:#fff;}
+.pick-step:first-child{border-radius:var(--radius-lg) 0 0 var(--radius-lg);}
+.pick-step:last-child{border-radius:0 var(--radius-lg) var(--radius-lg) 0;}
+.pick-step + .pick-step{border-left:none;}
+.pick-step .step-n{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);}
+.pick-step h5{font-size:13px;margin:4px 0 6px;}
+.pick-step p{font-size:11.5px;color:var(--text-tertiary);}
+.pick-step.active{background:var(--brand-soft);border-color:var(--brand);z-index:1;}
+.pick-step.active h5{color:var(--brand);}
+.pick-step .arrow{position:absolute;right:-11px;top:50%;transform:translateY(-50%);width:20px;height:20px;background:#fff;border-right:1px solid var(--border);border-top:1px solid var(--border);transform:translateY(-50%) rotate(45deg);z-index:2;}
+.pick-step:last-child .arrow{display:none;}
+
+/* ===== SHORT ladder / cycle-learning mechanic ===== */
+.short-mechanic{border:1px solid var(--border);border-radius:var(--radius-lg);background:#fff;padding:var(--space-lg);margin-bottom:var(--space-md);}
+.short-mechanic .sm-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.ladder-track{display:flex;align-items:center;gap:4px;margin:10px 0;flex-wrap:wrap;}
+.ladder-node{font-family:var(--font-mono);font-size:10px;font-weight:600;padding:4px 9px;border-radius:var(--radius-full);border:1px solid var(--border-strong);color:var(--text-muted);background:var(--bg-app);}
+.ladder-node.reached{color:#fff;border-color:transparent;}
+.ladder-node.reached.n-ask{background:var(--state-ask);}
+.ladder-node.reached.n-learning{background:var(--state-learning);}
+.ladder-node.reached.n-kit,.ladder-node.reached.n-automate{background:var(--state-automate);}
+.ladder-arrow{color:var(--text-muted);font-size:12px;}
+
+.ask-prompt{background:var(--state-ask-soft);border:1px solid var(--state-ask);border-radius:var(--radius-md);padding:var(--space-md);margin:10px 0;}
+.ask-prompt .q-label{font-family:var(--font-mono);font-size:10px;color:var(--state-ask);font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:4px;}
+.ask-prompt .q-text{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:6px;}
+.ask-prompt .kit-quote{font-size:11px;color:var(--text-tertiary);font-style:italic;}
+.ask-prompt textarea, .ask-prompt input[type=text]{
+  width:100%;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:8px;font-family:inherit;font-size:12.5px;margin-top:8px;resize:vertical;
+}
+.learn-log{background:var(--state-learning-soft);border:1px solid var(--state-learning);border-radius:var(--radius-md);padding:var(--space-md);margin:10px 0;}
+.learn-log .log-line{display:flex;gap:8px;align-items:flex-start;font-size:12px;}
+.learn-log .log-line .stamp{font-family:var(--font-mono);font-size:10px;color:var(--state-learning);white-space:nowrap;margin-top:1px;}
+.learn-log .confirm-row{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(109,40,217,.35);}
+.learn-log .confirm-row p{font-size:11.5px;color:var(--text-secondary);flex:1;}
+.automate-box{background:var(--state-automate-soft);border:1px solid var(--state-automate);border-radius:var(--radius-md);padding:var(--space-md);margin:10px 0;font-size:12.5px;color:#0d5c31;}
+
+.draft-card{background:repeating-linear-gradient(135deg,#fff,#fff 8px,#fdecea 8px,#fdecea 16px);border:2px dashed var(--state-draft);border-radius:var(--radius-md);padding:var(--space-md);}
+.draft-card .dc-label{font-family:var(--font-mono);font-size:10.5px;font-weight:800;color:var(--state-draft);letter-spacing:.4px;}
+
+.cannottell-widget{display:flex;gap:6px;}
+.ct-btn{flex:1;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:#fff;padding:8px;font-size:11.5px;font-weight:600;text-align:center;}
+.ct-btn.accept.selected{background:var(--low-soft);border-color:var(--low);color:var(--low);}
+.ct-btn.reject.selected{background:var(--critical-soft);border-color:var(--critical);color:var(--critical);}
+.ct-btn.cannottell{border-style:dashed;}
+.ct-btn.cannottell.selected{background:#f1eaff;border-color:#5b21b6;color:#5b21b6;border-style:solid;box-shadow:0 0 0 3px rgba(91,33,182,.15);}
+
+/* ===== tables ===== */
+table.data-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+table.data-table th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);border-bottom:1px solid var(--border);padding:8px 10px;}
+table.data-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top;}
+table.data-table tr:hover td{background:var(--bg-app);}
+.tier-chip{font-family:var(--font-mono);font-weight:700;font-size:11px;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+.tier-A{background:#0d7a41;} .tier-B{background:#8500cc;} .tier-C{background:#a8790a;} .tier-D{background:#8a8b91;}
+
+/* ===== tabs (8-tab EBR deck) ===== */
+.ebr-tabs{display:flex;flex-wrap:wrap;gap:2px;border-bottom:2px solid var(--border);margin-bottom:var(--space-lg);}
+.ebr-tab-btn{background:none;border:none;padding:9px 13px;font-size:12px;font-weight:600;color:var(--text-tertiary);border-bottom:2px solid transparent;margin-bottom:-2px;display:flex;align-items:center;gap:6px;}
+.ebr-tab-btn .owner-dot{width:7px;height:7px;border-radius:50%;}
+.ebr-tab-btn.active{color:var(--brand);border-bottom-color:var(--brand);}
+.owner-dot.marcus{background:#0d7a41;}
+.owner-dot.vanessa{background:#8500cc;}
+
+.persona-strip{display:flex;gap:var(--space-md);margin-bottom:var(--space-lg);}
+.persona-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-md);display:flex;gap:10px;align-items:center;}
+.persona-card .avatar{width:38px;height:38px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-brand);font-weight:800;flex-shrink:0;}
+.persona-card.marcus .avatar{background:#0d7a41;}
+.persona-card.vanessa .avatar{background:#8500cc;}
+.persona-card h5{font-size:13px;}
+.persona-card p{font-size:11.5px;color:var(--text-tertiary);}
+
+.callout{border-radius:var(--radius-lg);padding:var(--space-md) var(--space-lg);font-size:12.5px;margin-bottom:var(--space-lg);}
+.callout.info{background:var(--brand-soft);border:1px solid var(--brand);color:#5c008f;}
+.callout.warn{background:var(--medium-soft);border:1px solid var(--medium);color:#6b4d06;}
+.callout.risk{background:var(--critical-soft);border:1px solid var(--critical);color:#7a2a20;}
+.callout.ok{background:var(--low-soft);border:1px solid var(--low);color:#0d5c31;}
+.callout strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+
+/* ===== Marcus/Vanessa human-to-human dialogue (Task 2, 2026-08-13) =====
+   [A] Bubble layout/spacing below is NOT sourced from an Apex 2.0 screenshot —
+   the N-zo chat/chat-w-tick component family + Input Area composer are
+   confirmed to exist in the Figma library (componentKeys known) but no visual
+   pull was retrievable this session. This is built as a standard Apex card
+   with avatar-based sender distinction — ordinary human-to-human conversation,
+   not N-zo. N-zo's own purple-glow treatment (surface/border/shadow) is
+   reserved for the moment the system surfaces something it drafted FROM their
+   conversation (.nzo-callout below), matching its Figma-scoped description
+   ("AI assistant panels, AI-generated content surfaces") — never the human
+   bubbles themselves. */
+.dialogue-card{padding:var(--space-lg);margin-bottom:var(--space-lg);}
+.dialogue-card > h4{font-size:14px;margin-bottom:4px;}
+.dialogue-thread{display:flex;flex-direction:column;gap:10px;margin:var(--space-md) 0;}
+.dialogue-msg{display:flex;gap:9px;max-width:78%;}
+.dialogue-msg.vanessa{align-self:flex-end;flex-direction:row-reverse;}
+.dialogue-msg .avatar{width:28px;height:28px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-brand);font-weight:800;font-size:11px;flex-shrink:0;}
+.dialogue-msg.marcus .avatar{background:#0d7a41;}
+.dialogue-msg.vanessa .avatar{background:#8500cc;}
+.dialogue-bubble{background:var(--bg-app);border:1px solid var(--border);border-radius:var(--radius-lg);padding:8px 12px;}
+.dialogue-msg.marcus .dialogue-bubble{border-top-left-radius:var(--radius-sm);}
+.dialogue-msg.vanessa .dialogue-bubble{border-top-right-radius:var(--radius-sm);background:var(--brand-soft);border-color:rgba(133,0,204,.28);}
+.dialogue-bubble .who{font-size:10.5px;font-weight:700;color:var(--text-tertiary);margin-bottom:2px;}
+.dialogue-msg.vanessa .dialogue-bubble .who{color:#6f00a8;text-align:right;}
+.dialogue-bubble p{font-size:12.5px;color:var(--text-primary);}
+/* N-zo — [A] color/glow direction only (N-zo/shadow/default, N-zo/border/default,
+   N-zo/surface/default named in the Figma library; no screenshot retrieved).
+   Reserved for system-drafted-from-conversation content, never plain chat. */
+.nzo-callout{
+  background:linear-gradient(180deg,#fbf3ff,#ffffff);
+  border:1px solid var(--brand);
+  border-radius:var(--radius-lg);
+  padding:var(--space-md) var(--space-lg);
+  box-shadow:0 0 0 1px rgba(133,0,204,.12), 0 6px 24px rgba(133,0,204,.22);
+  margin-top:4px;
+}
+.nzo-callout .nzo-head{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--brand);margin-bottom:8px;}
+.nzo-callout .nzo-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(133,0,204,.18);}
+.nzo-callout p{font-size:12.5px;color:var(--text-secondary);}
+.nzo-callout .confirm-row{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(133,0,204,.3);}
+.nzo-callout .confirm-row p{font-size:11.5px;flex:1;margin:0;}
+.nzo-callout .logged-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#0d7a41;}
+
+/* ===== Stage 5 clean/presentation deck + export (Task 3, 2026-08-13) ===== */
+.deck-toggle-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:var(--space-lg) 0 var(--space-md);}
+.presentation-tab-block{margin-bottom:var(--space-lg);}
+.presentation-tab-block h4{font-size:13.5px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.presentation-tab-block ul{margin:0;padding-left:18px;}
+.presentation-tab-block li{font-size:13px;color:var(--text-primary);margin-bottom:7px;line-height:1.45;}
+
+.compare-toggle{display:inline-flex;background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius-full);padding:3px;margin-bottom:var(--space-lg);}
+.compare-toggle button{border:none;background:none;border-radius:var(--radius-full);padding:8px 16px;font-size:12.5px;font-weight:600;color:var(--text-tertiary);}
+.compare-toggle button.active{background:var(--brand);color:#fff;}
+
+.stat-strip{display:flex;gap:var(--space-md);margin:var(--space-md) 0 var(--space-lg);flex-wrap:wrap;}
+.stat-box{flex:1;min-width:160px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-md);}
+.stat-box .big{font-family:var(--font-brand);font-size:26px;font-weight:800;color:var(--brand);display:block;}
+.stat-box .lbl{font-size:11px;color:var(--text-tertiary);margin-top:2px;}
+
+.dropzone{border:2px dashed var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-3xl);text-align:center;background:#fff;cursor:pointer;transition:border-color .15s,background .15s;}
+.dropzone:hover,.dropzone.dragging{border-color:var(--brand);background:var(--brand-soft);}
+.dropzone .icon{font-size:36px;margin-bottom:10px;}
+.ftux-spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--brand);margin:0 auto;animation:ftuxspin .8s linear infinite;}
+.ftux-spinner.sm{width:16px;height:16px;border-width:2px;margin:0;}
+@keyframes ftuxspin{to{transform:rotate(360deg);}}
+.mapping-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.mapping-row .from{flex:1;color:var(--text-tertiary);}
+.mapping-row .to{flex:1;font-weight:600;}
+.mapping-row .arrow{color:var(--brand);}
+.check-in{color:var(--low);}
+
+.room-participant{display:flex;gap:12px;align-items:center;padding:var(--space-md);border:1px solid var(--border);border-radius:var(--radius-lg);background:#fff;margin-bottom:8px;}
+.room-participant .avatar{width:40px;height:40px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-brand);font-weight:800;flex-shrink:0;}
+.room-participant .role{font-size:11.5px;color:var(--text-tertiary);}
+.room-participant .frontstage-badge{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;background:var(--brand-soft);color:var(--brand);padding:3px 9px;border-radius:var(--radius-full);}
+
+.review-toggle{display:inline-flex;background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius-full);padding:3px;margin-bottom:var(--space-lg);}
+.review-toggle button{border:none;background:none;border-radius:var(--radius-full);padding:8px 16px;font-size:12.5px;font-weight:600;color:var(--text-tertiary);}
+.review-toggle button.active{background:var(--brand);color:#fff;}
+
+.tt-icon{cursor:help;border-bottom:1px dotted var(--text-muted);}
+footer.build-footer{padding:var(--space-lg) var(--space-xl);font-size:11px;color:var(--text-muted);border-top:1px solid var(--border);}
+@media (max-width:1100px){.bradley-rail{display:none;}}
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="topbar">
+    <div class="brand-mark"><span class="dot"></span>HARNESS</div>
+    <div class="msp-name">MSP: <b>Holt Technology Solutions</b> · Owner: Daniel Holt</div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-client-select">
+      Client:
+      <select id="topClientSelect" aria-label="Select client"></select>
+    </div>
+    <div class="persona-pill"><span class="avatar" style="background:#0d7a41">M</span>Marcus — Technical Practitioner</div>
+    <div class="persona-pill"><span class="avatar" style="background:#8500cc">V</span>Vanessa — Account Manager</div>
+  </header>
+
+  <div class="fidelity-banner" id="fidelityBanner">
+    <span class="badge-tier1">Tier 1 · Concept</span>
+    <span><strong>Fidelity ≠ validation.</strong> Hi-fi visual polish, PROCEED-FLAGGED evidence base — <b>60% of tagged claims are [A] Assumed or [?] Unknown</b> (math-recount.md). n=1 primary source (SRC-U-009). Nothing on this screen has been user-tested.</span>
+    <span class="sep">|</span>
+    <span>Names, clients, and figures are fictional. Real interview subjects fictionalized per seed-data rule.</span>
+    <button id="bannerMoreBtn" type="button" aria-expanded="false">What does that mean?</button>
+  </div>
+  <div class="card" id="fidelityMore" style="display:none;margin:0 var(--space-xl);padding:var(--space-md) var(--space-lg);font-size:12px;color:var(--text-secondary);border-top:none;border-radius:0 0 var(--radius-lg) var(--radius-lg);">
+    <strong>Confidence regime: PROCEED-FLAGGED.</strong> Beth's explicit authorization to build on an imperfect evidence base — the artifact's directional-testing value exceeds the cost of waiting for a second interview. This build does not claim the continuity problem generalizes past one MSP, does not claim the GOOD FOR staleness windows are measured (they are authored estimates), and does not claim the cycle-memory notebook shown in Stage 3/4 exists in any connected tool today. See the Bradley rail for the full "what will hurt you" list.
+  </div>
+
+  <nav class="stage-nav" id="stageNav" aria-label="EBR pipeline stages"></nav>
+
+  <div class="main-grid">
+    <main class="stage-content" id="stageContent" tabindex="-1"></main>
+
+    <aside class="bradley-rail" aria-label="Bradley — project management rail">
+      <div class="rail-brand">
+        <span class="avatar">B</span>
+        <span class="who">Bradley<span>Turn count, [CS:] tags, honest routing</span></span>
+      </div>
+
+      <span class="readiness-badge"><span class="dot"></span>Tier 1 · Concept</span>
+
+      <div class="rail-block">
+        <h4>What this tests</h4>
+        <p>Whether making EBR prep — the PICKING sequence, the four cycle-memory SHORTs, per-part staleness — <b>visible as structured, honest UI</b> changes how a technical practitioner (Marcus) and account manager (Vanessa) experience cycle 2+ prep, versus the current all-manual, no-cycle-memory workflow. Built on <span class="cs-tag">CS: MEDIUM</span> n=1 primary research from one MSP, fictionalized here as Holt / Marcus / Vanessa. This is directional, not validated.</p>
+      </div>
+
+      <div class="rail-block nailed">
+        <h4>What you nailed</h4>
+        <ul>
+          <li>Problem sourced to direct interview quotes with timestamps, not paraphrase (SRC-U-009, 38:01 / 46:59–47:54).</li>
+          <li>Stage 5 shows Marcus frontstage <em>and</em> backstage — the old prototype's prep-only treatment is corrected.</li>
+          <li>"Cannot tell" built as a real, selectable, non-defaulted UI state, not collapsed into a status pill.</li>
+          <li>The four SHORTs get one consistent Ask→Learn→Automate/Kit ladder, plus a distinct Draft status — the notebook's non-existence is a concrete visual pattern, not aspirational copy.</li>
+          <li>Tool-stack conflicts resolved before build: correct vendor names confirmed (uSecure, HaloPSA, N-central, Inforcer, Cloud Capsule) and the correct risk framework confirmed (NCSC 10 Steps + Cyber Essentials).</li>
+        </ul>
+      </div>
+
+      <div class="rail-block hurt">
+        <h4>What will hurt you</h4>
+        <ul>
+          <li>GOOD FOR staleness windows are <b>authored, not measured</b> — a wrong window trains false confidence silently. UI marks them "est." but the numbers underneath are still guesses.</li>
+          <li>The three headline stats (3h / 1.5–2h / 80%→50%) are unverified against the source recording — shown here <span class="cs-tag">CS: MEDIUM</span>, not as confident numbers.</li>
+          <li>All 28 KIT parts source from vendors Harness doesn't own (N-central, Inforcer, HaloPSA, uSecure, Cloud Capsule). The one differentiator — the notebook — is the one thing not built.</li>
+          <li>Vanessa's tabs have visual parity in this build, not functional parity — Forward Intelligence and Referrals still have zero tool path.</li>
+          <li>n=1: one MSP, one owner, one practitioner. Hi-fi polish risks a test participant from a different MSP reading Technica-specific structure as sector-standard.</li>
+          <li>Nobody is named accountable for building the notebook (Structure = unknown, Gate 2). This can test well and still have no owner to build it.</li>
+        </ul>
+      </div>
+
+      <div id="routedCards"></div>
+    </aside>
+  </div>
+
+  <footer class="build-footer">Harness EBR v2 — Tier 1 Concept prototype · built for directional testing only · Apex Bridge (Apex 2.0 tokens, design.md) · brief: harness-ebr-v2-2026-08-13.brief.md</footer>
+</div>
+<script>
+/* ==========================================================================
+   HARNESS EBR v2 — DATA MODEL
+   All names, MSPs, clients fictional. Source: KIT FigJam (259:1670), 28-part
+   picking list; 7-stage axis, qbr-system-blueprint-2026-08-04.md §8/§14.
+   ========================================================================== */
+
+const STAGES = [
+  {id:0,name:"Onboard & Customize",short:"FTUX"},
+  {id:1,name:"Always Current",short:"Portfolio"},
+  {id:2,name:"Nudge",short:"Cadence"},
+  {id:3,name:"Draft Lands",short:"Picking"},
+  {id:4,name:"Confirm & Personalize",short:"Review"},
+  {id:5,name:"The Room",short:"Meeting"},
+  {id:6,name:"Close & Compound",short:"File"},
+];
+
+// 8-tab EBR structure (KIT table numbering). Forward Intelligence has no TAB
+// number in the source KIT table — it's Vanessa's pre-call desk-research pass,
+// assembled alongside the 8 numbered tabs, not one of the 8 itself. Shown with
+// equal visual weight regardless, per this brief's explicit build requirement.
+const TABS = [
+  {id:"agenda", n:1, name:"Agenda", owner:"vanessa"},
+  {id:"climate", n:2, name:"Current Climate", owner:"marcus"},
+  {id:"risk", n:3, name:"Risk Review", owner:"marcus"},
+  {id:"employee", n:4, name:"Employee Review", owner:"marcus"},
+  {id:"hardware", n:5, name:"Hardware", owner:"marcus"},
+  {id:"roadmap", n:6, name:"Technical Roadmap", owner:"marcus"},
+  {id:"forward", n:null, name:"Forward Intelligence", owner:"vanessa"},
+  {id:"referrals", n:7, name:"Referrals & Testimonials", owner:"vanessa"},
+  {id:"close", n:8, name:"Close & Compound", owner:"marcus"},
+];
+
+// STATE values used across parts: raw | reconciled | cleared | short
+const KIT_PARTS = [
+ {id:1,tab:"climate",name:"Device count",pickedFrom:"N-central",goodFor:"Hours",state:"reconciled",judgment:"None needed once re-derived.",short:false},
+ {id:2,tab:"climate",name:"Licensed user count",pickedFrom:"Entra active users, intersected with assigned licences",goodFor:"Days",state:"reconciled",judgment:"None — offboarding hygiene caveat applies.",short:false},
+ {id:3,tab:"climate",name:"What's deployed, per tool, and how far",pickedFrom:"Each vendor's own coverage endpoint",goodFor:"Days",state:"reconciled",judgment:"None.",short:false},
+ {id:4,tab:"climate",name:"Contract lines — item, cadence, quantity",pickedFrom:"HaloPSA agreements",goodFor:"Months",state:"reconciled",judgment:"MSP: is this agreement record actually current?",short:false},
+ {id:5,tab:"climate",name:"Licences and renewal dates",pickedFrom:"M365 subscribed SKUs",goodFor:"Months",state:"reconciled",judgment:"MSP: which renewal are we talking about?",short:false},
+
+ {id:6,tab:"risk",name:"Target level, and where they actually are",pickedFrom:"Inforcer golden tenant, scored 1–9",goodFor:"Minutes",state:"reconciled",judgment:"MSP sets the target. Most clients sit at 5; ideal client is 5.",short:false},
+ {id:7,tab:"risk",name:"Deviation list, minus already-accepted",pickedFrom:"Inforcer, then subtract Marcus's standing acceptances",goodFor:"Minutes",state:"cleared",judgment:"This is where nearly all of Marcus's judgment lives. Each acceptance records who, when, why — and whether the reason had an expiry.",short:false,isDeviationList:true},
+ {id:8,tab:"risk",name:"Temporary exclusions nobody put back",pickedFrom:"[A] Entra conditional access — enumerate policies + exclusion lists, diff against last cycle",goodFor:"Days",state:"short",judgment:"Was this exclusion meant to be permanent?",short:true,question:"Was this exclusion meant to be permanent?"},
+ {id:9,tab:"risk",name:"DLP, retention, conditional access — present AND working",pickedFrom:"The 365 tenant directly — Inforcer can't see these",goodFor:"Days",state:"raw",judgment:"Marcus only on exceptions.",short:false,draftEligible:true},
+ {id:10,tab:"risk",name:"MFA coverage",pickedFrom:"Entra — enumerate users + registered methods, compute it",goodFor:"Days",state:"reconciled",judgment:"None on the number. Marcus on what to do about exceptions.",short:false},
+ {id:11,tab:"risk",name:"Training / phishing test results",pickedFrom:"uSecure, per user per course",goodFor:"Weeks",state:"reconciled",judgment:"None on the numbers. Sales tone — a selling moment, not a shaming one.",short:false},
+ {id:12,tab:"risk",name:"Devices below current minimum OS",pickedFrom:"N-central per-device OS version",goodFor:"Days",state:"reconciled",judgment:"MSP sets the minimum.",short:false},
+ {id:13,tab:"risk",name:"End-of-support firmware, network kit, unmanaged offices",pickedFrom:"[A] N-central scan + manufacturer end-of-support dates",goodFor:"Days (scan) / Short (support dates)",state:"short",judgment:"Is that appliance actually still in the path?",short:true,question:"Is that appliance actually still in the path?",phoneCall:true},
+ {id:14,tab:"risk",name:"Anything that went wrong this quarter, and why",pickedFrom:"[?] Nothing today — would be an Incident Response Analyst writing into the notebook",goodFor:"Short",state:"short",judgment:"Marcus.",short:true,question:"What went wrong with this client this quarter — and why?"},
+
+ {id:15,tab:"employee",name:"Name and email roster",pickedFrom:"HaloPSA — client contacts list",goodFor:"One billing cycle",state:"raw",notBuilt:true,judgment:"Is this person still in role? Is their licence type correct?",short:false},
+ {id:16,tab:"employee",name:"MFA status per person",pickedFrom:"Cloud Capsule and Inforcer — read both, always",goodFor:"Weekly",state:"raw",notBuilt:true,judgment:"Deliberate exclusion (service account, shared mailbox) or an active gap?",short:false},
+ {id:17,tab:"employee",name:"Training completion and phishing results",pickedFrom:"uSecure — completion + credential-give tracking",goodFor:"Monthly",state:"raw",notBuilt:true,judgment:"Known non-completer by agreed policy, or an active gap?",short:false},
+
+ {id:18,tab:"hardware",name:"Device list — name, class, OS, last seen",pickedFrom:"N-central — reconcile analytics report, new asset report, old device list",goodFor:"Hours",state:"raw",notBuilt:true,judgment:"Is the missing device decommissioned, loaned out, or is the agent broken on a live machine?",short:false},
+ {id:19,tab:"hardware",name:"Warranty status and manufacturer end-of-support date",pickedFrom:"[?] No tool in the stack provides this",goodFor:"Months to years",state:"raw",notBuilt:true,judgment:"In daily use, stored as backup, or effectively dead while still powered on?",short:false},
+
+ {id:20,tab:"roadmap",name:"Gap list — current state to target Inforcer level",pickedFrom:"[A] Inforcer deviation alerts + M365 (DLP/retention/CA) + NCSC mapping logic",goodFor:"Weekly",state:"raw",notBuilt:true,judgment:"Accepted, on an agreed roadmap, or unknown to the client?",short:false},
+ {id:21,tab:"roadmap",name:"Roadmap recommendations — gap, action, priority, timeline",pickedFrom:"[A] Composed from the gap list",goodFor:"Quarterly",state:"cleared",judgment:"Priority order, and the reasoning the client will actually accept. A senior technician must clear it.",short:false},
+
+ {id:22,tab:"forward",name:"What this business is trying to achieve this quarter",pickedFrom:"[A] Client website, LinkedIn, Sales Navigator, Vanessa's carry-forward notes",goodFor:"Quarterly",state:"raw",notBuilt:true,judgment:"Which of Marcus's gaps or services maps to where this client is actually going?",short:false},
+ {id:23,tab:"forward",name:"Competitive and sector signals, next 12 months",pickedFrom:"[A] Outside knowledge, Inforcer aggregate view, industry publications",goodFor:"Annually",state:"raw",notBuilt:true,judgment:"Which signals apply to this specific client vs. sector-wide noise?",short:false},
+ {id:24,tab:"forward",name:"Staff changes since last EBR",pickedFrom:"[A] Ask the client, then check M365 stale-account (90d no login)",goodFor:"As of the EBR",state:"raw",notBuilt:true,judgment:"Deliberate billing delay/oversight? Leaver gone or on leave?",short:false,draftEligible:true},
+
+ {id:25,tab:"agenda",name:"Meeting logistics — contact, date, cadence, advocate",pickedFrom:"HaloPSA client contacts for the primary contact",goodFor:"Until it changes",state:"raw",notBuilt:true,judgment:"Is the primary contact still the decision-maker? Advocate field requires Vanessa in every case.",short:false},
+
+ {id:26,tab:"referrals",name:"Testimonial request and referral ask — timing, framing, target",pickedFrom:"[A] Vanessa's relationship read — no tool provides this",goodFor:"Every EBR — not always appropriate",state:"raw",notBuilt:true,judgment:"Is this the right moment? What did the client just respond well to?",short:false},
+
+ {id:27,tab:"close",name:"Open commitments from last cycle",pickedFrom:"[?] Last cycle's EBR commitments tab, checked against current tool readings",goodFor:"Per cycle",state:"short",judgment:"Is this commitment completed, still open, partly done, or superseded by something that happened since?",short:true,question:"Is this commitment completed, still open, partly done, or superseded by something that happened since?"},
+ {id:28,tab:"close",name:"New commitments to draft from this cycle's roadmap",pickedFrom:"[A] Composed from the Technical Roadmap tab, confirmed live in the room",goodFor:"Per cycle",state:"cleared",judgment:"Owner and deadline — both must come from the meeting.",short:false},
+];
+
+const SHORT_IDS = [8,13,14,27];
+
+// Named sources Marcus can attach when answering a SHORT's Ask prompt —
+// fictional, plausible for Holt's stack.
+const NAMED_SOURCES = {
+  8:  "Quarterly IT-contact call — logged as a HaloPSA ticket note each cycle",
+  13: "Manufacturer end-of-support lookup — Ubiquiti + Cisco Umbrella portals, checked by hand",
+  14: "Halo incident tickets tagged \"incident-quarterly\" — Marcus's own tagging convention",
+  27: "Last cycle's filed EBR deck — Close & Compound export, Holt's shared drive",
+};
+
+/* Cycle-learning ladder state per client, per SHORT part id.
+   rung: 'ask' | 'learning' (recorded, confirm pending) | 'kit' | 'automate'
+   Demonstrates the compounding-asset thesis: Pemberton (cycle 3, longtime client)
+   has fewer live Asks than Ashgrove Legal (cycle 1, brand new). */
+const SHORT_LADDER = {
+  pemberton: {
+    8:  {rung:"automate", source:NAMED_SOURCES[8],  confirmedOn:"Cycle 2", note:"Marcus confirmed this fetch after Cycle 2 — Cycle 3 onward, Harness checks the HaloPSA ticket note automatically before Marcus ever opens Risk Review."},
+    13: {rung:"learning", source:NAMED_SOURCES[13], recordedOn:"Cycle 3 (this cycle)", note:"Marcus named the source this cycle. Recorded instantly. Not yet confirmed for auto-fetch — that's a separate action, still open."},
+    14: {rung:"ask", source:null},
+    27: {rung:"kit",  source:NAMED_SOURCES[27], confirmedOn:"Cycle 2", note:"Composed automatically from last cycle's filed deck — no dedicated connector exists, but Harness already has the file, so it assembles the diff itself."},
+  },
+  ashgrove: {
+    8:  {rung:"ask", source:null},
+    13: {rung:"ask", source:null},
+    14: {rung:"ask", source:null},
+    27: {rung:"ask", source:null},
+  },
+};
+
+const CLIENTS = [
+  {id:"pemberton", name:"Pemberton & Associates", sector:"Professional Services", tier:"A", cycle:3, inforcerCurrent:4, inforcerTarget:5, users:47, flagged:3, lastEBR:"2026-05-14", advocate:"Priya Nandagopal, Operations Director"},
+  {id:"ashgrove", name:"Ashgrove Legal", sector:"Professional Services", tier:"A", cycle:1, inforcerCurrent:3, inforcerTarget:5, users:31, flagged:6, lastEBR:"—  (first cycle)", advocate:"Tom Ferris, Managing Partner"},
+  {id:"brightwell", name:"Brightwell Retail Group", sector:"Retail", tier:"B", cycle:5, inforcerCurrent:5, inforcerTarget:5, users:88, flagged:1, lastEBR:"2026-06-02", advocate:"Nadia Osei, Ops Director"},
+  {id:"corven", name:"Corven Manufacturing", sector:"Manufacturing", tier:"C", cycle:2, inforcerCurrent:4, inforcerTarget:5, users:64, flagged:4, lastEBR:"2026-04-29", advocate:"Grant Wallis, IT Lead"},
+];
+
+const ROUTED_CARDS = [
+  {team:"Product", color:"#8500cc",
+    does:"Decide whether commercial capture (pricing/packaging — Profit Model) is scoped now or deferred until the notebook itself is scoped; name an owner for the notebook capability.",
+    why:"Council + critic both flag Structure and Profit Model as unanswered — Profit Model is entirely absent from the brief's own Ten Types pass, not merely flagged [?].",
+    without:"The prototype can test well and still have nowhere to go: no named owner, no monetization thesis, no build-queue slot.",
+    roi:{business:"Unknown: gap — no financial model exists for the 80%→50% time claim (named directly in brief, Gate 2).", user:"Unknown: gap — commercial framing doesn't change Marcus's or Vanessa's day-to-day experience directly.", unknown:"Whether the notebook is fundable at all without a Profit Model answer."}},
+  {team:"Design", color:"#0d7a41",
+    does:"Validate the SHORT-state ladder (Ask / Learning / Kit / Automate / Draft) with Marcus before wider rollout — five new states is a lot of new vocabulary for one interface.",
+    why:"This ladder is a Session B invention. Critic named the prior gap directly: \"zero specification... will otherwise be improvised.\" Nobody has seen this pattern yet.",
+    without:"Five new status states with no usability pass may read as visual noise instead of signal — undermining the exact trust the staleness/SHORT system is meant to build.",
+    roi:{business:"Unknown: gap.", user:"If the ladder reads clearly, it directly cuts the paperwork-hunt time Craig described; if it doesn't, it adds cognitive load instead.", unknown:"Which outcome — absent a usability pass, this is a coin flip, not a bet."}},
+  {team:"Research", color:"#a8790a",
+    does:"Run a second MSP practitioner interview to test whether the continuity problem (cycle 2 costs the same as cycle 1) and the 8-tab structure generalize beyond the one MSP this brief is sourced from.",
+    why:"n=1 is named as a limit three times in the brief (Gate 1, Failure Mode 3, council Register). No second interview is scheduled.",
+    without:"The whole prototype may validate against one firm's idiosyncratic workflow, not a sector pattern — a false-positive risk that only surfaces after build investment.",
+    roi:{business:"Unknown: gap — cost of building the wrong shape (right hypothesis, firm-specific implementation) is not yet estimated.", user:"Directional only — Marcus's baseline (1.5–2h, fictionalized from the source practitioner's self-report) is n=1, not independently measured.", unknown:"Whether a second MSP's tab structure and tool stack look anything like this one."}},
+  {team:"Eng", color:"#1F3C96",
+    does:"Scope the actual notebook backend (append-only log + confirm-gated fetch) against the existing MCP Gateway (5 auth types, OAuth discovery) rather than inventing new infrastructure.",
+    why:"The confirm-before-behavior-change platform principle already exists in acp-core-main-3 (Coworker autonomy: Manual→Assisted→Autonomous, admin-initiated only, DEC-005/TRADE-004) and should govern Learn→Automate instead of a bespoke rule.",
+    without:"Risk of reproducing acp-core-main-3's own value_ledger anti-pattern: a provisional answer silently wearing a confirmed-looking label — the exact failure this brief warns against by name.",
+    roi:{business:"Reuses existing gateway infrastructure rather than new build — cost avoidance, not quantified.", user:"Marcus's trust in the system depends on Learn never silently promoting without his confirm — this mechanism is what makes or breaks that trust.", unknown:"Engineering effort to wire an actual named source (e.g. Halo ticket tags) — not scoped in this prototype."}},
+];
+</script>
+<script>
+/* ==========================================================================
+   HARNESS EBR v2 — RUNTIME STATE + HELPERS
+   ========================================================================== */
+const state = {
+  stage: 0,
+  client: "pemberton",
+  ebrTab: "agenda",
+  reviewDepth: "looks-good", // 'looks-good' | 'fine-tooth-comb'
+  ladder: JSON.parse(JSON.stringify(SHORT_LADDER)), // mutable per-session copy
+  deviationAnswers: {}, // key `${clientId}-${devIdx}` -> 'accept'|'reject'|'cannottell'
+  draftConfirmed: {},   // key `${clientId}-${partId}` -> true once confirmed in Stage 4
+  dialogueLogged: {},   // key clientId -> true once the Marcus/Vanessa conversation's drafted note is confirmed (Task 2)
+  channelOverride: {},  // Stage 2 — clientId -> true means "not the tiering default this cycle" (logged, not silent)
+  nudgeDismissed: {},   // Stage 2 — clientId -> true once Marcus actioned that nudge
+};
+// give the two "other" comparison clients a ladder too, so the topbar switch
+// (outside the dedicated compounding-asset compare panel) stays consistent.
+state.ladder.brightwell = {
+  8:{rung:"automate",source:NAMED_SOURCES[8],confirmedOn:"Cycle 2",note:"Long-running client — confirmed three cycles ago."},
+  13:{rung:"automate",source:NAMED_SOURCES[13],confirmedOn:"Cycle 3",note:"Confirmed after Cycle 3."},
+  14:{rung:"kit",source:NAMED_SOURCES[14],confirmedOn:"Cycle 3",note:"Composed from Halo incident tags — no dedicated connector, assembled from data Harness already reads."},
+  27:{rung:"automate",source:NAMED_SOURCES[27],confirmedOn:"Cycle 2",note:"Auto-fetched from filed decks since Cycle 2."},
+};
+state.ladder.corven = {
+  8:{rung:"learning",source:NAMED_SOURCES[8],recordedOn:"Cycle 2",note:"Recorded last cycle. Not yet confirmed for auto-fetch."},
+  13:{rung:"ask",source:null},
+  14:{rung:"ask",source:null},
+  27:{rung:"ask",source:null},
+};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function clientById(id){return CLIENTS.find(c=>c.id===id);}
+function partsForTab(tabId){return KIT_PARTS.filter(p=>p.tab===tabId);}
+
+function statePill(s){
+  const map={raw:["RAW","pill-raw"],reconciled:["RECONCILED","pill-reconciled"],cleared:["CLEARED","pill-cleared"],short:["SHORT","pill-short"]};
+  const [label,cls]=map[s]||["—","pill-raw"];
+  return `<span class="pill ${cls}">${label}</span>`;
+}
+function ladderPill(rung){
+  const map={ask:["ASK — LIVE QUESTION","pill-ask"],learning:["LEARNING — RECORDED","pill-learning"],kit:["KIT — ASSEMBLED","pill-kit"],automate:["AUTOMATE — FETCHED","pill-automate"]};
+  const [label,cls]=map[rung]||["ASK","pill-ask"];
+  return `<span class="pill ${cls}">${label}</span>`;
+}
+function goodForPill(text){
+  return `<span class="good-for">GOOD FOR: ${esc(text)} <span class="est" title="[A] Authored estimate from the KIT FigJam — not measured against a connector's real refresh rate.">est.*</span></span>`;
+}
+
+function renderRoutedCards(){
+  const html = ROUTED_CARDS.map(c=>`
+    <div class="route-card">
+      <span class="team" style="background:${c.color}">${c.team}</span>
+      <dl>
+        <dt>Does</dt><dd>${c.does}</dd>
+        <dt>Why now</dt><dd>${c.why}</dd>
+        <dt>If you ship without it</dt><dd>${c.without}</dd>
+      </dl>
+      <div class="roi">
+        <div><b>Business:</b> ${c.roi.business}</div>
+        <div><b>User:</b> ${c.roi.user}</div>
+        <div><b>Unknown:</b> ${c.roi.unknown}</div>
+      </div>
+    </div>`).join("");
+  document.getElementById("routedCards").innerHTML = `<div class="rail-block" style="background:none;border:none;padding:0;"><h4 style="padding-left:4px;">Routed — Product / Design / Research / Eng</h4></div>` + html;
+}
+
+/* ===== stage nav ===== */
+function renderStageNav(){
+  document.getElementById("stageNav").innerHTML = STAGES.map(s=>`
+    <button class="stage-btn ${s.id===state.stage?'active':''}" onclick="goStage(${s.id})">
+      <span class="n">STAGE ${s.id}</span>${esc(s.name)}
+    </button>`).join("");
+}
+function goStage(id){ state.stage = id; renderStageNav(); renderStage(); document.getElementById("stageContent").focus(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+function renderStage(){
+  const el = document.getElementById("stageContent");
+  const fns = [renderStage0, renderStage1, renderStage2, renderStage3, renderStage4, renderStage5, renderStage6];
+  el.innerHTML = fns[state.stage]();
+  // post-render wiring for stages that need it
+  if(state.stage===3) wireStage3();
+  if(state.stage===0) wireStage0();
+  if(state.stage===2) renderNudgeQueue();
+  if(state.stage===5) wireStage5();
+}
+</script>
+<script>
+/* ==========================================================================
+   STAGE 0 — Onboard & Customize (FTUX): drop the deck, earn the connector.
+   Sourced as spec'd, not invented (FSN-82692, [D]). 20-minute flow: upload
+   existing EBR deck -> map to 8-tab structure -> show value -> THEN ask for
+   integrations. Demonstrates value before asking for anything back.
+   ========================================================================== */
+const FTUX_MAPPING = [
+  {from:"Tab: “Client Snapshot”",to:"Agenda (Tab 1) + Current Climate (Tab 2)"},
+  {from:"Tab: “Security Score”",to:"Risk Review (Tab 3)"},
+  {from:"Tab: “Users”",to:"Employee Review (Tab 4)"},
+  {from:"Tab: “Assets”",to:"Hardware (Tab 5)"},
+  {from:"Tab: “Next Steps”",to:"Technical Roadmap (Tab 6)"},
+  {from:"(freeform notes, bottom of deck)",to:"Forward Intelligence — flagged as Vanessa's, no tool source"},
+  {from:"(not present in the uploaded deck)",to:"Referrals & Testimonials (Tab 7) — new tab, template only"},
+  {from:"Tab: “Action Items”",to:"Close & Compound (Tab 8)"},
+];
+
+// Five real connectors, dummy pull results consistent with Pemberton's
+// established numbers elsewhere in this file (CLIENTS: inforcerCurrent 4,
+// inforcerTarget 5, users 47, flagged 3; DEVIATIONS: 3 items on Part 7).
+// Wizard of Oz — no real backend call, no file parsing. File.name only.
+const FTUX_CONNECTORS = [
+  {id:"ncentral",     name:"N-central",     desc:"Device management, OS inventory, asset data",        result:"247 devices found, 3 flagged for follow-up"},
+  {id:"inforcer",     name:"Inforcer",      desc:"Golden tenant scoring, 1–9 scale, real-time alerts",  result:"Level 4/5 (target 5) — 3 deviations flagged, standing acceptances still apply"},
+  {id:"halopsa",      name:"HaloPSA",       desc:"PSA / ticketing / agreements — not ConnectWise",     result:"18 active contracts, 47 licensed users"},
+  {id:"usecure",      name:"uSecure",       desc:"Security awareness + phishing sim — not KnowBe4",    result:"94% training completion, 2 phishing test fails"},
+  {id:"cloudcapsule", name:"Cloud Capsule", desc:"MFA and identity, read alongside Inforcer",           result:"MFA enforced on 44/47 users, 3 exceptions"},
+];
+
+let ftuxStep = 0;            // 0=dropzone, 1=mapping, 2=value shown, 3=integration ask
+let ftuxFileName = null;     // real File.name from drop/select — Wizard of Oz, not parsed
+let ftuxAnalyzing = false;   // true during the fake "reading the file" beat between drop and mapping
+let ftuxConnectorState = {}; // connector id -> 'pulling' | 'done' | 'skipped' (absent = idle)
+
+function renderStage0(){
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 0 · Onboard &amp; Customize</span>
+    <h2 class="stage-title">Drop the deck. Earn the connector.</h2>
+    <p class="stage-desc"><span class="cs-tag">CS: HIGH</span> A real, spec'd 20-minute flow (FSN-82692) — not invented for this brief. Harness maps an MSP's existing EBR deck to the 8-tab structure and shows value <b>before</b> asking for any tool integration. Value first, integration ask second.</p>
+  </div>
+  <div id="ftuxZone"></div>
+  `;
+}
+
+/* ===== step 0: real drag/drop + browse, then a fake "analyzing" beat ===== */
+function ftuxDropzoneHTML(){
+  return `
+  <div class="dropzone" id="dropzone" role="button" tabindex="0"
+       onclick="triggerFtuxBrowse()"
+       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();triggerFtuxBrowse();}">
+    <div class="icon">⫀</div>
+    <h4>Drop Holt's existing EBR deck here</h4>
+    <p style="color:var(--text-tertiary);margin-top:6px;font-size:12.5px;">or click to browse — .xlsx, .xls, .csv, .pdf, or anything else for this demo</p>
+    <input type="file" id="ftuxFileInput" class="visually-hidden" tabindex="-1" accept=".xlsx,.xls,.csv,.pdf" onchange="handleFtuxFileSelect(event)">
+    <div style="margin-top:14px;"><button type="button" class="btn btn-sm btn-ghost" onclick="event.stopPropagation();useSampleFtuxFile();">Use a sample file instead →</button></div>
+  </div>`;
+}
+function ftuxAnalyzingHTML(){
+  return `
+  <div class="card" style="padding:var(--space-3xl);text-align:center;">
+    <div class="ftux-spinner" aria-hidden="true"></div>
+    <h4 style="margin-top:16px;">Reading <span class="mono">${esc(ftuxFileName||'file')}</span>…</h4>
+    <p style="font-size:12px;color:var(--text-tertiary);margin-top:6px;">Recognizing tabs. Matching column headers to the 8-tab structure.</p>
+  </div>`;
+}
+function triggerFtuxBrowse(){ const inp=document.getElementById("ftuxFileInput"); if(inp) inp.click(); }
+function handleFtuxFileSelect(e){
+  const f = e.target.files && e.target.files[0];
+  e.target.value = "";
+  if(f) startFtuxAnalyzing(f.name);
+}
+function useSampleFtuxFile(){ startFtuxAnalyzing("Pemberton-EBR-Q1-Draft.pptx"); }
+function startFtuxAnalyzing(filename){
+  ftuxFileName = filename;
+  ftuxAnalyzing = true;
+  renderFtuxZone();
+  const delay = 800 + Math.floor(Math.random()*700); // 800–1500ms
+  // BUG FIX (Task 1, 2026-08-13): this callback used to do a bare `ftuxStep=1`,
+  // unconditionally. If a manual/console call to ftuxAdvance() landed while
+  // ftuxAnalyzing was still true — ftuxZoneHTML() renders the spinner regardless
+  // of ftuxStep while analyzing, so an advance made during that window is
+  // invisible — this callback would later fire and silently stomp ftuxStep back
+  // down to 1, discarding the manual advance. Math.max() makes the callback a
+  // floor, never a regression. See ftuxAdvance()'s matching guard below.
+  setTimeout(()=>{ ftuxAnalyzing=false; ftuxStep=Math.max(ftuxStep,1); renderFtuxZone(); }, delay);
+}
+function ftuxDragEnter(e){ e.preventDefault(); e.currentTarget.classList.add("dragging"); }
+function ftuxDragOver(e){ e.preventDefault(); e.currentTarget.classList.add("dragging"); }
+function ftuxDragLeave(e){ e.preventDefault(); e.currentTarget.classList.remove("dragging"); }
+function ftuxDrop(e){
+  e.preventDefault();
+  e.currentTarget.classList.remove("dragging");
+  const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if(file) startFtuxAnalyzing(file.name);
+}
+
+/* ===== step 3: simulated connector pull sequence ===== */
+function connectorCardHTML(c){
+  const st = ftuxConnectorState[c.id] || "idle";
+  let action;
+  if(st==="idle"){
+    action = `<div style="display:flex;gap:6px;margin-top:auto;">
+      <button class="btn btn-sm btn-primary" onclick="pullConnector('${c.id}')">Connect</button>
+      <button class="btn btn-sm btn-ghost" onclick="skipConnector('${c.id}')">Skip</button>
+    </div>`;
+  } else if(st==="pulling"){
+    action = `<div style="display:flex;align-items:center;gap:8px;margin-top:auto;"><span class="ftux-spinner sm" aria-hidden="true"></span><span style="font-size:11.5px;color:var(--text-tertiary);">Pulling…</span></div>`;
+  } else if(st==="skipped"){
+    action = `<span class="pill pill-raw" style="margin-top:auto;align-self:flex-start;">SKIPPED — stays RAW</span>`;
+  } else {
+    action = `<div class="callout ok" style="margin:0;padding:8px 10px;font-size:11.5px;"><strong>Connected</strong>${esc(c.result)}</div>`;
+  }
+  return `<div class="part-card"><h5>${esc(c.name)}</h5><p class="picked-from">${esc(c.desc)}</p>${action}</div>`;
+}
+function renderConnectorGrid(){
+  const el = document.getElementById("ftuxConnectorGrid");
+  if(!el) return;
+  el.innerHTML = FTUX_CONNECTORS.map(connectorCardHTML).join("");
+}
+function renderConnectorContinue(){
+  const el = document.getElementById("ftuxConnectorContinue");
+  if(!el) return;
+  const total = FTUX_CONNECTORS.length;
+  const settled = FTUX_CONNECTORS.filter(c=>{const s=ftuxConnectorState[c.id];return s==="done"||s==="skipped";}).length;
+  const connected = FTUX_CONNECTORS.filter(c=>ftuxConnectorState[c.id]==="done").length;
+  let msg;
+  if(settled===0){
+    msg = `<p style="font-size:12px;color:var(--text-tertiary);">Connect or skip each one — nothing here blocks you from moving on.</p>`;
+  } else if(settled<total){
+    msg = `<p style="font-size:12px;color:var(--text-tertiary);">${settled} of ${total} decided (${connected} connected). Keep going, or continue now.</p>`;
+  } else {
+    msg = `<div class="callout ok" style="margin-bottom:0;"><strong>${connected} of ${total} connectors live</strong>This is the same read Stage 1 (Always Current) shows in Pemberton's portfolio row, and the same PULL step Stage 3 (Draft Lands) runs every cycle after this one — not a separate seed.</div>`;
+  }
+  el.innerHTML = msg + `<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+    <button class="btn btn-primary" onclick="goStage(1)">Continue to Always Current →</button>
+    <button class="btn btn-sm" onclick="connectAllConnectors()">Connect all (demo shortcut)</button>
+    <button class="btn btn-sm btn-ghost" onclick="resetFtux()">Start over</button>
+  </div>`;
+}
+// Demo affordance — pull every connector at once so a live walkthrough doesn't have to
+// click five times. Same code path as pullConnector, just fanned out.
+function connectAllConnectors(){
+  FTUX_CONNECTORS.forEach(c=>{ if(!ftuxConnectorState[c.id] || ftuxConnectorState[c.id]==="skipped") pullConnector(c.id); });
+}
+function pullConnector(id){
+  ftuxConnectorState[id] = "pulling";
+  renderConnectorGrid();
+  const delay = 800 + Math.floor(Math.random()*1200); // 800–2000ms, independently randomized so parallel pulls stagger
+  setTimeout(()=>{ ftuxConnectorState[id]="done"; renderConnectorGrid(); renderConnectorContinue(); }, delay);
+}
+function skipConnector(id){
+  ftuxConnectorState[id] = "skipped";
+  renderConnectorGrid();
+  renderConnectorContinue();
+}
+
+/* ===== zone dispatch ===== */
+function ftuxZoneHTML(){
+  if(ftuxAnalyzing) return ftuxAnalyzingHTML();
+  if(ftuxStep===0) return ftuxDropzoneHTML();
+  if(ftuxStep===1){
+    const fname = ftuxFileName || "Pemberton-EBR-Q1-Draft.pptx";
+    return `
+    <div class="card" style="padding:var(--space-lg);">
+      <h4 style="margin-bottom:4px;">Mapping <span class="mono" style="font-weight:500;font-size:12px;color:var(--text-tertiary);">${esc(fname)}</span> to the 8-tab structure…</h4>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:14px;">Recognized: <b>${esc(fname)}</b>. No integrations connected yet. This mapping runs on the file alone.</p>
+      ${FTUX_MAPPING.map(m=>`<div class="mapping-row"><span class="from">${esc(m.from)}</span><span class="arrow">→</span><span class="to">${esc(m.to)}</span></div>`).join("")}
+      <div style="margin-top:16px;"><button class="btn btn-primary" onclick="ftuxAdvance()">See the mapped result</button></div>
+    </div>`;
+  }
+  if(ftuxStep===2){
+    return `
+    <div class="callout ok"><strong>Value shown — no integration requested yet</strong>Holt's own deck now renders inside the 8-tab Harness structure. Nothing has been connected to N-central, Inforcer, HaloPSA, uSecure, or Cloud Capsule. This is the deck the MSP already had, reorganized.</div>
+    <div class="card" style="padding:var(--space-lg);">
+      <div class="ebr-tabs">${TABS.map(t=>`<span class="ebr-tab-btn" style="cursor:default;"><span class="owner-dot ${t.owner}"></span>${esc(t.name)}</span>`).join("")}</div>
+      <p style="font-size:12.5px;color:var(--text-secondary);">8 tabs populated from the uploaded deck's own content. Owner dots show who this tab belongs to in the room — <span style="color:#0d7a41;font-weight:600;">green = Marcus</span>, <span style="color:#8500cc;font-weight:600;">purple = Vanessa</span>.</p>
+      <div style="margin-top:14px;"><button class="btn btn-primary" onclick="ftuxAdvance()">Now connect your tools →</button></div>
+    </div>`;
+  }
+  return `
+  <div class="callout info"><strong>Now — and only now — the integration ask</strong>Value was demonstrated on the MSP's own file first. This is the point FSN-82692 calls out explicitly: ask for integration after value, not before.</div>
+  <div class="part-grid" id="ftuxConnectorGrid"></div>
+  <p style="margin-top:14px;font-size:12px;color:var(--text-tertiary);">Skipping a connector doesn't block onboarding — it just means that part's KIT card stays <span class="pill pill-raw" style="vertical-align:middle;">RAW</span> until connected. See Stage 1 for the portfolio view this onboarding pass feeds.</p>
+  <div id="ftuxConnectorContinue" style="margin-top:16px;"></div>
+  `;
+}
+function renderFtuxZone(){
+  const z = document.getElementById("ftuxZone");
+  if(!z) return;
+  z.innerHTML = ftuxZoneHTML();
+  wireFtuxZoneEvents();
+}
+function wireFtuxZoneEvents(){
+  if(ftuxAnalyzing) return;
+  if(ftuxStep===0){
+    const dz = document.getElementById("dropzone");
+    if(dz){
+      dz.addEventListener("dragenter", ftuxDragEnter);
+      dz.addEventListener("dragover", ftuxDragOver);
+      dz.addEventListener("dragleave", ftuxDragLeave);
+      dz.addEventListener("drop", ftuxDrop);
+    }
+  } else if(ftuxStep===3){
+    renderConnectorGrid();
+    renderConnectorContinue();
+  }
+}
+function ftuxAdvance(){
+  // BUG FIX (Task 1, 2026-08-13): ignore advance calls while the "reading the
+  // file" beat is still in flight — there is nothing rendered yet for a step
+  // past the spinner, and letting it through was what created the race the
+  // startFtuxAnalyzing() timeout above had to guard against.
+  if(ftuxAnalyzing) return;
+  ftuxStep = Math.min(ftuxStep+1,3);
+  renderFtuxZone();
+}
+// FIX (critic-pass-2, Gate 1 FAIL): this used to hard-reset ftuxConnectorState on every
+// entry to Stage 0, which meant connector state could never inform any later stage —
+// part of why Stage 1 was static. Onboarding progress now persists once earned; use the
+// explicit "Start over" control to reset it.
+function wireStage0(){
+  renderFtuxZone();
+}
+function resetFtux(){
+  ftuxStep = 0;
+  ftuxFileName = null;
+  ftuxAnalyzing = false;
+  ftuxConnectorState = {};
+  renderFtuxZone();
+}
+// Read by Stage 1 — this is the linkage that makes Stage 1's on-screen claim true.
+function connectorLive(id){ return ftuxConnectorState[id]==="done"; }
+function anyConnectorLive(){ return FTUX_CONNECTORS.some(c=>connectorLive(c.id)); }
+</script>
+<script>
+/* ==========================================================================
+   STAGE 1 — Always Current: portfolio across Holt's client register.
+   The brief's own gap: "the first computation from onboarding becomes the
+   portfolio assessment... currently disconnected in v1." This view states
+   that lineage explicitly rather than showing static seed data silently.
+   ========================================================================== */
+/* FIX (critic-pass-2, Gate 1 FAIL): this stage used to *claim* on screen that its table
+   was "the same computation Stage 0's onboarding pass produced," while actually reading
+   a static CLIENTS array with zero runtime link to connector state — the numbers were
+   hand-matched to look connected. That is the brief's own Failure Mode 1 (depicting a
+   capability that doesn't exist), asserted about the very gap the brief named.
+
+   Now the linkage is real. Each column declares which connector it depends on and reads
+   ftuxConnectorState at render time. Skip Inforcer in Stage 0 and the risk columns here
+   genuinely go unavailable; connect it and they populate. The underlying figures are
+   still fictional seed data (that's fine and labelled) — but whether a figure is
+   AVAILABLE AT ALL is now computed, not narrated. */
+const STAGE1_DEPS = {
+  posture: {connector:"inforcer",     label:"Inforcer"},
+  flagged: {connector:"inforcer",     label:"Inforcer"},
+  users:   {connector:"halopsa",      label:"HaloPSA"},
+};
+function unavailableCell(depLabel){
+  return `<span class="pill pill-raw" title="No data — this column is computed from a connector that isn't live. Connect it in Stage 0.">NEEDS ${esc(depLabel).toUpperCase()}</span>`;
+}
+function renderStage1(){
+  const postureLive = connectorLive(STAGE1_DEPS.posture.connector);
+  const usersLive    = connectorLive(STAGE1_DEPS.users.connector);
+  const anyLive      = anyConnectorLive();
+
+  const rows = CLIENTS.map(c=>{
+    const gap = c.inforcerTarget - c.inforcerCurrent;
+    const usersCell = usersLive
+      ? `${c.users} licensed users`
+      : `<span style="color:var(--text-muted);">user count needs HaloPSA</span>`;
+    const postureCell = postureLive
+      ? `${c.inforcerCurrent} / ${c.inforcerTarget} ${gap>0?`<span style="color:var(--medium);font-size:11px;">(gap ${gap})</span>`:`<span style="color:var(--low);font-size:11px;">(on target)</span>`}`
+      : unavailableCell(STAGE1_DEPS.posture.label);
+    const flaggedCell = postureLive
+      ? (c.flagged>=4?`<span class="pill pill-short" style="animation:none;">${c.flagged} FLAGGED</span>`:`<span class="pill pill-cleared">${c.flagged} flagged</span>`)
+      : unavailableCell(STAGE1_DEPS.flagged.label);
+    return `
+    <tr>
+      <td><b>${esc(c.name)}</b><br><span style="color:var(--text-tertiary);font-size:11px;">${esc(c.sector)} · ${usersCell}</span></td>
+      <td><span class="tier-chip tier-${c.tier}">${c.tier}</span></td>
+      <td>Cycle ${c.cycle}${c.cycle===1?' <span class="a-flag">NEW</span>':''}</td>
+      <td>${postureCell}</td>
+      <td>${flaggedCell}</td>
+      <td style="font-size:11.5px;color:var(--text-tertiary);">${esc(c.lastEBR)}</td>
+      <td><button class="btn btn-sm" onclick="state.client='${c.id}';document.getElementById('topClientSelect').value='${c.id}';goStage(3);">Open EBR →</button></td>
+    </tr>`;
+  }).join("");
+
+  const tierA = CLIENTS.filter(c=>c.tier==="A").length;
+  const totalFlagged = CLIENTS.reduce((a,c)=>a+c.flagged,0);
+  const liveNames = FTUX_CONNECTORS.filter(c=>connectorLive(c.id)).map(c=>c.name);
+
+  const lineage = anyLive
+    ? `<div class="callout ok"><strong>Computed from ${liveNames.length} live connector${liveNames.length===1?'':'s'}</strong>Live now: ${esc(liveNames.join(", "))}. The posture and flagged-risk columns below are rendered from connector state — go back to Stage 0, skip Inforcer, and watch those columns go unavailable. Client names, tiers and cycle counts are fictional seed data; what's computed here is <b>whether each figure is available at all</b>.</div>`
+    : `<div class="callout warn"><strong>No connectors live — nothing to compute from</strong>Posture and flagged-risk are blank below because no tool is connected, not because the screen is empty. Connect tools in <button class="btn btn-sm btn-ghost" style="padding:0 4px;" onclick="goStage(0)">Stage 0 · Onboard &amp; Customize</button> and this table populates. This is the honest state of a portfolio view with no data behind it.</div>`;
+
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 1 · Always Current</span>
+    <h2 class="stage-title">Holt's client register</h2>
+    <p class="stage-desc"><span class="cs-tag">CS: LOW</span> Portfolio view, tier rollups, flagged-risk counts. Each data column names the connector it depends on and reads live connector state — <b>availability is computed, not seeded</b>. The figures themselves are fictional (see fidelity banner); the linkage to Stage 0 is real.</p>
+  </div>
+  ${lineage}
+  <div class="stat-strip">
+    <div class="stat-box"><span class="big">${CLIENTS.length}</span><span class="lbl">clients in register</span></div>
+    <div class="stat-box"><span class="big">${tierA}</span><span class="lbl">Tier A clients</span></div>
+    <div class="stat-box"><span class="big">${postureLive?totalFlagged:'—'}</span><span class="lbl">${postureLive?'total flagged risk items, across portfolio':'flagged risk — needs Inforcer'}</span></div>
+  </div>
+  <div class="card" style="padding:var(--space-lg);overflow-x:auto;">
+    <table class="data-table">
+      <thead><tr><th>Client</th><th>Tier</th><th>Cycle</th><th>Posture (current/target)<br><span style="font-weight:400;text-transform:none;letter-spacing:0;">via Inforcer</span></th><th>Flagged risk<br><span style="font-weight:400;text-transform:none;letter-spacing:0;">via Inforcer</span></th><th>Last EBR</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px;font-size:11.5px;color:var(--text-tertiary);">Tier A/B clients get a meeting invitation at Stage 2 (Nudge); Tier C/D get a text/Slack nudge or a recurring report instead — see Stage 2.</p>
+  `;
+}
+</script>
+<script>
+/* ==========================================================================
+   STAGE 2 — Nudge. A/B -> meeting invite. C/D -> text/Slack or recurring
+   report. Cadence = config + interrupt, not fixed schedule (Beth's decision,
+   blueprint §14). Session B decision (named, not silent): a per-client
+   override control resolves the live SDT-vs-Service-Blueprint divergence
+   council flagged over whether the practitioner can override the tiering.
+   ========================================================================== */
+/* Stage 2 used to be a config table *describing* a notification. The blueprint's
+   touchpoint for this stage is an actual thing a human receives — "Dashboard/email
+   notification, tiered by cadence" — so this is now the notification itself, in
+   Marcus's queue, with the tier driving which channel it arrives on. The override
+   is a real control that re-renders and logs, not an alert() explaining a control. */
+// One map, one meaning: channelOverride[id] === true means "not the tiering default
+// this cycle." For a Tier A/B client that's a downgrade to a light nudge; for C/D it's
+// an escalation to a meeting. Same flag either way — the tier decides the direction.
+function nudgeChannelFor(c){
+  const isDefaultMeeting = (c.tier==="A"||c.tier==="B");
+  const flipped = !!state.channelOverride[c.id];
+  const meeting = flipped ? !isDefaultMeeting : isDefaultMeeting;
+  return {kind: meeting?"meeting":"light", overridden: flipped};
+}
+function nudgeCardHTML(c){
+  const ch = nudgeChannelFor(c);
+  const dismissed = state.nudgeDismissed[c.id];
+  const meeting = ch.kind==="meeting";
+  const icon = meeting ? "✉" : "💬";
+  const chanLabel = meeting ? "Meeting invitation · email + dashboard" : "Slack / text nudge · no meeting requested";
+  const body = meeting
+    ? `<b>${esc(c.name)}</b> is due an EBR this cycle. Draft assembly can start now — last EBR ${esc(c.lastEBR)}.`
+    : `<b>${esc(c.name)}</b> is due a check-in. Tier ${c.tier} — this one gets a light nudge and a recurring report, not a meeting slot.`;
+  const cta = dismissed
+    ? `<span class="pill pill-cleared">ACTIONED — draft queued</span>`
+    : `<div style="display:flex;gap:6px;flex-wrap:wrap;">
+         <button class="btn btn-sm btn-primary" onclick="actionNudge('${c.id}')">${meeting?'Accept &amp; start the draft':'Send the nudge'}</button>
+         <button class="btn btn-sm" onclick="toggleChannelOverride('${c.id}')">${ch.overridden?'Revert to the tier default':(meeting?'Downgrade to a nudge':'Escalate to a meeting')}</button>
+       </div>`;
+  return `
+  <div class="card" style="padding:var(--space-md) var(--space-lg);margin-bottom:10px;border-left:4px solid ${meeting?'var(--brand)':'var(--medium)'};">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <span style="font-size:20px;line-height:1.2;">${icon}</span>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="tier-chip tier-${c.tier}">${c.tier}</span>
+          <span style="font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:${meeting?'var(--brand)':'var(--medium)'};">${esc(chanLabel)}</span>
+          ${ch.overridden?`<span class="pill pill-draft" title="Marcus overrode the tiering default for this cycle. Logged, not silent.">OVERRIDDEN — LOGGED</span>`:''}
+        </div>
+        <p style="font-size:13px;margin-top:6px;color:var(--text-secondary);">${body}</p>
+        <div style="margin-top:10px;">${cta}</div>
+      </div>
+    </div>
+  </div>`;
+}
+function actionNudge(id){ state.nudgeDismissed[id]=true; renderNudgeQueue(); }
+function toggleChannelOverride(id){
+  state.channelOverride[id] = !state.channelOverride[id];
+  renderNudgeQueue();
+}
+function renderNudgeQueue(){
+  const el = document.getElementById("nudgeQueue");
+  if(!el) return;
+  el.innerHTML = CLIENTS.map(nudgeCardHTML).join("");
+  const actioned = CLIENTS.filter(c=>state.nudgeDismissed[c.id]).length;
+  const foot = document.getElementById("nudgeFoot");
+  if(foot){
+    foot.innerHTML = actioned===CLIENTS.length
+      ? `<div class="callout ok" style="margin:0;"><strong>Queue clear — ${actioned} of ${CLIENTS.length} actioned</strong>Every accepted invitation queues a draft for Stage 3. Nothing here required Marcus to open a spreadsheet to find out who was due.</div>`
+      : `<p style="font-size:12px;color:var(--text-tertiary);">${actioned} of ${CLIENTS.length} actioned. Cadence is config + interrupt — these arrived because a trigger fired per client tier, not because someone checked a calendar.</p>`;
+  }
+}
+function renderStage2(){
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 2 · Nudge</span>
+    <h2 class="stage-title">Marcus's queue, Monday morning</h2>
+    <p class="stage-desc">These arrived on their own. Tier A/B get a meeting invitation; Tier C/D get a light nudge or a recurring report instead of a meeting slot <span class="a-flag">A</span>. Marcus can override the tiering default for a single cycle — the override is logged, not silent.</p>
+  </div>
+  <div id="nudgeQueue"></div>
+  <div id="nudgeFoot" style="margin-top:var(--space-md);"></div>
+  `;
+}
+</script>
+<script>
+/* ==========================================================================
+   STAGE 3 — Draft Lands (PICKING sequence). The stage the brief says must be
+   "visible as structured work, not invisible as background prep." Five
+   sub-steps, one person, in order. Also where the four SHORTs' Ask/Learn/
+   Automate/Draft mechanic lives, and where the compounding-asset payoff
+   (Pemberton cycle 3 vs. a brand-new client cycle 1) gets demonstrated.
+   ========================================================================== */
+const PICKING_STEPS = [
+  {n:"PULL",desc:"Retrieve raw data from each part's source — N-central, Inforcer, HaloPSA, uSecure, Cloud Capsule, M365."},
+  {n:"RECONCILE",desc:"Normalize across sources. Today this is manual: “pipes it in, copy paste to wherever it's coming from.”"},
+  {n:"CLEAR",desc:"Remove accepted deviations, known exclusions, already-resolved items."},
+  {n:"SHORT-LIST",desc:"Identify which parts are ready vs. still SHORT — the four cycle-memory parts live here."},
+  {n:"ASSEMBLE",desc:"Compose the draft from cleared, reconciled parts — both Marcus's tabs and Vanessa's."},
+];
+let pickingStep = 4; // default straight to ASSEMBLE so the 8-tab draft is visible on entry
+
+function renderStage3(){
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 3 · Draft Lands</span>
+    <h2 class="stage-title">The PICKING sequence — structured work, not hidden prep</h2>
+    <p class="stage-desc"><span class="a-flag">A</span> All five sub-steps, one person, in order. A part is not usable until it passes through all five. Client: <b>${esc(clientById(state.client).name)}</b> (Cycle ${clientById(state.client).cycle}).</p>
+  </div>
+  <div class="picking-track" id="pickingTrack"></div>
+  <div id="pickingDetail" class="callout info" style="margin-bottom:var(--space-xl);"></div>
+
+  <div id="compoundingPayoff"></div>
+
+  <h3 style="font-size:16px;margin-bottom:10px;">ASSEMBLE — the draft, across all 8 tabs</h3>
+  <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px;">Both practitioner tracks get assembled here: <span style="color:#0d7a41;font-weight:600;">Marcus's tabs</span> (Current Climate, Risk Review, Employee Review, Hardware, Technical Roadmap) and <span style="color:#8500cc;font-weight:600;">Vanessa's tabs</span> (Agenda, Forward Intelligence, Referrals &amp; Testimonials) — same visual weight, same assembly step.</p>
+  <div class="ebr-tabs" id="ebrTabsNav"></div>
+  <div id="ebrTabContent"></div>
+  `;
+}
+
+function wireStage3(){
+  renderPickingTrack();
+  renderCompoundingPayoff();
+  renderEbrTabsNav();
+  renderEbrTabContent();
+}
+function renderPickingTrack(){
+  document.getElementById("pickingTrack").innerHTML = PICKING_STEPS.map((s,i)=>`
+    <div class="pick-step ${i===pickingStep?'active':''}" onclick="setPickingStep(${i})">
+      <div class="arrow"></div>
+      <span class="step-n">STEP ${i+1}</span>
+      <h5>${s.n}</h5>
+    </div>`).join("");
+  document.getElementById("pickingDetail").innerHTML = `<strong>${PICKING_STEPS[pickingStep].n}</strong>${PICKING_STEPS[pickingStep].desc}`;
+}
+function setPickingStep(i){ pickingStep=i; renderPickingTrack(); }
+
+function renderEbrTabsNav(){
+  document.getElementById("ebrTabsNav").innerHTML = TABS.map(t=>`
+    <button class="ebr-tab-btn ${t.id===state.ebrTab?'active':''}" onclick="setEbrTab('${t.id}')">
+      <span class="owner-dot ${t.owner}"></span>${t.n?`Tab ${t.n} — `:''}${esc(t.name)}
+    </button>`).join("");
+}
+function setEbrTab(id){ state.ebrTab=id; renderEbrTabsNav(); renderEbrTabContent(); }
+
+// FIX (critic-pass-2, Gate 3 FAIL): DRAFT_ITEMS (Stage 4) and KIT_PARTS[].state
+// (Stage 3) used to be unconnected — Part 9 read "RAW" in Stage 3 forever, no matter
+// what Stage 4 did with it, so the two stages told different stories about the same
+// part. Draft is now DERIVED, single source of truth: a part listed in DRAFT_ITEMS
+// renders as DRAFT until a human confirms it in Stage 4, then flips to confirmed
+// everywhere at once — and keeps its "was Draft" provenance rather than silently
+// becoming indistinguishable from a normally-reconciled part.
+function draftStateFor(partId){
+  if(typeof DRAFT_ITEMS === "undefined") return null;
+  if(!DRAFT_ITEMS.some(d=>d.partId===partId)) return null;
+  return state.draftConfirmed[`${state.client}-${partId}`] ? "draft-confirmed" : "draft";
+}
+function partStatePillHTML(p){
+  const ds = draftStateFor(p.id);
+  if(ds==="draft") return `<span class="pill pill-draft" title="Best-effort carry-forward guess. Queued for confirmation in Stage 4 — Confirm &amp; Personalize.">DRAFT</span>`;
+  if(ds==="draft-confirmed") return `<span class="pill pill-reconciled" title="Was a Draft carry-forward guess; a human confirmed it in Stage 4.">CONFIRMED — was Draft</span>`;
+  return statePill(p.state);
+}
+function partCardHTML(p){
+  const isDraft = draftStateFor(p.id)==="draft";
+  const shortCls = p.short ? "is-short" : "";
+  return `
+  <div class="part-card ${shortCls}" ${isDraft?'style="border:2px dashed var(--state-draft);"':''}>
+    <div class="part-top">
+      <span class="part-num">PART ${p.id}</span>
+      ${partStatePillHTML(p)}
+    </div>
+    <h5>${esc(p.name)}</h5>
+    <p class="picked-from"><b>Picked from:</b> ${esc(p.pickedFrom)}</p>
+    <div class="judgment">${esc(p.judgment)}</div>
+    <div class="foot">
+      ${goodForPill(p.goodFor)}
+      ${p.notBuilt?'<span class="tag" style="background:var(--state-raw-soft);color:var(--state-raw);">Not built — needs a connector</span>':''}
+    </div>
+  </div>`;
+}
+
+function ebrTabContentHTML(tabId){
+  const parts = partsForTab(tabId);
+  const tab = TABS.find(t=>t.id===tabId);
+  let intro = "";
+  if(tab.owner==="vanessa"){
+    intro = `<div class="callout" style="background:var(--brand-soft);border:1px solid var(--brand);color:#5c008f;"><strong>Vanessa's tab — real design attention, not an afterthought</strong>This tab is assembled in the same PICKING pass as Marcus's, with the same visual weight. Most of its parts are honestly marked "no tool path" rather than faked as connector-sourced.</div>`;
+  }
+  if(tabId==="risk"){
+    intro += `<div class="callout warn"><strong>NCSC 10 Steps to Cyber Security · Cyber Essentials target</strong>Every risk finding in this tab uses NCSC 10 Steps and Cyber Essentials language exclusively — the only compliance framework named anywhere in this build.</div>`;
+  }
+  const shortParts = parts.filter(p=>p.short);
+  const normalParts = parts.filter(p=>!p.short);
+  let shortSection = "";
+  if(shortParts.length){
+    shortSection = `<h4 style="font-size:13px;margin:var(--space-lg) 0 10px;color:var(--state-short);">Cycle-memory SHORTs in this tab — the notebook's non-existence, made visible</h4>` +
+      shortParts.map(p=>shortMechanicHTML(p, state.client)).join("");
+  }
+  let draftSection = "";
+  const draftable = normalParts.find(p=>p.draftEligible);
+  // Dialogue content below is written for Pemberton specifically (named client contact,
+  // named exclusion) — shown only for that client rather than reused generically across clients.
+  const dialogueSection = (tabId==="risk" && state.client==="pemberton") ? dialogueThreadHTML(state.client) : "";
+  return `${intro}
+    ${shortSection}
+    <div class="part-grid" style="margin-top:${shortParts.length?'16px':'0'};">${normalParts.map(partCardHTML).join("")}</div>
+    ${dialogueSection}`;
+}
+function renderEbrTabContent(){
+  const el = document.getElementById("ebrTabContent");
+  if(el) el.innerHTML = ebrTabContentHTML(state.ebrTab);
+}
+// Shared by anything embedded inside ebrTabContentHTML() (SHORT ladder, dialogue) that
+// needs to re-render after a click — Stage 3's own tab pane AND Stage 5's reused
+// "Internal view" pane (Task 3) can both be showing this same content at once, on
+// different tab ids, so both are refreshed defensively and each is a no-op if absent.
+function refreshAssembledTabViews(){
+  renderEbrTabContent();
+  if(typeof renderStage5TabContent === "function") renderStage5TabContent();
+}
+</script>
+<script>
+/* ==========================================================================
+   MARCUS / VANESSA DIALOGUE — human-to-human, system listens in (Task 2,
+   2026-08-13). Beth's brief: "they converse with each other [about the data],
+   with the system listening in." Built as an ordinary Apex card with
+   avatar-based sender distinction — NOT N-zo styling; N-zo's purple-glow
+   surface is reserved for the moment the system surfaces what it drafted
+   FROM their talk (.nzo-callout below), per N-zo's own Figma-scoped
+   description ("AI assistant panels, AI-generated content surfaces" — not
+   general chat). Ends in a system-drafted note with an explicit Confirm
+   action, reusing the same confirm-gated recording pattern as the Learn
+   mechanic above (recordShortAnswer/confirmShortFetch): nothing gets logged
+   from a conversation without a human confirming it first.
+   All content fictional — Pemberton & Associates, Marcus, Vanessa, Priya. ===== */
+const DIALOGUE_THREAD = [
+  {who:"marcus",   text:"Flagging this before Thursday — the conditional-access exclusion on svc-backup@pemberton.co is still live. Nobody's revisited it since we set it up."},
+  {who:"vanessa",  text:"That's the backup service account, right? Priya mentioned back in March they were mid-migration off their old backup vendor."},
+  {who:"marcus",   text:"Right — so it might've been meant as temporary, just for the cutover. If that's done, this should've been pulled weeks ago."},
+  {who:"vanessa",  text:"My read is the migration wrapped in April. I don't think it's malicious — just nobody remembered to close the exclusion out."},
+  {who:"marcus",   text:"That tracks. I'll leave it as a live Ask rather than guess at the reason — but let's flag it in the room so it doesn't just roll forward again."},
+  {who:"vanessa",  text:"Agreed. I'll bring it up when we hit Risk Review — better Priya hears it from us than finds it cold in the report."},
+];
+function dialogueMsgHTML(m){
+  const label = m.who==="marcus" ? "Marcus" : "Vanessa";
+  const initial = m.who==="marcus" ? "M" : "V";
+  return `<div class="dialogue-msg ${m.who}">
+    <span class="avatar">${initial}</span>
+    <div class="dialogue-bubble"><div class="who">${label}</div><p>${esc(m.text)}</p></div>
+  </div>`;
+}
+function dialogueThreadHTML(clientId){
+  const logged = !!state.dialogueLogged[clientId];
+  const draftNote = "Exclusion on svc-backup@pemberton.co likely dates to the March–April backup-vendor migration cutover. Vanessa to confirm directly with Priya; flag live in the room regardless of the answer.";
+  const nzoBody = logged
+    ? `<div class="nzo-head"><span class="nzo-dot"></span>Logged to Part 8</div>
+       <p>${esc(draftNote)}</p>
+       <div class="confirm-row"><span class="logged-badge">✓ Confirmed by Marcus — logged, this cycle</span></div>`
+    : `<div class="nzo-head"><span class="nzo-dot"></span>What the system heard</div>
+       <p><b>Drafted note for Part 8 (Risk Review):</b> “${esc(draftNote)}”</p>
+       <div class="confirm-row">
+         <p>Drafted from the conversation above. Nothing is logged to Part 8's record without an explicit confirm — same platform principle as the Learn recorder above.</p>
+         <button class="btn btn-primary btn-sm" onclick="confirmDialogueNote('${clientId}')">Confirm — log this note to Part 8</button>
+       </div>`;
+  return `
+  <div class="card dialogue-card">
+    <h4>Marcus &amp; Vanessa talk it through — Part 8, before it's recorded</h4>
+    <p style="font-size:11.5px;color:var(--text-tertiary);margin-bottom:2px;"><span class="a-flag">A</span> Bubble layout/spacing not sourced from an Apex 2.0 screenshot — N-zo's chat/chat-w-tick components are confirmed to exist in the Figma library, but no visual pull was retrievable this session. Ordinary conversation styling used here; N-zo purple-glow reserved for the drafted note below.</p>
+    <div class="dialogue-thread">${DIALOGUE_THREAD.map(dialogueMsgHTML).join("")}</div>
+    <div class="nzo-callout">${nzoBody}</div>
+  </div>`;
+}
+function confirmDialogueNote(clientId){
+  state.dialogueLogged[clientId] = true;
+  refreshAssembledTabViews();
+}
+</script>
+<script>
+/* ==========================================================================
+   Cycle Learning Mechanic — Ask -> Learn (recorder, confirm-gated fetch) ->
+   Automate/Kit, per brief section "Cycle Learning Mechanic" (2026-08-13).
+   Learn is a recorder, not an inference engine: the answer is logged
+   instantly (no gate); a SEPARATE, visible confirm step gates the fetch
+   behavior change. Nothing auto-promotes without a human confirming it —
+   mirrors acp-core-main-3's Coworker autonomy governance (DEC-005/TRADE-004).
+   ========================================================================== */
+function shortMechanicHTML(part, clientId){
+  const rung = (state.ladder[clientId] && state.ladder[clientId][part.id]) || {rung:"ask",source:null};
+  const rungOrder = ["ask","learning","kit","automate"];
+  const track = `
+    <div class="ladder-track">
+      <span class="ladder-node ${rung.rung==='ask'?'reached n-ask':''}">1 · ASK</span>
+      <span class="ladder-arrow">→</span>
+      <span class="ladder-node ${rung.rung==='learning'?'reached n-learning':''}">2 · LEARN (recorded)</span>
+      <span class="ladder-arrow">→</span>
+      <span class="ladder-node ${(rung.rung==='automate'||rung.rung==='kit')?'reached n-automate':''}">3 · ${rung.rung==='kit'?'KIT':'AUTOMATE'}</span>
+    </div>`;
+
+  let body = "";
+  if(rung.rung==="ask"){
+    body = `
+    <div class="ask-prompt">
+      <div class="q-label">Judgment attached — active prompt to Marcus</div>
+      <div class="q-text">${esc(part.question)}</div>
+      <p class="kit-quote">${part.phoneCall?'“…and it\'s a phone call not a query.”':'From the KIT: “'+esc(part.judgment)+'”'}</p>
+      <label class="visually-hidden" for="src-${clientId}-${part.id}">Name a source</label>
+      <input type="text" id="src-${clientId}-${part.id}" placeholder="Name a source Marcus would check (e.g. “${esc(NAMED_SOURCES[part.id])}”)">
+      <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="recordShortAnswer('${clientId}',${part.id})">Record answer</button>
+      <span style="font-size:11px;color:var(--text-tertiary);margin-left:8px;">Recorded instantly — no gate. Confirming the fetch is a separate step, next.</span>
+    </div>`;
+  } else if(rung.rung==="learning"){
+    body = `
+    <div class="learn-log">
+      <div class="log-line"><span class="stamp">${esc(rung.recordedOn||'this cycle')}</span><span>Marcus's answer <b>recorded instantly</b> as an append-only log entry — named source: <i>“${esc(rung.source)}”</i>. No rule was inferred. No gate blocked the write.</span></div>
+      <div class="confirm-row">
+        <p><b>Confirm step (separate, visible action):</b> once confirmed, Harness will fetch this source automatically on future cycles. Nothing fetches until this is clicked.</p>
+        <button class="btn btn-primary btn-sm" onclick="confirmShortFetch('${clientId}',${part.id})">Confirm — start auto-fetch</button>
+      </div>
+    </div>`;
+  } else {
+    body = `
+    <div class="automate-box">
+      <b>${rung.rung==='kit'?'KIT':'AUTOMATE'} — confirmed ${esc(rung.confirmedOn||'')}.</b> ${esc(rung.note||'')}
+      <div style="margin-top:6px;font-size:11px;color:#0d5c31;">Source on file: <i>${esc(rung.source)}</i>. This did not happen automatically — a human confirmed it first.</div>
+    </div>`;
+  }
+
+  return `
+  <div class="short-mechanic">
+    <div class="sm-head">
+      <div><span class="part-num">PART ${part.id} — SHORT</span><h5 style="margin-top:2px;">${esc(part.name)}</h5></div>
+      ${ladderPill(rung.rung)}
+    </div>
+    <p style="font-size:11.5px;color:var(--text-tertiary);"><b>Picked from:</b> ${esc(part.pickedFrom)} · ${goodForPill(part.goodFor)}</p>
+    ${track}
+    ${body}
+  </div>`;
+}
+function recordShortAnswer(clientId, partId){
+  const input = document.getElementById(`src-${clientId}-${partId}`);
+  const named = (input && input.value.trim()) || NAMED_SOURCES[partId];
+  state.ladder[clientId][partId] = {rung:"learning", source:named, recordedOn:"just now"};
+  refreshAssembledTabViews();
+  renderCompoundingPayoff();
+}
+function confirmShortFetch(clientId, partId){
+  const cur = state.ladder[clientId][partId];
+  const isKit = partId===27; // Part 27 has no dedicated connector — composed from data already held, per brief's Kit rung
+  state.ladder[clientId][partId] = {rung: isKit?"kit":"automate", source:cur.source, confirmedOn:"just now", note: isKit? "Composed automatically from data Harness already has — no dedicated connector, assembled instead." : "Confirmed just now — future cycles fetch this source automatically."};
+  refreshAssembledTabViews();
+  renderCompoundingPayoff();
+}
+
+/* ===== The compounding-asset payoff: side-by-side, cost-reduction made visible ===== */
+function renderCompoundingPayoff(){
+  const el = document.getElementById("compoundingPayoff");
+  if(!el) return;
+  function summarize(clientId){
+    const l = state.ladder[clientId];
+    const live = SHORT_IDS.filter(id=>l[id].rung==="ask").length;
+    const pending = SHORT_IDS.filter(id=>l[id].rung==="learning").length;
+    const promoted = SHORT_IDS.filter(id=>l[id].rung==="kit"||l[id].rung==="automate").length;
+    return {live,pending,promoted};
+  }
+  const pem = summarize("pemberton"), ash = summarize("ashgrove");
+  function col(clientId, label, summary){
+    return `
+    <div class="card" style="padding:var(--space-lg);flex:1;">
+      <h4 style="font-size:14px;margin-bottom:2px;">${label}</h4>
+      <p style="font-size:11.5px;color:var(--text-tertiary);margin-bottom:12px;">Cycle ${clientById(clientId).cycle}</p>
+      <div class="stat-strip" style="margin:0 0 12px;">
+        <div class="stat-box" style="min-width:0;padding:10px;"><span class="big" style="font-size:20px;color:${summary.live>=3?'var(--state-ask)':'var(--brand)'}">${summary.live}</span><span class="lbl">live Asks needing Marcus now</span></div>
+        <div class="stat-box" style="min-width:0;padding:10px;"><span class="big" style="font-size:20px;">${summary.promoted}</span><span class="lbl">promoted to Kit/Automate</span></div>
+      </div>
+      ${SHORT_IDS.map(id=>{
+        const p = KIT_PARTS.find(k=>k.id===id);
+        const r = state.ladder[clientId][id];
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;">
+          <span>Part ${id} — ${esc(p.name)}</span>${ladderPill(r.rung)}
+        </div>`;
+      }).join("")}
+    </div>`;
+  }
+  el.innerHTML = `
+  <div class="short-mechanic" style="border-color:var(--brand);background:var(--brand-soft);">
+    <div class="sm-head"><div><span class="part-num" style="color:var(--brand);">THE PAYOFF</span><h5 style="margin-top:2px;">Cycle memory compounds — the cost-reduction thesis, made visible</h5></div></div>
+    <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;">Same four SHORTs. One client three cycles in, one client on cycle 1. <span class="cs-tag">CS: MEDIUM</span> This demonstrates the shape of the claim (fewer live Asks over time) — it does not demonstrate a validated 45-minute prep time; see the fidelity banner.</p>
+    <div style="display:flex;gap:var(--space-md);flex-wrap:wrap;">
+      ${col("pemberton","Pemberton &amp; Associates — established client",pem)}
+      ${col("ashgrove","Ashgrove Legal — brand-new client",ash)}
+    </div>
+  </div>`;
+}
+</script>
+<script>
+/* ==========================================================================
+   STAGE 4 — Confirm & Personalize: the system asks the human what it cannot
+   know. Three jobs: check computeds, fill gaps, confirm or override.
+   Review-depth toggle ("looks good" vs "fine tooth comb") is a real,
+   functioning control — it changes what's rendered, not just a label.
+   Draft-marked items (best-effort carry-forward guesses) queue here, per the
+   brief: "Stage 4 is the existing home for this."
+   "Cannot tell" lives here too, on the deviation list — Part 7, "the one
+   that matters" — as a first-class, non-defaulted, selectable answer.
+   ========================================================================== */
+const DEVIATIONS = [
+  {id:1, desc:"Legal-hold mailbox excluded from retention policy", risk:"medium", part:7},
+  {id:2, desc:"Conditional access exclusion — service account svc-backup@pemberton.co", risk:"low", part:7},
+  {id:3, desc:"MFA not enforced on 2 shared mailboxes (accounts@, reception@)", risk:"high", part:7},
+];
+const DRAFT_ITEMS = [
+  {partId:9, name:"DLP, retention, conditional access — present AND working", ownerLabel:"Marcus", reason:"No time to re-pull the 365 tenant directly this cycle — Inforcer can't see this part. Carried forward from Cycle 2's read.", carriedFrom:"Cycle 2"},
+  {partId:24, name:"Staff changes since the last EBR", ownerLabel:"Vanessa", reason:"Client wasn't asked directly this cycle. M365 stale-account check (90d no login) ran, but the client-told half of this part is a guess carried forward from last quarter's answer.", carriedFrom:"Last quarter's client conversation"},
+];
+
+function renderStage4(){
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 4 · Confirm &amp; Personalize</span>
+    <h2 class="stage-title">The inversion: the system asks Marcus what it cannot know</h2>
+    <p class="stage-desc"><span class="a-flag">A</span> Three jobs: check computeds, fill gaps, confirm or override. Beth's framing: “like me doing a sharpie deck.” Client: <b>${esc(clientById(state.client).name)}</b>.</p>
+  </div>
+  <div class="review-toggle" role="group" aria-label="Review depth">
+    <button class="${state.reviewDepth==='looks-good'?'active':''}" onclick="setReviewDepth('looks-good')">Looks good — quick skim</button>
+    <button class="${state.reviewDepth==='fine-tooth-comb'?'active':''}" onclick="setReviewDepth('fine-tooth-comb')">Fine tooth comb — full review</button>
+  </div>
+
+  <h3 style="font-size:16px;margin:8px 0 10px;">Draft items — best-effort guesses queued for confirmation</h3>
+  <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px;">These are not Reconciled, not Cleared, not Raw. <b>Draft</b> is its own visual status: a carried-forward guess made because there wasn't time to stop and answer an Ask prompt during PICKING.</p>
+  <div id="draftQueue"></div>
+
+  <h3 style="font-size:16px;margin:var(--space-xl) 0 10px;">Part 7 — the deviation list — the one that matters</h3>
+  <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px;">Nearly all of Marcus's judgment lives here. Every deviation gets a real answer — including <b>“cannot tell,”</b> which is a selectable, first-class answer, never a silent default.</p>
+  <div id="deviationQueue"></div>
+  `;
+}
+function setReviewDepth(mode){ state.reviewDepth=mode; renderStage(); }
+
+function draftQueueHTML(){
+  const compact = state.reviewDepth==="looks-good";
+  return `<div style="display:flex;flex-direction:column;gap:10px;">` + DRAFT_ITEMS.map(d=>{
+    const key = `${state.client}-${d.partId}`;
+    const confirmed = state.draftConfirmed[key];
+    if(confirmed){
+      return `<div class="card" style="padding:12px 16px;display:flex;align-items:center;gap:10px;"><span class="pill pill-reconciled">CONFIRMED</span><span style="font-size:12.5px;">Part ${d.partId} — ${esc(d.name)} — Marcus confirmed this cycle's read is accurate.</span></div>`;
+    }
+    if(compact){
+      return `<div class="draft-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <div><span class="dc-label">DRAFT — best-effort guess</span><div style="font-size:12.5px;margin-top:2px;">Part ${d.partId} — ${esc(d.name)}</div></div>
+        <button class="btn btn-sm btn-primary" onclick="confirmDraft(${d.partId})">Looks fine — approve</button>
+      </div>`;
+    }
+    return `<div class="draft-card">
+      <span class="dc-label">DRAFT — best-effort guess, not Reconciled, not Cleared</span>
+      <h5 style="margin:6px 0 4px;">Part ${d.partId} — ${esc(d.name)}</h5>
+      <p style="font-size:12px;color:var(--text-secondary);"><b>Owner:</b> ${d.ownerLabel} · <b>Carried forward from:</b> ${esc(d.carriedFrom)}</p>
+      <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">${esc(d.reason)}</p>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn btn-sm btn-primary" onclick="confirmDraft(${d.partId})">Confirm this guess is still accurate</button>
+        <button class="btn btn-sm" onclick="alert('Re-pull would run PICKING again for this one part — outside this prototype\'s scope, named not faked.')">Re-pull now instead</button>
+      </div>
+    </div>`;
+  }).join("") + `</div>`;
+}
+function confirmDraft(partId){
+  state.draftConfirmed[`${state.client}-${partId}`]=true;
+  const q = document.getElementById("draftQueue");
+  if(q) q.innerHTML = draftQueueHTML();
+  // keep Stage 3 / Stage 5-internal in sync — same part, same status, everywhere
+  refreshAssembledTabViews();
+}
+
+function deviationQueueHTML(){
+  const compact = state.reviewDepth==="looks-good";
+  return `<div style="display:flex;flex-direction:column;gap:10px;">` + DEVIATIONS.map(d=>{
+    const key = `${state.client}-${d.id}`;
+    const ans = state.deviationAnswers[key];
+    const riskColor = d.risk==="high"?"var(--critical)":d.risk==="medium"?"var(--medium)":"var(--low)";
+    const widget = `
+      <div class="cannottell-widget">
+        <button class="ct-btn accept ${ans==='accept'?'selected':''}" onclick="setDeviationAnswer(${d.id},'accept')">Accept</button>
+        <button class="ct-btn reject ${ans==='reject'?'selected':''}" onclick="setDeviationAnswer(${d.id},'reject')">Reject</button>
+        <button class="ct-btn cannottell ${ans==='cannottell'?'selected':''}" onclick="setDeviationAnswer(${d.id},'cannottell')">Cannot tell</button>
+      </div>`;
+    let statusLine = "";
+    if(ans==="cannottell"){
+      statusLine = `<div style="margin-top:8px;"><span class="pill pill-cannottell">CANNOT TELL — flagged, not defaulted</span> <span style="font-size:11.5px;color:var(--text-tertiary);">Logged as an open question for the room, not silently skipped and not counted as accepted or rejected.</span></div>`;
+    } else if(ans==="accept"){
+      // FIX (critic-pass-2, Gate 2 FAIL): this block used to be gated on `&& !compact`,
+      // so in the DEFAULT "Looks good — quick skim" mode a Part 7 deviation could be
+      // accepted with no who/when/why/expiry captured at all. The brief's counter-metric
+      // is "standing-acceptance integrity must not degrade" — putting its own protection
+      // behind a toggle defaulted off is exactly that degradation. Now always captured,
+      // in both review depths. Quick-skim changes how MUCH you review, never whether
+      // an acceptance gets a record.
+      statusLine = `<div class="card" style="margin-top:8px;padding:10px;background:var(--bg-app);border:1px dashed var(--border-strong);">
+        <p style="font-size:11.5px;color:var(--text-tertiary);margin-bottom:6px;">Acceptance record — who / when / why / expiry (Part 7's standing-acceptance fields):</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11.5px;">
+          <span><b>Who:</b> Marcus</span><span><b>When:</b> this cycle</span>
+          <span style="grid-column:1/-1;"><b>Why:</b> <input type="text" placeholder="e.g. legal hold, confirmed with client counsel" style="width:100%;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:11.5px;"></span>
+          <span><b>Expiry:</b> <input type="text" placeholder="e.g. 90 days, or none" style="width:120px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:11.5px;"></span>
+        </div>
+      </div>`;
+    } else if(ans){
+      statusLine = `<div style="margin-top:8px;"><span class="pill ${ans==='accept'?'pill-cleared':'pill-short'}" style="animation:none;">${ans.toUpperCase()}</span></div>`;
+    }
+    return `<div class="card" style="padding:var(--space-md);">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;">
+        <div><span style="font-size:10px;font-weight:700;color:${riskColor};text-transform:uppercase;">${d.risk} risk · NCSC-aligned</span><h5 style="margin-top:3px;">${esc(d.desc)}</h5></div>
+      </div>
+      ${widget}${statusLine}
+    </div>`;
+  }).join("") + `</div>`;
+}
+function setDeviationAnswer(id, val){ state.deviationAnswers[`${state.client}-${id}`]=val; document.getElementById("deviationQueue").innerHTML = deviationQueueHTML(); }
+
+// hook into generic stage renderer
+const _origRenderStage = renderStage;
+renderStage = function(){
+  _origRenderStage();
+  if(state.stage===4){
+    document.getElementById("draftQueue").innerHTML = draftQueueHTML();
+    document.getElementById("deviationQueue").innerHTML = deviationQueueHTML();
+  }
+};
+</script>
+<script>
+/* ==========================================================================
+   STAGE 5 — The Room — Brains Only. Marcus is frontstage AND backstage —
+   the old prototype treated him as prep-only. He sits in 100% of EBRs
+   (SRC-U-009, fictionalized). This view lists him as a named, present
+   participant alongside Vanessa and the client contact, not a backstage note.
+   ========================================================================== */
+function renderStage5(){
+  const c = clientById(state.client);
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 5 · The Room — Brains Only</span>
+    <h2 class="stage-title">${esc(c.name)} — EBR in progress</h2>
+    <p class="stage-desc"><span class="cs-tag">CS: HIGH</span> Marcus sits in 100% of EBRs — frontstage <b>and</b> backstage. This is the correction the old prototype was missing: he is not prep-only.</p>
+  </div>
+  <div class="room-participant">
+    <span class="avatar" style="background:#0d7a41;">M</span>
+    <div><b>Marcus</b><div class="role">Technical Practitioner, Holt Technology Solutions — prepped every tab you just saw in Stage 3, is now in the room to defend and discuss it live</div></div>
+    <span class="frontstage-badge">Frontstage + backstage</span>
+  </div>
+  <div class="room-participant">
+    <span class="avatar" style="background:#8500cc;">V</span>
+    <div><b>Vanessa</b><div class="role">Account Manager, Holt Technology Solutions — runs Agenda, Forward Intelligence, Referrals &amp; Testimonials</div></div>
+    <span class="frontstage-badge">Frontstage</span>
+  </div>
+  <div class="room-participant">
+    <span class="avatar" style="background:#a8790a;">${c.advocate[0]}</span>
+    <div><b>${esc(c.advocate)}</b><div class="role">Client advocate, ${esc(c.name)}</div></div>
+    <span class="frontstage-badge" style="background:var(--medium-soft);color:var(--medium);">Client</span>
+  </div>
+
+  <h3 style="font-size:16px;margin:var(--space-xl) 0 10px;">The deck — ready to present or export</h3>
+  <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:2px;">Part 27 (open commitments) and Part 28 (new commitments) close the loop live, in the room — the room confirms what Marcus drafted in Stage 3/4.</p>
+  <div class="deck-toggle-row">
+    <div class="review-toggle" role="group" aria-label="Deck view">
+      <button id="stage5ModeInternal" onclick="setStage5ViewMode('internal')">Internal view</button>
+      <button id="stage5ModePresentation" onclick="setStage5ViewMode('presentation')">Client presentation view</button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="exportDeckCSV()">⬇ Export to Excel (.csv)</button>
+  </div>
+  <p id="stage5ModeNote" style="font-size:11.5px;color:var(--text-tertiary);margin-bottom:12px;"></p>
+  <div class="ebr-tabs" id="stage5TabsNav"></div>
+  <div id="stage5TabContent"></div>
+  <div id="exportToast" style="display:none;margin-top:12px;"></div>
+  `;
+}
+
+/* ===== Task 3: presentation-clean deck + export ===== */
+let stage5ViewMode = "internal"; // 'internal' | 'presentation'
+let stage5Tab = "agenda";
+
+// Client-presentable facts only — no [CS:]/[A]/[?] tags, no GOOD FOR staleness pills,
+// no PICKED FROM/rung-ladder internals. Built from data already established elsewhere
+// in this file (CLIENTS, FTUX_CONNECTORS pull results, DEVIATIONS, Stage 6's commitment
+// count) rather than invented figures — this is the same fictional Pemberton dataset,
+// re-presented, not a new one.
+const PRESENTATION_DECK = {
+  pemberton: {
+    agenda: ["Pemberton & Associates — Cycle 3 EBR", "Client advocate: Priya Nandagopal, Operations Director", "Last EBR: 14 May 2026"],
+    climate: ["247 devices under management", "47 licensed users across 18 active service agreements", "Security posture: 4 of 5 on target scale (target: 5)"],
+    risk: ["Security posture: 4 of 5 — one step from target, aligned to NCSC 10 Steps to Cyber Security and Cyber Essentials",
+           "Multi-factor authentication enforced on 44 of 47 users — 3 exceptions under review",
+           "Security awareness training: 94% completion; 2 phishing-simulation misses scheduled for follow-up coaching"],
+    employee: ["47 employees reviewed for licensing, MFA, and training status", "MFA enforced on 44 of 47 accounts", "Security awareness training: 94% completion"],
+    hardware: ["247 devices tracked this cycle — 3 flagged for follow-up (see Risk Review)", "All devices checked against minimum supported OS"],
+    roadmap: ["Gap to close: 1 point (currently 4 of 5, target 5)", "Priority roadmap item: close remaining conditional-access and retention gaps"],
+    forward: ["This quarter's business priorities for Pemberton", "Sector and competitive signals for the next 12 months", "Staff changes since the last EBR"],
+    referrals: ["Testimonial and referral conversation — timed to this cycle's results"],
+    close: ["3 new commitments drafted this cycle, to be confirmed live in the room", "Open commitments from last cycle reviewed and closed out"],
+  }
+};
+function presentationFactsForTab(tabId, clientId){
+  const c = clientById(clientId);
+  const deck = PRESENTATION_DECK[clientId];
+  if(deck && deck[tabId]){
+    const facts = deck[tabId].slice();
+    if(tabId==="risk"){
+      DEVIATIONS.forEach(d=>facts.push(`${d.risk[0].toUpperCase()}${d.risk.slice(1)} risk — ${d.desc}`));
+    }
+    return facts;
+  }
+  // Fallback for clients without a fully sourced presentation pass yet — honest
+  // topic list from the KIT structure, not invented figures for this client.
+  return partsForTab(tabId).map(p=>p.name);
+}
+function presentationTabHTML(tabId, clientId){
+  const tab = TABS.find(t=>t.id===tabId);
+  const c = clientById(clientId);
+  const facts = presentationFactsForTab(tabId, clientId);
+  const sourced = !!PRESENTATION_DECK[clientId];
+  return `
+  <div class="presentation-tab-block">
+    <h4><span class="owner-dot ${tab.owner}"></span>${tab.n?`Tab ${tab.n} — `:''}${esc(tab.name)}</h4>
+    ${sourced ? "" : `<p style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;">Talking points shown for ${esc(c.name)} — full figures in this prototype are built out for Pemberton &amp; Associates only.</p>`}
+    <ul>${facts.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+  </div>`;
+}
+function setStage5ViewMode(mode){ stage5ViewMode=mode; renderStage5ToggleState(); renderStage5TabContent(); }
+function renderStage5ToggleState(){
+  const i = document.getElementById("stage5ModeInternal");
+  const p = document.getElementById("stage5ModePresentation");
+  const note = document.getElementById("stage5ModeNote");
+  if(!i||!p) return;
+  i.className = stage5ViewMode==="internal" ? "active" : "";
+  p.className = stage5ViewMode==="presentation" ? "active" : "";
+  if(note) note.textContent = stage5ViewMode==="internal"
+    ? "Internal view — the same backstage content Marcus assembled in Stage 3: pills, sourcing, SHORTs, and the Marcus/Vanessa conversation, all still attached."
+    : "Client presentation view — the room-ready version. No [CS:]/[A]/[?] tags, no staleness pills, no picking-sequence internals. This is what the MSP would actually put on screen.";
+}
+function setStage5Tab(id){ stage5Tab=id; renderStage5TabContent(); }
+function renderStage5TabsNav(){
+  const el = document.getElementById("stage5TabsNav");
+  if(!el) return;
+  el.innerHTML = TABS.map(t=>`
+    <button class="ebr-tab-btn ${t.id===stage5Tab?'active':''}" onclick="setStage5Tab('${t.id}')">
+      <span class="owner-dot ${t.owner}"></span>${t.n?`Tab ${t.n} — `:''}${esc(t.name)}
+    </button>`).join("");
+}
+function renderStage5TabContent(){
+  const el = document.getElementById("stage5TabContent");
+  if(!el) return;
+  // "Internal view" deliberately calls the exact same function Stage 3 uses to
+  // assemble the draft — not a parallel copy — so the two stages can never drift.
+  el.innerHTML = (stage5ViewMode==="internal")
+    ? ebrTabContentHTML(stage5Tab)
+    : presentationTabHTML(stage5Tab, state.client);
+}
+function wireStage5(){
+  stage5Tab = "agenda";
+  stage5ViewMode = "internal";
+  renderStage5ToggleState();
+  renderStage5TabsNav();
+  renderStage5TabContent();
+}
+
+/* ===== Real client-side CSV export — Blob + createObjectURL, no dependencies ===== */
+function csvEscape(field){
+  const s = String(field);
+  if(/[",\n]/.test(s)) return `"${s.replace(/"/g,'""')}"`;
+  return s;
+}
+function exportDeckCSV(){
+  const c = clientById(state.client);
+  const rows = [["Tab","Item"]];
+  TABS.forEach(t=>{
+    presentationFactsForTab(t.id, state.client).forEach(fact=>{
+      rows.push([t.name, fact]);
+    });
+  });
+  const csv = rows.map(r=>r.map(csvEscape).join(",")).join("\r\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const filename = `${c.id}-cycle-${c.cycle}-ebr.csv`;
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  const toast = document.getElementById("exportToast");
+  if(toast){
+    toast.style.display = "block";
+    toast.innerHTML = `<div class="callout ok" style="margin:0;"><strong>Exported</strong>${esc(filename)} — ${rows.length-1} rows across ${TABS.length} tabs, downloaded to your browser's default downloads location. Opens in Excel.</div>`;
+  }
+}
+</script>
+<script>
+/* ==========================================================================
+   STAGE 6 — Close & Compound. Filed deck. Signature is configurable by
+   risk/compliance profile, not universal (Beth's decision, blueprint §14).
+   ========================================================================== */
+function renderStage6(){
+  const c = clientById(state.client);
+  return `
+  <div class="stage-head">
+    <span class="stage-eyebrow">Stage 6 · Close &amp; Compound</span>
+    <h2 class="stage-title">File the deck. Compound the next cycle.</h2>
+    <p class="stage-desc"><span class="a-flag">A</span> Signature is configurable by risk/compliance profile — not universal (Beth's decision, blueprint §14).</p>
+  </div>
+  <div class="card" style="padding:var(--space-lg);max-width:640px;">
+    <h4 style="margin-bottom:10px;">${esc(c.name)} — Cycle ${c.cycle} EBR</h4>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;"><span>Filed to</span><b>Holt shared drive + HaloPSA client record</b></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;"><span>New commitments drafted (Part 28)</span><b>3</b></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;"><span>Signature required?</span><b>${c.tier==="A"?"Yes — regulated-adjacent profile":"No — standard profile"}</b></div>
+    <p style="font-size:11.5px;color:var(--text-tertiary);margin-top:10px;">This filed deck becomes next cycle's carry-forward baseline — the Part 27/8/13/14 ladder states you saw in Stage 3 advance from here, if Marcus confirms them.</p>
+    <button class="btn btn-primary" style="margin-top:14px;" onclick="alert('Filed. Next cycle\'s Stage 1 portfolio row updates from this close.')">File this deck</button>
+  </div>
+  `;
+}
+</script>
+<script>
+/* ==========================================================================
+   INIT
+   ========================================================================== */
+function init(){
+  // Demo default: connectors already live, so every stage is populated on first look and
+  // nothing reads as broken in a walkthrough. The Stage 0 → Stage 1 linkage is still real
+  // and still demonstrable — click "Start over" in Stage 0 to walk the FTUX story from the
+  // dropzone, or skip a connector and watch Stage 1's dependent columns go unavailable.
+  FTUX_CONNECTORS.forEach(c=>{ ftuxConnectorState[c.id] = "done"; });
+  ftuxStep = 3;
+
+  const sel = document.getElementById("topClientSelect");
+  sel.innerHTML = CLIENTS.map(c=>`<option value="${c.id}">${esc(c.name)} — Cycle ${c.cycle}</option>`).join("");
+  sel.value = state.client;
+  sel.addEventListener("change", e=>{ state.client = e.target.value; renderStage(); });
+
+  document.getElementById("bannerMoreBtn").addEventListener("click", ()=>{
+    const box = document.getElementById("fidelityMore");
+    const btn = document.getElementById("bannerMoreBtn");
+    const open = box.style.display !== "none";
+    box.style.display = open ? "none" : "block";
+    btn.setAttribute("aria-expanded", String(!open));
+    btn.textContent = open ? "What does that mean?" : "Hide";
+  });
+
+  renderStageNav();
+  renderRoutedCards();
+  renderStage();
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>

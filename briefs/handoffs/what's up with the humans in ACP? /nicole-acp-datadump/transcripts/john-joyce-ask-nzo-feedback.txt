@@ -1,0 +1,414 @@
+TRANSCRIPT: John Joyce - Ask N-zo Feedback Session
+Source: John Joyce - Ask N-zo Feedback Session.vtt
+============================================================
+
+[00:00:03] Nicole Reineke:
+  So first, thank you very much for participating at all. We really appreciate it. It's awesome of you.
+
+[00:00:07] John Joyce:
+  First.
+
+[00:00:10] Nicole Reineke:
+  Have you and your team used Enzo during the preview period? Period.
+
+[00:00:14] John Joyce:
+  Yes, I have personally used it and several of our both our solutions team and our security team have utilized it so.
+
+[00:00:23] Nicole Reineke:
+  Oh, great. And about how often do you use it?
+
+[00:00:26] John Joyce:
+  I personally don't get to use all that much because they don't let me do the fun
+
+[00:00:30] Nicole Reineke:
+  That's right.
+
+[00:00:30] John Joyce:
+  work anymore. But but I I obviously, you know, as a as a shiny new toy to play with, I found reasons to go in and poke around and and use it. But I've I've charged Will Chimel, who's our solutions director and his team. They oversee all service delivery and engineering, so they obviously spend the Most time In and Central, that's that's their lifeblood So I made sure it was in Will's hands and within about a week of getting access to it, we made sure of our solutions team is about 13 people and all of them have had access to it basically through the majority of the preview period. So far usage has varied based on person and their comfort level. We didn't, we didn't necessarily Mandate people use it, of course, but we did I did task certain people in certain roles with, hey, please take this piece of it and go make sure you use it five times this week. Or, you know, report back on, you know, in situations where it worked well or failed miserably or so on and so forth. Because we have to break things to make them work, obviously. So we wanted to give our best honest
+
+[00:01:23] Nicole Reineke:
+  OK.
+
+[00:01:25] John Joyce:
+  effort at doing so.
+
+[00:01:26] Nicole Reineke:
+  I appreciate that. Thank you. What kinds of questions did your team ask?
+
+[00:01:32] John Joyce:
+  Primarily data-driven ones, you know, obviously we have a decent sized and central footprint. So you know, navigating that at times you have the ability to, you know, going to pull information out of the masses quickly is one of the biggest promise areas we see with the product Just you know, you know, seeing through all the noise to get down to what's going to be useful Trou Shooting and problem solving that's that's obviously got huge potential value from just an efficiency perspective on our end and of course a service delivery perspective from the client's end. If we can get down to the broken thing faster and fix it, they're happier and we're spending less time. So that's that's a great win-win for everyone involved. So we we that that's been our main focus has been You know asking questions of it, you know whether they're troubleshooting an issue on a device, you know asking what are we asking? You know what can you tell us about users reporting slowness? You know what you know what might be a cause for that or you know the this this hard drive is reported 90% full three times in the last month, but we've cleaned you know Clean It up three times and it keeps filling up. You know, what's been the contributing factor that happening over and over again? We've had varied, you know, successive results, but those are the types of questions we're asking is, you know, in context, what can it tell us with the data it has access to that we obviously have access to the data, but we're not looking at the same optics that at a product level that we at least envision Enzo would be able to do to look at the trending of the data and the analytics and just help us find the patterns in the noise That's that's what we're excited to hopefully get to with it. Again, we've had some stumbles with it as expected with something so early on in its development, but that's where we really see a ton of the promise is just, you know, we're, you know, over 10 years into Using in Central all day, every day. So we're obviously very familiar with the product, but we've always known there's so much more both in the data and in the capability that you know, what are we partnering with the product at that level holds a ton of potential to us.
+
+[00:03:29] Nicole Reineke:
+  Tell me about the limitations you guys encountered.
+
+[00:03:33] John Joyce:
+  So again, obviously early on. So as always the disclaimer, please never take this as a anything even close to frustration or upsetness This is just like our excitement breeds the want for it to be great So that's that's always the spirit this comes from so.
+
+[00:03:45] Nicole Reineke:
+  Yeah, yeah, yeah. We don't want someone who's simply enthusiastic. That's a waste of my time. So tell me all of the things that went
+
+[00:03:49] John Joyce:
+  Now, yes, and we yeah, we don't want to waste any of your time
+
+[00:03:51] Nicole Reineke:
+  wrong.
+
+[00:03:53] John Joyce:
+  for sure. The biggest issue we ran into is reliability in the data. So we we really found because you know this is a true AB test. So the one thing I did charge my team
+
+[00:04:04] Nicole Reineke:
+  OK.
+
+[00:04:04] John Joyce:
+  with is if you ever used it and I told them the irony of my Ask. I'm asking them to actually spend more time than it would normally take them, but this is a true test.
+
+[00:04:13] Nicole Reineke:
+  Yeah.
+
+[00:04:14] John Joyce:
+  So every time they used it, they were instructed to use the product and then do it quote UN quote the old fashioned way so that we could validate the results as well as we could. And we did run into some pretty substantial just reliability issues in the data So a example that will our solution Director brought me was, you know, this was he was actually working on an audit that I had asked him to before all of this came up. We're shame on us We're still dealing with some antiquated servers that need to not be in the fleet and really goad our partners into letting us do our jobs and get those servers out of there. So I said, hey, what a great opportunity to use Enzo to help us source That you know to pull that data out of what N Central can see And we have about 350 servers in the fleet, give or take. And funny enough, the very basic ask was, hey, show me all, let's start with, show me a list of all of our servers. Obviously we can just go to our dashboard and do that, but let's start with a very simple query It returned 9 devices, which we just thought was funny.
+
+[00:05:11] Nicole Reineke:
+  No.
+
+[00:05:11] John Joyce:
+  So there's 350 and it returned 9. So obviously then digging in what Will's
+
+[00:05:13] Nicole Reineke:
+  Okay.
+
+[00:05:16] John Joyce:
+  main feedback was, it wasn't just the accuracy of the data Like that's obviously it just didn't understand the question apparently Or you know, what we found was like when we would ask for The higher level the question, the more confused it got. If we got very,
+
+[00:05:31] Nicole Reineke:
+  Mhm.
+
+[00:05:32] John Joyce:
+  very specific, please tell me how many servers run Windows Server 2016 at the Client Conservancy of Southwest Florida If we got really, really in the weeds with it, we could of course source better, more accurate returns Yes A frontline engineer is not going to slow down to do that. They're just going to go.
+
+[00:05:50] Nicole Reineke:
+  Yeah.
+
+[00:05:52] John Joyce:
+  They're going to do that twice, realize it takes more time, and then just go to the dashboard and find it themselves So the efficiency of the tool was lost. So we really felt that the need for that
+
+[00:05:59] Nicole Reineke:
+  Yeah.
+
+[00:06:03] John Joyce:
+  level of specificity to get accurate results, it really felt like it was struggling with Fuzzy questions like the fuzzy logic processing just seemed to be a struggle point because the irony, Nicole, in the context of the Catnip initiative, our vernacular is its stumbling block. Because when we ask, when we say show us all of our servers, I understand. Does the robot realize that? I mean, when I say R, does it mean the ones listed under CRS Technology Consultants, the client in RN Central, or does it mean the totality of the fleet that we manage? How could it know that?
+
+[00:06:36] Nicole Reineke:
+  Yeah.
+
+[00:06:38] John Joyce:
+  I say that to Will. Will knows when I say our servers, he knows I don't mean the two R&amp; D servers we run downstairs He knows I'm talking about the 350 servers we manage And I still can't know that context, but I think about the humans that are pushing the buttons and what they're going to want to build that trust and reliability. I said those fuzzier interactions, those would always introduce the stumbling block I can totally connect the dots to why, but I can also connect the dots to why engineers Are just going to throw their hands up and say I could just do this myself.
+
+[00:07:11] Nicole Reineke:
+  Yeah, that's fantastic feedback. Thank you very much. Yeah.
+
+[00:07:15] John Joyce:
+  Hmm.
+
+[00:07:15] Nicole Reineke:
+  And you're the first person to articulate it that way, which I really appreciate OK, keep going. What else? What else is bad?
+
+[00:07:26] John Joyce:
+  I mean there there's the more table Stacey kind of stuff Certain things just take a long time. That's a given.
+
+[00:07:29] Nicole Reineke:
+  Yes.
+
+[00:07:32] John Joyce:
+  It's a very early product that probably doesn't have full production resources behind it, but it would really chew sometimes again when we would ask higher level broader data set questions like the, you know, pull me a Port of all of our of all workstations in our end central that are still running Windows 10 we would get. I've got some screenshots I'm happy to send you guys like because we want to try to document this as much as possible It would actually crash out multiple times, but if we threw the same prompt at it enough times, it would be like oh here you go The answer was probably wrong, by the way, because I keep coming back to the broader the question, the less accurate there was the returns, which obviously that nerfs a lot of the hopeful because one of the biggest benefits we see long-term is to work with big sets of data and to be able to look at our outcomes more Strategically versus going client by client, which is very time consuming to be able to interact with Ncentral at an SO level and really start to trend on how many servers do we still need to kill that are running this service pack or how many devices still have this outdated version of XYZ product on it? Like to be able to source that out of Ncentral, that's like the goal And obviously we had very far reaching hopes for a very early on product and that's where it would stumble is asking those kinds of very broad If going back to my earlier point that I don't want to belabor, but it really was the consistent pattern was if I got down in the weeds with it and said hey Enzo On this server of this name at this client, can you tell me if it's running this outdated version of Java? It could answer that question, but if I backed that out too many steps and said hey, at these ten clients very specifically, how many servers are running this outdated version? Java Off the rails with a lot of consistency or going back to the the actual original point that was bringing up was we we found it pretty brittle from a we could break it pretty easily. Like if we threw certain types of prompts and queries at it, it would you know I can't answer that or I'm struck like we would just like you know I'm working on that and then it would just work.
+
+[00:10:01] Nicole Reineke:
+  OK.
+
+[00:10:02] John Joyce:
+  Asking the same time Jimmy was blowing the thing up and you know, he was stealing all the resources, but you know, that's how it goes, so.
+
+[00:10:05] Nicole Reineke:
+  It's quite possible. It's quite possible. It was funny cause I actually I've I've gone through every single prompt and there were a bunch of times where I've just seen the same prompt over and over and I'm like what is going on with these people like and now I know exactly what was going on like.
+
+[00:10:21] John Joyce:
+  Yeah If especially if they were CRS prompts, yes, because again,
+
+[00:10:22] Nicole Reineke:
+  All right.
+
+[00:10:24] John Joyce:
+  we in the spirit of the test, we were trying to really derive was it something wrong with what or how we were prompting or was it just the interaction
+
+[00:10:29] Nicole Reineke:
+  OK.
+
+[00:10:32] John Joyce:
+  itself that was breaking down? So from a feedback perspective, I really couldn't ever find a consistent like, oh, if we ask it this way, it'll break every time because Even when it would break, if we just copy, paste and threw it at it enough times, it would get there, which, you know, I'm no software engineer,
+
+[00:10:47] Nicole Reineke:
+  Yeah.
+
+[00:10:48] John Joyce:
+  but if it was eventually able to answer it, that would imply to me it's not the the it's not the context of the nature of the question, it's the mechanism by which it's trying to answer is where it's breaking.
+
+[00:10:58] Nicole Reineke:
+  Yeah, it feels like you're hitting some kind of
+
+[00:11:00] John Joyce:
+  Yeah.
+
+[00:11:01] Nicole Reineke:
+  a timeout, which is which is interesting. So Craig is 100% gonna be all over this OK, awesome feedback. Anything outside of that? Any other limitations that you came across?
+
+[00:11:12] John Joyce:
+  Let me go to Will's notes real quick, cause I did Of course I pinged him before as my hey, is all of this still accurate and correct? Yeah, his biggest stuff was just the need to be, in his opinion, overly specific. Again, I know that's kind of a theme here, but it's like the the the the push to have to be so specific Like we will do that because it's just Just what we do, I think about frontline engineers and they just won't. And it's like I so I try to think about this from the viability of the product and like putting it in our team's hands and like that's one of the big struggles at a leadership level is we know because we can see the vision why this is going to have value We it's part of our job to sell that value to the people that are actually going to be using it on a daily basis and I can see like the product as it exists
+
+[00:11:55] Nicole Reineke:
+  Yep.
+
+[00:11:57] John Joyce:
+  today selling that value proposition to our own internal customers as I refer to them that's that's going to that would be a struggle right now because the kind of the hoops and the biggest thing is and This is just systems engineers. At the end of the day, we're all flawed this way. The minute we have a reason to question the output, it's going to forever be tarnished to us It's just it's a very bad habit we all have It's like the robot lied to me one time, so now I'm never going to trust it again And it's like, all right, well, you know They're not calculators. 2 + 2 is always going to equal 4 on your Casio. It's not always going to work that way in an LLM, but it's just it's how systems engineers are wired. So Will and I are very cautious of pushing our team at this stage to use it much more heavily outside of what we've asked them to do because we're fearful of Reputation. We don't. We can tell them all day long It's like day -1 of this thing's existence. Give it some grace I still don't want to risk the people who are going to be using this thing for a very long time. Hopefully, you know, developing the wrong early opinion and the I said that that the accuracy of the data, it was definitely the biggest The performance stuff we get by all day long It just outright returning wrong information that we have to be real careful about because long after that's fixed, I'll still be dealing with Remember the time it told us it had nine servers? Remember the time Microsoft broke all of our servers? It happens all the time, like it's software, but they're engineers We are special like that.
+
+[00:13:26] Nicole Reineke:
+  That's great. That's great feedback for positioning because as we go into some more general previews, we're finding that, oh, I don't.
+
+[00:13:33] John Joyce:
+  Mm-hmm.
+
+[00:13:36] Nicole Reineke:
+  I'm going to tell you this at the end. I'm sorry. Yes and phew, sorry Yes and thank you. I totally, totally hear you Can you share any examples of where Ask Enzo saved your team time?
+
+[00:13:51] John Joyce:
+  Yes. So I mentioned earlier primarily was our solutions and consult, I'm sorry our solutions and security teams that were using it, but I did on separately.
+
+[00:13:58] Nicole Reineke:
+  8.
+
+[00:13:59] John Joyce:
+  We have three primary business units. Solutions is engineering, they fix things security that's self-explanatory We have a we have a consulting team that they They specifically exist to translate to the humans what it is that we do So when we have meetings, when we have to source information with like that is, you know, consultants is in our name for a reason So we figured at one point, hey, what if it was some people's job to do that? So we have. So Taylor Brown runs our consulting team So she's she's our consulting director and she and I worked with Enzo Hey, for all these consulting meeting documents that you guys prep, is there an opportunity to utilize this to, again, pull information that right now it's someone on her team's job to go pull hardware inventory reports and highlight them for which ones are lifecycle management, what's eligible for Windows? And upgrades and what isn't. There's a lot of manual work that happens there. Again, we ran into some roadblocks with like sometimes it would just be wrong or lied to us a little bit because it's an LLM But from a success story perspective, there was genuine positive outcomes from work that we currently do manually that we were able to get it to give us like That that same hard room and play report that Nicole on our team goes and pulls and then highlights, you know, for you know what isn't eligible for Windows 11. So we got to tell me you needed to have replaced this a year ago. Now you really need to use it We were able to, you know, you know, prompt our way into getting that information out of N Central, basically one shot with Censo query Which we thought was very, very cool and very, very promising So it's interesting for me that's a relatively non-technical application It's more it's close. We don't have sales people, but our consultants are like the closest thing we have to sales because it's communicating value to our customers and you know, making them understand what the heck it is that we do for them every day and the more data we can source To demonstrate that value is very valuable to us, but there's also a limited number of hours in the day and we had some really, really great early results of Enzo. Show me all of the hardware that meets this or show me all the show me uptime information for these devices like stuff that we would normally have to dig in ourselves and spend Quite a bit of time preparing for a meeting The outcomes were hit or miss because what we already talked about, but we validated that it can do it and that that is itself a very, very that's a big value proposition to us again to be able to get data out of N Central in a way that's understandable to our customers relatively natively that that's that's Huge in potential value and we had some really encouraging early results there.
+
+[00:16:30] Nicole Reineke:
+  Can I ask how many assets do you manage in total? How many end devices?
+
+[00:16:35] John Joyce:
+  So we're if we are counting network devices, about 7500.
+
+[00:16:41] Nicole Reineke:
+  7500, OK.
+
+[00:16:42] John Joyce:
+  Things like 7780 last it's it's it's between 7 and 8000 If we whittle out network devices more to workstations and servers, that's more the four to 5000 range cause we're we're pretty SNMP heavy so.
+
+[00:16:54] Nicole Reineke:
+  OK, so four to 5000, I'm just edge endpoint devices like
+
+[00:16:57] John Joyce:
+  Endpoint device, laptops, workstations, servers, etcetera.
+
+[00:16:58] Nicole Reineke:
+  laptop, yeah OK. All right. So we've clearly got something going on where we're not taking in your full list of of assets and then making informed decisions against them. So I'm wondering if we've got some kind of a scale issue. So we'll we'll look into that Thank you very much.
+
+[00:17:15] John Joyce:
+  Could be, yeah.
+
+[00:17:16] Nicole Reineke:
+  OK. Beyond just giving you the right data, what new features or capabilities would you like to see added?
+
+[00:17:26] John Joyce:
+  Yep, um, the biggest ones would be Better connection between the data itself and recommendations for troubleshooting Because again, we really think that that's where a lot of the upside potential, especially for our younger team members where you know everyone won't stop talking about how a I is going to put tier ones out of a job. I just don't think that's true I think it's going to make them more capable.
+
+[00:17:48] Nicole Reineke:
+  Yeah.
+
+[00:17:48] John Joyce:
+  You know what it's going to enable a tier one to start Doing work that they otherwise would not have been equipped to do So really the focus set is really for us around, OK, we've got this, we've got this product that's inside of our product So it's connected to it in a way that allows a relatively inexperienced more entry level person to be able to be Guided down the path of, you know, Sue is reporting her computer is slow Why? OK, why might this computer be running slow? All right, well, here's three key risk indicators And we realize that that's right there in the feature set already and those are some of the areas that we've been poking at But we were I considerably that's that's where one of those tangible going back to the value proposition For my internal customers is to show them this is stuff N Central's been capable of for the whole 11 years we've been using it But now the product is going to help us use the product and you know, show us the tools that have either newly there or maybe have been there all along that we didn't know that button was buried 7, you know, 7 menus deep Or, oh, we can trigger that through an automation rather than having to bug someone on their lunch hour and ask to hop onto their computer and do something. And like the main benefit, we have no shortage of models around this building We've run some on equipment downstairs. We've got some in Azure We pay for all the ones we've all heard about and spend too much time We have no shortage of, you know, can I have some AI please? The main value proposition to us of a product like Enzo is it's in Encentral, it's in the product. We're not taking data out of Encentral, throwing it into a Gemini prompt and saying what can I do with this? It's right freaking there and that's so exciting to us And to see that across more of our product stack and to have Encentral be one of the first ones to really have that ability, I can immediately See through to it's about enabling us to use Ncentral the way we in all honesty should have been using it for 11 years, but the product is going to help us use the product. So from a feature perspective, it's honestly about Enzo holding our hand to help us use what we already have to the maximum ability and therefore improve Service delivery. I hope that wasn't too broad or squishy, but that's that's really the the vision from where we're sitting.
+
+[00:19:56] Nicole Reineke:
+  I love that. I love the vision. Any specifically any UX improvements that you want to see? See.
+
+[00:20:05] John Joyce:
+  At this stage, no, because it's it's keep it simple I really think as as Ncentral's already a complicated product because it should be and to bury something that powerful behind more layers of obscurity probably just going to damage the user paradigm in my opinion. So like it's right there It's obvious we had our own dumb Dumb moments we had to, you know, navigate through like, why can't these five people see it? And then I realized 'cause they weren't on freaking SSO yet. Like that was just bad housekeeping on our end that yay, it helped us realize we just were dummies about something. But to the product itself, once everyone was in it, it was there. I didn't have to Hold a training or anything like that. We we know I went to Will. I said, Will, here it is. I'm going to walk you through it for an hour. We played around for a bit. He engaged his team leads They handed it out like there was. I actually think it was a hugely promising early sign that all the chatter and feedback wasn't about how the heck do I use this thing. And that's that's a good thing because At this point everyone's kind of figured out this is how I interact with a robot in text format. Great, like that was there. So no, I apologies always for the verbosity. I I get excited about this stuff, but.
+
+[00:21:15] Nicole Reineke:
+  Yes That's great. Anything else you want?
+
+[00:21:19] John Joyce:
+  But no, although very long winded way of saying no, Nicole, it's great. It's fantastic. Thumbs up.
+
+[00:21:24] Nicole Reineke:
+  Lynne, you did a good job. On a scale of one to 10, how amazing is Lynne 10? I mean, no. Lynne,
+
+[00:21:29] John Joyce:
+  There you go.
+
+[00:21:30] Nicole Reineke:
+  did you have any follow-on questions about that?
+
+[00:21:31] Lynne Robertson:
+  No, no. But it's great to hear that you didn't have to train anyone on how to use it because that was the whole, that's the whole part of the design. So thank you. I'm glad that we.
+
+[00:21:40] John Joyce:
+  Yes, it it it should just be, it should just be there and it should be obvious. And I mean this in the most complimentary
+
+[00:21:46] Lynne Robertson:
+  Yeah.
+
+[00:21:46] John Joyce:
+  way, it is. It's there and it's obvious. And you know,
+
+[00:21:47] Lynne Robertson:
+  Mhm. That's brilliant.
+
+[00:21:49] John Joyce:
+  thankfully because it aligns with the tools we are already using in similar fashion, it's, you know, it's Gemini without having to open every
+
+[00:21:54] Lynne Robertson:
+  Mhm.
+
+[00:21:56] John Joyce:
+  browser tab.
+
+[00:21:57] Lynne Robertson:
+  Yeah, yeah.
+
+[00:21:58] John Joyce:
+  It should be that straightforward and it is in a meaningful way, so.
+
+[00:22:02] Nicole Reineke:
+  We only have 5 minutes left, so based on your experience,
+
+[00:22:02] Lynne Robertson:
+  That's great. Thank you.
+
+[00:22:06] Nicole Reineke:
+  would you adopt Enzo when it becomes generally available?
+
+[00:22:12] John Joyce:
+  Assuming by GA that we're talking about, going back to the the accuracy component, obviously the only thing that would stop us from adoption is if we would, you know, not be able to validate the data, you know, from a functional perspective,
+
+[00:22:23] Nicole Reineke:
+  OK.
+
+[00:22:24] John Joyce:
+  we would absolutely adopt it as long as we can, you know, validate that you were getting Not 100% because there is no such thing, but consistently validated good returns on the the queries and questions. Yes, the the the value proposition on the product is absolutely there. We would implement it without question as long as we you know kind of clean up you know Whatever the true root cause is between some of the consistency issues that we've seen, but stripping that away because of the
+
+[00:22:53] Nicole Reineke:
+  OK.
+
+[00:22:54] John Joyce:
+  early element of the product, yes, we would.
+
+[00:22:57] Nicole Reineke:
+  Generally speaking, do you use that asset view?
+
+[00:23:01] John Joyce:
+  So shockingly little before this is it's driven us into asset view more We've and it's probably this is too far outside the scope of the conversation, but we've we've we've had general performance issues with asset view We feel that it's not as quick to get to and it is very effective at what it does but Everything takes longer, so the team has not embraced it to a great degree because we find it's slow compared to, you know, again, there's a little bit of the way we've always done it of it all, unfortunately, and that's again, systems engineers. But being as objective as I can, asset view is generally slower to navigate around than the rest Event Central. That's just been true since we got access to it, but this has actually driven more intentional use of it because Enzo was there.
+
+[00:23:49] Nicole Reineke:
+  OK. Did any of your team members use Enzo to ask documentation questions or knowledge base questions?
+
+[00:23:56] John Joyce:
+  I don't believe so. Just not not to the best of my knowledge It was more it was more specifically focused around genuine like you know, troubleshooting or sourcing information about a device or working with broader scale data set. Like hey, I've been tasked with figuring out what servers need upgraded or where we have outdated software Nothing specific to knowledge base information Information not the entirety of our knowledge base lives in Hoodoo.
+
+[00:24:17] Nicole Reineke:
+  And it.
+
+[00:24:21] John Joyce:
+  So I mean it's that that's obfuscated from in central anyway, so.
+
+[00:24:24] Nicole Reineke:
+  Yeah. Is there anything I didn't ask you that you wanted to tell us?
+
+[00:24:29] John Joyce:
+  Keep going. No, I seriously make sure anyone that needs to know knows everything I said that sounded like assembly block or a problem are all exciting opportunities. We're excited to be have to be able to work with you all on them. We and we'd like to keep doing so if you'll have us and we'll just just keep keep going with this Because this is what this is the work we need to be doing.
+
+[00:24:52] Nicole Reineke:
+  Wonderful. Craig, did I miss anything from your perspective?
+
+[00:24:56] Craig Hutcheon:
+  Uh, no. I think, uh, I think I've taken all the points on board. Yeah, sounds good to me.
+
+[00:25:01] Nicole Reineke:
+  Wonderful. Well, you are delightful. You are amazing Thank you so much for being straightforward and helping us figure out
+
+[00:25:05] John Joyce:
+  Thank you guys.
+
+[00:25:07] Nicole Reineke:
+  what to do better. So we really appreciate it.
+
+[00:25:09] John Joyce:
+  Yeah. And however we can engage on that, please tell me. We're there for it. So.
+
+[00:25:13] Nicole Reineke:
+  Yeah, you're going to get free Enzo access for the whole next quarter. We're going to continue to improve it.
+
+[00:25:18] John Joyce:
+  Great.
+
+[00:25:19] Nicole Reineke:
+  We are, we will improve the data accuracy. Thank you for letting us know about that I will investigate those timeouts because I have a feeling that's what's happening I just think we're going to add in patch and vulnerability information over the
+
+[00:25:28] John Joyce:
+  Yeah.
+
+[00:25:31] Nicole Reineke:
+  next few weeks, which will be fun.
+
+[00:25:33] John Joyce:
+  Break.
+
+[00:25:33] Nicole Reineke:
+  Information for you to have access to and then you're going to get chat history
+
+[00:25:34] John Joyce:
+  Yeah.
+
+[00:25:37] Nicole Reineke:
+  that comes pretty quickly and annotations. If you don't seeing those, those are coming pretty quickly and I think those are the main features that we
+
+[00:25:43] John Joyce:
+  Oh, OK, great.
+
+[00:25:46] Nicole Reineke:
+  have coming out over the next few weeks and then at Empower will give another update for what's going to come out after that That.
+
+[00:25:53] John Joyce:
+  The last thing for you all, just you know, I'll ask Will to make a very specific note of some of those queries and prompts we were running that had higher than normal like bad data returns because what we need is we can keep throwing those same things at it so we so we can track improvements in efficacy if that makes sense. So you know that way we're doing you know proper you know testing on improvement so.
+
+[00:26:13] Nicole Reineke:
+  That would be incredible. And if you do have screenshots of the
+
+[00:26:13] John Joyce:
+  Ha.
+
+[00:26:16] Nicole Reineke:
+  other things that went went poorly, if you could send those over to me,
+
+[00:26:16] John Joyce:
+  Yeah, Yep.
+
+[00:26:19] Nicole Reineke:
+  I will make sure that the team has access to them so we investigate it directly too.
+
+[00:26:23] John Joyce:
+  I'll get you guys what you need.
+
+[00:26:24] Nicole Reineke:
+  You're amazing. Thank you for your partnership I appreciate it.
+
+[00:26:27] John Joyce:
+  Oh, thank you guys. Talk soon.
+
+[00:26:27] Lynne Robertson:
+  Thank you so much. Bye.
+
+[00:26:29] Craig Hutcheon:
+  Yeah, thank you. Bye-bye.
+
+[00:26:29] Nicole Reineke:
+  Bye.
+
+[00:26:30] John Joyce:
+  I don't know.

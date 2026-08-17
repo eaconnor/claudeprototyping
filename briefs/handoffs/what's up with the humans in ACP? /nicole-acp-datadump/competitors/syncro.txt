@@ -1,0 +1,53 @@
+# Syncro
+slug: syncro
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Syncro is an all-in-one RMM + PSA platform purpose-built for small MSPs, offering flat per-technician pricing with unlimited endpoints. It competes directly with Atera at the smaller end of the MSP market, positioning on simplicity, affordability, and unlimited device management. Syncro includes built-in scripting, remote access, ticketing, billing, and basic automation — all in one platform without per-device fees.
+
+## MSP Relevance
+Syncro is the go-to all-in-one platform for solo MSPs and small shops (1–10 technicians) who cannot justify the complexity or pricing of ConnectWise, Kaseya, or NinjaOne. Its flat per-technician pricing model allows smaller MSPs to onboard unlimited devices without cost escalation. AI features are basic as of 2025–2026 but are on the roadmap.
+
+## Key Offerings & Capabilities
+- All-in-one RMM + PSA — endpoint monitoring, patching, ticketing, billing, time tracking
+- Unlimited devices per technician license — no per-endpoint fees
+- Built-in remote access (scripted and interactive)
+- Scripting and policy-based automation
+- Client portal for self-service and communication
+- Invoicing and billing built into PSA
+- Integration with common MSP security and backup tools
+
+## Recent Announcements
+- Platform continues to focus on simplicity and affordability for small MSPs
+- AI and automation features are on the product roadmap but not yet prominently shipped as of 2025–2026
+- Syncro remains a strong choice for the sub-$500/month MSP budget bracket
+- Community-driven feature requests continue to shape platform development
+
+## Pricing Model
+Per-technician per-month, with unlimited endpoints. Pricing around $139/technician/month (Standard) and higher for additional features. Free trial available. No per-device, per-seat-client, or storage fees. Simple, predictable pricing is a core differentiator.
+
+## Strengths
+- Unlimited endpoint model is the strongest pricing differentiator for device-heavy small MSPs
+- Simplicity — technicians can get started in hours, not days
+- All-in-one eliminates the need for separate PSA and RMM vendors
+- Strong value for price in the 1–10 technician segment
+- Active community and responsive support
+
+## Weaknesses / Gaps
+- Limited advanced automation compared to Rewst, Kaseya, or ConnectWise
+- AI features underdeveloped vs. Atera (which has Robin/IT Autopilot) and SuperOps
+- Less suited for MSPs growing beyond 20+ technicians — scales awkwardly
+- Fewer integrations than larger platforms
+- Not competitive for enterprise or mid-market clients
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Syncro serves a different segment (small MSPs) with a simpler tool. Its limited automation and absent AI features mean it does not compete with NZO's AI agent and control plane platform. Syncro MSPs that grow may eventually need NZO, making them a potential customer segment rather than a competitor's territory.
+
+## Notes
+- Syncro MSPs who outgrow the platform often move to NinjaOne or HaloPSA — track migration patterns
+- Atera (Robin/IT Autopilot) is the primary AI-capable competitor in the per-technician, unlimited-device segment
+- If Syncro ships meaningful AI automation, it could neutralize NZO's story for the small MSP segment

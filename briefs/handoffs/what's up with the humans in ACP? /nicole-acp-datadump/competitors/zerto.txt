@@ -1,0 +1,57 @@
+# Zerto
+slug: zerto
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Zerto is a continuous data protection (CDP) and disaster recovery platform acquired by Hewlett Packard Enterprise (HPE) for $374M in 2021. Zerto differentiates through near-zero RPO/RTO — protecting workloads with second-by-second replication rather than periodic snapshots — enabling recovery to any point in time before a ransomware attack or failure. Integrated into the HPE GreenLake cloud services portfolio, Zerto serves 9,000+ customers including 350+ MSPs delivering DRaaS.
+
+## MSP Relevance
+Zerto is relevant to MSPs delivering enterprise-grade disaster recovery and business continuity services for clients with stringent recovery SLAs. Its CDP model (continuous, real-time replication vs. scheduled snapshots) enables MSPs to offer sub-minute RPO guarantees — a capability no snapshot-based backup product can match. Zerto's HPE partnership and 350+ MSP customer base provide a structured channel with volume-based DRaaS pricing. MSPs serving financial services, healthcare, and manufacturing clients with zero-downtime requirements are the primary Zerto audience.
+
+## Key Offerings & Capabilities
+- Continuous Data Protection (CDP) — real-time block-level replication with no data loss window (RPO in seconds)
+- Near-zero RTO disaster recovery — recovery to any recent point in time with rapid failover
+- Workload mobility — live migration across on-premises, Azure, AWS, and VMware environments
+- Ransomware recovery — recover to a clean point in time before infection; Integration Hub with CrowdStrike for threat-triggered recovery (Q4 2025)
+- HPE GreenLake integration — Zerto available as managed service within HPE's cloud portfolio
+- Integration Hub — extensible platform enabling third-party security tools to trigger Zerto recovery actions (launched Q4 2025)
+- Microsoft Defender integration — real-time threat visibility with automated recovery post-detection (Q2 2026)
+- AI-assisted CDP — AI enhancements for continuous data protection (Q2 2026 HPE GreenLake update)
+- DRaaS — MSPs offer flexible billing (pay-as-you-go, reserved, dedicated resources) for managed disaster recovery
+- Per-VM licensing — Zerto Essential CloudEdition (ECE) and Advanced Resilience Edition (ARE)
+
+## Recent Announcements
+- Q2 2026: AI assistance added to CDP capabilities; Microsoft Defender integration for real-time threat visibility and faster recovery automation
+- Q2 2026: Live workload migration from VMware to HPE infrastructure with CDP — supports HPE's push for VMware migration as Broadcom pricing changes drive customers to evaluate alternatives
+- Q4 2025: Integration Hub launched with CrowdStrike as exclusive launch partner — combines Falcon threat detection with Zerto recovery, enabling restore to clean recovery points within seconds of attack detection
+- HPE named TierPoint "MSP of the Year" for leadership in Zerto-protected VMs and revenue growth
+
+## Pricing Model
+Per-VM subscription licensing (not per-site or per-capacity). Two editions: Zerto Essential CloudEdition (ECE) and Zerto Advanced Resilience Edition (ARE). Starting approximately $745/year per VM; minimum deal of 15 VMs (~$15,000/year). Annual or multi-year terms. Pricing described as "complex and costly" in market reviews. All transactions handled through channel partners — no direct sales model. Custom enterprise pricing negotiated through HPE and authorized resellers.
+
+## Strengths
+- Continuous replication (CDP) is a genuine technical differentiator — the only enterprise platform offering second-by-second recovery point across entire workloads
+- Integration Hub + CrowdStrike partnership is the most technically advanced ransomware recovery capability in the market
+- 9,000+ customers including 350+ MSPs validates production-scale deployment at significant breadth
+- VMware-to-HPE migration path is strategically positioned for Broadcom pricing disruption — MSPs with VMware clients have a new reason to evaluate Zerto
+- AI-assisted CDP (Q2 2026) adds intelligent automation to the world's most granular recovery technology
+
+## Weaknesses / Gaps
+- Per-VM pricing at $745+/year creates high cost floor; minimum 15 VM deal (~$15K/year) excludes smaller MSP clients
+- Pricing complexity — multiple editions, per-VM tiers, and volume discounts make proposals difficult to construct quickly
+- HPE ownership creates enterprise-focused sales motion that may deprioritize SMB-focused MSPs
+- Continuous replication is compute-intensive — requires more infrastructure resources than snapshot-based backup
+- Not a SaaS product — requires significant infrastructure commitment on both MSP and client sides
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Zerto is a disaster recovery platform with no meaningful overlap with NZO's AI agent and automation capabilities. As a backup/DR vendor, Zerto occupies a distinct market segment from NZO. The only integration opportunity is NZO agents triggering Zerto recovery actions through the Integration Hub API model — which is a partnership opportunity rather than a competitive conflict.
+
+## Notes
+- The CrowdStrike Integration Hub partnership (Q4 2025) is the most innovative product announcement in the backup/DR category this year — it sets a new standard for security-integrated recovery
+- VMware-to-HPE migration capability is strategically timed with Broadcom's VMware acquisition creating MSP pricing disruptions — this could drive significant Zerto evaluation activity in 2026
+- Microsoft Defender integration (Q2 2026) extends Zerto's security-integrated recovery to the Microsoft ecosystem — relevant for the majority of MSPs serving Windows-centric clients
+- Monitor HPE's overall GreenLake strategy — if HPE bundles Zerto into broader GreenLake managed services packages, the channel economics and MSP accessibility change significantly

@@ -1,0 +1,64 @@
+﻿TRANSCRIPT: Sketch Ditty - Ask N-zo Feedback Session
+Source: sketch.vtt
+============================================================
+
+Customer - Sketch Ditty  aitechny.com
+You'll probably want to read these notes summarized below 
+Brain
+ 
+dump
+ -- this was a high value call and another positive proof point. 
+ 
+Full transcript: Recap: Sketch Ditty - Ask N-zo Feedback Session Wednesday, February 25 | Meeting | Microsoft Teams 
+ 
+ 
+Value for Technicians and Daily Work
+“My service desk engineer… goes and refers to it quite often.” [Sketch Dit...Recording | Video]
+“He said I can ask it RMM questions and it basically gives me a direct answer plus a link of the KB article.” [Sketch Dit...Recording | Video]
+ 
+“It can provide basic troubleshooting specifically for my questions about an RMM check.” [Sketch Dit...Recording | Video]
+ 
+“It writes a script and commands for me when I need it for troubleshooting… and it works.” [Sketch Dit...Recording | Video]
+Higher‑Level and Validation Use Cases
+ 
+“He uses it to verify our service desk conclusions.” [Sketch Dit...Recording | Video]
+“So he was able to kind of fact check our engineering.” [Sketch Dit...Recording | Video]
+“In general he uses it to validate our team members’ approaches to things as well as a brainstorming resource for troubleshooting.” [Sketch Dit...Recording | Video]
+Limitations (Balanced, Constructive Feedback)
+“It only has access to RMM… it would be best if it also has access to other tools we are subscribed with.” [Sketch Dit...Recording | Video]
+“It cannot give me a list of workstations with active failed checks.” [Sketch Dit...Recording | Video]
+ 
+“We should probably be checking Enzo with some of these to see if it can give us the root cause instead of going to our partner that we have to pay for.” [Sketch Dit...Recording | Video]
+Willingness to Adopt and Pay
+ 
+“Oh yeah, heck yeah.” (In response to whether they would adopt Ask N‑zo when generally available.) [Sketch Dit...Recording | Video]
+ 
+ 
+WHAT THEY WANT IMPROVED
+ 
+Broader Product Coverage Improvements
+“It only has access to RMM… it would be best if it also has access to other tools we are subscribed with — MDR, EDR, Cove, MSP Manager, et cetera.”
+“They like it enough that they wish they had that depth within the other tools as well.”
+Deeper Diagnostics and Root Cause Analysis
+“It does not have the details of the failed check. It would be great if it has deeper access to the failed checks.”
+“We are struggling with diving into failed checks and then being able to give us a root cause of what the issue is.”
+“We should probably be checking Enzo with some of these to see if it can give us the root cause instead of going to our partner that we have to pay for.”
+Asset and List-Based Visibility
+“It cannot give me a list of workstations with active failed checks. It only can give me the device names and its details.”
+Context, Memory, and Configuration Improvements
+“It would be nice if Enzo was able to have a historical memory of previous interactions so that he doesn’t have to start from scratch all the time.”
+“I wish to be able to create a space where in that space is designed for Enzo to reply a certain way which I can preconfigure.”
+Learning From Other MSPs
+“I’d love if there’s anything you can share or references or anything of how other people are using it in a way that helps open our minds up.”
+ 
+ 
+Any issues with speed or accuracy of Responses
+Help Desk Engineer:  Yes, “he” takes time. BUT it is the least of my concerns so long as he answers me accurately.  I am willing to wait.
+Any UX or UI Improvements to note:
+Help Desk Engineer: For UI, I want to be able to use it on a separate window on its own. I also want it available in all RMM pages.  Ideally visible in all N-Able Pages / Tools
+Failed Checks
+Context:  Help Desk Engineer stated:
+It does not have the details of the failed check. It would be great if he has deeper access to the failed checks
+Nicole:
+more data on what a "fail check" looks like (aka your tech asks, "tell me what this error x0000xsdf means" and you are expecting the result to be something like "This is a system fault and requires a new hard drive" or whatever it means
+Help Desk Engineer: I would love to see n-zo doing my job. lol. what that means is, I like him to see the failed checks, understand the correlation to other checks if it is related. like initial diagnosis. then give me logical steps to take (which it does, based on the information I throw at it.)

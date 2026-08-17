@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>notify-service · Email Delivery (SendGrid) · Tier 1 Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+/* apply mode before first paint */
+(function(){
+  try {
+    var pref = localStorage.getItem('apx-mode-pref') || 'system';
+    var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = pref === 'system' ? (sysDark ? 'dark' : 'light') : pref;
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-mode-pref', pref);
+  } catch(e){ document.documentElement.setAttribute('data-theme','dark'); }
+})();
+</script>
+<style>
+/* ============================================================
+   APEX BRIDGE TOKENS (locked)
+   ============================================================ */
+:root {
+  --bg-app: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-elevated: #182238;
+  --bg-deep: #070d18;
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  --brand: #3b82f6;
+  --brand-strong: #2563eb;
+  --brand-soft: rgba(59,130,246,0.14);
+
+  --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+  --low: #22c55e;       --low-soft: rgba(34,197,94,0.12);
+
+  --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+  --topbar-bg: #0a1730;
+  --topbar-border: var(--brand);
+  --rail-bg: #16112e;
+  --rail-border: var(--alpha-accent);
+
+  --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 8px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+[data-theme="light"] {
+  --bg-app: #f4f6fb;  --bg-surface: #ffffff;  --bg-elevated: #eef1f8;
+  --bg-deep: #e6eaf3; --border: #d8deeb;  --border-strong: #c3ccdd;
+  --text-primary: #0d1424; --text-secondary: #45506b;
+  --text-tertiary: #6b7790; --text-muted: #94a0b8;
+  --topbar-bg: #0a1730;
+  --rail-bg: #f0eafa;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.mono { font-family: var(--font-mono); }
+button { font-family: inherit; cursor: pointer; }
+a { color: var(--brand); }
+
+/* ============================================================
+   TOPBAR — own surface, brand-edged, dark in both modes
+   ============================================================ */
+.topbar {
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  padding: 0 22px;
+  height: 52px;
+  display: flex; align-items: center; gap: 18px;
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar .logo {
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.04em; color: #fff;
+  display: flex; align-items: center; gap: 9px;
+}
+.topbar .logo .mark {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--brand), var(--alpha-accent));
+  display: inline-block;
+}
+.topbar .crumb { color: #8fa1c4; font-size: 12px; }
+.topbar .crumb b { color: #cdd9ef; font-weight: 600; }
+.topbar .spacer { flex: 1; }
+.topbar .pill {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+  color: #9fb2d6; border: 1px solid #2a3a5c; border-radius: 20px;
+  padding: 4px 11px; text-transform: uppercase;
+}
+
+/* ============================================================
+   FIDELITY BANNER — violet, sticky
+   ============================================================ */
+.fidelity {
+  position: sticky; top: 52px; z-index: 35;
+  background: var(--bg-elevated);
+  border: 2px solid var(--alpha-accent);
+  border-left: 0; border-right: 0;
+  padding: 11px 22px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.fid-tag {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--alpha-soft); color: var(--alpha-accent);
+  border: 1px solid var(--alpha-accent);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 5px 11px; border-radius: var(--radius-sm);
+}
+.pips { display: flex; gap: 4px; }
+.pip { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); }
+.pip.on { background: var(--alpha-accent); }
+.fid-checks { display: flex; gap: 13px; flex-wrap: wrap; }
+.fid-check { display: flex; align-items: center; gap: 5px; color: var(--text-tertiary); font-size: 11px; font-family: var(--font-mono); }
+.fid-check .y { color: var(--low); } .fid-check .p { color: var(--medium); } .fid-check .n { color: var(--text-muted); }
+.fid-dod {
+  flex-basis: 100%; color: var(--text-secondary); font-size: 11px;
+  font-family: var(--font-mono); border-top: 1px dashed var(--border-strong);
+  padding-top: 8px; margin-top: 2px;
+}
+.fid-dod b { color: var(--alpha-accent); }
+.fid-spacer { flex: 1; }
+.mode-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius-md); overflow: hidden; }
+.mode-toggle button {
+  background: transparent; border: 0; color: var(--text-tertiary);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
+  padding: 5px 9px; text-transform: uppercase;
+}
+.mode-toggle button.active { background: var(--brand-soft); color: var(--brand); }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.shell { display: grid; grid-template-columns: 1fr 340px; gap: 0; align-items: start; }
+.main { padding: 22px; min-width: 0; }
+@media (max-width: 1100px){ .shell { grid-template-columns: 1fr; } }
+
+.h-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+h1.page { font-family: var(--font-mono); font-size: 19px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+.sub { color: var(--text-secondary); font-size: 12px; margin: 0 0 18px; max-width: 760px; }
+
+/* metric strip */
+.metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+@media (max-width: 720px){ .metrics { grid-template-columns: repeat(2,1fr);} }
+.metric {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 12px 13px;
+}
+.metric .k { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-tertiary); }
+.metric .v { font-family: var(--font-mono); font-size: 22px; font-weight: 700; margin-top: 3px; }
+.metric.alarm { border-color: var(--critical); background: var(--critical-soft); }
+.metric.alarm .v { color: var(--critical); }
+.metric .v.good { color: var(--low); }
+
+/* channel split */
+.channels { display: grid; grid-template-columns: 1fr 280px; gap: 14px; margin-bottom: 8px; }
+@media (max-width: 980px){ .channels { grid-template-columns: 1fr; } }
+.panel {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.panel-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 15px; border-bottom: 1px solid var(--border);
+}
+.panel-head .ch-dot { width: 9px; height: 9px; border-radius: 50%; }
+.panel-head .title { font-family: var(--font-mono); font-weight: 700; font-size: 13px; letter-spacing: 0.02em; }
+.panel-head .meta { color: var(--text-tertiary); font-size: 11px; font-family: var(--font-mono); }
+.panel-head .spacer { flex: 1; }
+.ch-badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border-strong); color: var(--text-tertiary); }
+.indep-note {
+  font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono);
+  padding: 8px 15px; background: var(--bg-deep); border-top: 1px dashed var(--border-strong);
+}
+.indep-note b { color: var(--brand); }
+
+/* detection resolution stub */
+.resolve {
+  margin: 0 15px 13px; padding: 11px 13px; background: var(--bg-deep);
+  border: 1px solid var(--border); border-left: 3px solid var(--brand);
+  border-radius: var(--radius-md); font-size: 11.5px;
+}
+.resolve .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-tertiary); }
+.resolve .chain { font-family: var(--font-mono); color: var(--text-secondary); margin-top: 4px; }
+.resolve .chain b { color: var(--text-primary); }
+.resolve .arrow { color: var(--alpha-accent); padding: 0 4px; }
+
+/* delivery table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th {
+  text-align: left; font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary);
+  padding: 8px 14px; border-bottom: 1px solid var(--border); font-weight: 600;
+}
+.tbl td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl .recip { font-family: var(--font-mono); color: var(--text-primary); font-size: 11.5px; }
+.tbl .tmpl { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary);
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; }
+.tbl .reason { color: var(--text-secondary); font-size: 11px; }
+.tbl .lat { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
+
+/* status chips */
+.st { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.st .d { width: 6px; height: 6px; border-radius: 50%; }
+.st.accepted { color: var(--low); background: var(--low-soft); border: 1px solid var(--low); }
+.st.accepted .d { background: var(--low); }
+.st.rejected { color: var(--high); background: var(--high-soft); border: 1px solid var(--high); }
+.st.rejected .d { background: var(--high); }
+.st.bounced { color: var(--medium); background: var(--medium-soft); border: 1px solid var(--medium); }
+.st.bounced .d { background: var(--medium); }
+
+/* SUPPRESSED + zero-recipient — LOUDEST */
+tr.row-suppressed { background: var(--critical-soft); }
+tr.row-suppressed td { border-bottom: 1px solid rgba(239,68,68,0.4); }
+.st.suppressed { color: #fff; background: var(--critical); border: 1px solid var(--critical);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.25); animation: pulse 1.8s ease-in-out infinite; }
+.st.suppressed .d { background: #fff; }
+.st.zerorecip { color: #fff; background: var(--critical); border: 1px solid var(--critical); }
+.st.zerorecip .d { background: #fff; }
+@keyframes pulse { 0%,100%{ box-shadow: 0 0 0 3px rgba(239,68,68,0.25);} 50%{ box-shadow: 0 0 0 6px rgba(239,68,68,0.12);} }
+.silent-flag {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.05em;
+  color: var(--critical); font-weight: 700; text-transform: uppercase;
+}
+.row-suppressed .reason { color: var(--critical); font-weight: 600; }
+
+/* the LOUD suppressed banner above table */
+.loud {
+  display: flex; align-items: center; gap: 13px; margin: 13px 15px;
+  background: var(--critical); color: #fff;
+  border-radius: var(--radius-md); padding: 12px 15px;
+  box-shadow: 0 6px 22px -8px rgba(239,68,68,0.7);
+}
+.loud .ico { font-size: 20px; }
+.loud .txt { font-size: 12.5px; }
+.loud .txt b { font-family: var(--font-mono); letter-spacing: 0.03em; }
+.loud .txt .sm { display: block; opacity: 0.9; font-size: 11px; margin-top: 2px; }
+.loud .spacer { flex: 1; }
+.loud button { background: rgba(0,0,0,0.22); color: #fff; border: 1px solid rgba(255,255,255,0.4);
+  border-radius: var(--radius-sm); padding: 6px 12px; font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+
+/* twilio mini rows */
+.tw-row { display: flex; align-items: center; gap: 10px; padding: 11px 15px; border-bottom: 1px solid var(--border); font-size: 11.5px; }
+.tw-row:last-child { border-bottom: 0; }
+.tw-row .num { font-family: var(--font-mono); color: var(--text-primary); }
+.tw-row .spacer { flex: 1; }
+.st.tw-fail { color: var(--high); background: var(--high-soft); border: 1px solid var(--high); }
+.st.tw-fail .d { background: var(--high); }
+.st.tw-ok { color: var(--low); background: var(--low-soft); border: 1px solid var(--low); }
+.st.tw-ok .d { background: var(--low); }
+
+/* DLQ */
+.dlq { margin-top: 18px; }
+.dlq .panel-head .title { color: var(--high); }
+.dlq-row { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center;
+  padding: 11px 15px; border-bottom: 1px solid var(--border); font-size: 11.5px; }
+.dlq-row:last-child { border-bottom: 0; }
+.dlq-row .id { font-family: var(--font-mono); color: var(--high); }
+.dlq-row .why { color: var(--text-secondary); font-size: 11px; }
+.dlq-row .retries { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); }
+
+.legend { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 15px 4px; padding-top: 12px; border-top: 1px dashed var(--border); }
+.legend .item { font-size: 11px; color: var(--text-tertiary); display: flex; align-items: center; gap: 6px; }
+
+/* ============================================================
+   BRADLEY RAIL — distinct violet surface
+   ============================================================ */
+.rail {
+  background: var(--rail-bg);
+  border-left: 4px solid var(--rail-border);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  min-height: 100vh; padding: 18px 16px;
+  position: relative;
+}
+.rail::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(135deg, rgba(167,139,250,0.04) 0, rgba(167,139,250,0.04) 2px, transparent 2px, transparent 9px);
+}
+.rail > * { position: relative; }
+.rail-head { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; }
+.rail-head .badge {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  color: var(--alpha-accent); background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent); border-radius: 20px; padding: 4px 11px;
+}
+.rail-blurb { color: var(--text-secondary); font-size: 11.5px; margin: 4px 0 14px; }
+.rail-sec { margin-bottom: 14px; }
+.rail-sec h3 {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--alpha-accent); margin: 0 0 7px;
+}
+.nail, .hurt { font-size: 11.5px; padding: 8px 10px; border-radius: var(--radius-md); margin-bottom: 6px; }
+.nail { background: var(--low-soft); border: 1px solid rgba(34,197,94,0.4); color: var(--text-primary); }
+.hurt { background: var(--high-soft); border: 1px solid rgba(249,115,22,0.4); color: var(--text-primary); }
+.nail b, .hurt b { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.05em; margin-bottom: 2px; }
+.nail b { color: var(--low); } .hurt b { color: var(--high); }
+
+.card {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 11px; margin-bottom: 8px;
+}
+.card .ct { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; margin-bottom: 6px; }
+.card.product .ct { color: var(--brand); }
+.card.design .ct { color: var(--alpha-accent); }
+.card.research .ct { color: var(--medium); }
+.card.eng .ct { color: var(--low); }
+.card p { margin: 3px 0; font-size: 11px; color: var(--text-secondary); }
+.card p b { color: var(--text-primary); font-weight: 600; }
+.card .tag { font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); }
+.roi { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); font-size: 10.5px; }
+.roi .r { color: var(--text-secondary); } .roi .r b { color: var(--text-tertiary); font-family: var(--font-mono); font-weight: 600; }
+.roi .unk { color: var(--medium); }
+
+.council-btn {
+  width: 100%; background: var(--alpha-soft); color: var(--alpha-accent);
+  border: 1px solid var(--alpha-accent); border-radius: var(--radius-md);
+  padding: 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.05em; margin: 4px 0 12px;
+}
+.crosstalk { background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 10px; font-size: 11px; }
+.crosstalk .line { color: var(--text-secondary); margin: 3px 0; }
+.crosstalk .line .who { font-family: var(--font-mono); color: var(--alpha-accent); font-size: 10px; }
+.attr { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+/* ============================================================
+   COUNCIL MODAL
+   ============================================================ */
+.overlay { position: fixed; inset: 0; background: rgba(4,8,16,0.72); z-index: 80; display: none; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+.overlay.open { display: flex; }
+.modal { background: var(--bg-surface); border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-lg); max-width: 720px; width: 100%; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7); }
+.modal-head { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 2px solid var(--alpha-accent); }
+.modal-head h2 { font-family: var(--font-mono); font-size: 15px; margin: 0; }
+.modal-head .spacer { flex: 1; }
+.modal-head .close { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary);
+  border-radius: var(--radius-sm); width: 28px; height: 28px; font-size: 15px; }
+.modal-body { padding: 18px 20px; }
+.exec { background: var(--bg-deep); border: 1px solid var(--alpha-accent); border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px; }
+.exec h3 { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--alpha-accent); margin: 0 0 8px; }
+.exec .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 10px; }
+.exec .stat { } .exec .stat .k { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); }
+.exec .stat .v { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.synth { background: var(--alpha-soft); border: 1px dashed var(--alpha-accent); border-radius: var(--radius-sm);
+  padding: 9px 11px; font-family: var(--font-mono); font-size: 11px; color: var(--alpha-accent); }
+.mode-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.hard-btn { background: var(--bg-elevated); border: 1px solid var(--border-strong); color: var(--text-secondary);
+  border-radius: var(--radius-md); padding: 8px 13px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; }
+.tension { background: var(--bg-elevated); border: 1px solid var(--border); border-left: 3px solid var(--alpha-accent);
+  border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 8px; }
+.tension .t { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--alpha-accent); margin-bottom: 3px; }
+.tension .body { font-size: 11.5px; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="logo"><span class="mark"></span>ADLUMIN</span>
+  <span class="crumb">notify-service / <b>Email Delivery (SendGrid)</b></span>
+  <span class="spacer"></span>
+  <span class="pill">Internal stress-test</span>
+  <span class="pill">ADLBUGS-634</span>
+</header>
+
+<!-- FIDELITY BANNER -->
+<div class="fidelity">
+  <span class="fid-tag">
+    <span class="pips"><span class="pip on"></span><span class="pip"></span><span class="pip"></span></span>
+    Tier 1 · Concept
+  </span>
+  <div class="fid-checks">
+    <span class="fid-check"><span class="y">✓</span> Real copy</span>
+    <span class="fid-check"><span class="p">~</span> Seed data fictional</span>
+    <span class="fid-check"><span class="y">✓</span> Core interaction</span>
+    <span class="fid-check"><span class="n">✗</span> Full workflow</span>
+    <span class="fid-check"><span class="y">✓</span> Visual hierarchy</span>
+    <span class="fid-check"><span class="n">✗</span> Production ready</span>
+  </div>
+  <span class="fid-spacer"></span>
+  <div class="mode-toggle" role="group" aria-label="Color mode">
+    <button data-mode="light">Light</button>
+    <button data-mode="dark">Dark</button>
+    <button data-mode="system">System</button>
+  </div>
+  <div class="fid-dod">
+    <b>Provisional Definition-of-Done (not yet ratified):</b> all five row states render — accepted · rejected · bounced · <b>suppressed</b> · zero-recipient — every 0-sent row carries a reason, four templates + severity gate are visible, and a Twilio failure never visually drags an email row. [A]
+  </div>
+</div>
+
+<div class="shell">
+<!-- ============ MAIN ============ -->
+<main class="main">
+  <div class="h-row"><h1 class="page">Email Delivery — High+Critical escalations</h1></div>
+  <p class="sub">Per-recipient SendGrid delivery for the last detection batch. <b>The point of this surface:</b> a silent suppression must be the loudest thing on screen — not an empty table. Every send is observably delivered or observably failed; there is no third silent state.</p>
+
+  <div class="metrics">
+    <div class="metric"><div class="k">Escalations gated</div><div class="v">6</div></div>
+    <div class="metric"><div class="k">Accepted</div><div class="v good">3</div></div>
+    <div class="metric"><div class="k">Rejected / bounced</div><div class="v">2</div></div>
+    <div class="metric alarm"><div class="k">Suppressed (silent)</div><div class="v">1</div></div>
+    <div class="metric"><div class="k">p95 latency vs 2m target</div><div class="v">1m14s</div></div>
+  </div>
+
+  <div class="channels">
+    <!-- EMAIL CHANNEL -->
+    <section class="panel" aria-label="Email channel">
+      <div class="panel-head">
+        <span class="ch-dot" style="background:var(--brand)"></span>
+        <span class="title">Email · SendGrid</span>
+        <span class="meta">SendEmail · GateBySeverity</span>
+        <span class="spacer"></span>
+        <span class="ch-badge">Channel A</span>
+      </div>
+
+      <!-- LOUD suppressed banner -->
+      <div class="loud" role="alert">
+        <span class="ico" aria-hidden="true">⚠</span>
+        <div class="txt">
+          <b>1 escalation SUPPRESSED — no email sent, and under the old worker this produced NO error and NO log.</b>
+          <span class="sm">This is the ADLBUGS-634 fail-silent path. This surface renders it. The old surface rendered nothing.</span>
+        </div>
+        <span class="spacer"></span>
+        <button type="button" onclick="document.getElementById('sup-row').scrollIntoView({behavior:'smooth',block:'center'})">Jump to row</button>
+      </div>
+
+      <!-- Recipient resolution stub -->
+      <div class="resolve">
+        <div class="lbl">ResolveRecipients — SOC-4471 (Critical)</div>
+        <div class="chain">
+          Detection <b>SOC-4471</b> <span class="arrow">→</span> profile <b>"Birchwood-NOC-Tier1"</b> <span class="arrow">→</span> Call Directory priority order <b>[ on-call · team-dl · fallback ]</b> <span class="arrow">→</span> resolved <b>3 recipients</b>
+        </div>
+      </div>
+
+      <table class="tbl">
+        <thead>
+          <tr><th>Recipient</th><th>Template</th><th>DeliveryStatus</th><th>Reason / detail</th><th>Latency</th></tr>
+        </thead>
+        <tbody>
+          <!-- accepted -->
+          <tr>
+            <td><span class="recip">noc-oncall@birchwoodmanaged.example</span><br><span class="tag mono" style="color:var(--text-muted);font-size:10px">SOC-4471 · Critical</span></td>
+            <td><span class="tmpl">ransomware</span></td>
+            <td><span class="st accepted"><span class="d"></span>accepted</span></td>
+            <td class="reason">250 OK · queued by SendGrid for delivery</td>
+            <td class="lat">0m51s</td>
+          </tr>
+          <!-- accepted -->
+          <tr>
+            <td><span class="recip">soc-team@birchwoodmanaged.example</span><br><span class="tag mono" style="color:var(--text-muted);font-size:10px">SOC-4471 · Critical</span></td>
+            <td><span class="tmpl">ransomware</span></td>
+            <td><span class="st accepted"><span class="d"></span>accepted</span></td>
+            <td class="reason">250 OK · queued by SendGrid for delivery</td>
+            <td class="lat">0m53s</td>
+          </tr>
+          <!-- bounced -->
+          <tr>
+            <td><span class="recip">d.harlow@birchwoodmanaged.example</span><br><span class="tag mono" style="color:var(--text-muted);font-size:10px">SOC-4471 · Critical</span></td>
+            <td><span class="tmpl">ransomware</span></td>
+            <td><span class="st bounced"><span class="d"></span>bounced</span></td>
+            <td class="reason">550 5.1.1 — mailbox unavailable (hard bounce). RetryOrDLQ skipped: hard bounce is non-retryable.</td>
+            <td class="lat">1m02s</td>
+          </tr>
+          <!-- rejected -->
+          <tr>
+            <td><span class="recip">alerts@cascadesecuritygrp.example</span><br><span class="tag mono" style="color:var(--text-muted);font-size:10px">SOC-4458 · High</span></td>
+            <td><span class="tmpl">malware</span></td>
+            <td><span class="st rejected"><span class="d"></span>rejected</span></td>
+            <td class="reason">421 4.7.0 — SendGrid rate-limit. Entered RetryOrDLQ (attempt 2 of 3, exponential backoff).</td>
+            <td class="lat">1m14s</td>
+          </tr>
+          <!-- accepted identity -->
+          <tr>
+            <td><span class="recip">security@meadowlarktech.example</span><br><span class="tag mono" style="color:var(--text-muted);font-size:10px">SOC-4460 · High</span></td>
+            <td><span class="tmpl">identity</span></td>
+            <td><span class="st accepted"><span class="d"></span>accepted</span></td>
+            <td class="reason">250 OK · queued by SendGrid for delivery</td>
+            <td class="lat">0m47s</td>
+          </tr>
+          <!-- SUPPRESSED — loudest row -->
+          <tr id="sup-row" class="row-suppressed">
+            <td>
+              <span class="recip" style="color:var(--critical)">— no recipients —</span><br>
+              <span class="tag mono" style="color:var(--critical);font-size:10px">SOC-4463 · Critical</span>
+              <div class="silent-flag">⚠ would have been SILENT on old worker</div>
+            </td>
+            <td><span class="tmpl">generic</span></td>
+            <td><span class="st suppressed"><span class="d"></span>suppressed</span></td>
+            <td class="reason">ResolveRecipients returned 0: <b>exclude_jira_participants? rescued StandardError → defaulted true</b>, dropping every Jira participant. Profile "Foxglove-MSP-default" had no non-Jira recipient. No send attempted.</td>
+            <td class="lat">—</td>
+          </tr>
+          <!-- zero-recipient (distinct from suppressed) -->
+          <tr class="row-suppressed">
+            <td>
+              <span class="recip" style="color:var(--critical)">— no recipients —</span><br>
+              <span class="tag mono" style="color:var(--critical);font-size:10px">SOC-4467 · High</span>
+            </td>
+            <td><span class="tmpl">malware</span></td>
+            <td><span class="st zerorecip"><span class="d"></span>zero-recipient</span></td>
+            <td class="reason">Profile "Cascade-after-hours" resolved to an empty Call Directory (all entries disabled). Distinct from suppression: resolution ran cleanly and returned an empty set — flagged, not hidden.</td>
+            <td class="lat">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="legend">
+        <span class="item"><span class="st accepted" style="padding:1px 7px"><span class="d"></span></span> accepted</span>
+        <span class="item"><span class="st rejected" style="padding:1px 7px"><span class="d"></span></span> rejected (retrying)</span>
+        <span class="item"><span class="st bounced" style="padding:1px 7px"><span class="d"></span></span> bounced (hard)</span>
+        <span class="item"><span class="st suppressed" style="padding:1px 7px;animation:none"><span class="d"></span></span> suppressed (bug)</span>
+        <span class="item"><span class="st zerorecip" style="padding:1px 7px"><span class="d"></span></span> zero-recipient</span>
+      </div>
+
+      <div class="indep-note">Channel independence: this email panel reports <b>only</b> SendEmail outcomes. Voice/SMS results live in their own panel — a Twilio failure cannot alter any row here. <b>[R: ADLENG-2682 / NOT-5 AC "no impact on email send"]</b></div>
+    </section>
+
+    <!-- TWILIO CHANNEL — spatially separate -->
+    <section class="panel" aria-label="Twilio voice channel">
+      <div class="panel-head">
+        <span class="ch-dot" style="background:var(--high)"></span>
+        <span class="title">Voice · Twilio</span>
+        <span class="spacer"></span>
+        <span class="ch-badge">Channel B</span>
+      </div>
+      <div class="tw-row">
+        <span class="num">+1 555-0142</span><span class="spacer"></span>
+        <span class="st tw-ok"><span class="d"></span>delivered</span>
+      </div>
+      <div class="tw-row">
+        <span class="num">+1 555-0188</span><span class="spacer"></span>
+        <span class="st tw-fail"><span class="d"></span>failed</span>
+      </div>
+      <div class="tw-row" style="display:block">
+        <span class="num">SOC-4471</span> · carrier rejected call (busy, 3/3 retries spent).
+      </div>
+      <div class="indep-note" style="border-top:1px dashed var(--high)">This Twilio failure on SOC-4471 has <b style="color:var(--high)">no effect</b> on the email rows for SOC-4471 above — both email recipients on that detection still show <b>accepted</b>. Channels fail independently.</div>
+    </section>
+  </div>
+
+  <!-- DLQ -->
+  <section class="panel dlq" aria-label="Dead letter records">
+    <div class="panel-head">
+      <span class="ch-dot" style="background:var(--high)"></span>
+      <span class="title">RetryOrDLQ — DeadLetterRecord</span>
+      <span class="meta">3x exponential backoff → DLQ + alarm</span>
+    </div>
+    <div class="dlq-row">
+      <span><span class="id">SOC-4458</span> · alerts@cascadesecuritygrp.example<div class="why">In retry — attempt 2 of 3. Not yet a DeadLetterRecord; alarm fires only on the 3rd failure.</div></span>
+      <span class="retries">retry 2/3</span>
+      <span class="st rejected"><span class="d"></span>retrying</span>
+    </div>
+    <div class="dlq-row">
+      <span><span class="id">SOC-4402</span> · ops@thornfieldit.example<div class="why">3/3 retries failed (persistent 5xx). DeadLetterRecord created, CloudWatch alarm raised. Detection state, Jira creation + enrichment unaffected.</div></span>
+      <span class="retries">retry 3/3</span>
+      <span class="st suppressed" style="animation:none"><span class="d"></span>DLQ</span>
+    </div>
+  </section>
+</main>
+
+<!-- ============ BRADLEY RAIL ============ -->
+<aside class="rail" aria-label="Bradley review rail">
+  <div class="rail-head"><span class="badge">Readiness: 29/30 · Tier 1</span></div>
+  <p class="rail-blurb">Tests one bet: can a delivery surface make <b>silent suppression impossible to ship unnoticed</b>? If a 0-sent send renders blank, the surface reproduces the bug it exists to kill.</p>
+
+  <div class="rail-sec">
+    <h3>What you nailed</h3>
+    <div class="nail"><b>Suppressed is the loudest pixel</b>Pulsing critical chip + red banner + "would have been silent" flag. The bug cannot hide.</div>
+    <div class="nail"><b>Channel independence is visible</b>Twilio sits in its own panel; SOC-4471 Twilio fails while its email rows stay accepted. Satisfies NOT-5 AC.</div>
+    <div class="nail"><b>No row is ever blank</b>Both 0-sent states (suppressed vs zero-recipient) carry a distinct, specific reason.</div>
+  </div>
+
+  <div class="rail-sec">
+    <h3>What will hurt you</h3>
+    <div class="hurt"><b>DoD not ratified</b>The five-state set + reason rule is provisional [A]. Team hasn't agreed what "done" means for this surface.</div>
+    <div class="hurt"><b>No SOC-behavior evidence</b>No proof that a loud "0 sent / why" row actually changes what a SOC analyst does. [?]</div>
+    <div class="hurt"><b>Counter-metric not shown</b>PUT-996 over-notification ("tons of emails") has no guardrail on this view yet.</div>
+  </div>
+
+  <div class="rail-sec">
+    <h3>Routed work</h3>
+
+    <div class="card product">
+      <div class="ct">Product</div>
+      <p><b>Does:</b> ratify the prototype Definition-of-Done and the five-state taxonomy.</p>
+      <p><b>Why now:</b> ADLBUGS-634 affects the default config at field scale; fail-silent is in production. <span class="tag">[R]</span></p>
+      <p><b>If shipped without:</b> "done" stays a moving target; suppressed could regress to an empty row.</p>
+      <div class="roi">
+        <div class="r"><b>Business:</b> missed SOC escalations are a churn + trust risk.</div>
+        <div class="r"><b>User:</b> SOC analyst stops missing silent drops.</div>
+        <div class="r unk"><b>Unknown:</b> escalations-per-tenant actually suppressed today — not measured.</div>
+      </div>
+    </div>
+
+    <div class="card design">
+      <div class="ct">Design</div>
+      <p><b>Does:</b> validate the suppressed-row hierarchy against the live dashboard density.</p>
+      <p><b>Why now:</b> in a busy table, a critical chip can drown. <span class="tag">[A]</span></p>
+      <p><b>If shipped without:</b> the loud state stops being loud at 200 rows.</p>
+      <div class="roi">
+        <div class="r"><b>Business:</b> consistent with Adlumin alerting language.</div>
+        <div class="r"><b>User:</b> faster triage of the one row that matters.</div>
+        <div class="r unk"><b>Unknown:</b> attention holds at scale — needs a density test.</div>
+      </div>
+    </div>
+
+    <div class="card research">
+      <div class="ct">Research</div>
+      <p><b>Does:</b> run a SOC-analyst session on whether "0 sent / why" changes behavior.</p>
+      <p><b>Why now:</b> the entire bet is that loud-silent changes action. Unvalidated. <span class="tag">[?]</span></p>
+      <p><b>If shipped without:</b> we may ship a louder surface that changes nothing.</p>
+      <div class="roi">
+        <div class="r"><b>Business:</b> de-risks the design bet before eng spend.</div>
+        <div class="r"><b>User:</b> confirms the reason text is actionable, not noise.</div>
+        <div class="r unk"><b>Unknown:</b> does observability reduce missed escalations? No baseline yet.</div>
+      </div>
+    </div>
+
+    <div class="card eng">
+      <div class="ct">Eng</div>
+      <p><b>Does:</b> emit a real DeliveryStatus per recipient incl. an explicit suppressed/zero-recipient signal + reason.</p>
+      <p><b>Why now:</b> the rescue-to-true path emits nothing today. <span class="tag">[R: ADLBUGS-634]</span></p>
+      <p><b>If shipped without:</b> the UI has nothing to render — bug persists behind a prettier table.</p>
+      <div class="roi">
+        <div class="r"><b>Business:</b> closes the fail-silent class, not one instance.</div>
+        <div class="r"><b>User:</b> every send becomes observable.</div>
+        <div class="r unk"><b>Unknown:</b> whether prototype mocks notify.sendgrid.* metrics. [?]</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="council-btn" type="button" onclick="document.getElementById('council').classList.add('open')">⚖ Hear the council</button>
+
+  <div class="rail-sec">
+    <h3>Cross-talk preview</h3>
+    <div class="crosstalk">
+      <div class="line"><span class="who">JTBD:</span> the job is "trust the alert fired," not "see a table."</div>
+      <div class="line"><span class="who">Service Blueprint:</span> the silent gap is a backstage failure with no frontstage signal.</div>
+      <div class="line"><span class="who">SDT:</span> competence collapses when the system hides its own failure.</div>
+      <div style="margin-top:6px"><a href="#" onclick="document.getElementById('council').classList.add('open');return false;">see full council →</a></div>
+    </div>
+  </div>
+
+  <div class="attr">Attribution: 0% PM</div>
+</aside>
+</div>
+
+<!-- COUNCIL MODAL SHELL -->
+<div class="overlay" id="council" role="dialog" aria-modal="true" aria-label="Council">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>⚖ The Council — Fast Mode</h2>
+      <span class="spacer"></span>
+      <button class="close" type="button" aria-label="Close" onclick="document.getElementById('council').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="exec">
+        <h3>Executive summary</h3>
+        <div class="grid">
+          <div class="stat"><div class="k">Readiness</div><div class="v">29/30</div></div>
+          <div class="stat"><div class="k">Tier</div><div class="v">1</div></div>
+          <div class="stat"><div class="k">Tensions</div><div class="v">7</div></div>
+        </div>
+        <div class="synth">Synthesis: [0% Claude — fill this in]</div>
+      </div>
+
+      <div class="mode-row">
+        <button class="hard-btn" type="button" onclick="alert('Hard Mode — 44 voices — wired in Step 6.')">⚡ Switch to Hard Mode — 44 voices waiting</button>
+      </div>
+
+      <div class="tension"><div class="t">Tension 1 · JTBD vs. Density</div><div class="body">[placeholder — productive tension, fill in Step 6]</div></div>
+      <div class="tension"><div class="t">Tension 2 · Targeting vs. Over-notification</div><div class="body">[placeholder — ADL routing requests vs. PUT-996, fill in Step 6]</div></div>
+      <div class="tension"><div class="t">Tension 3 · Loud-silent vs. Alert fatigue</div><div class="body">[placeholder — fill in Step 6]</div></div>
+      <div class="tension"><div class="t">Tension 4 · Channel independence vs. Operator mental model</div><div class="body">[placeholder — fill in Step 6]</div></div>
+      <div class="tension"><div class="t">Tension 5 · Observability vs. Production telemetry scope</div><div class="body">[placeholder — fill in Step 6]</div></div>
+      <div class="tension"><div class="t">Tension 6 · Prototype DoD vs. Shadow-run parity</div><div class="body">[placeholder — fill in Step 6]</div></div>
+      <div class="tension"><div class="t">Tension 7 · Trust-the-fire vs. No SOC-behavior evidence</div><div class="body">[placeholder — fill in Step 6]</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* mode toggle */
+(function(){
+  var btns = document.querySelectorAll('.mode-toggle button');
+  function paint(){
+    var pref = document.documentElement.getAttribute('data-mode-pref') || 'system';
+    btns.forEach(function(b){ b.classList.toggle('active', b.dataset.mode === pref); });
+  }
+  function apply(pref){
+    localStorage.setItem('apx-mode-pref', pref);
+    var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = pref === 'system' ? (sysDark ? 'dark':'light') : pref;
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-mode-pref', pref);
+    paint();
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.mode); }); });
+  paint();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+    if ((document.documentElement.getAttribute('data-mode-pref')||'system')==='system') apply('system');
+  });
+})();
+/* close modal on overlay click / Esc */
+document.getElementById('council').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') document.getElementById('council').classList.remove('open'); });
+</script>
+</body>
+</html>

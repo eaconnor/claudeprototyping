@@ -1,0 +1,20 @@
+TRANSCRIPT: Alex Reineke - Empower 2026 IT Leaders Session
+Source: AI-AI session transcripts  Empower 2026-070526-120115 (1).pdf
+Session: IT Leaders Non-MSPs — Empower 2026
+============================================================
+
+[2:54] Alex Reineke:
+  Okay, after that for a second, of course. So one thing to consider, too, you mentioned you
+have users with the free chat license so you have an enter account, one of the advantages
+you have when you license the entire environment is then the agents aren't our consumption
+and it's just part of that license cost. So if you pay the 20 to $30 a month per user, what
+you've done is talk about putting everything in that 10 what we've done internally at enable, is
+everyone gets that license as well, and you need a really good reason to not use copilot, and
+that allows us to use that investment over and over again. So it'd be interesting to see is if we
+can hook Halo into those agents in your environment that you already you know, if you
+expanded your licensing, you could then get more out of that copilot investment especially,
+did all that work to lock it down.
+
+[3:46] Alex Reineke:
+  It's puts everything in the Microsoft tent. Ben and I did a session on this or in the week, and
+we can share that content.

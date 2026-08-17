@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACP — pricing · governance crux · ledger (vision sketch)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1a1612;--paper:#efe7d6;--card:#f7f0df;--line:#1a1612;--grid:rgba(26,22,18,.06);--muted:#6b6459;
+    --r:#3f6d3f;--a:#b6892b;--q:#a23b26;--violet:#5B3A7E;--blue:#1F3C96;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:"Kalam",cursive;font-size:17px;line-height:1.45;padding:30px 20px 80px}
+  .wrap{max-width:1120px;margin:0 auto}
+  .mono{font-family:"Space Mono",monospace}
+  .fidelity{border:2px dashed var(--line);background:var(--card);padding:9px 15px;margin-bottom:24px;font-family:"Space Mono",monospace;font-size:11.5px;display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center}
+  .fidelity b{background:var(--ink);color:var(--paper);padding:2px 8px}
+  h1{font-size:34px;margin:4px 0 2px}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:8px}
+  .tag{font-family:"Space Mono",monospace;font-size:10px;padding:1px 5px;border:1.4px solid;border-radius:2px;white-space:nowrap}
+  .tag.r{color:var(--r);border-color:var(--r)}.tag.a{color:var(--a);border-color:var(--a)}.tag.q{color:var(--q);border-color:var(--q)}.tag.cs{color:var(--violet);border-color:var(--violet)}
+  .section-label{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin:40px 0 14px;border-bottom:2px solid var(--line);padding-bottom:6px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .five{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+  .card{background:var(--card);border:2.5px solid var(--line);box-shadow:6px 6px 0 var(--line);padding:18px 20px}
+  .card h3{font-size:21px;margin:0 0 2px}
+  .card .lead{font-size:16px;font-weight:700;margin:4px 0 10px}
+  .tam{font-family:"Space Mono",monospace;font-size:13px;background:var(--ink);color:var(--paper);padding:3px 8px;display:inline-block;margin-bottom:8px}
+  ul{margin:8px 0 0;padding-left:18px}li{margin:0 0 6px}
+  .win{color:var(--r)}.hurt{color:var(--q)}
+  .idea{background:var(--card);border:2px solid var(--line);box-shadow:5px 5px 0 var(--line);padding:14px 16px}
+  .idea .n{font-family:"Space Mono",monospace;font-weight:700;font-size:12px;background:var(--violet);color:var(--paper);padding:1px 7px}
+  .idea h4{font-size:18px;margin:8px 0 4px}
+  .idea .mech{font-size:14.5px;margin:0 0 8px}
+  .idea .trade{font-size:13px;color:var(--muted);border-top:1.4px dotted var(--line);padding-top:6px}
+  .wire{border:2px dashed var(--line);background:rgba(26,22,18,.03);padding:13px;font-family:"Space Mono",monospace;font-size:11px;line-height:1.5;white-space:pre;overflow-x:auto;color:#2a251d;margin-top:10px}
+  .bet{background:var(--card);border-left:5px solid var(--violet);padding:10px 14px;margin-top:14px;font-size:15px}
+  .tags-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  footer{margin-top:44px;border-top:2px solid var(--line);padding-top:14px;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="fidelity mono"><b>SUPER LO-FI</b><span>Tier 0 · vision sketch — words &amp; boxes</span><span>✓ real framing &nbsp; ~ numbers fictional/seed &nbsp; ✗ not a screen &nbsp; ✗ not production</span><span style="color:var(--violet)">from acp-offerings-2026-07-14.md</span></div>
+
+  <h1>ACP — pricing, the governance crux, the ledger</h1>
+  <div class="sub">Three things to react to. Bets left open — the synthesis is yours.</div>
+
+  <!-- ============ PART 1 — PRICING ============ -->
+  <div class="section-label">1 · Two ways to price ACP — this choice is the biggest lever in the model</div>
+  <div class="two">
+    <div class="card">
+      <h3>Option 1 — Per-tech tool</h3>
+      <div class="lead">$/tech/month, flat — priced like the RMM seat sitting next to it.</div>
+      <div class="tam">TAM floor ≈ $0.5B–$1.35B/yr</div>
+      <ul>
+        <li class="win"><b>Wins:</b> predictable, MSPs already buy this way, matches the only real WTP anchor</li>
+        <li class="hurt"><b>Hurts:</b> commodity pressure, caps the upside, doesn't capture the value AI creates</li>
+      </ul>
+      <div class="tags-row"><span class="tag r">Atera $129–219/tech</span><span class="tag a">Kenneth "$25–50/tech; $300/user is nuts"</span><span class="tag cs">CS: MEDIUM</span></div>
+    </div>
+    <div class="card" style="box-shadow:6px 6px 0 var(--blue);border-color:var(--blue)">
+      <h3>Option 2 — Share of services</h3>
+      <div class="lead">A % of what the MSP bills <i>their client</i> for the vCISO / MDR service.</div>
+      <div class="tam" style="background:var(--blue)">MAX-TAM ≈ up to ~$4.3B+/yr</div>
+      <ul>
+        <li class="win"><b>Wins:</b> captures the value AI creates — "price the work, not the laptop"; biggest upside</li>
+        <li class="hurt"><b>Hurts:</b> no MSP precedent, MSPs may resist rev-share, harder to meter + explain</li>
+      </ul>
+      <div class="tags-row"><span class="tag r">Zendesk $1.50/resolution · Salesforce $2/conv</span><span class="tag cs">CS: VERIFIED precedent</span><span class="tag a">MSP rev-share appetite [?]</span></div>
+    </div>
+  </div>
+  <div class="bet"><b class="mono" style="font-size:12px">THE BET →</b> <span class="mono" style="font-size:12px;color:var(--violet)">[0% Claude — fill this in]</span> · the floor↔ceiling gap is <i>entirely</i> this one choice.</div>
+
+  <!-- ============ PART 2 — GOVERNANCE CRUX ============ -->
+  <div class="section-label">2 · The crux — can we govern agents the MSP built <i>elsewhere</i>? · five ideas</div>
+  <p style="margin:0 0 14px"><b>Wicked problem:</b> Claude builds a point agent in a day; one MSP already runs 200+ agents nobody can manage. <span class="tag r">Derek "no idea how you'd manage that"</span> <span class="tag r">Shawn "everybody's beating the drum"</span> Today ACP audits <i>after</i>, doesn't pre-screen. <span class="tag q">Nicole's "BIG QUESTION" — unanswered</span></p>
+  <div class="five">
+    <div class="idea"><span class="n">1</span><h4>Register &amp; Observe</h4><div class="mech">MSP registers external agents; ACP wraps them with monitoring + an audit trail. (Today's model.)</div><div class="trade">Lowest friction · but audit-after can't stop a bad action, only record it.</div></div>
+    <div class="idea"><span class="n">2</span><h4>Adopt into a Runbook</h4><div class="mech">Import the home-built agent <i>as</i> a Coworker/Runbook under ACP guardrails. Bring-your-agent.</div><div class="trade">Real control · but only for agents that agree to be re-homed.</div></div>
+    <div class="idea"><span class="n">3</span><h4>Identity Gate</h4><div class="mech">Every agent needs a scoped Non-Human Identity to touch the stack. No identity → no action.</div><div class="trade">Hard boundary at the credential · but MSPs must route access through ACP.</div></div>
+    <div class="idea"><span class="n">4</span><h4>Action Proxy</h4><div class="mech">External agents route their <i>actions</i> through ACP's risk-tier approval gate (MCP proxy). Govern the action, not the agent.</div><div class="trade">Governs anything, home-built or not · but you must sit in the action path.</div></div>
+    <div class="idea"><span class="n">5</span><h4>Certify &amp; Catalog</h4><div class="mech">External/vendor agents get certified into the marketplace — the Shopify pattern extended to home-built.</div><div class="trade">Scales + monetizes · but heavy, and slow for a one-off agent.</div></div>
+  </div>
+  <div class="bet"><b class="mono" style="font-size:12px">THE FORK →</b> walled garden (only agents built <i>in</i> ACP) vs. governor-of-all-agents (3+4 make ACP the layer everything passes through — the stronger buy-vs-build moat). <span class="mono" style="font-size:12px;color:var(--violet)">[0% Claude]</span></div>
+
+  <!-- ============ PART 3 — LEDGER ============ -->
+  <div class="section-label">3 · The ledger — what the agents <i>did</i>, and what value it created</div>
+  <p style="margin:0 0 10px">"Like an Adlumin SOC report." One immutable ledger, <b>two views</b>: the client sees value, governance sees activity.</p>
+  <div class="two">
+    <div class="card">
+      <h3>Value Ledger <span class="tag" style="border-color:var(--r);color:var(--r)">client-facing</span></h3>
+      <div class="lead">The proof the MSP shows the client to justify the price.</div>
+<div class="wire">┌ VALUE LEDGER · Northwind IT · Q2 ───────┐
+│ Your AI coworkers this quarter:         │
+│  ✓ 47 incidents resolved   [MEASURED]   │
+│  ✓ alert noise ↓ 68%       [MEASURED]   │
+│  ~ ~312 hrs returned       [ESTIMATED]  │
+│                                         │
+│  headline bills off MEASURED only ▸     │
+└─────────────────────────────────────────┘</div>
+    </div>
+    <div class="card">
+      <h3>Activity Log <span class="tag" style="border-color:var(--violet);color:var(--violet)">governance</span></h3>
+      <div class="lead">What each agent did, when, under whose approval. (NOT "Trust Ledger".)</div>
+<div class="wire">┌ ACTIVITY LOG · agent: Triage-01 ────────┐
+│ 14:02 diagnosed INC-2214  [auto/low]    │
+│ 14:03 proposed fix        [⏸ approved]  │
+│ 14:04 ran script #A17     [MEASURED]    │
+│ actor · time · risk-tier · approver     │
+│ append-only · audit-grade               │
+└─────────────────────────────────────────┘</div>
+    </div>
+  </div>
+  <div class="bet"><b class="mono" style="font-size:12px">DEFENSIBILITY TIER →</b> Measured · Benchmarked · Estimated · Unverified. <b>Bill + headline off MEASURED only</b> — never blend the AI's self-reported minutes into the number the MSP defends. <span class="tag q">cost-avoided / revenue-influenced = [?] traps, never seed</span></div>
+  <div class="bet" style="border-color:var(--q)"><b class="mono" style="font-size:12px;color:var(--q)">YOU FLAGGED →</b> the ledger <b>billing-dependency</b>: vision says N-able bills off it, the spec forbids a billing dependency. That's yours to untangle (Beth/Meaghan/Nicole).</div>
+
+  <footer>
+    Anchored to acp-offerings-2026-07-14.md + the three digs (TAM, agent-factory, ledger). Numbers fictional/seed. Bets left <span class="mono" style="color:var(--violet)">[0% Claude]</span> — the synthesis is Beth's. · vision sketch · Tier 0
+  </footer>
+
+</div>
+</body>
+</html>

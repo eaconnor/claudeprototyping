@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IR/RCA Coworker — Concept Sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --surface-bg:#ffffff; --surface-container:#ffffff; --surface-tertiary:#fafafa;
+    --surface-status:#f2f2f2; --surface-active-wash:#f8ebff;
+    --border-default:#d5d5d5; --border-active:#c046ff;
+    --brand:#8500cc; --brand-strong:#c046ff; --brand-wash:#f8ebff;
+    --extended-phlox:#f2d6ff; --extended-blue:#3c5edd; --extended-neon-blue:#4c63e5; --extended-pink:#ed186b;
+    --success:#058142;
+    --text-heading:#18191a; --text-body:#2e2e33; --text-secondary:#404047; --text-placeholder:#5c5c66; --text-oncolor:#fafafa;
+    --radius-sm:4px; --radius-full:999px; --radius-xl:16px;
+    --font-ui:'Inter',-apple-system,sans-serif; --font-brand:'Manrope',sans-serif;
+    --amber:#b45309; --amber-wash:#fef3e2; --amber-border:#f2c98a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:var(--font-ui); background:var(--surface-tertiary);
+    color:var(--text-body); font-size:14px; line-height:20px;
+  }
+  h1,h2,h3,h4{ font-family:var(--font-ui); color:var(--text-heading); letter-spacing:-0.02em; margin:0; }
+
+  .fidelity-banner{
+    background:var(--extended-pink); color:var(--text-oncolor);
+    padding:10px 24px; font-weight:700; font-size:13px; letter-spacing:0.01em;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    position:sticky; top:0; z-index:50;
+  }
+  .fidelity-banner span.tag{
+    background:rgba(255,255,255,0.22); padding:3px 10px; border-radius:var(--radius-full);
+    font-size:11px; text-transform:uppercase; letter-spacing:0.06em; font-weight:800;
+  }
+
+  .page{ max-width:1280px; margin:0 auto; padding:28px 24px 64px; }
+
+  header.doc-head{ margin-bottom:24px; }
+  .eyebrow{
+    font-family:var(--font-brand); font-weight:700; font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--brand); margin-bottom:8px; display:block;
+  }
+  header.doc-head h1{ font-size:28px; font-weight:800; margin-bottom:8px; }
+  header.doc-head p.sub{ font-size:15px; color:var(--text-secondary); max-width:760px; margin:0; }
+
+  .card{
+    background:var(--surface-container); border:1px solid var(--border-default);
+    border-radius:var(--radius-sm); padding:20px 24px; margin-bottom:20px;
+  }
+  .card h2{ font-size:16px; font-weight:700; margin-bottom:10px; }
+  .card h2 .num{ color:var(--brand); font-family:var(--font-brand); font-weight:800; margin-right:6px; }
+  .card p{ margin:0 0 8px; color:var(--text-body); }
+  .card p:last-child{ margin-bottom:0; }
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:900px){ .grid-2{ grid-template-columns:1fr; } }
+
+  .quote-block{
+    border-left:3px solid var(--brand-strong); background:var(--brand-wash);
+    padding:12px 16px; border-radius:var(--radius-sm); font-style:italic;
+    color:var(--text-heading); font-size:15px; margin:12px 0;
+  }
+  .quote-block cite{ display:block; font-style:normal; font-size:12px; color:var(--text-secondary); margin-top:6px; }
+
+  .risk-box{
+    background:#fff5f5; border:1.5px solid var(--extended-pink); border-radius:var(--radius-sm);
+    padding:20px 24px; margin-bottom:20px;
+  }
+  .risk-box h2{ color:#9d0f4f; font-size:16px; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .risk-box h2::before{ content:"⚠"; font-size:16px; }
+  .risk-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:14px; }
+  @media (max-width:1000px){ .risk-grid{ grid-template-columns:1fr 1fr; } }
+  .risk-cell{
+    background:var(--surface-container); border:1px solid #f3b8cf; border-radius:var(--radius-sm);
+    padding:12px 14px;
+  }
+  .risk-cell .label{ font-size:10px; text-transform:uppercase; letter-spacing:0.06em; font-weight:800; color:#9d0f4f; margin-bottom:6px; display:block; }
+  .risk-cell .value{ font-size:14px; font-weight:700; color:var(--text-heading); line-height:1.35; }
+  .risk-cell .value.big{ font-size:22px; font-family:var(--font-brand); font-weight:800; color:#9d0f4f; }
+
+  .gate-c{
+    background:var(--text-heading); color:var(--text-oncolor); border-radius:var(--radius-sm);
+    padding:16px 18px; margin-top:6px; display:flex; align-items:flex-start; gap:14px;
+  }
+  .gate-c .gate-badge{
+    background:var(--extended-pink); border-radius:var(--radius-full); padding:4px 12px;
+    font-weight:800; font-size:11px; letter-spacing:0.05em; text-transform:uppercase; flex-shrink:0;
+  }
+  .gate-c p{ margin:0; font-size:13.5px; line-height:1.5; color:#f0f0f0; }
+  .gate-c strong{ color:#fff; }
+
+  .mock-wrap{
+    border:2px dashed var(--border-active); border-radius:var(--radius-xl);
+    padding:16px; background:var(--surface-active-wash); position:relative; margin-bottom:6px;
+  }
+  .mock-watermark{
+    position:absolute; top:16px; right:26px; font-family:var(--font-brand); font-weight:800;
+    font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brand-strong);
+    background:#fff; padding:4px 10px; border-radius:var(--radius-full); border:1px solid var(--border-active);
+    transform:rotate(3deg); z-index:5;
+  }
+
+  .app-shell{
+    display:grid; grid-template-columns:220px 1fr; border:1px solid var(--border-default);
+    border-radius:var(--radius-sm); overflow:hidden; background:#fff; min-height:560px;
+  }
+  .app-nav{ background:var(--surface-tertiary); border-right:1px solid var(--border-default); padding:14px 10px; font-size:12px; }
+  .app-nav .nav-group{ margin-bottom:16px; }
+  .app-nav .nav-group-label{
+    font-size:10px; font-weight:800; letter-spacing:0.07em; text-transform:uppercase;
+    color:var(--text-placeholder); padding:0 8px; margin-bottom:6px; display:block;
+  }
+  .app-nav .nav-item{
+    padding:7px 8px; border-radius:var(--radius-sm); color:var(--text-secondary); margin-bottom:2px;
+    display:flex; align-items:center; gap:8px; font-weight:500;
+  }
+  .app-nav .nav-item.active{ background:var(--surface-active-wash); color:var(--brand); font-weight:700; }
+  .app-nav .dot{ width:6px; height:6px; border-radius:50%; background:var(--text-placeholder); flex-shrink:0; }
+  .app-nav .nav-item.active .dot{ background:var(--brand-strong); }
+
+  .app-main{ display:flex; flex-direction:column; }
+  .app-topbar{
+    display:flex; align-items:center; justify-content:space-between; padding:10px 18px;
+    border-bottom:1px solid var(--border-default); background:#fff;
+  }
+  .app-topbar .incident-title{ display:flex; align-items:center; gap:10px; }
+  .incident-badge{
+    background:var(--extended-pink); color:#fff; font-size:10.5px; font-weight:800;
+    padding:3px 10px; border-radius:var(--radius-full); text-transform:uppercase; letter-spacing:0.04em;
+    display:flex; align-items:center; gap:5px;
+  }
+  .incident-badge .pulse{ width:6px; height:6px; border-radius:50%; background:#fff; animation:pulse 1.4s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  .app-topbar .btn{
+    font-size:12px; font-weight:700; padding:6px 14px; border-radius:var(--radius-sm);
+    border:1px solid var(--border-default); background:#fff; color:var(--text-body); cursor:default; margin-left:8px;
+  }
+  .app-topbar .btn.primary{ background:var(--brand); color:#fff; border-color:var(--brand); }
+
+  .split{ display:grid; grid-template-columns:1fr 1fr; flex:1; }
+  .split > div{ padding:16px 18px; overflow:auto; }
+  .split .col-left{ border-right:1px solid var(--border-default); background:#fff; }
+  .split .col-right{ background:var(--surface-tertiary); }
+  .col-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .col-head h4{ font-size:12.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-secondary); }
+  .col-head .chip{
+    font-size:10px; font-weight:700; background:var(--surface-status); color:var(--text-secondary);
+    padding:2px 9px; border-radius:var(--radius-full);
+  }
+
+  .timeline-item{
+    border:1px solid var(--border-default); border-radius:var(--radius-sm); padding:10px 12px;
+    margin-bottom:8px; background:#fff;
+  }
+  .timeline-item .ts{ font-size:10.5px; color:var(--text-placeholder); font-weight:700; margin-bottom:4px; font-family:'JetBrains Mono',monospace; }
+  .timeline-item p{ margin:0; font-size:12.5px; line-height:1.45; color:var(--text-body); }
+  .conf-tag{
+    display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:800;
+    padding:2px 8px; border-radius:var(--radius-full); text-transform:uppercase; letter-spacing:0.03em;
+    margin-top:6px;
+  }
+  .conf-tag.confirmed{ background:#e6f6ee; color:var(--success); }
+  .conf-tag.inferred{ background:var(--amber-wash); color:var(--amber); }
+  .conf-tag.unverified{ background:#fde8ef; color:#9d0f4f; }
+
+  .narrative-block p{ font-size:12.5px; line-height:1.55; color:var(--text-body); margin:0 0 10px; }
+  .narrative-block .draft-flag{
+    font-size:10.5px; font-weight:800; color:var(--brand); text-transform:uppercase; letter-spacing:0.04em;
+    margin-bottom:10px; display:block;
+  }
+
+  .review-gate{
+    margin:16px 18px; padding:14px 16px; border-top:1px solid var(--border-default);
+    border-radius:var(--radius-sm); background:var(--surface-status); display:flex; align-items:center; gap:12px;
+  }
+  .review-gate .icon{
+    width:28px; height:28px; border-radius:50%; background:#fff; border:2px solid var(--text-placeholder);
+    display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; color:var(--text-placeholder);
+  }
+  .review-gate .txt strong{ display:block; font-size:12.5px; color:var(--text-heading); }
+  .review-gate .txt span{ font-size:11.5px; color:var(--text-secondary); }
+  .review-gate .status{
+    margin-left:auto; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em;
+    background:#fde8ef; color:#9d0f4f; padding:4px 10px; border-radius:var(--radius-full); flex-shrink:0;
+  }
+
+  .mock-caption{ font-size:12px; color:var(--text-secondary); margin-top:10px; padding:0 4px; }
+
+  .rail{
+    border:1px solid var(--border-default); border-radius:var(--radius-sm); background:var(--surface-tertiary);
+    padding:20px 24px; display:grid; grid-template-columns:180px 1fr; gap:24px;
+  }
+  @media (max-width:900px){ .rail{ grid-template-columns:1fr; } }
+  .rail-badge{
+    background:var(--surface-status); border:1px solid var(--border-default); border-radius:var(--radius-sm);
+    padding:12px; text-align:center; height:fit-content;
+  }
+  .rail-badge .tier-num{ font-family:var(--font-brand); font-weight:800; font-size:24px; color:var(--brand); }
+  .rail-badge .tier-label{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-secondary); margin-top:2px; }
+  .rail-body h3{ font-size:13px; font-weight:800; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-secondary); }
+  .rail-body p{ font-size:13px; margin:0 0 12px; color:var(--text-body); }
+  .rail-body .routing{
+    background:#fff; border:1px solid var(--border-default); border-radius:var(--radius-sm);
+    padding:10px 14px; font-size:12.5px; display:flex; gap:8px; align-items:baseline;
+  }
+  .rail-body .routing strong{ color:var(--text-heading); flex-shrink:0; }
+
+  footer.legal{ text-align:center; font-size:11px; color:var(--text-placeholder); margin-top:24px; }
+</style>
+</head>
+<body>
+
+<div class="fidelity-banner">
+  <span>CONCEPT SKETCH — reacting only, not build-ready</span>
+  <span class="tag">Tier 0 · Concept</span>
+</div>
+
+<div class="page">
+
+  <header class="doc-head">
+    <span class="eyebrow">ACP Concept Package · Security</span>
+    <h1>Live IR/RCA — Root Cause, Written As the Incident Happens</h1>
+    <p class="sub">A coworker that builds the customer-ready root-cause report while the incident is still open — cross-stack, confidence-tagged, defensible by morning. This is a sketch to react to. Nothing here is built.</p>
+  </header>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2><span class="num">01</span>The problem</h2>
+      <p>Post-incident, MSPs reconstruct what happened by hand, days later, from fragmented logs across six tools and three threads — often relying on one senior tech's memory.</p>
+      <p>The wicked bit: the report is a <strong>liability artifact</strong>. A wrong root cause, narrated confidently, destroys the MSP's credibility in one sentence — and no tool today distinguishes a telemetry-sourced fact from a confident guess.</p>
+    </div>
+    <div class="card">
+      <h2><span class="num">02</span>The wedge — during, not after</h2>
+      <div class="quote-block">
+        "Doing the RCA during the incident is equivalent to helping resolve it."
+        <cite>— MSP, source interview</cite>
+      </div>
+      <p>Post-hoc, the same report collapses into a smaller, commoditizable text-synthesizer. During the incident, it's part of the response — that's the wedge, and the reason a client pays for it.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">03</span>Value prop</h2>
+    <p>For MSPs carrying incident-response obligations they can't staff with a full SOC, the IR/RCA coworker assembles a cross-stack, confidence-tagged root-cause report in real time. Unlike manual post-hoc RCA or a generic SIEM export, it produces <strong>two calibrated outputs</strong> — a technical evidence chain and a client/insurer narrative — with a human review gate before anything faces a client.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">04</span>Why now</h2>
+    <p>Compliance-driven willingness to pay is real here: this is the <strong>#1 named driver on cyber-insurance policies</strong>. MSPs are already trying to prove containment to a client, an auditor, and an insurer — the gap is that the defensible version of that proof only exists days later, if at all.</p>
+  </div>
+
+  <div class="risk-box">
+    <h2>Honest risk read — read this before the mock below</h2>
+    <div class="risk-grid">
+      <div class="risk-cell">
+        <span class="label">Idea Chess survival</span>
+        <span class="value big">~0.55%</span>
+        <span class="value" style="font-weight:500; font-size:11.5px; color:var(--text-secondary);">naive — the conditional second of three packages</span>
+      </div>
+      <div class="risk-cell">
+        <span class="label">Where it dies</span>
+        <span class="value">Build stage</span>
+      </div>
+      <div class="risk-cell">
+        <span class="label">The actual risk</span>
+        <span class="value">Not confidence-display UI (solvable) — whether the evidence chain exists at all</span>
+      </div>
+      <div class="risk-cell">
+        <span class="label">Riskiest assumption</span>
+        <span class="value">A reconstructable incident timeline exists in Adlumin and is reachable by a coworker without a separate product-lane decision</span>
+      </div>
+    </div>
+    <div class="gate-c">
+      <span class="gate-badge">Gate C — unanswered</span>
+      <p><strong>Adlumin incident data access — technical and legal, cross-tenant.</strong> This is binary and upstream of the entire design. If Adlumin is a separate product lane, there is no data for this coworker to reason over, and the rest of this sketch is moot. Live zero-holes correlation is currently rated <strong>~30% feasible</strong>. Test Gate C before any design work proceeds — it's the whole existence question, not a detail to resolve during build.</p>
+    </div>
+  </div>
+
+  <div class="card" style="padding:24px;">
+    <h2 style="margin-bottom:14px;"><span class="num">05</span>What this looks like — lo-fi</h2>
+    <div class="mock-wrap">
+      <span class="mock-watermark">Concept — not built</span>
+      <div class="app-shell">
+        <nav class="app-nav">
+          <div class="nav-group">
+            <span class="nav-group-label">Control Plane</span>
+            <div class="nav-item"><span class="dot"></span>Coworkers</div>
+            <div class="nav-item active"><span class="dot"></span>Agents</div>
+            <div class="nav-item"><span class="dot"></span>In Flight</div>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-label">Capabilities</span>
+            <div class="nav-item"><span class="dot"></span>Runbooks</div>
+            <div class="nav-item"><span class="dot"></span>Skills</div>
+            <div class="nav-item"><span class="dot"></span>Tools</div>
+            <div class="nav-item"><span class="dot"></span>Scripts</div>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-label">Context</span>
+            <div class="nav-item"><span class="dot"></span>Experts</div>
+            <div class="nav-item"><span class="dot"></span>Knowledge Base</div>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-label">Connectors</span>
+            <div class="nav-item"><span class="dot"></span>Models</div>
+            <div class="nav-item"><span class="dot"></span>MCP Servers</div>
+            <div class="nav-item"><span class="dot"></span>Integrations</div>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-label">Governance</span>
+            <div class="nav-item"><span class="dot"></span>Value Ledger</div>
+            <div class="nav-item"><span class="dot"></span>Metering &amp; Chargeback</div>
+            <div class="nav-item"><span class="dot"></span>Usage</div>
+            <div class="nav-item"><span class="dot"></span>Logs</div>
+          </div>
+        </nav>
+
+        <div class="app-main">
+          <div class="app-topbar">
+            <div class="incident-title">
+              <span class="incident-badge"><span class="pulse"></span>Incident in progress</span>
+              <strong style="font-size:13px;">INC-2291 · Lateral movement, endpoint cluster 4</strong>
+            </div>
+            <div>
+              <button class="btn">Ask N-zo</button>
+              <button class="btn primary">Save</button>
+            </div>
+          </div>
+
+          <div class="split">
+            <div class="col-left">
+              <div class="col-head">
+                <h4>Technical evidence chain</h4>
+                <span class="chip">Live — building</span>
+              </div>
+
+              <div class="timeline-item">
+                <div class="ts">14:02:11 UTC</div>
+                <p>Auth log shows privilege escalation on host WKS-0447, service account context.</p>
+                <span class="conf-tag confirmed">Confirmed — telemetry-sourced</span>
+              </div>
+              <div class="timeline-item">
+                <div class="ts">14:04:53 UTC</div>
+                <p>Correlated EDR alert suggests initial access via phished credential, ~2hrs prior.</p>
+                <span class="conf-tag inferred">Inferred — pattern match</span>
+              </div>
+              <div class="timeline-item">
+                <div class="ts">14:07:20 UTC</div>
+                <p>Possible data staging on file share \\SRV-12\finance — source path not yet corroborated.</p>
+                <span class="conf-tag unverified">Unverified — single source</span>
+              </div>
+            </div>
+
+            <div class="col-right">
+              <div class="col-head">
+                <h4>Client / insurer narrative</h4>
+                <span class="chip">Draft</span>
+              </div>
+              <div class="narrative-block">
+                <span class="draft-flag">Draft — not sent</span>
+                <p><strong>What we know:</strong> An account on WKS-0447 was used to escalate privileges at 14:02 UTC. This is confirmed directly from authentication telemetry.</p>
+                <p><strong>What we believe, pending confirmation:</strong> The likely entry point was a phished credential roughly two hours earlier. This is a pattern-based inference, not yet a confirmed fact — it will be labeled as such in the final report.</p>
+                <p><strong>Still open:</strong> Possible data staging activity is flagged from a single source and has not been corroborated. It will not appear in a client-facing claim until it is.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-gate">
+            <div class="icon">✓</div>
+            <div class="txt">
+              <strong>Human review gate</strong>
+              <span>No output above is client-facing until a person signs off. This gate is the liability protection — the report is fictional as a trust artifact if it's skipped.</span>
+            </div>
+            <span class="status">Not yet cleared</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="mock-caption">Lo-fi only — layout, copy, and interaction pattern are illustrative. Whether the "Confirmed" tag on the left is even reachable data is Gate C, not a UI question.</p>
+  </div>
+
+  <div class="rail">
+    <div class="rail-badge">
+      <div class="tier-num">T0</div>
+      <div class="tier-label">Concept<br>Reacting only</div>
+    </div>
+    <div class="rail-body">
+      <h3>What's being tested here</h3>
+      <p>Whether a live, confidence-tagged root-cause narrative is trusted enough to eventually send to a client and an insurer without a full human rewrite — and, upstream of that, whether the underlying incident data is even reachable by a coworker at all. This session is reacting to direction, not approving a build.</p>
+      <div class="routing">
+        <strong>Routes to:</strong>
+        <span>Legal + Adlumin engineering own answering Gate C (cross-tenant incident data access, technical and legal). This is not a design call — design work on this package should not proceed until Gate C returns an answer.</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="legal">IR/RCA Security Package · Tier 0 Concept · ACP board session, 2026-07-23 · All incident data shown is fictional.</footer>
+</div>
+
+</body>
+</html>

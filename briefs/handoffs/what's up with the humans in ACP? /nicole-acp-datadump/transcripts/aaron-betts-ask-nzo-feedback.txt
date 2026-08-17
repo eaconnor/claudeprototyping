@@ -1,0 +1,310 @@
+﻿TRANSCRIPT: Aaron Betts - Ask N-zo Feedback Session
+Source: aaron.vtt
+============================================================
+
+We value your privacy
+
+This website or its third-party tools process personal data. You can opt out of the sale of your personal information by clicking on the “Do Not Sell or Share My Personal Information” link. Cookie Policy
+
+Do Not Sell or Share My Personal Information
+
+02-24 Consultation: Aaron Betts - Ask Enzo AI Tool Feedback
+2026-02-24 12:02:33
+29m 47s
+logo
+Amplify Human Intelligence
+Explore now
+00:00:00/ 00:29:47
+
+00:00:00
+Aaron Betts
+Not at all.
+00:00:01
+Nicole Reineke
+Okay. Is it okay if Oh, sorry, go ahead.
+00:00:03
+Aaron Betts
+I just hope I don't disappoint. That's all right.
+00:00:07
+Nicole Reineke
+Uh, that's okay, you're replying. Uh is it okay with you if I make a transcript of this call? Of course Thank you Okay. So this is Lynn. She runs our UXum and this is Craig. He is one of the uh engineers in the back end, and he. One of the initial inventors. So, uh, and this is Aaron. He's ouresteemed customer. Thrilled to have him. Hi Aaron. Hi,
+00:00:38
+Aaron Betts
+Nice to meet you. Nice to meet you.
+00:00:40
+Nicole Reineke
+So the goal is tell us all of the things that worked, whatum what didn't work, Your general impressions and I have a couple of questions that I'll ask. And if you're goodum I'll start Okay Okay Um how. Have you and your team used Ask Enzo during the preview? Yes. Okay, do you know about how often?
+00:01:06
+Aaron Betts
+Um, probably a couple times a week maybe. It'sum I don't I don't uh know how often they've been doing it. Um I probably should have had Dave on with us uh just because he runs service, but that's kind of my feeling. Uh I'm getting is it's you know every. Typically, it's when they need to get and my team's not always the most creative, but statistics out of Event Central. So that's that's my understanding. Yeah.
+00:01:42
+Nicole Reineke
+Okay. Do, you know, so you just you said you don't know about how many questions each technician asks? Do you know what kinds of things in addition to statistics they were asking?
+00:01:57
+Aaron Betts
+Um, I don't, But I could try and get some maybe uh sample questions or examples, if you want. Yeah. While while we're on the phone.
+00:02:10
+Nicole Reineke
+If you don't mind, um And just sort of ask what kinds of questions they ask most, that would be great. And then I'd like to know alsoum if they encountered any limitations or errors that bugged them.
+00:02:24
+Aaron Betts
+Okay. I know thatum, You know, I had heard from Dave that the team had been doing like the thumbs down, um thumbs up type thing. I don't know that they've been actually, you know, putting in uh commentary along with it. Um the fact that I could get them to do the thumbs down is probably a win.
+00:02:47
+Nicole Reineke
+Yeah, we could totally yeah on the back end. We can go back and we can look at the questions with a thumbs down, and we've been doing that. We were just looking for, I mpression like what stuck in your brain, the most or what stuck in their brain, the most as the most important or the most frustrating. So in addition to like the detailed statistics, like what was the emotional response.
+00:03:07
+Aaron Betts
+Uh from the team, you meanum I I think it's it'sum cautious optimism. Like, I think they really want it to like they really would like to see it. Give them uh data and things like that. Um, It's just I don't know people have when it comes to like new technologies for some reason and which is odd in an MSP. Um getting the the techs to engage with it um is the I think the hardest piece.
+00:03:57
+Nicole Reineke
+Yeah. Do you have that issue with other technologies too then?
+00:04:00
+Aaron Betts
+Oh yeah. Well, so okay, let me rephrase it maybe. I don't know that it's a technology issue so much as it is a procedure issue. Meaning like get like okay, so one of the things that MSPs are challenged with all the time is, Techs putting in their time that they do on a ticket, right? So, it's getting them to take that time that's away from the work. It's, you know, monotonous, and they have to put in what they do on a ticket. So when it comes to things that are outside of the kind of typical workflow, That's kind of what I mean as far as. So it's not necessarily because I mean look techs love new technology.
+00:04:49
+Aaron Betts
+But when you ask them, it's like, "Hey, while you're doing this in Central and we want you to, you know, instead of looking for this, we want you to ask the AI to look for for you." Um. That's that's where it's like reminding them. Oh, you know. It's almost like you have to remind them daily. Like hey there is this tool. It's okay to use please use it um, So, I think that's the biggest challenge.
+00:05:22
+Nicole Reineke
+Would, it be helpful if we put an indicator or reminder pop- up in the UI and said," Hey, don't forget Enzo"?
+00:05:32
+Aaron Betts
+Um yeah that might might not hurt.
+00:05:37
+Nicole Reineke
+Okay. All right, that's great feedback. So, it's not that there was a negative reaction to to the content that came out;. It's that we're disrupting their. Their personal flow and their personal process, and it's not something they're proactively going out and looking for.
+00:05:53
+Aaron Betts
+Right, so James is one of my engineers. He just wrote back and said the last question, I asked was to find a specific user and the workstation that they were currently signed into. Often we'll get tickets that a user's having challenges with their PC. We ask them, well what's the, The service tag or you know whatever on the PC, and they're like I don't know. So then it's okay. Well, let's figure out what PC that user is attached to. Um let me see if he got.
+00:06:34
+Nicole Reineke
+Leonard Craig. Are you able to try to hit the record on this for some reason, I'm getting an error?
+00:06:40
+Aaron Betts
+I'm I'm also getting a transcript of this I could send to you.
+00:06:44
+Nicole Reineke
+Oh yes, please. Okay. Thank you.
+00:06:48
+Aaron Betts
+That doesn't show because I use something called plod, which I love.
+00:06:55
+Nicole Reineke
+Thank you. Yeah. I truly appreciate it. Um okay. And so do you know if he got the he's the name of this?
+00:07:04
+Aaron Betts
+He's answering right now?
+00:07:05
+Nicole Reineke
+Okay, no tell him it stinks.
+00:07:11
+Speaker 3
+I think these kind of workflows that you're on about, the monotonous ones, Uh insight into those is quite useful to be honest because they are the things that we probably like to target. It's what what we want to make your jobs easier really. I feel like uh that one where trying to identify what PC a user is logged into is like a good example. So, if you've got any more of those kind of pain points that we can maybe target with this because I know it's myself when I use the AI coding tools, for example, I don't use them.
+00:07:42
+Speaker 3
+I want something that speaks me up, not something that I find monotonous to use. So, we're trying to look for those wins if that makes sense. So these kinds of things are quite useful.
+00:08:08
+Nicole Reineke
+Okay, So maybe another question you can ask: I s, was there any example of a question that you asked Enzo that saved time?
+00:08:18
+Aaron Betts
+Okay. I can guarantee you that the looking up of the user definitely saves time for them.
+00:08:26
+Nicole Reineke
+Okay. That's great.
+00:08:28
+Aaron Betts
+That's a great quality to have.
+00:08:39
+Aaron Betts
+Um, I'll have to ask uh Ryan. Let me ask Ryan too, because one of the things that's a challenge for us um and this is something I was really hoping to see come out of Enzo and not saying that it's not. That's just when Nicole talked about it, this is where my head went right? Is um we create monthly reports based on User count, seat count, license count, and the the correlation between active licenses and billed licenses is one of. And I would I would go on record saying that, that is probably one of the biggest pain points of all MSP's. Like if we asked at the conference how many MSP's have trouble.
+00:09:36
+Aaron Betts
+Getting an actual accurate count of licenses, ninety percent of the hands would go up. Agreed.
+00:09:48
+Nicole Reineke
+So if we were to build a feature for you in Enzo, what's the kind what question would you ask?
+00:09:56
+Aaron Betts
+Um, So I was the kind of things that I would look for isum you know. How many active licenses of Sentinel One are we currently using? How many devices are we currently supporting? Um, how many users are we currently supporting? Uh, cause those don't always match. Um. So kind of things like that. Um.
+00:10:34
+Aaron Betts
+I know I I know that theyum like they used Enzo to ask how manyum Windows 10 pcs were still in existence for the clients. And that did save a lot of time. Uh, cause it it returned that really quick.
+00:10:56
+Nicole Reineke
+Okay, awesome. Thank you.
+00:11:03
+Nicole Reineke
+All right, my next question. Okay, so I think you may have already answered it. So what new features or capabilities would you like to see added? Definitely the business questions around license use. Were there any features inside the app itself that your team felt were missing?
+00:11:23
+Aaron Betts
+Well, uh, um, so I would say reporting is a huge one. Um and not just user count. Soum.
+00:11:34
+Aaron Betts
+For example, asking if we could say, " G ive me a list of machines that all have less than 10 % disk space and what drive letter it is." Kind of things like that. So statistics on machines. What like for example, if a certain advisory comes out that says, you know, this firmware has been found to have flaws. To be able to go in and say, return to me all the machines that have this firmware or this patch. That would be hugely beneficial. So, it's kind of like those reports that you know we're using to present to the client.
+00:12:31
+Aaron Betts
+To show value. Right now we're doing most of those reports manually.
+00:12:39
+Nicole Reineke
+Awesome. And then when we create a report for you in Enso, Is there value in having us create layouts? Or do you just want the data in sort of like a spreadsheet format?
+00:12:52
+Aaron Betts
+Um, so okay, so careful what you ask.
+00:12:56
+Nicole Reineke
+Because you say report implies UX.
+00:13:01
+Aaron Betts
+Now, Now you're yeah. Oh, okay. So for the techs, it's all about the data. Right? For me and my account managers, it's an executive report. The biggest challenge that we have seen across platforms, and we've used three different manufacturers uh and central being the latest. The one thing that nobody has been able to provide, Is an executive level report based on statistics. And that's the hardest because my team are great with numbers, they're not great with putting those numbers into language that a CEO might value.
+00:13:50
+Nicole Reineke
+Yeah. Yeah, There used to be an executive level report a few years back that quite a few of our customers loved, and it's gone. And as you're you're talking to me here, I see the, how do I walk into my customer and tell him what value I gave him last year or last quarter? And then what additional value I can bring to the table next quarter. And that absolutely does that feel true?
+00:14:16
+Aaron Betts
+Absolutely. Yeah.
+00:14:17
+Nicole Reineke
+Okay. Yeah, that's great insight. So us just giving you back a list of statistics on, Hey, which laptops need to be upgraded? Interesting but not useful. Useful but not interesting. I guess it's well,
+00:14:33
+Aaron Betts
+Useful for the text for sure. For the text, yeah. So I guess it's a different level of engagement, right? You've got your technical level, then you've got, and you probably have multiple of those because I know Charles who is my security specialist, he? He looks at things much differently than my help desk, you know, technicians look at in in in central. So there's kind of a different level of statistics that they're looking for. But from an account perspective, yeah, it's it's a much differentum. Much different ask.
+00:15:18
+Nicole Reineke
+Okay. Sorry somebody Mike headset broke so Oh no, I just got a new one delivered. The best service I've ever had. Awesome. Okay, so the persona on the account, So you have sort of somebody who's like an account manager who would have those those executive level conversations. Is there a secondary persona for that account type of interaction? Or would it just be a sales manager would be interacting with us?
+00:15:50
+Nicole Reineke
+Does that make sense?
+00:15:52
+Aaron Betts
+Expand a little bit.
+00:15:54
+Nicole Reineke
+Yeah, so I imagine an account manager is like, Hey, here's how many licenses you're using. Here's what we did for you last year. Here's what we can do for you next year. And, that's the conversation between your account manager and likely the CTO of whatever SMB you're dealing with or medium sized business. But, is there a case where you actually come in and you have a different level of conversation that is. You know, more strategic or differently strategic? Would you have the same.
+00:16:24
+Aaron Betts
+So, yes, definitely that conversation would be different. I, guess the question that I would need to answer for you and I don't know that I have that right at the moment is what out of N Central would I be looking for for that conversation? Right.
+00:16:48
+Aaron Betts
+So, Because just to give you an example, Most of the conversations that I'm having right now with my clients is we have developed or are developing an AI advisory service. And so it's more about workflow and business impact. Um, Not necessarily the tools that we have deployed out there or the tools that we are monitoring them with. This is about us actually building things for the client, you know, at a client production level.
+00:17:32
+Nicole Reineke
+Okay. So I definitely see yes and this this is actually really exciting Aaron so, When you're going out and you're analyzing the account's environment, it is plausible that you want to understand the types of systems they're using, the workflows between the systems, and use that to create automation within the client themselves.
+00:17:56
+Aaron Betts
+Absolutely. Yeah.
+00:17:57
+Nicole Reineke
+Okay. So I see value that we can add there for sure. And it's not just endpoint data, right? But being able to provide information that supports that. That's super fun. Oh, I love that you started that.
+00:18:11
+Aaron Betts
+I'm really close to closing my first deal too. Are you really? Yeah, it's uh it's one of our clients that does investigative reporting. They do work workers comp investigations. Yeah, And they spend hours and hours creating these reports that we're just jonesing to get in and uh, automate these things for them. And uh I just can't get them to bite. And I'm, I think part of the challenge uh is around pricing and you know how to how to get that enticingum but still still covering my costs and getting it created. Um. So.
+00:18:56
+Nicole Reineke
+That that that's soum it's so hard I mean, it's one of the challenges that I have too is how do I how do I create enough value, that you know companies like yours. Are getting savings so that you're willing to pay something. Right. So, so that there's an offset. So yeah, I feel your pain.
+00:19:17
+Aaron Betts
+Kind of what I've done is I've told them, look to to establish the foundation, the backend servers, all the things it's going to cost about 13 grand. So, what I want to do is I just I'm going to set it up where I will bill you hourly with a not- to- exceed 13 grand. And part of that will include at least one of the objectives that we've identified. And they, yeah, I don't know. They seem very like poised, but they just they haven't pulled the trigger yet.
+00:19:54
+Nicole Reineke
+Yeah. Oh, that's really interesting. So I'll talk to you. I'm going to set up another conversation with you. I'm sorry. Sure. I'm super interested in that now Okayum, Any UX improvements needed?
+00:20:08
+Aaron Betts
+Oh, that's a really good question. Let me ask these guys.
+00:20:28
+Aaron Betts
+So I did just backing up real quick. James did reply. When I asked him if he got the answers he needed, and he said, at first, I was getting the answers I needed, but then it stopped working. I don't recall how I asked it to provide answers. But over the next couple of days, I wasn't getting anything. I even tried giving it hints by being more specific, such as can you find which workstation Azure AD slash Chris Keener is logged into? Still nothing. I also asked this question at the company level.
+00:21:00
+Nicole Reineke
+Can you ask him, For a time frame so that I can go back and see if we changed anything between when he first asked him. Um, that would be great. Like a week- ish, like within a five- day period is close enough. Um, okay. Uh while he's answering that, was my onboarding clear and helpful for what I do better for that?
+00:21:28
+Aaron Betts
+Oh, I'm sorry. Um so Yeah yeah go ahead, And it was I can tell you when it was. So we did our company meeting on January 30 th. So it would have been the first week of February I. Think okay. The second through the sixth,
+00:21:56
+Nicole Reineke
+He experienced a degradation, the first week of February, all right Craig's already on it. I guarantee it. Thank you. Um, was the onboarding clear enough and helpful? Uh, yeah. Okay. Um, did you know how to report issues and provide feedback? Yes. Okay. Uh, was it easy enough to provide feedback?
+00:22:19
+Aaron Betts
+Uh, yeah, I think so.
+00:22:24
+Nicole Reineke
+Um Based on your experience, would you adopt Ask Enzo when it becomes generally available? Absolutely, Awesome. I'm going to ask a question that's not on here. Um, would you pay for it?
+00:22:39
+Aaron Betts
+Ooh. Um, if I could see ROI, I would absolutely pay for it.
+00:22:47
+Nicole Reineke
+Okay, So if we could say when you ask this kind of question, you save this number of hours a week, and we charge you a percentage of that. You'd be two thumbs up? Yeah. Okay. Awesome. Um, If the number, If we saved you two hours a month and we charged you nine dollars a month, would that be interesting?
+00:23:09
+Aaron Betts
+Uh- huh. Yeah, that that would be sure. Okay.
+00:23:12
+Nicole Reineke
+Um, If we saved you five hours a month, and we charged you nineteen dollars a month, would that be interesting? This would be per per technician.
+00:23:24
+Aaron Betts
+So if if we saved five hours per month per technician, Would it be worth an extra twenty dollars a month per technician? Correct. Hmm. Potentially, the one. So, the one challenge I could see at some point I am not saying that's the number, is that um we also would be able to um.
+00:23:58
+Aaron Betts
+Have an interface in house that could API back to N central that could also ask those same questions. And I'm paying the twenty dollars a month for that license. Now, if if the Ask Enzo, because that gives me a greater containerized LLM in that scenario that I could use for other things as well. Um if. If there was some way of using Enso for other general questions and stuff, um, outside of just the N Central, then it would definitely be worth it.
+00:24:40
+Nicole Reineke
+Okay. So what I think I hear is at the$ 19 per user price point you might as well get them ChatGPT. And whichever.
+00:24:50
+Aaron Betts
+A custom like we would have to build we would have to build some stuff. So I don't know that the$ 20 a month, Would would definitely do it. Um, but probably at thirty I would. Okay. Um, Just because I got to pay for building all that.
+00:25:08
+Nicole Reineke
+Yeah. On a aside, so I'm sorry, Uh, Lynn and Craig. Did you have any other questions you want to ask specifically on Enso before I give them an aside?
+00:25:20
+Speaker 3
+Just quickly about the if there were anyum obvious UX or UI, Improvements or yeah,
+00:25:26
+Aaron Betts
+I haven't uh the one the one tech that has used it says he likes the new look. Um, He just said, actually I guess maybe it's less intuitive than I thought it might be. So he actually said, I believe it'll be a great help once I learn how to talk to it. Okay. Soum That's fair. That's fair.
+00:25:52
+Aaron Betts
+I've, it's it's one of those things too, where I've probably spent hundreds of hours creating prompts, my texts not so much. So for me, it's very intuitive. Um so that that you know maybe if there was some. I don't know. And this is kind of just thinking outside the box. But if you put in a query. Instead of getting just an automatic response to that query, if the query could say, it seems to me that you would like to see X Y Z. Is that correct? Am I understanding you correctly? That would be fantastic. Now, I don't know. That that could be a very difficult and you know uh response, But you know, it's just that like like he says learning how to ask those prompts.
+00:26:48
+Aaron Betts
+Um, Maybe it's just maybe it's just a knowledge base with sample prompts that they could look at. Um, or a cheat sheet that's in there. Um, That they could click on that would give them kind of sample prompts that have been used. Um, that people have reported work. Um so.
+00:27:05
+Nicole Reineke
+But that's great feedback. Um Sometimes when we're in it, we forget that not everybody else is Right So That's really good feedback Yeahum So anything else before having a side.
+00:27:18
+Nicole Reineke
+Okay, as an aside, your org is far more advanced than most orgs. So we are releasing the MCP in limited tech preview. Um and I'll send you a note about that over the next few weeks. But, essentially when you talk about building your own access point into the different models or different uh chats, you'll be able to do that really quite easily. Okay. Um it's just a URL, a token that will help you create and then you can have a copilot Or, whichever your language model of choice is conversation and do automations that access about the same data that Enzo accesses. Okay. About the same asset data. Um, it will not have the product guide information in it, so the things that are helping your level one techs, that's not going to be part of it. Yeah. Uh, but just that data access layer will be there. So that's pretty exciting. Okay. I think that your team will like that Awesome Uh, anything I didn't ask you that you want to let us know?
+00:28:14
+Aaron Betts
+Um, no, no. I thinkum and one thing that I cause I would imagine, we're going to have another one of these in probably April. April. Okay. Yeah,
+00:28:25
+Nicole Reineke
+We're going to leave it on for you for a couple more months with no charge.
+00:28:27
+Aaron Betts
+Okay. Can, you do me a favor and just because I get so busy, um just maybe a week before or two weeks before that meeting, send out a list of questions that you would like me to pepper my team with? 'Cause I just feel like I could have maybe got gotten more information and, you know, I saw the meeting and I just didn't dawn on me to to get those questions for you.
+00:28:54
+Nicole Reineke
+That is phenomenal, feedback and I will do that moving forward with every other customer right now. You are our very first. So you get all of the errors in my process. Um, we're just ironing them out with you. So I'll do that for everybody else and I'll do it for you next time, too.
+00:29:11
+Aaron Betts
+All right, great, perfect.
+00:29:13
+Nicole Reineke
+All right. Thank you. You're phenomenal. Thank you so much for being one of our partners and for taking the time to do this. Yeah, absolutely. And if you think of anything else, just let me know. Okay, if you don't mind sending over the transcript, that would be great.
+00:29:25
+Aaron Betts
+Yeah, uh Do you want the full transcript or uh summary or both or?
+00:29:30
+Nicole Reineke
+A full would be great that way. Those sample questions that you asked I can get the exact content. Got it You're the best Thank you Aaron All right Thanks,
+00:29:39
+Aaron Betts
+Craig and Lynn It was nice to meet ya Yes.
+00:29:42
+Nicole Reineke
+Yeah, thanks, mate.
+00:29:43
+Aaron Betts
+All right. Bye- bye.
+Copyright © 2026 Plaud Inc. All rights reserved.

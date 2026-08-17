@@ -1,0 +1,58 @@
+# OpenAI (ChatGPT / GPT-4o)
+slug: openai
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+OpenAI is the leading AI research and deployment company, creator of the GPT model family and ChatGPT. OpenAI provides frontier large language models via API (GPT-5 family), a consumer product (ChatGPT), enterprise offerings, and an Agents SDK that enables developers and enterprises to build autonomous AI agents. In 2025-2026, OpenAI transitioned from an AI model provider to a full AI platform company with production-ready agentic infrastructure including MCP support, the Responses API, and a managed orchestration layer for multi-step agent workflows.
+
+## MSP Relevance
+OpenAI is the model layer that most AI products and MSP automation tools are built on top of, making it foundational infrastructure for the MSP AI ecosystem. MSPs using or evaluating AI automation tools need to understand OpenAI's capabilities, pricing, and direction. OpenAI does not have a dedicated MSP channel program — it operates through direct enterprise contracts and API access — but its models power a significant share of MSP-targeted AI products in the market.
+
+## Key Offerings & Capabilities
+- GPT-5 model family — GPT-5.3 Instant (default), GPT-5.4 Thinking (reasoning), GPT-5.4 Pro (research-grade); 256K+ context window; native agentic capabilities built-in
+- Responses API — primary interface for production agent development; integrates tools including computer use, code interpreter, file search, function calling, and web search in a unified API
+- Agents SDK (v0.17.2) — open-source production framework for building multi-agent systems with Python and TypeScript support; sandbox environment for secure agent execution
+- Model Context Protocol (MCP) — full MCP support across Agents SDK, Responses API, and ChatGPT desktop for standardized tool and data source connections
+- ChatGPT — consumer and enterprise product with Pro ($200/month) and Business/Enterprise tiers
+- Operator — AI agent that can perform multi-step web tasks autonomously (available to Pro subscribers)
+- ChatGPT Team and Enterprise — shared workspace with admin controls, SSO, and extended context for business use
+- OpenAI API — direct model access with batch processing, fine-tuning, and embedding capabilities
+
+## Recent Announcements
+- March 2025: Responses API launched as the primary interface for agentic development; Agents SDK released as production-ready evolution from prior Swarm framework
+- March 2025: Full MCP support added across Agents SDK and Responses API (Streamable HTTP and HTTP/SSE transports)
+- GPT-5 family standardized as the unified model lineup (February 2026); GPT-4 series and o-series models retired
+- August 2025: Assistants API officially deprecated with August 26, 2026 sunset date; migration path provided to Responses API
+- Agents SDK v0.17.2 (May 2026) — sandbox capabilities for secure agent code execution; agents can inspect files, run commands, and handle long-horizon tasks
+- ChatGPT desktop MCP support launched — custom connectors for local data sources and enterprise tools
+
+## Pricing Model
+API pricing charged per million input/output tokens; standard model rates apply to Responses API with no separate orchestration charge. GPT-5 pricing varies by model tier: GPT-5.3 Instant is the most cost-effective for high-volume use; GPT-5.4 Pro is priced for research-grade workloads. ChatGPT Pro at $200/user/month for individuals; Business at $30/user/month; Enterprise via custom contract. No public MSP tier or channel pricing — enterprise customers negotiate directly with OpenAI sales.
+
+## Strengths
+- Best-known AI brand — clients and prospects are more familiar with OpenAI/ChatGPT than any competitor, reducing education burden
+- Responses API + Agents SDK provide the most complete developer-facing agentic infrastructure available
+- MCP support across the full product line enables standardized, ecosystem-wide tool integration
+- Rapid model iteration — GPT-5 family represents significant capability leap; continuous improvement cadence
+- Native agentic reasoning in GPT-5 models reduces need for external orchestration layers
+- Massive developer community — largest AI developer ecosystem, driving integrations and tooling
+
+## Weaknesses / Gaps
+- No dedicated MSP channel or reseller program — enterprise sales only; smaller MSPs must go direct via API
+- Assistants API deprecation (August 2026) creates migration burden for MSPs and partners that built on it
+- Enterprise pricing opaque and requires sales engagement — no self-serve path for mid-market MSPs
+- OpenAI's model and product roadmap has historically surprised the ecosystem with rapid changes, creating integration risk
+- Primarily a model/API provider — not a vertical MSP product; requires significant build effort to deliver MSP-specific outcomes
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: OpenAI is infrastructure that powers many MSP AI tools (including potential NZO components), but is not a direct MSP market competitor. The risk is platform dependency — if NZO relies heavily on OpenAI models, OpenAI pricing and deprecation decisions directly affect NZO economics. The competitive threat increases if OpenAI launches vertical MSP-specific agent products or partners with RMM/PSA vendors to embed ChatGPT-native automation.
+
+## Notes
+- The Assistants API sunset (August 2026) is operationally important — any NZO integrations or partner tools built on Assistants must be migrated to Responses API
+- MCP becoming the standard across OpenAI, Anthropic, and Google simultaneously creates a genuine interoperability opportunity for NZO
+- OpenAI's operator/agent products are consumer-facing first; enterprise/MSP channel plays are secondary to their roadmap
+- Monitor for OpenAI enterprise distribution partnerships with Microsoft (which resells OpenAI via Azure) that could lock MSPs into Microsoft-native AI stacks

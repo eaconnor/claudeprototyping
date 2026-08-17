@@ -1,0 +1,3266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idea Chorus — PM Scoring Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --vermillion: #D8472B;
+    --ultramarine: #1F3C96;
+    --ochre: #C99A2E;
+    --violet: #5B3A7E;
+    --green-earth: #5E7A3F;
+    --cadmium: #E8B93A;
+    --ink: #1a1612;
+    --paper: #efe7d6;
+    --card: #f7f0df;
+    --line: rgba(26,22,18,0.18);
+    --line-solid: #c8b89a;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Kalam', cursive;
+    font-size: 16px;
+  }
+
+  /* ── INPUT STATE ── */
+  #state-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .input-inner {
+    width: 100%;
+    max-width: 700px;
+  }
+
+  h1.wordmark {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--vermillion);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 2px solid var(--line-solid);
+    margin: 16px 0 32px;
+  }
+
+  .field-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  textarea, input[type="text"] {
+    width: 100%;
+    font-family: 'Kalam', cursive;
+    font-size: 1rem;
+    color: var(--ink);
+    background: var(--card);
+    border: 2px solid var(--line-solid);
+    border-radius: 0;
+    padding: 12px 14px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.15s;
+  }
+
+  textarea:focus, input[type="text"]:focus {
+    border-color: var(--vermillion);
+  }
+
+  textarea {
+    min-height: 140px;
+    line-height: 1.6;
+  }
+
+  .field-group {
+    margin-bottom: 24px;
+  }
+
+  .field-note {
+    font-family: 'Kalam', cursive;
+    font-size: 0.82rem;
+    color: rgba(26,22,18,0.5);
+    margin-top: 6px;
+  }
+
+  .run-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--paper);
+    background: var(--vermillion);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: 14px 32px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.08s, box-shadow 0.08s;
+    display: block;
+    margin-top: 8px;
+  }
+
+  .run-btn:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--ink); }
+  .run-btn:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 var(--ink); }
+
+  /* ── OUTPUT STATE ── */
+  #state-output {
+    display: none;
+    padding: 40px 24px 80px;
+  }
+
+  .output-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .reset-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    opacity: 0.6;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 0;
+    margin-bottom: 32px;
+    display: inline-block;
+  }
+  .reset-link:hover { opacity: 1; }
+
+  /* ── LOADING ── */
+  #loading {
+    display: none;
+    text-align: center;
+    padding: 80px 0;
+  }
+
+  .loading-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--vermillion);
+  }
+
+  .dot-anim::after {
+    content: '';
+    animation: dots 1.4s steps(4, end) infinite;
+  }
+
+  @keyframes dots {
+    0%   { content: ''; }
+    25%  { content: '.'; }
+    50%  { content: '..'; }
+    75%  { content: '...'; }
+    100% { content: ''; }
+  }
+
+  /* ── PANELS ── */
+  #panels {
+    display: none;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 2px solid var(--line-solid);
+    box-shadow: 6px 6px 0 var(--line-solid);
+    border-radius: 0;
+    padding: 24px;
+  }
+
+  .panel-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--line);
+  }
+
+  .header-bradley { color: var(--ultramarine); }
+  .header-score   { color: var(--vermillion); }
+  .header-research{ color: var(--green-earth); }
+  .header-brief   { color: var(--ochre); }
+
+  /* ── PANEL 1: BRADLEY ── */
+  .intake-row {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: baseline;
+  }
+
+  .intake-label {
+    font-weight: 700;
+    color: var(--ultramarine);
+    min-width: 140px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .intake-value {
+    font-family: 'Kalam', cursive;
+    font-size: 0.95rem;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .cs-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    background: var(--line);
+    color: var(--ink);
+    padding: 1px 6px;
+    border-radius: 0;
+    margin-left: 6px;
+    border: 1px solid var(--line-solid);
+    vertical-align: middle;
+    white-space: nowrap;
+    opacity: 0.85;
+  }
+
+  .cs-assumed { background: rgba(201,154,46,0.18); border-color: var(--ochre); color: var(--ochre); }
+  .cs-medium  { background: rgba(26,22,18,0.08); }
+  .cs-high    { background: rgba(94,122,63,0.15); border-color: var(--green-earth); color: var(--green-earth); }
+
+  /* ── GATES ── */
+  .gates-wrap { display: flex; flex-direction: column; gap: 16px; }
+
+  .gate-card {
+    border: 2px solid var(--line-solid);
+    background: var(--card);
+    padding: 16px 20px;
+    position: relative;
+  }
+  .gate-card.locked { opacity: 0.55; }
+
+  .gate-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+
+  .gate-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    background: var(--ultramarine);
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .gate-card.locked .gate-num { background: #aaa; }
+
+  .gate-question {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    text-transform: uppercase;
+    flex: 1;
+  }
+
+  .gate-lock {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: #999;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+  }
+
+  .gate-level-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .gate-lvl-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--vermillion);
+    min-width: 56px;
+    flex-shrink: 0;
+  }
+  .gate-card.locked .gate-lvl-label { color: #999; }
+
+  .gate-xp-track {
+    flex: 1;
+    height: 12px;
+    background: var(--line);
+    border: 1px solid var(--line-solid);
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+    overflow: hidden;
+  }
+
+  .gate-xp-seg {
+    flex: 1;
+    height: 100%;
+    background: var(--line-solid);
+    transition: background 0.3s ease;
+  }
+  .gate-xp-seg.filled { background: var(--vermillion); }
+  .gate-xp-seg.filled-warn { background: var(--cadmium); }
+  .gate-card.locked .gate-xp-seg.filled { background: #aaa; }
+
+  .gate-dims {
+    font-family: 'Kalam', cursive;
+    font-size: 0.8rem;
+    color: rgba(26,22,18,0.5);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── GATE CRITERIA ── */
+  .gate-criteria {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .criteria-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(26,22,18,0.5);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .criteria-header:hover { color: var(--ink); }
+
+  .criteria-met-count {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--green-earth);
+    letter-spacing: 0.04em;
+  }
+
+  .criteria-list { margin-bottom: 10px; }
+
+  .criteria-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--line);
+    font-family: 'Kalam', cursive;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .criteria-item:last-child { border-bottom: none; }
+
+  .criteria-check {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--green-earth);
+    margin-top: 2px;
+  }
+
+  .criteria-text { flex: 1; line-height: 1.4; }
+  .criteria-text.met { text-decoration: line-through; opacity: 0.5; }
+
+  .criteria-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 1px 5px;
+    border: 1px solid var(--line-solid);
+    flex-shrink: 0;
+    color: rgba(26,22,18,0.6);
+  }
+  .criteria-type.CONSTRAINT { border-color: var(--ultramarine); color: var(--ultramarine); }
+  .criteria-type.DEADLINE   { border-color: var(--vermillion); color: var(--vermillion); }
+  .criteria-type.QUESTION   { border-color: var(--ochre); color: var(--ochre); }
+  .criteria-type.CHECK      { border-color: var(--green-earth); color: var(--green-earth); }
+
+  .criteria-del {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(26,22,18,0.3);
+    cursor: pointer;
+    padding: 0 4px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    line-height: 1;
+  }
+  .criteria-del:hover { color: var(--vermillion); }
+
+  .criteria-add-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    align-items: stretch;
+  }
+
+  .criteria-input {
+    flex: 1;
+    font-family: 'Kalam', cursive;
+    font-size: 0.88rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line-solid);
+    border-radius: 0;
+    padding: 5px 10px;
+    outline: none;
+  }
+  .criteria-input:focus { border-color: var(--ultramarine); }
+
+  .criteria-type-select {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line-solid);
+    border-radius: 0;
+    padding: 5px 8px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .criteria-add-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--paper);
+    background: var(--ultramarine);
+    border: 1px solid var(--ultramarine);
+    border-radius: 0;
+    padding: 5px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .criteria-add-btn:hover { opacity: 0.85; }
+
+  .gate-new-badge {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: var(--green-earth);
+    color: var(--paper);
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  /* ── FRAME GROUPS ── */
+  .frame-group {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--line);
+  }
+  .frame-group:last-of-type { border-bottom: none; margin-bottom: 0; }
+
+  .frame-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+  }
+
+  .frame-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ultramarine);
+  }
+
+  .frame-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .score-row-sub {
+    padding-left: 14px;
+    border-left: 2px solid var(--line);
+    margin-bottom: 10px;
+  }
+
+  /* ── PANEL 2: SCORE CARD ── */
+  .score-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .score-row {
+    display: grid;
+    grid-template-columns: 140px 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .score-dim {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  .bar-container {
+    height: 8px;
+    background: var(--line);
+    border: 1px solid var(--line-solid);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+  }
+
+  .tag-cell {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 2px 7px;
+    border: 1px solid var(--line-solid);
+    background: var(--line);
+    white-space: nowrap;
+    text-align: center;
+    min-width: 28px;
+  }
+
+  .tag-r { background: rgba(94,122,63,0.15); border-color: var(--green-earth); color: var(--green-earth); }
+  .tag-d { background: rgba(31,60,150,0.1);  border-color: var(--ultramarine); color: var(--ultramarine); }
+  .tag-q { background: rgba(201,154,46,0.18); border-color: var(--ochre); color: var(--ochre); }
+  .tag-a { background: rgba(26,22,18,0.07); }
+
+  .score-rationale {
+    font-family: 'Kalam', cursive;
+    font-size: 0.88rem;
+    color: rgba(26,22,18,0.75);
+    line-height: 1.4;
+  }
+
+  .chorus-total {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--vermillion);
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 2px solid var(--line);
+  }
+
+  .chorus-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    margin-right: 8px;
+  }
+
+  /* ── PANEL 3: RESEARCH PLAN ── */
+  .research-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .research-col-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-earth);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .research-item {
+    margin-bottom: 14px;
+  }
+
+  .research-method {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--cadmium);
+    background: rgba(232,185,58,0.12);
+    border: 1px solid var(--cadmium);
+    padding: 2px 6px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .research-answered-method {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--green-earth);
+    background: rgba(94,122,63,0.1);
+    border: 1px solid var(--green-earth);
+    padding: 2px 6px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .research-q {
+    font-family: 'Kalam', cursive;
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  /* ── EVIDENCE INPUT ── */
+  .evidence-add-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .evidence-add-row input { min-width: 140px; }
+
+  .evidence-link-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--paper);
+    border: 1px solid var(--line-solid);
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+  }
+
+  .ev-type-badge {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 1px 6px;
+    border: 1px solid;
+    flex-shrink: 0;
+    font-size: 0.65rem;
+  }
+  .ev-type-badge.JIRA       { color: var(--ultramarine); border-color: var(--ultramarine); }
+  .ev-type-badge.CONFLUENCE { color: var(--violet); border-color: var(--violet); }
+  .ev-type-badge.PROTOTYPE  { color: var(--vermillion); border-color: var(--vermillion); }
+  .ev-type-badge.RESEARCH   { color: var(--green-earth); border-color: var(--green-earth); }
+  .ev-type-badge.DOC        { color: var(--ochre); border-color: var(--ochre); }
+  .ev-type-badge.OTHER      { color: var(--ink); border-color: var(--line-solid); }
+
+  .ev-label { flex: 1; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ev-url   { color: rgba(26,22,18,0.45); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+  .ev-del   { background: none; border: none; cursor: pointer; color: rgba(26,22,18,0.3); font-size: 12px; flex-shrink: 0; padding: 0 2px; }
+  .ev-del:hover { color: var(--vermillion); }
+
+  /* ── SCORE TRACE ── */
+  .score-trace {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    padding: 8px 12px;
+    background: var(--paper);
+    border-left: 3px solid var(--line-solid);
+    display: none;
+  }
+  .score-row:hover .score-trace { display: block; }
+
+  .trace-line {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(26,22,18,0.6);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+  }
+
+  .trace-signal { color: var(--ultramarine); font-weight: 700; }
+  .trace-excerpt { color: var(--ink); font-style: normal; }
+  .trace-link { color: var(--vermillion); text-decoration: none; border-bottom: 1px solid var(--vermillion); }
+  .trace-link:hover { opacity: 0.7; }
+  .trace-no-link { color: rgba(26,22,18,0.35); }
+
+  /* ── SCOUT MODAL ── */
+  .scout-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,22,18,0.55);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .scout-modal-backdrop.open { display: flex; }
+
+  .scout-modal {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--ink);
+    max-width: 720px;
+    width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .scout-modal-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ultramarine);
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .scout-modal-close {
+    background: none;
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+  }
+  .scout-modal-close:hover { color: var(--vermillion); }
+
+  .scout-modal-textarea {
+    width: 100%;
+    flex: 1;
+    min-height: 280px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper);
+    border: 2px solid var(--line-solid);
+    border-radius: 0;
+    padding: 14px;
+    outline: none;
+    resize: vertical;
+  }
+
+  .scout-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    align-items: center;
+  }
+
+  .scout-modal-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--paper);
+    background: var(--vermillion);
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .scout-modal-copy:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+  .scout-modal-copy.copied { background: var(--green-earth); }
+
+  .scout-modal-hint {
+    font-family: 'Kalam', cursive;
+    font-size: 0.85rem;
+    color: rgba(26,22,18,0.55);
+    flex: 1;
+  }
+
+  /* ── QUEST ITEMS ── */
+  .quest-item {
+    border: 2px solid var(--line-solid);
+    background: var(--paper);
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    position: relative;
+  }
+
+  .quest-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .quest-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border: 1px solid;
+    flex-shrink: 0;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+  .quest-status.OPEN     { color: var(--ochre); border-color: var(--ochre); background: rgba(201,154,46,0.08); }
+  .quest-status.FOUND    { color: var(--green-earth); border-color: var(--green-earth); background: rgba(94,122,63,0.08); }
+  .quest-status.MISSING  { color: var(--vermillion); border-color: var(--vermillion); background: rgba(216,71,43,0.08); }
+
+  .quest-fw {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    background: var(--line);
+    border: 1px solid var(--line-solid);
+    padding: 2px 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: rgba(26,22,18,0.6);
+  }
+
+  .quest-q {
+    font-family: 'Kalam', cursive;
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .quest-scout-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    border: none;
+    border-radius: 0;
+    padding: 5px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: background 0.1s;
+  }
+  .quest-scout-btn:hover { background: var(--ultramarine); }
+  .quest-scout-btn.copied { background: var(--green-earth); }
+
+  .quest-scout-btn.method-scout      { background: var(--ultramarine); }
+  .quest-scout-btn.method-scout:hover{ background: var(--ink); }
+
+  .quest-scout-btn.method-interview      { background: var(--green-earth); }
+  .quest-scout-btn.method-interview:hover{ background: var(--ink); }
+
+  .quest-scout-btn.method-think      { background: var(--violet); }
+  .quest-scout-btn.method-think:hover{ background: var(--ink); }
+
+  .quest-dim {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    color: rgba(26,22,18,0.4);
+    text-transform: uppercase;
+  }
+
+  .answered-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .answered-item:last-child { border-bottom: none; }
+
+  .answered-check {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--green-earth);
+    flex-shrink: 0;
+  }
+
+  .answered-fw {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    background: rgba(94,122,63,0.1);
+    border: 1px solid var(--green-earth);
+    color: var(--green-earth);
+    padding: 1px 5px;
+    flex-shrink: 0;
+  }
+
+  .answered-q {
+    font-family: 'Kalam', cursive;
+    font-size: 0.88rem;
+    color: rgba(26,22,18,0.6);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .warn-banner {
+    background: rgba(232,185,58,0.18);
+    border: 2px solid var(--cadmium);
+    padding: 12px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FRAMEWORK CANVASES ── */
+  .canvas-block {
+    background: var(--paper);
+    border: 1px solid var(--line-solid);
+    margin-bottom: 12px;
+    padding: 12px 14px;
+  }
+
+  .canvas-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .canvas-head:hover .canvas-name { color: var(--vermillion); }
+
+  .canvas-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ochre);
+    text-transform: uppercase;
+  }
+
+  .canvas-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(26,22,18,0.55);
+    letter-spacing: 0.04em;
+  }
+  .canvas-count.complete { color: var(--green-earth); }
+
+  .canvas-arrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(26,22,18,0.4);
+    margin-left: 6px;
+  }
+
+  .canvas-slots {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-solid);
+  }
+
+  .canvas-slot {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .canvas-slot:last-child { border-bottom: none; }
+
+  .canvas-slot-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(26,22,18,0.65);
+    letter-spacing: 0.04em;
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  .canvas-slot-value {
+    flex: 1;
+    font-family: 'Kalam', cursive;
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.4;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 0;
+    border: 1px solid transparent;
+    min-height: 26px;
+  }
+  .canvas-slot-value:hover {
+    border-color: var(--line-solid);
+    background: var(--card);
+  }
+  .canvas-slot-value.gap {
+    color: rgba(216,71,43,0.7);
+    font-style: italic;
+  }
+  .canvas-slot-value.gap::before { content: '[GAP] '; opacity: 0.6; font-style: normal; font-family: 'Space Mono', monospace; font-size: 0.7rem; }
+
+  .canvas-slot-edit {
+    flex: 1;
+    font-family: 'Kalam', cursive;
+    font-size: 0.92rem;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--vermillion);
+    border-radius: 0;
+    padding: 4px 8px;
+    outline: none;
+    min-height: 26px;
+    line-height: 1.4;
+  }
+
+  .canvas-slot-hint {
+    font-family: 'Kalam', cursive;
+    font-size: 0.78rem;
+    color: rgba(26,22,18,0.4);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* ── PANEL 4: BRIEF ── */
+  .brief-rows {
+    margin-bottom: 20px;
+  }
+
+  .brief-row {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brief-row:last-child { border-bottom: none; }
+
+  .brief-field-label {
+    font-weight: 700;
+    color: var(--ochre);
+    min-width: 90px;
+    flex-shrink: 0;
+    letter-spacing: 0.07em;
+  }
+
+  .brief-value {
+    font-family: 'Kalam', cursive;
+    font-size: 0.95rem;
+    color: var(--ink);
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .brief-value.not-stated {
+    color: rgba(26,22,18,0.45);
+    font-style: italic;
+  }
+
+  .copy-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--paper);
+    background: var(--ultramarine);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--ink);
+    padding: 10px 22px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.08s, box-shadow 0.08s;
+    margin-bottom: 24px;
+  }
+
+  .copy-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .copy-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+
+  .george-block {
+    border-left: 3px solid var(--vermillion);
+    padding: 12px 16px;
+    margin-top: 8px;
+    background: rgba(216,71,43,0.04);
+  }
+
+  .george-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--vermillion);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .george-quote {
+    font-family: 'Kalam', cursive;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── PANEL 5: OUTCOME ── */
+  .outcome-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .outcome-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 10px 22px;
+    cursor: pointer;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 4px 4px 0 var(--line-solid);
+    transition: transform 0.08s, box-shadow 0.08s;
+  }
+  .outcome-btn:hover { transform: translate(-1px,-1px); box-shadow: 6px 6px 0 var(--line-solid); }
+  .outcome-btn:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--line-solid); }
+  .outcome-btn.active-shipped  { background: var(--green-earth); color: var(--paper); border-color: var(--green-earth); }
+  .outcome-btn.active-killed   { background: var(--vermillion); color: var(--paper); border-color: var(--vermillion); }
+  .outcome-btn.active-paused   { background: var(--cadmium); color: var(--ink); border-color: var(--cadmium); }
+
+  #outcome-reason-block {
+    display: none;
+    margin-top: 4px;
+  }
+
+  .outcome-reason-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(26,22,18,0.55);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .outcome-reason-input {
+    width: 100%;
+    font-family: 'Kalam', cursive;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--card);
+    border: 2px solid var(--line-solid);
+    border-radius: 0;
+    padding: 10px 14px;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  .outcome-reason-input:focus { border-color: var(--vermillion); }
+
+  .log-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--paper);
+    background: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--line-solid);
+    padding: 10px 22px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .log-btn:hover { opacity: 0.85; }
+
+  .outcome-logged {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--green-earth);
+    letter-spacing: 0.06em;
+    margin-top: 8px;
+  }
+
+  /* ── PANEL 6: THE STANDARD ── */
+  .standard-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(26,22,18,0.55);
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+  }
+
+  .standard-version {
+    display: inline-block;
+    background: var(--violet);
+    color: var(--paper);
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-right: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .standard-dim {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .standard-dim:last-child { border-bottom: none; margin-bottom: 0; }
+
+  .standard-dim-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .standard-bars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .standard-bar-item {
+    background: var(--paper);
+    border: 1px solid var(--line-solid);
+    padding: 8px 12px;
+  }
+
+  .standard-bar-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .sbs-3 { color: #999; }
+  .sbs-7 { color: var(--cadmium); }
+  .sbs-10 { color: var(--green-earth); }
+
+  .standard-bar-desc {
+    font-family: 'Kalam', cursive;
+    font-size: 0.82rem;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .proposal-block {
+    background: rgba(31,60,150,0.06);
+    border: 2px solid var(--ultramarine);
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+
+  .proposal-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ultramarine);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .proposal-item {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(31,60,150,0.15);
+  }
+  .proposal-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .proposal-dim-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ultramarine);
+    margin-bottom: 4px;
+  }
+
+  .proposal-text {
+    font-family: 'Kalam', cursive;
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .proposal-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .accept-btn, .reject-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 5px 14px;
+    cursor: pointer;
+  }
+  .accept-btn { background: var(--green-earth); color: var(--paper); }
+  .reject-btn { background: var(--card); color: var(--ink); }
+
+  .history-toggle {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    opacity: 0.5;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 0;
+    margin-top: 24px;
+    display: inline-block;
+  }
+  .history-toggle:hover { opacity: 1; }
+
+  #history-list { display: none; margin-top: 16px; }
+
+  .history-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 10px 12px;
+    border: 1px solid var(--line-solid);
+    margin-bottom: 8px;
+    background: var(--paper);
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .hist-outcome {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+  }
+  .hist-shipped { background: var(--green-earth); color: var(--paper); }
+  .hist-killed  { background: var(--vermillion); color: var(--paper); }
+  .hist-paused  { background: var(--cadmium); color: var(--ink); }
+
+  .hist-name { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hist-score { color: var(--vermillion); font-weight: 700; }
+  .hist-date  { color: rgba(26,22,18,0.45); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    h1.wordmark { font-size: 1.8rem; }
+    .score-row { grid-template-columns: 1fr; gap: 4px; }
+    .score-dim { min-width: auto; }
+    .research-grid { grid-template-columns: 1fr; }
+    .intake-row { flex-direction: column; gap: 2px; }
+    .intake-label { min-width: auto; }
+  }
+
+  @media (max-width: 860px) {
+    .score-row { grid-template-columns: 120px 1fr auto; }
+    .score-rationale { grid-column: 1 / -1; padding-left: 0; font-size: 0.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     STATE 1 — INPUT
+     ══════════════════════════════════════════════════ -->
+<section id="state-input">
+  <div class="input-inner">
+    <h1 class="wordmark">IDEA CHORUS</h1>
+    <hr class="divider">
+
+    <div class="field-group">
+      <label class="field-label" for="idea-text">What's the idea?</label>
+      <textarea id="idea-text" rows="6" placeholder="Blab it. Raw is fine. The band will figure it out."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="context-text">Company / product context <span style="font-weight:400;opacity:0.6;">(optional)</span></label>
+      <input type="text" id="context-text" placeholder="e.g. Adlumin — B2B cybersecurity for mid-market">
+    </div>
+
+    <div class="field-group" style="margin-top:8px;">
+      <label class="field-label">Evidence &amp; links <span style="font-weight:400;opacity:0.6;">(optional — Jira, Confluence, prototypes, docs, anything)</span></label>
+      <div id="evidence-list"></div>
+      <div class="evidence-add-row">
+        <input type="text" id="ev-url" placeholder="URL or reference (e.g. ADL-1294, figma.com/…)" style="flex:2;">
+        <input type="text" id="ev-label" placeholder="Label (e.g. LOTL customer case)" style="flex:2;">
+        <select id="ev-type" class="criteria-type-select">
+          <option value="JIRA">JIRA</option>
+          <option value="CONFLUENCE">CONFLUENCE</option>
+          <option value="PROTOTYPE">PROTOTYPE</option>
+          <option value="RESEARCH">RESEARCH</option>
+          <option value="DOC">DOC</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+        <button class="criteria-add-btn" onclick="addEvidenceLink()">+ ADD</button>
+      </div>
+    </div>
+
+    <button class="run-btn" id="run-btn">RUN THE CHORUS →</button>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     STATE 2 — OUTPUT
+     ══════════════════════════════════════════════════ -->
+<section id="state-output">
+  <div class="output-inner">
+    <button class="reset-link" id="reset-btn">← New Idea</button>
+
+    <!-- Loading -->
+    <div id="loading">
+      <p class="loading-text dot-anim">THE BAND IS READING</p>
+    </div>
+
+    <!-- Panels -->
+    <div id="panels">
+
+      <!-- PANEL 0: GATES -->
+      <div class="panel">
+        <div class="panel-header" style="color:var(--ultramarine);">GATES</div>
+        <div id="gates-content"></div>
+      </div>
+
+      <!-- PANEL 1: BRADLEY -->
+      <div class="panel">
+        <div class="panel-header header-bradley">BRADLEY — INTAKE</div>
+        <div id="bradley-content"></div>
+      </div>
+
+      <!-- PANEL 2: SCORE CARD -->
+      <div class="panel">
+        <div class="panel-header header-score">SCORE CARD</div>
+        <div id="scorecard-content"></div>
+      </div>
+
+      <!-- PANEL 3: RESEARCH PLAN -->
+      <div class="panel">
+        <div class="panel-header header-research">RESEARCH PLAN</div>
+        <div id="research-content"></div>
+      </div>
+
+      <!-- PANEL 4: BRIEF IN MOTION -->
+      <div class="panel">
+        <div class="panel-header header-brief">BRIEF IN MOTION</div>
+        <div id="brief-content"></div>
+      </div>
+
+<!-- PANEL 6: THE STANDARD -->
+      <div class="panel">
+        <div class="panel-header" style="color:var(--violet);">THE STANDARD</div>
+        <div id="standard-content"></div>
+      </div>
+
+    </div><!-- /panels -->
+  </div>
+</section>
+
+<!-- SCOUT MODAL -->
+<div class="scout-modal-backdrop" id="scout-modal-backdrop">
+  <div class="scout-modal">
+    <div class="scout-modal-header">
+      <span id="scout-modal-label">SCOUT QUEST BRIEF</span>
+      <button class="scout-modal-close" onclick="closeScoutModal()">✕</button>
+    </div>
+    <textarea class="scout-modal-textarea" id="scout-modal-text" readonly></textarea>
+    <div class="scout-modal-actions">
+      <button class="scout-modal-copy" id="scout-modal-copy-btn" onclick="copyModalBrief()">COPY TO CLIPBOARD</button>
+      <span class="scout-modal-hint">Or Cmd-A / Cmd-C inside the box — paste into a Claude Code session running the scout agent.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// UTILITIES
+// ══════════════════════════════════════════════════════
+
+function countWords(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function containsAny(text, keywords) {
+  const t = text.toLowerCase();
+  return keywords.some(k => t.includes(k));
+}
+
+function csBadge(type) {
+  const map = {
+    'HIGH':    '<span class="cs-badge cs-high">[CS: HIGH]</span>',
+    'MEDIUM':  '<span class="cs-badge cs-medium">[CS: MEDIUM]</span>',
+    'ASSUMED': '<span class="cs-badge cs-assumed">[CS: ASSUMED]</span>',
+  };
+  return map[type] || '';
+}
+
+function tagCell(tag) {
+  const cls = { R: 'tag-r', D: 'tag-d', '?': 'tag-q', A: 'tag-a' };
+  return `<div class="tag-cell ${cls[tag] || ''}">${tag}</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// EXTRACTION LOGIC
+// ══════════════════════════════════════════════════════
+
+function extractIdea(text) {
+  const sentences = text.match(/[^.!?]+[.!?]*/g) || [text];
+  const clean = s => s.trim();
+
+  // IDEA NAME: first noun phrase attempt — grab first 5 words
+  const firstFive = text.trim().split(/\s+/).slice(0, 5).join(' ');
+  const ideaName = firstFive || 'Unnamed';
+
+  // PROBLEM: look for explicit signals
+  const problemPatterns = [
+    /problem is[^.!?]*/i,
+    /challenge is[^.!?]*/i,
+    /struggle(?:s)? with[^.!?]*/i,
+    /pain point[^.!?]*/i,
+  ];
+  let problem = null;
+  for (const p of problemPatterns) {
+    const m = text.match(p);
+    if (m) { problem = clean(m[0]); break; }
+  }
+  if (!problem) {
+    // sentence with "because" or "but currently"
+    for (const s of sentences) {
+      if (/because|but currently/i.test(s)) { problem = clean(s); break; }
+    }
+  }
+
+  // USER: phrase after "for ", "helps ", "enables " or containing user/customer keywords
+  let user = null;
+  const userPhraseMatch = text.match(/(?:for|helps|enables)\s+([\w\s,'-]{2,40})/i);
+  if (userPhraseMatch) {
+    user = clean(userPhraseMatch[1]);
+  }
+  if (!user) {
+    for (const s of sentences) {
+      if (/\b(user|customer|team|developer|manager|admin|analyst|operator)\b/i.test(s)) {
+        const m = s.match(/\b(user|customer|team|developer|manager|admin|analyst|operator)s?\b[^.!?]{0,60}/i);
+        if (m) { user = clean(m[0]); break; }
+      }
+    }
+  }
+
+  // SOLUTION: sentence with "would", "could", "enables", "allows", "by", or second main sentence
+  let solution = null;
+  const solutionWords = /\b(would|could|enables|allows|by|propose|build|create|introduce)\b/i;
+  for (const s of sentences) {
+    if (solutionWords.test(s)) { solution = clean(s); break; }
+  }
+  if (!solution && sentences.length >= 2) {
+    solution = clean(sentences[1]);
+  }
+
+  return {
+    name: ideaName,
+    problem: problem || null,
+    user: user || null,
+    solution: solution || null,
+  };
+}
+
+// ══════════════════════════════════════════════════════
+// SIGNAL DETECTION
+// ══════════════════════════════════════════════════════
+
+function detectSignals(text) {
+  const t = text.toLowerCase();
+  return {
+    hasUser:          containsAny(t, ['user', 'customer', 'people', 'team', 'clients', 'stakeholder', 'analyst', 'operator', 'manager', 'engineer', 'admin', 'buyer', 'practitioner']),
+    hasPain:          containsAny(t, ['pain', 'problem', 'frustration', 'struggle', 'challenge', 'friction', 'broken', 'hard to', 'difficult', 'invisible', 'miss', 'gap', 'blind', 'fail', 'slow', 'manual', 'noise', 'flood', 'erode', 'trust', 'can\'t', 'cannot', 'unable', 'risk', 'threat', 'breach', 'exposed', 'undetected', 'overwhelming']),
+    hasMoney:         containsAny(t, ['revenue', 'pay', 'cost', 'price', 'roi', 'pricing', 'monetize', 'budget', 'spend', 'renewal', 'upsell', 'contract', 'deal', 'competitive', 'churn', 'retention', 'margin']),
+    hasCompetitor:    containsAny(t, ['competitor', 'existing', 'alternative', 'currently use', 'instead of', 'unlike', 'vs', 'battlecard', 'market', 'huntress', 'sentinelone', 'crowdstrike', 'owns the']),
+    hasResearch:      containsAny(t, ['research', 'data', 'interview', 'survey', 'study', 'metric', 'analytics', 'finding', 'case', 'confirmed', 'evidence', 'showed', 'measured', 'billion', 'percent', 'report', 'ticket', 'jira', 'confluence']),
+    hasEmpower:       containsAny(t, ['empower', 'growth', 'mastery', 'confidence', 'autonomy', 'control', 'ownership', 'skill', 'act', 'decide', 'trust', 'agency', 'capable', 'override', 'audit', 'clarity']),
+    hasSolution:      containsAny(t, ['would', 'could', 'enables', 'allows', 'surfaces', 'detects', 'scores', 'names', 'shows', 'builds', 'creates', 'introduces', 'provides', 'delivers', 'solves', 'reduces', 'automates', 'replaces']),
+    wordCount:        countWords(text),
+    isThin:           countWords(text) < 50,
+  };
+}
+
+function diamondPosition(sig, extracted) {
+  // Estimate where in the double diamond this idea sits
+  if (sig.isThin || (!sig.hasUser && !sig.hasPain)) return { pos: 'DIVERGE', label: 'Still diverging — problem space not closed.' };
+  if (sig.hasUser && sig.hasPain && !extracted.solution) return { pos: 'CONVERGE-1', label: 'Converging on problem. Solution space not opened yet.' };
+  if (sig.hasUser && sig.hasPain && extracted.solution && !sig.hasResearch) return { pos: 'DIVERGE-2', label: 'In solution space. Assumed, not evidenced.' };
+  if (sig.hasResearch && extracted.solution) return { pos: 'CONVERGE-2', label: 'Converging on solution. Gate 3 is the next question.' };
+  return { pos: 'UNCLEAR', label: 'Position in the diamond is unclear from this text.' };
+}
+
+// ══════════════════════════════════════════════════════
+// DOBLIN 10 TYPES
+// ══════════════════════════════════════════════════════
+
+const DOBLIN_TYPES = [
+  { key: 'profit',     label: 'Profit Model',        keywords: ['revenue model', 'subscription', 'freemium', 'pricing model', 'monetize', 'pay per', 'license'] },
+  { key: 'network',    label: 'Network',              keywords: ['partner', 'ecosystem', 'platform', 'marketplace', 'network', 'alliance', 'integration'] },
+  { key: 'structure',  label: 'Structure',            keywords: ['team', 'organization', 'process ownership', 'internal', 'department', 'governance'] },
+  { key: 'process',    label: 'Process',              keywords: ['workflow', 'automate', 'pipeline', 'efficiency', 'streamline', 'reduce steps', 'faster'] },
+  { key: 'perf',       label: 'Product Performance',  keywords: ['feature', 'capability', 'performance', 'faster', 'better', 'accurate', 'reliable', 'detection'] },
+  { key: 'system',     label: 'Product System',       keywords: ['suite', 'ecosystem', 'platform', 'integrate', 'module', 'stack', 'end-to-end'] },
+  { key: 'service',    label: 'Service',              keywords: ['support', 'service', 'onboarding', 'training', 'help', 'assist', 'guide', 'consult'] },
+  { key: 'channel',    label: 'Channel',              keywords: ['channel', 'distribution', 'delivery', 'marketplace', 'direct', 'self-serve', 'partner channel'] },
+  { key: 'brand',      label: 'Brand',                keywords: ['brand', 'trust', 'reputation', 'credibility', 'certification', 'recognition'] },
+  { key: 'cx',         label: 'Customer Engagement',  keywords: ['engagement', 'community', 'loyalty', 'experience', 'delight', 'personalize', 'retain', 'notification'] },
+];
+
+function scoreDoblin(text) {
+  const t = text.toLowerCase();
+  const active = DOBLIN_TYPES.filter(d => d.keywords.some(k => t.includes(k)));
+  return { score: active.length, active: active.map(d => d.label) };
+}
+
+// ══════════════════════════════════════════════════════
+// UX 5Es
+// ══════════════════════════════════════════════════════
+
+const FIVE_ES = [
+  { key: 'entice',  label: 'Entice',  keywords: ['attract', 'discover', 'aware', 'first learn', 'find out', 'notice', 'come across', 'trial', 'free'] },
+  { key: 'enter',   label: 'Enter',   keywords: ['sign up', 'onboard', 'start', 'begin', 'first time', 'setup', 'install', 'login', 'register'] },
+  { key: 'engage',  label: 'Engage',  keywords: ['use', 'workflow', 'daily', 'interact', 'navigate', 'feature', 'task', 'action', 'perform', 'complete'] },
+  { key: 'exit',    label: 'Exit',    keywords: ['finish', 'done', 'complete', 'export', 'save', 'close', 'log out', 'handoff', 'report'] },
+  { key: 'extend',  label: 'Extend',  keywords: ['return', 'upgrade', 'share', 'recommend', 'expand', 'renewal', 'upsell', 'cross-sell', 'loyalty'] },
+];
+
+function scoreFiveEs(text) {
+  const t = text.toLowerCase();
+  const present = FIVE_ES.filter(e => e.keywords.some(k => t.includes(k)));
+  return { score: present.length, present: present.map(e => e.label) };
+}
+
+// ══════════════════════════════════════════════════════
+// SCORING ENGINE
+// ══════════════════════════════════════════════════════
+
+function buildScores(text, contextText) {
+  const sig = detectSignals(text);
+  const doblin = scoreDoblin(text);
+  const fiveE  = scoreFiveEs(text);
+  const t = text.toLowerCase();
+  const scores = [];
+  const excerpt = (keyword) => {
+    const i = t.indexOf(keyword);
+    if (i < 0) return null;
+    const start = Math.max(0, i - 30);
+    const end   = Math.min(text.length, i + keyword.length + 50);
+    return '"…' + text.slice(start, end).replace(/\n/g,' ').trim() + '…"';
+  };
+
+  // 1. VALUE PROP
+  let vpScore = 2;
+  if (sig.hasPain && sig.hasSolution) vpScore = 7;
+  else if (sig.hasPain || sig.hasSolution) vpScore = 4;
+  const vpTrace = [
+    sig.hasPain    && { signal: 'pain signal',     excerpt: excerpt('trust') || excerpt('problem') || excerpt('breach') || excerpt('invisible'), tag: 'A' },
+    sig.hasSolution && { signal: 'solution signal', excerpt: excerpt('surfaces') || excerpt('scores') || excerpt('detects') || excerpt('enables'), tag: 'A' },
+  ].filter(Boolean);
+  scores.push({ dim: 'VALUE PROP', score: vpScore, tag: vpScore >= 6 ? 'A' : '?',
+    rationale: sig.hasPain && sig.hasSolution ? 'Problem + solution both present.' : sig.hasPain ? 'Problem stated, solution unclear.' : sig.hasSolution ? 'Solution described, problem unstated.' : 'Neither stated.',
+    trace: vpTrace,
+    questions: [
+      { fw: 'JTBD',        method: 'INTERVIEW', q: 'What functional, emotional, and social job is the customer hiring this to do? What are they firing the current solution for?' },
+      { fw: 'BLUE OCEAN',  method: 'THINK',     q: 'On the strategy canvas: what does this Eliminate / Reduce / Raise / Create relative to the existing alternative?' },
+      { fw: 'POSITIONING', method: 'THINK',     q: 'Complete the Moore statement: For [user] who [pain], [product] is a [category] that [benefit], unlike [competitor] which [differentiator].' },
+    ],
+  });
+
+  // 2. COMPANY FIT
+  const ctxFilled = contextText && contextText.trim().length > 2;
+  let fitScore = 5, fitTag = '?', fitRationale = 'No context provided.', fitTrace = [];
+  if (ctxFilled) {
+    const ctxWords = contextText.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+    const textWords = t.split(/\W+/).filter(w => w.length > 3);
+    const sharedWords = ctxWords.filter(w => textWords.includes(w));
+    fitScore = sharedWords.length >= 2 ? 7 : 5;
+    fitTag = sharedWords.length >= 2 ? 'A' : '?';
+    fitRationale = sharedWords.length >= 2 ? `${sharedWords.length} shared terms with context.` : 'Low keyword alignment with context.';
+    fitTrace = sharedWords.slice(0,3).map(w => ({ signal: `shared term "${w}"`, excerpt: excerpt(w), tag: 'A' }));
+  }
+  scores.push({ dim: 'COMPANY FIT', score: fitScore, tag: fitTag, rationale: fitRationale, trace: fitTrace,
+    questions: [
+      { fw: 'STRATEGIC FIT', method: 'THINK',           q: 'Is this core, adjacent, or transformational innovation? Which does the company\'s current strategy call for?' },
+      { fw: 'ANSOFF',        method: 'THINK',           q: 'Is this market penetration, market development, product development, or diversification?' },
+      { fw: 'BLUE OCEAN',    method: 'INTERNAL REVIEW', q: 'Red ocean or blue ocean play? If red, what\'s the wedge? If blue, who\'s the non-customer? Pull the competitive landscape and customer base.' },
+    ],
+  });
+
+  // 3. 10 TYPES
+  const doblinScore = Math.min(doblin.score, 10);
+  const doblinActive = doblin.active.length > 0 ? doblin.active.join(', ') : 'none detected';
+  const doblinTrace = doblin.active.map(label => {
+    const type = DOBLIN_TYPES.find(d => d.label === label);
+    const kw = type ? type.keywords.find(k => t.includes(k)) : null;
+    return { signal: label, excerpt: kw ? excerpt(kw) : null, tag: 'A' };
+  });
+  scores.push({ dim: '10 TYPES', score: doblinScore, tag: doblinScore >= 4 ? 'A' : '?',
+    rationale: `Active: ${doblinActive}.`, trace: doblinTrace,
+    questions: [
+      { fw: 'DOBLIN',              method: 'MARKET RESEARCH', q: 'Which types are being deliberately activated? Which are competitors ignoring that we could own?' },
+      { fw: 'INNOVATION AMBITION', method: 'THINK',           q: 'What ratio is core vs. adjacent vs. transformational? Is that the right portfolio bet?' },
+      { fw: 'MOAT',                method: 'THINK',           q: 'Which type(s) are hardest to copy in 18 months? Is the moat named?' },
+    ],
+  });
+
+  // 4. PAIN EVIDENCE
+  let painScore = 3, painTag = '?';
+  if (sig.hasPain && sig.hasResearch) { painScore = 8; painTag = 'R'; }
+  else if (sig.hasPain) { painScore = 6; painTag = 'A'; }
+  const painKws = ['trust','breach','invisible','undetected','miss','flood','can\'t','cannot','problem','pain','risk','threat','challenge'];
+  const resKws  = ['confirmed','data','research','case','evidence','billion','metric','finding','ticket'];
+  const painTrace = [
+    ...painKws.map(k => t.includes(k) ? { signal: `pain: "${k}"`, excerpt: excerpt(k), tag: 'A' } : null).filter(Boolean).slice(0,2),
+    ...resKws.map(k => t.includes(k) ? { signal: `evidence: "${k}"`, excerpt: excerpt(k), tag: 'R' } : null).filter(Boolean).slice(0,2),
+  ];
+  scores.push({ dim: 'PAIN EVIDENCE', score: painScore, tag: painTag,
+    rationale: sig.hasPain && sig.hasResearch ? 'Pain + evidence signals found.' : sig.hasPain ? 'Pain stated, no source cited.' : 'No pain language.',
+    trace: painTrace,
+    questions: [
+      { fw: 'JTBD',              method: 'INTERVIEW',       q: 'What is the customer currently hiring to do this job? Where specifically does the current solution fail them?' },
+      { fw: 'SERVICE BLUEPRINT', method: 'INTERNAL REVIEW', q: 'Where in front stage / backstage / behind-the-scenes does this pain occur? Which backstage process is failing?' },
+      { fw: 'KANO',              method: 'INTERVIEW',       q: 'Basic need, performance need, or delight? Which Kano tier is this?' },
+    ],
+  });
+
+  // 5. WILLINGNESS TO PAY
+  let wtpScore = sig.hasMoney ? 7 : 3, wtpTag = sig.hasMoney ? 'A' : '?';
+  const moneyKws = ['revenue','cost','renewal','contract','budget','deal','churn','price','roi'];
+  const wtpTrace = moneyKws.map(k => t.includes(k) ? { signal: `economic: "${k}"`, excerpt: excerpt(k), tag: 'A' } : null).filter(Boolean).slice(0,3);
+  scores.push({ dim: 'WILL TO PAY', score: wtpScore, tag: wtpTag,
+    rationale: sig.hasMoney ? 'Economic language present.' : 'No pricing or ROI signals.',
+    trace: wtpTrace,
+    questions: [
+      { fw: 'ECONOMIC BUYER',      method: 'INTERNAL REVIEW',  q: 'Who controls the budget? Is the user the buyer or is there a separate economic buyer? What does each care about?' },
+      { fw: 'VALUE-BASED PRICING', method: 'MARKET RESEARCH',  q: 'What is the cost of the problem unsolved — in time, risk, revenue, trust? What fraction is a fair price?' },
+      { fw: 'PRICE CORRIDOR',      method: 'MARKET RESEARCH',  q: 'What is the price corridor for the mass of target buyers? Where should this sit to maximize adoption?' },
+    ],
+  });
+
+  // 6. SELF-ACTUALIZATION
+  let saScore = sig.hasEmpower ? 7 : 3, saTag = sig.hasEmpower ? 'A' : '?';
+  const empowerKws = ['confidence','control','act','agency','override','audit','capable','trust','clarity','autonomy','mastery'];
+  const saTrace = empowerKws.map(k => t.includes(k) ? { signal: `agency: "${k}"`, excerpt: excerpt(k), tag: 'A' } : null).filter(Boolean).slice(0,3);
+  scores.push({ dim: 'SELF-ACTUAL.', score: saScore, tag: saTag,
+    rationale: sig.hasEmpower ? 'Agency / mastery language present.' : 'No autonomy or growth signals.',
+    trace: saTrace,
+    questions: [
+      { fw: 'SELF-DETERMINATION', method: 'INTERVIEW', q: 'Which of autonomy, competence, relatedness does this address? Is that the right dimension for this user?' },
+      { fw: 'JTBD EMOTIONAL',     method: 'INTERVIEW', q: 'What does the user feel before? After? Is the emotional job — not just functional — being done?' },
+      { fw: 'MASLOW',             method: 'THINK',     q: 'Deficiency need or growth need? Does the user need lower needs met first?' },
+    ],
+  });
+
+  // 7. UX — 5Es
+  const fiveEScore = fiveE.score * 2;
+  const fiveEPresent = fiveE.present.length > 0 ? fiveE.present.join(', ') : 'none';
+  const fiveEMissing = ['Entice','Enter','Engage','Exit','Extend'].filter(e => !fiveE.present.includes(e));
+  const fiveETrace = fiveE.present.map(label => {
+    const e = FIVE_ES.find(x => x.label === label);
+    const kw = e ? e.keywords.find(k => t.includes(k)) : null;
+    return { signal: `5E: ${label}`, excerpt: kw ? excerpt(kw) : null, tag: 'A' };
+  });
+  scores.push({ dim: 'UX — 5Es', score: Math.min(fiveEScore, 10), tag: fiveEScore >= 6 ? 'A' : '?',
+    rationale: `Present: ${fiveEPresent}. Missing: ${fiveEMissing.join(', ') || 'none'}.`,
+    trace: fiveETrace,
+    questions: [
+      { fw: '5Es',               method: 'THINK',           q: `Weakest: ${fiveEMissing.slice(0,2).join(', ') || 'all covered'}. Which is the make-or-break moment?` },
+      { fw: 'SERVICE BLUEPRINT', method: 'INTERNAL REVIEW', q: 'Map the moments of truth. For each: what backstage process must work? Where is the most likely failure point?' },
+      { fw: 'SIGNAL ENTROPY',    method: 'THINK',           q: 'Where does user intent degrade across the journey? What context is lost at each handoff?' },
+    ],
+  });
+
+  applyCanvasBoosts(scores, simpleHash(text));
+  return scores;
+}
+
+// ══════════════════════════════════════════════════════
+// BAR COLOR
+// ══════════════════════════════════════════════════════
+
+function barColor(score) {
+  if (score >= 7) return 'var(--vermillion)';
+  if (score >= 4) return 'var(--cadmium)';
+  return '#999';
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════
+
+function renderBradley(text, sig, extracted) {
+  const missing = [];
+  if (!sig.hasUser)       missing.push('who this is for');
+  if (!sig.hasPain)       missing.push('the pain or problem');
+  if (!sig.hasMoney)      missing.push('economic signal');
+  if (!sig.hasCompetitor) missing.push('competitive landscape');
+  if (!sig.hasResearch)   missing.push('evidence source');
+  if (sig.isThin)         missing.push('more detail (< 50 words)');
+
+  const whatsThere = [
+    sig.hasUser       && 'user named',
+    sig.hasPain       && 'pain signal',
+    sig.hasMoney      && 'economic signal',
+    sig.hasCompetitor && 'competitive context',
+    sig.hasResearch   && 'evidence cited',
+    sig.hasSolution   && 'solution direction',
+  ].filter(Boolean);
+
+  const diamond = diamondPosition(sig, extracted);
+
+  const entropy = sig.isThin ? 'HIGH — too little signal to score reliably.'
+    : !sig.hasResearch ? 'MEDIUM — idea is assumed, not evidenced. Signal will degrade at handoff.'
+    : missing.length <= 1 ? 'LOW — strong signal. Brief is ready to move.'
+    : 'MEDIUM — gaps present. Fill before scoping.';
+
+  const initialRead = missing.filter(m => m !== 'more detail (< 50 words)').length >= 4
+    ? 'Very thin. Don\'t score this yet — develop the problem first.'
+    : missing.filter(m => m !== 'more detail (< 50 words)').length >= 2
+    ? 'Partial intake. Real signal here, but key dimensions are assumed.'
+    : 'Solid intake. Enough to run the full chorus.';
+
+  const csTag = sig.isThin ? 'ASSUMED' : sig.hasResearch ? 'HIGH' : 'MEDIUM';
+
+  return `
+    <div class="intake-row">
+      <span class="intake-label">WHAT I HEARD:</span>
+      <span class="intake-value">${escapeHtml((extracted.name || 'Unnamed') + ' — ' + sig.wordCount + ' words.')} ${csBadge(csTag)}</span>
+    </div>
+    <div class="intake-row">
+      <span class="intake-label">SIGNAL PRESENT:</span>
+      <span class="intake-value">${whatsThere.length ? whatsThere.join(' · ') : 'unclear'} ${csBadge('MEDIUM')}</span>
+    </div>
+    <div class="intake-row">
+      <span class="intake-label">SIGNAL MISSING:</span>
+      <span class="intake-value">${missing.length ? missing.join(' · ') : 'nothing obvious'} ${csBadge(missing.length > 0 ? 'ASSUMED' : 'MEDIUM')}</span>
+    </div>
+    <div class="intake-row">
+      <span class="intake-label">DIAMOND POS:</span>
+      <span class="intake-value"><strong>${escapeHtml(diamond.pos)}</strong> — ${escapeHtml(diamond.label)} ${csBadge('ASSUMED')}</span>
+    </div>
+    <div class="intake-row">
+      <span class="intake-label">SIGNAL ENTROPY:</span>
+      <span class="intake-value">${escapeHtml(entropy)} ${csBadge('ASSUMED')}</span>
+    </div>
+    <div class="intake-row">
+      <span class="intake-label">INTAKE READ:</span>
+      <span class="intake-value">${escapeHtml(initialRead)} ${csBadge('ASSUMED')}</span>
+    </div>
+  `;
+}
+
+const FRAMES = [
+  { label: 'WHO ARE YOU SERVING?',         dims: ['COMPANY FIT'] },
+  { label: 'WHAT HURTS THEM?',             dims: ['PAIN EVIDENCE', 'VALUE PROP'] },
+  { label: 'WHAT DO THEY NEED?',           dims: ['VALUE PROP', '10 TYPES'] },
+  { label: 'WHAT MAKES THEM FEEL BETTER?', dims: ['SELF-ACTUAL.', 'UX — 5Es'] },
+  { label: 'WHAT ARE THE MARKET OPPS?',    dims: ['WILL TO PAY', '10 TYPES'] },
+];
+
+function renderScoreCard(scores) {
+  const scoreMap = {};
+  scores.forEach(s => { scoreMap[s.dim] = s; });
+
+  const avg = (scores.reduce((a, s) => a + s.score, 0) / scores.length).toFixed(1);
+
+  const frameRows = FRAMES.map(frame => {
+    const frameDims = frame.dims.map(d => scoreMap[d]).filter(Boolean);
+    const frameAvg = frameDims.length
+      ? (frameDims.reduce((a, s) => a + s.score, 0) / frameDims.length).toFixed(1)
+      : '—';
+
+    const dimRows = frameDims.map(s => {
+      const linkedEvidence = getLinksForDim(s.dim);
+      const traceLines = (s.trace || []).map(tr => {
+        if (!tr) return '';
+        return `<div class="trace-line">
+          <span class="trace-signal">${escapeHtml(tr.signal)}</span>
+          ${tr.excerpt ? ` — <span class="trace-excerpt">${escapeHtml(tr.excerpt)}</span>` : ''}
+          ${tagCell(tr.tag)}
+        </div>`;
+      }).join('');
+      const linkedLines = linkedEvidence.map(e => `
+        <div class="trace-line">
+          <span class="ev-type-badge ${e.type}" style="font-size:10px;padding:1px 5px;margin-right:4px;">${e.type}</span>
+          ${e.url
+            ? `<a class="trace-link" href="${escapeHtml(e.url)}" target="_blank">${escapeHtml(e.label || e.url)}</a>`
+            : `<span class="trace-excerpt">${escapeHtml(e.label)}</span>`}
+          <span class="trace-no-link" style="margin-left:4px;">[CS: HIGH — linked]</span>
+        </div>`).join('');
+      const noLinkNote = linkedEvidence.length === 0 && (s.trace||[]).length > 0
+        ? `<div class="trace-line trace-no-link">No linked evidence — add URLs above to connect sources.</div>` : '';
+
+      return `
+      <div class="score-row score-row-sub">
+        <div class="score-dim">${s.dim}</div>
+        <div class="bar-container">
+          <div class="bar-fill" style="width:${s.score * 10}%; background:${barColor(s.score)};"></div>
+        </div>
+        ${tagCell(s.tag)}
+        <div class="score-rationale">${escapeHtml(s.rationale)}</div>
+        ${traceLines || linkedLines ? `<div class="score-trace">${traceLines}${linkedLines}${noLinkNote}</div>` : ''}
+      </div>`;
+    }).join('');
+
+    const frameColor = parseFloat(frameAvg) >= 7 ? 'var(--green-earth)' : parseFloat(frameAvg) >= 4 ? 'var(--cadmium)' : '#999';
+
+    return `
+      <div class="frame-group">
+        <div class="frame-header">
+          <span class="frame-label">${escapeHtml(frame.label)}</span>
+          <span class="frame-score" style="color:${frameColor}">${frameAvg}</span>
+        </div>
+        <div class="score-rows">${dimRows}</div>
+      </div>
+    `;
+  }).join('');
+
+  const totalColor = parseFloat(avg) >= 7 ? 'var(--green-earth)' : parseFloat(avg) >= 4 ? 'var(--cadmium)' : '#888';
+
+  return `
+    ${frameRows}
+    <div class="chorus-total" style="color:${totalColor}">
+      <span class="chorus-label">CHORUS SCORE:</span>${avg} / 10
+    </div>
+  `;
+}
+
+function _briefCommon(dim, fw, context, ideaText, links) {
+  const gate = GATES.find(g => g.dims.includes(dim));
+  const gateLabel = gate ? `Gate ${gate.num} — ${gate.label}` : 'Unassigned';
+  const linkLines = (links && links.length)
+    ? links.map(e => `  - [${e.type}] ${e.label || ''}${e.url ? ' — ' + e.url : ''}`).join('\n')
+    : '  (none provided)';
+  const ideaSummary = ideaText
+    ? (ideaText.length > 1500 ? ideaText.slice(0, 1500).trim() + '…' : ideaText.trim())
+    : '(no idea text provided)';
+  return { gateLabel, linkLines, ideaSummary };
+}
+
+function buildScoutBrief(dim, q, fw, method, context, ideaText, links) {
+  const c = _briefCommon(dim, fw, context, ideaText, links);
+  return [
+    `SCOUT QUEST — ${dim} / ${fw}`,
+    `Method: ${method}    Feeds: ${c.gateLabel}`,
+    ``,
+    `── THE IDEA ────────────────────────────────`,
+    c.ideaSummary,
+    ``,
+    `── COMPANY / PRODUCT CONTEXT ───────────────`,
+    context || '(none provided)',
+    ``,
+    `── EVIDENCE ALREADY ON HAND ────────────────`,
+    c.linkLines,
+    ``,
+    `── THE QUEST ───────────────────────────────`,
+    `Framework: ${fw}`,
+    `Question:  ${q}`,
+    ``,
+    `── INSTRUCTIONS ────────────────────────────`,
+    `1. Search the available evidence first — Jira, Confluence, research`,
+    `   docs, prior tickets, the links above. For MARKET RESEARCH also`,
+    `   search competitive landscape, analyst reports, public sources.`,
+    `2. Return ONLY what you find in the evidence. Do not fabricate.`,
+    `3. If the answer exists: return it with the exact source (ticket ID,`,
+    `   page URL, document, quote where useful). Tag confidence as`,
+    `   [CS: VERIFIED] / [HIGH] / [MEDIUM] / [LOW] per CLAUDE.md.`,
+    `4. If the answer does not exist: return "NOT FOUND" plus a sharper`,
+    `   research question that would surface it, and name a follow-on`,
+    `   method ([USER INTERVIEW] / [MARKET RESEARCH] / [DESK RESEARCH] /`,
+    `   [INTERNAL REVIEW]).`,
+    `5. Flag [WOBBLY] on any thin or vendor-published source.`,
+  ].join('\n');
+}
+
+function buildInterviewBrief(dim, q, fw, context, ideaText, links) {
+  const c = _briefCommon(dim, fw, context, ideaText, links);
+  return [
+    `INTERVIEW QUEST — ${dim} / ${fw}`,
+    `Method: USER INTERVIEW    Feeds: ${c.gateLabel}`,
+    ``,
+    `── THE IDEA ────────────────────────────────`,
+    c.ideaSummary,
+    ``,
+    `── COMPANY / PRODUCT CONTEXT ───────────────`,
+    context || '(none provided)',
+    ``,
+    `── EVIDENCE ALREADY ON HAND ────────────────`,
+    c.linkLines,
+    ``,
+    `── THE QUEST ───────────────────────────────`,
+    `Framework: ${fw}`,
+    `Core question (do NOT ask directly): ${q}`,
+    ``,
+    `── INTERVIEW BRIEF ─────────────────────────`,
+    `RECRUIT: Users who have lived this problem in the last 90 days.`,
+    `         Aim for 5–7 sessions; diversify by role / scale / tenure.`,
+    ``,
+    `OPENING: "Walk me through the last time you [encountered the problem]."`,
+    `         Stay in story. No leading questions. No "would you use…" Qs.`,
+    ``,
+    `FRAMEWORK PROMPTS (${fw}):`,
+    fw === 'JTBD'
+      ? `  - What were you trying to get done?\n  - What did you hire to do it last time? What did you fire?\n  - What made you decide that was the moment to change?`
+      : fw === 'JTBD EMOTIONAL'
+      ? `  - How did you feel before? During? After?\n  - When did you feel most in control? Least?\n  - What would you have told a colleague about that moment?`
+      : fw === 'KANO'
+      ? `  - If this feature wasn't there, what would you do? (basic)\n  - If it worked twice as well, what changes? (performance)\n  - Surprise question — what would delight you here? (delight)`
+      : fw === 'SELF-DETERMINATION'
+      ? `  - When you used this, did you feel like you were in control of the choice?\n  - Did you feel capable, or like the tool was making you look bad?\n  - Did it connect you to other people doing the same work?`
+      : `  - Tell me about the last time this happened.\n  - What did you try? What happened?\n  - What would have made that easier?`,
+    ``,
+    `OBSERVE: Behavior > opinion. Note hesitation, contradictions, workarounds.`,
+    `         Capture exact verbatims for the moments that matter.`,
+    ``,
+    `OUTPUT:  Per session, write up 3 quotes + 1 surprise. After 5,`,
+    `         synthesize patterns. Tag confidence [CS: HIGH] for direct`,
+    `         observation, [CS: MEDIUM] for self-reported behavior,`,
+    `         [CS: LOW] for predicted future behavior.`,
+  ].join('\n');
+}
+
+function buildThinkBrief(dim, q, fw, context, ideaText, links) {
+  const c = _briefCommon(dim, fw, context, ideaText, links);
+  const approach = {
+    'BLUE OCEAN':           'Strategy canvas workshop. Map the 4 actions: ELIMINATE / REDUCE / RAISE / CREATE relative to the current industry curve. 90 minutes, whiteboard, product + design + sales in the room.',
+    'POSITIONING':          'Moore statement drafting session. Fill the template, then test it against 3 alternative phrasings. Read aloud — if it sounds like a brochure, it\'s wrong.',
+    'STRATEGIC FIT':        'Pull current OKRs / strategic bets. Map this idea against each. Where does it land? If it doesn\'t land cleanly anywhere, that\'s the answer.',
+    'ANSOFF':               'Plot on the 2x2 (existing/new market × existing/new product). Discuss the implied risk/resource profile. Confirm or kill with leadership.',
+    'INNOVATION AMBITION':  'Plot current portfolio on core/adjacent/transformational. Add this idea. Is the portfolio balanced? Does this idea reinforce or correct the imbalance?',
+    'MOAT':                 'For each Doblin type activated, ask: what would a competitor need to do to copy this in 18 months? The one(s) hardest to copy = the moat. Name it explicitly.',
+    'MASLOW':               'Map the user\'s working context. Are basic needs (safety, certainty, belonging) met? If not, growth-need framing won\'t land.',
+    '5Es':                  'Sketch each E end-to-end. For the weakest, run a service blueprint. Find the broken handoff.',
+    'SIGNAL ENTROPY':       'Trace the user\'s intent from first touch through long-term use. At each handoff, ask: what context is lost? Where does the design preserve it?',
+  }[fw] || 'Run as a team workshop with product + design + closest customer-facing role. 60–90 minutes.';
+
+  return [
+    `THINK-THROUGH — ${dim} / ${fw}`,
+    `Method: STRATEGIC    Feeds: ${c.gateLabel}`,
+    ``,
+    `── THE IDEA ────────────────────────────────`,
+    c.ideaSummary,
+    ``,
+    `── COMPANY / PRODUCT CONTEXT ───────────────`,
+    context || '(none provided)',
+    ``,
+    `── EVIDENCE ALREADY ON HAND ────────────────`,
+    c.linkLines,
+    ``,
+    `── THE QUESTION ────────────────────────────`,
+    `Framework: ${fw}`,
+    `Question:  ${q}`,
+    ``,
+    `── APPROACH ────────────────────────────────`,
+    approach,
+    ``,
+    `── DISCIPLINE ──────────────────────────────`,
+    `1. This is a judgment call, not a data search. The answer comes from`,
+    `   the room — but the room needs the evidence in hand first.`,
+    `2. Bring the EVIDENCE ALREADY ON HAND. If sparse, run a scout quest`,
+    `   first to ground the conversation.`,
+    `3. Output: one paragraph stating the call, one naming the strongest`,
+    `   dissenting view, one naming what would change your mind.`,
+    `4. Tag the output [A] until validated downstream. This is a frame,`,
+    `   not evidence.`,
+  ].join('\n');
+}
+
+function renderResearch(scores, context, ideaText) {
+  const answered   = scores.filter(s => s.score >= 6 || s.tag === 'R' || s.tag === 'D');
+  const unanswered = scores.filter(s => s.score < 6 && s.tag !== 'R' && s.tag !== 'D');
+
+  const answeredHtml = answered.length
+    ? answered.map(s => (s.questions || []).map(q => `
+        <div class="answered-item">
+          <span class="answered-check">✓</span>
+          <span class="answered-fw">${escapeHtml(q.fw)}</span>
+          <span class="answered-q">${escapeHtml(q.q)}</span>
+        </div>
+      `).join('')).join('')
+    : '<div style="font-family:Kalam,cursive;font-size:0.9rem;opacity:0.5;font-style:italic;">Nothing evidenced yet.</div>';
+
+  const unansweredHtml = unanswered.length
+    ? unanswered.map(s => (s.questions || []).map((q, qi) => {
+        const briefId = `quest-${s.dim.replace(/\W/g,'')}-${qi}`;
+        const method = q.method || 'INTERNAL REVIEW';
+        let brief, btnLabel, btnClass, modalLabel;
+        if (method === 'INTERVIEW') {
+          brief = buildInterviewBrief(s.dim, q.q, q.fw, context, ideaText, _evidenceLinks);
+          btnLabel = '→ INTERVIEW';
+          btnClass = 'method-interview';
+          modalLabel = 'INTERVIEW QUEST BRIEF';
+        } else if (method === 'THINK') {
+          brief = buildThinkBrief(s.dim, q.q, q.fw, context, ideaText, _evidenceLinks);
+          btnLabel = '→ THINK';
+          btnClass = 'method-think';
+          modalLabel = 'THINK-THROUGH BRIEF';
+        } else {
+          brief = buildScoutBrief(s.dim, q.q, q.fw, method, context, ideaText, _evidenceLinks);
+          btnLabel = '→ SCOUT';
+          btnClass = 'method-scout';
+          modalLabel = 'SCOUT QUEST BRIEF';
+        }
+        _scoutBriefs[briefId] = { text: brief, label: modalLabel };
+        return `
+          <div class="quest-item">
+            <div class="quest-top">
+              <span class="quest-status OPEN">${escapeHtml(method)}</span>
+              <span class="quest-fw">${escapeHtml(q.fw)}</span>
+              <span class="quest-q">${escapeHtml(q.q)}</span>
+              <button class="quest-scout-btn ${btnClass}" id="${briefId}"
+                onclick="copyScoutBrief('${briefId}')">
+                ${btnLabel}
+              </button>
+            </div>
+            <div class="quest-dim">feeds: ${escapeHtml(s.dim)}</div>
+          </div>
+        `;
+      }).join('')).join('')
+    : '<div style="font-family:Kalam,cursive;font-size:0.9rem;opacity:0.5;font-style:italic;">No open quests.</div>';
+
+  const totalQuests = unanswered.reduce((n, s) => n + (s.questions || []).length, 0);
+  const warnBanner = totalQuests > 6
+    ? `<div class="warn-banner">⚠ ${totalQuests} open quests. Send to scout before scoping.</div>`
+    : '';
+
+  return `
+    <div class="research-grid">
+      <div>
+        <div class="research-col-header">EVIDENCED</div>
+        ${answeredHtml}
+      </div>
+      <div>
+        <div class="research-col-header">OPEN QUESTS</div>
+        ${unansweredHtml}
+      </div>
+    </div>
+    ${warnBanner}
+  `;
+}
+
+const _scoutBriefs = {};
+
+function copyScoutBrief(btnId) {
+  const data = _scoutBriefs[btnId];
+  if (!data) return;
+  const brief = typeof data === 'string' ? data : data.text;
+  const label = typeof data === 'string' ? 'SCOUT QUEST BRIEF' : data.label;
+  const ta = document.getElementById('scout-modal-text');
+  if (ta) ta.value = brief;
+  const headerLabel = document.getElementById('scout-modal-label');
+  if (headerLabel) headerLabel.textContent = label;
+  const backdrop = document.getElementById('scout-modal-backdrop');
+  if (backdrop) backdrop.classList.add('open');
+  setTimeout(() => { if (ta) { ta.focus(); ta.select(); } }, 50);
+  const copyBtn = document.getElementById('scout-modal-copy-btn');
+  if (copyBtn) { copyBtn.textContent = 'COPY TO CLIPBOARD'; copyBtn.classList.remove('copied'); }
+}
+
+function closeScoutModal() {
+  const backdrop = document.getElementById('scout-modal-backdrop');
+  if (backdrop) backdrop.classList.remove('open');
+}
+
+function copyModalBrief() {
+  const ta = document.getElementById('scout-modal-text');
+  const btn = document.getElementById('scout-modal-copy-btn');
+  if (!ta || !btn) return;
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try {
+    ok = document.execCommand('copy');
+  } catch(e) { ok = false; }
+  if (!ok && navigator.clipboard) {
+    navigator.clipboard.writeText(ta.value).then(() => {
+      btn.textContent = 'COPIED ✓';
+      btn.classList.add('copied');
+    }).catch(() => {
+      btn.textContent = 'USE CMD-C';
+    });
+  } else if (ok) {
+    btn.textContent = 'COPIED ✓';
+    btn.classList.add('copied');
+  } else {
+    btn.textContent = 'USE CMD-C';
+  }
+}
+
+// close modal on backdrop click + Escape key
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'scout-modal-backdrop') closeScoutModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeScoutModal();
+});
+
+function renderBrief(text, contextText, extracted, scores, ideaHash) {
+  const tagCounts = { R: 0, A: 0, '?': 0 };
+  scores.forEach(s => {
+    if (s.tag in tagCounts) tagCounts[s.tag]++;
+    else tagCounts['A']++;
+  });
+
+  const lowestScore = scores.reduce((min, s) => s.score < min.score ? s : min, scores[0]);
+
+  // Determine next gate
+  const avg = scores.reduce((a, s) => a + s.score, 0) / scores.length;
+  let nextGate = 'Gate 1 — Confirm the customer problem is real';
+  if (avg >= 5 && (extracted.problem || extracted.user)) {
+    nextGate = 'Gate 2 — Validate you are making the right thing';
+  }
+  if (avg >= 7 && extracted.problem && extracted.solution) {
+    nextGate = 'Gate 3 — Test that you are making the thing right';
+  }
+
+  const val = (v, field) => v
+    ? `<span class="brief-value">${escapeHtml(v)}</span>`
+    : `<span class="brief-value not-stated">[?] NOT STATED</span>`;
+
+  const georgeQ = lowestScore.questions && lowestScore.questions.length
+    ? lowestScore.questions[0].q
+    : 'What is the one thing that would kill this idea if left unanswered?';
+
+  const briefText = [
+    `IDEA:      ${extracted.name || 'Unnamed'}`,
+    `PROBLEM:   ${extracted.problem || '[?] NOT STATED'}`,
+    `USER:      ${extracted.user || '[?] NOT STATED'}`,
+    `SOLUTION:  ${extracted.solution || '[?] NOT STATED'}`,
+    `EVIDENCE:  R: ${tagCounts.R} / A: ${tagCounts.A} / ?: ${tagCounts['?']}`,
+    `NEXT GATE: ${nextGate}`,
+    ``,
+    `GEORGE: ${georgeQ}`,
+  ].join('\n');
+
+  return `
+    <div class="brief-rows">
+      <div class="brief-row">
+        <span class="brief-field-label">IDEA:</span>
+        ${val(extracted.name, 'name')}
+      </div>
+      <div class="brief-row">
+        <span class="brief-field-label">PROBLEM:</span>
+        ${val(extracted.problem, 'problem')}
+      </div>
+      <div class="brief-row">
+        <span class="brief-field-label">USER:</span>
+        ${val(extracted.user, 'user')}
+      </div>
+      <div class="brief-row">
+        <span class="brief-field-label">SOLUTION:</span>
+        ${val(extracted.solution, 'solution')}
+      </div>
+      <div class="brief-row">
+        <span class="brief-field-label">EVIDENCE:</span>
+        <span class="brief-value">R: ${tagCounts.R} / A: ${tagCounts.A} / ?: ${tagCounts['?']}</span>
+      </div>
+      <div class="brief-row">
+        <span class="brief-field-label">NEXT GATE:</span>
+        <span class="brief-value">${escapeHtml(nextGate)}</span>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding-top:18px;border-top:2px solid var(--line);">
+      <div style="font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;color:var(--ochre);text-transform:uppercase;margin-bottom:12px;">
+        FRAMEWORK CANVASES
+        <span style="font-weight:400;opacity:0.55;font-size:0.7rem;">— click any slot to fill</span>
+      </div>
+      ${renderCanvases(ideaHash)}
+    </div>
+    <button class="copy-btn" id="copy-brief-btn" data-text="${escapeAttr(briefText)}" style="margin-top:18px;">COPY BRIEF</button>
+    <div class="george-block">
+      <div class="george-label">GEORGE:</div>
+      <div class="george-quote">"${escapeHtml(georgeQ)}"</div>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════════════
+// ESCAPING
+// ══════════════════════════════════════════════════════
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeAttr(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/\n/g, '&#10;');
+}
+
+// ══════════════════════════════════════════════════════
+// MAIN FLOW
+// ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+// FRAMEWORK CANVASES — fillable templates per framework
+// ══════════════════════════════════════════════════════
+
+const CANVASES = [
+  { key: 'MOORE',      label: 'POSITIONING — Geoffrey Moore',
+    slots: [
+      { k: 'for_user',     l: 'For:',              hint: 'who is this for?' },
+      { k: 'who_face',     l: 'Who face:',         hint: 'the specific pain or condition' },
+      { k: 'product_is',   l: '[Product] is a:',   hint: 'the category — what it IS' },
+      { k: 'that_benefit', l: 'That:',             hint: 'the key benefit' },
+      { k: 'unlike',       l: 'Unlike:',           hint: 'the existing alternative' },
+      { k: 'which_diff',   l: 'Which:',            hint: 'the differentiator' },
+    ] },
+  { key: 'JTBD',       label: 'JOBS TO BE DONE',
+    slots: [
+      { k: 'functional', l: 'Functional job:', hint: 'what they\'re trying to get done' },
+      { k: 'emotional',  l: 'Emotional job:',  hint: 'how they want to feel' },
+      { k: 'social',     l: 'Social job:',     hint: 'how they want to be seen' },
+      { k: 'fired',      l: 'Fired solution:', hint: 'what they used before' },
+    ] },
+  { key: 'BLUE_OCEAN', label: 'BLUE OCEAN — ERRC',
+    slots: [
+      { k: 'eliminate', l: 'Eliminate:', hint: 'what does the industry compete on that we kill?' },
+      { k: 'reduce',    l: 'Reduce:',    hint: 'what is overdone — drop below standard?' },
+      { k: 'raise',     l: 'Raise:',     hint: 'what is under-served — push past standard?' },
+      { k: 'create',    l: 'Create:',    hint: 'what does the industry not offer?' },
+    ] },
+  { key: 'ANSOFF',     label: 'ANSOFF MATRIX',
+    slots: [
+      { k: 'quadrant',  l: 'Quadrant:',   hint: 'penetration / market dev / product dev / diversification' },
+      { k: 'rationale', l: 'Why:',        hint: 'evidence for that placement' },
+      { k: 'risk',      l: 'Risk profile:', hint: 'implied risk and resource need' },
+    ] },
+  { key: 'KANO',       label: 'KANO MODEL',
+    slots: [
+      { k: 'tier',        l: 'Kano tier:',     hint: 'basic / performance / delight' },
+      { k: 'basic',       l: 'Basic:',         hint: 'what would cause dissatisfaction if absent?' },
+      { k: 'performance', l: 'Performance:',   hint: 'where more = better (linear)' },
+      { k: 'delight',     l: 'Delight:',       hint: 'unexpected value' },
+    ] },
+  { key: 'DOBLIN',     label: '10 TYPES — Doblin',
+    slots: [
+      { k: 'profit',     l: 'Profit Model:',        hint: 'mark X if activated, leave gap if not' },
+      { k: 'network',    l: 'Network:' },
+      { k: 'structure',  l: 'Structure:' },
+      { k: 'process',    l: 'Process:' },
+      { k: 'perf',       l: 'Product Performance:' },
+      { k: 'system',     l: 'Product System:' },
+      { k: 'service',    l: 'Service:' },
+      { k: 'channel',    l: 'Channel:' },
+      { k: 'brand',      l: 'Brand:' },
+      { k: 'cx',         l: 'Customer Engagement:' },
+    ] },
+  { key: 'FIVE_ES',    label: 'UX — 5 Es',
+    slots: [
+      { k: 'entice', l: 'Entice:', hint: 'how do they first discover this?' },
+      { k: 'enter',  l: 'Enter:',  hint: 'first-use / onboarding moment' },
+      { k: 'engage', l: 'Engage:', hint: 'ongoing use — the daily moment' },
+      { k: 'exit',   l: 'Exit:',   hint: 'finishing / handoff / completion' },
+      { k: 'extend', l: 'Extend:', hint: 'return / share / upgrade / referral' },
+    ] },
+  { key: 'SDT',        label: 'SELF-DETERMINATION THEORY',
+    slots: [
+      { k: 'autonomy',    l: 'Autonomy:',    hint: 'does the user feel in control?' },
+      { k: 'competence',  l: 'Competence:',  hint: 'does the user feel capable?' },
+      { k: 'relatedness', l: 'Relatedness:', hint: 'does the user feel connected to others?' },
+      { k: 'primary',     l: 'Primary dim:', hint: 'which of the three is the load-bearing one?' },
+    ] },
+];
+
+function loadCanvasData(ideaHash) {
+  try {
+    const s = localStorage.getItem('chorus_canvas_' + ideaHash);
+    return s ? JSON.parse(s) : {};
+  } catch(e) { return {}; }
+}
+
+function saveCanvasData(ideaHash, data) {
+  try { localStorage.setItem('chorus_canvas_' + ideaHash, JSON.stringify(data)); } catch(e) {}
+}
+
+const CANVAS_DIM_MAP = [
+  { key: 'MOORE',      dims: ['VALUE PROP'],                  maxBonus: 2.5 },
+  { key: 'JTBD',       dims: ['VALUE PROP', 'PAIN EVIDENCE'], maxBonus: 2.0 },
+  { key: 'BLUE_OCEAN', dims: ['VALUE PROP', 'COMPANY FIT'],   maxBonus: 1.5 },
+  { key: 'ANSOFF',     dims: ['COMPANY FIT'],                 maxBonus: 2.0 },
+  { key: 'KANO',       dims: ['PAIN EVIDENCE'],               maxBonus: 2.0 },
+  { key: 'DOBLIN',     dims: ['10 TYPES'],                    maxBonus: 2.5 },
+  { key: 'FIVE_ES',    dims: ['UX — 5Es'],                    maxBonus: 2.5 },
+  { key: 'SDT',        dims: ['SELF-ACTUAL.'],                maxBonus: 2.5 },
+];
+
+function applyCanvasBoosts(scores, ideaHash) {
+  const canvasData = loadCanvasData(ideaHash);
+  CANVAS_DIM_MAP.forEach(mapping => {
+    const cDef = CANVASES.find(c => c.key === mapping.key);
+    if (!cDef) return;
+    const cData = canvasData[mapping.key] || {};
+    const filled = cDef.slots.filter(s => cData[s.k] && cData[s.k].trim()).length;
+    if (filled === 0) return;
+    const fillFrac = filled / cDef.slots.length;
+    const bonus = fillFrac * mapping.maxBonus;
+    mapping.dims.forEach(dimName => {
+      const entry = scores.find(s => s.dim === dimName);
+      if (!entry) return;
+      entry.score = Math.min(10, entry.score + bonus);
+      if (!['R', 'D'].includes(entry.tag)) entry.tag = 'D';
+      entry.trace = entry.trace || [];
+      entry.trace.push({
+        signal: `canvas: ${cDef.label} (${filled}/${cDef.slots.length} filled)`,
+        excerpt: null,
+        tag: 'D'
+      });
+    });
+  });
+}
+
+function setCanvasSlot(ideaHash, canvasKey, slotKey, value) {
+  const data = loadCanvasData(ideaHash);
+  if (!data[canvasKey]) data[canvasKey] = {};
+  if (value && value.trim()) data[canvasKey][slotKey] = value.trim();
+  else delete data[canvasKey][slotKey];
+  saveCanvasData(ideaHash, data);
+}
+
+function renderCanvases(ideaHash) {
+  const data = loadCanvasData(ideaHash);
+
+  const blocks = CANVASES.map(c => {
+    const cdata = data[c.key] || {};
+    const filled = c.slots.filter(s => cdata[s.k] && cdata[s.k].trim()).length;
+    const total = c.slots.length;
+    const isOpen = filled > 0; // auto-open canvases with content
+    const completeClass = filled === total ? 'complete' : '';
+
+    const slotRows = c.slots.map(s => {
+      const val = cdata[s.k] || '';
+      const slotId = `slot-${c.key}-${s.k}-${ideaHash}`;
+      return `
+        <div class="canvas-slot">
+          <span class="canvas-slot-label">${escapeHtml(s.l)}</span>
+          <div class="canvas-slot-value ${val ? '' : 'gap'}"
+               id="${slotId}-display"
+               data-canvas="${escapeAttr(c.key)}"
+               data-slot="${escapeAttr(s.k)}"
+               data-hash="${escapeAttr(ideaHash)}"
+               data-hint="${escapeAttr(s.hint || '')}"
+               data-slot-id="${escapeAttr(slotId)}">
+            ${val ? escapeHtml(val) : (s.hint ? escapeHtml(s.hint) : 'click to fill')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="canvas-block">
+        <div class="canvas-head" onclick="toggleCanvasBlock('${c.key}-${ideaHash}')">
+          <span class="canvas-name">${escapeHtml(c.label)}</span>
+          <span>
+            <span class="canvas-count ${completeClass}" id="count-${c.key}-${ideaHash}">${filled} of ${total} filled</span>
+            <span class="canvas-arrow" id="arrow-${c.key}-${ideaHash}">${isOpen ? '▾' : '▸'}</span>
+          </span>
+        </div>
+        <div class="canvas-slots" id="slots-${c.key}-${ideaHash}" style="display:${isOpen ? 'block' : 'none'};">
+          ${slotRows}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  return blocks;
+}
+
+function toggleCanvasBlock(id) {
+  const el = document.getElementById('slots-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? '▸' : '▾';
+}
+
+function editCanvasSlot(ideaHash, canvasKey, slotKey, slotId, hint) {
+  const display = document.getElementById(slotId + '-display');
+  if (!display) return;
+  const data = loadCanvasData(ideaHash);
+  const currentVal = (data[canvasKey] && data[canvasKey][slotKey]) || '';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'canvas-slot-edit';
+  input.value = currentVal;
+  input.placeholder = hint || '';
+  display.replaceWith(input);
+  input.focus();
+  input.select();
+
+  let finished = false;
+  const finish = (save) => {
+    if (finished) return;
+    finished = true;
+    const newVal = save ? input.value.trim() : currentVal;
+    if (save) {
+      setCanvasSlot(ideaHash, canvasKey, slotKey, newVal);
+    }
+    // re-render display with the new value directly (no localStorage round-trip)
+    const newDisplay = document.createElement('div');
+    newDisplay.id = slotId + '-display';
+    newDisplay.className = 'canvas-slot-value ' + (newVal ? '' : 'gap');
+    newDisplay.textContent = newVal || (hint || 'click to fill');
+    newDisplay.setAttribute('data-canvas', canvasKey);
+    newDisplay.setAttribute('data-slot', slotKey);
+    newDisplay.setAttribute('data-hash', ideaHash);
+    newDisplay.setAttribute('data-hint', hint || '');
+    newDisplay.setAttribute('data-slot-id', slotId);
+    if (input.parentNode) input.replaceWith(newDisplay);
+    refreshCanvasCount(ideaHash, canvasKey);
+  };
+
+  input.addEventListener('blur', () => finish(true));
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter')  { e.preventDefault(); finish(true); }
+    if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+  });
+}
+
+// delegated click handler for canvas slot values
+document.addEventListener('click', function(e) {
+  const el = e.target.closest && e.target.closest('.canvas-slot-value');
+  if (!el) return;
+  // ignore clicks during editing
+  if (el.tagName === 'INPUT') return;
+  const ideaHash   = el.getAttribute('data-hash');
+  const canvasKey  = el.getAttribute('data-canvas');
+  const slotKey    = el.getAttribute('data-slot');
+  const slotId     = el.getAttribute('data-slot-id');
+  const hint       = el.getAttribute('data-hint') || '';
+  if (!ideaHash || !canvasKey || !slotKey) return;
+  editCanvasSlot(ideaHash, canvasKey, slotKey, slotId, hint);
+});
+
+function refreshCanvasCount(ideaHash, canvasKey) {
+  const data = loadCanvasData(ideaHash);
+  const c = CANVASES.find(x => x.key === canvasKey);
+  if (!c) return;
+  const cdata = data[canvasKey] || {};
+  const filled = c.slots.filter(s => cdata[s.k] && cdata[s.k].trim()).length;
+  const total = c.slots.length;
+  const count = document.getElementById(`count-${canvasKey}-${ideaHash}`);
+  if (count) {
+    count.textContent = `${filled} of ${total} filled`;
+    count.className = 'canvas-count' + (filled === total ? ' complete' : '');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// GATES — living progressive levels
+// ══════════════════════════════════════════════════════
+
+const GATES = [
+  {
+    num: 1,
+    label: 'PROBLEM WORTH SOLVING',
+    question: 'Do we have a problem worth solving?',
+    dims: ['PAIN EVIDENCE', 'COMPANY FIT'],
+    unlockAt: 0,
+  },
+  {
+    num: 2,
+    label: 'RIGHT FOR US',
+    question: 'Is it right for us? Do we have a unique competitive advantage?',
+    dims: ['WILL TO PAY', '10 TYPES', 'COMPANY FIT'],
+    unlockAt: 3,
+  },
+  {
+    num: 3,
+    label: 'MAKING THE RIGHT THING',
+    question: 'Are we making the right thing?',
+    dims: ['VALUE PROP', 'SELF-ACTUAL.', 'UX — 5Es'],
+    unlockAt: 3,
+  },
+  {
+    num: 4,
+    label: 'MADE IT RIGHT',
+    question: 'Did we make the thing right?',
+    dims: ['VALUE PROP', 'PAIN EVIDENCE', 'SELF-ACTUAL.', 'UX — 5Es'],
+    unlockAt: 3,
+  },
+];
+
+// ══════════════════════════════════════════════════════
+// EVIDENCE LINKS — input-side
+// ══════════════════════════════════════════════════════
+
+let _evidenceLinks = [];
+
+function addEvidenceLink() {
+  const url   = document.getElementById('ev-url').value.trim();
+  const label = document.getElementById('ev-label').value.trim();
+  const type  = document.getElementById('ev-type').value;
+  if (!url && !label) return;
+  _evidenceLinks.push({ id: Date.now().toString(36), url, label, type });
+  document.getElementById('ev-url').value = '';
+  document.getElementById('ev-label').value = '';
+  renderEvidenceList();
+}
+
+function removeEvidenceLink(id) {
+  _evidenceLinks = _evidenceLinks.filter(e => e.id !== id);
+  renderEvidenceList();
+}
+
+function renderEvidenceList() {
+  const el = document.getElementById('evidence-list');
+  if (!el) return;
+  el.innerHTML = _evidenceLinks.map(e => `
+    <div class="evidence-link-item">
+      <span class="ev-type-badge ${e.type}">${e.type}</span>
+      <span class="ev-label">${escapeHtml(e.label || e.url)}</span>
+      ${e.url ? `<a class="ev-url" href="${escapeHtml(e.url)}" target="_blank">${escapeHtml(e.url.slice(0,40))}${e.url.length>40?'…':''}</a>` : ''}
+      <button class="ev-del" onclick="removeEvidenceLink('${e.id}')">×</button>
+    </div>
+  `).join('');
+}
+
+// Map evidence link types to scoring dimensions
+const EV_TYPE_DIM_MAP = {
+  JIRA:       ['PAIN EVIDENCE', 'COMPANY FIT', '10 TYPES'],
+  CONFLUENCE: ['PAIN EVIDENCE', 'VALUE PROP', 'COMPANY FIT'],
+  PROTOTYPE:  ['UX — 5Es', 'VALUE PROP', 'SELF-ACTUAL.'],
+  RESEARCH:   ['PAIN EVIDENCE', 'WILL TO PAY', 'SELF-ACTUAL.'],
+  DOC:        ['COMPANY FIT', '10 TYPES', 'WILL TO PAY'],
+  OTHER:      [],
+};
+
+function getLinksForDim(dim) {
+  return _evidenceLinks.filter(e => {
+    const mapped = EV_TYPE_DIM_MAP[e.type] || [];
+    return mapped.includes(dim);
+  });
+}
+
+// ── Criteria persistence (global — team-level, not idea-level) ──
+
+function loadCriteria() {
+  try {
+    const s = localStorage.getItem('chorus_criteria');
+    return s ? JSON.parse(s) : { 1: [], 2: [], 3: [], 4: [] };
+  } catch(e) { return { 1: [], 2: [], 3: [], 4: [] }; }
+}
+
+function saveCriteria(data) {
+  try { localStorage.setItem('chorus_criteria', JSON.stringify(data)); } catch(e) {}
+}
+
+function addCriterion(gateNum, text, type) {
+  const data = loadCriteria();
+  if (!data[gateNum]) data[gateNum] = [];
+  data[gateNum].push({ id: Date.now().toString(36), text, type, met: false });
+  saveCriteria(data);
+}
+
+function toggleCriterion(gateNum, id) {
+  const data = loadCriteria();
+  const item = (data[gateNum] || []).find(c => c.id === id);
+  if (item) item.met = !item.met;
+  saveCriteria(data);
+}
+
+function deleteCriterion(gateNum, id) {
+  const data = loadCriteria();
+  data[gateNum] = (data[gateNum] || []).filter(c => c.id !== id);
+  saveCriteria(data);
+}
+
+function criteriaMetBonus(gateNum) {
+  const data = loadCriteria();
+  const list = data[gateNum] || [];
+  if (!list.length) return 0;
+  const met = list.filter(c => c.met).length;
+  return met / list.length; // 0–1 bonus toward level
+}
+
+function renderCriteriaSection(gateNum) {
+  const data = loadCriteria();
+  const list = data[gateNum] || [];
+  const metCount = list.filter(c => c.met).length;
+
+  const items = list.map(c => `
+    <div class="criteria-item" data-id="${c.id}" data-gate="${gateNum}">
+      <input class="criteria-check" type="checkbox" ${c.met ? 'checked' : ''}
+        onchange="toggleCriterion(${gateNum}, '${c.id}'); rerenderGateCriteria(${gateNum})">
+      <span class="criteria-type ${c.type}">${c.type}</span>
+      <span class="criteria-text ${c.met ? 'met' : ''}">${escapeHtml(c.text)}</span>
+      <button class="criteria-del" onclick="deleteCriterion(${gateNum}, '${c.id}'); rerenderGateCriteria(${gateNum})">×</button>
+    </div>
+  `).join('');
+
+  const countLabel = list.length
+    ? `<span class="criteria-met-count">${metCount}/${list.length} met</span>`
+    : '';
+
+  return `
+    <div class="gate-criteria" id="criteria-section-${gateNum}">
+      <div class="criteria-header" onclick="toggleCriteriaList(${gateNum})">
+        <span>CRITERIA <span id="criteria-arrow-${gateNum}">▾</span></span>
+        ${countLabel}
+      </div>
+      <div id="criteria-body-${gateNum}">
+        <div class="criteria-list">${items}</div>
+        <div class="criteria-add-row">
+          <input class="criteria-input" id="criteria-input-${gateNum}" type="text"
+            placeholder="Add constraint, deadline, question, or check..."
+            onkeydown="if(event.key==='Enter') submitCriterion(${gateNum})">
+          <select class="criteria-type-select" id="criteria-type-${gateNum}">
+            <option value="CONSTRAINT">CONSTRAINT</option>
+            <option value="DEADLINE">DEADLINE</option>
+            <option value="QUESTION">QUESTION</option>
+            <option value="CHECK">CHECK</option>
+          </select>
+          <button class="criteria-add-btn" onclick="submitCriterion(${gateNum})">+ ADD</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function submitCriterion(gateNum) {
+  const input = document.getElementById('criteria-input-' + gateNum);
+  const typeEl = document.getElementById('criteria-type-' + gateNum);
+  const text = input ? input.value.trim() : '';
+  if (!text) return;
+  addCriterion(gateNum, text, typeEl ? typeEl.value : 'CHECK');
+  if (input) input.value = '';
+  rerenderGateCriteria(gateNum);
+}
+
+function rerenderGateCriteria(gateNum) {
+  const el = document.getElementById('criteria-section-' + gateNum);
+  if (el) el.outerHTML = renderCriteriaSection(gateNum);
+}
+
+function toggleCriteriaList(gateNum) {
+  const body = document.getElementById('criteria-body-' + gateNum);
+  const arrow = document.getElementById('criteria-arrow-' + gateNum);
+  if (!body) return;
+  const hidden = body.style.display === 'none';
+  body.style.display = hidden ? 'block' : 'none';
+  if (arrow) arrow.textContent = hidden ? '▾' : '▸';
+}
+
+function simpleHash(str) {
+  let h = 0;
+  for (let i = 0; i < Math.min(str.length, 200); i++)
+    h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(36).slice(0, 8);
+}
+
+function calcGateLevel(gate, scoreMap) {
+  const dimScores = gate.dims.map(d => scoreMap[d] ? scoreMap[d].score : 0);
+  const avg = dimScores.reduce((a, b) => a + b, 0) / dimScores.length;
+  const evidenced = gate.dims.filter(d => scoreMap[d] && ['R','D'].includes(scoreMap[d].tag)).length;
+  const evidenceBonus = evidenced / gate.dims.length;
+  const critBonus = criteriaMetBonus(gate.num);
+  return Math.min(5, Math.round((avg / 10) * 3.5 + evidenceBonus * 0.75 + critBonus * 0.75));
+}
+
+function loadGateLevels(hash) {
+  try {
+    const s = localStorage.getItem('chorus_gates_' + hash);
+    return s ? JSON.parse(s) : [0, 0, 0, 0];
+  } catch(e) { return [0, 0, 0, 0]; }
+}
+
+function saveGateLevels(hash, levels) {
+  try { localStorage.setItem('chorus_gates_' + hash, JSON.stringify(levels)); } catch(e) {}
+}
+
+function mergeGateLevels(stored, fresh) {
+  return stored.map((s, i) => Math.max(s, fresh[i] || 0));
+}
+
+function renderGates(scores, ideaText) {
+  const scoreMap = {};
+  scores.forEach(s => { scoreMap[s.dim] = s; });
+
+  const hash = simpleHash(ideaText);
+  const stored = loadGateLevels(hash);
+  const fresh = GATES.map(g => calcGateLevel(g, scoreMap));
+  const merged = mergeGateLevels(stored, fresh);
+  saveGateLevels(hash, merged);
+
+  const cards = GATES.map((gate, i) => {
+    const prevLevel = i > 0 ? merged[i - 1] : 5;
+    const isLocked = prevLevel < gate.unlockAt;
+    const level = merged[i];
+    const isNew = fresh[i] > stored[i];
+
+    const segs = Array.from({ length: 10 }, (_, s) => {
+      const filled = s < level * 2;
+      const cls = filled ? (level >= 4 ? 'filled' : 'filled-warn') : '';
+      return `<div class="gate-xp-seg ${cls}"></div>`;
+    }).join('');
+
+    const lockNote = isLocked
+      ? `<span class="gate-lock">🔒 GATE ${i} → LVL ${gate.unlockAt} to unlock</span>`
+      : '';
+
+    const newBadge = isNew && !isLocked
+      ? `<div class="gate-new-badge">↑ LEVELED UP</div>`
+      : '';
+
+    return `
+      <div class="gate-card ${isLocked ? 'locked' : ''}">
+        ${newBadge}
+        <div class="gate-top">
+          <span class="gate-num">GATE ${gate.num}</span>
+          <span class="gate-question">${escapeHtml(gate.question)}</span>
+          ${lockNote}
+        </div>
+        <div class="gate-level-row">
+          <span class="gate-lvl-label">LVL ${level} / 5</span>
+          <div class="gate-xp-track">${segs}</div>
+        </div>
+        <div class="gate-dims">${gate.dims.join(' · ')}</div>
+        ${renderCriteriaSection(gate.num)}
+      </div>
+    `;
+  }).join('');
+
+  return `<div class="gates-wrap">${cards}</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// THE STANDARD — default rubric
+// ══════════════════════════════════════════════════════
+
+const DEFAULT_STANDARD = {
+  version: 1,
+  updatedAt: null,
+  updatedBy: 'Default',
+  dimensions: {
+    'VALUE PROP': {
+      bar3:  'Problem or solution mentioned, not both.',
+      bar7:  'Problem and solution both stated. User is named.',
+      bar10: 'Differentiated value with user evidence and a testable success metric.',
+      history: []
+    },
+    'COMPANY FIT': {
+      bar3:  'Idea exists independently of company context.',
+      bar7:  'Aligns with product mission and existing user base.',
+      bar10: 'Directly advances stated product strategy with named alignment.',
+      history: []
+    },
+    '10 TYPES': {
+      bar3:  'Activates 1–2 innovation types.',
+      bar7:  'Activates 4+ Doblin innovation types.',
+      bar10: 'Activates 7+ types deliberately, with gaps named.',
+      history: []
+    },
+    'PAIN EVIDENCE': {
+      bar3:  'Pain implied but not stated.',
+      bar7:  'Pain stated with at least one primary research reference.',
+      bar10: 'Primary research with frequency and severity data.',
+      history: []
+    },
+    'WILL TO PAY': {
+      bar3:  'No economic signal present.',
+      bar7:  'Willingness to pay addressed with pricing or ROI framing.',
+      bar10: 'Named economic buyer with stated max willingness to pay.',
+      history: []
+    },
+    'SELF-ACTUAL.': {
+      bar3:  'No user empowerment language.',
+      bar7:  'User empowerment or mastery explicitly named.',
+      bar10: 'User agency, growth, and mastery all addressed and testable.',
+      history: []
+    },
+    'UX — 5Es': {
+      bar3:  '1 of the 5Es addressed.',
+      bar7:  'At least 3 of the 5Es addressed in the concept.',
+      bar10: 'All 5Es designed, with at least one validated.',
+      history: []
+    }
+  }
+};
+
+function loadStandard() {
+  try {
+    const s = localStorage.getItem('chorus_standard');
+    return s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULT_STANDARD));
+  } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_STANDARD)); }
+}
+
+function saveStandard(std) {
+  try { localStorage.setItem('chorus_standard', JSON.stringify(std)); } catch(e) {}
+}
+
+function loadIdeas() {
+  try {
+    const s = localStorage.getItem('chorus_ideas');
+    return s ? JSON.parse(s) : [];
+  } catch(e) { return []; }
+}
+
+function saveIdea(idea) {
+  const ideas = loadIdeas();
+  ideas.unshift(idea);
+  try { localStorage.setItem('chorus_ideas', JSON.stringify(ideas.slice(0, 100))); } catch(e) {}
+}
+
+// ══════════════════════════════════════════════════════
+// PATTERN ANALYSIS — Bradley watches what gets killed
+// ══════════════════════════════════════════════════════
+
+const DIM_KEYS = ['VALUE PROP','COMPANY FIT','10 TYPES','PAIN EVIDENCE','WILL TO PAY','SELF-ACTUAL.','UX — 5Es'];
+
+function analyzePatterns() {
+  const ideas = loadIdeas();
+  const killed = ideas.filter(i => i.outcome === 'killed');
+  if (killed.length < 3) return [];
+
+  const proposals = [];
+  DIM_KEYS.forEach(dim => {
+    const scores = killed.map(i => i.scores[dim]).filter(s => s !== undefined);
+    if (scores.length < 3) return;
+    const avg = scores.reduce((a,b) => a+b, 0) / scores.length;
+    if (avg < 5) {
+      const std = loadStandard();
+      const current7 = std.dimensions[dim] ? std.dimensions[dim].bar7 : '';
+      proposals.push({
+        dim,
+        avg: avg.toFixed(1),
+        count: killed.length,
+        current: current7,
+        proposed: `Require evidence at Gate 1 — ${killed.length} killed ideas averaged ${avg.toFixed(1)}/10 here.`
+      });
+    }
+  });
+  return proposals;
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER: THE STANDARD
+// ══════════════════════════════════════════════════════
+
+function renderStandard() {
+  const std = loadStandard();
+  const proposals = analyzePatterns();
+  const ideas = loadIdeas();
+
+  const dateStr = std.updatedAt
+    ? `Updated ${std.updatedAt} — ${std.updatedBy}`
+    : 'Default standards — no ideas logged yet.';
+
+  const dims = Object.entries(std.dimensions).map(([name, d]) => `
+    <div class="standard-dim">
+      <div class="standard-dim-name">${name}</div>
+      <div class="standard-bars">
+        <div class="standard-bar-item">
+          <div class="standard-bar-score sbs-3">3</div>
+          <div class="standard-bar-desc">${escapeHtml(d.bar3)}</div>
+        </div>
+        <div class="standard-bar-item">
+          <div class="standard-bar-score sbs-7">7</div>
+          <div class="standard-bar-desc">${escapeHtml(d.bar7)}</div>
+        </div>
+        <div class="standard-bar-item">
+          <div class="standard-bar-score sbs-10">10</div>
+          <div class="standard-bar-desc">${escapeHtml(d.bar10)}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const proposalHtml = proposals.length ? `
+    <div class="proposal-block">
+      <div class="proposal-header">BRADLEY — PROPOSED UPDATES (${proposals.length})</div>
+      ${proposals.map((p, i) => `
+        <div class="proposal-item" id="proposal-${i}">
+          <div class="proposal-dim-label">${p.dim} — avg ${p.avg}/10 across ${p.count} killed ideas</div>
+          <div class="proposal-text">"${escapeHtml(p.proposed)}"<br><span style="opacity:0.6;font-size:0.85em;">Current bar 7: ${escapeHtml(p.current)}</span></div>
+          <div class="proposal-actions">
+            <button class="accept-btn" onclick="acceptProposal(${i})">Accept</button>
+            <button class="reject-btn" onclick="rejectProposal(${i})">Reject</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  ` : '';
+
+  const historyHtml = ideas.length ? `
+    <button class="history-toggle" id="hist-toggle" onclick="toggleHistory()">
+      View idea history (${ideas.length}) ↓
+    </button>
+    <div id="history-list">
+      ${ideas.map(idea => `
+        <div class="history-item">
+          <span class="hist-outcome hist-${idea.outcome || 'paused'}">${(idea.outcome || 'unlogged').toUpperCase()}</span>
+          <span class="hist-name">${escapeHtml((idea.name || 'Unnamed').substring(0, 60))}</span>
+          <span class="hist-score">${idea.chorusScore}/10</span>
+          <span class="hist-date">${idea.scoredAt || ''}</span>
+        </div>
+      `).join('')}
+    </div>
+  ` : `<div style="font-family:'Kalam',cursive;font-size:0.9rem;opacity:0.5;margin-top:16px;">No ideas logged yet. Run an idea and log the outcome.</div>`;
+
+  return `
+    <div class="standard-meta">
+      <span class="standard-version">v${std.version}</span>${escapeHtml(dateStr)}
+    </div>
+    ${dims}
+    ${proposalHtml}
+    ${historyHtml}
+  `;
+}
+
+function toggleHistory() {
+  const el = document.getElementById('history-list');
+  const btn = document.getElementById('hist-toggle');
+  if (!el || !btn) return;
+  const showing = el.style.display === 'block';
+  el.style.display = showing ? 'none' : 'block';
+  btn.textContent = showing
+    ? `View idea history (${loadIdeas().length}) ↓`
+    : `Hide history ↑`;
+}
+
+// ══════════════════════════════════════════════════════
+// PROPOSAL ACCEPT / REJECT
+// ══════════════════════════════════════════════════════
+
+let _currentProposals = [];
+
+function acceptProposal(i) {
+  const p = _currentProposals[i];
+  if (!p) return;
+  const std = loadStandard();
+  if (std.dimensions[p.dim]) {
+    std.dimensions[p.dim].history.push({
+      version: std.version,
+      bar7: std.dimensions[p.dim].bar7,
+      at: new Date().toISOString().slice(0,10),
+      reason: p.proposed
+    });
+    std.dimensions[p.dim].bar7 = p.proposed;
+  }
+  std.version += 1;
+  std.updatedAt = new Date().toISOString().slice(0,10);
+  std.updatedBy = 'Bradley — pattern analysis';
+  saveStandard(std);
+  document.getElementById('standard-content').innerHTML = renderStandard();
+  _currentProposals = analyzePatterns();
+}
+
+function rejectProposal(i) {
+  const el = document.getElementById(`proposal-${i}`);
+  if (el) {
+    el.style.opacity = '0.4';
+    el.style.pointerEvents = 'none';
+    el.querySelector('.proposal-actions').innerHTML = '<span style="font-family:Space Mono,monospace;font-size:0.7rem;color:var(--ink);opacity:0.6;">Rejected.</span>';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// OUTCOME LOGGING
+// ══════════════════════════════════════════════════════
+
+let _currentOutcome = null;
+let _currentIdeaData = null;
+
+function initOutcomePanel() {
+  ['shipped','killed','paused'].forEach(o => {
+    document.getElementById('btn-' + o).addEventListener('click', function() {
+      _currentOutcome = o;
+      ['shipped','killed','paused'].forEach(x => {
+        document.getElementById('btn-' + x).classList.remove('active-shipped','active-killed','active-paused');
+      });
+      this.classList.add('active-' + o);
+      document.getElementById('outcome-reason-block').style.display = 'block';
+      document.getElementById('outcome-logged').style.display = 'none';
+    });
+  });
+
+  document.getElementById('log-outcome-btn').addEventListener('click', function() {
+    if (!_currentOutcome || !_currentIdeaData) return;
+    const reason = document.getElementById('outcome-reason').value.trim();
+    saveIdea(Object.assign({}, _currentIdeaData, {
+      outcome: _currentOutcome,
+      killReason: reason || null,
+      scoredAt: new Date().toISOString().slice(0,10)
+    }));
+    document.getElementById('outcome-logged').style.display = 'block';
+    document.getElementById('log-outcome-btn').disabled = true;
+    document.getElementById('log-outcome-btn').textContent = 'LOGGED ✓';
+    // refresh standard with new patterns
+    _currentProposals = analyzePatterns();
+    document.getElementById('standard-content').innerHTML = renderStandard();
+  });
+}
+
+document.getElementById('run-btn').addEventListener('click', function() {
+  const text = document.getElementById('idea-text').value.trim();
+  if (!text) {
+    document.getElementById('idea-text').focus();
+    return;
+  }
+  const contextText = document.getElementById('context-text').value.trim();
+
+  // Transition to output
+  document.getElementById('state-input').style.display = 'none';
+  document.getElementById('state-output').style.display = 'block';
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('panels').style.display = 'none';
+
+  // Simulate reading delay
+  setTimeout(function() {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('panels').style.display = 'flex';
+
+    const sig = detectSignals(text);
+    const extracted = extractIdea(text);
+    const scores = buildScores(text, contextText);
+    const avg = (scores.reduce((a,s) => a+s.score, 0) / scores.length).toFixed(1);
+
+    // store for outcome logging
+    const scoreMap = {};
+    scores.forEach(s => { scoreMap[s.dim] = s.score; });
+    _currentIdeaData = {
+      name: extracted.name || text.trim().split(/\s+/).slice(0,6).join(' '),
+      text: text,
+      context: contextText,
+      scores: scoreMap,
+      chorusScore: avg
+    };
+    _currentOutcome = null;
+    _currentProposals = analyzePatterns();
+
+    document.getElementById('gates-content').innerHTML     = renderGates(scores, text);
+    document.getElementById('bradley-content').innerHTML   = renderBradley(text, sig, extracted);
+    document.getElementById('scorecard-content').innerHTML = renderScoreCard(scores);
+    document.getElementById('research-content').innerHTML  = renderResearch(scores, contextText, text);
+    document.getElementById('brief-content').innerHTML     = renderBrief(text, contextText, extracted, scores, simpleHash(text));
+    document.getElementById('standard-content').innerHTML  = renderStandard();
+
+    // Attach copy button
+    const copyBtn = document.getElementById('copy-brief-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        const txt = this.getAttribute('data-text').replace(/&#10;/g, '\n');
+        navigator.clipboard.writeText(txt).then(() => {
+          this.textContent = 'COPIED ✓';
+          setTimeout(() => { this.textContent = 'COPY BRIEF'; }, 1800);
+        }).catch(() => {
+          this.textContent = 'COPY FAILED';
+        });
+      });
+    }
+  }, 400);
+});
+
+document.getElementById('reset-btn').addEventListener('click', function() {
+  document.getElementById('state-output').style.display = 'none';
+  document.getElementById('state-input').style.display  = 'flex';
+  document.getElementById('idea-text').value = '';
+  document.getElementById('context-text').value = '';
+  _evidenceLinks = [];
+  renderEvidenceList();
+  document.getElementById('panels').style.display = 'none';
+  document.getElementById('loading').style.display = 'none';
+  // reset outcome panel
+  _currentOutcome = null;
+  _currentIdeaData = null;
+  ['shipped','killed','paused'].forEach(o => {
+    document.getElementById('btn-' + o).classList.remove('active-shipped','active-killed','active-paused');
+  });
+  document.getElementById('outcome-reason-block').style.display = 'none';
+  document.getElementById('outcome-logged').style.display = 'none';
+  document.getElementById('outcome-reason').value = '';
+  document.getElementById('log-outcome-btn').disabled = false;
+  document.getElementById('log-outcome-btn').textContent = 'LOG OUTCOME →';
+});
+
+// init on page load
+initOutcomePanel();
+</script>
+</body>
+</html>

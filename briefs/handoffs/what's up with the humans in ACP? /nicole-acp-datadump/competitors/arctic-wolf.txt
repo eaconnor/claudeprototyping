@@ -1,0 +1,55 @@
+# Arctic Wolf
+slug: arctic-wolf
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Arctic Wolf is a security operations platform that delivers MDR, vulnerability management, cloud monitoring, and incident response through a concierge delivery model (Concierge Security Teams). In March 2026, Arctic Wolf unveiled the Aurora Superintelligence Platform — an agentic AI framework called "Swarm of Experts" designed to accelerate AI adoption across security operations. The platform now includes Exposure Management (May 2026) combining attack surface management and vulnerability management.
+
+## MSP Relevance
+Arctic Wolf serves mid-market organizations through MSP and direct channels. The Concierge Security Team model is differentiated — each customer gets a dedicated security operations team rather than a shared SOC. This resonates with MSPs who want to deliver premium security services without building their own SOC. The Aurora agentic platform signals a move toward AI-augmented security operations at scale.
+
+## Key Offerings & Capabilities
+- Arctic Wolf MDR — 24/7 managed detection and response with Concierge Security Teams
+- Aurora Platform — underlying AI and data platform powering all Arctic Wolf services
+- Aurora Superintelligence Platform — agentic AI framework with "Swarm of Experts" architecture (March 2026)
+- Aurora Endpoint Security — prevention and protection layer (launched 2025)
+- Aurora Exposure Management — combines Vulnerability Management and Attack Surface Management (May 2026)
+- Aurora Attack Surface Management — external threat surface visibility
+- Cloud Security Monitoring — coverage for AWS, Azure, GCP environments
+- Incident Response retainer
+
+## Recent Announcements
+- Unveiled Aurora Superintelligence Platform (March 2026) — agentic AI framework "Swarm of Experts" for security operations
+- Launched Aurora Exposure Management (May 12, 2026) — unified vulnerability and attack surface management
+- Launched Aurora Endpoint Security in 2025 — expanded from detection into prevention
+- Expanded to Japan and Singapore in 2025 — APAC presence growing
+- 2026 Threat Report (Feb 2026): 11x growth in data extortion, sustained ransomware, rise of remote access tool abuse
+- 2025 Security Operations Report: analyzed 330+ trillion security observations from the Aurora platform
+
+## Pricing Model
+Annual subscription per user/seat. Concierge delivery model means pricing includes dedicated team time. Higher price point than pure-software MDR vendors. MSP/channel partner pricing available. Exact pricing requires sales engagement.
+
+## Strengths
+- Concierge Security Team model is genuinely differentiated — clients get dedicated humans, not a shared queue
+- Aurora Superintelligence Platform is a serious agentic AI investment, not just AI marketing
+- Exposure Management covers both vulnerability and attack surface in one workflow
+- Global expansion (APAC) adds geographic coverage MSPs with international clients need
+- Annual threat reports and security operations data establish thought leadership
+
+## Weaknesses / Gaps
+- Premium pricing limits accessibility for smaller MSPs and SMB clients
+- Concierge model doesn't scale as efficiently as automated SOC approaches
+- Less known in the pure MSP community than Huntress or Blackpoint
+- Aurora Superintelligence Platform is early — "Swarm of Experts" is a concept more than a shipping product
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Arctic Wolf is focused on security operations delivery, not MSP workflow automation. However, the Aurora agentic framework is one of the more serious AI agent investments in the security space. If Arctic Wolf extends agentic operations into MSP-facing workflow automation, the overlap with NZO increases.
+
+## Notes
+- "Swarm of Experts" agentic architecture (March 2026) is conceptually interesting — multiple specialized AI agents collaborating mirrors multi-agent frameworks like CrewAI
+- Aurora Exposure Management (May 2026) is very recent — watch for MSP-specific packaging
+- APAC expansion suggests ambition beyond North America; relevant for MSPs with international footprints

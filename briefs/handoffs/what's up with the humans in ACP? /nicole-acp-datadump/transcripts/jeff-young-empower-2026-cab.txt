@@ -1,0 +1,80 @@
+TRANSCRIPT: Jeff Young - Empower 2026 CAB Session
+Source: AI-AI session transcripts  Empower 2026-070526-120115 (1).pdf
+Session: CAB (Customer Advisory Board) — Empower 2026
+Facilitator: Nicole Reineke
+============================================================
+
+--- CONTRIBUTIONS BY JEFF YOUNG ---
+
+[04:15-06:19] The discussion shifted to expanding services into new lines of business, focusing
+on business process integration and platform consolidation.
+-A speaker (Jeff Young) noted they are engaging more with back-office functions like HR,
+finance, and operations, moving beyond traditional IT.
+-This shift involves replacing legacy systems (e.g., Great Plains) with modern financial
+operations platforms (e.g., Dynamics F&O), leading to business transformation and platform
+consolidation.
+-Another participant (Thomas Collier) added that while their company doesn't do
+applications, they see an opportunity in the integration layer, linking systems like HR and
+finance.
+-The goal is to create common, reusable business process automations (an "orchestration"
+layer) for standard corporate functions (sales, marketing, finance, HR) to deliver services more
+efficiently.
+
+[06:29-07:51] The group debated how to define the boundaries of their business engagements,
+considering vertical vs. horizontal approaches and deal size.
+-A speaker (Laura DuBois) questioned whether the boundary for engagement is based on
+existing system expertise (e.g., Great Plains, ERP) or if it's unlimited, extending into areas like
+marketing (Salesforce) or sales transformation.
+-A participant (Jeff Young) responded that deal size and potential margin are critical factors.
+A large deal with no profit is not worth pursuing.
+-The group was then prompted to consider whether they define their opportunities by
+industry vertical (e.g., manufacturing, supply chain) or by horizontal needs that cross all
+industries (e.g., marketing).
+
+--- FACILITATOR CONTEXT (Nicole Reineke) ---
+
+[00:12-01:21] Nicole Reineke outlined the meeting agenda and requested a recording of the
+session.
+-Nicole stated she has a set of discussion questions, a presentation on the future of AI
+("noun escalator"), and the "enamel AI tenants" which guide the organization's approach to AI
+from an operational perspective.
+
+[01:21-02:55] Participants discussed their envisioned roles as trusted advisors to clients
+navigating the rapid evolution of AI over the next one to three years.
+-Nicole Reineke reframed the initial question from "What AI should we build?" to "What do
+you see as your future roles concerning your customers?"
+-A speaker (Christian Kelly) noted that a three-year AI forecast is difficult due to the rapid
+rate of innovation, but the short-to-medium term goal is to be in the conversation, guiding
+customer journeys, and having a compelling story about enabling AI for the business.
+-The primary aspiration is to become the "trusted advisor" clients turn to for navigating their
+AI journey, even without having all the answers.
+-A key concern is to avoid a scenario where external "AI consultants" are brought in,
+dictating strategy to both the company and their clients.
+-The speaker highlighted the uncertainty of whether "scaffolding tools" or the "core models"
+themselves will become the dominant force in AI development.
+
+[02:55-03:12] Nicole Reineke shared the company's strategic perspective on the future
+interaction of AI models.
+-In response to a point about the rapid evolution of AI models, Nicole stated the company's
+approach is based on the assumption that different models will communicate with each other.
+-This perspective is considered the "safest way" to approach future AI architecture.
+
+[10:30-11:15] A participant confirmed their company has formalized its AI efforts by creating a
+dedicated internal team.
+-Echoing the uncertainty of the AI landscape, a speaker (Nicole Reineke0) stated their
+company is working to help customers build AI solutions to streamline business operations.
+-Key Decision: The company has appointed its own internal Head of AI to lead projects and
+scale out a dedicated AI team.
+-The speaker acknowledged it is difficult to know if they are early or late in forming this
+dedicated team.
+
+[11:38-13:17] The group discussed the abstraction of technology, comparing the flow of data
+between AI systems to the historical flow of network packets.
+-A speaker (Nicole Reineke2) proposed that future work will focus on enabling data to flow
+between systems at a higher level of abstraction, similar to how networking evolved to just make
+data flow without needing deep expertise in the underlying packets.
+-The focus will be on orchestrating data flow to "encapsulate that job function in the
+infrastructure," making the infrastructure itself a platform.
+-Nicole Reineke agreed, referencing the business book "The E-Myth," which advocates for
+creating a detailed operating manual for every job function. She stated this level of process
+definition is essential for building effective AI.

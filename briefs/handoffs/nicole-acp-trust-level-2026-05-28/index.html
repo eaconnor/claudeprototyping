@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACP Trust-Level Model UI — Apex Bridge Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --vermillion: #D8472B;
+            --ultramarine: #1F3C96;
+            --ochre: #C99A2E;
+            --violet: #5B3A7E;
+            --green-earth: #5E7A3F;
+            --cadmium: #E8B93A;
+            --ink: #1a1612;
+            --paper: #efe7d6;
+            --card: #f7f0df;
+            --grid: rgba(26,22,18,.055);
+        }
+
+        body {
+            font-family: 'Kalam', cursive;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+            padding: 28px;
+        }
+
+        .backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 22, 18, 0.4);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .apex-bridge {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 840px;
+            max-width: 90vw;
+            background: var(--paper);
+            z-index: 1001;
+            overflow-y: auto;
+            animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: -12px 0 24px rgba(26, 22, 18, 0.2);
+        }
+
+        .apex-header {
+            background: var(--ultramarine);
+            color: var(--paper);
+            padding: 28px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .apex-header h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .apex-header .subhead {
+            font-family: 'Kalam', cursive;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: 2px solid var(--paper);
+            color: var(--paper);
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            padding: 8px 16px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 rgba(239, 231, 214, 0.3);
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--paper);
+            color: var(--ultramarine);
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 rgba(239, 231, 214, 0.3);
+        }
+
+        .fidelity-banner {
+            position: absolute;
+            top: 140px;
+            right: 28px;
+            background: var(--card);
+            border: 2px solid var(--ink);
+            padding: 12px 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 336px;
+            gap: 28px;
+            padding: 28px;
+            margin-top: 56px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 2px solid var(--ink);
+            padding: 28px;
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .card h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ultramarine);
+        }
+
+        .card h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 20px 0 12px 0;
+            color: var(--ink);
+        }
+
+        .trust-score-display {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: var(--paper);
+            border: 2px solid var(--green-earth);
+            margin-bottom: 20px;
+        }
+
+        .trust-score-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--green-earth);
+        }
+
+        .trust-score-label {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .trust-score-label strong {
+            font-family: 'Space Mono', monospace;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .component-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .component-item {
+            display: grid;
+            grid-template-columns: 200px 80px 1fr;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--paper);
+            border: 1px solid var(--grid);
+        }
+
+        .component-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .component-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--green-earth);
+        }
+
+        .component-desc {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bradley-rail {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .readiness-badge {
+            background: var(--ultramarine);
+            color: var(--paper);
+            padding: 20px;
+            border: 2px solid var(--ink);
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .readiness-badge .tier {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .readiness-badge .blurb {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .rail-section {
+            background: var(--card);
+            border: 2px solid var(--ink);
+            padding: 20px;
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .rail-section h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rail-section.nailed h3 {
+            color: var(--green-earth);
+        }
+
+        .rail-section.hurt h3 {
+            color: var(--vermillion);
+        }
+
+        .rail-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rail-section li {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .rail-section.nailed li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--green-earth);
+            font-weight: 700;
+        }
+
+        .rail-section.hurt li:before {
+            content: "!";
+            position: absolute;
+            left: 0;
+            color: var(--vermillion);
+            font-weight: 700;
+        }
+
+        .routed-card {
+            background: var(--card);
+            border: 2px solid var(--ink);
+            padding: 20px;
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .routed-card h4 {
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .routed-card.product h4 {
+            color: var(--ultramarine);
+        }
+
+        .routed-card.design h4 {
+            color: var(--ochre);
+        }
+
+        .routed-card.research h4 {
+            color: var(--violet);
+        }
+
+        .routed-card.eng h4 {
+            color: var(--green-earth);
+        }
+
+        .routed-card .action {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .routed-card .action strong {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .routed-card .why-now {
+            font-size: 13px;
+            background: var(--paper);
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--ink);
+        }
+
+        .routed-card .if-skip {
+            font-size: 13px;
+            background: rgba(216, 71, 43, 0.1);
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--vermillion);
+        }
+
+        .roi-section {
+            font-size: 13px;
+            padding: 12px;
+            background: var(--paper);
+        }
+
+        .roi-section h5 {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .roi-section p {
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .roi-section strong {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .attribution {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--grid);
+            color: var(--violet);
+        }
+
+        .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            background: var(--paper);
+            border: 1px solid var(--ink);
+            margin-left: 4px;
+        }
+
+        .tag.r { background: rgba(94, 122, 63, 0.15); }
+        .tag.a { background: rgba(232, 185, 58, 0.15); }
+        .tag.q { background: rgba(216, 71, 43, 0.15); }
+
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="backdrop" onclick="closeApex()"></div>
+
+    <div class="apex-bridge">
+        <div class="apex-header">
+            <div>
+                <h1>AI Coworker Trust Level</h1>
+                <div class="subhead">Summit IT Partners · Patch Deployment Coworker</div>
+            </div>
+            <button class="close-btn" onclick="closeApex()">Close</button>
+        </div>
+
+        <div class="fidelity-banner">Tier 2 · Direction</div>
+
+        <div class="content-wrapper">
+            <div class="main-content">
+                <div class="card">
+                    <h2>Trust Level Calculation</h2>
+
+                    <div class="trust-score-display">
+                        <div class="trust-score-number">L4</div>
+                        <div class="trust-score-label">
+                            <strong>Autonomous Execution</strong>
+                            This coworker is trusted to execute, human audits
+                        </div>
+                    </div>
+
+                    <p style="margin-bottom: 20px;">Your Patch Deployment Coworker has graduated to Level 4 autonomy based on proven track record and defined scope boundaries. The trust level combines five components:</p>
+
+                    <div class="component-grid">
+                        <div class="component-item">
+                            <div class="component-name">Track Record</div>
+                            <div class="component-value">97%</div>
+                            <div class="component-desc">32 successful executions over 45 days, no critical errors</div>
+                        </div>
+
+                        <div class="component-item">
+                            <div class="component-name">Risk Classification</div>
+                            <div class="component-value">Low</div>
+                            <div class="component-desc">Patch deployment scoped to non-production systems during maintenance windows</div>
+                        </div>
+
+                        <div class="component-item">
+                            <div class="component-name">Scope Boundaries</div>
+                            <div class="component-value">Defined</div>
+                            <div class="component-desc">Limited to Windows Server 2019+ systems, excludes domain controllers</div>
+                        </div>
+
+                        <div class="component-item">
+                            <div class="component-name">Escalation Rules</div>
+                            <div class="component-value">Active</div>
+                            <div class="component-desc">Auto-escalates if patch requires reboot or affects >10 systems</div>
+                        </div>
+
+                        <div class="component-item">
+                            <div class="component-name">Audit Trail</div>
+                            <div class="component-value">100%</div>
+                            <div class="component-desc">All actions logged with pre/post state snapshots</div>
+                        </div>
+                    </div>
+
+                    <h3>What Changes Trust Level?</h3>
+                    <p><strong>Trust increases:</strong> Consistent success rate >95% over 30+ days, clean escalation handling, no scope violations.</p>
+                    <p><strong>Trust decreases:</strong> Critical error (immediate rollback to L3), scope violation, failed escalation, or success rate drops below 90% over 7 days.</p>
+                </div>
+
+                <div class="card">
+                    <h2>Value Ledger Summary</h2>
+                    <p style="margin-bottom: 12px;">Since graduating to L4 autonomy (14 days ago):</p>
+                    <ul style="padding-left: 20px; margin-bottom: 20px;">
+                        <li>18 patch deployments executed without human confirmation</li>
+                        <li>Estimated time saved: 4.5 hours (15 minutes per deployment)</li>
+                        <li>Zero escalations required</li>
+                    </ul>
+                    <p style="font-size: 14px; color: var(--ink); opacity: 0.7;">At L3 (human confirms), these same tasks would have required technician review before each execution.</p>
+                </div>
+            </div>
+
+            <div class="bradley-rail">
+                <div class="readiness-badge">
+                    <div class="tier">Tier 2 · Direction</div>
+                    <div class="blurb">Testing whether showing trust-score math builds confidence or creates cognitive load</div>
+                </div>
+
+                <div class="rail-section nailed">
+                    <h3>What You Nailed</h3>
+                    <ul>
+                        <li>The five-component trust model maps directly to Ewan Cameron's L4 earned autonomy architecture</li>
+                        <li>Value Ledger connection makes the business case visible: L4 = time compounding, L3 = time plateaued</li>
+                        <li>Rollback conditions named explicitly (critical error = immediate downgrade)</li>
+                        <li>Realistic seed data: 97% success rate over 32 executions is plausible for mature coworker</li>
+                    </ul>
+                </div>
+
+                <div class="rail-section hurt">
+                    <h3>What Will Hurt You</h3>
+                    <ul>
+                        <li>No user research confirming MSPs want to see this math—may be cognitive load without benefit</li>
+                        <li>Risk classification shows "Low" but doesn't define the taxonomy (severity? reversibility? scope?)</li>
+                        <li>Success threshold (95% over 30 days) not sourced—engineering may have different criteria</li>
+                        <li>False precision risk: showing 97% implies more certainty than model may have with 32-execution sample size</li>
+                    </ul>
+                </div>
+
+                <div class="routed-card product">
+                    <h4>Product</h4>
+                    <div class="action">
+                        <strong>Product does:</strong> Define risk taxonomy for trust-level calculation (severity-based? reversibility-based? scope-based?) and map to L3/L4 thresholds.
+                    </div>
+                    <div class="why-now">
+                        <strong>Why now:</strong> Trust level is the permission structure that determines whether Expert Licensing value compounds (L4) or plateaus (L3). <span class="tag a">[A]</span> Layer 3 monetization depends on MSPs believing trust level accurately reflects risk. <span class="tag r">[R]</span>
+                    </div>
+                    <div class="if-skip">
+                        <strong>If you ship without it:</strong> Engineering implements arbitrary thresholds, MSPs see coworkers downgraded for unclear reasons, trust in the system erodes, Expert Licensing adoption stalls.
+                    </div>
+                    <div class="roi-section">
+                        <h5>[ROI]</h5>
+                        <p><strong>Business:</strong> Unknown—no data on how trust-level transparency affects Expert Licensing conversion. Need baseline graduation rates (L3→L4) to measure impact.</p>
+                        <p><strong>User:</strong> Reduces cognitive load if MSPs currently second-guess autonomy decisions; increases cognitive load if they don't. Discovery research required.</p>
+                        <p><strong>Unknown:</strong> Do MSPs want to see the math, or just the outcome? What percentage of MSPs currently override L4 recommendations by forcing manual approval?</p>
+                    </div>
+                    <div class="attribution">75% Nicole (trust components, monetization link, L4 definition) / 25% Tool (taxonomy structure, rollback conditions)</div>
+                </div>
+
+                <div class="routed-card design">
+                    <h4>Design</h4>
+                    <div class="action">
+                        <strong>Design does:</strong> Run task-based usability test with 5-8 MSPs: "Your coworker's trust level just changed. Why? What would trigger a rollback?" Measure comprehension vs. time spent reviewing UI.
+                    </div>
+                    <div class="why-now">
+                        <strong>Why now:</strong> The brief assumes transparency builds confidence, but we have no evidence MSPs asked to see the calculation. <span class="tag a">[A]</span> If this creates cognitive load without benefit, the UI becomes a tax on every trust-level interaction.
+                    </div>
+                    <div class="if-skip">
+                        <strong>If you ship without it:</strong> You build a feature no one needs. MSPs ignore the breakdown, or worse, spend time trying to understand it and resent the complexity.
+                    </div>
+                    <div class="roi-section">
+                        <h5>[ROI]</h5>
+                        <p><strong>Business:</strong> Unknown—testing de-risks investment before engineering builds production-ready calculation UI. Prototype cost: ~8 hours. Production build without validation: ~80 hours.</p>
+                        <p><strong>User:</strong> Prevents shipping cognitive load disguised as transparency. If test shows MSPs only care about outcome ("safe to proceed?"), design can simplify to badge system instead of numeric breakdown.</p>
+                        <p><strong>Unknown:</strong> What mental model do MSPs currently use for autonomy decisions? Do they think in terms of "trust score" or "task safety"?</p>
+                    </div>
+                    <div class="attribution">70% Nicole (testing hypothesis, cognitive load risk, L4 concept) / 30% Tool (test structure, success criteria)</div>
+                </div>
+
+                <div class="routed-card research">
+                    <h4>Research</h4>
+                    <div class="action">
+                        <strong>Research does:</strong> Discovery interviews with 8-10 MSPs (mix of new and experienced ACP users). Core question: "Walk me through how you decide whether to let this coworker execute autonomously."
+                    </div>
+                    <div class="why-now">
+                        <strong>Why now:</strong> The entire problem statement is assumed. <span class="tag a">[A]</span> We have no evidence MSPs under-trust or over-trust coworkers. Ewan Cameron's experiment validated L4 as "self-evident UX" for mature MSPs <span class="tag r">[R]</span>—which may mean they don't need the math exposed.
+                    </div>
+                    <div class="if-skip">
+                        <strong>If you ship without it:</strong> You build based on Product's hypothesis about MSP behavior instead of observed reality. If MSPs already trust the outcome, you've added UI complexity to solve a non-problem.
+                    </div>
+                    <div class="roi-section">
+                        <h5>[ROI]</h5>
+                        <p><strong>Business:</strong> De-risks Expert Licensing roadmap. If trust-level transparency is critical to adoption, it moves up the backlog. If it's noise, Product deprioritizes and focuses on value ledger instead.</p>
+                        <p><strong>User:</strong> Ensures MSPs get the information they actually need to make autonomy decisions, not the information Product assumes they need.</p>
+                        <p><strong>Unknown:</strong> What percentage of MSPs currently at L3 feel blocked by lack of transparency vs. blocked by risk aversion? Are we solving an information problem or a confidence problem?</p>
+                    </div>
+                    <div class="attribution">80% Nicole (L4 validation, self-evident UX insight, autonomy framing) / 20% Tool (interview structure)</div>
+                </div>
+
+                <div class="routed-card eng">
+                    <h4>Engineering</h4>
+                    <div class="action">
+                        <strong>Engineering does:</strong> Instrument live trust-level calculation in ACP backend. Pull baseline data: What % of coworkers are currently L3 vs. L4? Average time to graduation? Rollback frequency?
+                    </div>
+                    <div class="why-now">
+                        <strong>Why now:</strong> The prototype uses realistic but fictional data (97% success rate over 32 executions). <span class="tag a">[A]</span> Without real distribution data, we don't know if this UI is showing an edge case or the norm.
+                    </div>
+                    <div class="if-skip">
+                        <strong>If you ship without it:</strong> Design tests a UI with seed data that doesn't reflect production reality. MSPs see the real UI and it feels wrong because the numbers don't match their lived experience.
+                    </div>
+                    <div class="roi-section">
+                        <h5>[ROI]</h5>
+                        <p><strong>Business:</strong> Baseline data establishes success metrics for Expert Licensing. If 80% of coworkers graduate to L4 within 60 days, that's the floor. If only 20% graduate, monetization model needs adjustment.</p>
+                        <p><strong>User:</strong> Real data informs realistic expectations. If most coworkers stay at L3 for 6 months, showing a 97% score after 45 days sets false expectation of fast graduation.</p>
+                        <p><strong>Unknown:</strong> What's the actual success rate distribution? Are most coworkers clustered at 85-90%, or is there bimodal distribution (either very high or very low)?</p>
+                    </div>
+                    <div class="attribution">65% Nicole (L4 graduation concept, Expert Licensing dependency) / 35% Tool (instrumentation plan, baseline metrics)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeApex() {
+            // In production, this would close the overlay
+            // For prototype purposes, it just logs
+            console.log('Apex Bridge closed');
+        }
+    </script>
+</body>
+</html>

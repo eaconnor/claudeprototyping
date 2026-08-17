@@ -1,0 +1,57 @@
+# ConnectWise RMM / Automate
+slug: connectwise-rmm
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+ConnectWise RMM is a mature remote monitoring and management platform serving MSPs of all sizes, fully rebuilt in 2025 on the Asio cloud platform. It offers endpoint monitoring, patching (1,200 monitors, 7,000+ third-party apps), scripting, remote access, and network monitoring. ConnectWise Automate is the legacy on-prem/hybrid RMM; ConnectWise RMM (Asio-native) is the current-generation product. Both coexist during migration.
+
+## MSP Relevance
+ConnectWise serves the largest installed base of mid-to-large MSPs of any single vendor. The Asio platform consolidation and ConnectWise Pro bundle are designed to lock in this base and migrate them off legacy tools. Any AI or automation features ConnectWise ships reach this massive audience immediately.
+
+## Key Offerings & Capabilities
+- ConnectWise RMM (Asio-native) — cloud-native endpoint management rebuilt in 2025
+- 1,200 out-of-box monitors, 300+ reusable scripts
+- Third-party patching for 7,000+ applications (expanded from ~350 in 2025)
+- Biweekly patch validation process
+- Network monitoring integrated into RMM
+- RPA (Robotic Process Automation) capabilities within Asio platform
+- AI-powered RPA bot generation (in development)
+- ConnectWise Pro bundle — packages RMM, PSA, RPA, remote support, documentation, CPQ in one contract
+
+## Recent Announcements
+- November 2025 (IT Nation Connect): RMM fully rebuilt on Asio — 1,200 monitors, 300+ scripts, third-party patching for 7,000+ apps
+- Third-party patch coverage expanded from ~350 to 7,000+ applications (Slack, Notion, Discord, OBS, Brave, Webex)
+- Launched ConnectWise Pro — simplified all-in-one bundle replacing complex individual licensing
+- PSA Powered by Asio launched June 2025 (IT Nation Secure) — Unified Billing, Calendar View, custom fields
+- AI-powered RPA bot generation planned for upcoming release
+- Enhanced Community Exchange for partner-contributed automations
+
+## Pricing Model
+Per-endpoint per-month for RMM. ConnectWise Pro bundles RMM + PSA + RPA + additional tools under a single contract with flexible licensing. Legacy Automate customers on separate pricing structure. Enterprise volume discounts available. Historically complex; Pro bundle is an attempt to simplify.
+
+## Strengths
+- Largest MSP installed base of any single vendor — enormous distribution reach
+- Deep PSA + RMM integration within the Asio platform
+- 7,000+ app third-party patching library — now competitive with NinjaOne
+- Strong IT Nation partner community and annual events
+- ConnectWise Pro simplifies purchasing for existing customers
+- Automation depth through RPA within Asio platform
+
+## Weaknesses / Gaps
+- Legacy Automate platform creates migration friction and ongoing customer frustration
+- Reputation for complex, expensive licensing has driven MSPs to NinjaOne and N-able
+- UI/UX historically poor vs. NinjaOne — Asio improves this but migration is slow
+- Large org moves slower on product than NinjaOne or Rewst
+- Fragmented product portfolio from years of acquisitions
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: ConnectWise's sheer install base means AI or automation features they ship reach thousands of MSPs immediately. Their RPA capabilities and upcoming AI bot generation within Asio are heading toward NZO's automation territory. Execution speed and customer satisfaction lower than NinjaOne or Rewst, but distribution is unmatched.
+
+## Notes
+- IT Nation Connect (November) is the major annual announcement event — key to monitor
+- Kaseya is their primary platform competitor for MSP stack consolidation
+- NinjaOne explicitly positioned ConnectWise as a migration target in 2026 strategy

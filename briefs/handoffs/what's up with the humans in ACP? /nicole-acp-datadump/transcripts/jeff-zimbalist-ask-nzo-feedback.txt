@@ -1,0 +1,82 @@
+﻿TRANSCRIPT: Jeff Zimbalist - Ask N-zo Feedback Session
+Source: jeffZimbalist.vtt
+============================================================
+
+Recap: Jeff Zimbalist - Ask N-zo Feedback Session Monday, March 2 | Meeting | Microsoft Teams 
+Lynne Robertson Craig Hutcheon worth looking at - a few UI problems in this one.
+ 
+What Jeff Found Useful About Ask N‑zo
+1. It gives helpful, reasonable answers to exploratory questions
+Jeff consistently framed N‑zo as useful for curiosity-driven questions, even when he was not yet using it for formal troubleshooting.
+He described asking things like “why is this machine running slow?” and said it gave “a couple of good answers.”
+He emphasized that none of his questions felt wasted or wrong, noting that the answers were “cool” and informative even when he was just experimenting.
+Takeaway: Jeff values N‑zo as a low‑risk, exploratory assistant that helps him think through problems, not just execute predefined workflows.
+2. It’s faster than his local LLM and faster than expected
+Speed stood out as a clear positive, especially when compared to tools he already runs internally.
+Jeff said N‑zo was “not as fast as the big cloud LLMs,” but was “way faster than the one we run” locally.
+He explicitly said it was “faster than I think I probably thought it might be.”
+Takeaway: Even without peak performance, N‑zo cleared Jeff’s personal speed bar and exceeded expectations relative to in‑house tooling.
+3. It reliably points him to where to find data
+While Jeff wants N‑zo to eventually deliver results directly, he still found value in how it guides him today.
+When asking about things like disk usage, he said N‑zo “has no problem telling me how to go find that data.”
+He described the output as “real, usable data” once the correct host name was provided.
+Takeaway: Even in its current state, Jeff sees N‑zo as a dependable guide for navigating data and diagnostics.
+4. It works well when the input is correct
+Jeff was clear that when N‑zo has the right context, it performs well.
+After correcting host name issues, he said it “did great” and “gave me real, usable data.”
+He explicitly confirmed that the “why is asset running slowly” question worked well for him.
+Takeaway: Accuracy and usefulness are there. The main friction is context capture, not answer quality.
+5. He would absolutely adopt it if generally available
+Despite limited usage so far, Jeff was unequivocal about future adoption.
+He said “100%” when asked if he would adopt Ask N‑zo at GA.
+He added that even limited interaction was “already cool enough” and made him want to use it more.
+Takeaway: Jeff sees clear value today and strong potential as capabilities mature.
+6. He appreciates the direction and ongoing innovation
+Jeff expressed appreciation not just for the tool, but for the effort and roadmap behind it.
+He said he “really does appreciate the work that’s gone into this” and likes seeing N‑able invest in new capabilities.
+He explicitly asked for more information and said “please continue to throw it at me.”
+Takeaway: N‑zo builds goodwill and credibility. Jeff sees it as evidence of meaningful innovation, not a gimmick. 
+ 
+What Could Be Improved (with Jeff’s Quotes)
+1. Lack of contextual awareness of what he’s currently viewing
+This was Jeff’s strongest and most repeated improvement request.
+He expected N‑zo to understand the machine or asset already open on screen:
+“I started thinking that it did know that and I would ask it… it’s like garbage answer. And I’m like, oh, it doesn’t know that I’m talking about this computer.”
+He had to manually re‑enter hostnames, which caused friction:
+“I would have to give it that host name, which was cool till I like mistyped the host name a couple of times.”
+His ideal behavior was clear:
+“It would be cool if it was contextually aware of what you had in the flyout view.”
+Improvement opportunity: Automatically infer context from the active asset, flyout, or detailed view.
+2. It explains how to get data, but does not deliver the result
+Jeff wants N‑zo to move from guidance to execution.
+On questions like disk usage, he said:
+“It has no problem telling me how to go find that data. But it doesn’t… I want it to be able to then give me the report instead of like here’s how you go get the thing.”
+He summarized the desired outcome simply:
+“I want it to be able to say like, and here it is.”
+Improvement opportunity: Return direct answers, reports, or summaries, not just instructions.
+3. Discoverability and placement limit usage
+Jeff admitted that where N‑zo lives in the UI affects how often he uses it.
+He is rarely in the current view where N‑zo appears:
+“I’m not in that view. So I’m not used to that view existing.”
+Even though he likes the new view, habit wins:
+“I like the new view a lot. I just am not… I’m just never in it.”
+Improvement opportunity: Make N‑zo accessible globally, not tied to specific screens.
+4. Full‑screen experience feels constrained (possible bug)
+Jeff appreciated full‑screen mode but found it incomplete.
+He said full screen didn’t actually give him more working space:
+“My only nitpick is it’d be cool if when you put it in full screen if it actually went bigger… it just sticks it in a column in the middle of the screen.”
+He believed this might be unintended behavior:
+“That really solved that whole thing for me… never mind. It doesn’t solve my problem.”
+Improvement opportunity: True responsive full‑screen layout with wider text and content area.
+5. Reporting issues and feedback paths are easy to miss
+Jeff didn’t realize how to report UI problems.
+He said:
+“I didn’t think about reporting an issue with the size because I was like, oh, that must be intentional.”
+He acknowledged the info was there, but not obvious enough:
+“This is probably because I skipped over that part in the welcome e‑mail.”
+Improvement opportunity: In‑product reminders or lightweight prompts for reporting bugs and feedback.
+6. Host name ambiguity across tenants
+Jeff raised a practical edge case that could become a broader problem.
+He noted:
+“It’s not uncommon for us to have the same machine name in more than one tenant.”
+Improvement opportunity: Disambiguation when identical hostnames exist across tenants.

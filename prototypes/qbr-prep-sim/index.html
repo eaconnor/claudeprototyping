@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>qbr-prep-sim — Prep-Assemble simulation · Tier 1 Concept</title>
+<script>
+/* apply mode pref before first paint — localStorage key: apx-mode-pref */
+(function () {
+  try {
+    var pref = localStorage.getItem('apx-mode-pref') || 'system';
+    var dark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ===== canvas — [CS: UNKNOWN], no dark-mode Apex pull yet ===== */
+  --bg-app: #0b1220;       /* main app canvas */
+  --bg-surface: #121b2e;   /* cards, panels */
+  --bg-elevated: #182238;  /* hover, raised */
+  --bg-deep: #070d18;      /* wells, insets */
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  /* ===== text — [CS: UNKNOWN], no dark-mode Apex pull yet ===== */
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  /* ===== brand — [CS: VERIFIED] live Figma pull, Apex 2.0, 2026-07-31 ===== */
+  --brand: #c046ff;        /* color/brand/base */
+  --brand-strong: #8500cc; /* surface/app/product-bar/product-block */
+  --brand-soft: rgba(192,70,255,0.14);
+
+  /* ===== status — [CS: UNKNOWN], only fill/active (#058142, maps to "low") verified ===== */
+  --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+  --low: #058142;       --low-soft: rgba(5,129,66,0.12);  /* [CS: VERIFIED] fill/active */
+
+  /* ===== Bradley / council accent (violet) — Band's own, not Apex ===== */
+  --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+  /* ===== DISTINCT SURFACES — topbar + Bradley rail are their OWN color ===== */
+  --topbar-bg: #0a1730;          /* brand cast, darker than app — [CS: UNKNOWN] dark variant */
+  --topbar-border: var(--brand); /* 2px brand line under topbar */
+  --rail-bg: #16112e;            /* violet-tinted — visibly NOT the app */
+  --rail-border: var(--alpha-accent);  /* 4px solid left border */
+
+  /* ===== shape + type — [CS: VERIFIED] radius; font family verified, JetBrains Mono is NOT Apex-sourced ===== */
+  --radius-sm: 2px;  --radius-md: 4px;  --radius-lg: 16px;  --radius-full: 999px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;      /* fonts/context/brand/family */
+  --font-brand: 'Manrope', -apple-system, sans-serif;                    /* product-bar/heading font, verified */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;                /* Band Protocol convention for metrics/code — not from Apex */
+}
+
+/* Light mode (3-way toggle: light · dark · system) — [CS: VERIFIED] live Figma pull, Apex 2.0, 2026-07-31 */
+[data-theme="light"] {
+  --bg-app: #fafafa;       /* surface/container/tertiary/default */
+  --bg-surface: #ffffff;   /* surface/container/default, surface/app/background/default */
+  --bg-elevated: #f8ebff;  /* surface/container/active/default — brand-tinted hover */
+  --bg-deep: #fafafa;
+  --border: #d5d5d5;       /* border/default */
+  --border-strong: #c046ff; /* border/container/active */
+  --text-primary: #18191a;  /* content/default/heading */
+  --text-secondary: #2e2e33; /* content/default/body */
+  --text-tertiary: #404047;  /* content/default/secondary */
+  --text-muted: #5c5c66;     /* content/default/placeholder */
+  --topbar-bg: #0a1730;          /* keep topbar dark + branded in both modes — [CS: UNKNOWN] */
+  --rail-bg: #f0eafa;            /* violet-tinted light surface */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+button:disabled { cursor: not-allowed; }
+
+/* ============ TOPBAR — distinct surface, dark in both modes ============ */
+.topbar {
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  color: #e6edf7;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+.topbar .product {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar .product .block {
+  background: var(--brand-strong);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 2px 8px;
+  font-size: 0.8rem;
+}
+.topbar .crumb { color: #9aa8c2; font-size: 0.82rem; }
+.topbar .spacer { flex: 1; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.topbar .chip { background: rgba(255,255,255,0.06); border-color: rgba(192,70,255,0.5); color: #cbb8e8; }
+.chip.cs { border-color: var(--medium); color: var(--medium); background: var(--medium-soft); }
+.chip.cs-a { border-color: var(--high); color: var(--high); background: var(--high-soft); }
+.chip.cs-d { border-color: var(--low); color: var(--text-secondary); }
+.chip.wobbly { border-color: var(--critical); color: var(--critical); background: var(--critical-soft); }
+.chip.seed { border-style: dashed; color: var(--text-tertiary); }
+
+/* mode toggle */
+.mode-toggle {
+  display: inline-flex;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.mode-toggle button {
+  background: transparent;
+  color: #9aa8c2;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+}
+.mode-toggle button[aria-pressed="true"] { background: var(--brand-strong); color: #fff; }
+
+/* ============ LAYOUT ============ */
+.shell { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: calc(100vh - 46px); }
+.content { min-width: 0; padding-bottom: 60px; }
+
+/* ============ FIDELITY BANNER — sticky ============ */
+.fidelity {
+  position: sticky;
+  top: 46px;
+  z-index: 50;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-strong);
+  padding: 8px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 12px -8px rgba(0,0,0,0.4);
+}
+.fidelity .tier {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pips { display: inline-flex; gap: 4px; }
+.pips span { width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--border-strong); }
+.pips span.on { background: var(--brand); }
+.fid-matrix { display: inline-flex; flex-wrap: wrap; gap: 4px 12px; font-family: var(--font-mono); font-size: 0.66rem; }
+.fid-matrix .ok { color: var(--low); } [data-theme="dark"] .fid-matrix .ok { color: #34d399; }
+.fid-matrix .part { color: var(--medium); }
+.fid-matrix .no { color: var(--critical); }
+.fidelity .echo { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); }
+.fidelity .readiness { font-family: var(--font-mono); font-size: 0.66rem; color: var(--alpha-accent); }
+
+/* ============ PAGE NAV ============ */
+.pagenav {
+  display: flex;
+  gap: 6px;
+  padding: 14px 18px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-app);
+}
+.pagenav button {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.pagenav button[aria-current="page"] {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  box-shadow: inset 0 2px 0 var(--brand);
+}
+.pagenav .navnote { margin-left: auto; align-self: center; font-family: var(--font-mono); font-size: 0.64rem; color: var(--text-muted); padding-bottom: 6px; }
+
+.page { display: none; padding: 20px 18px; }
+.page.active { display: block; }
+
+h1 { font-family: var(--font-brand); font-size: 1.25rem; font-weight: 800; margin-bottom: 2px; }
+h2 { font-family: var(--font-brand); font-size: 0.98rem; font-weight: 700; margin-bottom: 8px; }
+h3 { font-size: 0.85rem; font-weight: 700; }
+.sub { color: var(--text-tertiary); font-size: 0.78rem; margin-bottom: 16px; }
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: 0 2px 8px -4px rgba(0,0,0,0.25);
+}
+
+/* ============ PREMISE BANNER ============ */
+.premise {
+  border: 1px solid var(--high);
+  background: var(--high-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  font-size: 0.82rem;
+}
+.premise strong { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; }
+
+/* ============ JUDGE QUEUE — prime position ============ */
+.judge {
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  margin-bottom: 22px;
+  box-shadow: 0 0 0 3px var(--brand-soft), 0 4px 14px -8px rgba(0,0,0,0.4);
+}
+.judge header { padding: 12px 14px 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.judge .caption { font-family: var(--font-mono); font-size: 0.7rem; color: var(--brand); }
+[data-theme="light"] .judge .caption { color: var(--brand-strong); }
+.judge-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.1fr) 1fr 0.7fr auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+.judge-row .gap-src { font-family: var(--font-mono); font-size: 0.64rem; color: var(--text-tertiary); display: block; margin-top: 2px; }
+.judge-field {
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  min-height: 40px;
+  padding: 6px 8px;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  background: var(--bg-deep);
+}
+.judge-field .label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.05em; text-transform: uppercase; display: block; color: var(--text-tertiary); margin-bottom: 2px; }
+.judge-field.filled { border-style: solid; border-color: var(--low); color: var(--text-primary); background: var(--low-soft); }
+.judge-row .attr { font-family: var(--font-mono); font-size: 0.62rem; color: var(--low); display: none; grid-column: 1 / -1; }
+[data-theme="dark"] .judge-row .attr { color: #34d399; }
+.judge-row.filled .attr { display: block; }
+.btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+.btn:hover:not(:disabled) { border-color: var(--brand); }
+.btn.primary { background: var(--brand-strong); border-color: var(--brand-strong); color: #fff; }
+.btn:disabled { opacity: 0.45; }
+
+/* ============ PULL CARDS ============ */
+.pull-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.pull-card { position: relative; }
+.pull-card .num {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--brand);
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 4px;
+}
+[data-theme="light"] .pull-card .num { color: var(--brand-strong); }
+.pull-card h3 { margin-bottom: 4px; }
+.pull-card .sor { font-size: 0.72rem; color: var(--text-tertiary); margin-bottom: 8px; }
+.pull-card .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-mono); font-size: 0.64rem;
+  padding: 2px 8px; border-radius: var(--radius-full); border: 1px solid;
+}
+.badge::before { content: "●"; font-size: 0.55rem; }
+.badge.ok { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .badge.ok { color: #34d399; }
+.badge.unbound { color: var(--medium); border-color: var(--medium); background: var(--medium-soft); }
+.badge.deprecated { color: var(--high); border-color: var(--high); background: var(--high-soft); }
+.badge.unresolvable { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.badge.conn-err { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.badge.conn-ok { color: var(--text-secondary); border-color: var(--border-strong); background: var(--bg-elevated); }
+.pull-card .seedline { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-secondary); margin-top: 8px; }
+.pull-expand-body { display: none; margin-top: 10px; border-top: 1px dashed var(--border-strong); padding-top: 10px; font-size: 0.76rem; color: var(--text-secondary); }
+.pull-card.expanded .pull-expand-body { display: block; }
+.diff-card {
+  border: 1.5px dashed var(--high);
+  background: linear-gradient(0deg, var(--high-soft), var(--high-soft)), var(--bg-surface);
+}
+.diff-card .num { color: var(--high); }
+
+/* ============ HEALTH SNAPSHOT ============ */
+.health-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px; }
+.health-card .score { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; }
+.health-card .wts { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); margin-top: 4px; }
+
+/* ============ RISK REGISTER + CONFIRM GATE ============ */
+.register { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-surface); margin-bottom: 20px; overflow: hidden; }
+.register header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
+.reg-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+}
+.reg-row:last-child { border-bottom: none; }
+.reg-row .src { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); display: block; margin-top: 2px; }
+.tier {
+  font-family: var(--font-mono); font-size: 0.64rem; padding: 2px 8px;
+  border-radius: var(--radius-full); border: 1px solid; justify-self: start; white-space: nowrap;
+}
+.tier.measured { color: var(--low); border-color: var(--low); background: var(--low-soft); }
+[data-theme="dark"] .tier.measured { color: #34d399; }
+.tier.benchmarked { color: var(--alpha-accent); border-color: var(--alpha-accent); background: var(--alpha-soft); }
+.tier.estimated { color: var(--medium); border-color: var(--medium); background: var(--medium-soft); }
+.tier.unverified { color: var(--critical); border-color: var(--critical); background: var(--critical-soft); }
+.gate-state { justify-self: end; text-align: right; }
+.gate-blocked {
+  display: inline-flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.gate-blocked .stamp {
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700;
+  color: #fff; background: var(--critical);
+  padding: 3px 10px; border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+}
+.reg-row.blocked { background: var(--critical-soft); border-left: 4px solid var(--critical); }
+.reg-row.cleared-attr { border-left: 4px solid var(--low); }
+.gate-cleared { font-family: var(--font-mono); font-size: 0.64rem; color: var(--low); text-align: right; }
+[data-theme="dark"] .gate-cleared { color: #34d399; }
+.gate-eligible { font-family: var(--font-mono); font-size: 0.64rem; color: var(--text-tertiary); }
+
+/* exposure counter */
+.exposure {
+  border: 1px solid var(--medium); background: var(--medium-soft);
+  border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 20px;
+  font-size: 0.8rem;
+}
+.exposure .n { font-family: var(--font-mono); font-weight: 700; }
+
+/* quarantine frame */
+.quarantine {
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 20px;
+  background: var(--bg-deep);
+  position: relative;
+}
+.quarantine > .q-label {
+  position: absolute; top: -10px; left: 12px;
+  background: var(--bg-deep);
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em;
+  color: var(--text-tertiary); padding: 0 8px; text-transform: uppercase;
+}
+.quarantine .q-caption { font-family: var(--font-mono); font-size: 0.66rem; color: var(--high); margin-top: 10px; }
+.coworker-card { border-left: 4px solid var(--brand); }
+.coworker-card .timechip {
+  border-color: var(--brand); color: var(--brand); background: var(--brand-soft);
+}
+[data-theme="light"] .coworker-card .timechip { color: var(--brand-strong); }
+
+/* internal notes */
+.notes { margin-bottom: 20px; }
+.notes .note { border-left: 3px solid var(--medium); padding: 8px 12px; margin-bottom: 8px; background: var(--bg-surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: 0.8rem; color: var(--text-secondary); }
+.notes .note .who { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-tertiary); display: block; margin-top: 4px; }
+
+/* ============ EXTRACT (page 3) ============ */
+.extract-doc {
+  max-width: 720px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow: 0 6px 20px -12px rgba(0,0,0,0.35);
+  margin-bottom: 16px;
+}
+.extract-doc .letterhead { border-bottom: 2px solid var(--brand); padding-bottom: 12px; margin-bottom: 18px; }
+.extract-doc .letterhead .from { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); }
+.extract-doc h2 { margin-top: 18px; }
+.extract-doc p, .extract-doc li { font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 8px; }
+.extract-doc ul { padding-left: 18px; }
+.extract-doc .decision {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  padding: 10px 12px; margin-bottom: 10px; background: var(--bg-app);
+}
+.extract-doc .decision h3 { margin-bottom: 4px; color: var(--text-primary); }
+.evidence-foot { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-muted); }
+.extract-held {
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+  padding: 10px 12px; margin-bottom: 10px; font-family: var(--font-mono);
+  font-size: 0.68rem; color: var(--text-muted);
+}
+#extract-cleared-row { display: none; }
+#extract-cleared-row.show { display: block; }
+#extract-held-note.hide { display: none; }
+.send-footer {
+  max-width: 720px; display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+}
+.send-footer .label { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); }
+
+/* ============ BRADLEY RAIL — distinct violet surface ============ */
+.rail {
+  background: var(--rail-bg);
+  border-left: 4px solid var(--rail-border);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  padding: 16px 14px 40px;
+  font-size: 0.78rem;
+}
+.rail h2 { color: var(--alpha-accent); display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+[data-theme="light"] .rail h2 { color: #6d28d9; }
+.rail .readiness-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--alpha-accent); border-radius: var(--radius-full);
+  padding: 4px 12px; font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--alpha-accent); background: var(--alpha-soft); margin: 8px 0;
+}
+[data-theme="light"] .rail .readiness-badge { color: #6d28d9; }
+.rail .blurb { color: var(--text-secondary); margin-bottom: 14px; }
+.rail-block { border: 1px solid var(--border-strong); border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 10px; background: var(--bg-surface); }
+.rail-block h3 { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono); margin-bottom: 6px; }
+.rail-block.nailed h3 { color: var(--low); } [data-theme="dark"] .rail-block.nailed h3 { color: #34d399; }
+.rail-block.hurt h3 { color: var(--critical); }
+.rail-block ul { padding-left: 16px; }
+.rail-block li { margin-bottom: 4px; color: var(--text-secondary); font-size: 0.74rem; }
+.routed { margin-bottom: 10px; }
+.routed summary {
+  cursor: pointer; font-weight: 700; font-size: 0.78rem;
+  padding: 8px 10px; border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); background: var(--bg-surface);
+  list-style: none; display: flex; justify-content: space-between; align-items: center;
+}
+.routed summary::after { content: "+"; font-family: var(--font-mono); color: var(--alpha-accent); }
+.routed[open] summary::after { content: "–"; }
+.routed .routed-body { border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); padding: 10px 12px; background: var(--bg-surface); font-size: 0.72rem; color: var(--text-secondary); }
+.routed .routed-body p { margin-bottom: 6px; }
+.routed .roi { font-family: var(--font-mono); font-size: 0.64rem; border-top: 1px dashed var(--border-strong); padding-top: 6px; margin-top: 6px; }
+.routed .roi div { margin-bottom: 3px; }
+.rail .attribution { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); margin-top: 16px; border-top: 1px dashed var(--border-strong); padding-top: 10px; }
+
+/* ============ COUNCIL MODAL ============ */
+.modal-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(3,6,14,0.72); align-items: flex-start; justify-content: center;
+  padding: 6vh 16px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg-surface); border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-lg); max-width: 640px; width: 100%;
+  max-height: 84vh; overflow-y: auto; padding: 22px 24px;
+  box-shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+}
+.modal h2 { color: var(--alpha-accent); }
+[data-theme="light"] .modal h2 { color: #6d28d9; }
+.modal .exec {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  padding: 12px; font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text-secondary); margin: 12px 0;
+  background: var(--bg-deep);
+}
+.tension-slot {
+  border: 1.5px dashed var(--border-strong); border-radius: var(--radius-md);
+  padding: 14px; margin-bottom: 10px; text-align: center;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+}
+.synth-slot {
+  border: 1.5px dashed var(--medium); border-radius: var(--radius-md);
+  padding: 14px; margin: 14px 0; font-family: var(--font-mono);
+  font-size: 0.72rem; color: var(--medium); background: var(--medium-soft);
+}
+.modal-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+.section-note { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-tertiary); margin-bottom: 10px; }
+.mb8 { margin-bottom: 8px; } .mb16 { margin-bottom: 16px; } .mb22 { margin-bottom: 22px; }
+
+@media (max-width: 980px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { border-left: none; border-top: 4px solid var(--rail-border); }
+  .judge-row { grid-template-columns: 1fr; }
+  .health-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR ================= -->
+<header class="topbar">
+  <span class="product"><span class="block">ACP</span> QBR Advisor <span class="crumb">(Coworker)</span></span>
+  <span class="chip" title="U6 — corpus naming divergence, carried visibly">"QBR Analyst" in onboarding spec — naming divergence unresolved [D]</span>
+  <span class="crumb">SuperN-able Shop · prepping EBR for Dibbler &amp; Sons Chartered Accountants Ltd</span>
+  <span class="spacer"></span>
+  <span class="chip">Prep-Assemble × 8 data pulls</span>
+  <div class="mode-toggle" role="group" aria-label="Colour mode">
+    <button type="button" id="mode-light" onclick="setMode('light')">light</button>
+    <button type="button" id="mode-dark" onclick="setMode('dark')">dark</button>
+    <button type="button" id="mode-system" onclick="setMode('system')">system</button>
+  </div>
+</header>
+
+<div class="shell">
+<main class="content">
+
+  <!-- ================= FIDELITY BANNER (sticky) ================= -->
+  <div class="fidelity" role="note" aria-label="Fidelity banner">
+    <span class="tier">Tier 1 · Concept <span class="pips" aria-label="tier 1 of 3"><span class="on"></span><span></span><span></span></span></span>
+    <span class="fid-matrix">
+      <span class="ok">✓ real copy</span>
+      <span class="part">~ seed data</span>
+      <span class="ok">✓ core interaction</span>
+      <span class="no">× full workflow</span>
+      <span class="ok">✓ visual hierarchy</span>
+      <span class="no">× production ready</span>
+    </span>
+    <span class="echo">prep baseline: 4–5h self-reported, n=1, echo — not a stat</span>
+    <span class="readiness">Readiness score: Bradley rail → (rail-only, [A] device)</span>
+  </div>
+
+  <!-- ================= PAGE NAV ================= -->
+  <nav class="pagenav" aria-label="Prototype pages">
+    <button type="button" id="nav-board" aria-current="page" onclick="navigate('board')">1 · Prep Board</button>
+    <button type="button" id="nav-working" onclick="navigate('working')">2 · Working Document</button>
+    <button type="button" id="nav-extract" onclick="navigate('extract')">3 · Client-Facing Extract</button>
+    <span class="navnote">dual-surface = two artifact objects, never a toggle [R]</span>
+  </nav>
+
+  <!-- ============================================================
+       PAGE 1 — PREP BOARD (internal surface)
+       ============================================================ -->
+  <section class="page active" id="page-board" aria-label="Prep Board">
+    <h1>Prep Board — Dibbler &amp; Sons EBR (6-monthly)</h1>
+    <p class="sub">Internal surface · operator: J. Garlick, delivery lead, SuperN-able Shop · client: Dibbler &amp; Sons Chartered Accountants Ltd — ~48 staff, Leeds + York, 61 managed endpoints <span class="chip seed">SEED DATA — invented 2026-07-31</span></p>
+
+    <div class="premise">
+      <strong>SIM PREMISE</strong> <span class="chip cs-a">[A — the thing being tested]</span><br>
+      This sim assumes the operator pulls her own 8 sources via the QBR Advisor Coworker. In the n=1 evidence she does <em>not</em> pull — the Head of Technical Overview does all 8, and the delivery lead's role is the Judge step. The operator-pulls premise blends two people and has no direct source. This screen exists to make that question fieldable — it is not a finding.
+    </div>
+
+    <!-- JUDGE QUEUE — prime position -->
+    <div class="judge" aria-label="Judge queue">
+      <header>
+        <h2>Judge queue — gap → business consequence → roadmap priority</h2>
+        <span class="chip cs">[R — blueprint: "the one moment with no tool at all"]</span>
+        <span class="caption">the one moment with no tool — this is where you come in</span>
+      </header>
+
+      <div class="judge-row" id="judge-row-1">
+        <div>11 staff accounts without MFA <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+          <span class="gap-src">pulled: Identity &amp; MFA · metric name: MFA coverage (Northsignal, MIT, attribution retained)</span>
+        </div>
+        <div class="judge-field" id="judge-1-conseq"><span class="label">business consequence</span><span class="val">— empty · only the human fills this —</span></div>
+        <div class="judge-field" id="judge-1-prio"><span class="label">roadmap priority</span><span class="val">— empty —</span></div>
+        <div><button type="button" class="btn primary" id="judge-1-btn" onclick="fillJudgeRow()">Judge this gap (demo)</button></div>
+        <span class="attr">filled by J. Garlick (operator) · 2026-07-31 · sim demo — this judgment is the human's, not the Coworker's</span>
+      </div>
+
+      <div class="judge-row">
+        <div>Restore test "ran" — restorability not verified <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+          <span class="gap-src">pulled: Backup &amp; recovery · "ran" ≠ "verified restorable" [R]</span>
+        </div>
+        <div class="judge-field"><span class="label">business consequence</span>— empty · only the human fills this —</div>
+        <div class="judge-field"><span class="label">roadmap priority</span>— empty —</div>
+        <div><button type="button" class="btn" disabled title="painted — one demo row only at Tier 1">Judge this gap</button></div>
+      </div>
+
+      <div class="judge-row">
+        <div>Sold package includes managed EDR; 9 of 61 devices missing EDR <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+          <span class="gap-src">pulled: Package-gap diff (V9) · the risk-register feed [WOBBLY — single speaker]</span>
+        </div>
+        <div class="judge-field"><span class="label">business consequence</span>— empty · only the human fills this —</div>
+        <div class="judge-field"><span class="label">roadmap priority</span>— empty —</div>
+        <div><button type="button" class="btn" disabled title="painted — one demo row only at Tier 1">Judge this gap</button></div>
+      </div>
+    </div>
+
+    <!-- HEALTH SNAPSHOT -->
+    <h2>Client health snapshot <span class="chip seed">SEED DATA — invented 2026-07-31</span></h2>
+    <p class="section-note">score shape: etop-am verbatim weightings (ISC) · row + metric names: Northsignal Labs template pack (MIT, attribution retained) · mapping those names onto N-central/Cove/Adlumin territory is our move, not the sources' [A] · every value invented</p>
+    <div class="health-row">
+      <div class="card health-card">
+        <h3>Standards score</h3>
+        <div class="score">71</div>
+        <div class="wts">weights 20/30/20/15/15 · etop-am (ISC)</div>
+      </div>
+      <div class="card health-card">
+        <h3>Risk score</h3>
+        <div class="score">63</div>
+        <div class="wts">weights 30/25/25/20 · etop-am (ISC)</div>
+      </div>
+      <div class="card health-card">
+        <h3>Experience score</h3>
+        <div class="score">82</div>
+        <div class="wts">weights 25/20/25/15/15 · etop-am (ISC)</div>
+      </div>
+    </div>
+
+    <!-- 8 PULL CARDS + V9 DIFF CARD -->
+    <h2>Data pulls — Prep-Assemble × 8</h2>
+    <p class="section-note">one blueprint stage, eight separate backstage pulls, not one step [R] · each pull arrives via an MCP Instance (account-scoped configured connection) — never "a singular MCP" · reference_health is spec-004 FR-037 UI grammar, spec-complete, 0/40 built — shown, not claimed running [D]</p>
+
+    <div class="pull-grid">
+
+      <div class="card pull-card">
+        <span class="num">PULL 1 / 8 · V1</span>
+        <h3>Warranty / EOL</h3>
+        <p class="sor">system of record: N-central / N-sight warranty reports · via MCP Instance: N-central (account-scoped)</p>
+        <div class="chips">
+          <span class="badge ok">reference_health: ok</span>
+          <span class="chip cs-a">pre-connected [A] — assumes N-able MCPs ship authed (open question, J. Scally)</span>
+        </div>
+        <p class="seedline">7 devices past warranty · 3 EOL OS builds <span class="chip seed">SEED</span></p>
+      </div>
+
+      <div class="card pull-card">
+        <span class="num">PULL 2 / 8 · V2</span>
+        <h3>License utilization (no login 3–4 mo)</h3>
+        <p class="sor">system of record: M365 admin center / IdP login logs · via MCP Instance: M365 (third-party)</p>
+        <div class="chips">
+          <span class="badge ok">reference_health: ok</span>
+          <span class="badge conn-ok">connection: active</span>
+        </div>
+        <p class="seedline">6 licenses with no login in 3–4 months <span class="chip seed">SEED</span></p>
+      </div>
+
+      <div class="card pull-card">
+        <span class="num">PULL 3 / 8 · V3</span>
+        <h3>User / staff reconcile</h3>
+        <p class="sor">system of record: AD or IdP vs. HR roster cross-check · HR roster has no bound source — manual cross-check</p>
+        <div class="chips">
+          <span class="badge unbound">reference_health: unbound</span>
+        </div>
+        <p class="seedline">2 leaver accounts still enabled — needs manual confirm <span class="chip seed">SEED</span></p>
+      </div>
+
+      <div class="card pull-card">
+        <span class="num">PULL 4 / 8 · V4</span>
+        <h3>Ticket volume + SLA</h3>
+        <p class="sor">system of record: Halo PSA reporting · via MCP Instance: Halo PSA (third-party)</p>
+        <div class="chips">
+          <span class="badge unresolvable">reference_health: unresolvable</span>
+          <span class="badge conn-err">connection: reauth needed</span>
+        </div>
+        <p class="seedline">last successful pull 19 days ago — stale until reauth <span class="chip seed">SEED</span></p>
+      </div>
+
+      <div class="card pull-card" id="pull-5">
+        <span class="num">PULL 5 / 8 · V5</span>
+        <h3>Patch + backup</h3>
+        <p class="sor">system of record: N-central patch status + Cove job success + restore-test log · via MCP Instances: N-central, Cove</p>
+        <div class="chips">
+          <span class="badge ok">reference_health: ok</span>
+          <span class="chip cs-a">pre-connected [A] — assumes N-able MCPs ship authed (open question, J. Scally)</span>
+        </div>
+        <p class="seedline">critical patches overdue: 4 devices · backup jobs successful: 58 of 61 <span class="chip seed">SEED</span></p>
+        <button type="button" class="btn" id="pull-5-btn" aria-expanded="false" aria-controls="pull-5-body" onclick="togglePull()" style="margin-top:8px;">Expand pull detail</button>
+        <div class="pull-expand-body" id="pull-5-body">
+          <p><strong>Restore-test log:</strong> restore tests completed: 1 this period — and it <em>ran</em>; nobody verified the restored data. "Ran" ≠ "verified restorable" [R]. This is the row the confirm-gate will block on the Working Document.</p>
+          <p style="margin-top:6px;"><span class="chip cs-d">baseline_source: tenant_configured [D — built, in code]</span> — the only substrate that exists in code; the defensibility tier on page 2 is proposed grammar layered over it, not built.</p>
+        </div>
+      </div>
+
+      <div class="card pull-card">
+        <span class="num">PULL 6 / 8 · V6</span>
+        <h3>Phish-sim + training</h3>
+        <p class="sor">system of record: security-awareness platform · via MCP Instance: phish-sim (third-party)</p>
+        <div class="chips">
+          <span class="badge unresolvable">reference_health: unresolvable</span>
+          <span class="badge conn-err">connection: endpoint down</span>
+        </div>
+        <p class="seedline">phishing blocked: 214 (partial period — pull interrupted) <span class="chip seed">SEED</span></p>
+      </div>
+
+      <div class="card pull-card">
+        <span class="num">PULL 7 / 8 · V7</span>
+        <h3>Tenant config vs. baseline</h3>
+        <p class="sor">system of record: Adlumin health report vs. MSP-authored baseline — the baseline is judgment, not data [R]</p>
+        <div class="chips">
+          <span class="badge ok">reference_health: ok</span>
+          <span class="chip cs-a">pre-connected [A] — assumes N-able MCPs ship authed (open question, J. Scally)</span>
+        </div>
+        <p class="seedline">3 config drifts from MSP baseline <span class="chip seed">SEED</span></p>
+      </div>
+
+      <div class="card pull-card">
+        <span class="num">PULL 8 / 8 · V8</span>
+        <h3>Compliance checklist</h3>
+        <p class="sor">system of record: Adlumin assessments or manual checklist · which standards apply per client is unnamed in source [?]</p>
+        <div class="chips">
+          <span class="badge deprecated">reference_health: deprecated</span>
+          <span class="chip cs-a">pre-connected [A] — assumes N-able MCPs ship authed (open question, J. Scally)</span>
+        </div>
+        <p class="seedline">checklist snapshot v2 superseded — re-pin before use <span class="chip seed">SEED</span></p>
+      </div>
+
+      <!-- the explicit 9th card — visually distinct -->
+      <div class="card pull-card diff-card">
+        <span class="num">+1 · V9 — NOT one of the 8</span>
+        <h3>Package-gap diff</h3>
+        <p class="sor">sold package vs. deployed stack — the risk-register feed</p>
+        <div class="chips">
+          <span class="chip wobbly">unnumbered by the blueprint · [WOBBLY — single speaker]</span>
+        </div>
+        <p class="seedline">managed EDR sold; 9 of 61 devices missing agent → feeds risk register R2 <span class="chip seed">SEED</span></p>
+      </div>
+
+    </div>
+
+    <p class="section-note">Third-party connection grammar (Will Mincher FigJam) collapses to badge states here — auth expired · endpoint down · URL blocked · reauth needed. The config/instance/auth journey is NOT exercised at Tier 1; badges only.</p>
+  </section>
+
+  <!-- ============================================================
+       PAGE 2 — WORKING DOCUMENT (internal artifact, E6)
+       ============================================================ -->
+  <section class="page" id="page-working" aria-label="Working Document">
+    <h1>Working Document — internal prep artifact</h1>
+    <p class="sub">Candid notes, operator risk judgments, "things that haven't happened yet." This is artifact object 1 of 2 — the Client-Facing Extract is a second object, never a redaction toggle on this one [R].</p>
+
+    <div class="exposure" role="note">
+      <span class="n">This draft documents 6 detected gaps.</span> Volume of detection is volume of exposure — cleared items enter the client-visible record. <span class="chip cs">[R — Must 8, machine-specific concern]</span>
+    </div>
+
+    <!-- RISK REGISTER + CONFIRM GATE -->
+    <div class="register">
+      <header>
+        <h2>Risk register — auto-drafted by QBR Advisor, human-cleared</h2>
+        <span class="chip cs-d">defensibility tier = proposed grammar — not built substrate [D — grep 2026-07-31: zero hits in code; code has baseline_source only]</span>
+        <span class="chip cs">confirm-gate {S4}: block is the default — a passive warning is a fail [R]</span>
+      </header>
+
+      <div class="reg-row cleared-attr">
+        <div>11 staff accounts without MFA (Identity &amp; MFA) <span class="chip seed">SEED</span>
+          <span class="src">source: M365/IdP pull · first-party count</span>
+        </div>
+        <span class="tier measured">Measured</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row cleared-attr">
+        <div>9 of 61 endpoints missing EDR agent — sold package includes managed EDR <span class="chip seed">SEED</span>
+          <span class="src">source: package-gap diff (V9) vs. N-central inventory [WOBBLY — single speaker]</span>
+        </div>
+        <span class="tier measured">Measured</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row cleared-attr">
+        <div>Critical patches overdue on 4 devices vs. peer benchmark <span class="chip seed">SEED</span>
+          <span class="src">source: N-central patch status · benchmark set invented [A]</span>
+        </div>
+        <span class="tier benchmarked">Benchmarked</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row cleared-attr">
+        <div>Phishing exposure judged elevated from partial sim data (platform endpoint down mid-pull) <span class="chip seed">SEED</span>
+          <span class="src">source: phish-sim pull, interrupted · operator's read, not a measurement</span>
+        </div>
+        <span class="tier estimated">Estimated</span>
+        <div class="gate-state"><span class="gate-cleared">✓ cleared — J. Garlick · 2026-07-31</span></div>
+      </div>
+
+      <div class="reg-row blocked" id="gate-row-1">
+        <div>Backups presumed restorable — restore verification not completed ("ran" ≠ "verified restorable") <span class="chip seed">SEED</span>
+          <span class="src">source: Cove job success + restore-test log</span>
+        </div>
+        <span class="tier unverified">Unverified</span>
+        <div class="gate-state">
+          <span class="gate-blocked" id="gate-1-blocked">
+            <span class="stamp">⛔ BLOCKED FROM EXTRACT</span>
+            <button type="button" class="btn primary" onclick="clearGate(1)">Operator clears</button>
+          </span>
+          <span class="gate-cleared" id="gate-1-cleared" style="display:none;">✓ cleared by J. Garlick (operator) · 2026-07-31 · Unverified → released to extract under her name</span>
+        </div>
+      </div>
+
+      <div class="reg-row blocked" id="gate-row-2">
+        <div>2 leaver accounts possibly still enabled — HR roster unbound, not yet manually confirmed <span class="chip seed">SEED</span>
+          <span class="src">source: AD/IdP vs. HR roster · reference_health: unbound</span>
+        </div>
+        <span class="tier unverified">Unverified</span>
+        <div class="gate-state">
+          <span class="gate-blocked" id="gate-2-blocked">
+            <span class="stamp">⛔ BLOCKED FROM EXTRACT</span>
+            <button type="button" class="btn primary" onclick="clearGate(2)">Operator clears</button>
+          </span>
+          <span class="gate-cleared" id="gate-2-cleared" style="display:none;">✓ cleared by J. Garlick (operator) · 2026-07-31 · Unverified → released to extract under her name</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COWORKER ADMIN CARD — QUARANTINED -->
+    <div class="quarantine">
+      <span class="q-label">ACP admin surface</span>
+      <div class="card coworker-card">
+        <h3>QBR Advisor <span class="crumb" style="font-weight:400;color:var(--text-tertiary);">Coworker · DEC-006 v1 default · priority 2.90, rank 1 of 5</span></h3>
+        <div class="chips" style="margin-top:8px;">
+          <span class="chip timechip">⏱ prep this cycle ≈ 0.4× the self-reported baseline — ratio only; baseline is one echo, n=1, not a stat · SEED DATA — invented 2026-07-31</span>
+          <span class="chip cs-d">time-saved framing = FSN-83143 §5 Coworker-card north star [D]</span>
+        </div>
+      </div>
+      <p class="q-caption">this framing never reaches the client surface → (DIV-004: Must 1 bans time-saved / percentage / graph framing inside client-facing QBR content — resolution owner Beth → Nicole, open [?])</p>
+    </div>
+
+    <!-- CANDID INTERNAL NOTES -->
+    <div class="notes">
+      <h2>Internal notes — candid, never client-visible <span class="chip cs">[Must 6: demonstrably absent from the extract object]</span></h2>
+      <div class="note">Third cycle running that Dibbler have deferred the MFA rollout we scoped in January. Don't let C. Dibbler wave it off again — put it first in the decisions list and hold the silence after asking.
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+      <div class="note">The restore test "ran" but nobody opened the restored files. Until someone verifies, we do not know their recovery position — and neither do they. If they ask "are we safe," the honest answer is "we'll know after the verification we're proposing."
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+      <div class="note">S. Bonk (Practice Manager, York office) is the real decision-maker on spend, not the Leeds partners. Route the roadmap conversation through her.
+        <span class="who">J. Garlick · working note <span class="chip seed">SEED DATA — invented 2026-07-31</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PAGE 3 — CLIENT-FACING EXTRACT (second artifact object, E7)
+       ============================================================ -->
+  <section class="page" id="page-extract" aria-label="Client-Facing Extract">
+    <h1>Client-Facing Extract — second artifact object</h1>
+    <p class="sub">Only confirm-gate-cleared rows appear here. Structurally separate from the Working Document — a second object, not a filtered view. <span class="chip seed">SEED DATA — invented 2026-07-31</span></p>
+
+    <article class="extract-doc" aria-label="Extract document">
+      <div class="letterhead">
+        <h2 style="margin-top:0;">Service Review — Dibbler &amp; Sons Chartered Accountants Ltd</h2>
+        <p class="from">Prepared by SuperN-able Shop · Review period: January–June 2026 · Six-monthly business review · Offices covered: Leeds + York · 61 managed devices</p>
+      </div>
+
+      <h2>What this period protected</h2>
+      <p>Your practice handles client money, payroll records, and personal financial information every working day. Over the last six months our monitoring stopped 214 phishing attempts before they reached your staff, and your systems stayed available through both the January self-assessment peak and the April year-end run.</p>
+      <p>Day-to-day, your team raised 96 support requests and 91 were resolved within the response times we agreed. The five that ran longer are reviewed below with what we changed as a result.</p>
+
+      <h2>Decisions we need from you</h2>
+
+      <div class="decision">
+        <h3>1 · Protect staff sign-ins before self-assessment season</h3>
+        <p>11 staff accounts can currently be opened with a password alone. For a practice holding client financial records, a single guessed or stolen password is the difference between business as usual and telling clients their information was exposed. We recommend adding a second sign-in step for these accounts before your busy season starts — the work is routine and staff disruption is minimal.</p>
+        <p class="evidence-foot">evidence: verified</p>
+      </div>
+
+      <div class="decision">
+        <h3>2 · Close the protection gap on nine devices</h3>
+        <p>Your agreement with us includes managed threat detection on every device. Nine of your 61 devices are not yet covered — most are recent starter laptops in the York office. Until they are covered, work done on those machines carries more exposure than the rest of the practice. We can close this gap within the existing agreement; we need a maintenance window from you.</p>
+        <p class="evidence-foot">evidence: verified</p>
+      </div>
+
+      <div class="decision">
+        <h3>3 · Bring four devices up to date</h3>
+        <p>Four devices are behind on important updates. Out-of-date machines are the most common way problems get in, and these four sit in the payroll workflow. We recommend scheduling the updates outside working hours this month.</p>
+        <p class="evidence-foot">evidence: verified against our records; comparison context estimated</p>
+      </div>
+
+      <div class="decision">
+        <h3>4 · Refresh awareness training for the busy season</h3>
+        <p>The attempts we stopped this period were increasingly aimed at your accounts team by name. Based on what we saw, we judge your staff's exposure to convincing fake emails to be elevated, and we recommend a short refresher before January. This recommendation is our professional reading of an incomplete picture — our testing platform was interrupted mid-period — and we'd rather tell you that plainly than present it as a measurement.</p>
+        <p class="evidence-foot">evidence: estimated</p>
+      </div>
+
+      <div class="decision" id="extract-cleared-row">
+        <h3>5 · Verify that your backups actually restore</h3>
+        <p>Backup copies are being taken for all covered systems, and the most recent restore exercise ran successfully. What has not yet happened is a verification that the restored files open and are complete. Until that verification is done, we treat your recovery position as unconfirmed — and we recommend completing it this quarter so that, if you ever need it, the answer is already known.</p>
+        <p class="evidence-foot">evidence: operator-cleared (estimated) — released by J. Garlick, 2026-07-31</p>
+      </div>
+
+      <p class="extract-held" id="extract-held-note">1 further item is held at the confirm-gate. It clears on the Working Document — by a person, with their name on it — not here.</p>
+
+      <h2>Recommended roadmap</h2>
+      <ul>
+        <li>Next 30 days: second sign-in step for the 11 accounts; maintenance window for the nine uncovered devices.</li>
+        <li>Next 90 days: update the four behind devices; awareness refresher for the accounts team; backup restore verification.</li>
+        <li>Next review (January 2027): revisit the York office starter-laptop process so new joiners are covered from day one.</li>
+      </ul>
+      <p>Each of these is sized to protect the seasons when your practice earns its year. We'll bring costed options for the 30-day items to the meeting; nothing proceeds without your sign-off.</p>
+    </article>
+
+    <div class="send-footer">
+      <button type="button" class="btn primary" disabled>Send to client</button>
+      <span class="label">Tier 1 concept — nothing sends.</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= BRADLEY RAIL — persists all pages ================= -->
+<aside class="rail" aria-label="Bradley rail — internal review rail">
+  <h2>◈ Bradley rail <span class="chip" style="border-color:var(--alpha-accent);color:var(--alpha-accent);background:var(--alpha-soft);">internal — never client-visible</span></h2>
+
+  <div class="readiness-badge">Tier 1 · Concept — readiness: latest critic pass in .bradley-ledger (26/30 at pass 2; scores in copy go stale)</div>
+  <p class="section-note">readiness score = [A] prototype device — not an evidenced metric. It lives on this rail only; never on page 2/3 content.</p>
+
+  <p class="blurb"><strong>What this sim tests:</strong> the operator-pulls premise — does a delivery lead at a 12-person shop want the mechanism (AI pulls, human judges and defends) or only the destination? That premise is an [A]: it blends two people from the n=1 evidence. This is the Q2 question made concrete — an instrument for the operator study, <em>not</em> a finding, and not evidence of demand.</p>
+
+  <div class="rail-block nailed">
+    <h3>What you nailed</h3>
+    <ul>
+      <li>Dual-surface is structural — two artifact objects on two pages, no redaction toggle anywhere (the prior Tier-1 failed exactly here).</li>
+      <li>Confirm-gate is a hard block with attribution, not a passive warning — Unverified rows render BLOCKED by default.</li>
+      <li>Echo discipline — the 4–5h baseline appears only as "self-reported, n=1, echo"; the one reduction claim is a ratio, never an absolute.</li>
+      <li>[A] flags on-screen — the premise banner, the pre-connected chips (Jude Scally's open question), and this readiness score all carry their tags in the UI, not just the brief.</li>
+    </ul>
+  </div>
+
+  <div class="rail-block hurt">
+    <h3>What will hurt you</h3>
+    <ul>
+      <li><strong>Premise laundering.</strong> If this sim persuades, the operator-pulls [A] gets read back as evidence the operator wants it. A simulation is not a study.</li>
+      <li><strong>n=1, one transmission line.</strong> All operator evidence is Vanessa ← Stefanie — an echo measured twice. Representativeness check (Nicole's altitude check) not run.</li>
+      <li><strong>No operator study yet.</strong> Every demand signal in the corpus is buyer purchase-intent; the operator has never been directly studied.</li>
+      <li><strong>Market unsettled.</strong> No shipping MSP-specific AI QBR tool with PSA writeback was found — and Zomentum built and killed this exact category in July 2024. Opportunity or failed category: this sim must not pretend to settle it.</li>
+    </ul>
+  </div>
+
+  <details class="routed">
+    <summary>Product</summary>
+    <div class="routed-body">
+      <p><strong>Product does:</strong> take the mechanism-vs-destination question to the Q2 operator study before spec 004 build sequencing locks; get DIV-001 (which branch DEC-006 assumed) answered by Nicole directly.</p>
+      <p><strong>Why now:</strong> DEC-006 ranks QBR Advisor #1 of 5 (priority 2.90) — but the score traces to a single 22-partner interview catalog [D] [WOBBLY], and the assumed branch is open [?].</p>
+      <p><strong>If you ship without it:</strong> v1 sequencing commits to buyer purchase-intent with zero operator evidence — you may build the right destination with an unwanted mechanism.</p>
+      <div class="roi">
+        <div>Business: Unknown: gap — no demand evidence beyond buyer intent; no willingness-to-pay data</div>
+        <div>User: Unknown: gap — the operator has never been studied</div>
+        <div>Unknown: whether the operator wants pulls at all — that is the Q2 question itself</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="routed">
+    <summary>Design</summary>
+    <div class="routed-body">
+      <p><strong>Design does:</strong> run the three ux.md §6 quality-bar tests against this prototype — cognitive walkthrough (~2h solo), 5-second confirm-gate test ×3, ≥60/40 content audit on the seeded talking points — and file results as [R] by 2026-08-14.</p>
+      <p><strong>Why now:</strong> the confirm-gate is the load-bearing interaction; warning-fatigue is sourced [R] and a gate that reads as a passive warning is a fail, not a nice-to-have.</p>
+      <p><strong>If you ship without it:</strong> the gate ships as decoration — unverified content reaches the client-visible record with a green tick on it.</p>
+      <div class="roi">
+        <div>Business: counter-metric protection — zero internal content reachable from the extract</div>
+        <div>User: the operator can trust what crosses the line of visibility without re-checking every row</div>
+        <div>Unknown: whether the defensibility-tier grammar reads at a glance — untested; Apex Tenets &amp; Traps not yet pulled [?]</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="routed">
+    <summary>Research</summary>
+    <div class="routed-body">
+      <p><strong>Research does:</strong> field the Q2 operator study using this sim as the instrument — mechanism vs. destination — and run Nicole's altitude check on whether Vanessa is representative.</p>
+      <p><strong>Why now:</strong> the entire operator evidence base is one transmitted process measured twice (Vanessa ← Stefanie) — an echo, not triangulation [R].</p>
+      <p><strong>If you ship without it:</strong> this prototype's persuasiveness becomes the evidence — premise laundering, the exact failure mode the brief flags {F2}.</p>
+      <div class="roi">
+        <div>Business: Unknown: gap — cannot size the opportunity from n=1</div>
+        <div>User: Unknown: gap — observed pull order, judge workflow, and follow-up ticket ownership all unsourced [?]</div>
+        <div>Unknown: the mechanism question in its entirety; also real distribution of MSPs running structured QBRs (the "only 20%" figure is uncited vendor content)</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="routed">
+    <summary>Eng</summary>
+    <div class="routed-body">
+      <p><strong>Eng does:</strong> scope connector cost honestly — all 8 pulls need connectors registered from scratch; spec 004 is 0/40 built; no frontend and no auth exist in the repo [D].</p>
+      <p><strong>Why now:</strong> what IS built — Runbook Engine 49/49, Value Ledger 55/55 (QBR producer unwired, renders $0), full MCP connection lifecycle [D] — is real but none of it is the QBR surface, and the defensibility tier is NOT in code (grep 2026-07-31: zero hits; code has baseline_source only).</p>
+      <p><strong>If you ship without it:</strong> substrate claims inflate — "built on the existing tiers" copy ships false, and the 8-connector cost surfaces mid-build instead of pre-commit.</p>
+      <div class="roi">
+        <div>Business: avoids committing sequencing to unpriced connector work</div>
+        <div>User: Unknown: gap — no operator latency/effort data exists for any pull</div>
+        <div>Unknown: per-source connector effort for Halo PSA, M365, phish-sim; MCP Configs spec (soft-delete, tool governance) not in tree [?]</div>
+      </div>
+    </div>
+  </details>
+
+  <div class="rail-block">
+    <h3 style="color:var(--alpha-accent);">Council cross-talk — preview</h3>
+    <p style="font-size:0.72rem;color:var(--text-secondary);margin-bottom:8px;">Council pass 2026-07-31 complete — 9 tensions named by the 44-voice council, routed not resolved. Full testimony: council-testimony-qbr-prep-sim.md.</p>
+    <button type="button" class="btn" onclick="openCouncil()">Hear the council</button>
+  </div>
+
+  <p class="attribution">Attribution: 0% Beth — accepted verbatim from pipeline. (Adjust after review.)</p>
+</aside>
+</div>
+
+<!-- ================= COUNCIL MODAL (Fast Mode shell) ================= -->
+<div class="modal-backdrop" id="council-backdrop" onclick="backdropClose(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="council-title" id="council-modal">
+    <h2 id="council-title">⚖ Council — Fast Mode</h2>
+    <div class="exec">
+      <strong>Executive summary</strong><br>
+      Readiness: 22/30 pre-build (critic pass 1) · Tier 1 · Concept · PROCEED-FLAGGED<br>
+      Tensions: 9 named — from the 44-voice council pass 2026-07-31 (council-testimony-qbr-prep-sim.md). Routed, not resolved.
+    </div>
+    
+    
+    <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">1 · JTBD × SDT — mechanism vs destination vs the confidence ceiling</strong>JTBD: pulls are a cost of the job — fire them. SDT: pulling may be how meeting-room confidence gets built; firing it may cap competence [WOBBLY — no operator studied]. The Q2 fork as a needs conflict.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">2 · Doblin × Christensen — lattice play vs failed-category corpse</strong>Doblin: the defensible innovation is the first-party integration lattice (MCP preview shipped, 49/49 + 55/55 built). Christensen: the growth read is nonconsumers, for whom the Stefanie-worthy bar is overshoot — and Zomentum died once. DIV-001 verbatim.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth → Nicole · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">3 · Moore × [CS:] tags — the demo needs a category name; the regime forbids one</strong>The positioning template cannot be completed honestly; demo pressure in front of Nicole will want a category anyway; copy bans say no.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth → Nicole · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">4 · Lean × Charter/Means-Ends — instrument vs pride artifact</strong>The more Stefanie-worthy the report becomes, the stronger the premise laundering {F2}: a beautiful report about an assumed premise reads as evidence for it. Three voices hit this independently.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">5 · Kano × {F3} — delight vs the must-be interruption</strong>Deck-grade flow wants the confirm-gate smoothed; doctrine says the gate must visibly interrupt or it is decoration. The 5-second test adjudicates.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">6 · V15 × evidence — the strategic-advisor heart fed by the weakest source</strong>Business Priorities carries the 'strategic advisor' promise and is fed by the only permanently-Unverified source (web-gathered trends). Strongest voice, weakest evidence — how loudly does the section wear its tier?<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">7 · Service Blueprint × eng — the pre-connected backstage</strong>First-party lanes assume pre-authed N-able MCPs; Jude Scally's question stays open (existence trending [A]→[D]; pre-auth not). Flagged on-screen; the answer is not a design deliverable.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: eng · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">8 · JTBD-social × [CS:] tags — epistemic chips on the status artifact</strong>Visible confidence chips on the client report vs the operator's competence display in the room; Stefanie's own template has no confidence column. Chip presence on E7, distinct from gate function on E6.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · council 2026-07-31 · routed, not resolved</span></div>
+      <div class="tension-slot" style="text-align:left;border-style:solid;color:var(--text-secondary);"><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">9 · Cynefin × Mode 6 — what a passing test may not mean</strong>All three Gate-3 tests can pass and Q2 stays unanswered. '3/3 passed' must file as artifact legibility, never as demand evidence.<br><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--alpha-accent);">owner: Beth · Beth → Nicole · council 2026-07-31 · routed, not resolved</span></div>
+    <div class="synth-slot">Synthesis: [0% Beth — fill this in]</div>
+    <div class="modal-foot">
+      <button type="button" class="btn" disabled title="stub — non-functional at Tier 1">⚡ Hard Mode: all 44 voices (methods-library-matrix) — stub</button>
+      <button type="button" class="btn primary" id="council-close" onclick="closeCouncil()">Close (Esc)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ page navigation (lo-fi show/hide) ============ */
+function navigate(name) {
+  var pages = ['board', 'working', 'extract'];
+  for (var i = 0; i < pages.length; i++) {
+    var p = pages[i];
+    document.getElementById('page-' + p).classList.toggle('active', p === name);
+    var nav = document.getElementById('nav-' + p);
+    if (p === name) { nav.setAttribute('aria-current', 'page'); }
+    else { nav.removeAttribute('aria-current'); }
+  }
+  window.scrollTo(0, 0);
+}
+
+/* ============ confirm-gate clear (load-bearing interaction) ============ */
+function clearGate(n) {
+  var row = document.getElementById('gate-row-' + n);
+  row.classList.remove('blocked');
+  row.classList.add('cleared-attr');
+  document.getElementById('gate-' + n + '-blocked').style.display = 'none';
+  document.getElementById('gate-' + n + '-cleared').style.display = 'inline';
+  if (n === 1) {
+    /* the cleared backup-verification row is now released to the extract object */
+    document.getElementById('extract-cleared-row').classList.add('show');
+  }
+  if (n === 2) {
+    /* row 2 clears with attribution but its extract copy is not seeded — Tier 1 shows the mechanism once */
+    document.getElementById('gate-' + n + '-cleared').textContent =
+      '✓ cleared by J. Garlick (operator) · 2026-07-31 · released — extract copy not seeded at Tier 1';
+  }
+  /* held-note is computed from actual gate state, never a stale string */
+  var stillBlocked = document.querySelectorAll('.reg-row.blocked').length;
+  var note = document.getElementById('extract-held-note');
+  if (stillBlocked === 0) {
+    note.textContent = 'No items remain held at the confirm-gate — every Unverified row was cleared by a person, with their name on it.';
+  } else {
+    note.textContent = stillBlocked + ' item' + (stillBlocked === 1 ? '' : 's') + ' remain' + (stillBlocked === 1 ? 's' : '') + ' held at the confirm-gate. Items clear on the Working Document — by a person, with their name on it — not here.';
+  }
+}
+
+/* ============ one pull-card expand ============ */
+function togglePull() {
+  var card = document.getElementById('pull-5');
+  var btn = document.getElementById('pull-5-btn');
+  var open = card.classList.toggle('expanded');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  btn.textContent = open ? 'Collapse pull detail' : 'Expand pull detail';
+}
+
+/* ============ one judge-queue row fill (demo) ============ */
+function fillJudgeRow() {
+  var row = document.getElementById('judge-row-1');
+  var c = document.getElementById('judge-1-conseq');
+  var p = document.getElementById('judge-1-prio');
+  c.classList.add('filled');
+  p.classList.add('filled');
+  c.innerHTML = '<span class="label">business consequence</span>One phished password currently equals full mailbox access for client-money correspondence.';
+  p.innerHTML = '<span class="label">roadmap priority</span>Next 30 days — before self-assessment season.';
+  row.classList.add('filled');
+  var btn = document.getElementById('judge-1-btn');
+  btn.disabled = true;
+  btn.textContent = 'Judged — by the human';
+}
+
+/* ============ council modal ============ */
+var lastFocus = null;
+function openCouncil() {
+  lastFocus = document.activeElement;
+  document.getElementById('council-backdrop').classList.add('open');
+  document.getElementById('council-close').focus();
+}
+function closeCouncil() {
+  document.getElementById('council-backdrop').classList.remove('open');
+  if (lastFocus) { lastFocus.focus(); }
+}
+function backdropClose(e) {
+  if (e.target === document.getElementById('council-backdrop')) { closeCouncil(); }
+}
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && document.getElementById('council-backdrop').classList.contains('open')) {
+    closeCouncil();
+  }
+});
+
+/* ============ 3-way mode toggle — localStorage: apx-mode-pref ============ */
+function applyMode(pref) {
+  var dark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  var modes = ['light', 'dark', 'system'];
+  for (var i = 0; i < modes.length; i++) {
+    document.getElementById('mode-' + modes[i]).setAttribute('aria-pressed', modes[i] === pref ? 'true' : 'false');
+  }
+}
+function setMode(pref) {
+  try { localStorage.setItem('apx-mode-pref', pref); } catch (e) {}
+  applyMode(pref);
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+  var pref = 'system';
+  try { pref = localStorage.getItem('apx-mode-pref') || 'system'; } catch (e) {}
+  if (pref === 'system') { applyMode('system'); }
+});
+(function () {
+  var pref = 'system';
+  try { pref = localStorage.getItem('apx-mode-pref') || 'system'; } catch (e) {}
+  applyMode(pref);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+TRANSCRIPT: Louis Oosthuizen - Ask N-zo Feedback Session
+Source: Louis Oosthuizen - Ask N-zo Feedback Session.vtt
+============================================================
+
+[00:00:03] Nicole Reineke:
+  Ask you things that you liked. Then I'm gonna ask you what you want to change. Then I'm gonna ask you what went terribly wrong and then just open the floor for general feedback and conversation.
+
+[00:00:11] Unknown:
+  OK OK.
+
+[00:00:13] Nicole Reineke:
+  Is that are you comfortable with that process?
+
+[00:00:16] Louis Oosthuizen:
+  Yep, all good with me.
+
+[00:00:17] Wesley Harris:
+  Yeah, sounds good.
+
+[00:00:19] Nicole Reineke:
+  OK, great. So let's get right to it because we only have a little bit of time. So first, thank you We appreciate you participating. Were you able to use Enzo over the tech preview period?
+
+[00:00:37] Louis Oosthuizen:
+  Perfect. Uh, Wesley, you can go.
+
+[00:00:37] Wesley Harris:
+  Uh, yeah, if you go, Louis, I'll I'll jump in. I'll jump, OK You go, I'll jump in on some of the other stuff that I've got something to say.
+
+[00:00:45] Louis Oosthuizen:
+  Yeah, he's got a lot of things to say. Yeah. So, so yeah, we we we've, we've, we've been going through the Oskins of preview. It's been very good, very impressed with regards to how how it differentiates between specifically a lot of things. But major focus for us with regards to is with regards to it is how well it is built into the The documentation, I think that's the biggest part that we've experienced. I've experienced. We've had a client have a major outage on Valentine's Day. I was working at 2:00 in the morning and it was to the point where I was super frustrated with support I had a live chat with them. I had a call with them I started begging them to help me and then I just gave up. I was like, OK, you know what? I need to find something else And then I I'm so happy that I did look somewhere else cuz I know of course I knew we had Ospienzo, but the first perspective there was that I realized, OK, support not to help me. They didn't even know the documentation themselves at this point This is like unfortunately that was that was this was the after hours support So I I understand there's probably a new guy So I I moved to ask Enzo immediately and I asked it basic questions with regards to Sentinel one and the specific part of that was I needed to know how do I create this group? What groups are supported? How can I maybe just ensure that when I give a specific vendor access to a specific user that they only have these certain permissions and some of it was able to direct me. So to the point where I basically was able to figure it out myself between myself and ask Enzo, just passing some documentation into Ask Enzo, getting some information and then I was able to do something. OK, you know what? This is what needs to happen More support now supporting. They can do whatever they want to do Let me just use Oscanzo for this. So that was probably one of the best and quickest ways that I found value. Beyond that, I've done a lot of things as well. My team have had some things I wanted to do. I know I've had a call with one of our Tier 2 engineers, they were looking towards reporting on some printing. We've got a lot of printers that we configure across all of our tenancy and he wanted to do some reporting rights and the the quick way for us was we already had because of only our access to the new scripting repository. Love that by the way as well. So, so, so enthusiastic about it It's changing our life to be honest. And we used Askenset to build it for us because we know there's a lot of documentation, a lot of scripts already out there in the cookbook. So it was genuinely, I think we had to ask it twice, the second time again, my most excited for us, the most thing that made That I was most excited about it was when we asked it, it gave us three different options on different varieties of complexity The easy quick print methodology, the second one just doing a much more in depth perspective and the last one doing even a CSV file export for you as well That was amazing. I love that it gives you three options based on Basically based on how much and how deep you want to go. So that I must say, I really, really, really enjoy that perspective So I think the big part, the big value for us already has been, firstly, I don't have to go to support for everything. I really don't want to go to support for everything. I want to go to them only if I need to escalate Only if it's something that's a little bit more complex And then the next perspective is the the fact that it is that that there's so much to leverage, sorry from the cookbook makes it a lot more valuable to the towards us rather than looking at something like GitHub Copilot with Claude with specifically the the Codex models They're great, but we don't necessarily need to go that deep with regards to basic scripts, basic things that we can just copy paste
+
+[00:04:18] Nicole Reineke:
+  Hey.
+
+[00:04:19] Louis Oosthuizen:
+  into, for example, the new script repository So that's that's really made it a lot better. Yes, I've got a lot of feedback here, but I think I'll give it to Wesley and then when we get to the next questions, I'll add to what I added with my Points of feedback.
+
+[00:04:32] Wesley Harris:
+  Um.
+
+[00:04:33] Nicole Reineke:
+  Oh, go ahead. Sorry, go ahead, Wesley.
+
+[00:04:35] Wesley Harris:
+  Yeah, I was just gonna say, yeah, I definitely been able to use it I know our staff has been using it as well for just some general reporting on stats and things like that and to get some information on how to write scripts and and stuff So yeah, definitely have been able to use it, yes.
+
+[00:04:57] Nicole Reineke:
+  OK, so it saved definitely saved you time. Oh, I meant I skipped a question I'm sorry. So what types of questions did you ask most? So we know Louis was like documentation and scripting. How about you?
+
+[00:05:12] Wesley Harris:
+  Yeah, um, I think so. I'm I'm not like using enable day-to-day, so I I was able to pull um Some information from it. I know some of our staff were asking questions like how many Windows 10 licensed machines are there versus Windows 11, things like that, because obviously they need to start Getting our clients into Windows 11, so things like that I would also just compare the questions that they asked I would put them in myself and just see if there's any variance in the information that it received that it gives and there wasn't That's also good. It's not hallucinating on the information that it's giving. So yeah, things like that Then I would also sometimes I would ask it some questions, even just putting in like the default questions that it it gives you initially And it would sometimes say that it didn't have access to the documentation, which is a bit weird. Seems to come and go. Um.
+
+[00:06:17] Nicole Reineke:
+  OK.
+
+[00:06:19] Wesley Harris:
+  So I'm not sure if if all of our other stuff have been getting that, but yeah, I've been getting that one intermittently, but yeah, more so just following on with what the other stuff have been feeling.
+
+[00:06:34] Nicole Reineke:
+  OK, tell me about the limitations and errors you came across. So you came across an intermittent access error. What else?
+
+[00:06:41] Wesley Harris:
+  Mm-hmm. So if I ask it, if I was, I would, I would say like this is like what kind of reports, what reports would show me my device hardware and software details and if I put that in I've just put it in again now to see if it if I get the error again to remind myself what it says, but it'll say something like it's not able to access that documentation and then it gives you sort of like a pre a best practice answer that I guess something like Um, ChatGPT or Claude would give you as well if it doesn't have access to the directly to the documentation, kind of just finds it online. Um Yeah, it'll say like apologize for technical difficulties accessing documentation. At the moment I have a based on knowledge of in central. I can provide this. So it's almost like it's not able to access the documentation directly, it just tries to find it in its trained data essentially.
+
+[00:07:39] Nicole Reineke:
+  OK. That is definitely an issue on our part That should never be happening. So thank you for letting us know. OK,
+
+[00:07:45] Wesley Harris:
+  No problem.
+
+[00:07:46] Nicole Reineke:
+  what are the limitations?
+
+[00:07:47] Wesley Harris:
+  Uh, Louis, do you have something?
+
+[00:07:50] Louis Oosthuizen:
+  I posted in the chat. So to make it a little bit easier because there's a couple of interesting things. So just to clarify, Nicole, I I think we we skipped over it. But when we when we went through the procedure of this entire specific tool set, we originally did some training with our staff We I I spent like an hour before before work with our staff Taking them through the tool set and we really went through all of the features, how it works, how to approach it, which is great because our staff are already very familiar with working with and even selling to clients from sales to engineering, specifically Microsoft copilot So it's been something that we're that we're quite used to interacting with So we we through that identified a couple of things that of course we would love to see. So some limitations are I believe the the one thing I've been recently experiencing and I get where this is coming from because you did mention you guys are building specialists is where it tells you that this is not a specific feature that I can look into The specific tools that isn't built towards looking at, let's say, I think what was it? There was something with that I asked it, but it wasn't able to really give me an answer, but that makes sense But there is some things that we've basically been able to determine. Yeah, for example, I asked it a scripting query for something that was general. It didn't want to I answered that specifically and I had to just prompt engineer it to skip a little bit of the parameters there, but it's fine The other thing that we've identified are just some fields as well that I know you guys, but just wanted to figure out which fields we found would be the most important to us based on what's already there, what's also not already there So existing data last logged in user. This one I'll elaborate on So last logged in user is extremely important So we had a rogue AD account doing some absolutely terrible things for one of our clients and I had to identify where that account was Now the new assets view is so Great for it because the new assets view just logs anyone that logs into these machines and keeps it there for you. I feel like there's so much opportunity here for ask engine to be able to view that data That data would be super interesting. So we've for example identified a machine Those are throughout Lumen with their endpoint hunt, but I feel like that Lumen is like that's that's phase two I go to a given when I need to do more investigations So we identified a user that was so whether it is, whether it is that they're sharing machines or just somehow people just
+
+[00:10:15] Unknown:
+  No.
+
+[00:10:20] Louis Oosthuizen:
+  logging in We've had a user that essentially had their own machine They were plugging in a USB and then they were going into another technician's
+
+[00:10:26] Nicole Reineke:
+  OK.
+
+[00:10:30] Louis Oosthuizen:
+  machine. On that technician's machine, we had like 5 people logging in the same day. So it's on a terminal server, so that's super suspicious So I'm super curious to see how.
+
+[00:10:40] Nicole Reineke:
+  Yeah.
+
+[00:10:41] Louis Oosthuizen:
+  How much we can get out of that. So that also based on what I mentioned about the rogue AD user, we were able to shut down a rogue AD user with the normal assets view. I was able to determine where it was going, where it logged in and I think it will be just super interesting to see what OSC engine will be able to do with the data sets just based on our use case, based on risk We've identified again. I think that we did some you probably, I don't know, you spoke some of this with regards to some of the queries that were very similar to the ones we made I think during the training even where we basically mentioned to the bot to essentially train a showcase, do a do a bit of an analysis for us based on our Asset pool gave us some recommendations we can give to a client based on the data So that's super vague. I love it. It's vague cuz we can see how far it can go. So out of that we identified a couple of very interesting things that we would love to see Disk availability and size would be one and I know you can release the disk size I know availability, it's kind of not really there yet, but I know that's something that's coming. Also the events, I'm curious to see how that'll work into it as well And then things that are not in the assets view, these are things I'll probably speak to the team about, but apps installed, I know that one's coming. Actually I saw this cuz Darren was doing a showcase with I believe As Graphql themselves and I saw a little bit of a tease of that data set coming I'm so excited for that data set. We've got the temperatures on CPU that'll
+
+[00:12:04] Nicole Reineke:
+  Yep.
+
+[00:12:07] Louis Oosthuizen:
+  be. I know that's possible through PowerShell, but I'll probably annoy Darren and the team about that as well IO speed specifically, like we've experienced a lot of crazy things with And then, of course, patches and vulnerabilities, those two beautiful data sets that are ever growing, ever changing I can't wait to see what OSC Enzo's gonna be able to do with those I know it's gonna be absolutely phenomenal The next perspective that I've identified is something that Lynne actually spoke about during that call with Ben with regards to specifically Context memory. So when you close a session,
+
+[00:12:40] Nicole Reineke:
+  Oh.
+
+[00:12:41] Louis Oosthuizen:
+  you lose that session basically. Now I of course when I showed you Nicole when I was playing around with this tool set, we have the context ID I know it's there. I think we just don't actually save it for the users to go back to. So I can't wait to see how that'll work and how you guys will implement it Be amazing. But to be honest, that's probably the one thing that I'm very excited to see is going back. What did I ask ask Enzo yesterday? So I can follow up on that discussion, follow up on that train of thought I'm curious to see how you guys are going to do that specifically.
+
+[00:13:10] Wesley Harris:
+  Yeah.
+
+[00:13:11] Louis Oosthuizen:
+  I know that's going to be very interesting.
+
+[00:13:11] Wesley Harris:
+  Yeah, 'cause it's very easy once you you ask the question and then you change tabs or you go to a different view and then you go back and then your conversation's gone and you lose all that context.
+
+[00:13:21] Unknown:
+  Done.
+
+[00:13:22] Wesley Harris:
+  So that's definitely something that we like.
+
+[00:13:25] Nicole Reineke:
+  OK, that's great. I'll tell you about the road map in a minute. So yes, great feedback. What are any other limitations or errors?
+
+[00:13:32] Wesley Harris:
+  OK No, I don't think limitations or errors. We I I don't know if it's necessarily a limitation, but it would be great if Ask Enza was almost like a standalone app or you had some way to access it as a kind of like a standalone page that you could bookmark That would be very useful just because right now it's not super visible to our engineers. So I think the big issue we had when we were telling our engineers about it is that or our staff is that not a lot of them are accessing the assets page Frequently. So they're not even like kind of being confronted with the option to use it, right? Whereas if it was an option that was more visible that we could bookmark for them on their browsers and stuff like that, it'd help replace the current AIS that
+
+[00:14:24] Nicole Reineke:
+  Sure.
+
+[00:14:25] Wesley Harris:
+  they're using with our scansor For sure.
+
+[00:14:28] Louis Oosthuizen:
+  N.
+
+[00:14:29] Nicole Reineke:
+  Yeah, that's great feedback OK, how was the speed and accuracy of response?
+
+[00:14:39] Wesley Harris:
+  Go away.
+
+[00:14:39] Louis Oosthuizen:
+  Yeah, so this was, this was actually pretty good to be honest. I'm super impressed. I don't know what survey you guys are seeing this on. I'm assuming it's in your AW AWS services, but it was super fast. You guys are giving it a lot of resources for a huge amount of GPU and CPU power. So it's it's very fast I think Lynne, the best thing that you guys did, I know you spoke about this as well. This was so cool because I know I told Ben like this made my day when I saw it is because I know back in the day Jane Wilson set out a questionnaire about it and I was like, OK, the one thing I really want this tool to do is to be able to give us context as things go What is it thinking? What's the thinking process? Cuz that's what I love about GitHub Copilot, right? I can see what it's doing I can see what it's thinking. Where is the context coming from? So that makes it so much easier because we can track as it thinks I don't have to think it's not doing anything because that's what I've experienced as well is if you don't give it some form of Interaction saying I'm thinking about this now, I'm reviewing this document Now I'm coming up with a solution that if you don't have that train of thought, there's two things I think specifically for the staff, it's about trust, right? It's like, OK, where's getting this data from?
+
+[00:15:52] Nicole Reineke:
+  Yes.
+
+[00:15:53] Louis Oosthuizen:
+  OK, then with that, it's actually quite transparent I love the transparency perspective here. Wesley actually had a very cool idea about this as well, about the transparency. Wesley, I'll get you to mention the sources soon.
+
+[00:16:05] Wesley Harris:
+  Oh yeah, yeah. If I could just, yeah, I'll just interrupt you there. Sorry,
+
+[00:16:08] Louis Oosthuizen:
+  That's all I put to feedback.
+
+[00:16:11] Wesley Harris:
+  Louis. Yeah, it would be great if it told you which sources it used to get the the data that it queried It would also be very interesting if there was a way that if you answered a question and it returned a report, if it was almost a way to use that as a link to like a pre-filtered view on the assets page, that would be really useful As well.
+
+[00:16:39] Louis Oosthuizen:
+  So overarching me, I believe.
+
+[00:16:40] Wesley Harris:
+  'Cause it obviously can't return everything. Yeah, certainly.
+
+[00:16:43] Louis Oosthuizen:
+  No, no, no, exactly. It can't do everything. It's too much I I think the overarch and I think the the the the perspective that we have so much transparency while it's loading gives us the opportunity to wait It's easier to wait for it because we know it's doing something that UIUX perspective really changes the the the usage for for me at least as well Because I know if I because I I mean I've written applications to do deep loads and you click on the button and then it even goes into a not responding because it's actually busy processing and it's only got so many processes to to work on and so many calls. So I know you get frustrated like engineers got so angry at me in the past They would say, great, your thing is not working. I was like, no, it's working. It's just give it a second, don't touch it So that was back at my first year. But anyway, I know that's a huge thing for us and it really did help with regards to just when the user experience, you know it's not gonna be immediate It is thinking. Give it a second.
+
+[00:17:39] Nicole Reineke:
+  Yeah.
+
+[00:17:39] Louis Oosthuizen:
+  It definitely takes a little bit longer when you've got a bigger query, but that's fine. I mean, I get it. The context is a lot bigger It needs to work through the context and build something logical to respond with.
+
+[00:17:51] Nicole Reineke:
+  I love that. Can you share an example of where Ask Enzo saved you time and about how much time it saved you compared to your usual process?
+
+[00:18:03] Louis Oosthuizen:
+  Uh, my favorite answer. Where's the do you want to go first before I add my mini endeavors?
+
+[00:18:08] Wesley Harris:
+  No, I think, no, I don't think. I don't. I don't have an exact example when it saved me time because I haven't used it necessarily as a time saver I've just really been testing it and comparing it. So yeah, Louis, you go, you've got a good example.
+
+[00:18:25] Louis Oosthuizen:
+  Yeah, I mean as I I I spoke about it previously, but the the first perspective that this really helped me with was with regards to documentation. I spend on average probably normally if it's if it's like for example I need to go and get the documentation for tech controls network requirements That's something I I could ask Enzo and it was able to return it to me I would have to log a case that takes me what, 5 minutes? Then I have to call support. If it's a Friday, it's gonna take me like half an hour to get to support Sometimes it's it's the the call logs get very busy I get into the call with support. Sometimes I need to be moved between departments cuz even though I followed the right process on the call log, it took me to someone in central, but I need to go to the managerial department, so that takes a while as well. Then I finally get to the managerial department or whatever and they're able to return some data that I'm requiring on, let's say for example Mail shorts process of doing a white listing or what are the SMTP requirements for this? How does it do a scan to e-mail or whatever the procedure may be? And that by itself probably saves or has saved me on a daily Depending on the things I need to do, at least two hours per thing I'm querying, I can tell you based on experience, it's just and again, I mean support is support, but support is also support So this this helps a lot with regards to that for me at least I mean that one time I was desperately needing an answer because I needed to create Or a third party something to have access immediately to Sentinel one That saved me. That saved me. That saved me frustration because I could go to sleep. So that was like probably like 30 minutes, 40 minutes time saved after I've already called support.
+
+[00:20:09] Nicole Reineke:
+  Mm.
+
+[00:20:10] Louis Oosthuizen:
+  So, so I mean the the perspective of having to skip support for a bunch of these things and it's already saved me so much time. I'm excited for it to have even more context. I know there's some things about Adlumen it doesn't know about yet that I'm very excited for it to have because I must say Adlumen is 1 product that has So many things associated with it. It's actually quite overwhelming Even when I ask support for some things, they can't give me an answer I have to go to Simon Begus to actually get a proper answer from him And he's actually, he's an absolute ******, so he's able to give me the answers. But I don't need, I don't want to go to Simon because he's busy So it saved us like probably at least two hours per day based on things that I'm
+
+[00:20:48] Nicole Reineke:
+  Right.
+
+[00:20:52] Louis Oosthuizen:
+  that I have to investigate. Because I mean I've I've done the essential call certification, but I still forget things I can't remember everything.
+
+[00:21:03] Nicole Reineke:
+  I love that. Yeah. Thank you. I'm so glad it was helpful That's that's what we're aiming for. So that makes me so happy. OK What new features would you like to see added?
+
+[00:21:15] Louis Oosthuizen:
+  Yes. So Wesley, I think you already mentioned his specifically with regards to the the separate. I know that's look, I mean I I know the the the dashboard where you could do your token management for Graph QR right now. I know that's that's I saw for Jason that's actually quite more flush than than we we see it I'm excited to see how that goes, but definitely I think the biggest perspective will be having a separate specific window or just a separate button in the views, a specific section in the in the panel to the side. That'll be amazing just to Just to really put it in your face, everyone should know about this It's again, I like it should still be in the assets
+
+[00:21:54] Wesley Harris:
+  M.
+
+[00:21:56] Louis Oosthuizen:
+  view, but it deserves to have its own place That's why I built that little agent that I showed you. Nicole was like, I want to have quick access to this tool. I don't even want to worry about the assets view. Let's let's ask it questions.
+
+[00:22:06] Wesley Harris:
+  Mm.
+
+[00:22:08] Louis Oosthuizen:
+  So that's the first thing. I think the second thing is definitely for our perspective is definitely more fields. I I know and this is early, but I I know I'm excited to see how it'll how it'll interact with those new fields that I've mentioned. So I've I've posted those in the chat as well And I think the other perspective is, as Wesley says, the big thing for us is having just references to the documentation it didn't refer to. So if I could click on a link, it takes me that documentation because I know unfortunately for us as well, same for support A lot of the URLs actually change often, so I bookmark a URL I actually had this issue now twice in the last two years for the Take Control network requirements. That URL changes constantly, so I know Ask Enzo will definitely have a better time of it than I will have my bookmarks And I have to go back to support and ask them for where is this because I actually go through the documentation and I can't find it and every time I'm telling you maybe it's a brain issue, maybe I'm just tired by the end of the day, but I never, I'm never able to find that document on my own. So it's actually cool support for the take control Network requirements and that's just sad, but I know that's gonna be amazing once we have that more available inside of the maybe at the end of the reference section itself. Yeah, I mean that's probably the biggest piece of feedback from mine with regards to improvements. I think the other thing we Was also Snowflake, but that's gonna be a bit strange I don't know how you're gonna do that and also not really break the existing system because that's also a different MCP it needs to discuss with We're gonna have to build a specialist just for that. So yes.
+
+[00:23:46] Nicole Reineke:
+  Yeah, you're absolutely right. We we are going to build a specialist just for that. Lynne has some great well, she can share her UX ideas, but the the concept of being able to select which specialist you want to
+
+[00:23:54] Lynne Robertson:
+  OK.
+
+[00:23:57] Nicole Reineke:
+  interact with is something that we have coming down the line So if you want to have Snowflake data, there's an MCP server for that There'll be a reporting or an MCP specialist there, and you can deselect the specialist you don't want to engage so you don't end
+
+[00:24:08] Wesley Harris:
+  Mhm.
+
+[00:24:11] Nicole Reineke:
+  with information conflicts. Yeah, that's a that is a great request. Oh, I'm sorry, I broke the rule. I'm not supposed to tell you anything until the end Sorry, OK. Any other improvements?
+
+[00:24:25] Wesley Harris:
+  Yeah, I've just like some random things. It would be interesting if there was a way to share the chat with someone else.
+
+[00:24:33] Nicole Reineke:
+  OK.
+
+[00:24:35] Wesley Harris:
+  Just because sometimes your I guess your chats can get quite long and then maybe you just want to send everything so people can see the questions that you asked it. The other thing that we'd mentioned was
+
+[00:24:47] Nicole Reineke:
+  Mhm.
+
+[00:24:47] Wesley Harris:
+  also just the chat history would be very useful Yeah, I don't think there's anything else that I can think of that we haven't mentioned yet. Uh, yeah.
+
+[00:24:59] Louis Oosthuizen:
+  Maybe export of your existing chat. I don't know if that's that's gonna be an option in the future. Just if you can export it in CSV format, even whatever's easiest.
+
+[00:25:11] Nicole Reineke:
+  OK.
+
+[00:25:11] Wesley Harris:
+  Mm.
+
+[00:25:15] Nicole Reineke:
+  OK, awesome. So we only have 4 minutes back Was there anything else you wanted to tell me that we didn't get a chance to talk about?
+
+[00:25:25] Wesley Harris:
+  I think from my side.
+
+[00:25:26] Louis Oosthuizen:
+  Probably the MCP. I know Jason teased us there It looks like you also you you you can you sent us an e-mail as well about the
+
+[00:25:30] Wesley Harris:
+  Oh, yeah.
+
+[00:25:35] Louis Oosthuizen:
+  fact that that's going to preview. How does that work? Do we do we sign up?
+
+[00:25:40] Nicole Reineke:
+  I can't have to sign up, you can just use the URL with the token.
+
+[00:25:40] Louis Oosthuizen:
+  Can we sign up?
+
+[00:25:44] Nicole Reineke:
+  So it's it's in preview, you're you're fully approved for it and
+
+[00:25:44] Louis Oosthuizen:
+  Oh.
+
+[00:25:48] Nicole Reineke:
+  it in in central you should be able to create a key or a token and if it doesn't say it in the description in that link I told you, let me know and I'll make sure that they make that Clearer, but it is available for you as an Enzo partner to to use and and take advantage of Now it is slightly different than the AI experts that we have.
+
+[00:26:06] Louis Oosthuizen:
+  So.
+
+[00:26:10] Nicole Reineke:
+  So the MCP server is one large MCP server that accesses the entire subgraph It does get, it does put, it does. You know,
+
+[00:26:17] Wesley Harris:
+  Mm.
+
+[00:26:18] Nicole Reineke:
+  you can grab the information and you can update it and you can make calls into it What we have in Enzo is more refined. So we actually have a series of MCP servers under the covers and that makes it so you get more specific feedback and more detailed information We will be releasing more specific MCP servers, more specific tools in the generic MCP as well when you do direct access What we're finding is Claud is exceptional at interacting with that MCP server and tool because it's really good at understanding, you know, the definitions of all the fields and bringing that in so that it gives you Pretty good and accurate results. We have it up and running on teams in Copilot as well internally, and it gets you information, but it's less consistent. So if you're looking through which tools you're going to use it with, just know those caveats and that's a language model issue that's not Necessarily an MCP issue, yeah, but it's available. Have at it.
+
+[00:27:14] Louis Oosthuizen:
+  Perfect. That's exciting. I I know Wesley Wesley will probably do the the copilot perspective, Microsoft perspective We can definitely test that, but I know from my perspective I think what I'll do is I I wanted to test it. I still need to make time, but then because specifically for for for us, I would love to see how it interacts with Thor 4.6 on GitHub copilot That, I think, is gonna be amazing.
+
+[00:27:36] Nicole Reineke:
+  Good. Yeah, it's so fun. And we brought in all of the developer portal documentation recently. So when you're seeing with the recipe,
+
+[00:27:42] Louis Oosthuizen:
+  Oh, wow.
+
+[00:27:44] Wesley Harris:
+  Mm.
+
+[00:27:46] Nicole Reineke:
+  so that will be able to inform the the outcomes you can I don't want to tell me how it goes. Tell me how it goes We'll have a discussion after. I'm super curious where you go with it because you are a very forward thinking partner, so I'm excited OK, sorry. OK. Based on your experience, would you adopt Enzo when it becomes generally available?
+
+[00:28:13] Louis Oosthuizen:
+  I like to adopt it now. I mean, we are, but yes, yes, definitely.
+
+[00:28:15] Wesley Harris:
+  Yeah.
+
+[00:28:16] Lynne Robertson:
+  Yeah.
+
+[00:28:19] Wesley Harris:
+  Yeah, considering the state it's in now and
+
+[00:28:19] Nicole Reineke:
+  OK.
+
+[00:28:22] Wesley Harris:
+  where it can go, yeah, definitely.
+
+[00:28:25] Nicole Reineke:
+  Great. You will get it for free until at least June. So because you were one of our early partners, we are continuing on our partnership We were going to go to what's called general preview So you will continue to have access as you come across things that you want Please e-mail Lynn and I like We love your feedback. It helps us prioritize the backlog Chat history is coming, so you'll see that coming out in the next probably week or two. Sources is coming, so that will be coming out The the URL inclusion is coming And vulnerability data is coming any like any minute now like that's just right up on the top of the list and we will be expanding the sources as well So you know that we're at time, I tried to cram it all in Any other questions?
+
+[00:29:16] Lynne Robertson:
+  Uh, nothing.
+
+[00:29:16] Louis Oosthuizen:
+  Oh, quite excited. Are you, are you both gonna be at Empower?
+
+[00:29:16] Nicole Reineke:
+  Yeah, you guys are immediately.
+
+[00:29:20] Louis Oosthuizen:
+  That's the other question.
+
+[00:29:22] Nicole Reineke:
+  I'm gonna be there. Are you there?
+
+[00:29:23] Lynne Robertson:
+  OK.
+
+[00:29:24] Louis Oosthuizen:
+  Yes, yes, we will be there.
+
+[00:29:26] Nicole Reineke:
+  Oh, we have an entire Enzo session and an MCP session. There's like an hour and a half just dedicated to how can we use MCP and Enzo to do automations I think Jason and Ben Lee are leading it. So if you don't have that on your agenda Toss it in.
+
+[00:29:44] Wesley Harris:
+  Definitely.
+
+[00:29:44] Louis Oosthuizen:
+  Will do.
+
+[00:29:46] Lynne Robertson:
+  Could I jump in and ask a very quick question about some of the things that you raised about the UX? If you've got time, that is, if the button was more globally available, would you expect the panel to persist when you're moving from screen to screen? So if you opened it in the assets view and then you went to the old devices? This view and insight or in central, whichever tool you're using, would you expect it to be like still visible when you're moving from screen to screen? Yeah, or not?
+
+[00:30:18] Wesley Harris:
+  If it was like, because then it feels like it's something that exists over the top of the application,
+
+[00:30:22] Lynne Robertson:
+  Yeah.
+
+[00:30:24] Wesley Harris:
+  which is what I initially kind of, yeah, that's kind of what I was expecting it to
+
+[00:30:28] Lynne Robertson:
+  What you expected, Yeah, OK, that's good to know.
+
+[00:30:29] Wesley Harris:
+  be, yeah.
+
+[00:30:31] Lynne Robertson:
+  And you also mentioned if you you wouldn't mind seeing it, if it was maybe globally available and also in the assets view, would that be useful just so that you've, you know, how would that be useful to you just seeing it in two places? Thank you.
+
+[00:30:47] Wesley Harris:
+  Well, I think it would be useful that that firstly that would be useful if it was kind of just this app that can exist on
+
+[00:30:55] Lynne Robertson:
+  Mhm.
+
+[00:30:55] Wesley Harris:
+  its its own. But then also when you access enable and
+
+[00:30:58] Lynne Robertson:
+  Yeah.
+
+[00:30:59] Wesley Harris:
+  you go into it and you use it, the chat history is all in there from.
+
+[00:31:03] Lynne Robertson:
+  Mhm.
+
+[00:31:04] Wesley Harris:
+  Your previous session using it and sessions using it, but it yeah, accessed it in a standalone version. So yeah,
+
+[00:31:11] Lynne Robertson:
+  Mhm.
+
+[00:31:11] Wesley Harris:
+  that would be perfect 'cause then it feels like it's kind of this ubiquitous
+
+[00:31:15] Lynne Robertson:
+  Yeah.
+
+[00:31:16] Wesley Harris:
+  application that exists everywhere. Yeah, yeah.
+
+[00:31:18] Lynne Robertson:
+  OK. That's great. Thank you. I am going to be, I'm working on the UX for that right away. I'm already, yeah. OK, that's great.
+
+[00:31:23] Louis Oosthuizen:
+  Gonna be hard.
+
+[00:31:24] Wesley Harris:
+  It's very hard, I know.
+
+[00:31:27] Lynne Robertson:
+  Thank you so much. You've given great feedback today So we may be sending some concepts to you soon to review if you've got time.
+
+[00:31:35] Wesley Harris:
+  Oh, that'd be awesome. No, plenty of time.
+
+[00:31:36] Lynne Robertson:
+  So that'd be great. Thank you.
+
+[00:31:38] Louis Oosthuizen:
+  We always have time.
+
+[00:31:38] Lynne Robertson:
+  OK. Thank you so much for the feedback. It was great time savings as well, but you illustrated with, you know, bypassing support That's just brilliant to hear. Thank you.
+
+[00:31:50] Louis Oosthuizen:
+  Yeah, I mean the money for you guys as well, to be honest, in the long term.
+
+[00:31:53] Lynne Robertson:
+  Yeah. OK. Well, thank you so much. It's been great to hear your feedback and I'm glad you're having a really good experience with Enzo So thank you so much.
+
+[00:32:04] Wesley Harris:
+  Thank you so much, Lynn.
+
+[00:32:05] Louis Oosthuizen:
+  Thank you. Thank you for the hard work. Bye.
+
+[00:32:05] Lynne Robertson:
+  Thanks. Bye. Yeah, thank you.
+
+[00:32:09] Wesley Harris:
+  Bye.

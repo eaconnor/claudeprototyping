@@ -1,0 +1,165 @@
+{
+  "_source_md": "HANDOFF.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-MAIN",
+    "title": "ACP Market Analysis \u00b7 Handoff",
+    "version": "1.0.0",
+    "status": "Tier 1 \u00b7 The Only Doc You Must Read",
+    "date": "2026-06-05",
+    "audience": "N-able Spec-Driven Design Team (PMs \u00b7 Designers \u00b7 Eng)",
+    "owner": "Beth Schwindt",
+    "read_time_minutes": 5,
+    "tier": {
+      "1": "This doc \u2014 5 min, the only required read",
+      "2": "nicole-actual-acp-vision.md + primary-research-transcripts.md \u2014 30 min, if Tier 1 raises questions",
+      "3": "All 13 docs \u2014 reference, not required (see TAXONOMY.md)"
+    }
+  },
+  "sections": [
+    {
+      "level": 2,
+      "title": "\ud83d\udccb For Decisions (PMs)",
+      "id": "FOR-DECISIONS"
+    },
+    {
+      "level": 2,
+      "title": "\ud83d\udd2c For Research (Designers + Researchers)",
+      "id": "FOR-RESEARCH"
+    },
+    {
+      "level": 2,
+      "title": "\ud83d\udcca For Leadership (One-Pager for Nicole + Execs)",
+      "id": "FOR-LEADERSHIP"
+    }
+  ],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Option",
+        "Tradeoff"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Option": "**A. Audit-only** (current vision)",
+          "Tradeoff": "Lowest friction for MSPs. Highest blast radius for bad runbooks."
+        },
+        {
+          "Option": "**B. Static pre-screen**",
+          "Tradeoff": "Predictable. Slow. Misses runtime issues."
+        },
+        {
+          "Option": "**C. Runtime policy engine**",
+          "Tradeoff": "Most expressive. Most engineering work. Requires telemetry already in vision."
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Option",
+        "What it looks like"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Option": "**A. Track record**",
+          "What it looks like": "\"This coworker handled 47 patches successfully \u2192 promote to autonomous\""
+        },
+        {
+          "Option": "**B. Graduated dial**",
+          "What it looks like": "Slider per task: manual / assisted / autonomous"
+        },
+        {
+          "Option": "**C. Scope-based guardrail**",
+          "What it looks like": "\"Low risk: auto \u00b7 Medium: approval \u00b7 High: manual\" (current default in PDFs)"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Option",
+        "Implication"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Option": "**A. Recompute** with explicit assumptions (working days only? single-tech bottleneck?)",
+          "Implication": "Honest but lowers headline number"
+        },
+        {
+          "Option": "**B. Rewrite formula** to match $33,600",
+          "Implication": "Risks reverse-engineering \u2014 find the assumptions that make math work"
+        },
+        {
+          "Option": "**C. Pull the claim**",
+          "Implication": "Removes a flashy ROI number from external decks"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "If you want\u2026",
+        "Open"
+      ],
+      "is_id_table": false,
+      "row_count": 10,
+      "rows": [
+        {
+          "If you want\u2026": "The strategic frame",
+          "Open": "`nicole-actual-acp-vision.md`"
+        },
+        {
+          "If you want\u2026": "Source-grounded architecture spec",
+          "Open": "`acp-vision-from-pdfs.md`"
+        },
+        {
+          "If you want\u2026": "Ranked problem list (with math dispute)",
+          "Open": "`problems-ranked.md`"
+        },
+        {
+          "If you want\u2026": "All evidence (partners + competitors + ethnography)",
+          "Open": "`research-evidence.md`"
+        },
+        {
+          "If you want\u2026": "Framework analysis (9 frameworks)",
+          "Open": "`council-frameworks.md`"
+        },
+        {
+          "If you want\u2026": "What's broken in this analysis",
+          "Open": "`critic-pass-1.md`"
+        },
+        {
+          "If you want\u2026": "ID schema + grep recipes",
+          "Open": "`TAXONOMY.md`"
+        },
+        {
+          "If you want\u2026": "Confidence tag reference",
+          "Open": "`CS-TAGS.md`"
+        },
+        {
+          "If you want\u2026": "The raw data dump",
+          "Open": "`nicole-acp-datadump/`"
+        },
+        {
+          "If you want\u2026": "Raw scout output",
+          "Open": "`scout/scout-secondary-output.md`"
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [
+    "BLOCKER-DISCOVERABILITY",
+    "CLAIM-MATH-DISPUTED-001",
+    "PROBLEM-001",
+    "TENSION-HEADLESS-VS-DISCOVERABILITY",
+    "TENSION-RUNBOOK-NOT-PRESCREENED"
+  ],
+  "cs_tag_histogram": {
+    "VERIFIED": 1
+  }
+}

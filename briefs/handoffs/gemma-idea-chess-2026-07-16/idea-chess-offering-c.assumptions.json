@@ -1,0 +1,172 @@
+[
+  {
+    "id": "C-GATE",
+    "label": "Adlumin incident data can reach an ACP coworker (technically and legally, across tenants)",
+    "probability": 0.40,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "Adlumin runs as a separate product lane whose structured incident data model is not exposed to ACP coworkers, OR cross-product / cross-tenant use of client incident telemetry for report generation is not permitted under existing client DPAs. Either collapses C to a free-text synthesizer over incident notes.",
+    "test_that_resolves_it": "Internal Adlumin-eng review (is the incident data model queryable by an ACP coworker?) + legal/DPA review (is cross-product, cross-tenant use of client incident telemetry permitted?). Days, no build required.",
+    "evidence": "[?] CS:LOW - Gate C UNCONFIRMED (offerings build-state map line 136); mini-council Voice 7 names this the riskiest, gating assumption. The whole first-party-telemetry why-n-able claim depends on it."
+  },
+  {
+    "id": "C-CORR",
+    "label": "Zero-holes cross-stack correlation, during the incident, at scale",
+    "probability": 0.30,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "Correlation completeness or false-linkage rate on a live, multi-source, partially-degraded incident is too low to produce a defensible timeline; the 'zero-holes' promise fails exactly when the estate is under attack.",
+    "test_that_resolves_it": "Replay 3 historical multi-source incidents through the correlation logic; measure evidence-chain completeness and false-linkage rate against the known ground truth.",
+    "evidence": "[?] ~30% P1 - offering's own North Star risk register. Genesis-stage capability; the narration layer on top is already commodity (Huntress ships it)."
+  },
+  {
+    "id": "C-LIVE",
+    "label": "MSPs actually USE it DURING the incident, not after (the wedge)",
+    "probability": 0.45,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "MSPs run C after the fire is out (post-hoc), not during. The 'live' differentiator evaporates and C is a report generator wearing a live badge - which is the ticket-RCA card already in the build.",
+    "test_that_resolves_it": "Contextual inquiry on actual current IR workflow at 3-5 MSPs (the mini-council's shared blind spot - no one observed real IR practice), then a wizard-of-oz live-RCA session under simulated incident pressure to see if it is used during.",
+    "evidence": "[?] North Star ~50% use-during, explicitly flagged behavior-untested."
+  },
+  {
+    "id": "C-TRUST",
+    "label": "An MSP trusts an AI mid-incident enough to act on its live correlation",
+    "probability": 0.45,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "Under acute stress (2am, adrenaline high, breach active), the senior tech defaults to human judgment and ignores/bypasses the AI until the incident is resolved, voiding the 'during' value.",
+    "test_that_resolves_it": "Same simulated-incident operator session as C-LIVE; observe whether the tech acts on the AI's live output or falls back to the on-call human. Collapses into one study with C-LIVE and C-SOLN.",
+    "evidence": "[A] - no evidence any MSP will hand live incident reasoning to an AI; incident-response culture is human-trust-based. SDT (mini-council Voice 3): autonomy threat is sharpest under time pressure."
+  },
+  {
+    "id": "C-LIABLE",
+    "label": "An AI-authored RCA is admissible / insurer-acceptable / not a catastrophic liability when relied upon",
+    "probability": 0.45,
+    "required": true,
+    "stage": "launch",
+    "kill_criterion": "Insurers or auditors will not accept an AI-generated RCA as the reliance document without a licensed human examiner's attestation, OR a wrong AI-authored RCA relied upon in a claim/litigation creates severe multi-party liability. Either makes C an input to a human's report, not 'the artifact the insurer requires'.",
+    "test_that_resolves_it": "Legal scoping (admissibility, discoverability of model reasoning, spoliation risk) + 2-3 cyber-insurer conversations: will you accept an AI-generated RCA as the reliance document, or require a human forensic examiner sign-off?",
+    "evidence": "[?] - offering DESIGNS for reliance ('defensible by morning, the artifact the insurer requires') but never scopes admissibility. EU AI Act 2026-08-02, compliance owner <TBD> (offerings doc). C-specific and potentially fatal to the headline value prop."
+  },
+  {
+    "id": "C-SOLN",
+    "label": "Demand is for THIS mechanism (live AI-authored RCA), not just the destination (a fast defensible RCA)",
+    "probability": 0.50,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "MSPs want the outcome (a fast, defensible cross-stack RCA) but reject the mechanism (an AI correlates and drafts it live while you approve) - they want a human SOC to hand them the report, not an AI to babysit mid-crisis.",
+    "test_that_resolves_it": "Solution-fit operator session presenting the live-AI-RCA mechanic; observe whether it matches how they actually want the incident job done. Collapses with C-LIVE and C-TRUST.",
+    "evidence": "[A] CS:MEDIUM - all demand data measured desire for the outcome; never for this mechanism. Independent survey VALUE rating is soft (3.13) even while ranked #3 priority."
+  },
+  {
+    "id": "C-DEMAND",
+    "label": "RCA demand exists (the destination)",
+    "probability": 0.80,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "Demand proves an artifact of the shared 8-person qual base, or softens further under independent quant; the soft 3.13 value-rating is the true signal, not the #2/#3 ranking.",
+    "test_that_resolves_it": "Independent Qualtrics survey (Meaghan, 500-target) to separate ranking-priority from value-willingness; watch whether value-rating stays soft.",
+    "evidence": "[D/R mixed] - #2 qual cumulative (26), #3 survey priority (4.00), but survey VALUE 3.13 soft (acp-vision-synthesis line 53). Both qual cuts are the same n=8."
+  },
+  {
+    "id": "C-PAY",
+    "label": "Per-incident / percent-of-SOC WTP holds",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "The named WTP anchors do not generalize; MSPs decline per-incident or %-of-SOC pricing at scale, or the pricing model inverts margin on large breaches (see H7).",
+    "test_that_resolves_it": "Pricing test with the target segment on both per-incident and %-of-SOC models; pair with the COGS model from H7.",
+    "evidence": "[R] MEDIUM - Vikram '10-15% of my SOC running expense', Jonathan 'pay per incident to run it.' n=2 named, single-source Guidepoint, directional not projectable."
+  },
+  {
+    "id": "C-EGRESS",
+    "label": "Correlation across the non-N-able stack is legally and contractually permitted",
+    "probability": 0.40,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "Competing security vendors' ToS/DPA prohibit N-able extracting and correlating their incident data into a client-facing artifact; the cross-stack promise shrinks to cross-Adlumin-estate.",
+    "test_that_resolves_it": "Legal review + read one rival SIEM/EDR vendor ToS (SentinelOne / Rapid7 / Proofpoint - the actual MSP stack); confirm client-consent path.",
+    "evidence": "[?] - same egress problem as Offering A's H2, but here the data owners are security competitors with active incentive to throttle. 'First-party' only covers the Adlumin estate."
+  },
+  {
+    "id": "H1",
+    "label": "No account/claim-ending wrong-RCA event and no admissibility failure",
+    "probability": 0.50,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "A wrong AI-authored root cause is relied upon by a client/insurer/court; the reliance-chain liability lands on the MSP and possibly N-able. Asymmetric and unrecoverable - a wrong RCA loses a claim, not just an account.",
+    "test_that_resolves_it": "Bundled with C-LIABLE legal scoping; define confidence-tiering carried into the client/insurer-facing artifact and a mandatory human-attestation gate before any relied-upon output.",
+    "evidence": "[?] - reliance-chain liability unexamined; C-specific because the output is designed to be relied upon by an adversarial third party."
+  },
+  {
+    "id": "H3",
+    "label": "A 2am reliability / uptime bar and degraded-mode design exist",
+    "probability": 0.50,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "C is down, slow, or blind at the moment of an active incident - especially when the incident itself has degraded the network/identity/endpoint telemetry C reads from. Failure is correlated with the event C exists to handle.",
+    "test_that_resolves_it": "Define an incident-grade SLA + degraded-mode behavior (what C does when its own data source is compromised); chaos-test correlation under simulated telemetry loss.",
+    "evidence": "[?] - operational SLA unscoped; the failure mode is structurally correlated with the incident, the nastiest kind."
+  },
+  {
+    "id": "H5",
+    "label": "The alert-to-RCA trigger does not false-fire into erosion",
+    "probability": 0.55,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "C fires RCAs on false-positive alerts, burning cost, creating possibly-discoverable 'we had an incident' artifacts, and training the MSP to ignore its triggers; OR it waits for human confirmation and is no longer 'during' for the early phase where speed matters.",
+    "test_that_resolves_it": "Define and test trigger logic against a labeled alert stream; measure false-trigger rate and downstream mute behavior.",
+    "evidence": "[?] - the trigger dilemma (auto-fire vs wait-for-human) is unnamed in the offering; the sibling 'Alert Flood Suppressor' default exists precisely because alerts are noisy."
+  },
+  {
+    "id": "H6",
+    "label": "C survives incumbents (Huntress / Blackpoint) who already ship incident reports",
+    "probability": 0.45,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "Huntress/Blackpoint/CrowdStrike fold live-RCA narration into their managed SIEM/MDR where they already own the telemetry and staff a 24/7 human SOC - delivering a human-defensible report that is strictly safer for the liability job than an AI-authored one.",
+    "test_that_resolves_it": "Competitive teardown of Huntress Managed SIEM 'incident reports' + Blackpoint Active Defense; win/loss data (N-able Win/Loss Report, Chorus, page 61977427997) if this passes concept.",
+    "evidence": "[R] CS:HIGH competitor capability - Huntress Managed SIEM 'delivers incident reports' (scout 01); Blackpoint Active Defense is the posture N-able's own battlecard compares Adlumin to (scout 05). Competitive response modeling is [A]."
+  },
+  {
+    "id": "H7",
+    "label": "Per-incident LLM COGS fits the per-incident price on the worst breaches",
+    "probability": 0.45,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "Continuous large-context correlation over an unbounded incident duration (hours-to-days, re-generating as facts change) produces token COGS that inverts margin against a fixed per-incident fee - and spikes on exactly the major breaches that matter most.",
+    "test_that_resolves_it": "Model token cost of continuous cross-stack correlation over realistic incident durations; compare against per-incident and %-of-SOC price points.",
+    "evidence": "[?] - unit economics unmodeled; the billed unit (one incident) is decoupled from the cost unit (correlation over incident length). DSE helps runbooks, not free-form correlation/narration."
+  },
+  {
+    "id": "H8",
+    "label": "The build (ticket-RCA card) reconciles with the offering (live cross-stack RCA)",
+    "probability": 0.50,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "The specced default 'Incident Response Analyst - RCA on tickets and device events' (post-hoc, single/few-source) and Offering C's pitch (live, cross-whole-stack, during) are different products; C's spec must argue against Nicole's ratified DEC-006 default, or the offering is over-claiming vs what is built.",
+    "test_that_resolves_it": "Product decision: which product is C? Reconcile the offering pitch with DEC-006 before spec; name the gap to Nicole/Meaghan.",
+    "evidence": "[CS: VERIFIED - build read] FSN-83143 / specs/004-ai-coworker-registry, DEC-006 (Nicole Reineke): the default card is scoped post-hoc and ticket/device-level, i.e. the fallback mini-council Voice 7 warned C collapses into."
+  },
+  {
+    "id": "H9",
+    "label": "C is not absorbed as an Adlumin case-file feature",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "Adlumin already produces 'audit-ready case files'; C's net-new shrinks to a client/insurer-formatted skin over Adlumin's existing artifact, which the Adlumin team could build first, triggering internal channel/margin conflict.",
+    "test_that_resolves_it": "Scope C's net-new value above Adlumin's existing case file; check strategy/product-line ownership (blocked while n-able-strategy-context.md is a v0 placeholder).",
+    "evidence": "[?] - Adlumin markets 'audit-ready case files' and 'self-service access to underlying investigation data' (scout 02/03, vendor). Cannibalization unexamined."
+  },
+  {
+    "id": "H11",
+    "label": "Multi-tenant approval authority is resolvable under incident time pressure",
+    "probability": 0.50,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "Write-with-approval requires a human approver at 2am when the RCA must reach the insurer by morning; if the authority cascade is unresolved or the approver is asleep, the gate is a bottleneck (voiding speed) or gets skipped (voiding liability protection).",
+    "test_that_resolves_it": "Resolve build approval-model open questions OQ-001..005 specifically for time-critical events; define an incident-mode approval path.",
+    "evidence": "[?] - build has 5 open approval-model questions (OQ-001..005, findings JSON); C adds a 2am timing conflict A does not have."
+  }
+]

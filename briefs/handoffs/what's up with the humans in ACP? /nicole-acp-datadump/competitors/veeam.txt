@@ -1,0 +1,55 @@
+# Veeam
+slug: veeam
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Veeam is the enterprise backup and data protection market leader, covering physical, virtual, cloud, SaaS, and Kubernetes workloads. At VeeamON 2026, Veeam repositioned itself at the intersection of data resilience, cyber resilience, and AI resilience — integrating MCP (Model Context Protocol) to allow AI systems to query and interact with backup repositories. Veeam Backup & Replication v12.3 and ONE V13 represent the current generation, with significant AI observability and resilience investments underway.
+
+## MSP Relevance
+Veeam is widely deployed in MSP stacks for enterprise and mid-market clients. The VCSP (Veeam Cloud & Service Provider) program gives MSPs consumption-based licensing to resell Veeam protection. The AI resilience narrative and MCP integration position Veeam as foundational infrastructure for AI-era IT operations — relevant as MSPs manage clients adopting AI workloads.
+
+## Key Offerings & Capabilities
+- Veeam Backup & Replication v12.3 — backup and DR for physical, virtual (VMware, Hyper-V), and cloud workloads
+- Veeam ONE V13 — observability, reporting, and analytics across the Veeam Data Platform
+- Veeam Data Cloud — SaaS backup for Microsoft 365 and Azure
+- Veeam Kasten — Kubernetes backup and mobility
+- MCP integration — AI systems can securely access and utilize Veeam backup repository data
+- CrowdStrike Falcon LogScale and SIEM integration — Veeam events visible in security platforms for threat-aware recovery
+- Veeam Software Appliance — bootable ISO/virtual appliance on hardened Linux OS
+- Day 1 VCSP support for SaaS workloads in VDC (MSP-relevant)
+
+## Recent Announcements
+- VeeamON 2025: MCP integration announced — AI systems can query and interact with backup repositories
+- VeeamON 2025: CrowdStrike Falcon LogScale and Next-Gen SIEM integration for threat-aware recovery
+- Veeam Backup & Replication v12.3 released — strengthens enterprise resilience, hybrid estate management
+- Veeam ONE V13 released — next-gen observability with enterprise-scale reporting engine and enriched analytics
+- ISO 27701, ISO 27017, and HIPAA attestation achieved; FIPS certifications in progress
+- VeeamON 2026: Positioning backup as foundational AI resilience infrastructure — "AI resilience era"
+- Day 1 VCSP SaaS workload support enabling MSPs to offer SaaS protection immediately
+
+## Pricing Model
+Perpetual licensing with annual support (Veeam Universal License — VUL) or subscription-based. VCSP program for MSPs: consumption-based, pay-as-you-go per workload. VUL allows flexible portability across workloads. Pricing is enterprise-scale — typically higher than Datto BCDR or Axcient for SMB deployments.
+
+## Strengths
+- Market-leading enterprise backup platform — dominant in hybrid/cloud enterprise environments
+- MCP integration is forward-looking — positions Veeam data as AI-queryable infrastructure
+- CrowdStrike integration creates security-aware recovery workflows (recover from last known clean backup)
+- Strong certifications (ISO, HIPAA) enable compliance-heavy MSP clients
+- Veeam ONE observability is best-in-class for large Veeam environments
+
+## Weaknesses / Gaps
+- Pricing and complexity can be high for SMB MSP clients — Datto BCDR and Axcient are often preferred at that tier
+- SaaS backup (Microsoft 365) is newer and less mature than purpose-built tools (Backupify, Dropsuite)
+- Less MSP-native than Datto BCDR in terms of partner portal and management tooling
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Veeam competes in backup/DR. The MCP integration is interesting (Veeam data becomes AI-queryable) but this is infrastructure plumbing, not agentic workflow automation. Low direct overlap with NZO's platform play.
+
+## Notes
+- MCP integration at VeeamON 2025 is worth tracking — signals Veeam wants to be part of the AI agent ecosystem as a data source, not just a backup tool
+- CrowdStrike integration creates a security + backup convergence narrative relevant to MSPs selling both
+- VeeamON 2026 "AI resilience" positioning is a branding shift that may increase Veeam's relevance to AI-adopting MSP clients

@@ -1,0 +1,108 @@
+TRANSCRIPT: Nicole Reineke - Empower 2026 IT Leaders Session
+Source: AI-AI session transcripts  Empower 2026-070526-120115 (1).pdf
+Session: IT Leaders Non-MSPs — Empower 2026
+============================================================
+
+[0:00] Nicole Reineke:
+  Can I use your two All right, go ahead. Thank you. Hi. My name is Shane.
+
+[0:41] Nicole Reineke:
+  follow up question. Where do you put the solutions? Currently? Do you actually have tickets
+and you record them?
+
+[1:10] Nicole Reineke:
+  Okay, and you're an mspm customer, so let's, let's connect, because I have ideas
+
+[2:37] Nicole Reineke:
+  I have some fun calculation spreadsheets that we could talk about, but it also depends on
+what LLM. It's what LLM, who's hosting the LLM, what discounts you can get, what kind of
+verbiage you get, which model you choose.
+
+[3:43] Nicole Reineke:
+  Yeah, you don't incur a per token charge on top of it.
+
+[7:07] Nicole Reineke:
+  part, the human in the loop, approval. Yeah, yeah. I feel pretty strongly about that too. Who
+knew automotive for the win? Very well done. You know, I'm going to call on you guys. Come
+on. You're all looking down.
+
+[8:46] Nicole Reineke:
+  to be doing. Anybody else feel strongly about this before I move to the next one? Oh my
+gosh, you raised your eyebrows. Go ahead, that was an indicator of interest. Don't you have to
+keep your face super still, or you're getting called up. Okay. Okay, what are your users or
+customers asking for when it comes to AI? So what are you getting pushed for?
+
+[9:20] Nicole Reineke:
+  anybody have anything more specific than everything?
+
+[11:35] Nicole Reineke:
+  how can we meet that need that they have? Otherwise, it's just opportunistic, and that's a
+waste of money, right?
+
+[12:57] Nicole Reineke:
+  Jean Francois, you look very like you need to say something curious. What are you seeing
+from you?
+
+[13:51] Nicole Reineke:
+  Yet, Josh has kept
+
+[16:20] Nicole Reineke:
+  how do you make it efficient and accurate? Right? Production, it's not just like a full time job,
+it's explicitly like 100% a full time job, yeah? Prompt engineer, yeah, sure, absolutely.
+
+[17:30] Nicole Reineke:
+  Yeah, I actually, I published a book called How to innovate with AI. It's free, it's available on
+our website, and it literally walks you through beginning to end, how you identify the
+workflows, how you pick the tools, how you bring it into your environment. So if you just go on
+the ABLE website and look for the how to innovate with AI books, it will walk you from zero to
+production,
+
+[18:37] Nicole Reineke:
+  So number one, PowerPoint AI is the worst of all the AIS. So if you're not familiar with that,
+isn't truth, it's truth, and there are ways that you can actually achieve what you're looking to
+do. But what I forgot, I had a microphone. Okay, so PowerPoint AI is the worst of all the AIS.
+If you've ever used it, it's horrifying, the analogy, yeah, but there are ways to do it, AI when
+you can't even get it to do that. So you can get it to do that, but you have to know how to
+break down the process into wildly specific steps. And I can, I can walk you through how you
+would do that. But we had the same problem. We initially adopted it, and now I'm able to
+achieve with our PowerPoint template that's now properly formatted and with the export so
+but the whole point is it has to be wildly explicit. And you can't just say, Hey, do this general
+thing. And that's sort of true for AI. Generally speaking, you have to segregate each of your
+agents to do a wildly specific job in the way you want to do it with an operating manual that is
+also wildly explicit. So isn't that just essentially power just rules? Oh, yes, just workflows with
+90% right? Because with workflows, you have to be explicit. You have to write every single
+rule. And with AI, what you can do is you can write 80% of the rules, and it can infer the last
+20% for for topics like that. My dad is a mainframe developer, and he claims everything that
+we do actually is not even remotely interesting or innovative, because they did it all in the 70s
+and it's just a bunch of rules. So I had heard that argument more than you could possibly
+understand, and I agree with it in I agree with 80% of that. Yeah, you have to be more
+specific than people. make it out to be, yeah, yeah. To add
+
+[21:44] Nicole Reineke:
+  It saves me 40 hours a week, easily. From a technical
+
+[22:17] Nicole Reineke:
+  pretty good. You have to pick the use cases that is meant for, right? You're not going to have it
+do your financials. So there are use cases where just is a stupid use of time and resources,
+but there are a lot of use cases where it's effective. Okay, what do you believe your role will
+be in your customers or users environments three years from now? I know who hasn't spoken
+yet, so be proactive here, Ashley, we're
+
+[23:18] Nicole Reineke:
+  check. So you really think it's going so you really think it's going to do the proactive
+recommendation, and then you're just verifying it after the fact, yeah, for the most
+
+[25:25] Nicole Reineke:
+  So you don't have a formal education process through your HR or through other teams that's
+left to you
+
+[26:32] Nicole Reineke:
+  that's where we're going to be three years from now. So you almost end up being integrators.
+That's really interesting.
+
+[27:38] Nicole Reineke:
+  perspective, and your day to day operations is that level one support of your end customers,
+is that configuration management. What is the bulk of your time?
+
+[27:52] Nicole Reineke:
+  is maniacal, I'm just

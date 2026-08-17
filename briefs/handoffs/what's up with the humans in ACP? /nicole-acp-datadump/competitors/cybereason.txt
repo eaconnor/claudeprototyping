@@ -1,0 +1,58 @@
+# Cybereason
+slug: cybereason
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Cybereason is an endpoint detection and response (EDR) and extended detection and response (XDR) platform with elite threat intelligence and digital forensics capabilities. In November 2025, LevelBlue (the world's largest pure-play managed security services provider) completed the acquisition of Cybereason, integrating its award-winning EDR with LevelBlue's managed security operations. Prior to the acquisition, Cybereason received $120M in March 2025 from SoftBank Corp., SoftBank Vision Fund 2, and Liberty Strategic Capital to expand its cybersecurity solutions.
+
+## MSP Relevance
+Cybereason is relevant to MSSPs (Managed Security Service Providers) and security-focused MSPs offering EDR/MDR services to enterprise and mid-market clients. Its Pay As You Grow (PAYG) partner program enables MSSPs to bill monthly per endpoint sensor — aligned with MSP billing models. The LevelBlue acquisition provides Cybereason technology with the backing of the world's largest MSSP, expanding distribution through LevelBlue's managed security partner network. For MSPs seeking an enterprise-grade EDR with a mature MSSP partner program, Cybereason/LevelBlue is a credible option.
+
+## Key Offerings & Capabilities
+- EDR (Endpoint Detection and Response) — behavioral threat detection across endpoints with MalOp (malicious operation) correlation
+- XDR (Extended Detection and Response) — cross-layer detection spanning endpoint, network, email, cloud, and identity
+- MDR — managed threat hunting and incident response backed by Cybereason's security operations team
+- Digital Forensics and Incident Response (DFIR) — specialized consulting services for post-breach investigation and remediation
+- Elite threat intelligence — proprietary intelligence feeds from Cybereason's global threat research team
+- AI-driven behavioral analysis — machine learning model correlating endpoint events into attack narratives
+- Defenders League — global MSSP partner program enabling managed detection and response resale
+- PAYG program — monthly per-endpoint billing for MSSP partners (Elite and Premier tier access)
+- LevelBlue integration — Cybereason EDR integrated with LevelBlue's managed security operations and MSSP partner ecosystem
+
+## Recent Announcements
+- March 2025: Cybereason raises $120M from SoftBank Corp., SoftBank Vision Fund 2, and Liberty Strategic Capital — funding for solution expansion
+- March 2025: Manish Narula appointed CEO
+- November 25, 2025: LevelBlue completes acquisition of Cybereason — integrating EDR/XDR capabilities into the world's largest pure-play MSSP
+- Post-acquisition: Cybereason technology becomes core EDR/XDR component of LevelBlue's managed security services portfolio
+- PAYG partner program expanded for MSSP flexibility — monthly billing per endpoint sensor for Elite and Premier partners
+
+## Pricing Model
+Custom enterprise pricing — no public rate card. PAYG program for MSSP partners: monthly billing based on endpoint sensor count rather than annual commitment. This enables MSPs to scale up/down with client size changes without overpaying for seats. Enterprise annual or multi-year contracts for direct customers. Post-acquisition, pricing increasingly integrated into LevelBlue managed security service packages.
+
+## Strengths
+- Award-winning EDR technology — MalOp correlation provides attack narrative visibility that alert-focused competitors do not offer
+- LevelBlue backing provides global MSSP distribution and enterprise credibility post-acquisition
+- PAYG partner program enables monthly billing flexibility — reduces MSSP barrier to entry and risk
+- DFIR consulting capabilities add high-value professional services to the product portfolio
+- $120M funding (March 2025) prior to acquisition indicates strong investor confidence in underlying technology
+- North American MSSP program expansion with dedicated support resources and incentive structures for growth
+
+## Weaknesses / Gaps
+- LevelBlue acquisition creates integration uncertainty — product roadmap, pricing, and channel priorities may shift as integration progresses
+- Enterprise positioning and pricing complexity — less accessible for smaller MSPs managing SMB client environments
+- Post-acquisition, Cybereason as an independent brand may be sunset or subsumed into LevelBlue branding
+- Competing against well-established EDR leaders (CrowdStrike, SentinelOne, Microsoft Defender) that have larger ecosystems and greater MSP market share
+- Limited transparency on post-acquisition partner program terms and margins
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Cybereason is an EDR/XDR security detection platform with no meaningful overlap with NZO's AI agent and workflow automation capabilities. As a security tool, it is a complementary stack component in MSP environments, not a direct competitor. NZO's AI agents could potentially integrate with or orchestrate Cybereason alerts and response actions — making it a potential integration partner rather than a competitor.
+
+## Notes
+- LevelBlue as the world's largest pure-play MSSP provides Cybereason with a distribution channel that independent EDR vendors do not have — this is strategically significant for MSP adoption
+- The PAYG model is the right pricing design for the MSP market — monthly per-sensor billing aligns with how MSPs charge clients and manage variable endpoint counts
+- Watch for LevelBlue to bundle Cybereason into their MSSP service catalog as a differentiated managed detection offering vs. competitors using CrowdStrike or SentinelOne
+- MalOp (malicious operation) narrative visualization is a genuine UX differentiator — MSP analysts can understand the full attack story rather than triaging individual alerts

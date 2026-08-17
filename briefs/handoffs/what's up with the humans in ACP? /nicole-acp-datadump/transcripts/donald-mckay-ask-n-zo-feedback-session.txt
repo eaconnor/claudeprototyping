@@ -1,0 +1,387 @@
+TRANSCRIPT: Donald McKay - Ask N-zo Feedback Session
+Source: Donald McKay - Ask N-zo Feedback Session.vtt
+============================================================
+
+[00:00:03] Donald McKay:
+  But it's obviously not. Thank you.
+
+[00:00:05] Nicole Reineke:
+  No, it's definitely not. No. OK.
+
+[00:00:19] Donald McKay:
+  2 Of some limitations in reporting within in Central, we sort of started building their own reports in their own way I guess what I am so Because Just asking a question comparing it with ours and the information's been fairly accurate, so that's probably responsive wise that we find, you know, speed wise My biggest Probably hope for it was to do with patching and operating system because that's probably our biggest challenge is sort of interrogate the patching and seeing what needs to get done sort of from that I and initially when was It really wasn't much information at all, which was useful compared to what we had So what we found is the most accurate way to measure is by The the actual patch level over the system That information is there, but it's not easily displayed.
+
+[00:02:37] Nicole Reineke:
+  But.
+
+[00:02:39] Donald McKay:
+  So what we had to do was create a custom property and sort of join the two information together which And a custom property And at first when we tried asking, I think the last time as well there I couldn't read the custom property where that information was, you know, so if I go in and ask it, tell me the packs And to me, that's sort of one of the biggies from my point of view, because making sure servers and workstations are patched these days is probably more important than anything else kind of thing. And a lot of the challenges we've had since moving in Central have been around Getting the information to see how good or bad it actually is The the upside being that when we finally did get the report,
+
+[00:03:49] Nicole Reineke:
+  OK.
+
+[00:03:53] Donald McKay:
+  our external report showed the patching was actually pretty decent and any machines that weren't patched weren't a problem for Nsential The machine itself had a problem patching, rather than Nsential patching it being the problem Anything. So so once I had that information,
+
+[00:04:09] Nicole Reineke:
+  OK.
+
+[00:04:11] Donald McKay:
+  it made things a bit better.
+
+[00:04:15] Nicole Reineke:
+  OK. Any other use cases that you've used it for?
+
+[00:04:21] Donald McKay:
+  Again, we we've asked a couple of times, look at this customer and make some recommendations and it will come back with, yeah, you've got these machines on 23H2, you've got these machines without enough RAM, you know you've got these machines on
+
+[00:04:36] Nicole Reineke:
+  Yes.
+
+[00:04:38] Donald McKay:
+  this Again That's all good. Apart from the fact that we've sort our own way to do that as well, kind of Thing you know which is I get the information was sort of fairly accurate between the two line when I wanted to look at it.
+
+[00:04:59] Nicole Reineke:
+  OK. Did you ask any questions about how do you use the system itself or how to use N Central or to look up any documentation?
+
+[00:05:06] Donald McKay:
+  To be honest, no, I don't think. I'll be honest.
+
+[00:05:08] Nicole Reineke:
+  OK.
+
+[00:05:09] Donald McKay:
+  I didn't think to ask and stuff like that. You know, no. Again,
+
+[00:05:12] Nicole Reineke:
+  OK.
+
+[00:05:14] Donald McKay:
+  I'm probably the lazy one. If I want to know how to do something, I go and speak to Justin and Justin. So, but yeah, yeah, yeah.
+
+[00:05:21] Nicole Reineke:
+  Yes.
+
+[00:05:23] Donald McKay:
+  That sort of a feature we are probably quite tight with who can make changes in the system So able to take maybe take a machine off monitoring or make changes to dashboards and things like that. We probably take the control lab So we've got 33 guys just in my team, never mind the consultancy So having all of them been able to make changes, we got burned very early on when people had too many rights and OK When you think of turning it off for one machine and they turned it off for everything.
+
+[00:06:11] Nicole Reineke:
+  How long has your team been on in Central?
+
+[00:06:14] Donald McKay:
+  Sorry, probably probably about two years.
+
+[00:06:15] Nicole Reineke:
+  How? How many years have you?
+
+[00:06:19] Donald McKay:
+  So we were on, we were on insight or probably the first
+
+[00:06:19] Nicole Reineke:
+  Are you saying?
+
+[00:06:23] Donald McKay:
+  eight years of our life as Kick And it was David Weeks came and done the the sales job on N Central on us said you really need to be on N Central and he was he was right.
+
+[00:06:37] Nicole Reineke:
+  Yes.
+
+[00:06:40] Donald McKay:
+  So for an organisation other size N site was getting very, very hard to manage N Central's a hell of a lot easier.
+
+[00:06:49] Nicole Reineke:
+  OK, so you really have a lot of experts inside your organization. It's very locked down and people understand how to do their jobs. And then it seems like you've created a
+
+[00:06:55] Donald McKay:
+  Mhm.
+
+[00:06:59] Nicole Reineke:
+  series of dashboards or interfaces that access information directly in a way.
+
+[00:07:03] Donald McKay:
+  Huh.
+
+[00:07:04] Nicole Reineke:
+  That your team needs to understand it. See, yeah, here what I would call an advanced organization, which is great. OK.
+
+[00:07:08] Donald McKay:
+  Yeah.
+
+[00:07:12] Nicole Reineke:
+  Did you encounter any limitations or errors?
+
+[00:07:16] Donald McKay:
+  And No, not errors. I wouldn't say any errors. I would say the limitations was in It would come up, say this information is not in the API, like custom properties wasn't in the API. So if you're trying to query something on custom properties I'll say I'm sorry if that information is just not there for you to actually clean
+
+[00:07:40] Nicole Reineke:
+  Yeah.
+
+[00:07:41] Donald McKay:
+  it. You know that was that's probably been no errors and stuff. There's no point it crashed out There was no point it didn't back The information based on its understanding of my question kind of thing and then two or three ref refines of that question afterwards kind of thing You know you get to where you want to be. It was more the limitations where and what it did have access to and what it didn't, but I'm assuming that's more The fact He has one Depending on what that information you want.
+
+[00:08:22] Nicole Reineke:
+  Yeah That makes sense. How is the speed and accuracy?
+
+[00:08:29] Donald McKay:
+  It's definitely fine, yeah. I've never had it, never had to take too long to do anything. I think at one point I asked it to query pretty much every agent in our system. You know, I got the information back within within a minute, which is fine when you're doing 10 and a half thousand agents worth of Of query type information. Accuracy, I would say is pretty good as well. Again, accuracy based on what I think you mean, what you've asked it, Rosalyn, what you actually mean. But again, that's that's just life, you know So, but no. And again, checking it against our own dashboards,
+
+[00:09:05] Nicole Reineke:
+  But.
+
+[00:09:09] Donald McKay:
+  you know, the information's the same on both So yeah, it's accurate that way.
+
+[00:09:15] Nicole Reineke:
+  That's great. Were there any examples where Enzo saved you time?
+
+[00:09:21] Donald McKay:
+  I don't know at the moment there has.
+
+[00:09:24] Nicole Reineke:
+  Nope. OK, that's a clear answer. So new features or capabilities Other Kimberly's.
+
+[00:09:35] Donald McKay:
+  I Probably this. The one thing I never thought to check was, yeah, what you said. Have you asked how you do things? The other thing might be ask, I don't know, can you ask it to run?
+
+[00:10:08] Nicole Reineke:
+  Yeah.
+
+[00:10:08] Donald McKay:
+  Using it possibly to schedule scripts against machines.
+
+[00:10:09] Nicole Reineke:
+  Yeah.
+
+[00:10:15] Donald McKay:
+  Like the adoption where you want to say this machine schedule a script against it, you know, to do this, you know, which saves you going in and building machines and doing things would probably be the sort of things we would use it for.
+
+[00:10:29] Nicole Reineke:
+  All right Great, great ideas at UX. So what was your impression of the UX,
+
+[00:10:31] Donald McKay:
+  Yeah.
+
+[00:10:36] Nicole Reineke:
+  the user experience?
+
+[00:10:39] Donald McKay:
+  Yeah, it's it's it's fine. It looks clean, you know, when it's giving you the information. What I haven't done is you export the stuff from it. I never even thought about trying that No, you're not getting the option. You need to expand the whole It's not up to use the whole screen. That's all just to be paying down the site. We if you're asking what information really isn't, you know, big enough for use 8 Uh, and yeah, probably would be. So you ask all of this information How do you then get it to spit that information?
+
+[00:11:36] Lynne Robertson:
+  Export. Would that be for the whole response, Donald, or would it just be for items in the response like tables or?
+
+[00:11:45] Donald McKay:
+  I would probably say, for example, look at this customer and give us all our
+
+[00:11:49] Lynne Robertson:
+  Mhm.
+
+[00:11:50] Donald McKay:
+  recommendations that you would say need to be done on this customer and spit it
+
+[00:11:53] Lynne Robertson:
+  Mhm Like a report, yeah.
+
+[00:11:55] Donald McKay:
+  out into a PDF, you know, which could then be sort of handed out.
+
+[00:11:59] Lynne Robertson:
+  Mhm.
+
+[00:12:00] Donald McKay:
+  Or or it might be again we are using ChatGPT as you can copy and paste So yeah, the option to probably highlight affect and copy and paste out over there. But yeah, I would say in most cases,
+
+[00:12:17] Lynne Robertson:
+  OK.
+
+[00:12:21] Donald McKay:
+  most cases if it's a one or PDF if it's a a whole.
+
+[00:12:25] Lynne Robertson:
+  Mhm.
+
+[00:12:26] Donald McKay:
+  Patching the report you want to have a.
+
+[00:12:30] Lynne Robertson:
+  Yes That's it And for your PDF that you mentioned for customer reports, would you need, would it be beneficial to have the option to add custom branding or would it be
+
+[00:12:41] Donald McKay:
+  Oh, definitely, yeah. You know, yeah.
+
+[00:12:43] Lynne Robertson:
+  fine just OK, Yep.
+
+[00:12:48] Nicole Reineke:
+  OK, was onboarding clear and helpful?
+
+[00:12:48] Lynne Robertson:
+  OK Thank you.
+
+[00:12:55] Donald McKay:
+  Sorry.
+
+[00:12:55] Nicole Reineke:
+  Was onboarding the information we gave you to start off? Was that clear and helpful?
+
+[00:12:59] Donald McKay:
+  Yeah, definitely. Yeah. No, it was. It was very easy just to click on it and start using it and start getting information out. Yes. Yeah, there was nothing hard about that at all.
+
+[00:13:10] Nicole Reineke:
+  And did you know how to provide feedback?
+
+[00:13:14] Donald McKay:
+  I've been clicking the wee thumbs up and thumbs down type stuff as the things that we've been mainly doing, yeah.
+
+[00:13:22] Nicole Reineke:
+  Perfect and based on your.
+
+[00:13:24] Donald McKay:
+  I'll be honest and I'm sure these More than anything else.
+
+[00:13:41] Nicole Reineke:
+  Yeah Help to understand. We're here to help So under not a problem. Based on your experience, would you adopt Ask Enzo when it becomes generally available?
+
+[00:13:58] Donald McKay:
+  I am. I think we would definitely look at it from that to see where we could get our general help desk guys to use it.
+
+[00:14:07] Nicole Reineke:
+  Hmm.
+
+[00:14:08] Donald McKay:
+  I think because we have our own portals and part of the businesses invest That's fine I think we would one of them would almost start using this more, you know, than our own portals because there's so our own portals grab stuff from our CRM system, our ERP system and central and various different places and mash it together So, but there's there's probably definitely benefit for the help desk and especially if you could do things which would be time saving like scheduling scripts for running remediation stuff if it's if You tell it to do a bit of health check on all of the agents and a customer that come back says here's all the agents we think of good problems and here's stuff that you should maybe do about it or whatever, you know, and then that sort of a thing. I could see the general help desk would probably get benefit out of that.
+
+[00:15:11] Nicole Reineke:
+  Yeah, yeah. We're finding exactly that, that the people who get the highest value out of it are the people who are sort of that level one technician who who need to be able to find information pretty quickly and need to be able to navigate the system faster. That's what we're seeing the value right
+
+[00:15:26] Donald McKay:
+  Yeah, yeah.
+
+[00:15:27] Nicole Reineke:
+  now OK. Um, Craig, did I miss any questions that you wanted?
+
+[00:15:34] Craig Hutcheon:
+  And.
+
+[00:15:35] Nicole Reineke:
+  OK, great. Anything else you want to ask?
+
+[00:15:51] Lynne Robertson:
+  No.
+
+[00:16:03] Donald McKay:
+  Dashboards and we're looking at the offline servers and you could say how
+
+[00:16:05] Lynne Robertson:
+  OK.
+
+[00:16:09] Donald McKay:
+  long have these these servers been offline for and say this one has been
+
+[00:16:10] Lynne Robertson:
+  Mhm.
+
+[00:16:15] Donald McKay:
+  offline for that because when you look at it offline Hello I see a offline servers. I'm going to check that they were offline They've been offline for two days, so we already know about that That one only went offline 4 hours ago, you know?
+
+[00:16:34] Lynne Robertson:
+  Mm-hmm. OK.
+
+[00:16:36] Donald McKay:
+  So if you had a wee thing in there, it said Less than 4 hours, you know, you know, and if you see one customer If it was available in the area, certainly yes.
+
+[00:16:54] Lynne Robertson:
+  Thank you Thanks.
+
+[00:17:02] Nicole Reineke:
+  Fantastic. I'm going to let you. Is there anything to ask you that you want us to let us know? OK.
+
+[00:17:12] Donald McKay:
+  From I It's probably opening up more of the in information.
+
+[00:17:22] Nicole Reineke:
+  Yeah A lot more data over the next several months.
+
+[00:17:34] Donald McKay:
+  Yeah.
+
+[00:17:35] Nicole Reineke:
+  So over the next quarter you're going to see little information, hopefully some.
+
+[00:17:37] Donald McKay:
+  Yeah.
+
+[00:17:41] Nicole Reineke:
+  It's a classic information, so customer's probably just come up quite a bit for us to do Advanced data access That basically makes all the available, all of the data available for graph QL available.
+
+[00:18:23] Donald McKay:
+  Yes 8 You don't get the system kind of thing because there is wee bits that I think we've just struggled to get so far. So yeah.
+
+[00:18:34] Nicole Reineke:
+  Yeah. Yeah. So hopefully that helps. Well, you're amazing as always.
+
+[00:18:37] Donald McKay:
+  Yeah.
+
+[00:18:38] Nicole Reineke:
+  Thank you so much for participating and for gifting us your time and for interacting with the system. I really appreciate it You do get free access for the next full quarter, so As we start, we'll get some emails with new features and functionality on what we've added and hopefully some of your team members can
+
+[00:18:54] Donald McKay:
+  Yeah Yeah.
+
+[00:18:57] Nicole Reineke:
+  engage a little more actively if you don't mind.
+
+[00:19:00] Donald McKay:
+  OK. Based on that statement, how much is it gonna cost after it's not
+
+[00:19:05] Nicole Reineke:
+  We have not decided yet. If it were available on a per user basis,
+
+[00:19:05] Donald McKay:
+  free?
+
+[00:19:11] Nicole Reineke:
+  how much would you expect it to cost?
+
+[00:19:16] Donald McKay:
+  Man.
+
+[00:19:16] Nicole Reineke:
+  Per and per user.
+
+[00:19:19] Donald McKay:
+  Considering we spend 40 grand a month for you guys, I would expect it to be fairly free As any typical Scotsman will say, yeah.
+
+[00:19:30] Nicole Reineke:
+  I think that's fair. Would you pay? Yeah. No, I'm just gonna.
+
+[00:19:33] Donald McKay:
+  Yeah.
+
+[00:19:35] Nicole Reineke:
+  I'm gonna smile and say yes. I hear hear you. You are a very large,
+
+[00:19:38] Donald McKay:
+  Yeah.
+
+[00:19:41] Nicole Reineke:
+  very trusted, very cherished customer. So understood.
+
+[00:19:41] Donald McKay:
+  Yeah, yeah Yeah, no problem. All right.
+
+[00:19:47] Nicole Reineke:
+  All right, you're fantastic. Thank you so much.
+
+[00:19:50] Donald McKay:
+  No bother. I'd love to speak to you all. OK. See you later.
+
+[00:19:52] Lynne Robertson:
+  Yeah. Thanks, Donald. Nice to see you again. Bye.
+
+[00:19:53] Craig Hutcheon:
+  Yeah, nice to meet you. Bye, bye.
+
+[00:19:55] Donald McKay:
+  Bye.

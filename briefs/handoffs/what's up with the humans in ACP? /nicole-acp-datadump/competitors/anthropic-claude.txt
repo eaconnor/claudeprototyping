@@ -1,0 +1,63 @@
+# Anthropic Claude
+slug: anthropic-claude
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Anthropic is an AI safety company founded in 2021 by former OpenAI researchers, developing the Claude family of frontier AI models. Claude models (Opus, Sonnet, Haiku) are available via API, enterprise plan, and consumer product (claude.ai), with strong capabilities in reasoning, coding, vision, and tool use. In 2025, Anthropic launched a formal Claude Channel Partner Program targeting MSPs, agencies, and system integrators — with $100M in partner funding and plans to expand partner-facing operations 5x.
+
+## MSP Relevance
+Anthropic is directly building an MSP channel with explicit investment. The $100M Claude Channel Partner Program provides MSPs with certification, co-marketing, and a Claude Code modernization starter kit designed for MSP sales motions. Claude's tool use, computer use, and MCP (Model Context Protocol) capabilities enable MSPs to build AI automation workflows for client environments. As the model layer powering many MSP AI tools, Claude is foundational infrastructure that MSPs will encounter whether they choose it or not.
+
+## Key Offerings & Capabilities
+- Claude Opus 4.7 — flagship model (April 2026); 87.6% SWE-bench, high-resolution vision, 1M token context, 128K max output, agentic self-verification
+- Claude Sonnet 4.6 — balanced default; $3/$15 per MTok; near-Opus quality at faster speed; recommended for most production workloads
+- Claude Haiku 4.5 — cost-efficient; $1/$5 per MTok; 200K context; best for high-volume tasks (classification, routing, extraction, summarization)
+- Claude API — developer access with batch processing (50% off), prompt caching (90% off cached inputs), fine-tuning options
+- Claude for Enterprise — business plan with SSO, team admin, extended context; 300,000+ business customers
+- Claude Code — IDE-integrated software engineering agent; VS Code and JetBrains extensions
+- Claude for Small Business — automation workflows for SMB clients (May 2026)
+- Tool use and function calling — all Claude models support structured tool definitions; agentic multi-step execution
+- Computer Use — desktop control via vision + action API for automation of GUI-based workflows
+- Model Context Protocol (MCP) — desktop extensions, enterprise-deployed MCP servers, remote MCP (January 2026); 100+ pre-built MCP servers
+- Available on Amazon Bedrock and Google Vertex AI / Gemini Enterprise Agent Platform
+
+## Recent Announcements
+- April 2026: Claude Opus 4.7 released — 87.6% SWE-bench Verified, high-res vision (2576px), task budgets for agentic loops, adaptive thinking
+- May 2026: Claude for Small Business launched with automation workflows for SMB market
+- 2025: Claude Channel Partner Program launched at inaugural Anthropic Partner Summit — $100M partner funding pool, certification, co-marketing, 5x partner operations expansion planned
+- January 2026: Remote MCP support added for enterprise environments requiring remote infrastructure
+- Deloitte partnership: 470,000 Deloitte professionals using Claude — largest known enterprise AI deployment
+- Accenture: 30,000 trained professionals; joint business group formed December 2025
+- Infosys, Cognizant: Strategic partnerships integrating Claude into agentic AI platforms
+- Anthropic $30B+ Series G fundraise at $380B post-money valuation
+
+## Pricing Model
+API: Opus 4.7 at $5.00/$25.00 per MTok (input/output); Sonnet 4.6 at $3.00/$15.00; Haiku 4.5 at $1.00/$5.00. Batch processing 50% off all models. Prompt caching 90% discount on cached input tokens. Claude.ai Pro at $20/month (individual); Max tier with higher usage limits. Enterprise pricing via custom contract. Partner program provides preferential pricing for certified channel partners.
+
+## Strengths
+- Explicit MSP channel investment — $100M partner program with certification and co-marketing; rare among foundation model providers
+- Claude Code modernization starter kit gives MSPs a concrete sales motion for AI-powered development services
+- Opus 4.7 agentic capabilities (self-verification, task budgets) reduce hallucination risk in production agent deployments
+- Computer Use enables automation of legacy GUI-based software without APIs — high value for MSPs managing client environments
+- Competitive pricing with Haiku at $1/$5 per MTok and batch/caching discounts for high-volume MSP automation
+- Available on Bedrock and Vertex AI — MSPs can use Claude through existing AWS or GCP relationships
+
+## Weaknesses / Gaps
+- Partner program is newly launched (2025) — ecosystem, tooling, and support infrastructure still ramping
+- Computer Use security: pixel-level desktop access is a large attack surface if agents are compromised in client environments
+- Smaller pre-built connector library than Workato or Azure AI Foundry for common enterprise system integrations
+- Higher pricing than self-hosted open-source alternatives (Llama, Mistral) for cost-sensitive MSP use cases
+- No hardware or infrastructure — pure software/API vendor; MSPs must manage deployment infrastructure separately
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: Anthropic is the model provider NZO likely uses or builds on — making it infrastructure partner and potential competitor simultaneously. The channel partner program is building an Anthropic-certified MSP ecosystem that could compete with NZO's MSP automation positioning if Anthropic expands into vertical MSP tooling. The risk is indirect: Anthropic empowers MSP competitors with Claude capabilities, accelerating the overall market for AI-powered MSP automation.
+
+## Notes
+- The $100M channel partner fund signals Anthropic is serious about building an MSP ecosystem — this is the most significant Anthropic GTM move for the MSP market
+- The 5x partner operations expansion means Anthropic will have significantly more sales and partner support capacity in 2026-2027
+- Claude's availability on both Bedrock and Vertex AI removes cloud dependency — MSPs on any cloud can use Claude without switching providers
+- The Deloitte deployment (470K users) is the reference customer that validates Claude at the largest enterprise scale

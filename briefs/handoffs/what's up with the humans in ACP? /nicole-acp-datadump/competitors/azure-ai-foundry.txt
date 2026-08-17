@@ -1,0 +1,59 @@
+# Microsoft Azure AI Foundry
+slug: azure-ai-foundry
+category: AI Agent Control Planes
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Microsoft Azure AI Foundry (formerly Azure AI Studio) is Microsoft's enterprise-grade AI agent development and orchestration platform, elevated to production-ready status in February 2026. It provides the Foundry Agent Service for autonomous multi-step agents, a Model Router for intelligent model selection across 18+ models (including Claude, GPT, DeepSeek, Llama, Grok), a long-term memory system, and visual workflow orchestration via Prompt Flow. Azure AI Foundry is the enterprise AI control plane for organizations building production AI agents on Azure infrastructure, available through Azure CSP to MSPs.
+
+## MSP Relevance
+Azure AI Foundry is highly relevant to MSPs that manage Azure environments for enterprise clients and to MSPs building AI solutions for Microsoft-centric customers. The platform is available through the Azure Cloud Solution Provider (CSP) program, enabling MSPs to resell and manage AI Foundry deployments alongside existing Azure services. For MSPs already invested in the Microsoft ecosystem, Azure AI Foundry provides the most natural path to delivering AI agent capabilities without introducing new vendor relationships.
+
+## Key Offerings & Capabilities
+- Foundry Agent Service — fully managed platform for autonomous agents with multi-step reasoning, tool use, and persistent state; production-ready as of February 2026
+- Model Router — AI orchestration layer automatically selecting optimal LLM per prompt; routes simple tasks to cost-efficient models, complex tasks to reasoning models; supports 18 models
+- Memory System — long-term memory store extracting, consolidating, and retrieving context across sessions and devices
+- Prompt Flow — deterministic pipeline orchestration for RAG workflows and structured AI pipelines (complementary to autonomous Agent Service)
+- Multi-agent orchestration — persistent state, error recovery, and context sharing across coordinating agents (December 2025/January 2026)
+- MCP support — Model Context Protocol integration for standardized agent-to-tool connections
+- Model catalog — 200+ models including Claude (Opus, Sonnet, Haiku), GPT-5 family, Llama, DeepSeek, Mistral, Gemma
+- Sovereign local deployment — on-premises/local deployment option for compliance-sensitive regulated industries
+- Azure CSP integration — available through direct-bill (1-tier) and indirect reseller (2-tier) CSP models
+
+## Recent Announcements
+- February 2026: Azure AI Foundry elevated from experimentation to production-ready platform — multi-agent orchestration, MCP support, hosted agents, and sovereign deployment options all GA
+- December 2025 / January 2026: Multi-agent architecture update — persistent state, error recovery, and cross-agent context sharing
+- GPT-5.2 GA with long-context understanding and agentic tool-calling; GPT-image-1.5 released (~20% lower API costs)
+- Model Router production-ready for agentic scenarios — supports 18 models with automatic routing logic
+- Azure CSP incentive extensions: Extended Copilot CSP promotions; enterprise customer investment funds increased 20%
+- Azure AI Foundry made available via Azure Marketplace for streamlined provisioning
+
+## Pricing Model
+Platform-based cost structure reflecting: model usage/request patterns, compute/runtime, agent orchestration, data access, and governance. Production deployments typically $1,000–$10,000/month range; 30-60% of production traffic can use cheaper models via Model Router for cost optimization. Azure CSP margins: 10-15% net margin on Azure subscriptions; 3-8% on Azure consumption. Direct-bill CSP partners must demonstrate $1M+ trailing twelve-month CSP-billed revenue; below threshold requires transition to indirect reseller.
+
+## Strengths
+- Production-ready as of February 2026 — no longer experimental; enterprise SLAs and support tiers available
+- Model Router is a genuine cost-optimization differentiator — automatically routes to cheapest viable model per task, reducing inference costs without sacrificing quality
+- 18+ model support including non-Microsoft models (Claude, Llama, DeepSeek) reduces vendor lock-in concerns
+- Sovereign local deployment addresses compliance-sensitive enterprise verticals (government, healthcare, financial services)
+- CSP program provides MSPs with structured margins and resale path without direct Azure enterprise relationships
+- Deepest Microsoft ecosystem integration — Entra ID, SharePoint, Teams, M365 Copilot all natively connected
+
+## Weaknesses / Gaps
+- Azure dependency — primary value for Azure-committed organizations; cross-cloud MSPs lose most of the integration advantage
+- CSP margin pressure — 3-8% on consumption is thin; MSPs must add services value to make economics work
+- Platform complexity — multiple overlapping services (Agent Service, Prompt Flow, Model Router, Memory System) require expertise to architect correctly
+- Direct-bill CSP $1M threshold creates a barrier for smaller MSPs
+- Not as developer-accessible as Anthropic or OpenAI APIs — skewed toward enterprise Azure-native teams
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: Azure AI Foundry is the enterprise control plane for Microsoft-centric organizations. MSPs managing Microsoft-heavy client environments may build AI automation on Foundry rather than NZO — especially through the CSP channel. The Model Router, Foundry Agent Service, and MCP support map directly to NZO's control plane capabilities. NZO's differentiation must be clear for MSP-specific workflows that Foundry does not address: multi-tenant MSP management, MSP billing integration, and MSP-native automation templates.
+
+## Notes
+- Model Router is worth monitoring — automatic cost optimization via model selection is a capability that could shift enterprise AI economics significantly
+- Sovereign deployment option is a genuine differentiator for defense, healthcare, and financial services MSPs
+- Azure CSP $1M threshold creates a two-tier MSP market: larger MSPs get direct-bill access; smaller MSPs go indirect with additional margin erosion
+- Microsoft's integration of Copilot, Azure AI Foundry, and Teams positions it as the all-in-one enterprise AI stack for Microsoft-committed organizations

@@ -1,0 +1,59 @@
+{
+  "_source_md": "council-frameworks.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-COUNCIL-FRAMEWORKS",
+    "title": "Council Framework Analysis \u2014 All 9 Frameworks",
+    "version": "1.0.0",
+    "status": "Combined doc (merged 5 + 4 frameworks into one)",
+    "date": "2026-06-05",
+    "owners": {
+      "product": "Beth Schwindt",
+      "agent": "Council"
+    },
+    "combines": [
+      "HANDOFF-COUNCIL-REPORT (5 original frameworks)",
+      "HANDOFF-COUNCIL-EXTENDED (4 additional frameworks)"
+    ],
+    "frameworks": [
+      "FW-JTBD",
+      "FW-SERVICE-BLUEPRINT",
+      "FW-SDT",
+      "FW-DISRUPTIVE-INNOVATION",
+      "FW-VALUE-CHAIN",
+      "FW-TEN-TYPES-INNOVATION",
+      "FW-CROSSING-CHASM",
+      "FW-KANO",
+      "FW-WARDLEY"
+    ],
+    "correction_note": "This report was produced before Nicole's source PDFs were available.\nSignificant findings have been superseded by nicole-actual-acp-vision.md\nand acp-vision-from-pdfs.md. Read those FIRST, then read this report\nas a tensions-and-frameworks reference.\n",
+    "known_issues": [
+      "Wardley framework body truncated mid-section (critic finding)",
+      "Nine-framework cross-synthesis promised but absent",
+      "Strategic position framing superseded by Nicole's vision"
+    ]
+  },
+  "sections": [
+    {
+      "level": 1,
+      "title": "Part 1 \u00b7 Original 5 Frameworks",
+      "id": "part-1-original-frameworks"
+    },
+    {
+      "level": 1,
+      "title": "Part 2 \u00b7 Extended 4 Frameworks",
+      "id": "part-2-extended-frameworks"
+    }
+  ],
+  "structured_blocks": [],
+  "tables": [],
+  "inline_id_references": [],
+  "cs_tag_histogram": {
+    "X": 1,
+    "HIGH": 25,
+    "VERIFIED": 33,
+    "MEDIUM": 48,
+    "UNKNOWN": 9,
+    "LOW": 3
+  }
+}

@@ -1,0 +1,74 @@
+TRANSCRIPT: Michael Bateman - Empower 2026 CAB Session
+Source: AI-AI session transcripts  Empower 2026-070526-120115 (1).pdf
+Session: CAB (Customer Advisory Board) — Empower 2026
+Facilitator: Nicole Reineke
+============================================================
+
+--- CONTRIBUTIONS BY MICHAEL BATEMAN ---
+
+[07:51-10:24] Participants described their strategies for client engagement, which involve a mix
+of vertical focus, leveraging common platforms, and adapting to a changing buyer landscape.
+-One speaker (Chris Wendt) described a sharp focus on the construction vertical, providing
+IT services and building solutions around a common ERP and the Microsoft 365 ecosystem
+(Power Platform, Power Automate).
+oTheir goal is to help companies use technology to run their business, which means they are
+flexible and will partner for technologies outside their core (e.g., find a Salesforce partner) while
+also using tools like Power Automate to integrate with them.
+oTheir typical client is smaller and often lacks any internal IT staff.
+-Another participant (Michael Bateman) noted that when selling data and AI projects, the
+buyer profile is expanding beyond the traditional CIO or IT Director to include roles like the
+Chief Marketing Officer.
+oTheir firm can provide value by building agents and workflows "over the top" of systems
+like Salesforce or finance platforms without needing to be deep experts in the underlying system
+itself.
+-Key Decision: The group is finding that the buyer for technology services is expanding
+beyond IT to anyone in the organization, and the scope of work is not limited by the underlying
+platform.
+
+--- FACILITATOR CONTEXT (Nicole Reineke) ---
+
+[00:12-01:21] Nicole Reineke outlined the meeting agenda and requested a recording of the
+session.
+-Nicole stated she has a set of discussion questions, a presentation on the future of AI
+("noun escalator"), and the "enamel AI tenants" which guide the organization's approach to AI
+from an operational perspective.
+
+[01:21-02:55] Participants discussed their envisioned roles as trusted advisors to clients
+navigating the rapid evolution of AI over the next one to three years.
+-Nicole Reineke reframed the initial question from "What AI should we build?" to "What do
+you see as your future roles concerning your customers?"
+-A speaker (Christian Kelly) noted that a three-year AI forecast is difficult due to the rapid
+rate of innovation, but the short-to-medium term goal is to be in the conversation, guiding
+customer journeys, and having a compelling story about enabling AI for the business.
+-The primary aspiration is to become the "trusted advisor" clients turn to for navigating their
+AI journey, even without having all the answers.
+-A key concern is to avoid a scenario where external "AI consultants" are brought in,
+dictating strategy to both the company and their clients.
+-The speaker highlighted the uncertainty of whether "scaffolding tools" or the "core models"
+themselves will become the dominant force in AI development.
+
+[02:55-03:12] Nicole Reineke shared the company's strategic perspective on the future
+interaction of AI models.
+-In response to a point about the rapid evolution of AI models, Nicole stated the company's
+approach is based on the assumption that different models will communicate with each other.
+-This perspective is considered the "safest way" to approach future AI architecture.
+
+[10:30-11:15] A participant confirmed their company has formalized its AI efforts by creating a
+dedicated internal team.
+-Echoing the uncertainty of the AI landscape, a speaker (Nicole Reineke0) stated their
+company is working to help customers build AI solutions to streamline business operations.
+-Key Decision: The company has appointed its own internal Head of AI to lead projects and
+scale out a dedicated AI team.
+-The speaker acknowledged it is difficult to know if they are early or late in forming this
+dedicated team.
+
+[11:38-13:17] The group discussed the abstraction of technology, comparing the flow of data
+between AI systems to the historical flow of network packets.
+-A speaker (Nicole Reineke2) proposed that future work will focus on enabling data to flow
+between systems at a higher level of abstraction, similar to how networking evolved to just make
+data flow without needing deep expertise in the underlying packets.
+-The focus will be on orchestrating data flow to "encapsulate that job function in the
+infrastructure," making the infrastructure itself a platform.
+-Nicole Reineke agreed, referencing the business book "The E-Myth," which advocates for
+creating a detailed operating manual for every job function. She stated this level of process
+definition is essential for building effective AI.

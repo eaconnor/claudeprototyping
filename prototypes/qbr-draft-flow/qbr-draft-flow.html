@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en" data-apx-mode="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>QBR Coworker — Draft Review · Ridgemont Financial Services · Apex Bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* ── APEX BRIDGE — TOKEN CONTRACT (cribbed from qbr-triage-apex.html) ── */
+:root {
+  --br-color-brand-primary:       #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint:  #e6f0fa;
+  --br-color-brand-accent:        #6d28d9;
+
+  --br-color-surface-app:         #f4f6fb;
+  --br-color-surface-panel:       #ffffff;
+  --br-color-surface-elevated:    #eef1f8;
+  --br-color-surface-sunken:      #e6eaf3;
+  --br-color-surface-hover:       #f0f3f8;
+
+  --br-color-ink-primary:         #0d1424;
+  --br-color-ink-secondary:       #45506b;
+  --br-color-ink-muted:           #6b7790;
+  --br-color-ink-inverse:         #ffffff;
+
+  --br-color-border-subtle:       #d8deeb;
+  --br-color-border-default:      #c3ccdd;
+  --br-color-border-strong:       #94a0b8;
+
+  --br-color-state-success:       #16a34a;
+  --br-color-state-success-tint:  #dcfce7;
+  --br-color-state-warning:       #d97706;
+  --br-color-state-warning-tint:  #fef3c7;
+  --br-color-state-danger:        #dc2626;
+  --br-color-state-danger-tint:   #fee2e2;
+  --br-color-state-info:          #0284c7;
+  --br-color-state-info-tint:     #e0f2fe;
+
+  --br-font-family-sans:  "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --br-font-family-brand: "Manrope", -apple-system, sans-serif;
+  --br-font-family-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  --br-radius-sm: 4px;
+  --br-radius-md: 6px;
+  --br-radius-lg: 10px;
+
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-lg: 0 4px 12px rgba(15,23,42,.10), 0 1px 4px rgba(15,23,42,.06);
+
+  --topbar-bg:     #0a1730;
+  --topbar-border: var(--br-color-brand-primary);
+  --rail-bg:       #f0eafa;
+  --rail-border:   #a78bfa;
+  --alpha-accent:  #a78bfa;
+  --alpha-soft:    rgba(167,139,250,0.13);
+}
+
+[data-apx-mode="dark"] {
+  --br-color-surface-app:        #0b1220;
+  --br-color-surface-panel:      #111827;
+  --br-color-surface-elevated:   #1e293b;
+  --br-color-surface-sunken:     #0f172a;
+  --br-color-surface-hover:      #1e293b;
+  --br-color-ink-primary:        #f1f5f9;
+  --br-color-ink-secondary:      #cbd5e1;
+  --br-color-ink-muted:          #94a3b8;
+  --br-color-border-subtle:      #1e293b;
+  --br-color-border-default:     #334155;
+  --br-color-border-strong:      #475569;
+  --br-color-brand-primary-tint: #0c2845;
+  --br-color-state-success-tint: rgba(22,163,74,.18);
+  --br-color-state-warning-tint: rgba(217,119,6,.18);
+  --br-color-state-danger-tint:  rgba(220,38,38,.18);
+  --br-color-state-info-tint:    rgba(2,132,199,.18);
+  --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+  --rail-bg: #16112e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary);
+  font-family: var(--br-font-family-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; cursor: pointer; }
+
+/* ── TOPBAR ───────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 100; height: 48px;
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  display: flex; align-items: center; gap: 12px; padding: 0 24px;
+}
+.topbar-wordmark {
+  font-family: var(--br-font-family-brand);
+  font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.92);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.topbar-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+.topbar-title { font-size: 13px; color: rgba(255,255,255,0.65); }
+.topbar-spacer { flex: 1; }
+.topbar-badge {
+  font-family: var(--br-font-family-mono); font-size: 11px;
+  background: rgba(167,139,250,0.2); color: var(--alpha-accent);
+  border: 1px solid rgba(167,139,250,0.35); border-radius: 4px; padding: 2px 8px;
+}
+.theme-btn {
+  font-family: var(--br-font-family-mono); font-size: 11px; color: rgba(255,255,255,0.45);
+  background: none; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; padding: 3px 10px;
+}
+.theme-btn:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.35); }
+
+/* ── PAGE LAYOUT ──────────────────────────────────────── */
+.page { max-width: 1180px; margin: 0 auto; padding: 28px 24px 56px; display: flex; flex-direction: column; gap: 24px; }
+
+.section-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.section-title { font-family: var(--br-font-family-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-ink-muted); }
+.section-hr { flex: 1; height: 1px; background: var(--br-color-border-subtle); }
+.stage-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700;
+  color: var(--br-color-brand-accent); background: rgba(109,40,217,0.08);
+  border: 1px solid rgba(109,40,217,0.25); border-radius: 4px; padding: 2px 8px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ── PAGE TITLE BLOCK ─────────────────────────────────── */
+.page-title-block {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); padding: 20px 24px; box-shadow: var(--br-shadow-sm);
+  display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;
+}
+.page-title-block h1 { font-family: var(--br-font-family-brand); font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.page-title-block .sub { font-size: 13px; color: var(--br-color-ink-secondary); }
+.meta-pills { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pill {
+  font-family: var(--br-font-family-mono); font-size: 11px; padding: 3px 10px; border-radius: 99px;
+  border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-secondary);
+  background: var(--br-color-surface-elevated); white-space: nowrap;
+}
+.pill.status {
+  border-color: var(--br-color-border-strong); color: var(--br-color-ink-secondary);
+  font-weight: 700; transition: all .3s ease;
+}
+.pill.status.ready { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.35); }
+
+/* ── CYCLE MEMORY STRIP ───────────────────────────────── */
+.cycle-strip {
+  background: var(--topbar-bg); border-radius: var(--br-radius-md); padding: 12px 20px;
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center; cursor: pointer;
+  border: none; text-align: left; width: 100%;
+}
+.cycle-strip:hover { background: #0d1e3d; }
+.cycle-strip .cs-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(255,255,255,0.45); flex-shrink: 0;
+}
+.cycle-strip .cs-text { font-size: 13px; color: rgba(255,255,255,0.85); flex: 1; }
+.cycle-strip .cs-text strong { color: #fff; }
+.cycle-strip .cs-progress {
+  font-family: var(--br-font-family-mono); font-size: 12px; font-weight: 700;
+  color: var(--br-color-state-warning); background: rgba(217,119,6,0.18);
+  border: 1px solid rgba(217,119,6,0.35); border-radius: 99px; padding: 3px 10px;
+}
+.cycle-strip .cs-arrow { color: var(--alpha-accent); font-family: var(--br-font-family-mono); font-size: 12px; }
+
+/* ── GAP BANNER ───────────────────────────────────────── */
+.gap-banner {
+  display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: var(--br-radius-md);
+  background: var(--br-color-state-warning-tint); border: 1px solid rgba(217,119,6,0.35);
+  cursor: pointer; width: 100%; text-align: left;
+}
+.gap-banner:hover { border-color: rgba(217,119,6,0.55); }
+.gap-banner .gb-icon { font-size: 18px; }
+.gap-banner .gb-text { font-size: 13px; color: var(--br-color-ink-primary); flex: 1; }
+.gap-banner .gb-text strong { font-family: var(--br-font-family-mono); }
+.gap-banner .gb-cta { font-family: var(--br-font-family-mono); font-size: 11px; color: var(--br-color-state-warning); font-weight: 700; white-space: nowrap; }
+
+/* ── CARD GRID (stage 3 content blocks) ──────────────── */
+.block-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; }
+@media (max-width: 860px) { .block-grid { grid-template-columns: 1fr; } }
+
+.content-card {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); padding: 18px 20px; box-shadow: var(--br-shadow-sm);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.content-card h3 {
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--br-color-ink-muted); display: flex; align-items: center; gap: 8px;
+}
+.content-card p { font-size: 13px; color: var(--br-color-ink-secondary); line-height: 1.6; }
+.content-card .cs-tag { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); opacity: .7; }
+
+.ask-highlight {
+  background: var(--br-color-brand-primary-tint); border: 1px solid rgba(0,102,204,0.25);
+  border-radius: var(--br-radius-md); padding: 10px 14px; font-size: 13px; color: var(--br-color-ink-primary);
+}
+.ask-highlight strong { color: var(--br-color-brand-primary); }
+
+/* ── REHEARSE TOGGLE ──────────────────────────────────── */
+.rehearse-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rehearse-chip {
+  font-size: 12px; padding: 8px 14px; border-radius: 99px; border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-elevated); color: var(--br-color-ink-secondary);
+}
+.rehearse-chip:hover { border-color: var(--br-color-brand-primary); }
+.rehearse-chip.selected {
+  background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary);
+  border-color: var(--br-color-brand-primary); font-weight: 600;
+}
+.rehearse-chip.selected::before { content: '✓ '; }
+
+/* ── STAGE 4 HEADER ROW ───────────────────────────────── */
+.stage4-header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.stage4-eyebrow { font-size: 12px; color: var(--br-color-ink-muted); }
+
+/* ── EVIDENCE TRAIL (Jordan's register — the reconciliation mechanism) ── */
+.evidence-trail {
+  background: var(--br-color-surface-sunken); border: 1px solid var(--br-color-border-default);
+  border-radius: var(--br-radius-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.et-label {
+  display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px;
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--br-color-ink-muted);
+}
+.et-label .et-owner { color: var(--br-color-brand-accent); }
+.et-rows { display: flex; flex-direction: column; gap: 6px; }
+.et-row {
+  display: grid; grid-template-columns: 150px 1fr auto; gap: 10px; align-items: start;
+  font-family: var(--br-font-family-mono); font-size: 11.5px; padding-bottom: 6px;
+  border-bottom: 1px dashed var(--br-color-border-subtle);
+}
+.et-row:last-child { border-bottom: none; padding-bottom: 0; }
+.et-source { color: var(--br-color-ink-secondary); font-weight: 700; white-space: nowrap; }
+.et-source .et-src-type { display: block; font-size: 9.5px; color: var(--br-color-ink-muted); font-weight: 400; text-transform: uppercase; letter-spacing: .04em; }
+.et-reading { color: var(--br-color-ink-primary); font-family: var(--br-font-family-sans); font-size: 12px; line-height: 1.45; }
+.et-flag {
+  font-family: var(--br-font-family-mono); font-size: 9.5px; font-weight: 700; padding: 2px 8px;
+  border-radius: 99px; border: 1px solid; white-space: nowrap; align-self: start;
+}
+.et-flag.match    { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.et-flag.mismatch { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.et-flag.single   { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); border-color: rgba(220,38,38,.4); }
+.et-reconciliation {
+  font-family: var(--br-font-family-sans); font-size: 12px; color: var(--br-color-ink-secondary);
+  border-top: 1px solid var(--br-color-border-default); padding-top: 10px; line-height: 1.5;
+}
+.et-reconciliation strong { color: var(--br-color-ink-primary); }
+.et-cs { display: block; font-family: var(--br-font-family-mono); font-size: 9.5px; color: var(--br-color-ink-muted); opacity: .8; margin-top: 6px; }
+
+/* ── STAGE 4 GRID: sidebar + canvas ───────────────────── */
+.stage4-grid { display: grid; grid-template-columns: 300px 1fr; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .stage4-grid { grid-template-columns: 1fr; } }
+
+.findings-sidebar {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.fs-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--br-color-ink-muted); padding: 12px 16px 8px;
+}
+.finding-item {
+  display: block; width: 100%; text-align: left; background: none; border: none;
+  border-top: 1px solid var(--br-color-border-subtle); padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 6px; color: var(--br-color-ink-primary);
+}
+.finding-item:hover { background: var(--br-color-surface-hover); }
+.finding-item.active { background: var(--br-color-brand-primary-tint); border-left: 3px solid var(--br-color-brand-primary); padding-left: 13px; }
+.finding-item:focus-visible { outline: 2px solid var(--br-color-brand-primary); outline-offset: -2px; }
+.fi-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.fi-title { font-size: 12.5px; font-weight: 600; }
+.fi-cat { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); }
+
+/* tier badges — distinct per tier */
+.tierbadge {
+  display: inline-flex; align-items: center; gap: 3px; font-family: var(--br-font-family-mono);
+  font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 99px; border: 1px solid;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.tierbadge.measured    { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.tierbadge.benchmarked { background: var(--br-color-state-info-tint);    color: var(--br-color-state-info);    border-color: rgba(2,132,199,.4); }
+.tierbadge.estimated   { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+.tierbadge.unverified  { background: var(--br-color-state-danger-tint);  color: var(--br-color-state-danger);  border-color: rgba(220,38,38,.4); }
+
+/* status pills */
+.status-pill {
+  font-family: var(--br-font-family-mono); font-size: 9.5px; font-weight: 700; padding: 2px 7px;
+  border-radius: 4px; border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-muted);
+  background: var(--br-color-surface-elevated); white-space: nowrap;
+}
+.status-pill.accepted  { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.status-pill.edited    { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); border-color: rgba(0,102,204,.4); }
+.status-pill.escalated { background: rgba(109,40,217,0.10); color: var(--br-color-brand-accent); border-color: rgba(109,40,217,.4); }
+.status-pill.resolved  { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: rgba(22,163,74,.4); }
+.status-pill.flagged   { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: rgba(217,119,6,.4); }
+
+/* ── FINDING DETAIL CANVAS ────────────────────────────── */
+.finding-canvas {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 22px 24px;
+  min-height: 420px; display: flex; flex-direction: column; gap: 16px;
+}
+.fd-header { display: flex; flex-direction: column; gap: 6px; }
+.fd-header-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.fd-header h2 { font-size: 17px; font-weight: 700; }
+.evidence-note {
+  font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--br-color-ink-muted); background: var(--br-color-surface-elevated);
+  border: 1px solid var(--br-color-border-subtle); border-radius: 4px; padding: 4px 10px; width: fit-content;
+}
+
+.four-part {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  background: var(--br-color-surface-elevated); border-radius: var(--br-radius-md); padding: 14px;
+}
+@media (max-width: 700px) { .four-part { grid-template-columns: 1fr; } }
+.fp-row { display: flex; flex-direction: column; gap: 4px; }
+.fp-label {
+  font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--br-color-brand-accent);
+}
+.fp-row p { font-size: 13px; color: var(--br-color-ink-primary); line-height: 1.55; }
+
+.fd-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn {
+  font-size: 12.5px; font-weight: 600; padding: 8px 16px; border-radius: var(--br-radius-md);
+  border: 1px solid var(--br-color-border-default); background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-secondary);
+}
+.btn:hover { background: var(--br-color-surface-hover); }
+.btn.accept { border-color: rgba(22,163,74,.4); color: var(--br-color-state-success); }
+.btn.accept:hover { background: var(--br-color-state-success-tint); }
+.btn.edit { border-color: rgba(0,102,204,.4); color: var(--br-color-brand-primary); }
+.btn.edit:hover { background: var(--br-color-brand-primary-tint); }
+.btn.dispute { border-color: rgba(220,38,38,.4); color: var(--br-color-state-danger); }
+.btn.dispute:hover { background: var(--br-color-state-danger-tint); }
+.btn.dispute-link {
+  border: none; background: none; text-decoration: underline; color: var(--br-color-ink-muted);
+  padding: 4px 0; font-weight: 500;
+}
+.btn.dispute-link:hover { color: var(--br-color-state-danger); }
+.btn:disabled { opacity: .4; cursor: default; }
+
+.fd-note {
+  font-size: 12.5px; padding: 10px 14px; border-radius: var(--br-radius-md); border: 1px solid;
+  display: none;
+}
+.fd-note.show { display: block; }
+.fd-note.accepted { background: var(--br-color-state-success-tint); border-color: rgba(22,163,74,.35); color: var(--br-color-state-success); }
+.fd-note.escalated { background: rgba(109,40,217,0.08); border-color: rgba(109,40,217,.35); color: var(--br-color-brand-accent); }
+.fd-note.resolved { background: var(--br-color-state-success-tint); border-color: rgba(22,163,74,.35); color: var(--br-color-state-success); }
+.fd-note.flagged { background: var(--br-color-state-warning-tint); border-color: rgba(217,119,6,.35); color: var(--br-color-state-warning); }
+
+.fd-edit-panel { display: none; flex-direction: column; gap: 8px; }
+.fd-edit-panel.show { display: flex; }
+.fd-edit-panel textarea {
+  width: 100%; min-height: 72px; font-family: var(--br-font-family-sans); font-size: 13px;
+  padding: 10px 12px; border-radius: var(--br-radius-md); border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-app); color: var(--br-color-ink-primary); resize: vertical;
+}
+.fd-edit-panel .edit-actions { display: flex; gap: 8px; }
+.btn.save { border-color: rgba(0,102,204,.5); background: var(--br-color-brand-primary); color: #fff; }
+.btn.save:hover { background: var(--br-color-brand-primary-hover); }
+.btn.cancel { color: var(--br-color-ink-muted); }
+
+/* decision prompt (Estimated gap flow) */
+.decision-prompt {
+  background: var(--br-color-state-warning-tint); border: 1px solid rgba(217,119,6,0.35);
+  border-radius: var(--br-radius-md); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
+}
+.decision-prompt .dp-question { font-size: 14px; font-weight: 600; color: var(--br-color-ink-primary); }
+.dp-options { display: flex; gap: 10px; flex-wrap: wrap; }
+.dp-btn {
+  font-size: 12.5px; font-weight: 600; padding: 10px 16px; border-radius: var(--br-radius-md);
+  border: 1px solid var(--br-color-border-strong); background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary); flex: 1; min-width: 220px; text-align: left;
+}
+.dp-btn:hover { border-color: var(--br-color-brand-primary); }
+.dp-btn .dp-btn-label { display: block; font-weight: 700; margin-bottom: 2px; }
+.dp-btn .dp-btn-sub { display: block; font-size: 11px; color: var(--br-color-ink-muted); font-weight: 400; }
+.dp-btn.known .dp-btn-label { color: var(--br-color-state-success); }
+.dp-btn.unknown .dp-btn-label { color: var(--br-color-state-warning); }
+
+/* ── CONSULTATIVE QUESTIONS ───────────────────────────── */
+.consult-card {
+  background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 20px 22px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.consult-card h3 { font-size: 13px; font-weight: 700; }
+.consult-card .consult-sub { font-size: 12px; color: var(--br-color-ink-muted); }
+.question-list { display: flex; flex-direction: column; gap: 8px; list-style: none; }
+.question-list li {
+  font-size: 13px; color: var(--br-color-ink-primary); padding: 10px 14px; border-radius: var(--br-radius-md);
+  background: var(--br-color-surface-elevated); border-left: 3px solid var(--br-color-brand-accent);
+}
+.add-question-row { display: flex; gap: 8px; margin-top: 4px; }
+.add-question-row input {
+  flex: 1; font-size: 13px; font-family: var(--br-font-family-sans); padding: 9px 12px;
+  border-radius: var(--br-radius-md); border: 1px solid var(--br-color-border-default);
+  background: var(--br-color-surface-app); color: var(--br-color-ink-primary);
+}
+.add-question-row input:focus { outline: 2px solid var(--br-color-brand-primary); outline-offset: 1px; }
+.btn.add-q { border-color: rgba(0,102,204,.4); color: var(--br-color-brand-primary); }
+
+/* ── BRADLEY RAIL (verbatim pattern from qbr-triage-apex.html) ── */
+.bradley-rail {
+  background: var(--rail-bg); border: 1px solid var(--rail-border); border-radius: var(--br-radius-lg);
+  padding: 20px 24px; box-shadow: var(--br-shadow-md); display: flex; flex-direction: column; gap: 16px;
+}
+.rail-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.rail-title { font-family: var(--br-font-family-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-brand-accent); }
+.rail-badge { font-family: var(--br-font-family-mono); font-size: 10px; background: var(--alpha-soft); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,0.35); border-radius: 4px; padding: 2px 8px; }
+.rail-blurb { font-size: 13px; color: var(--br-color-ink-secondary); }
+.rail-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 580px) { .rail-dual { grid-template-columns: 1fr; } }
+.rail-block { background: var(--br-color-surface-panel); border-radius: var(--br-radius-md); padding: 12px 14px; border: 1px solid var(--br-color-border-subtle); }
+.rail-block-label { font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 700; }
+.rail-block.nailed .rail-block-label { color: var(--br-color-state-success); }
+.rail-block.hurt .rail-block-label { color: var(--br-color-state-danger); }
+.rail-block ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.rail-block li { font-size: 12px; color: var(--br-color-ink-secondary); padding-left: 14px; position: relative; }
+.rail-block.nailed li::before { content: '✓'; position: absolute; left: 0; color: var(--br-color-state-success); font-size: 11px; }
+.rail-block.hurt li::before { content: '!'; position: absolute; left: 0; color: var(--br-color-state-danger); font-size: 11px; font-weight: 700; }
+.cs-inline { font-family: var(--br-font-family-mono); font-size: 10px; color: var(--br-color-ink-muted); opacity: .8; }
+
+.rail-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.route-card { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.route-card .rc-team { font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-brand-accent); margin-bottom: 4px; }
+.route-card .rc-action { font-size: 12px; font-weight: 600; color: var(--br-color-ink-primary); }
+.route-card .rc-why { font-size: 11px; color: var(--br-color-ink-muted); }
+.route-card .rc-risk { font-size: 11px; color: var(--br-color-state-danger); font-style: italic; }
+.route-card .rc-roi { font-size: 11px; color: var(--br-color-ink-secondary); background: var(--br-color-surface-elevated); border-radius: 4px; padding: 6px 8px; margin-top: 2px; }
+.route-card .rc-roi b { color: var(--br-color-ink-primary); }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <span class="topbar-wordmark">Apex Bridge</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-title">QBR Coworker · Draft Review — Ridgemont Financial Services</span>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-badge">Tier 1 · Concept</span>
+  <button class="theme-btn" onclick="document.documentElement.setAttribute('data-apx-mode', document.documentElement.getAttribute('data-apx-mode')==='dark' ? 'light' : 'dark')">
+    Toggle dark
+  </button>
+</header>
+
+<main class="page">
+
+  <!-- PAGE TITLE -->
+  <div class="page-title-block">
+    <div>
+      <h1>Ridgemont Financial Services — Q3 2026 QBR draft</h1>
+      <p class="sub">Priya Shah · Delivery Lead · Laissez Faire Fellows (Denver, CO) — this is Priya's view. Jordan Ellis (technician) built the risk register behind it.</p>
+    </div>
+    <div class="meta-pills">
+      <span class="pill">B-tier client</span>
+      <span class="pill">GLBA applies</span>
+      <span class="pill">Denver, CO</span>
+      <span class="pill">Cycle: Aug 2026</span>
+      <span class="pill status" id="draft-status-pill">Draft status: In review</span>
+    </div>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div>
+    <div class="section-header">
+      <span class="stage-label">Stage 3 · Draft Lands</span>
+      <span class="section-title">The coworker pre-wrote this. Priya is opening it for the first time.</span>
+      <div class="section-hr"></div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <!-- Cycle memory strip -->
+      <button class="cycle-strip" onclick="selectFinding('f1')">
+        <span class="cs-label">Cycle memory</span>
+        <span class="cs-text">March 2026 action: <strong>upgrade 3 servers to Cove Cloud+.</strong> Status: 1 of 3 complete.</span>
+        <span class="cs-progress">1/3</span>
+        <span class="cs-arrow">see finding →</span>
+      </button>
+
+      <!-- Gap flag -->
+      <button class="gap-banner" onclick="selectFinding('f2')">
+        <span class="gb-icon">⚠</span>
+        <span class="gb-text"><strong>3 devices not enrolled in backup</strong> · Estimated · Please confirm before room</span>
+        <span class="gb-cta">Resolve in Stage 4 →</span>
+      </button>
+    </div>
+
+    <div class="block-grid" style="margin-top:12px;">
+      <div class="content-card">
+        <h3>Industry briefing</h3>
+        <p>Financial services stays a high-interest target for opportunistic attackers — less because the sector is careless, more because a compromised account there is simply worth more. GLBA doesn't ask for perfection, it asks that you can show your controls and your gaps in the same room. That's what this draft is built to do.</p>
+        <span class="cs-tag">[CS: LOW — directional register-setting only, no specific stats cited, per brief]</span>
+      </div>
+      <div class="content-card">
+        <h3>The ask</h3>
+        <div class="ask-highlight">
+          Renewal comes up in <strong>September 2026</strong>. Two new endpoints from Ridgemont's recent hires aren't enrolled yet — worth raising in the same breath as backup coverage, not as a separate pitch.
+        </div>
+        <span class="cs-tag">[D — deck p11 scenario]</span>
+      </div>
+    </div>
+
+    <div class="content-card" style="margin-top:12px;">
+      <h3>Rehearse toggle — "Prepare for the room"</h3>
+      <div class="rehearse-chips" id="rehearse-chips">
+        <button class="rehearse-chip" data-rehearse="crib">Crib sheet</button>
+        <button class="rehearse-chip" data-rehearse="roleplay">AI plays the client (roleplay)</button>
+        <button class="rehearse-chip" data-rehearse="both">Both</button>
+        <button class="rehearse-chip" data-rehearse="peer">Peer review</button>
+      </div>
+      <span class="cs-tag">Static selectable state — no engineered logic behind each option yet [A]</span>
+    </div>
+  </div>
+
+  <!-- STAGE 4 -->
+  <div>
+    <div class="stage4-header-row">
+      <div class="section-header" style="margin-bottom:0; flex:1;">
+        <span class="stage-label">Stage 4 · Confirm &amp; Personalize</span>
+        <span class="section-title">Fast, confident, low ceremony — like a sharpie deck</span>
+        <div class="section-hr"></div>
+      </div>
+      <span class="stage4-eyebrow">Each finding below carries its own evidence trail — Jordan's register, read-only.</span>
+    </div>
+
+    <div class="stage4-grid">
+      <!-- SIDEBAR -->
+      <div class="findings-sidebar" role="listbox" aria-label="Findings">
+        <div class="fs-label">Findings — select one to review</div>
+        <div id="findings-list"></div>
+      </div>
+
+      <!-- CANVAS -->
+      <div class="finding-canvas" id="finding-canvas"></div>
+    </div>
+
+    <!-- CONSULTATIVE QUESTIONS -->
+    <div class="consult-card" style="margin-top:16px;">
+      <h3>Consultative questions for the room</h3>
+      <p class="consult-sub">Priya drafts. Jordan and the team agree on which discussions are worth having before the draft locks — this is the thing the tool can't pull from any system.</p>
+      <ul class="question-list" id="question-list"></ul>
+      <form class="add-question-row" id="add-question-form">
+        <label for="new-question" class="visually-hidden">Add a consultative question</label>
+        <input type="text" id="new-question" placeholder="Draft a question for the room…" />
+        <button type="submit" class="btn add-q">Add question</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- BRADLEY RAIL -->
+  <div class="bradley-rail">
+    <div class="rail-header">
+      <span class="rail-title">Bradley · Draft-to-Send Flow Assessment</span>
+      <span class="rail-badge">Tier 1 · Concept</span>
+    </div>
+    <p class="rail-blurb">Testing: does the translation layer + confirm gate read as a real human judgment moment, or as another approval checkbox? That's the one thing that matters here. <span class="cs-inline">[CS: MEDIUM — design hypothesis, not measured]</span></p>
+
+    <div class="rail-dual">
+      <div class="rail-block nailed">
+        <div class="rail-block-label">What you nailed</div>
+        <ul>
+          <li>Scope is tight and sourced from the deck's own stated prototype. <span class="cs-inline">[CS: HIGH]</span></li>
+          <li>Cycle memory and the 4-part translation come from primary research — the scenario is real enough to test. <span class="cs-inline">[CS: HIGH — Stefanie Hammond interview, verbatim formula]</span></li>
+          <li>Beth's "sharpie deck" register is the right tone target for Stage 4. <span class="cs-inline">[CS: UNKNOWN — Beth's own call]</span></li>
+        </ul>
+      </div>
+      <div class="rail-block hurt">
+        <div class="rail-block-label">What will hurt you</div>
+        <ul>
+          <li>Stage 4's consultative-question gate is the whole thesis ("ownership, not rubber-stamp") and the mechanism was undesigned going in. <span class="cs-inline">[CS: MEDIUM]</span></li>
+          <li>If the UI reads as a form to fill out, the finding will be "it feels like extra work" regardless of whether the concept is sound. <span class="cs-inline">[CS: MEDIUM]</span></li>
+          <li>The gate needs to feel like a natural pause, not a checkpoint — not yet tested with a real delivery lead. <span class="cs-inline">[CS: LOW — untested]</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rail-cards">
+      <div class="route-card">
+        <div class="rc-team">Product</div>
+        <div class="rc-action">Confirm whether countersign (Stage 6) should be tested in v1 or gated on legal counsel (Q3)</div>
+        <div class="rc-why">Why now: it's out of this prototype's scope, but the answer changes Stage 6 design before build freezes.</div>
+        <div class="rc-risk">If you ship without it: Stage 6 closes the loop without the "acknowledged" signal — the feature works but the defensibility thesis weakens.</div>
+        <div class="rc-roi"><b>ROI</b> — Business: Unknown — gap. User: Unknown — gap. <span class="cs-inline">[CS: UNKNOWN]</span></div>
+      </div>
+      <div class="route-card">
+        <div class="rc-team">Design</div>
+        <div class="rc-action">Decide the interaction pattern for Stage 4's consultative-question checklist — sidebar, step-through, overlay, or inline prompt</div>
+        <div class="rc-why">Why now: the "sharpie deck" analogy implies fast + low-ceremony; the prototype should reflect that intent, not default to a form. <span class="cs-inline">[CS: HIGH — Beth's analogy]</span> This build locked sidebar + main-canvas as the pattern to test — still the open item for what ships.</div>
+        <div class="rc-risk">If you ship without it: the gate reads as an approval form, not a judgment moment — the primary risk named above.</div>
+        <div class="rc-roi"><b>ROI</b> — Business: Unknown — gap. User: reduces rubber-stamping risk; actual load reduction unmeasured. <span class="cs-inline">[CS: UNKNOWN]</span></div>
+      </div>
+      <div class="route-card">
+        <div class="rc-team">Research</div>
+        <div class="rc-action">Test the confirm gate with a real delivery lead before the interaction pattern commits — no tester is named yet. David is Craig Fisher's technician-analog, not a delivery lead; Priya's real-world counterpart hasn't been identified or recruited. <span class="cs-inline">[CS: LOW — casting gap, flagged in critic-pass-1]</span></div>
+        <div class="rc-why">Why now: the gate's entire value is "ownership feels real" — that's a perception test, not a desk judgment. <span class="cs-inline">[CS: MEDIUM — hypothesis; needs lived experience to falsify]</span></div>
+        <div class="rc-risk">If you ship without it: you'll find out in the room whether the gate worked, which is too late.</div>
+        <div class="rc-roi"><b>ROI</b> — Business: Unknown — gap. User: Unknown — gap. <span class="cs-inline">[CS: UNKNOWN]</span></div>
+      </div>
+      <div class="route-card">
+        <div class="rc-team">Eng</div>
+        <div class="rc-action">Note that notification_recipients needs an SMS type before Stage 2 (Nudge) ships for C/D tier — confirmed direction, zero existing schema (data-model.md:129-132)</div>
+        <div class="rc-why">Why now: not a prototype blocker, but it's the only Stage 2 mechanism that doesn't exist in the current schema.</div>
+        <div class="rc-risk">If you ship without it: C/D tier gets email nudge only, not the sachet channel that was confirmed as the direction.</div>
+        <div class="rc-roi"><b>ROI</b> — Business: C/D tier revenue base currently unserviced (~$992K/yr on Laissez Faire Fellows comparable) <span class="cs-inline">[CS: UNKNOWN — fictional persona illustration, not real revenue]</span>. User: Unknown — gap.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ── STATE ──────────────────────────────────────────────
+const findings = [
+  {
+    id: 'f1',
+    title: 'Cycle Memory Follow-up',
+    category: 'NIST CSF 2.0 · RC.RP — Recovery Planning',
+    tier: 'measured',
+    tierLabel: '✓ Measured',
+    data: 'March 2026 QBR committed to upgrading 3 servers to Cove Cloud+. Cove shows 1 of 3 completed as of this cycle.',
+    risk: "Two servers are still running the prior backup configuration — the exact gap flagged last cycle hasn't closed.",
+    meaning: "This isn't a new problem, it's the same promise, half-kept. Ridgemont agreed to this scope five months ago.",
+    consequence: 'If this shows up unresolved a second cycle in a row, it reads as neglect, not backlog — a harder conversation than the gap itself.',
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM · native', reading: "3 servers tagged \u201cCove Cloud+ migration.\u201d 1 shows the updated backup-agent profile; 2 still show the legacy profile.", flag: 'match' },
+        { source: 'Cove', type: 'Backup/DR · native', reading: '1 of 3 servers now reporting into the Cove Cloud+ tier. 2 remain on the prior Cove tier.', flag: 'match' },
+        { source: 'ConnectWise Manage', type: 'PSA · cross-vendor', reading: "Project ticket \u201cServer backup migration \u2014 Ridgemont\u201d shows 1 of 3 tasks closed, 2 open.", flag: 'match' }
+      ],
+      reconciliation: "All three independent sources agree on <strong>1 of 3 complete</strong> \u2014 RMM, backup platform, and PSA ticket status all cross-verify the same count. No disagreement to resolve here, which is exactly why this tier reads Measured.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f2',
+    title: 'Backup Enrollment Gap',
+    category: 'NIST CSF 2.0 · PR.DS — Data Security',
+    tier: 'estimated',
+    tierLabel: '~ Estimated',
+    data: 'Cove shows 47 of 50 managed devices enrolled in backup. 3 devices have no active backup job.',
+    risk: 'Those 3 devices have zero recovery point if they fail, are lost, or are hit by ransomware.',
+    meaning: "We can't tell yet whether this is by design (retired machines, BYOD, out of scope) or a missed enrollment step.",
+    consequence: "If one of the 3 is a production device and something happens before this is resolved, there's no restore path — and no record we flagged it.",
+    special: 'gap',
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM · native', reading: 'Reports 50 managed devices under contract for Ridgemont Financial Services.', flag: 'match' },
+        { source: 'ConnectWise Manage', type: 'PSA · cross-vendor', reading: 'Reports 50 contracted / billed endpoints for the same client — agrees with N-central.', flag: 'match' },
+        { source: 'Cove', type: 'Backup/DR · native', reading: 'Reports 47 devices enrolled in an active backup job. 3-device shortfall against the other two sources.', flag: 'mismatch' }
+      ],
+      reconciliation: "Two independent sources (RMM + PSA) agree on <strong>50</strong>. The backup platform shows <strong>47</strong>. That 3-device delta is real and cross-verified as a count mismatch \u2014 but no source can say <em>why</em>. That unresolved \u201cwhy\u201d is what keeps this Estimated instead of Measured, and it's exactly what the Known/Unknown decision below is for.",
+      reconciliationResolved: "Two independent sources (RMM + PSA) agree on <strong>50</strong>. The backup platform shows <strong>47</strong>. Priya confirmed the 3-device gap is known, with remediation in progress \u2014 the \u201cwhy\u201d the sources couldn't answer on their own is now supplied by a human, which is what moved this from Estimated to <strong>Measured</strong>.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f3',
+    title: 'Microsoft 365 Security Baseline',
+    category: 'NIST CSF 2.0 · DE.CM — Continuous Monitoring',
+    tier: 'benchmarked',
+    tierLabel: '≈ Benchmarked',
+    data: 'Inforcer alignment score: 6 of 9, up from 5 of 9 last cycle.',
+    risk: "Ridgemont's 365 tenant is closer to baseline than last quarter, but 3 configuration gaps remain open against the benchmark.",
+    meaning: 'Real progress worth naming out loud — the kind of movement that makes the renewal conversation easier, not harder.',
+    consequence: "If we don't call this out, Ridgemont only ever hears what's wrong, never what improved — that's how trust erodes even when the work is landing.",
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'Inforcer', type: 'M365 posture score · cross-vendor', reading: 'Alignment score 6/9 this cycle, up from 5/9 \u2014 scored against a base-wide benchmark, not an absolute pass/fail.', flag: 'match' },
+        { source: 'Microsoft Entra ID', type: 'Identity/MFA · cross-vendor', reading: 'Conditional-access policy scope expanded to cover one additional user group since last cycle \u2014 consistent with the score movement.', flag: 'match' },
+        { source: 'KnowBe4', type: 'Security awareness · cross-vendor', reading: 'Not pulled for this finding \u2014 awareness training completion doesn\u2019t bear on the 365 config baseline.', flag: 'single' }
+      ],
+      reconciliation: "Inforcer's score is the primary signal here, and Entra ID's policy-scope change corroborates the direction \u2014 but nothing independently <em>recomputes</em> Inforcer's own score. That's the difference between Benchmarked (compared against base-wide data, directionally corroborated) and Measured (independently re-derived).",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  },
+  {
+    id: 'f4',
+    title: 'Legacy Remote Access Appliance',
+    category: 'NIST CSF 2.0 · PR.PS — Platform Security',
+    tier: 'unverified',
+    tierLabel: '! Unverified',
+    data: "Network scan flagged a VPN appliance running firmware that reached end-of-life in 2024. Not confirmed whether it's still in active use.",
+    risk: "If it's live, it's an unpatched, internet-facing entry point. If it's dormant, it's still an unmanaged asset on the network.",
+    meaning: "We don't have enough to say which — this needs eyes on it before it goes in front of the client as a hard finding.",
+    consequence: "Presenting this as fact when it might be a decommissioned box makes the whole draft look sloppy. Presenting nothing and it's live is worse.",
+    special: null,
+    status: 'pending',
+    evidence: {
+      rows: [
+        { source: 'N-central', type: 'RMM · native', reading: 'Network discovery scan flagged one VPN appliance running end-of-life (2024) firmware. Device is outside the managed-agent fleet.', flag: 'single' },
+        { source: 'ConnectWise Manage', type: 'PSA · cross-vendor', reading: 'No open or historical ticket references this appliance \u2014 no contracted record of it either way.', flag: 'single' },
+        { source: 'Adlumin', type: 'MDR · native', reading: 'No detection events tied to this appliance\u2019s IP in the lookback window \u2014 absence of alarm, not proof it\u2019s offline.', flag: 'single' }
+      ],
+      reconciliation: "Only one source surfaces this device at all, and the other two can neither confirm nor rule it out. No second source to reconcile against \u2014 that single-source, unconfirmed status is exactly what Unverified means.",
+      csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
+    }
+  }
+];
+
+let selectedId = null;
+let questions = [
+  "You mentioned onboarding two new locations this quarter — are those the same 2 endpoints we're seeing unenrolled, or something separate?",
+  "With GLBA audit season coming in Q4, does the board want a written confirmation on backup coverage, or is verbal sign-off enough this cycle?"
+];
+
+const statusText = {
+  pending: 'Pending',
+  accepted: 'Accepted',
+  edited: 'Edited',
+  escalated: 'Escalated → Jordan',
+  resolved: 'Resolved — ticket added',
+  flagged: 'Flagged for room'
+};
+
+// ── RENDER SIDEBAR ─────────────────────────────────────
+function renderSidebar() {
+  const list = document.getElementById('findings-list');
+  list.innerHTML = findings.map(f => `
+    <button class="finding-item ${f.id === selectedId ? 'active' : ''}"
+            role="option" aria-selected="${f.id === selectedId}"
+            onclick="selectFinding('${f.id}')">
+      <div class="fi-top">
+        <span class="tierbadge ${f.tier}">${f.tierLabel}</span>
+        <span class="status-pill ${f.status}">${statusText[f.status]}</span>
+      </div>
+      <div class="fi-title">${f.title}</div>
+      <div class="fi-cat">${f.category}</div>
+    </button>
+  `).join('');
+}
+
+// ── RENDER CANVAS ──────────────────────────────────────
+function renderCanvas() {
+  const canvas = document.getElementById('finding-canvas');
+  if (!selectedId) {
+    canvas.innerHTML = `<p style="color:var(--br-color-ink-muted); font-size:13px; margin:auto;">Select a finding from the list to review it here.</p>`;
+    return;
+  }
+  const f = findings.find(x => x.id === selectedId);
+
+  let actionsHtml = '';
+  if (f.special === 'gap') {
+    if (f.status === 'resolved' || f.status === 'flagged') {
+      actionsHtml = `
+        <div class="fd-note ${f.status === 'resolved' ? 'resolved' : 'flagged'} show">
+          ${f.status === 'resolved'
+            ? '<strong>Known — remediation in progress.</strong> Tier updated to Measured. Added to follow-up ticket.'
+            : '<strong>Unknown — needs client input.</strong> Stays Estimated. Flagged for the room.'}
+        </div>
+        <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this classification? Dispute → Jordan</button>
+      `;
+    } else if (f.status === 'escalated') {
+      actionsHtml = `<div class="fd-note escalated show"><strong>Escalated to Jordan Ellis.</strong> This classification is now his to resolve before the draft locks.</div>`;
+    } else {
+      actionsHtml = `
+        <div class="decision-prompt">
+          <div class="dp-question">Are these intentionally excluded, or is this a missed enrollment?</div>
+          <div class="dp-options">
+            <button class="dp-btn known" onclick="resolveGap('known')">
+              <span class="dp-btn-label">Known — remediation in progress</span>
+              <span class="dp-btn-sub">Tier upgrades Estimated → Measured. Adds to follow-up ticket.</span>
+            </button>
+            <button class="dp-btn unknown" onclick="resolveGap('unknown')">
+              <span class="dp-btn-label">Unknown — needs client input</span>
+              <span class="dp-btn-sub">Stays Estimated. Flagged for discussion in the room.</span>
+            </button>
+          </div>
+          <button class="btn dispute-link" onclick="disputeFinding('${f.id}')">Disagree with this framing entirely? Dispute → Jordan</button>
+        </div>
+      `;
+    }
+  } else {
+    if (f.status === 'escalated') {
+      actionsHtml = `<div class="fd-note escalated show"><strong>Escalated to Jordan Ellis.</strong> Priya disputed this finding — it now routes to the technician who built the register.</div>`;
+    } else if (f.status === 'accepted') {
+      actionsHtml = `<div class="fd-note accepted show"><strong>Accepted by Priya.</strong> This finding is confirmed as written for the room.</div>`;
+    } else {
+      actionsHtml = `
+        <div class="fd-actions">
+          <button class="btn accept" onclick="acceptFinding('${f.id}')">Accept</button>
+          <button class="btn edit" onclick="toggleEdit('${f.id}')">Edit</button>
+          <button class="btn dispute" onclick="disputeFinding('${f.id}')">Dispute → Jordan</button>
+        </div>
+        <div class="fd-edit-panel" id="edit-panel-${f.id}">
+          <label for="edit-text-${f.id}" class="visually-hidden">Edit the meaning for this finding</label>
+          <textarea id="edit-text-${f.id}">${f.meaning}</textarea>
+          <div class="edit-actions">
+            <button class="btn save" onclick="saveEdit('${f.id}')">Save edit</button>
+            <button class="btn cancel" onclick="toggleEdit('${f.id}')">Cancel</button>
+          </div>
+        </div>
+      `;
+    }
+    if (f.status === 'edited') {
+      actionsHtml = `<div class="fd-note edited show" style="display:block; background:var(--br-color-brand-primary-tint); border-color:rgba(0,102,204,.35); color:var(--br-color-brand-primary);"><strong>Edited by Priya.</strong> Meaning updated for the room. ${
+        `<div class="fd-actions" style="margin-top:8px;"><button class="btn dispute" onclick="disputeFinding('${f.id}')">Dispute → Jordan</button></div>`
+      }</div>`;
+    }
+  }
+
+  canvas.innerHTML = `
+    <div class="fd-header">
+      <div class="fd-header-top">
+        <span class="tierbadge ${f.tier}">${f.tierLabel}</span>
+        <span class="fi-cat">${f.category}</span>
+      </div>
+      <h2>${f.title}</h2>
+    </div>
+    ${renderEvidenceTrail(f)}
+    <div class="four-part">
+      <div class="fp-row" style="grid-column: 1 / -1;"><span class="fp-label">Translation for the room — Priya's read</span></div>
+      <div class="fp-row"><span class="fp-label">Data</span><p>${f.data}</p></div>
+      <div class="fp-row"><span class="fp-label">Risk</span><p>${f.risk}</p></div>
+      <div class="fp-row"><span class="fp-label">Meaning</span><p id="meaning-${f.id}">${f.meaning}</p></div>
+      <div class="fp-row"><span class="fp-label">Consequence</span><p>${f.consequence}</p></div>
+    </div>
+    ${actionsHtml}
+  `;
+}
+
+// ── EVIDENCE TRAIL — Jordan's register, the reconciliation mechanism ──
+function renderEvidenceTrail(f) {
+  const ev = f.evidence;
+  if (!ev) return '';
+  const flagText = { match: 'Agrees', mismatch: 'Mismatch', single: 'Single source' };
+  const rows = ev.rows.map(r => `
+    <div class="et-row">
+      <span class="et-source">${r.source}<span class="et-src-type">${r.type}</span></span>
+      <span class="et-reading">${r.reading}</span>
+      <span class="et-flag ${r.flag}">${flagText[r.flag]}</span>
+    </div>
+  `).join('');
+  return `
+    <div class="evidence-trail">
+      <div class="et-label"><span>Jordan's evidence trail <span class="et-owner">— his register, read-only to Priya</span></span><span>Sourced from Laissez Faire Fellows' stack</span></div>
+      <div class="et-rows">${rows}</div>
+      <div class="et-reconciliation">
+        <strong>Reconciliation:</strong> ${(f.status === 'resolved' && ev.reconciliationResolved) ? ev.reconciliationResolved : ev.reconciliation}
+        <span class="et-cs">${ev.csTag}</span>
+      </div>
+    </div>
+  `;
+}
+
+function selectFinding(id) {
+  selectedId = id;
+  renderSidebar();
+  renderCanvas();
+  document.querySelector('.finding-canvas').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function acceptFinding(id) {
+  const f = findings.find(x => x.id === id);
+  f.status = 'accepted';
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function disputeFinding(id) {
+  const f = findings.find(x => x.id === id);
+  f.status = 'escalated';
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function toggleEdit(id) {
+  const panel = document.getElementById('edit-panel-' + id);
+  panel.classList.toggle('show');
+}
+
+function saveEdit(id) {
+  const f = findings.find(x => x.id === id);
+  const text = document.getElementById('edit-text-' + id).value;
+  f.meaning = text;
+  f.status = 'edited';
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+function resolveGap(kind) {
+  const f = findings.find(x => x.id === 'f2');
+  if (kind === 'known') {
+    f.tier = 'measured';
+    f.tierLabel = '✓ Measured';
+    f.status = 'resolved';
+  } else {
+    f.status = 'flagged';
+  }
+  renderSidebar(); renderCanvas(); updateDraftStatus();
+}
+
+// ── DRAFT STATUS ───────────────────────────────────────
+function updateDraftStatus() {
+  const allResolved = findings.every(f => f.status !== 'pending');
+  const hasQuestion = questions.length >= 1;
+  const pill = document.getElementById('draft-status-pill');
+  if (allResolved && hasQuestion) {
+    pill.textContent = 'Draft status: Ready for room';
+    pill.classList.add('ready');
+  } else {
+    pill.textContent = 'Draft status: In review';
+    pill.classList.remove('ready');
+  }
+}
+
+// ── CONSULTATIVE QUESTIONS ─────────────────────────────
+function renderQuestions() {
+  const list = document.getElementById('question-list');
+  list.innerHTML = questions.map(q => `<li>${q}</li>`).join('');
+}
+
+document.getElementById('add-question-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const input = document.getElementById('new-question');
+  const val = input.value.trim();
+  if (!val) return;
+  questions.push(val);
+  input.value = '';
+  renderQuestions();
+  updateDraftStatus();
+});
+
+// ── REHEARSE CHIPS ─────────────────────────────────────
+document.querySelectorAll('.rehearse-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.rehearse-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+  });
+});
+
+// ── INIT ────────────────────────────────────────────────
+renderSidebar();
+renderCanvas();
+renderQuestions();
+updateDraftStatus();
+</script>
+
+</body>
+</html>

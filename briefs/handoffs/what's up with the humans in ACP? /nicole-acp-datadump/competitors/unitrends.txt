@@ -1,0 +1,58 @@
+# Unitrends
+slug: unitrends
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Unitrends is an enterprise backup and disaster recovery platform offering hardware appliances, virtual appliances, cloud backup, and DRaaS for MSPs and IT teams. Acquired by Kaseya in May 2018, Unitrends operates as part of Kaseya's "IT Complete" portfolio alongside VSA, Datto BCDR, and Autotask. Unitrends differentiates through its Recovery Series MAX appliance lineup (18 models, 2 TB to 120 TB), the UniView centralized management dashboard, and deep integration with the Kaseya ecosystem for PSA-connected backup management.
+
+## MSP Relevance
+Unitrends is relevant to Kaseya-aligned MSPs seeking an integrated backup and DR solution within the Kaseya ecosystem. Its PSA integrations (BMS, Autotask, Vorex) enable automatic billing and ticketing from backup events. The "No Upfront Cost" hardware financing (leveraging Kaseya's PE backing from Insight Partners and TPG) reduces capital barriers for MSPs deploying Unitrends appliances. As part of Kaseya 365, Unitrends capabilities are bundled into Kaseya's all-in-one MSP platform offering.
+
+## Key Offerings & Capabilities
+- Recovery Series MAX appliances — 18 hardware models from 2 TB to 120 TB; all-in-one appliance with backup and DR in hardware form factor
+- Virtual appliance — software-only deployment for MSPs preferring VM-based infrastructure
+- Cloud backup — Azure and AWS cloud targets for offsite backup and disaster recovery
+- DRaaS — managed disaster recovery as a service with three new U.S./Canadian data centers and all-flash cloud infrastructure
+- UniView dashboard — centralized multi-client management; policy-based scheduling, flexible restore methods, unified reporting
+- BackupIQ intelligence — proactive alerts for capacity limits, backup failures, and anomaly detection
+- Endpoint backup — Windows and macOS endpoint protection alongside server backup
+- SaaS backup — Microsoft 365 and Google Workspace backup management within UniView
+- PSA integration — automatic licensing, invoice generation, and ticket creation via BMS, Autotask, and Vorex
+- Kaseya VSA integration — deep RMM-to-backup integration for unified monitoring within Kaseya's ecosystem
+
+## Recent Announcements
+- 2025-2026: Recovery Series MAX launched — next-generation hardware appliance lineup replacing previous Recovery Series; 18 models with significant performance improvements
+- DattoCon 2025 (October 2025): Kaseya announces unified cyber resilience platform preview integrating Datto backup, Unitrends, and Spanning
+- April 2026: Kaseya unveils next-generation cyber resilience innovations — unified dashboard, flexible pricing, and pooled storage across Unitrends, Datto BCDR, and Spanning backup products
+- UniView enhancements: Policy-based scheduling, Salesforce backup integration, VMware policy management improvements
+- Cloud DRaaS expansion: Up to 2 years free cloud storage on 5-year contracts; all-flash infrastructure offering 800% performance improvement over previous generation
+
+## Pricing Model
+Socket/server-based licensing (not per-VM): Essentials at $349 (up to 10 resources), Standard at $549, Enterprise at $1,099, Enterprise Plus at $1,699. Free tier available for up to 1 TB. 24/7/365 platinum support included in all paid tiers. Monthly, annual, or upfront payment options. "No Upfront Cost" hardware financing available for MSPs — hardware deployed without capital expense, paid through subscription. Cloud DRaaS priced per managed disk capacity (500 GB increments) plus retention period.
+
+## Strengths
+- Kaseya ecosystem integration is the deepest of any backup vendor — PSA-connected billing and ticketing reduces MSP operational overhead
+- "No Upfront Cost" hardware program removes capital barrier for MSPs deploying appliances — competitive advantage vs. vendors without PE-backed financing
+- Socket-based licensing (not per-VM) reduces license complexity for environments with many VMs per server
+- Recovery Series MAX all-flash cloud infrastructure (800% performance improvement) enables faster recovery SLAs
+- PSA auto-billing integration eliminates manual monthly billing reconciliation for backup services
+
+## Weaknesses / Gaps
+- Kaseya ecosystem lock-in — Unitrends' differentiation is maximized within the Kaseya stack; value diminishes significantly outside it
+- Hardware appliance deployment adds infrastructure management complexity that SaaS-native competitors (Druva) eliminate
+- AI and intelligent automation capabilities less mature than Druva's DruAI or Datto's approach
+- Kaseya's private equity ownership (TPG/Insight Partners) creates pricing uncertainty; PE-driven optimization may change partner margins
+- Brand visibility lower than Datto BCDR within the broader MSP community; Kaseya's consolidation strategy may further reduce Unitrends' independent identity
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Unitrends is a backup and DR product with no meaningful overlap with NZO's AI agent and workflow automation platform. As a Kaseya component, Unitrends could be part of a broader Kaseya competitive stack in MSP accounts. Kaseya's AI Digital Workforce (Spring 2026) is the more relevant competitive vector; Unitrends itself is not a competitor to NZO.
+
+## Notes
+- The April 2026 Kaseya unified cyber resilience platform announcement bundles Unitrends with Datto BCDR and Spanning into a single pricing model — this strengthens Kaseya's backup portfolio but also consolidates Unitrends' identity further into the Kaseya brand
+- Pooled storage model across backup products (April 2026) changes MSP economics for Kaseya-native backup deployments
+- Monitor the Recovery Series MAX market reception — if hardware appliances lose share to SaaS-native alternatives, Unitrends may need to accelerate cloud-first transition
+- Unitrends is most important competitively as a signal of Kaseya's overall platform strategy — watch Kaseya 365 bundle pricing for indications of where Kaseya is heading

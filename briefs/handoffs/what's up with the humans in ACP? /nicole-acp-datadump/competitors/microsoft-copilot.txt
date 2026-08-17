@@ -1,0 +1,58 @@
+# Microsoft Copilot / Azure AI
+slug: microsoft-copilot
+category: AI Agents
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Microsoft Copilot is Microsoft's AI assistant and agent platform, embedded across Microsoft 365, Azure, and the Power Platform. Copilot Studio is the no-code builder for creating custom AI agents. In 2025–2026, Microsoft shifted from AI assistant to agentic enterprise platform — introducing Agent 365 (a centralized control plane for all AI agents), multi-agent orchestration in Copilot Studio, and Wave 3 of Microsoft 365 Copilot with embedded agentic capabilities across the M365 suite.
+
+## MSP Relevance
+Microsoft's dominance in SMB and enterprise IT means that Copilot is arriving in every MSP client's Microsoft 365 subscription whether or not MSPs recommend it. MSPs must understand Copilot's capabilities to advise clients, manage governance, and identify where third-party AI tools (like NZO) add value that Microsoft doesn't cover. Copilot Studio is also a direct low-code competitor to no-code MSP automation tools.
+
+## Key Offerings & Capabilities
+- Microsoft 365 Copilot — AI assistant embedded in Teams, Outlook, Word, Excel, SharePoint
+- Copilot Studio — no-code/low-code builder for custom AI agents with multi-agent orchestration
+- Agent 365 — centralized control plane for all AI agents: registry, access controls, visualization, interoperability, security (Ignite 2025)
+- Multi-agent systems — agents in Copilot Studio can delegate tasks to each other, including Azure AI agents and Fabric agents
+- Generative orchestration and deep reasoning toggles for agent behavior control
+- Copilot agents embedded directly into Power Automate workflows for delegated reasoning steps
+- Wave 3 (March 2026) — moves M365 Copilot beyond assistance to embedded agentic capabilities
+- Models: OpenAI GPT-5.1, Anthropic models, and Azure OpenAI models available in Copilot Studio
+
+## Recent Announcements
+- Microsoft Build 2025: Multi-agent orchestration in Copilot Studio — agents delegate tasks to each other across Azure AI, M365, and Fabric
+- Microsoft Ignite 2025: Agent 365 introduced — centralized AI agent control plane with registry, access controls, visualization, and governance
+- April 2026 Copilot Studio update: Expanded agent governance for admins; Copilot Studio agents embedded in Power Automate workflows
+- Wave 3 of Microsoft 365 Copilot (March 2026) — moves from assistant to embedded agentic capabilities across M365
+- December 2025: Microsoft 365 pricing update with new Copilot capabilities in base tier
+- GPT-5.1 (OpenAI) added to Copilot Studio model options
+
+## Pricing Model
+Microsoft 365 Copilot: $30/user/month add-on to M365 E3/E5 or Business plans. Copilot Studio: $200/month for 25,000 messages, then pay-per-use. Power Platform licensing required for some automations. Agent 365 licensing still evolving. MSPs can resell through CSP program.
+
+## Strengths
+- Ubiquitous distribution — arrives in every M365 tenant, giving Microsoft unmatched reach
+- Agent 365 is a genuine enterprise-grade AI agent control plane
+- Multi-agent orchestration across Azure AI, M365, and Fabric creates a powerful ecosystem
+- No-code Copilot Studio lowers the bar for building custom AI agents
+- Model flexibility — GPT-5.1, Anthropic, and Azure OpenAI models all available
+- Trust and security compliance (Microsoft sovereign cloud, compliance certifications)
+
+## Weaknesses / Gaps
+- Generic tooling — not purpose-built for MSP workflows, requiring significant customization
+- Pricing complexity — multiple licenses required for full agentic capability
+- MSPs report inconsistent Copilot output quality for specialized IT support use cases
+- Agent governance and compliance features still maturing
+- Power Platform licensing requirements add cost for automation workflows
+
+## Competitive Threat to NZO
+Level: High
+Reason: Microsoft's Agent 365 is a centralized AI agent control plane that NZO's category is trying to own for MSPs. If Microsoft's agentic capabilities become good enough for MSP use cases (and they are actively improving), MSPs may default to Microsoft rather than adopting a third-party AI automation platform. The distribution advantage is unmatched.
+
+## Notes
+- Agent 365 (Ignite 2025) is the most strategically important Microsoft announcement for NZO — monitor closely
+- Copilot Studio multi-agent orchestration makes Microsoft a genuine control plane competitor
+- NZO's differentiator must be MSP-specific depth that generic Copilot cannot provide
+- Wave 3 in March 2026 is a significant platform shift — review what "embedded agentic capabilities" means in practice

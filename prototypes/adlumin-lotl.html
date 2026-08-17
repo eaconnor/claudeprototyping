@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adlumin — LOTL Detection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --br-bg-base: #0f1117;
+    --br-bg-surface: #1a1d27;
+    --br-bg-elevated: #222537;
+    --br-border: #2e3147;
+    --br-text-primary: #e8eaf2;
+    --br-text-secondary: #8b90a8;
+    --br-accent-blue: #4f7cf7;
+    --br-accent-red: #e84855;
+    --br-accent-orange: #f5a623;
+    --br-accent-green: #3dd68c;
+    --br-accent-purple: #9b6dff;
+    --br-radius: 6px;
+    --br-font: 'Inter', system-ui, sans-serif;
+    --br-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: var(--br-font);
+    background: var(--br-bg-base);
+    color: var(--br-text-primary);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .nav {
+    background: var(--br-bg-surface);
+    border-bottom: 1px solid var(--br-border);
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-wordmark {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--br-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-wordmark-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--br-accent-blue);
+    display: inline-block;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--br-border);
+    margin: 0 16px;
+  }
+
+  .nav-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--br-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-label span {
+    color: var(--br-accent-blue);
+    font-weight: 600;
+  }
+
+  .nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    font-family: var(--br-mono);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--br-accent-green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .toggle-btn {
+    background: var(--br-bg-elevated);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    color: var(--br-text-secondary);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: var(--br-font);
+    padding: 5px 10px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .toggle-icon {
+    font-size: 12px;
+  }
+
+  /* LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    grid-template-rows: auto 1fr;
+    gap: 0;
+    height: calc(100vh - 52px);
+  }
+
+  .main-col {
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-right: 1px solid var(--br-border);
+  }
+
+  .side-col {
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--br-text-secondary);
+  }
+
+  .section-action {
+    font-size: 11px;
+    color: var(--br-accent-blue);
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  /* KPI CARDS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-card {
+    background: var(--br-bg-surface);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+  }
+
+  .kpi-card.kpi-blue::before { background: var(--br-accent-blue); }
+  .kpi-card.kpi-red::before { background: var(--br-accent-red); }
+  .kpi-card.kpi-green::before { background: var(--br-accent-green); }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--br-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+  }
+
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    font-family: var(--br-mono);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-card.kpi-blue .kpi-value { color: var(--br-accent-blue); }
+  .kpi-card.kpi-red .kpi-value { color: var(--br-accent-red); }
+  .kpi-card.kpi-green .kpi-value { color: var(--br-accent-green); }
+
+  .kpi-delta {
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    font-family: var(--br-mono);
+  }
+
+  .kpi-delta .up { color: var(--br-accent-red); }
+  .kpi-delta .down { color: var(--br-accent-green); }
+
+  /* INCIDENT FEED */
+  .feed-container {
+    background: var(--br-bg-surface);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    overflow: hidden;
+  }
+
+  .feed-header {
+    display: grid;
+    grid-template-columns: 64px 60px 1fr 120px 100px 100px;
+    gap: 12px;
+    padding: 8px 16px;
+    background: var(--br-bg-elevated);
+    border-bottom: 1px solid var(--br-border);
+  }
+
+  .feed-col-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--br-text-secondary);
+  }
+
+  .feed-row {
+    display: grid;
+    grid-template-columns: 64px 60px 1fr 120px 100px 100px;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--br-border);
+    align-items: center;
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+
+  .feed-row:last-child {
+    border-bottom: none;
+  }
+
+  .feed-row:hover {
+    background: var(--br-bg-elevated);
+  }
+
+  .feed-time {
+    font-family: var(--br-mono);
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    font-weight: 500;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: var(--br-mono);
+    white-space: nowrap;
+  }
+
+  .badge-high {
+    background: rgba(232, 72, 85, 0.15);
+    color: var(--br-accent-red);
+    border: 1px solid rgba(232, 72, 85, 0.3);
+  }
+
+  .badge-med {
+    background: rgba(245, 166, 35, 0.12);
+    color: var(--br-accent-orange);
+    border: 1px solid rgba(245, 166, 35, 0.3);
+  }
+
+  .badge-low {
+    background: rgba(79, 124, 247, 0.10);
+    color: #7fa3f9;
+    border: 1px solid rgba(79, 124, 247, 0.25);
+  }
+
+  .badge-ai {
+    background: rgba(155, 109, 255, 0.12);
+    color: var(--br-accent-purple);
+    border: 1px solid rgba(155, 109, 255, 0.3);
+  }
+
+  .badge-analyst {
+    background: rgba(79, 124, 247, 0.12);
+    color: var(--br-accent-blue);
+    border: 1px solid rgba(79, 124, 247, 0.3);
+  }
+
+  .technique-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--br-text-primary);
+  }
+
+  .technique-sub {
+    font-size: 10px;
+    color: var(--br-text-secondary);
+    font-family: var(--br-mono);
+    margin-top: 2px;
+  }
+
+  .host-name {
+    font-family: var(--br-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--br-text-primary);
+  }
+
+  /* CONFIDENCE BAR */
+  .confidence-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .confidence-label {
+    font-family: var(--br-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--br-text-primary);
+  }
+
+  .confidence-bar-bg {
+    height: 3px;
+    background: var(--br-border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .confidence-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .conf-high { background: var(--br-accent-red); }
+  .conf-med { background: var(--br-accent-orange); }
+  .conf-low { background: #7fa3f9; }
+
+  /* SOURCE CALLOUT */
+  .source-callout {
+    background: var(--br-bg-surface);
+    border: 1px solid var(--br-border);
+    border-left: 3px solid var(--br-accent-purple);
+    border-radius: var(--br-radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .source-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--br-radius);
+    background: rgba(155, 109, 255, 0.15);
+    border: 1px solid rgba(155, 109, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .source-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .source-text {
+    flex: 1;
+  }
+
+  .source-heading {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-accent-purple);
+    margin-bottom: 3px;
+  }
+
+  .source-body {
+    font-size: 12px;
+    color: var(--br-text-secondary);
+    line-height: 1.5;
+  }
+
+  .source-body strong {
+    color: var(--br-text-primary);
+    font-weight: 600;
+  }
+
+  /* ATTACK CHAIN */
+  .chain-panel {
+    background: var(--br-bg-surface);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    overflow: hidden;
+  }
+
+  .chain-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--br-border);
+    background: var(--br-bg-elevated);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chain-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--br-text-secondary);
+  }
+
+  .chain-tag {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(79, 124, 247, 0.12);
+    color: var(--br-accent-blue);
+    border: 1px solid rgba(79, 124, 247, 0.25);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: var(--br-mono);
+  }
+
+  .chain-body {
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .chain-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .chain-step:not(:last-child) {
+    padding-bottom: 0;
+  }
+
+  .chain-step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 28px;
+  }
+
+  .chain-node {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--br-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--br-mono);
+    flex-shrink: 0;
+    border: 1px solid;
+  }
+
+  .chain-node-1 {
+    background: rgba(232, 72, 85, 0.12);
+    border-color: rgba(232, 72, 85, 0.3);
+    color: var(--br-accent-red);
+  }
+
+  .chain-node-2 {
+    background: rgba(245, 166, 35, 0.12);
+    border-color: rgba(245, 166, 35, 0.3);
+    color: var(--br-accent-orange);
+  }
+
+  .chain-node-3 {
+    background: rgba(79, 124, 247, 0.12);
+    border-color: rgba(79, 124, 247, 0.25);
+    color: var(--br-accent-blue);
+  }
+
+  .chain-node-4 {
+    background: rgba(155, 109, 255, 0.12);
+    border-color: rgba(155, 109, 255, 0.3);
+    color: var(--br-accent-purple);
+  }
+
+  .chain-connector {
+    width: 1px;
+    flex: 1;
+    background: var(--br-border);
+    min-height: 20px;
+    margin: 4px 0;
+    align-self: stretch;
+  }
+
+  .chain-step-right {
+    padding-bottom: 20px;
+    flex: 1;
+  }
+
+  .chain-step:last-child .chain-step-right {
+    padding-bottom: 0;
+  }
+
+  .chain-step-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--br-text-primary);
+    margin-bottom: 3px;
+    margin-top: 4px;
+  }
+
+  .chain-step-desc {
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    line-height: 1.5;
+    font-family: var(--br-mono);
+  }
+
+  .chain-step-desc code {
+    color: var(--br-accent-orange);
+    font-size: 10px;
+  }
+
+  /* MITRE PANEL */
+  .mitre-panel {
+    background: var(--br-bg-surface);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    overflow: hidden;
+  }
+
+  .mitre-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--br-border);
+    background: var(--br-bg-elevated);
+  }
+
+  .mitre-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--br-text-secondary);
+  }
+
+  .mitre-list {
+    padding: 8px 0;
+  }
+
+  .mitre-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgba(46, 49, 71, 0.5);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .mitre-row:last-child {
+    border-bottom: none;
+  }
+
+  .mitre-row:hover {
+    background: var(--br-bg-elevated);
+  }
+
+  .mitre-id {
+    font-family: var(--br-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--br-accent-blue);
+    width: 68px;
+    flex-shrink: 0;
+  }
+
+  .mitre-name {
+    font-size: 11px;
+    color: var(--br-text-primary);
+    flex: 1;
+  }
+
+  .mitre-count {
+    font-family: var(--br-mono);
+    font-size: 10px;
+    color: var(--br-text-secondary);
+    background: var(--br-bg-elevated);
+    border: 1px solid var(--br-border);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--br-border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3e4160; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-wordmark">
+    <span class="nav-wordmark-dot"></span>
+    Adlumin
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-label"><span>LOTL</span> Detection</div>
+  <div class="nav-right">
+    <div class="nav-status">
+      <span class="status-dot"></span>
+      Live · Updated 14:33:07
+    </div>
+    <button class="toggle-btn">
+      <span class="toggle-icon">☀</span>
+      Light
+    </button>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN COLUMN -->
+  <div class="main-col">
+
+    <!-- KPI BAR -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Threat Summary · Today</span>
+        <span class="section-action">Export →</span>
+      </div>
+      <div class="kpi-grid">
+
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-label">PowerShell Anomalies Today</div>
+          <div class="kpi-value">847</div>
+          <div class="kpi-delta"><span class="up">↑ 12%</span> vs. 7-day avg</div>
+        </div>
+
+        <div class="kpi-card kpi-red">
+          <div class="kpi-label">Active LOTL Incidents</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-delta"><span class="up">↑ 3</span> since 08:00</div>
+        </div>
+
+        <div class="kpi-card kpi-green">
+          <div class="kpi-label">Threats Resolved (24h)</div>
+          <div class="kpi-value">34</div>
+          <div class="kpi-delta"><span class="down">↓ avg 2.1h</span> MTTR</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- INCIDENT FEED -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Incident Feed — LOTL Detections</span>
+        <span class="section-action">View all</span>
+      </div>
+
+      <div class="feed-container">
+        <div class="feed-header">
+          <span class="feed-col-label">Time</span>
+          <span class="feed-col-label">Sev</span>
+          <span class="feed-col-label">Technique</span>
+          <span class="feed-col-label">Host</span>
+          <span class="feed-col-label">Confidence</span>
+          <span class="feed-col-label">Source</span>
+        </div>
+
+        <!-- Row 1 -->
+        <div class="feed-row">
+          <span class="feed-time">14:32</span>
+          <span><span class="badge badge-high">HIGH</span></span>
+          <div>
+            <div class="technique-name">PowerShell LOLBin Execution</div>
+            <div class="technique-sub">T1059.001 · Cmd & Scripting</div>
+          </div>
+          <span class="host-name">WIN-SOC-04</span>
+          <div class="confidence-wrap">
+            <span class="confidence-label">94%</span>
+            <div class="confidence-bar-bg">
+              <div class="confidence-bar-fill conf-high" style="width:94%"></div>
+            </div>
+          </div>
+          <span><span class="badge badge-ai">AI Detected</span></span>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="feed-row">
+          <span class="feed-time">14:28</span>
+          <span><span class="badge badge-high">HIGH</span></span>
+          <div>
+            <div class="technique-name">WMI Lateral Movement</div>
+            <div class="technique-sub">T1047 · Windows Mgmt Instr</div>
+          </div>
+          <span class="host-name">WIN-EXCH-01</span>
+          <div class="confidence-wrap">
+            <span class="confidence-label">88%</span>
+            <div class="confidence-bar-bg">
+              <div class="confidence-bar-fill conf-high" style="width:88%"></div>
+            </div>
+          </div>
+          <span><span class="badge badge-ai">AI Detected</span></span>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="feed-row">
+          <span class="feed-time">13:55</span>
+          <span><span class="badge badge-med">MED</span></span>
+          <div>
+            <div class="technique-name">Scheduled Task Persistence</div>
+            <div class="technique-sub">T1053.005 · Scheduled Task</div>
+          </div>
+          <span class="host-name">WIN-DC-02</span>
+          <div class="confidence-wrap">
+            <span class="confidence-label">76%</span>
+            <div class="confidence-bar-bg">
+              <div class="confidence-bar-fill conf-med" style="width:76%"></div>
+            </div>
+          </div>
+          <span><span class="badge badge-ai">AI Detected</span></span>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="feed-row">
+          <span class="feed-time">13:41</span>
+          <span><span class="badge badge-med">MED</span></span>
+          <div>
+            <div class="technique-name">Living-Off-Land Script Block</div>
+            <div class="technique-sub">T1059.001 · Script Block Log</div>
+          </div>
+          <span class="host-name">WIN-FIN-07</span>
+          <div class="confidence-wrap">
+            <span class="confidence-label">71%</span>
+            <div class="confidence-bar-bg">
+              <div class="confidence-bar-fill conf-med" style="width:71%"></div>
+            </div>
+          </div>
+          <span><span class="badge badge-ai">AI Detected</span></span>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="feed-row">
+          <span class="feed-time">12:18</span>
+          <span><span class="badge badge-low">LOW</span></span>
+          <div>
+            <div class="technique-name">Unsigned Binary Proxy</div>
+            <div class="technique-sub">T1218 · Signed Binary Proxy</div>
+          </div>
+          <span class="host-name">WIN-HR-11</span>
+          <div class="confidence-wrap">
+            <span class="confidence-label">58%</span>
+            <div class="confidence-bar-bg">
+              <div class="confidence-bar-fill conf-low" style="width:58%"></div>
+            </div>
+          </div>
+          <span><span class="badge badge-analyst">Analyst Flagged</span></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SOURCE CALLOUT -->
+    <div class="source-callout">
+      <div class="source-icon">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="8" r="6" stroke="#9b6dff" stroke-width="1.5"/>
+          <path d="M5 8l2 2 4-4" stroke="#9b6dff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="source-text">
+        <div class="source-heading">Detection Engine</div>
+        <div class="source-body">
+          Powered by <strong>PowerShell Ensemble Model</strong> — analyzing approximately <strong>~1 billion commands per week</strong> in real time. Behavioral baselines updated continuously. No signature matching. No false negatives from renamed binaries.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDE COLUMN -->
+  <div class="side-col">
+
+    <!-- ATTACK CHAIN -->
+    <div class="chain-panel">
+      <div class="chain-header">
+        <span class="chain-title">LOTL Attack Pattern</span>
+        <span class="chain-tag">How it works</span>
+      </div>
+      <div class="chain-body">
+
+        <div class="chain-step">
+          <div class="chain-step-left">
+            <div class="chain-node chain-node-1">1</div>
+            <div class="chain-connector"></div>
+          </div>
+          <div class="chain-step-right">
+            <div class="chain-step-title">No Malware Dropped</div>
+            <div class="chain-step-desc">Attacker avoids writing files to disk. Traditional AV finds nothing.</div>
+          </div>
+        </div>
+
+        <div class="chain-step">
+          <div class="chain-step-left">
+            <div class="chain-node chain-node-2">2</div>
+            <div class="chain-connector"></div>
+          </div>
+          <div class="chain-step-right">
+            <div class="chain-step-title">Legitimate Tools Weaponized</div>
+            <div class="chain-step-desc">Uses <code>powershell.exe</code>, <code>wmic</code>, <code>certutil</code>, <code>mshta</code> — all signed by Microsoft.</div>
+          </div>
+        </div>
+
+        <div class="chain-step">
+          <div class="chain-step-left">
+            <div class="chain-node chain-node-3">3</div>
+            <div class="chain-connector"></div>
+          </div>
+          <div class="chain-step-right">
+            <div class="chain-step-title">Blends With Admin Traffic</div>
+            <div class="chain-step-desc">Indistinguishable from routine sysadmin work without behavioral context.</div>
+          </div>
+        </div>
+
+        <div class="chain-step">
+          <div class="chain-step-left">
+            <div class="chain-node chain-node-4">4</div>
+          </div>
+          <div class="chain-step-right">
+            <div class="chain-step-title">Only Behavioral AI Sees It</div>
+            <div class="chain-step-desc">Pattern deviation across command history, user context, and timing — no signature required.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MITRE COVERAGE -->
+    <div class="mitre-panel">
+      <div class="mitre-header">
+        <span class="mitre-title">MITRE ATT&CK Coverage · Active</span>
+      </div>
+      <div class="mitre-list">
+        <div class="mitre-row">
+          <span class="mitre-id">T1059.001</span>
+          <span class="mitre-name">PowerShell</span>
+          <span class="mitre-count">312</span>
+        </div>
+        <div class="mitre-row">
+          <span class="mitre-id">T1047</span>
+          <span class="mitre-name">WMI Execution</span>
+          <span class="mitre-count">194</span>
+        </div>
+        <div class="mitre-row">
+          <span class="mitre-id">T1053.005</span>
+          <span class="mitre-name">Scheduled Task</span>
+          <span class="mitre-count">87</span>
+        </div>
+        <div class="mitre-row">
+          <span class="mitre-id">T1218</span>
+          <span class="mitre-name">Signed Binary Proxy</span>
+          <span class="mitre-count">61</span>
+        </div>
+        <div class="mitre-row">
+          <span class="mitre-id">T1027</span>
+          <span class="mitre-name">Obfuscated Files</span>
+          <span class="mitre-count">49</span>
+        </div>
+        <div class="mitre-row">
+          <span class="mitre-id">T1140</span>
+          <span class="mitre-name">Deobfuscate / Decode</span>
+          <span class="mitre-count">22</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

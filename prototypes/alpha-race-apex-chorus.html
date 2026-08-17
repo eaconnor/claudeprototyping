@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha (RACE) v0.9 · Apex Prototype + Idea Chorus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   APEX / ADLUMIN PROTOTYPE — APPROXIMATED TOKENS
+   Real Apex tokens are not bound. Approximations only.
+   ============================================================ */
+:root {
+  --bg-app: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-elevated: #182238;
+  --bg-deep: #070d18;
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  --brand: #3b82f6;
+  --brand-strong: #2563eb;
+  --brand-soft: rgba(59,130,246,0.14);
+
+  --critical: #ef4444;
+  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;
+  --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;
+  --medium-soft: rgba(234,179,8,0.12);
+  --low: #22c55e;
+  --low-soft: rgba(34,197,94,0.12);
+
+  --alpha-accent: #a78bfa;
+  --alpha-soft: rgba(167,139,250,0.13);
+
+  /* one radius scale, one shadow scale */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   FIDELITY BANNER
+   ============================================================ */
+.fidelity-banner {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(239,68,68,0.08) 0,
+      rgba(239,68,68,0.08) 12px,
+      transparent 12px,
+      transparent 24px
+    ),
+    var(--bg-deep);
+  border-bottom: 1px solid var(--critical);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.fidelity-flag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: var(--critical);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+}
+.fidelity-flag .dot {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.fidelity-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.fidelity-checks {
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+.fidelity-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+.fidelity-check .mark.fail { color: var(--critical); }
+.fidelity-check .mark.warn { color: var(--medium); }
+.fidelity-check .mark.pass { color: var(--low); }
+.fidelity-tier {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.tier-pill {
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+}
+.tier-pill.on { background: var(--critical); border-color: var(--critical); }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app-shell {
+  display: grid;
+  grid-template-columns: 56px 1fr 440px;
+  min-height: calc(100vh - 50px);
+}
+
+/* LEFT NAV */
+.sidenav {
+  background: var(--bg-deep);
+  border-right: 1px solid var(--border);
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.nav-logo {
+  width: 32px;
+  height: 32px;
+  background: var(--brand);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.nav-item {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-size: 16px;
+}
+.nav-item:hover { background: var(--bg-surface); color: var(--text-primary); }
+.nav-item.active { background: var(--brand-soft); color: var(--brand); }
+.nav-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+/* MAIN */
+.main {
+  background: var(--bg-app);
+  overflow-y: auto;
+}
+.topbar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.breadcrumbs .sep { color: var(--text-muted); }
+.breadcrumbs .current { color: var(--text-primary); font-weight: 500; }
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.demo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--alpha-soft);
+  color: var(--alpha-accent);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 4px 4px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+}
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+.user-name { color: var(--text-primary); font-weight: 500; }
+.user-role { color: var(--text-tertiary); font-size: 11px; }
+
+/* ============================================================
+   VALUE PROP HEADER
+   ============================================================ */
+.vp-header {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-app) 100%);
+}
+.vp-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--alpha-accent);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.vp-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--text-primary);
+}
+.vp-claim {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 720px;
+}
+.vp-claim .em { color: var(--text-primary); font-weight: 500; }
+
+/* ============================================================
+   BEFORE / AFTER SPLIT
+   ============================================================ */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr;
+  gap: 0;
+  padding: 22px 24px;
+  align-items: stretch;
+}
+.ba-pane {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+.ba-pane.before { border-color: var(--border); }
+.ba-pane.after { border-color: var(--alpha-accent); background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-elevated) 100%); }
+.ba-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 18px;
+}
+.ba-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.ba-pane.before .ba-label { color: var(--text-tertiary); }
+.ba-pane.after .ba-label { color: var(--alpha-accent); }
+.ba-count {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.ba-pane.before .ba-count { color: var(--text-secondary); }
+.ba-pane.after .ba-count { color: var(--text-primary); }
+.ba-unit { font-size: 13px; color: var(--text-tertiary); margin-bottom: 14px; }
+.ba-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.ba-list li {
+  padding: 4px 8px;
+  background: var(--bg-deep);
+  border-left: 2px solid var(--border-strong);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.ba-after-line {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.ba-after-line .ent {
+  font-family: var(--font-mono);
+  background: var(--brand-soft);
+  color: var(--brand);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+}
+
+/* ============================================================
+   INCIDENT STORY CARD
+   ============================================================ */
+.story-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin: 0 24px 24px;
+  overflow: hidden;
+}
+.story-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.story-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+.story-meta-row .id-bold { color: var(--text-secondary); font-weight: 600; }
+.story-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+.story-title .em { color: var(--critical); }
+.mitre-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mitre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.mitre-chip .code { color: var(--alpha-accent); font-weight: 600; }
+
+/* narrative blocks */
+.narrative {
+  padding: 20px 22px;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 14px 20px;
+}
+.narr-q {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  padding-top: 2px;
+  font-weight: 600;
+}
+.narr-a {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+.narr-a .ent {
+  font-family: var(--font-mono);
+  background: var(--brand-soft);
+  color: var(--brand);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+.narr-a .time {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.narr-a .note {
+  display: inline-block;
+  margin-left: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--medium);
+  letter-spacing: 0.04em;
+}
+
+/* correlation explainer */
+.corr-explain {
+  margin: 0 22px 20px;
+  padding: 12px 14px;
+  background: var(--alpha-soft);
+  border-left: 3px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.corr-explain strong { color: var(--text-primary); }
+.corr-explain .src {
+  display: inline-block;
+  margin-left: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--alpha-accent);
+  letter-spacing: 0.04em;
+}
+
+/* timeline */
+.timeline-block {
+  padding: 18px 22px 22px;
+  border-top: 1px solid var(--border);
+}
+.timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.timeline-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.timeline-foot-note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--medium);
+  letter-spacing: 0.04em;
+}
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--border-strong);
+}
+.tl-event {
+  position: relative;
+  padding-bottom: 16px;
+}
+.tl-event:last-child { padding-bottom: 0; }
+.tl-dot {
+  position: absolute;
+  left: -28px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+}
+.tl-dot.detect { background: var(--critical); border-color: var(--critical); }
+.tl-dot.corr { background: var(--alpha-accent); border-color: var(--alpha-accent); }
+.tl-time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.tl-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 2px 0;
+}
+.tl-body {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.tl-source {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+  padding: 2px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+/* footnote block */
+.footnotes {
+  margin: 0 24px 32px;
+  padding: 14px 16px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+}
+.footnotes strong { color: var(--text-secondary); font-weight: 600; }
+.footnotes .tag-a { color: var(--medium); }
+.footnotes .tag-q { color: var(--text-tertiary); }
+.footnotes .tag-r { color: var(--low); }
+
+/* ============================================================
+   IDEA CHORUS RAIL
+   ============================================================ */
+.chorus-rail {
+  background: var(--bg-deep);
+  border-left: 1px solid var(--border);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
+  position: sticky;
+  top: 50px;
+}
+.rail-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.rail-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--alpha-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.rail-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+.rail-sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.rail-blurb {
+  margin: 12px 0 18px;
+  padding: 10px 12px;
+  background: var(--alpha-soft);
+  border-left: 3px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+.rail-blurb .label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--alpha-accent);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+/* chorus rows */
+.chorus-list {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.chorus-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.chorus-row-top {
+  display: grid;
+  grid-template-columns: 140px 1fr 44px;
+  gap: 10px;
+  align-items: center;
+}
+.chorus-dim {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.chorus-track {
+  height: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.chorus-fill {
+  height: 100%;
+  background: var(--brand);
+  border-radius: var(--radius-sm);
+}
+.chorus-fill.crit { background: var(--critical); }
+.chorus-fill.high { background: var(--high); }
+.chorus-fill.med { background: var(--medium); }
+.chorus-fill.low { background: var(--low); }
+.chorus-score {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+  color: var(--text-primary);
+}
+.chorus-score .of {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.chorus-row-bottom {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.chorus-tag-cell { display: flex; }
+.chorus-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+}
+.chorus-tag.r { background: var(--low-soft); color: var(--low); border-color: var(--low); }
+.chorus-tag.d { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
+.chorus-tag.a { background: var(--medium-soft); color: var(--medium); border-color: var(--medium); }
+.chorus-tag.q { background: var(--bg-elevated); color: var(--text-tertiary); border-color: var(--border-strong); }
+.chorus-tag.ra { background: var(--low-soft); color: var(--low); border-color: var(--low); }
+.chorus-rationale {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* chorus total */
+.chorus-total {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.chorus-total-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.chorus-total-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.chorus-total-num {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--medium);
+  line-height: 1;
+}
+.chorus-total-of {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+.chorus-readiness {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.chorus-readiness-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--medium);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.chorus-readiness-body {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* legend / footer */
+.chorus-legend {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+.rail-foot {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  font-family: var(--font-mono);
+}
+.rail-foot a { color: var(--text-tertiary); }
+
+@media (max-width: 1280px) {
+  .app-shell { grid-template-columns: 56px 1fr; }
+  .chorus-rail { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FIDELITY BANNER -->
+<div class="fidelity-banner">
+  <div class="fidelity-flag">
+    <span class="dot"></span>
+    Apex Prototype · Tier 1 · Concept
+  </div>
+  <div class="fidelity-label">Visual approximation of Apex — not bound to real tokens or apx-* components</div>
+  <div class="fidelity-checks">
+    <span class="fidelity-check"><span class="mark fail">x</span> Real Apex tokens</span>
+    <span class="fidelity-check"><span class="mark fail">x</span> apx-* components</span>
+    <span class="fidelity-check"><span class="mark fail">x</span> schema.json contract</span>
+    <span class="fidelity-check"><span class="mark fail">x</span> Live data binding</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> A11y baseline</span>
+  </div>
+  <div class="fidelity-tier">
+    <span>Fidelity:</span>
+    <span class="tier-pill on"></span>
+    <span class="tier-pill"></span>
+    <span class="tier-pill"></span>
+    <span style="color: var(--critical); font-weight: 600;">1 / 3</span>
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- LEFT NAV -->
+  <nav class="sidenav">
+    <div class="nav-logo">A</div>
+    <div class="nav-item" title="Home">H</div>
+    <div class="nav-item active" title="Incidents">I</div>
+    <div class="nav-item" title="Detections">D</div>
+    <div class="nav-item" title="Reports">R</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item" title="Settings">S</div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="breadcrumbs">
+        <span>MDR</span>
+        <span class="sep">/</span>
+        <span>Incidents</span>
+        <span class="sep">/</span>
+        <span class="current">INC-2026-0834</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="demo-pill">Alpha (RACE) v0.9 · DEMO</span>
+        <div class="user-chip">
+          <div class="user-avatar">R</div>
+          <div>
+            <div class="user-name">Raj K.</div>
+            <div class="user-role">MDR · on shift</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALUE PROP HEADER -->
+    <section class="vp-header">
+      <div class="vp-eyebrow">Alpha · RACE · multi-event correlation</div>
+      <h1 class="vp-title">Analysts investigate incidents, not alerts.</h1>
+      <p class="vp-claim">
+        Alpha groups related detections that share entities and time proximity into a single incident story.
+        <span class="em">Twelve isolated alerts collapsed into one incident</span> — same evidence, one ticket, one narrative.
+      </p>
+    </section>
+
+    <!-- BEFORE / AFTER SPLIT -->
+    <section class="before-after">
+      <div class="ba-pane before">
+        <div class="ba-label">Before · today</div>
+        <div class="ba-count">12</div>
+        <div class="ba-unit">isolated alerts in the queue</div>
+        <ul class="ba-list">
+          <li>Azure AD · anomalous sign-in (×3)</li>
+          <li>Defender · privilege escalation (×2)</li>
+          <li>Defender · malicious binary (×2)</li>
+          <li>Defender · credential dump (×1)</li>
+          <li>Azure AD · MFA failure (×4)</li>
+        </ul>
+      </div>
+      <div class="ba-arrow">&rsaquo;</div>
+      <div class="ba-pane after">
+        <div class="ba-label">After · with Alpha</div>
+        <div class="ba-count">1</div>
+        <div class="ba-unit">incident story</div>
+        <div class="ba-after-line">
+          <span class="ent">INC-2026-0834</span> — same user, same hosts, same window.
+          Twelve alerts share entities and time, so Alpha treats them as one incident.
+        </div>
+      </div>
+    </section>
+
+    <!-- INCIDENT STORY CARD -->
+    <section class="story-card">
+
+      <div class="story-head">
+        <div class="story-meta-row">
+          <span class="id-bold">INC-2026-0834</span>
+          <span>·</span>
+          <span>MDR · Black Team</span>
+          <span>·</span>
+          <span>Acme Bldg Supply</span>
+          <span>·</span>
+          <span>opened ~20 min ago</span>
+        </div>
+        <h2 class="story-title">Lateral movement &rsaquo; <span class="em">credential access</span> suspected</h2>
+        <div class="mitre-row">
+          <span class="mitre-chip"><span class="code">TA0008</span> Lateral Movement</span>
+          <span class="mitre-chip"><span class="code">TA0006</span> Credential Access</span>
+          <span class="mitre-chip" style="color: var(--text-tertiary);">MITRE ATT&amp;CK · sourced</span>
+        </div>
+      </div>
+
+      <!-- correlation explainer -->
+      <div class="corr-explain">
+        <strong>How Alpha grouped these:</strong>
+        per ADL-1839 Function Statement, Alpha correlates detections by shared user, host, source/destination,
+        and time proximity. The twelve alerts in this incident share one user
+        (<span style="color: var(--text-primary); font-family: var(--font-mono);">user.acme@corp</span>),
+        two hosts, and fall inside a single working window.
+        <span class="src">[R: ADL-1839 §Function Statement]</span>
+      </div>
+
+      <!-- narrative blocks -->
+      <div class="narrative">
+
+        <div class="narr-q">What happened</div>
+        <div class="narr-a">
+          <span class="ent">user.acme@corp</span> authenticated from an unfamiliar ASN, then within the same session
+          a privilege-escalation pattern was observed on <span class="ent">host-east-04</span> and a Defender
+          malicious-binary detection fired on <span class="ent">host-east-09</span>. The events share user, host
+          lineage, and a contiguous time window.
+          <span class="note">[A] — synthetic incident for prototype</span>
+        </div>
+
+        <div class="narr-q">Recommended response</div>
+        <div class="narr-a">
+          Confirm whether <span class="ent">user.acme@corp</span> is a known traveller (HR / calendar). Pull the
+          Defender quarantine report for <span class="ent">host-east-09</span>. If geography is unexpected,
+          recommend session termination and an MFA challenge before unlock.
+          <span class="note">[A] — recommended actions, not auto-executed by Alpha v0.9</span>
+        </div>
+
+        <div class="narr-q">Next steps</div>
+        <div class="narr-a">
+          Escalate to Tier-2 with the consolidated incident if any of the above does not resolve cleanly.
+          Tier-2 receives one ticket with the narrative, MITRE mapping, and the underlying twelve detections
+          attached.
+        </div>
+
+      </div>
+
+      <!-- timeline -->
+      <div class="timeline-block">
+        <div class="timeline-head">
+          <div class="timeline-title">Timeline · 5 events shown</div>
+          <div class="timeline-foot-note">[A] timestamps illustrative</div>
+        </div>
+        <div class="timeline">
+          <div class="tl-event">
+            <span class="tl-dot detect"></span>
+            <div class="tl-time">T+0 · Azure AD</div>
+            <div class="tl-title">Anomalous sign-in</div>
+            <div class="tl-body">Sign-in from an ASN not previously associated with this user.</div>
+            <span class="tl-source">Azure AD</span>
+          </div>
+          <div class="tl-event">
+            <span class="tl-dot detect"></span>
+            <div class="tl-time">T+13m · Defender</div>
+            <div class="tl-title">Privilege escalation pattern · host-east-04</div>
+            <div class="tl-body">PsExec-like invocation in the same interactive session.</div>
+            <span class="tl-source">MS Defender</span>
+          </div>
+          <div class="tl-event">
+            <span class="tl-dot detect"></span>
+            <div class="tl-time">T+19m · Defender</div>
+            <div class="tl-title">Malicious binary · host-east-09</div>
+            <div class="tl-body">Beacon-variant signature on a second host in the same session lineage.</div>
+            <span class="tl-source">MS Defender</span>
+          </div>
+          <div class="tl-event">
+            <span class="tl-dot detect"></span>
+            <div class="tl-time">T+19m · Defender</div>
+            <div class="tl-title">Credential access attempt · host-east-04</div>
+            <div class="tl-body">LSASS read pattern flagged on the origin host.</div>
+            <span class="tl-source">MS Defender</span>
+          </div>
+          <div class="tl-event">
+            <span class="tl-dot corr"></span>
+            <div class="tl-time">T+20m · Alpha</div>
+            <div class="tl-title">Incident assembled</div>
+            <div class="tl-body">12 detections grouped by shared user, host lineage, and time proximity into INC-2026-0834. Story and MITRE mapping generated.</div>
+            <span class="tl-source">Alpha · RACE</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- HONEST FOOTNOTES -->
+    <div class="footnotes">
+      <strong>Evidence on this page</strong><br>
+      <span class="tag-r">[R]</span> MITRE tactic codes (TA0008, TA0006) and correlation logic source — ADL-1839 Function Statement.<br>
+      <span class="tag-a">[A]</span> Incident content (user, hosts, ASN, timestamps) is synthetic for prototype purposes — no real customer data.<br>
+      <span class="tag-a">[A]</span> "Recommended response" reflects analyst-side actions; Alpha v0.9 does not auto-isolate hosts, revoke tokens, or quarantine devices in this build.<br>
+      <span class="tag-q">[?]</span> Noise-reduction, time-to-triage, and correlation-confidence metrics are not measured at v0.9 and are intentionally omitted from this view.
+    </div>
+
+  </main>
+
+  <!-- IDEA CHORUS RAIL -->
+  <aside class="chorus-rail">
+
+    <div class="rail-head">
+      <div class="rail-avatar">C</div>
+      <div>
+        <div class="rail-title">Idea Chorus</div>
+        <div class="rail-sub">scoring the Alpha RACE idea</div>
+      </div>
+    </div>
+
+    <div class="rail-blurb">
+      <span class="label">What this scores</span>
+      The product idea, not the prototype artifact. Seven dimensions, evidence-tagged. Tied to ADL-1839 where sourced; honest [A] / [?] where not.
+    </div>
+
+    <!-- CHORUS LEGEND -->
+    <div class="chorus-legend">
+      <span class="legend-item"><span class="chorus-tag r">R</span> Research</span>
+      <span class="legend-item"><span class="chorus-tag d">D</span> Data</span>
+      <span class="legend-item"><span class="chorus-tag a">A</span> Assumed</span>
+      <span class="legend-item"><span class="chorus-tag q">?</span> Unknown</span>
+    </div>
+
+    <!-- CHORUS ROWS -->
+    <div class="chorus-list">
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">Value Prop</div>
+          <div class="chorus-track"><div class="chorus-fill low" style="width: 80%"></div></div>
+          <div class="chorus-score">8<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag r">R</span></div>
+          <div class="chorus-rationale">"Analysts investigate incidents, not alerts" — clear, differentiated, anchored in ADL-1839.</div>
+        </div>
+      </div>
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">Company Fit</div>
+          <div class="chorus-track"><div class="chorus-fill low" style="width: 90%"></div></div>
+          <div class="chorus-score">9<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag r">R</span></div>
+          <div class="chorus-rationale">Builds on existing Incident Map + syscore. No net-new data sources required.</div>
+        </div>
+      </div>
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">10 Types</div>
+          <div class="chorus-track"><div class="chorus-fill med" style="width: 40%"></div></div>
+          <div class="chorus-score">4<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag a">A</span></div>
+          <div class="chorus-rationale">Doblin mapping (product performance + service + customer engagement) is assumed, not validated.</div>
+        </div>
+      </div>
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">Pain Evidence</div>
+          <div class="chorus-track"><div class="chorus-fill med" style="width: 50%"></div></div>
+          <div class="chorus-score">5<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag ra">R/A</span></div>
+          <div class="chorus-rationale">ADL-1839 cites "multiple internal MDR reviews and customer escalations" — sourced but unquantified.</div>
+        </div>
+      </div>
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">Will to Pay</div>
+          <div class="chorus-track"><div class="chorus-fill med" style="width: 40%"></div></div>
+          <div class="chorus-score">4<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag q">?</span></div>
+          <div class="chorus-rationale">MDR-only beta first. No customer pricing or expansion signal yet.</div>
+        </div>
+      </div>
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">Self-Actual</div>
+          <div class="chorus-track"><div class="chorus-fill high" style="width: 60%"></div></div>
+          <div class="chorus-score">6<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag a">A</span></div>
+          <div class="chorus-rationale">Removes drudgery for analysts. Plausible, but not validated with analyst interviews.</div>
+        </div>
+      </div>
+
+      <div class="chorus-row">
+        <div class="chorus-row-top">
+          <div class="chorus-dim">UX &mdash; 5Es</div>
+          <div class="chorus-track"><div class="chorus-fill crit" style="width: 30%"></div></div>
+          <div class="chorus-score">3<span class="of">/10</span></div>
+        </div>
+        <div class="chorus-row-bottom">
+          <div class="chorus-tag-cell"><span class="chorus-tag q">?</span></div>
+          <div class="chorus-rationale">Entice / Enter / Engage / Exit / Extend — unmapped at prototype stage.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CHORUS TOTAL -->
+    <div class="chorus-total">
+      <div class="chorus-total-label">Chorus total</div>
+      <div class="chorus-total-row">
+        <div>
+          <span class="chorus-total-num">39</span>
+          <span class="chorus-total-of"> / 70</span>
+        </div>
+        <div style="text-align: right; font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.06em;">
+          56% &middot; mid band
+        </div>
+      </div>
+      <div class="chorus-readiness">
+        <div class="chorus-readiness-label">Gate readiness · 30% fidelity — schematic</div>
+        <div class="chorus-readiness-body">
+          Strong on value prop and company fit. Soft on will-to-pay and UX 5Es. Brief sits at Gate 30 — ready to show for alignment, not ready to ship as product.
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-foot">
+      Idea Chorus rubric &middot; 7 dimensions &middot; max 70<br>
+      Anchored to ADL-1839 &middot; alpha-race-customer-prototype.brief.md<br>
+      Buttons in main view are previews &mdash; not wired.
+    </div>
+
+  </aside>
+
+</div>
+</body>
+</html>

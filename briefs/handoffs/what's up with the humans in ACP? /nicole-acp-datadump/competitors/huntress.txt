@@ -1,0 +1,56 @@
+# Huntress
+slug: huntress
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Huntress is an MDR platform purpose-built for MSPs serving SMBs. Unlike enterprise-focused EDR vendors, Huntress was designed from the ground up for the MSP delivery model — with per-partner pricing, a 24/7 human-backed ThreatOps SOC, and integrations into common MSP toolsets. The company expanded in 2025–2026 from endpoint MDR into SIEM, identity posture, and Microsoft-native security, building toward a full security platform for SMB-focused MSPs. An IPO is reportedly planned for 2026.
+
+## MSP Relevance
+Huntress is one of the highest-affinity security vendors in the MSP market. Its MSP-first packaging, flat-fee transparent pricing, and human ThreatOps SOC make it accessible and defensible for MSPs serving SMB clients. Rapid expansion into SIEM, identity posture, and Microsoft integrations makes Huntress a platform play, not just a point solution.
+
+## Key Offerings & Capabilities
+- Managed EDR — endpoint detection with 24/7 human ThreatOps SOC
+- MDR for Microsoft 365 — identity threat detection and response for M365 environments
+- Managed SIEM — flat-fee SIEM with predictable per-seat pricing (GA April 2025)
+- Managed Endpoint Security Posture Management (ESPM) — launched March 2026
+- Managed Identity Security Posture Management (ISPM) — launched March 2026, built on Inside Agent acquisition
+- Security Awareness Training (SAT) — phishing simulation and employee training
+- Microsoft integration — layers on top of Defender and Entra ID
+
+## Recent Announcements
+- Launched Managed SIEM with GA April 29, 2025 — flat-fee per-seat pricing eliminates unpredictable SIEM costs
+- Strategic Microsoft collaboration announced July 2025 — integrates with Defender, M365, Entra ID
+- Acquired Inside Agent (late 2025) — identity posture management technology
+- Launched Managed ESPM and Managed ISPM (March 2026) — extends platform into proactive posture management
+- Launched formal VAR program for non-MSP resellers (March 2026)
+- IPO reportedly planned for 2026
+
+## Pricing Model
+Flat per-seat/per-endpoint monthly pricing, billed through MSP partners. No per-incident or per-alert fees. SIEM priced per seat rather than per GB/event volume — a deliberate differentiator vs. traditional SIEM pricing. Pricing disclosed on website, unusually transparent for the MDR market.
+
+## Strengths
+- Built exclusively for MSPs — product, pricing, and go-to-market are all MSP-native
+- Human ThreatOps SOC — real analysts behind every alert, not just automated playbooks
+- Transparent flat-fee pricing — easy for MSPs to build into recurring service packages
+- Rapid feature expansion while maintaining SMB focus
+- Strong community reputation in MSP ecosystem
+- Microsoft partnership covers the dominant SMB security stack
+
+## Weaknesses / Gaps
+- Less suited for enterprise environments — intentionally SMB-focused
+- SIEM is newer and less mature than dedicated SIEM platforms
+- Limited international presence compared to Sophos or Bitdefender
+- IPO preparation may shift attention toward growth metrics over product depth
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: Huntress competes in security adjacent to NZO's core. However, as it expands into posture management and identity workflows, it builds automated response workflows that increasingly overlap with NZO's agentic automation territory in MSP environments.
+
+## Notes
+- IPO in 2026 will bring significant attention and funding — expect accelerated product development
+- Inside Agent acquisition suggests interest in AI-driven identity workflows
+- Microsoft partnership is strategic — MSPs already on Microsoft will see Huntress as the natural security layer
+- VAR program signals ambition beyond the pure MSP channel

@@ -1,0 +1,88 @@
+{
+  "user": "Nicole Reineke",
+  "domain": "ACP (Adlumin Control Plane) product prototyping",
+  "sources": [
+    "Confluence space AI (Control Plane positioning, Coworker definition, Runbooks)",
+    "Confluence space PUT (Product strategy)",
+    "Jira project ACP"
+  ],
+  "test_cases": [
+    {
+      "test_name": "acp-trust-level-tier2-with-council-contradiction",
+      "fidelity": "Tier 2 (Direction)",
+      "prompt": "I need to prototype the ACP Trust-Level Model UI that shows MSPs how their confidence score is calculated. Pull from the Control Plane positioning doc in Confluence (space AI) and the Coworker definition doc. Show it as an overlay in N-central using Apex Bridge. This is directional fidelity (Tier 2) — we're testing whether surfacing the math behind the trust level actually builds confidence or just creates cognitive load.",
+      "expected_outputs": [
+        "scout_input/ with 2-3 docs from Confluence AI space (Control Plane, Coworker, possibly Runbooks)",
+        "briefs/acp-trust-level.brief.md with 40-60% [A]+[?] ratio (appropriate for Tier 2)",
+        "critic-pass-1.md with pre-build scores (expect 3-4 range on most dimensions)",
+        "prototypes/acp-trust-level/index.html with Apex Bridge overlay, Tier 2 fidelity banner, Bradley rail",
+        "critic-pass-2.md with post-build scores + delta (expect demo-ability to improve)",
+        "council-testimony.md with JTBD and Service Blueprint potentially contradicting on math visibility",
+        "briefs/handoffs/nicole-acp-trust-level-[date]/ with complete packet"
+      ],
+      "success_criteria": [
+        "Pipeline completes all 7 steps",
+        "Apex Bridge overlay pattern renders correctly (slide-in from right or modal)",
+        "Bradley rail Product card shows 60-80% Nicole attribution with reasoning",
+        "Council explicitly names JTBD vs. Service Blueprint tension on transparency (if present)",
+        "[A]+[?] ratio is 40-60% (appropriate for Tier 2 / Direction)",
+        "Handoff packet includes attribution matrix showing calculation for Product card"
+      ],
+      "notes": "Nicole authored the source docs. Tone should be peer-to-peer, ACP-internal. Don't re-explain Coworkers/Runbooks to Nicole."
+    },
+    {
+      "test_name": "acp-value-ledger-tier1-council-emphasis",
+      "fidelity": "Tier 1 (Concept)",
+      "prompt": "Show me what the ACP Value Ledger looks like when an MSP is reviewing their monthly usage and cost breakdown. I want to see the 5 monetization layers visualized. Use the Runbooks doc from Confluence for context on what actions get metered. Apex Bridge delivery, concept-level (Tier 1) — this is exploratory, so high [A] ratio is expected. Run full council to see if JTBD and Value Chain agree on whether we should show the math or hide it.",
+      "expected_outputs": [
+        "scout_input/ with Runbooks doc from Confluence AI space",
+        "briefs/acp-value-ledger.brief.md with 50-70% [A]+[?] ratio (appropriate for Tier 1 / Concept)",
+        "critic-pass-1.md flagging high [A] ratio but noting it's appropriate for Tier 1",
+        "prototypes/acp-value-ledger/index.html with 5 monetization layers visualized, Apex Bridge overlay, Tier 1 fidelity banner",
+        "critic-pass-2.md with post-build scores",
+        "council-testimony.md with JTBD and Value Chain potentially contradicting on transparency, plus other voices",
+        "briefs/handoffs/nicole-acp-value-ledger-[date]/ with complete packet routing the visibility decision to Nicole"
+      ],
+      "success_criteria": [
+        "Pipeline completes all 7 steps",
+        "Spec explicitly flags high [A]+[?] ratio but proceeds (appropriate for Tier 1)",
+        "Prototype visualizes all 5 monetization layers",
+        "Council runs all 5 frameworks (not just JTBD and Value Chain)",
+        "If JTBD and Value Chain contradict on visibility, handoff routes this as a decision to Nicole",
+        "Bradley rail includes 'Unknown: gap' in ROI section where appropriate"
+      ],
+      "notes": "Tier 1 / Concept means exploration is the goal. High [A] ratio is expected and should not block. Council emphasis means the expert voices are the primary deliverable here."
+    },
+    {
+      "test_name": "acp-coworker-handoff-tier3-attribution-emphasis",
+      "fidelity": "Tier 3 (Spec-ready)",
+      "prompt": "Prototype the Coworker handoff screen — when an MSP escalates from AI Coworker to human Runbook expert. Pull from both the Coworker doc and Runbooks doc in Confluence. This needs to be spec-ready (Tier 3) so the [A] ratio should be under 30%. Show what context the human expert sees when they receive the handoff. Apex Bridge overlay. Include ownership attribution on any AI-generated elements.",
+      "expected_outputs": [
+        "scout_input/ with Coworker doc + Runbooks doc from Confluence AI space",
+        "briefs/acp-coworker-handoff.brief.md with <30% [A]+[?] ratio (Tier 3 requirement)",
+        "critic-pass-1.md noting whether spec meets Tier 3 threshold",
+        "prototypes/acp-coworker-handoff/index.html with context transfer UI, Apex Bridge overlay, Tier 3 fidelity banner, attribution on AI-generated elements",
+        "critic-pass-2.md validating attribution display is present and correct",
+        "council-testimony.md with Service Blueprint voice analyzing frontstage/backstage handoff",
+        "briefs/handoffs/nicole-acp-coworker-handoff-[date]/ with complete packet + attribution matrix"
+      ],
+      "success_criteria": [
+        "Pipeline completes all 7 steps",
+        "[A]+[?] ratio is <30% OR spec flags readiness issue and asks whether to proceed",
+        "Prototype shows context transfer from AI to human clearly",
+        "Ownership attribution displays on any AI-generated suggestions/context (e.g., '0% Nicole' for tool-generated summary)",
+        "Bradley rail includes attribution reasoning for key components",
+        "Handoff packet includes attribution matrix showing calculations for multiple components",
+        "Service Blueprint voice in council explicitly analyzes the handoff visibility"
+      ],
+      "notes": "Tier 3 means this should be build-ready. If [A]+[?] is >30%, spec should flag and confirm before proceeding. Attribution is emphasized — test that the skill correctly applies and displays X% Nicole throughout."
+    }
+  ],
+  "validation_notes": [
+    "All test cases use Confluence space AI as primary source — Nicole has access",
+    "All test cases use Apex Bridge delivery — Bryce Wilson's overlay pattern",
+    "All test cases include Bradley rail and council by default",
+    "Attribution emphasis varies by test case — Tier 3 test specifically validates display",
+    "Fidelity levels span Tier 1/2/3 to test threshold logic at each gate"
+  ]
+}

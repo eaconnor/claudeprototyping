@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACP Trust-Level Model — Apex Bridge Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Apex Bridge tokens — briefs/context/DESIGN.md, dark mode. Restyled 2026-08-04
+               to replace the guessed brand blue (#3b82f6) with the corrected brand purple. */
+            --bg-app: #0b1220;
+            --bg-surface: #121b2e;
+            --bg-elevated: #182238;
+            --bg-deep: #070d18;
+            --border: #1f2c47;
+            --border-strong: #2a3a5c;
+            --text-primary: #e6edf7;
+            --text-secondary: #9aa8c2;
+            --text-tertiary: #6b7a96;
+            --brand: #c046ff;        /* color/brand/base */
+            --brand-strong: #8500cc; /* surface/app/product-bar/product-block */
+            --brand-soft: rgba(192, 70, 255, 0.14);
+            --low: #058142;          /* fill/active — verified */
+            --alpha-accent: #a78bfa; /* Bradley/council accent — Band's own, not Apex */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        /* Mock N-central/Adlumin Top Nav (underlying product — deliberately NOT Apex Bridge, left as its own surface) */
+        .product-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #1a1f3a;
+            border-bottom: 1px solid #2a3356;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 9997;
+        }
+
+        .product-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-right: 32px;
+        }
+
+        .product-nav-items {
+            display: flex;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .product-nav-item {
+            font-size: 14px;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+
+        /* Apex Bridge Overlay */
+        .apex-overlay {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            width: 100%;
+            height: calc(100% - 56px);
+            background: rgba(11, 18, 32, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .apex-panel {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            width: 1100px;
+            height: calc(100% - 56px);
+            display: flex;
+            animation: slideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 9999;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Main Content Area */
+        .apex-main {
+            flex: 1;
+            background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%);
+            border-left: 2px solid var(--border-strong);
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .apex-header {
+            background: var(--bg-deep);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .apex-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .apex-brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .apex-brand-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .apex-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(71, 85, 105, 0.2);
+            border-radius: 6px;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .apex-close:hover {
+            background: rgba(71, 85, 105, 0.4);
+            color: #f1f5f9;
+        }
+
+        /* Content */
+        .apex-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        /* Fidelity Banner */
+        .fidelity-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--brand-soft);
+            border: 1px solid rgba(192, 70, 255, 0.3);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #e0b3ff;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+
+        .coworker-info {
+            background: rgba(24, 34, 56, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 12px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-item {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .trust-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--low) 0%, #046c37 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Trust Components Grid */
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .trust-card {
+            background: rgba(24, 34, 56, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+        }
+
+        .trust-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .trust-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .icon-green { background: rgba(5, 129, 66, 0.15); color: var(--low); }
+        .icon-blue { background: var(--brand-soft); color: var(--brand); }
+        .icon-purple { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .icon-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+        .trust-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .trust-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .trust-card-detail {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Value Ledger */
+        .value-card {
+            background: linear-gradient(135deg, var(--brand-soft) 0%, rgba(133, 0, 204, 0.05) 100%);
+            border: 1px solid rgba(192, 70, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .value-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .value-stat {
+            text-align: center;
+        }
+
+        .value-stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--brand);
+            display: block;
+        }
+
+        .value-stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .value-note {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding-top: 16px;
+            border-top: 1px solid rgba(192, 70, 255, 0.2);
+        }
+
+        /* Bradley Rail (distinct background) */
+        .bradley-rail {
+            width: 340px;
+            background: var(--bg-deep);
+            border-left: 2px solid var(--border-strong);
+            padding: 24px;
+            overflow-y: auto;
+            box-shadow: -4px 0 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .rail-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(31, 44, 71, 0.5);
+        }
+
+        .rail-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fbbf24;
+            margin-bottom: 16px;
+        }
+
+        .rail-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .rail-blurb {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .rail-section {
+            margin-bottom: 24px;
+        }
+
+        .rail-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .rail-card {
+            background: rgba(24, 34, 56, 0.3);
+            border: 1px solid rgba(31, 44, 71, 0.5);
+            border-radius: 6px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .rail-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .rail-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .rail-attribution {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            background: rgba(100, 116, 139, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .rail-card-content {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .rail-card-content p {
+            margin-bottom: 8px;
+        }
+
+        .rail-card-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .rail-card-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .rail-roi {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(31, 44, 71, 0.3);
+            font-size: 11px;
+        }
+
+        .rail-roi-item {
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        /* Readiness Score */
+        .readiness-score {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(133, 0, 204, 0.1) 100%);
+            border: 2px solid rgba(167, 139, 250, 0.4);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .readiness-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .readiness-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--alpha-accent);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .readiness-tier {
+            font-size: 16px;
+            font-weight: 600;
+            color: #c4b5fd;
+            margin-bottom: 16px;
+        }
+
+        .readiness-gates {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+            padding-top: 16px;
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .readiness-gate {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .gate-icon {
+            font-size: 14px;
+        }
+
+        .gate-pass { color: var(--low); }
+        .gate-fail { color: var(--text-secondary); }
+
+        /* Score Details */
+        .score-detail {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(31, 44, 71, 0.3);
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Mock N-central/Adlumin Top Nav -->
+    <div class="product-nav">
+        <div class="product-logo">N-central</div>
+        <div class="product-nav-items">
+            <div class="product-nav-item">Dashboard</div>
+            <div class="product-nav-item">Devices</div>
+            <div class="product-nav-item">Monitoring</div>
+            <div class="product-nav-item">Automation</div>
+        </div>
+    </div>
+
+    <!-- Apex Bridge Overlay -->
+    <div class="apex-overlay"></div>
+    <div class="apex-panel">
+        <div class="apex-main">
+            <div class="apex-header">
+                <div class="apex-brand">
+                    <div class="apex-brand-icon">ACP</div>
+                    <div class="apex-brand-text">Adlumin Control Plane</div>
+                </div>
+                <button class="apex-close" onclick="alert('Close overlay')">&times;</button>
+            </div>
+
+            <div class="apex-content">
+                <div class="fidelity-banner">
+                    <span>●</span> Tier 2 · Direction
+                </div>
+
+                <h1>Trust-Level Model</h1>
+                <p class="subtitle">Transparency into AI Coworker autonomy calculation</p>
+
+                <div class="coworker-info">
+                    <div class="info-row">
+                        <div class="info-item">
+                            <div class="info-label">MSP Organization</div>
+                            <div class="info-value">Summit IT Partners</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">AI Coworker</div>
+                            <div class="info-value">Patch Deployment Coworker</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item">
+                            <div class="info-label">Current Trust Level</div>
+                            <div class="info-value"><span class="trust-badge">● L4 Autonomous</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Scope</div>
+                            <div class="info-value">Windows Server 2019+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Trust Score Components</div>
+                <div class="trust-grid">
+                    <div class="trust-card">
+                        <div class="trust-card-header">
+                            <div class="trust-icon icon-green">✓</div>
+                            <div class="trust-card-title">Track Record</div>
+                        </div>
+                        <div class="trust-card-value">97%</div>
+                        <div class="trust-card-detail">
+                            32 executions<br>
+                            31 successful, 1 escalation<br>
+                            Over 14 days
+                        </div>
+                    </div>
+
+                    <div class="trust-card">
+                        <div class="trust-card-header">
+                            <div class="trust-icon icon-blue">◆</div>
+                            <div class="trust-card-title">Risk Classification</div>
+                        </div>
+                        <div class="trust-card-value">Low</div>
+                        <div class="trust-card-detail">
+                            Reversible changes only<br>
+                            No data destruction<br>
+                            Rollback window: 7 days
+                        </div>
+                    </div>
+
+                    <div class="trust-card">
+                        <div class="trust-card-header">
+                            <div class="trust-icon icon-purple">◉</div>
+                            <div class="trust-card-title">Scope Boundaries</div>
+                        </div>
+                        <div class="trust-card-value">Defined</div>
+                        <div class="trust-card-detail">
+                            Windows Server 2019+<br>
+                            Security patches only<br>
+                            Production environment
+                        </div>
+                    </div>
+
+                    <div class="trust-card">
+                        <div class="trust-card-header">
+                            <div class="trust-icon icon-amber">⚠</div>
+                            <div class="trust-card-title">Escalation Rules</div>
+                        </div>
+                        <div class="trust-card-value">Active</div>
+                        <div class="trust-card-detail">
+                            Escalate if: requires reboot<br>
+                            or affects >10 systems<br>
+                            or outside maintenance window
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trust-grid">
+                    <div class="trust-card" style="grid-column: 1 / -1;">
+                        <div class="trust-card-header">
+                            <div class="trust-icon icon-blue">⚙</div>
+                            <div class="trust-card-title">Audit Trail</div>
+                        </div>
+                        <div class="trust-card-value">100%</div>
+                        <div class="trust-card-detail">
+                            Every execution logged with timestamp, affected systems, changes made, and outcome. Full playback available for 90 days.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Value Ledger</div>
+                <div class="value-card">
+                    <div class="value-stats">
+                        <div class="value-stat">
+                            <span class="value-stat-number">18</span>
+                            <span class="value-stat-label">Deployments</span>
+                        </div>
+                        <div class="value-stat">
+                            <span class="value-stat-number">4.5h</span>
+                            <span class="value-stat-label">Time Saved</span>
+                        </div>
+                        <div class="value-stat">
+                            <span class="value-stat-number">14d</span>
+                            <span class="value-stat-label">At L4</span>
+                        </div>
+                    </div>
+                    <div class="value-note">
+                        <strong>L4 vs. L3:</strong> At L4 autonomy, this coworker saved 4.5 hours over 14 days compared to L3 (manual approval required). Estimated 15 minutes per deployment at L3.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bradley Rail (distinct darker background) -->
+        <div class="bradley-rail">
+            <div class="rail-header">
+                <div class="rail-badge">● Tier 2 Readiness</div>
+                <div class="rail-title">Prototype Testing</div>
+                <div class="rail-blurb">
+                    Does surfacing the trust-score calculation build MSP confidence in autonomy decisions, or does it create cognitive load without benefit?
+                </div>
+            </div>
+
+            <div class="readiness-score">
+                <div class="readiness-label">Overall Readiness</div>
+                <div class="readiness-value">72%</div>
+                <div class="readiness-tier">Tier 2 · Direction</div>
+                <div class="readiness-gates">
+                    <div class="readiness-gate">
+                        <span class="gate-icon gate-pass">✓</span>
+                        <span>Ready as concept</span>
+                    </div>
+                    <div class="readiness-gate">
+                        <span class="gate-icon gate-pass">✓</span>
+                        <span>Ready to test direction</span>
+                    </div>
+                    <div class="readiness-gate">
+                        <span class="gate-icon gate-fail">○</span>
+                        <span>NOT ready to build (55% [A]+[?])</span>
+                    </div>
+                    <div class="readiness-gate">
+                        <span class="gate-icon gate-fail">○</span>
+                        <span>NOT ready to release</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Critic Scores</div>
+                <div class="rail-card">
+                    <div class="rail-card-content">
+                        <p><strong>Coherence:</strong> 8/10
+                            <div class="score-detail">Solution (transparency UI) traces to problem (invisible calculation). Loses 2pts: risk taxonomy undefined, escalation rules shown as "Active" without defining threshold.</div>
+                        </p>
+                        <p><strong>Source-fidelity:</strong> 7/10
+                            <div class="score-detail">Maps to Control Plane doc (L4 earned autonomy, five components). Loses 3pts: success thresholds (95% over 30 days) not sourced, rollback conditions invented, 97% false precision not flagged.</div>
+                        </p>
+                        <p><strong>Demo-ability:</strong> 9/10
+                            <div class="score-detail">Self-contained HTML. Realistic seed data. Bradley rail complete. Loses 1pt: no state transitions (can't see L3→L4 change or rollback).</div>
+                        </p>
+                        <p><strong>Differentiation:</strong> 6/10
+                            <div class="score-detail">L4 earned autonomy exists in source. Loses 4pts: brief flags this as assumed problem (MSPs haven't asked to see the math). May be building cognitive load without benefit.</div>
+                        </p>
+                        <p><strong>Risk:</strong> 5/10
+                            <div class="score-detail">High risk: 55% [A]+[?] in brief. No user research confirming demand. False precision (97% with 32-sample). Risk taxonomy undefined. Mitigating: Bradley rail names all risks explicitly.</div>
+                        </p>
+                        <p><strong>Scope discipline:</strong> 8/10
+                            <div class="score-detail">Stayed within Tier 2 boundaries. Fictional seed data. Bradley rail routes next steps. Loses 2pts: doesn't test rollback scenario (L4→L3 downgrade).</div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Council Testimony</div>
+                <div class="rail-card">
+                    <div class="rail-card-content">
+                        <p><strong>Jobs-to-Be-Done:</strong> MSPs may be hiring for <em>permission</em> ("tell me it's safe") not <em>comprehension</em> ("explain the math"). Showing calculation might be overservice.</p>
+                        <p><strong>Service Blueprint:</strong> Calculation may only be relevant at specific moments (investigating failure). Should be hidden by default, surfaced on-demand.</p>
+                        <p><strong>Self-Determination Theory:</strong> View-only risks pseudo-autonomy (feels like surveillance). MSPs should be able to tune thresholds to support true control.</p>
+                        <p><strong>Disruptive Innovation:</strong> Sustaining feature for existing market, not disruptive. Risk of over-serving customer with unwanted sophistication.</p>
+                        <p><strong>Value Chain:</strong> Adlumin controls trust calculation as platform chokepoint. Making thresholds configurable surrenders control, risks fragmentation.</p>
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(31, 44, 71, 0.3); color: #fbbf24;">
+                            <strong>⚠ 2 Contradictions Found:</strong><br>
+                            <span style="font-size: 11px; color: #cbd5e1;">
+                            1. JTBD vs. Service Blueprint on visibility (always visible vs. contextual)<br>
+                            2. SDT vs. Value Chain on configurability (MSP control vs. platform control)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">What You Nailed</div>
+                <div class="rail-card">
+                    <div class="rail-card-content">
+                        ✓ Five trust components sourced from Control Plane architecture<br>
+                        ✓ L4 earned autonomy model validated (Ewan Cameron experiment)<br>
+                        ✓ Value Ledger tracks time saved per action<br>
+                        ✓ Failure modes named before build
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">What Will Hurt You</div>
+                <div class="rail-card">
+                    <div class="rail-card-content">
+                        ⚠ Problem is assumed, not sourced — no evidence MSPs asked for this<br>
+                        ⚠ Risk taxonomy undefined (Low/Medium/High scale not explained)<br>
+                        ⚠ False precision risk (97% over 32 tasks implies certainty model may not have)
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Routed To Teams</div>
+
+                <div class="rail-card">
+                    <div class="rail-card-header">
+                        <div class="rail-card-title">Product</div>
+                        <div class="rail-attribution">75% Nicole</div>
+                    </div>
+                    <div class="rail-card-content">
+                        <p><strong>Product does:</strong> Decide transparency pattern — always visible, collapsed by default, or contextual only</p>
+                        <p><strong>Why now:</strong> Council flagged JTBD vs. Service Blueprint contradiction [D]</p>
+                        <p><strong>If you ship without it:</strong> May build UI that adds friction without solving MSP need</p>
+                        <div class="rail-roi">
+                            <div class="rail-roi-item"><strong>Business:</strong> Unknown — depends on whether transparency increases L3→L4 graduation</div>
+                            <div class="rail-roi-item"><strong>User:</strong> Unknown — could save time or cost time</div>
+                            <div class="rail-roi-item"><strong>Unknown:</strong> No baseline on MSP graduation friction</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rail-card">
+                    <div class="rail-card-header">
+                        <div class="rail-card-title">Design</div>
+                        <div class="rail-attribution">70% Nicole</div>
+                    </div>
+                    <div class="rail-card-content">
+                        <p><strong>Design does:</strong> Define risk taxonomy visual language and thresholds</p>
+                        <p><strong>Why now:</strong> Brief flags this as [?] — undefined but shown in UI [A]</p>
+                        <p><strong>If you ship without it:</strong> MSPs see "Low" risk without understanding what it means</p>
+                        <div class="rail-roi">
+                            <div class="rail-roi-item"><strong>Business:</strong> Unknown</div>
+                            <div class="rail-roi-item"><strong>User:</strong> Comprehension gap — can name components but not act on them</div>
+                            <div class="rail-roi-item"><strong>Unknown:</strong> Whether MSPs need to understand risk classification or just trust the outcome</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rail-card">
+                    <div class="rail-card-header">
+                        <div class="rail-card-title">Research</div>
+                        <div class="rail-attribution">65% Nicole</div>
+                    </div>
+                    <div class="rail-card-content">
+                        <p><strong>Research does:</strong> Test comprehension vs. permission hypothesis with 5-8 beta MSPs</p>
+                        <p><strong>Why now:</strong> 55% [A]+[?] ratio — problem is assumed [A]</p>
+                        <p><strong>If you ship without it:</strong> Building solution to problem MSPs don't have</p>
+                        <div class="rail-roi">
+                            <div class="rail-roi-item"><strong>Business:</strong> Unknown — no churn data on trust model satisfaction</div>
+                            <div class="rail-roi-item"><strong>User:</strong> Unknown — no baseline on L3/L4 distribution or graduation barriers</div>
+                            <div class="rail-roi-item"><strong>Unknown:</strong> Do MSPs want math or just permission?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rail-card">
+                    <div class="rail-card-header">
+                        <div class="rail-card-title">Engineering</div>
+                        <div class="rail-attribution">80% Nicole</div>
+                    </div>
+                    <div class="rail-card-content">
+                        <p><strong>Engineering does:</strong> Define threshold logic for L3→L4 graduation and rollback</p>
+                        <p><strong>Why now:</strong> Prototype shows 95%/30d (trust increase) and 90%/7d (trust decrease) — both invented [A]</p>
+                        <p><strong>If you ship without it:</strong> Magic numbers become production logic without Product rationale</p>
+                        <div class="rail-roi">
+                            <div class="rail-roi-item"><strong>Business:</strong> Unknown</div>
+                            <div class="rail-roi-item"><strong>User:</strong> Unknown — threshold arbitrariness may cause confusion</div>
+                            <div class="rail-roi-item"><strong>Unknown:</strong> Whether thresholds should be fixed or configurable per MSP</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

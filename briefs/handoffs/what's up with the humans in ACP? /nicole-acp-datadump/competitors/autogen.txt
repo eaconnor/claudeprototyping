@@ -1,0 +1,59 @@
+# Autogen (Microsoft)
+slug: autogen
+category: AI Agent Control Planes
+last_updated: 2026-05-14
+
+---
+
+## Overview
+AutoGen is Microsoft Research's open-source multi-agent framework for building collaborative AI agent systems. Following a complete architectural redesign in v0.4 (January 2025), AutoGen introduced an asynchronous, event-driven architecture for scalable and observable agent workflows. Microsoft subsequently launched the Microsoft Agent Framework in October 2025 — a production-ready platform combining AutoGen and Semantic Kernel — with v1.0 reaching GA in April 2026. AutoGen is transitioning to maintenance mode; new projects are directed to the Microsoft Agent Framework.
+
+## MSP Relevance
+AutoGen/Microsoft Agent Framework is relevant to MSPs building AI automation solutions for enterprise Microsoft-centric clients, and to MSPs with .NET or Python engineering capabilities seeking a free, open-source foundation for custom AI agents. AutoGen Studio (low-code GUI) lowers the development barrier for MSP teams without deep AI engineering expertise. Enterprise adoption by BMW, Commerzbank, Fujitsu, and Citrix validates the framework for production IT and business automation use cases.
+
+## Key Offerings & Capabilities
+- AutoGen v0.4 — open-source multi-agent framework with asynchronous event-driven architecture, pluggable components (agents, tools, memory, models), and built-in OpenTelemetry observability
+- AutoGen Studio — low-code GUI rebuilt on v0.4 AgentChat API for rapid agent prototyping without writing code
+- AutoGen Bench — developer benchmarking tool for comparing and evaluating agent performance
+- Microsoft Agent Framework — production-ready platform combining AutoGen + Semantic Kernel; v1.0 GA April 2026; supports Python and .NET
+- Graph-based workflow orchestration — explicit multi-agent coordination via directed graphs; sequential, parallel, and group-chat patterns
+- Session-based state management — enterprise-grade context persistence across agent interactions
+- Multi-provider model support — works with OpenAI, Azure OpenAI, Anthropic, and other model providers
+- A2A and MCP protocol interoperability — cross-runtime agent communication using open standards
+- Middleware and telemetry — enterprise observability through OpenTelemetry integration
+
+## Recent Announcements
+- January 2025: AutoGen v0.4 released — complete architectural redesign for scalability, extensibility, and production robustness
+- October 2025: Microsoft Agent Framework v1.0 announced — combines AutoGen + Semantic Kernel into unified production platform
+- April 2026: Microsoft Agent Framework v1.0 GA for Python and .NET — recommended for all new agent projects; long-term support commitment
+- AutoGen formally transitioning to maintenance mode — existing AutoGen users provided migration guides to Agent Framework
+- Formal Semantic Kernel migration path announced — at least 1-year continued support for existing SK deployments
+- Enterprise deployments announced: BMW (vehicle telemetry analysis), Commerzbank (customer service avatars), Fujitsu (integration services), Citrix, TCS, TeamViewer, Elastic
+
+## Pricing Model
+AutoGen framework is fully open-source and free. AutoGen Studio is free to run locally. Microsoft Agent Framework is open-source and free. Costs come from: underlying model inference (OpenAI, Azure OpenAI, Anthropic API costs), Azure compute for hosted deployments, and enterprise support through Microsoft Azure support plans. No licensing fees for the framework itself — pure consumption model.
+
+## Strengths
+- Free and open-source — zero licensing cost enables MSPs to build without framework spend
+- Microsoft backing reduces enterprise adoption risk — not a startup, long-term support commitment given
+- AutoGen Studio provides low-code prototyping for MSP teams without deep AI engineering expertise
+- Event-driven architecture supports long-running, observable workflows that enterprises require in production
+- A2A and MCP protocol support ensures interoperability with the broader agent ecosystem
+- Enterprise-grade: session management, type safety, middleware, OpenTelemetry telemetry built-in from v1.0
+
+## Weaknesses / Gaps
+- AutoGen transitioning to maintenance mode creates ecosystem fragmentation — tooling and community content reference both AutoGen and Agent Framework
+- .NET and Python only — not accessible for MSPs building in other languages
+- No managed hosting — MSPs must deploy and manage compute infrastructure themselves (or use Azure)
+- Less observability tooling than LangSmith — OpenTelemetry provides tracing but no dedicated monitoring UI out of the box
+- Community adoption still building around Agent Framework v1.0 — documentation, examples, and community knowledge concentrated on AutoGen v0.4
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Microsoft Agent Framework is a developer framework for building agents, not a competing MSP product. It is potential infrastructure that NZO or NZO's competitors could use to build agent platforms. For Microsoft-aligned MSPs with .NET engineering capabilities, Agent Framework provides a free alternative to NZO's orchestration layer. The competitive relevance increases if Microsoft releases managed MSP-specific agent products built on top of Agent Framework.
+
+## Notes
+- The AutoGen-to-Agent-Framework transition is operationally significant for the developer ecosystem — NZO or partners built on AutoGen should plan migration timelines
+- BMW and Commerzbank enterprise deployments validate production-scale AI agent use cases in regulated, complex environments
+- The free open-source model makes Agent Framework accessible to any technically capable MSP — lowers the barrier to competitive DIY agent solutions
+- Watch for Microsoft to layer Agent Framework capabilities into Azure AI Foundry's managed offerings — creating a managed version of the open-source framework with Azure hosting

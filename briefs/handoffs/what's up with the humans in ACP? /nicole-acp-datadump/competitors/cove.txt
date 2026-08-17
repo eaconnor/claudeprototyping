@@ -1,0 +1,55 @@
+# Cove Data Protection (N-able)
+slug: cove
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Cove Data Protection is N-able's cloud-first backup platform for MSPs, covering endpoints, servers, Microsoft 365, and Google Workspace (roadmap). Unlike appliance-based BCDR platforms (Datto, Axcient), Cove is software-only and cloud-native — no hardware procurement needed. It is tightly integrated into the N-able ecosystem via the N-sight management portal. Cove 26.3 (March 2026) added Group-Based Data Protection, enabling M365 backup scope to be defined by Microsoft Entra ID security groups.
+
+## MSP Relevance
+Cove appeals to MSPs who want a cloud-native backup solution without the complexity of hardware appliances. For M365-heavy MSP environments, Cove's per-user pricing and simplified SaaS backup make it competitive. The N-able ecosystem integration (RMM + backup in one portal) reduces tool sprawl for N-able MSPs.
+
+## Key Offerings & Capabilities
+- Cloud-first endpoint and server backup — Windows, Linux (Ubuntu 24.04 LTS, Windows Server 2025 supported)
+- Microsoft 365 backup — Exchange, SharePoint, OneDrive, Teams
+- Group-Based Data Protection (GA March 2026) — Entra ID security groups define M365 backup scope
+- N-sight integration — backup management from the same portal as N-able RMM
+- Cloud storage — backups stored in N-able's cloud, no on-premises infrastructure
+- Backup reporting and compliance documentation for MSPs
+- Roadmap: Entra ID backup (identity configuration and recovery)
+- Roadmap: Google Workspace backup (Gmail, Drive, Shared Drive)
+- Roadmap: Co-managed DRaaS hosted in N-able Cloud
+
+## Recent Announcements
+- Cove 26.3 (March 2026): Group-Based Data Protection GA — use Entra ID security groups to control which M365 users are protected
+- Windows Server 2025 and Ubuntu 24.04 LTS support added
+- Entra ID backup announced on roadmap — protect identity settings, recover from admin errors and security incidents
+- Google Workspace backup announced on roadmap
+- Co-managed DRaaS in N-able Cloud announced on roadmap
+
+## Pricing Model
+Per-protected-user per-month for M365 backup. Per-device for endpoint and server backup. Storage is included in the subscription (no separate per-GB charge). Pricing through N-able partner program with volume discounts. No public pricing.
+
+## Strengths
+- Cloud-native, no hardware — simpler deployment than Datto BCDR or Axcient appliances
+- Group-Based Data Protection simplifies M365 backup administration at enterprise scale
+- N-sight integration reduces context switching for N-able MSPs
+- Competitive per-user pricing for M365 environments
+- Roadmap fills important gaps (Entra ID, Google Workspace, DRaaS)
+
+## Weaknesses / Gaps
+- No hardware appliance option — not suitable for clients requiring local backup copy without internet
+- Google Workspace backup still on roadmap — can't yet compete with Backupify or SaaS Protection
+- Entra ID backup still on roadmap — gap for identity recovery use cases
+- Less brand recognition than Datto BCDR or Acronis in the broader MSP market
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Cove is a cloud backup platform with no significant AI automation or agent capabilities. Low direct overlap with NZO's platform play.
+
+## Notes
+- Group-Based Data Protection (Cove 26.3) is a strong M365-centric feature — reduces MSP admin overhead
+- Entra ID backup is strategically important as identity management becomes a core MSP service
+- Google Workspace backup roadmap positions Cove to compete for the growing Google Workspace MSP segment

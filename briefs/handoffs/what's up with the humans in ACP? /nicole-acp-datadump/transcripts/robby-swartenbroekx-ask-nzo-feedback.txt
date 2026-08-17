@@ -1,0 +1,148 @@
+﻿TRANSCRIPT: Robby Swartenbroekx - Ask N-zo Feedback Session
+Source: Robbie.vtt
+============================================================
+
+customer agreed to give us the quote:
+
+"Ask N‑zo quickly identified where resources could be freed across servers. What used to take hours of manual analysis now takes minutes.
+
+Robby Swartenbroekx, b-inside"
+1. It saves hours of work on complex analysis
+Robby was very clear that Ask N‑zo turns multi‑hour or multi‑day analysis into near‑instant answers.
+
+“That wasn’t less than a minute. I got my answers.”
+“Half a day, a day maybe… usually multiple hours.”
+
+This was specifically in reference to identifying underutilized servers and reallocating resources across large customer environments. [Robby Swar...Recording | Video]
+
+2. Natural language is faster than building filters or reports
+He prefers asking questions in full sentences rather than constructing manual filters or reports.
+
+“Building a filter or asking things is much faster than creating a filter for it.”
+
+He described Ask N‑zo as a more intuitive way to explore data without needing to know exactly how to structure queries up front. [Robby Swar...Recording | Video]
+
+3. Ranked insights and summaries are especially valuable
+Robby repeatedly referenced “top five” and “top ten” questions as high‑value use cases.
+
+“Give me the top five servers to give more resources or less resources.”
+“Very fastly gave me these are the top five or six items.”
+
+He highlighted how quickly N‑zo surfaced actionable insights that would normally require multiple reports and historical analysis. [Robby Swar...Recording | Video]
+
+4. It fits real technician workflows in the field
+His system engineers actively used Ask N‑zo during customer visits to get situational guidance.
+
+“I’m in this environment or with this customer and then it starts. What can I do or what should I do here?”
+
+He positioned Ask N‑zo as a natural companion for weekly support visits and on‑site troubleshooting. [Robby Swar...Recording | Video]
+
+5. Speed and performance feel appropriate for the value delivered
+Robby explicitly said response time was not an issue, given the complexity of the data being processed.
+
+“I don’t have a real issue with the speed.”
+“It’s normal for any answer for me.”
+
+This reinforces that performance met expectations rather than being a blocker. [Robby Swar...Recording | Video]
+
+6. Strong potential for correlating large data sets
+He was especially enthusiastic about Ask N‑zo’s ability to correlate signals across data sources, particularly for troubleshooting.
+
+“That’s something AI is so good at, like doing correlation across large sets of data.”
+
+He gave concrete examples around event logs, service crashes, and identifying leading indicators before failures. [Robby Swar...Recording | Video]
+
+7. It changes how he searches and thinks about problems
+Robby described a clear shift in his own behavior as a result of using Ask N‑zo.
+
+“Instead of searching for the keywords I start to ask in full sentences.”
+
+He also noted that he increasingly expects structured outputs like tables and ranked lists from AI. [Robby Swar...Recording | Video]
+
+8. He sees strong adoption potential with broader data access
+Despite current limitations, Robby was explicit about future adoption if data coverage improves.
+
+“You really are, you’re looking for us to be much better included and give you all of the data you need and you’ll adopt it.”
+“You have the best persons to get the AI running for us.”
+
+This positions data breadth, not value perception, as the primary gating factor. [Robby Swar...Recording | Video]
+
+ 
+
+ 
+
+What Robby Requested to Be Added to Ask N‑zo
+1. More endpoint data, especially installed software
+This was his first and clearest gap.
+
+Requested additions
+
+Installed software per endpoint
+Software versions
+Ability to ask which customers or devices are running a specific piece of software
+ He said N‑zo “immediately” failed for him when he tried to use it as an advanced filtering tool because this data was missing. [Robby Swar...Recording | Video]
+
+2. Custom Device Properties from N‑central
+This was called out as critical for how his MSP operates.
+
+Requested additions
+
+Custom device properties
+Licensing data stored in those properties
+Ability to query devices by license type or plan
+ He described custom device properties as “one of the most important pieces of information” and noted they use this for all licensing and configuration decisions. He explicitly said this blocks meaningful questions today. [Robby Swar...Recording | Video]
+
+3. Broader API access and awareness of data limitations
+He wants N‑zo to both have more access and be honest when it doesn’t.
+
+Requested additions
+
+Access to more N‑central and Ecoverse data via MCP servers
+Clear awareness in answers when N‑zo does not have access to local or central instances
+Better handling of “why can’t you do this?” questions
+ He called this a “big fail” when N‑zo tried to explain configuration changes without having access and said the answer should explicitly state its data limitations. [Robby Swar...Recording | Video]
+
+ 
+
+4. Event logs and event‑level analysis
+This was one of his most enthusiastic asks.
+
+Requested additions
+
+Ingestion of event logs into Ecoverse
+Ability to query event logs using natural language
+Correlation of warnings, info, and errors leading up to failures
+Example use cases he gave
+
+Why an application or service is crashing
+What happened in the minutes before a failure
+Which users logged into a server recently
+He explicitly said AI would be “so good” at this type of correlation. [Robby Swar...Recording | Video]
+
+5. Historical data access
+He wants to ask questions across time, not just current state.
+
+Requested additions
+
+Historical check data
+Historical CPU and memory usage
+Ability to analyze trends over weeks or months
+This came up repeatedly in the context of capacity planning and right‑sizing infrastructure. [Robby Swar...Recording | Video]
+
+6. Better support for configuration and “how‑to” questions
+He sees a second, distinct role for N‑zo beyond data queries.
+
+Requested additions
+
+Clearer indication that N‑zo can help with N‑central configuration
+Answers that go beyond manuals and KBs, including generated how‑tos
+Script generation based on documentation and developer portal examples
+ He suggested a “second type of N‑zo” focused on configuration, documentation, and setup rather than live data. [Robby Swar...Recording | Video]
+
+7. UI improvements for usability and discoverability
+Requested additions
+
+Ability to see previous questions
+Better prompt suggestions that show the full range of what N‑zo can do
+Clearer cues that N‑zo can be used for both data analysis and configuration help
+He said this isn’t obvious today and limits how much value users get

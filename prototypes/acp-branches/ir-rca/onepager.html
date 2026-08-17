@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IR/RCA Coworker — The Case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --surface-bg:#ffffff; --surface-container:#ffffff; --surface-tertiary:#fafafa;
+    --surface-status:#f2f2f2; --surface-active-wash:#f8ebff;
+    --border-default:#d5d5d5; --border-active:#c046ff;
+    --brand:#8500cc; --brand-strong:#c046ff; --brand-wash:#f8ebff;
+    --extended-phlox:#f2d6ff; --extended-blue:#3c5edd; --extended-neon-blue:#4c63e5; --extended-pink:#ed186b;
+    --success:#058142;
+    --text-heading:#18191a; --text-body:#2e2e33; --text-secondary:#404047; --text-placeholder:#5c5c66; --text-oncolor:#fafafa;
+    --radius-sm:4px; --radius-full:999px; --radius-xl:16px;
+    --font-ui:'Inter',-apple-system,sans-serif; --font-brand:'Manrope',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:var(--font-ui); background:var(--surface-tertiary);
+    color:var(--text-body); font-size:14px; line-height:20px;
+  }
+  h1,h2,h3,h4{ font-family:var(--font-ui); color:var(--text-heading); letter-spacing:-0.02em; margin:0; }
+
+  .page{ max-width:920px; margin:0 auto; padding:56px 32px 72px; }
+
+  .hero{ text-align:left; margin-bottom:40px; padding-bottom:32px; border-bottom:1px solid var(--border-default); }
+  .kicker{
+    font-family:var(--font-brand); font-weight:800; font-size:12px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--brand); display:inline-flex; align-items:center; gap:8px; margin-bottom:16px;
+  }
+  .kicker .dot{ width:7px; height:7px; border-radius:50%; background:var(--extended-pink); }
+  .hero h1{ font-size:40px; font-weight:800; line-height:1.12; margin-bottom:16px; letter-spacing:-0.03em; }
+  .hero h1 em{ font-style:normal; color:var(--brand); }
+  .hero p.sub{ font-size:18px; color:var(--text-secondary); max-width:680px; margin:0; line-height:1.5; }
+
+  .stat-strip{
+    display:flex; gap:0; border:1px solid var(--border-default); border-radius:var(--radius-sm);
+    overflow:hidden; margin-bottom:40px; background:#fff;
+  }
+  .stat-strip .stat{ flex:1; padding:18px 20px; border-right:1px solid var(--border-default); }
+  .stat-strip .stat:last-child{ border-right:none; }
+  .stat-strip .stat .n{ font-family:var(--font-brand); font-weight:800; font-size:22px; color:var(--text-heading); display:block; margin-bottom:2px; }
+  .stat-strip .stat .n.flag{ color:#9d0f4f; }
+  .stat-strip .stat .l{ font-size:11.5px; color:var(--text-secondary); line-height:1.35; }
+
+  .points{ margin-bottom:40px; }
+  .point{
+    display:grid; grid-template-columns:44px 1fr; gap:18px; padding:22px 0;
+    border-bottom:1px solid var(--border-default);
+  }
+  .point:first-child{ padding-top:0; }
+  .point:last-child{ border-bottom:none; }
+  .point .idx{
+    font-family:var(--font-brand); font-weight:800; font-size:15px; color:var(--brand);
+    width:36px; height:36px; border-radius:var(--radius-full); background:var(--brand-wash);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .point h3{ font-size:17px; font-weight:700; margin-bottom:6px; }
+  .point p{ font-size:14.5px; color:var(--text-body); margin:0 0 8px; line-height:1.55; }
+  .point .quote{
+    font-style:italic; color:var(--text-heading); font-size:15px; border-left:3px solid var(--brand-strong);
+    padding-left:14px; margin:10px 0 8px;
+  }
+  .point .quote cite{ display:block; font-style:normal; font-size:11.5px; color:var(--text-secondary); margin-top:4px; }
+  .badge-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .pill{
+    font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.03em;
+    padding:3px 10px; border-radius:var(--radius-full);
+  }
+  .pill.compliance{ background:var(--brand-wash); color:var(--brand); }
+  .pill.trust{ background:#e6f6ee; color:var(--success); }
+  .pill.moat{ background:#eef0fd; color:var(--extended-blue); }
+
+  .ask{
+    background:var(--text-heading); border-radius:var(--radius-sm); padding:28px 32px;
+    margin-bottom:28px; color:var(--text-oncolor);
+  }
+  .ask .kicker2{
+    font-family:var(--font-brand); font-weight:800; font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--extended-pink); margin-bottom:10px; display:block;
+  }
+  .ask h2{ color:#fff; font-size:20px; font-weight:700; margin-bottom:10px; line-height:1.4; }
+  .ask p{ color:#d4d4d8; font-size:14px; margin:0; line-height:1.6; }
+
+  .footnote{
+    border:1px solid var(--border-default); background:#fff8fa; border-left:3px solid var(--extended-pink);
+    border-radius:var(--radius-sm); padding:16px 20px; font-size:12.5px; color:var(--text-secondary); line-height:1.6;
+  }
+  .footnote strong{ color:var(--text-heading); }
+  .footnote .fn-label{
+    font-weight:800; text-transform:uppercase; letter-spacing:0.05em; font-size:10.5px; color:#9d0f4f;
+    display:block; margin-bottom:6px;
+  }
+
+  footer.legal{ text-align:center; font-size:11px; color:var(--text-placeholder); margin-top:32px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <span class="kicker"><span class="dot"></span>ACP Concept Package · Security</span>
+    <h1>The root cause, written <em>during</em> the incident — not days after it.</h1>
+    <p class="sub">A coworker that assembles a cross-stack, confidence-tagged root-cause report in real time — client-ready and insurer-ready by morning, with a human sign-off before anything ships.</p>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat">
+      <span class="n">During, not after</span>
+      <span class="l">The wedge — a live RCA is part of resolving the incident; a post-hoc one is a commodity text-synthesizer</span>
+    </div>
+    <div class="stat">
+      <span class="n">#1</span>
+      <span class="l">Named driver on cyber-insurance policies — compliance pull is real, not assumed</span>
+    </div>
+    <div class="stat">
+      <span class="n flag">~0.55%</span>
+      <span class="l">Naive Idea Chess survival — see footnote. This is early, not approved.</span>
+    </div>
+  </div>
+
+  <div class="points">
+
+    <div class="point">
+      <div class="idx">1</div>
+      <div>
+        <h3>The wedge is timing, not technology</h3>
+        <div class="quote">
+          "Doing the RCA during the incident is equivalent to helping resolve it."
+          <cite>— MSP, source interview</cite>
+        </div>
+        <p>Move the same report from after the incident to during it, and it stops being a synthesis exercise and becomes part of the response a client is paying for. That timing shift is the entire differentiation case.</p>
+        <div class="badge-row"><span class="pill trust">Trust mechanism</span></div>
+      </div>
+    </div>
+
+    <div class="point">
+      <div class="idx">2</div>
+      <div>
+        <h3>The buyer already has a reason to pay</h3>
+        <p>MSPs are already trying to prove containment — to a client, an auditor, and an insurer. The evidence for that proof exists today, but it's scattered across six tools and three threads, and a defensible version of it doesn't exist until days later, if at all. This driver ranks #1 on cyber-insurance policy requirements — it isn't a hypothesis about future demand.</p>
+        <div class="badge-row"><span class="pill compliance">Compliance-driven demand</span></div>
+      </div>
+    </div>
+
+    <div class="point">
+      <div class="idx">3</div>
+      <div>
+        <h3>Two outputs, one gate — how it earns trust</h3>
+        <p>The coworker produces two calibrated outputs: a technical evidence chain for the team, and a client/insurer narrative for the outside world — each claim tagged by confidence, not stated as flat fact. Nothing reaches a client or insurer without a human review gate. That gate is the liability protection, not a formality; skip it and the report stops being a trust artifact.</p>
+        <div class="badge-row"><span class="pill trust">Confidence-tagged</span><span class="pill trust">Human-gated</span></div>
+      </div>
+    </div>
+
+    <div class="point">
+      <div class="idx">4</div>
+      <div>
+        <h3>N-able's actual advantage: owning the log at the bottom</h3>
+        <p>Adlumin's live threat telemetry, plus the SOC's large auto-remediation corpus, is what makes a root cause credible in context — a signal only means something if the coworker already understands what similar signals meant before. Whoever owns the log at the bottom of the evidence chain owns the margin on this category. If it's Adlumin-native, that's N-able.</p>
+        <div class="badge-row"><span class="pill moat">Chokepoint argument</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ask">
+    <span class="kicker2">The ask</span>
+    <h2>Answer Gate C first — before any further design spend on this package.</h2>
+    <p>Confirm whether cross-tenant Adlumin incident data is technically and legally reachable by a coworker, or whether Adlumin sits in a separate product lane. That answer is binary and sits upstream of everything else in this concept — get it from Legal and Adlumin engineering, not from a design review.</p>
+  </div>
+
+  <div class="footnote">
+    <span class="fn-label">Read before you get excited</span>
+    <strong>This concept survives Idea Chess screening at ~0.55% naive</strong> — it dies at the Build stage, and the failure mode isn't the confidence-tag UI (that's solvable). It's whether the evidence chain exists at all. <strong>Gate C — Adlumin incident data access, technical and legal, cross-tenant — is currently unconfirmed</strong>, and live zero-holes cross-stack correlation is rated only ~30% feasible today. Separately, a wrong root cause delivered with false confidence is an asymmetric, unrecoverable risk for the MSP and for N-able — that risk does not shrink just because the pitch above reads clean. The "10–15% of SOC running expense" and per-incident pricing framing mentioned in early interviews is single-source [CS: MEDIUM] and should not be treated as a market number.
+  </div>
+
+  <footer class="legal">IR/RCA Security Package · One-pager for board discussion, 2026-07-23 · Not a commitment to build.</footer>
+</div>
+</body>
+</html>

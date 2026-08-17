@@ -1,0 +1,57 @@
+# Datto BCDR
+slug: datto-bcdr
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Datto BCDR (Business Continuity and Disaster Recovery) is the MSP market's leading backup and disaster recovery platform, now owned by Kaseya. It offers hybrid on-premises appliances (SIRIS) plus cloud backup, with MSP-centric management and SLA reporting. Recent additions include AI-powered screenshot verification (up to 99.9% boot accuracy), native Datto RMM integration, and a new Unified Cyber Resilience Portal launched at Kaseya Connect 2026.
+
+## MSP Relevance
+Datto BCDR is deeply embedded in MSP stacks as the go-to BCDR appliance. Under Kaseya ownership, it is bundled with Kaseya 365 and integrated with Datto RMM, IT Glue, and Autotask. For MSPs already on the Kaseya stack, Datto BCDR is the path of least resistance. New features like Agentless Hyper-V and Domain Controller DR address long-standing gaps.
+
+## Key Offerings & Capabilities
+- Datto SIRIS — hybrid on-premises BCDR appliance with local and cloud backup
+- Datto ALTO — smaller-site BCDR appliance
+- Cloud-only backup tiers for smaller deployments
+- AI-powered Screenshot Verification — 99.9% accuracy for boot success confirmation with auto-remediation guidance
+- Native Datto RMM integration — monitor devices, run backups, mount restores from RMM
+- Unified Cyber Resilience Portal (Connect 2026) — consolidated backup management across on-premises, SaaS, endpoint, and cloud
+- Azure Files support (GA)
+- Domain Controller and Active Directory DR (planned Q2 2026)
+- Agentless Hyper-V backup (June 2026)
+
+## Recent Announcements
+- Unified Cyber Resilience Portal launched at Kaseya Connect 2026 — consolidates all backup management into a single interface
+- AI Screenshot Verification — trained AI model providing 99.9% boot confirmation accuracy with failure type detection and remediation guidance
+- Native Datto RMM integration — backup management directly from the RMM console
+- Domain Controller and Active Directory DR support planned for Q2 2026
+- Agentless Hyper-V backup arriving June 2026
+- Azure Files support now generally available
+- FIPS 140-3 validation and CMMC Level 2 audit-ready status for Datto BCDR by fall 2026
+
+## Pricing Model
+Per-device per-month through MSP partner tier. Appliance hardware cost is separate (SIRIS, ALTO). Cloud storage is consumption-based. Bundled within Kaseya 365 at a discount vs. standalone. MSPs set their own markup. Multi-year contracts with volume discounts through Kaseya.
+
+## Strengths
+- Market-leading BCDR platform with deep MSP install base and brand trust
+- AI Screenshot Verification meaningfully improves DR confidence for MSPs and clients
+- Unified Cyber Resilience Portal simplifies multi-type backup management in one view
+- Kaseya stack integration (RMM, PSA, IT Glue) creates operational efficiency for Kaseya MSPs
+- FIPS and CMMC certifications make it viable for compliance-sensitive clients
+
+## Weaknesses / Gaps
+- Under Kaseya ownership, Datto's channel-first culture has faced internal tension
+- Agentless Hyper-V arriving June 2026 — a gap that existed for years
+- Domain Controller DR still planned, not shipped — a significant DR coverage gap
+- Some MSPs prefer standalone BCDR (Axcient, Veeam) to avoid Kaseya stack dependency
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Datto BCDR is a pure backup/DR play. No meaningful overlap with NZO's AI agent automation and workflow platform. The Kaseya integration reduces openings for additional tools within Kaseya-stack MSPs, but this is an indirect effect rather than direct competition.
+
+## Notes
+- Unified Cyber Resilience Portal is a UX investment that reduces MSP tool sprawl — a strategic move
+- FIPS and CMMC certifications mirror a broader Kaseya push to win compliance-conscious MSPs
+- Watch Axcient and Veeam for MSPs leaving the Kaseya/Datto ecosystem

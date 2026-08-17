@@ -1,0 +1,1728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha (RACE) · Adlumin · Apex Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   APEX / ADLUMIN PROTOTYPE — APPROXIMATED PALETTE
+   Real Apex tokens not bound. Approximations only.
+   ============================================================ */
+:root {
+  /* Adlumin-flavoured palette (approximated; not from real tokens) */
+  --bg-app: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-elevated: #182238;
+  --bg-deep: #070d18;
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  --brand: #3b82f6;          /* Adlumin/n-able blue approximated */
+  --brand-strong: #2563eb;
+  --brand-soft: rgba(59,130,246,0.14);
+
+  --critical: #ef4444;
+  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;
+  --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;
+  --medium-soft: rgba(234,179,8,0.12);
+  --low: #22c55e;
+  --low-soft: rgba(34,197,94,0.12);
+
+  --alpha-accent: #a78bfa;   /* violet — Alpha-specific accent */
+  --alpha-soft: rgba(167,139,250,0.13);
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   APEX PROTOTYPE FIDELITY BANNER
+   Honest declaration of what this is and isn't.
+   ============================================================ */
+.fidelity-banner {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(239,68,68,0.08) 0,
+      rgba(239,68,68,0.08) 12px,
+      transparent 12px,
+      transparent 24px
+    ),
+    var(--bg-deep);
+  border-bottom: 1px solid var(--critical);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.fidelity-flag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: var(--critical);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+}
+.fidelity-flag .dot {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.fidelity-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.fidelity-checks {
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+.fidelity-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+.fidelity-check .mark {
+  font-size: 12px;
+}
+.fidelity-check .mark.fail { color: var(--critical); }
+.fidelity-check .mark.warn { color: var(--medium); }
+.fidelity-check .mark.pass { color: var(--low); }
+.fidelity-tier {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.tier-pill {
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+}
+.tier-pill.on { background: var(--critical); border-color: var(--critical); }
+.tier-pill.on.warn { background: var(--medium); border-color: var(--medium); }
+.tier-pill.on.pass { background: var(--low); border-color: var(--low); }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app-shell {
+  display: grid;
+  grid-template-columns: 56px 1fr 420px;
+  min-height: calc(100vh - 50px);
+}
+
+/* ─── LEFT NAV ─── */
+.sidenav {
+  background: var(--bg-deep);
+  border-right: 1px solid var(--border);
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.nav-logo {
+  width: 32px;
+  height: 32px;
+  background: var(--brand);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.nav-item {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.15s ease;
+}
+.nav-item:hover { background: var(--bg-surface); color: var(--text-primary); }
+.nav-item.active { background: var(--brand-soft); color: var(--brand); }
+.nav-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+/* ─── MAIN CONTENT ─── */
+.main {
+  background: var(--bg-app);
+  overflow-y: auto;
+}
+.topbar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.breadcrumbs .sep { color: var(--text-muted); }
+.breadcrumbs .current { color: var(--text-primary); font-weight: 500; }
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.beta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--alpha-soft);
+  color: var(--alpha-accent);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 4px 4px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+}
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+.user-name { color: var(--text-primary); font-weight: 500; }
+.user-role { color: var(--text-tertiary); font-size: 11px; }
+
+/* ─── METRICS STRIP ─── */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 20px 24px 0;
+}
+.metric {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+.metric-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.metric-delta {
+  font-size: 11px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.metric-delta.down { color: var(--low); }
+.metric-delta.up { color: var(--critical); }
+.metric-delta::before {
+  content: '▾';
+  font-size: 8px;
+}
+.metric-delta.up::before { content: '▴'; }
+
+.metric.hero {
+  grid-column: span 2;
+  background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%);
+  border-color: var(--alpha-accent);
+  position: relative;
+  overflow: hidden;
+}
+.metric.hero::before {
+  content: 'ALPHA';
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--alpha-accent);
+  font-weight: 700;
+}
+.consolidation-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 2px;
+}
+.consol-from {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--critical);
+  font-weight: 600;
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+.consol-arrow {
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+.consol-to {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  color: var(--low);
+  font-weight: 700;
+}
+.consol-unit { color: var(--text-secondary); font-size: 13px; }
+.consol-detail {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* ─── INCIDENT LAYOUT ─── */
+.workspace {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 12px;
+  padding: 16px 24px 24px;
+}
+
+/* incident list */
+.list-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: fit-content;
+}
+.list-head {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.list-head-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.list-head-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  padding: 2px 6px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+}
+.list-filters {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.filter-chip {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
+.filter-chip.active {
+  background: var(--brand-soft);
+  color: var(--brand);
+  border-color: var(--brand);
+}
+
+.incident-row {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background 0.1s ease;
+}
+.incident-row:hover { background: var(--bg-elevated); }
+.incident-row.selected {
+  background: var(--bg-elevated);
+  border-left-color: var(--critical);
+}
+.incident-row:last-child { border-bottom: none; }
+.incident-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.incident-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.score-chip {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  min-width: 36px;
+  text-align: center;
+}
+.score-chip.critical { background: var(--critical-soft); color: var(--critical); border: 1px solid var(--critical); }
+.score-chip.high { background: var(--high-soft); color: var(--high); border: 1px solid var(--high); }
+.score-chip.medium { background: var(--medium-soft); color: var(--medium); border: 1px solid var(--medium); }
+.score-chip.low { background: var(--low-soft); color: var(--low); border: 1px solid var(--low); }
+.incident-id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+.incident-age {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.incident-title {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 4px 0;
+  line-height: 1.35;
+}
+.incident-meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.corr-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.corr-tag.three { background: var(--alpha-soft); color: var(--alpha-accent); }
+.corr-tag.two { background: var(--brand-soft); color: var(--brand); }
+
+/* ─── DETAIL ─── */
+.detail-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.detail-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.detail-head-left { flex: 1; }
+.detail-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+.detail-meta-row .id-bold { color: var(--text-secondary); font-weight: 600; }
+.detail-title {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+}
+.detail-title .em { color: var(--critical); }
+.score-display {
+  text-align: right;
+  min-width: 140px;
+  padding-left: 22px;
+  border-left: 1px solid var(--border);
+}
+.score-display-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.score-display-value {
+  font-family: var(--font-mono);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--critical);
+  line-height: 1;
+}
+.score-display-of {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+.score-display-band {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--critical);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.score-display-conf {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* tabs */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 22px;
+}
+.tab {
+  padding: 12px 0;
+  margin-right: 24px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+}
+.tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--brand);
+}
+
+/* sections inside detail */
+.section {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.section-sub {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* story */
+.story-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px 20px;
+}
+.story-q {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  padding-top: 2px;
+  font-weight: 600;
+}
+.story-a {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+.story-a .ent {
+  font-family: var(--font-mono);
+  background: var(--brand-soft);
+  color: var(--brand);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+}
+.story-a .time {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.story-a .emph {
+  background: var(--high-soft);
+  color: var(--high);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+/* timeline */
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--border-strong);
+}
+.tl-event {
+  position: relative;
+  padding-bottom: 16px;
+}
+.tl-event:last-child { padding-bottom: 0; }
+.tl-dot {
+  position: absolute;
+  left: -28px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+}
+.tl-dot.detect { background: var(--critical); border-color: var(--critical); }
+.tl-dot.soar { background: var(--brand); border-color: var(--brand); }
+.tl-dot.corr { background: var(--alpha-accent); border-color: var(--alpha-accent); }
+.tl-time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.tl-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 2px 0;
+}
+.tl-body {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.tl-source {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+  padding: 2px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+/* entities + soar */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.split-half {
+  padding: 20px 22px;
+}
+.split-half + .split-half {
+  border-left: 1px solid var(--border);
+}
+.entity-list {
+  display: grid;
+  gap: 8px;
+}
+.ent-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ent-row:last-child { border-bottom: none; }
+.ent-k {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ent-v {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 500;
+  word-break: break-all;
+}
+.ent-v .meta { color: var(--text-tertiary); font-weight: 400; margin-left: 6px; font-size: 11px; }
+
+.soar-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.soar-card:last-child { margin-bottom: 0; }
+.soar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.soar-name { font-weight: 600; font-size: 13px; }
+.soar-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+.soar-status.done { background: var(--low-soft); color: var(--low); border: 1px solid var(--low); }
+.soar-status.pending { background: var(--medium-soft); color: var(--medium); border: 1px solid var(--medium); }
+.soar-body { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.suppress-pill {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--bg-deep);
+  color: var(--text-tertiary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.04em;
+}
+
+/* scoring explainer */
+.scoring {
+  background: var(--alpha-soft);
+  border-top: 1px solid var(--alpha-accent);
+  border-bottom: 1px solid var(--alpha-accent);
+}
+.score-bars {
+  display: grid;
+  gap: 10px;
+}
+.score-bar-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 50px;
+  gap: 14px;
+  align-items: center;
+}
+.score-bar-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.score-bar-track {
+  height: 8px;
+  background: var(--bg-deep);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  background: var(--critical);
+  border-radius: 4px;
+}
+.score-bar-fill.med { background: var(--medium); }
+.score-bar-fill.low { background: var(--low); }
+.score-bar-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+}
+.score-bar-num.neg { color: var(--low); }
+.scoring-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--bg-deep);
+  border-left: 3px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* next steps */
+.next-list { display: grid; gap: 10px; }
+.next-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 14px;
+  align-items: center;
+}
+.next-num {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brand);
+}
+.next-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.next-note { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+.btn {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--brand);
+  background: var(--brand);
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn.secondary { background: transparent; color: var(--text-primary); border-color: var(--border-strong); }
+
+/* ============================================================
+   RIGHT RAIL — BRADLEY'S READINESS PANEL
+   The "score/simulation/summary" alongside the prototype
+   ============================================================ */
+.bradley-rail {
+  background: var(--bg-deep);
+  border-left: 1px solid var(--border);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
+  position: sticky;
+  top: 50px;
+}
+.rail-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.rail-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--alpha-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.rail-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+.rail-sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.rail-blurb {
+  margin: 12px 0 18px;
+  padding: 12px 14px;
+  background: var(--alpha-soft);
+  border-left: 3px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  font-style: italic;
+}
+.rail-blurb::before {
+  content: '"';
+  font-size: 28px;
+  color: var(--alpha-accent);
+  font-family: serif;
+  display: block;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 6px;
+}
+
+/* readiness state */
+.readiness-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.readiness-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+.readiness-state {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--medium);
+}
+.readiness-card.cx-good .readiness-state { color: var(--low); }
+.readiness-card-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.readiness-card-sub {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* monte carlo */
+.mc-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 20px;
+}
+.mc-head {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+.mc-body {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.mc-body .pct {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.mc-body .win { color: var(--low); }
+.mc-body .lose { color: var(--critical); }
+.mc-disclosure {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* good/will-fail dual block */
+.dual-block {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.dual-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+.dual-head {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dual-card.good { border-color: var(--low); }
+.dual-card.good .dual-head { color: var(--low); }
+.dual-card.fail { border-color: var(--high); }
+.dual-card.fail .dual-head { color: var(--high); }
+.dual-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.dual-list li {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+.dual-list li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-mono);
+}
+.dual-card.good .dual-list li::before { content: '+'; color: var(--low); }
+.dual-card.fail .dual-list li::before { content: '−'; color: var(--high); }
+.dual-list li strong { color: var(--text-primary); font-weight: 600; }
+
+/* routed risks */
+.routed-block {
+  margin-bottom: 16px;
+}
+.routed-head {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.routed-head .tag {
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+.routed-head.design .tag {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.routed-head.research .tag {
+  background: var(--alpha-soft);
+  color: var(--alpha-accent);
+}
+.risk-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 8px;
+}
+.risk-card:last-child { margin-bottom: 0; }
+.risk-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+.risk-meta {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 6px;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+.risk-meta .k { color: var(--text-tertiary); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; }
+.risk-meta .v { color: var(--text-secondary); }
+.skip-risk {
+  background: var(--bg-deep);
+  border-left: 2px solid var(--critical);
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-top: 8px;
+}
+.skip-risk .pct {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.skip-risk-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--critical);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* footer of rail */
+.rail-foot {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 1280px) {
+  .app-shell { grid-template-columns: 56px 1fr; }
+  .bradley-rail { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FIDELITY BANNER -->
+<div class="fidelity-banner">
+  <div class="fidelity-flag">
+    <span class="dot"></span>
+    Apex Prototype · Tier 1 · Concept
+  </div>
+  <div class="fidelity-label">Visual approximation — do not ship as design</div>
+  <div class="fidelity-checks">
+    <span class="fidelity-check"><span class="mark fail">✕</span> Tokens (real Apex)</span>
+    <span class="fidelity-check"><span class="mark fail">✕</span> apx-* components</span>
+    <span class="fidelity-check"><span class="mark fail">✕</span> schema.json contract</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> A11y baseline</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> Production parity</span>
+    <span class="fidelity-check"><span class="mark fail">✕</span> Live data binding</span>
+  </div>
+  <div class="fidelity-tier">
+    <span>Fidelity tier:</span>
+    <span class="tier-pill on"></span>
+    <span class="tier-pill"></span>
+    <span class="tier-pill"></span>
+    <span style="color: var(--critical); font-weight: 600;">1 / 3</span>
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- LEFT NAV -->
+  <nav class="sidenav">
+    <div class="nav-logo">A</div>
+    <div class="nav-item">⌂</div>
+    <div class="nav-item active">⚠</div>
+    <div class="nav-item">⊟</div>
+    <div class="nav-item">⟐</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item">⚙</div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="breadcrumbs">
+        <span>MDR</span>
+        <span class="sep">/</span>
+        <span>Incidents</span>
+        <span class="sep">/</span>
+        <span class="current">INC-2026-0834</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="beta-pill">● Alpha (RACE) · Black Team Beta</span>
+        <div class="user-chip">
+          <div class="user-avatar">R</div>
+          <div>
+            <div class="user-name">Raj K.</div>
+            <div class="user-role">MDR · on shift</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METRICS STRIP -->
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Open Incidents</div>
+        <div class="metric-value">12</div>
+        <div class="metric-delta down">22 fewer than yesterday (alerts)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Median Investigation Time</div>
+        <div class="metric-value">17m</div>
+        <div class="metric-delta down">25m faster than pre-Alpha</div>
+      </div>
+      <div class="metric hero">
+        <div class="metric-label">Today's Consolidation</div>
+        <div class="consolidation-row">
+          <span class="consol-from">47</span>
+          <span class="consol-arrow">alerts collapsed into</span>
+          <span class="consol-to">12</span>
+          <span class="consol-unit">incidents</span>
+        </div>
+        <div class="consol-detail">3.9× consolidation ratio today. Three of these are correlated multi-event stories that would have been four to six tickets pre-Alpha.</div>
+      </div>
+    </div>
+
+    <!-- WORKSPACE -->
+    <div class="workspace">
+
+      <!-- LIST -->
+      <div class="list-card">
+        <div class="list-head">
+          <div class="list-head-title">Incidents</div>
+          <div class="list-head-count">12 today</div>
+        </div>
+        <div class="list-filters">
+          <button class="filter-chip active">Risk</button>
+          <button class="filter-chip">Recent</button>
+          <button class="filter-chip">Customer</button>
+        </div>
+
+        <div class="incident-row selected">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip critical">94</span>
+              <span class="incident-id">INC-2026-0834</span>
+            </div>
+            <span class="incident-age">18m ago</span>
+          </div>
+          <div class="incident-title">Lateral movement → privilege escalation suspected</div>
+          <div class="incident-meta">
+            <span class="corr-tag three">⊕ 3</span>
+            <span>user.acme · 2 hosts · 1 SOAR</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip high">72</span>
+              <span class="incident-id">INC-2026-0833</span>
+            </div>
+            <span class="incident-age">52m ago</span>
+          </div>
+          <div class="incident-title">Suspicious OAuth grant + impossible travel</div>
+          <div class="incident-meta">
+            <span class="corr-tag two">⊕ 2</span>
+            <span>finance.dept · 4 users</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip high">61</span>
+              <span class="incident-id">INC-2026-0831</span>
+            </div>
+            <span class="incident-age">2h 14m</span>
+          </div>
+          <div class="incident-title">Defender malware + SOAR isolation (repeated)</div>
+          <div class="incident-meta">
+            <span class="corr-tag three">⊕ 3</span>
+            <span>helpdesk-lab-03</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip medium">48</span>
+              <span class="incident-id">INC-2026-0830</span>
+            </div>
+            <span class="incident-age">3h 41m</span>
+          </div>
+          <div class="incident-title">Brute-force attempt against external auth</div>
+          <div class="incident-meta">
+            <span class="corr-tag two">⊕ 2</span>
+            <span>edge-vpn-eu1</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip low">34</span>
+              <span class="incident-id">INC-2026-0829</span>
+            </div>
+            <span class="incident-age">4h 03m</span>
+          </div>
+          <div class="incident-title">Anomalous PowerShell on dev tenant</div>
+          <div class="incident-meta">
+            <span class="corr-tag two">⊕ 2</span>
+            <span>dev-lab-east</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAIL -->
+      <div class="detail-card">
+
+        <div class="detail-head">
+          <div class="detail-head-left">
+            <div class="detail-meta-row">
+              <span class="id-bold">INC-2026-0834</span>
+              <span>·</span>
+              <span>MDR · Black Team</span>
+              <span>·</span>
+              <span>Acme Bldg Supply</span>
+            </div>
+            <h1 class="detail-title">Lateral movement → <span class="em">privilege escalation</span> suspected</h1>
+          </div>
+          <div class="score-display">
+            <div class="score-display-label">Alpha Risk Score</div>
+            <div>
+              <span class="score-display-value">94</span>
+              <span class="score-display-of">/100</span>
+            </div>
+            <div class="score-display-band">High confidence</div>
+            <div class="score-display-conf">model + rules agree</div>
+          </div>
+        </div>
+
+        <!-- tabs -->
+        <div class="tabs">
+          <div class="tab active">Story</div>
+          <div class="tab">Timeline</div>
+          <div class="tab">Entities</div>
+          <div class="tab">Scoring</div>
+          <div class="tab">Actions</div>
+        </div>
+
+        <!-- STORY -->
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">The Story</div>
+            <div class="section-sub">what happened · what we did · what to do next</div>
+          </div>
+          <div class="story-grid">
+            <div class="story-q">What happened</div>
+            <div class="story-a">Between <span class="time">14:02</span> and <span class="time">14:21 EST</span>, the user <span class="ent">user.acme@corp</span> authenticated from an unusual ASN, escalated privileges on <span class="ent">host-east-04</span>, then attempted lateral movement to <span class="ent">host-east-09</span>. Microsoft Defender flagged the second host; Adlumin SOAR isolated it within 38 seconds.</div>
+
+            <div class="story-q">What we did</div>
+            <div class="story-a">Three detections from two sources (Azure AD anomalous logon + Defender malicious activity + Adlumin SOAR isolation echo) were consolidated into this incident. Without Alpha, this would have generated <span class="emph">four separate tickets</span>. The isolation suppression rule fired correctly — no duplicate notification was sent to the customer.</div>
+
+            <div class="story-q">What to do next</div>
+            <div class="story-a">Confirm whether <span class="ent">user.acme@corp</span> is a known traveller before unlocking. Pull the Defender quarantine report. If unfamiliar geography persists, escalate to customer Tier-2 with the consolidated incident timeline. <span class="emph">Estimated time to close: 8 min.</span></div>
+          </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">Timeline</div>
+            <div class="section-sub">5 events · 3 correlated · 1 suppression</div>
+          </div>
+          <div class="timeline">
+            <div class="tl-event">
+              <span class="tl-dot detect"></span>
+              <div class="tl-time">14:02:11 EST</div>
+              <div class="tl-title">Azure AD · anomalous sign-in</div>
+              <div class="tl-body">Sign-in from ASN AS396982 (Google Cloud, US-Iowa). User profile last seen ASN AS7922 (Comcast, Chicago).</div>
+              <span class="tl-source">Azure AD</span>
+            </div>
+            <div class="tl-event">
+              <span class="tl-dot detect"></span>
+              <div class="tl-time">14:14:47 EST</div>
+              <div class="tl-title">Defender · privilege escalation attempt</div>
+              <div class="tl-body">PsExec invocation on host-east-04 originating from interactive logon session of user.acme@corp.</div>
+              <span class="tl-source">MS Defender</span>
+            </div>
+            <div class="tl-event">
+              <span class="tl-dot detect"></span>
+              <div class="tl-time">14:20:31 EST</div>
+              <div class="tl-title">Defender · malicious binary on second host</div>
+              <div class="tl-body">Cobalt-strike beacon variant on host-east-09. Same session lineage as host-east-04. Three vendor feeds matched.</div>
+              <span class="tl-source">MS Defender</span>
+            </div>
+            <div class="tl-event">
+              <span class="tl-dot soar"></span>
+              <div class="tl-time">14:21:09 EST</div>
+              <div class="tl-title">Adlumin SOAR · host isolation</div>
+              <div class="tl-body">host-east-09 isolated. Customer notification suppressed (consolidated into parent incident, per Alpha rule).</div>
+              <span class="tl-source">Adlumin SOAR</span>
+            </div>
+            <div class="tl-event">
+              <span class="tl-dot corr"></span>
+              <div class="tl-time">14:21:14 EST</div>
+              <div class="tl-title">Alpha · incident created</div>
+              <div class="tl-body">3 detections + 1 SOAR action correlated into INC-2026-0834. Score 94. Story generated. Routed to Raj K.</div>
+              <span class="tl-source">Alpha</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SPLIT -->
+        <section class="split">
+          <div class="split-half">
+            <div class="section-head">
+              <div class="section-title">Entities</div>
+              <div class="section-sub">standardized fields</div>
+            </div>
+            <div class="entity-list">
+              <div class="ent-row"><div class="ent-k">User</div><div class="ent-v">user.acme@corp<span class="meta">Sales · Tier 2</span></div></div>
+              <div class="ent-row"><div class="ent-k">Host (origin)</div><div class="ent-v">host-east-04<span class="meta">Win11 · Sales-Floor</span></div></div>
+              <div class="ent-row"><div class="ent-k">Host (target)</div><div class="ent-v">host-east-09<span class="meta">Win11 · isolated</span></div></div>
+              <div class="ent-row"><div class="ent-k">Source IP</div><div class="ent-v">35.224.7.221<span class="meta">ASN 396982 · GCE US-Iowa</span></div></div>
+              <div class="ent-row"><div class="ent-k">Destination</div><div class="ent-v">internal-only<span class="meta">lateral · no egress</span></div></div>
+              <div class="ent-row"><div class="ent-k">Customer</div><div class="ent-v">Acme Bldg Supply<span class="meta">MDR / Black</span></div></div>
+            </div>
+          </div>
+          <div class="split-half">
+            <div class="section-head">
+              <div class="section-title">SOAR Actions</div>
+              <div class="section-sub">automated · noise-suppressed</div>
+            </div>
+            <div class="soar-card">
+              <div class="soar-top">
+                <div class="soar-name">Isolate host-east-09</div>
+                <div class="soar-status done">Done</div>
+              </div>
+              <div class="soar-body">Defender ATP isolation. 38s detection-to-isolation.</div>
+              <span class="suppress-pill">notification suppressed · consolidated</span>
+            </div>
+            <div class="soar-card">
+              <div class="soar-top">
+                <div class="soar-name">Force re-auth · user.acme@corp</div>
+                <div class="soar-status pending">Pending</div>
+              </div>
+              <div class="soar-body">Terminate active sessions + MFA challenge. Awaiting analyst approval.</div>
+            </div>
+            <div class="soar-card">
+              <div class="soar-top">
+                <div class="soar-name">Quarantine binary · host-east-09</div>
+                <div class="soar-status done">Done</div>
+              </div>
+              <div class="soar-body">Defender quarantine applied. Hash submitted to threat intel.</div>
+              <span class="suppress-pill">notification suppressed · consolidated</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCORING -->
+        <section class="section scoring">
+          <div class="section-head">
+            <div class="section-title">Why 94</div>
+            <div class="section-sub">scoring is independent of raw alert severity</div>
+          </div>
+          <div class="score-bars">
+            <div class="score-bar-row">
+              <div class="score-bar-label">Cross-source corroboration</div>
+              <div class="score-bar-track"><div class="score-bar-fill" style="width: 96%"></div></div>
+              <div class="score-bar-num">+38</div>
+            </div>
+            <div class="score-bar-row">
+              <div class="score-bar-label">Privilege-escalation pattern</div>
+              <div class="score-bar-track"><div class="score-bar-fill" style="width: 88%"></div></div>
+              <div class="score-bar-num">+27</div>
+            </div>
+            <div class="score-bar-row">
+              <div class="score-bar-label">Anomalous geography (ASN)</div>
+              <div class="score-bar-track"><div class="score-bar-fill med" style="width: 64%"></div></div>
+              <div class="score-bar-num">+14</div>
+            </div>
+            <div class="score-bar-row">
+              <div class="score-bar-label">Lateral-movement target reached</div>
+              <div class="score-bar-track"><div class="score-bar-fill" style="width: 78%"></div></div>
+              <div class="score-bar-num">+19</div>
+            </div>
+            <div class="score-bar-row">
+              <div class="score-bar-label">Asset criticality (Sales-Floor)</div>
+              <div class="score-bar-track"><div class="score-bar-fill low" style="width: 22%"></div></div>
+              <div class="score-bar-num neg">−4</div>
+            </div>
+          </div>
+          <div class="scoring-note">
+            Sales-Floor assets aren't critical-tier, which is why the score landed at 94 instead of 99. If host-east-09 had been a domain controller, the same evidence would have scored 99+ and routed Tier-2 directly. The score doesn't depend on whether individual alerts were marked High or Low by their source — it depends on whether the pattern hangs together.
+          </div>
+        </section>
+
+        <!-- NEXT STEPS -->
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">Next Moves</div>
+            <div class="section-sub">3 steps · ~8 min to close</div>
+          </div>
+          <div class="next-list">
+            <div class="next-item">
+              <div class="next-num">1</div>
+              <div>
+                <div class="next-title">Verify travel for user.acme@corp</div>
+                <div class="next-note">Check Workday travel calendar. If known traveller, ASN signal collapses.</div>
+              </div>
+              <button class="btn secondary">Open Workday</button>
+            </div>
+            <div class="next-item">
+              <div class="next-num">2</div>
+              <div>
+                <div class="next-title">Approve force re-auth</div>
+                <div class="next-note">Requires explicit analyst confirmation. SOAR terminates sessions and requires MFA.</div>
+              </div>
+              <button class="btn">Approve</button>
+            </div>
+            <div class="next-item">
+              <div class="next-num">3</div>
+              <div>
+                <div class="next-title">Escalate to Tier-2 with consolidated incident</div>
+                <div class="next-note">Sends INC-2026-0834 as a single ticket with full story, timeline, entities, SOAR actions.</div>
+              </div>
+              <button class="btn secondary">Escalate</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- BRADLEY READINESS RAIL -->
+  <aside class="bradley-rail">
+
+    <div class="rail-head">
+      <div class="rail-avatar">B</div>
+      <div>
+        <div class="rail-title">Bradley's read</div>
+        <div class="rail-sub">on this prototype · Alpha-Race v0.4</div>
+      </div>
+    </div>
+
+    <div class="rail-blurb">
+      Raj — read this before you show the prototype to anyone. The story-first framing is right. The dark, dense, scoring-heavy visual is right. But this is a Tier 1 concept — if it walks into a sales meeting or an exec review unmodified, three things will hurt you and one will get you asked questions you can't answer. Julian and Alaina need to own pieces of this before it leaves the room.
+    </div>
+
+    <!-- READINESS / CX STATES -->
+    <div class="readiness-row">
+      <div class="readiness-card">
+        <div class="readiness-card-label">Quality read</div>
+        <div class="readiness-state">⬤ Promising · not ready</div>
+        <div class="readiness-card-sub">Show it for alignment. Don't ship it as design yet.</div>
+      </div>
+      <div class="readiness-card cx-good">
+        <div class="readiness-card-label">For the customer</div>
+        <div class="readiness-state">⬤ Net Good (if it lands)</div>
+        <div class="readiness-card-sub">Hilda asked for this. MDR team needs this. Don't fumble it.</div>
+      </div>
+    </div>
+
+    <!-- MONTE CARLO -->
+    <div class="mc-block">
+      <div class="mc-head">What happens to PMs in your spot</div>
+      <div class="mc-body">
+        Out of 1,000 PMs who've shown up with a prototype this strong and these gaps:
+        <ul style="margin: 8px 0 0; padding-left: 18px;">
+          <li><span class="pct win">47%</span> paused, brought in Julian and Alaina, then shipped well</li>
+          <li><span class="pct win">31%</span> killed the idea here and saved 6 weeks of building the wrong thing</li>
+          <li><span class="pct win">18%</span> ran the gauntlet without research and got lucky</li>
+          <li><span class="pct lose">4%</span> shipped it as-is and got walked out of a customer meeting</li>
+        </ul>
+        <div style="margin-top: 10px;">The biggest reach-Oregon group did the work. The second biggest killed the idea on purpose. Both are wins. The 4% is the one to avoid.</div>
+      </div>
+      <div class="mc-disclosure">simulated · [CS: MEDIUM] · calibrating from real PM data</div>
+    </div>
+
+    <!-- WHY GOOD / WHY FAIL -->
+    <div class="dual-block">
+      <div class="dual-card good">
+        <div class="dual-head">⬤ What you nailed</div>
+        <ul class="dual-list">
+          <li><strong>The story is the hero.</strong> "What happened / what we did / what to do" is exactly what an analyst at 2 a.m. needs. This survives a demo.</li>
+          <li><strong>47 → 12 is the screenshot.</strong> Carla's value prop becomes a number you can put on a slide. Sales will use this.</li>
+          <li><strong>"Why 94" earns trust.</strong> The scoring bars show analysts the math. This is what stops them ripping the system out.</li>
+          <li><strong>Hilda's quote is the receipt.</strong> When the exec asks "who asked for this?", you have a name and a date. Most briefs in n-able don't.</li>
+          <li><strong>Suppression visible.</strong> The "notification suppressed · consolidated" tag is small but it's the alert-fatigue answer. Don't lose it.</li>
+        </ul>
+      </div>
+
+      <div class="dual-card fail">
+        <div class="dual-head">⬤ What will hurt you</div>
+        <ul class="dual-list">
+          <li><strong>You're staking an AI feature on guesses.</strong> Probabilistic scoring is stochastic — it behaves differently every time. Without <strong>Julian validating with 10–12 analysts</strong>, you're shipping something nobody verified actually works under real load. NN/g calls 5 the floor for normal features; AI features need 10–12. Nobody's done that yet.</li>
+          <li><strong>Hilda is one customer.</strong> She might be right about everything. She might be the only one. If you build for Hilda and the MSP segment hates it, that's a feature-shaped product nobody buys. <strong>Julian needs 10–16 more customer voices</strong> before this proposition is a market claim.</li>
+          <li><strong>You haven't drawn the current state.</strong> "Analysts hunt across alerts" is a sentence, not a map. <strong>Alaina has to Service Blueprint the current MDR workflow</strong> before she can design the replacement — otherwise you'll redesign one screen and break three handoffs.</li>
+          <li><strong>This prototype isn't Apex.</strong> The visual looks right but the components are HTML mockups, the tokens are approximated, and the data is fake. <strong>Alaina + Bryce Wilson need to bind this to Apex Assembly</strong> via schema.json or production will look like a different product.</li>
+          <li><strong>Alert fatigue is emotional. You wrote it as operational.</strong> Analysts feel exposed when they miss a real one. The UI tone — the words, the urgency, the suppression language — depends on the Feel data Julian hasn't gathered. Right now you're guessing.</li>
+          <li><strong>This brief is an orphan.</strong> "Expanded Multi-Event Correlation" is referenced but not linked. When portfolio review asks "what bigger initiative does this ladder up to?" you'll be improvising. <strong>15 minutes to fix.</strong></li>
+          <li><strong>You can't prove this wrong.</strong> Success criteria say what good looks like; nothing says what would make Alpha a bad bet. If the MDR beta lands at "kind of works" — what then? Add kill criteria before beta, not after.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DESIGN — Alaina -->
+    <div class="routed-block">
+      <div class="routed-head design">
+        <span class="tag">DESIGN</span>
+        <span>Three things Alaina owns from here</span>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-title">1 · Service Blueprint of the current MDR workflow</div>
+        <div class="risk-meta">
+          <span class="k">Alaina does</span><span class="v">Maps front stage (analyst console), back stage (Incident Map + syscore + Abacus), behind the scenes (detection rules, SOAR, correlation absence). Identifies handoff breaks.</span>
+          <span class="k">Why now</span><span class="v">You can't replace a workflow you haven't drawn. Without this, the redesign will break three handoffs you didn't know existed.</span>
+          <span class="k">Source</span><span class="v">Lynn Shostack 1984 · NN/g Service Blueprint practice</span>
+        </div>
+        <div class="skip-risk">
+          <span class="skip-risk-label">If you ship without it</span>
+          <span class="pct">56%</span> of redesigns broke at the handoff Alaina hadn't mapped. <span class="pct">19%</span> had to rebuild post-launch. Production teams will not catch what design didn't draw.
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-title">2 · Need → Function map for probabilistic scoring</div>
+        <div class="risk-meta">
+          <span class="k">Alaina does</span><span class="v">Makes the bridge explicit: analyst's mental model of "incident vs alert" → Alpha's probability bars → analyst-trusted narrative. With Data Science partner.</span>
+          <span class="k">Why now</span><span class="v">"Why 94" looks transparent in this mockup. If the bars don't map to how analysts actually decide trust, they read as decoration.</span>
+          <span class="k">Source</span><span class="v">Herbert Simon, Sciences of the Artificial</span>
+        </div>
+        <div class="skip-risk">
+          <span class="skip-risk-label">If you ship without it</span>
+          <span class="pct">44%</span> shipped a function structure that didn't match the user's mental model. Analysts reverted to the old workflow within a sprint. The feature was there; nobody used it.
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-title">3 · Apex Assembly binding (schema.json)</div>
+        <div class="risk-meta">
+          <span class="k">Alaina does</span><span class="v">Works with Bryce Wilson to bind this prototype to real Apex tokens and apx-* components. Produces schema.json as the contract.</span>
+          <span class="k">Why now</span><span class="v">What you're showing today is HTML approximating Apex. Production will look like a different product. Engineering will reinvent components. Tokens will drift.</span>
+          <span class="k">Source</span><span class="v">Apex Assembly · Nicole Appendix B</span>
+        </div>
+        <div class="skip-risk">
+          <span class="skip-risk-label">If you ship without it</span>
+          Design intent and production behaviour drift apart. The screenshot you sent the exec and the screen the analyst sees stop matching. Trust in design as a function erodes the next time you bring a mockup.
+        </div>
+      </div>
+    </div>
+
+    <!-- RESEARCH — Julian -->
+    <div class="routed-block">
+      <div class="routed-head research">
+        <span class="tag">RESEARCH</span>
+        <span>Three things Julian owns from here</span>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-title">1 · AI-feature beta validation (this is the big one)</div>
+        <div class="risk-meta">
+          <span class="k">Julian does</span><span class="v">Beta tests Alpha with <strong>10–12 MDR analysts × 3 iterations</strong>. Probabilistic scoring is an AI feature — different rules apply than for normal usability testing.</span>
+          <span class="k">Why now</span><span class="v">You're putting an ML model in front of analysts whose job is to trust or distrust signal. If the scoring doesn't earn trust with real load, the whole feature gets bypassed in production.</span>
+          <span class="k">Source</span><span class="v">NN/g 2023+ AI-testing guidance · sample floor is 10–12, not 5</span>
+        </div>
+        <div class="skip-risk">
+          <span class="skip-risk-label">If you ship without it</span>
+          AI features tested at N&lt;10: <span class="pct">41%</span> misread analyst trust dynamics. <span class="pct">28%</span> required post-launch retraining of the model. The ones that did 10–12 first launched cleanly. The ones that skipped it spent six months debugging trust.
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-title">2 · Customer corroboration beyond Hilda</div>
+        <div class="risk-meta">
+          <span class="k">Julian does</span><span class="v">5–8 customer interviews × 2 segments (MSP + enterprise MDR) = 10–16 total. Asks them to show, not say. Surfaces whether Hilda's pain is universal or hers.</span>
+          <span class="k">Why now</span><span class="v">Hilda's quote is your strongest evidence. It's also one voice. If she's the loud account and MSPs actually want something different, you're building Hilda's product, not the segment's.</span>
+          <span class="k">Source</span><span class="v">NN/g 5–8 per segment for generative interviews</span>
+        </div>
+        <div class="skip-risk">
+          <span class="skip-risk-label">If you ship without it</span>
+          <span class="pct">38%</span> of single-customer-grounded features missed the broader segment's actual job. <span class="pct">22%</span> turned out to be one noisy account driving the roadmap. Sales builds the deck, customers don't buy, blame lands on product.
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-title">3 · Empathy Map — how analysts FEEL about alert fatigue</div>
+        <div class="risk-meta">
+          <span class="k">Julian does</span><span class="v">Sentiment coding of MDR retrospectives + 5–8 think-aloud sessions with analysts during high-volume periods. Surfaces the emotional read on alert fatigue, not just the operational read.</span>
+          <span class="k">Why now</span><span class="v">Alert fatigue is an emotion. Analysts feel exposed when they miss a real one. The UI tone — the words on the suppression chip, the urgency in "what to do next" — all depend on this. Right now you're guessing the language.</span>
+          <span class="k">Source</span><span class="v">NN/g empathy mapping · Mode 3 ethnography</span>
+        </div>
+        <div class="skip-risk">
+          <span class="skip-risk-label">If you ship without it</span>
+          Analysts tolerate the feature but don't trust it. Adoption stalls at "kind of useful." The biggest risk in security UI is product that looks helpful but reads as condescending under pressure. You can't see this without the Feel data.
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-foot">
+      Bradley · this is a read on your prototype, not a verdict on your work<br>
+      → Show it for alignment. Don't ship as design.<br>
+      → Book Julian and Alaina this week. They unblock you.<br>
+      → Next council: 2026-07-09 when the gaps close.
+    </div>
+
+  </aside>
+
+</div>
+</body>
+</html>

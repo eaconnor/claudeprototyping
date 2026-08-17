@@ -1,0 +1,54 @@
+# Microsoft Defender
+slug: microsoft-defender
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Microsoft Defender is Microsoft's native security platform covering endpoint protection (Defender for Business/Endpoint), email security (Defender for Office 365), identity (Defender for Identity/Entra ID Protection), cloud (Defender for Cloud), and SIEM (Microsoft Sentinel). For MSPs, Defender for Business is included in Microsoft 365 Business Premium, making it ubiquitous in SMB client environments. The Microsoft Defender Experts suite — a managed XDR + incident response offering — became generally available January 1, 2026.
+
+## MSP Relevance
+Microsoft Defender is already present in nearly every MSP client running Microsoft 365 Business Premium or E3/E5. MSPs must decide whether to standardize on Defender or overlay it with a third-party MDR (Huntress, Blackpoint, Sophos). Huntress's Microsoft partnership and Sophos's free integrations are both responses to this reality. The Defender Experts suite creates a Microsoft-managed XDR tier that MSPs can position above standalone Defender for clients wanting managed coverage.
+
+## Key Offerings & Capabilities
+- Microsoft Defender for Business — SMB endpoint protection included in M365 Business Premium
+- Microsoft Defender for Endpoint Plan 1/2 — enterprise EDR/XDR
+- Microsoft Defender for Office 365 Plan 1/2 — email and collaboration security
+- Microsoft Defender for Identity — ITDR, Active Directory and Entra ID threat detection
+- Microsoft Defender for Cloud — CSPM and workload protection for Azure, AWS, GCP
+- Microsoft Sentinel — cloud-native SIEM and SOAR
+- Microsoft Defender Experts — managed XDR + proactive threat hunting + incident response (GA January 1, 2026)
+- CrowdStrike Falcon OverWatch for Defender — third-party threat hunting layered on Defender (via CrowdStrike)
+
+## Recent Announcements
+- Microsoft Defender Experts suite GA January 1, 2026 — unified managed XDR + proactive hunting + incident response per user per month SKU
+- Enhanced email security from Defender for Office 365 Plan 1 added to Office 365 E3 and M365 E3
+- Microsoft 365 pricing update effective July 1, 2026 — Business Standard price increase, Business Premium unchanged (narrows gap between tiers, incentivizing Business Premium adoption)
+- December 2025: Ongoing monthly security feature updates across Defender suite
+
+## Pricing Model
+Defender for Business included in M365 Business Premium ($22/user/month). Defender for Endpoint P1 ($3/user/month), P2 ($5.20/user/month) as add-ons. Defender Experts suite: bundled managed XDR per user per month SKU (pricing via CSP). Microsoft Sentinel: consumption-based per GB ingested. MSPs resell through CSP with margin.
+
+## Strengths
+- Already deployed in every M365 Business Premium tenant — zero incremental deployment for MSPs
+- Unified platform across endpoint, identity, email, cloud, and SIEM
+- Defender Experts provides a managed XDR tier without needing a third-party MDR vendor
+- Business Premium pricing stability (no increase July 2026) incentivizes MSPs to standardize there
+- Deep integration with Microsoft 365 and Azure — native threat correlation across the Microsoft stack
+
+## Weaknesses / Gaps
+- Complexity — many MSPs struggle to configure and tune Defender effectively for SMB clients
+- Defender for Business (SMB tier) has fewer features than Defender for Endpoint P2
+- Alert fatigue — Defender can generate significant noise without proper tuning
+- Microsoft Sentinel is complex and expensive compared to purpose-built SIEM alternatives
+- Defender Experts pricing and MSP resale terms still being evaluated
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: As Microsoft Defender becomes the default security baseline for SMB MSP clients, it reduces the surface area for third-party security tools. If MSPs standardize on Microsoft's integrated security stack (including Defender Experts), the market for security-adjacent AI automation may compress. NZO needs to position above and alongside Defender, not against it.
+
+## Notes
+- Business Premium pricing stability (July 2026) is a Microsoft incentive to push MSPs toward the tier that includes full Defender — watch adoption rates
+- Defender Experts (GA January 2026) is Microsoft's answer to Huntress and Blackpoint — expect MSPs to evaluate it as an alternative to third-party MDR
+- CrowdStrike's Falcon OverWatch for Defender shows the market for "third-party managed hunting on top of Defender" is real and growing

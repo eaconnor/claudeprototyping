@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACP Control Plane · QBR Native · Tier 1 Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-app: #0d1117;
+  --bg-surface: #161b22;
+  --bg-elevated: #21262d;
+  --bg-deep: #010409;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #484f58;
+  --text-on-brand: #ffffff;
+  --brand: #58a6ff;
+  --brand-strong: #388bfd;
+  --brand-soft: rgba(88,166,255,0.15);
+  --critical: #f85149;
+  --high: #ff7b72;
+  --medium: #e3b341;
+  --low: #3fb950;
+  --alpha-accent: #a78bfa;
+  --alpha-soft: rgba(167,139,250,0.12);
+  --topbar-bg: #161b22;
+  --topbar-border: rgba(88,166,255,0.3);
+  --rail-bg: #16112e;
+  --rail-border: rgba(167,139,250,0.4);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --font-ui: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+}
+[data-theme="light"] {
+  --bg-app: #ffffff;
+  --bg-surface: #f6f8fa;
+  --bg-elevated: #eaeef2;
+  --bg-deep: #f0f3f6;
+  --text-primary: #1f2328;
+  --text-secondary: #636c76;
+  --text-muted: #9198a1;
+  --brand: #0969da;
+  --brand-strong: #0550ae;
+  --brand-soft: rgba(9,105,218,0.1);
+  --critical: #d1242f;
+  --high: #bc4c00;
+  --medium: #9a6700;
+  --low: #1a7f37;
+  --alpha-accent: #7c3aed;
+  --alpha-soft: rgba(124,58,237,0.1);
+  --topbar-bg: #f6f8fa;
+  --topbar-border: rgba(9,105,218,0.3);
+  --rail-bg: #f0eafa;
+  --rail-border: rgba(124,58,237,0.4);
+  --border: rgba(0,0,0,0.1);
+  --border-strong: rgba(0,0,0,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Fidelity Banner ── */
+.fidelity-banner {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.fidelity-banner .banner-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fidelity-banner .tier-badge {
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  color: var(--alpha-accent);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.fidelity-banner .concept-badge {
+  background: var(--brand-soft);
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2px;
+}
+.mode-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  transition: all 0.15s;
+}
+.mode-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+/* ── Topbar ── */
+.topbar {
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+.topbar-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-logo-dot {
+  width: 8px; height: 8px;
+  background: var(--brand);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--brand);
+}
+.topbar-sep { width: 1px; height: 20px; background: var(--border-strong); margin: 0 4px; }
+.topbar-product {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(63,185,80,0.1);
+  border: 1px solid rgba(63,185,80,0.3);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--low);
+  letter-spacing: 0.04em;
+}
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--low); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.topbar-avatar {
+  width: 28px; height: 28px;
+  background: var(--brand-soft);
+  border: 1px solid var(--brand);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; color: var(--brand);
+  font-family: var(--font-mono);
+}
+
+/* ── App Shell ── */
+.app-shell {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 248px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+.sidebar-section-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  padding: 16px 16px 6px;
+  text-transform: uppercase;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-secondary);
+  border-left: 3px solid transparent;
+  transition: all 0.12s;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.nav-item.active {
+  background: var(--brand-soft);
+  color: var(--brand);
+  border-left-color: var(--brand);
+  font-weight: 500;
+}
+.nav-icon {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.nav-badge {
+  margin-left: auto;
+  background: var(--brand-soft);
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.04em;
+}
+.nav-badge.blocked {
+  background: rgba(248,81,73,0.1);
+  border-color: var(--critical);
+  color: var(--critical);
+}
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-footer-text {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Main Content ── */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* ── Package Nav Strip ── */
+.package-strip {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  flex-wrap: wrap;
+}
+.pkg-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.12s;
+  color: var(--text-secondary);
+  background: transparent;
+}
+.pkg-item:hover { background: var(--bg-elevated); }
+.pkg-item.active {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+  color: var(--brand);
+  font-weight: 600;
+}
+.pkg-item.blocked { cursor: not-allowed; opacity: 0.7; }
+.pkg-blocker {
+  font-size: 8px;
+  background: rgba(248,81,73,0.1);
+  border: 1px solid rgba(248,81,73,0.3);
+  color: var(--critical);
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+.pkg-avail {
+  font-size: 8px;
+  background: rgba(63,185,80,0.1);
+  border: 1px solid rgba(63,185,80,0.3);
+  color: var(--low);
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+
+/* ── Section header ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── QBR Card ── */
+.qbr-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.qbr-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.qbr-client-info {}
+.qbr-msp {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.qbr-client-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+.qbr-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.qbr-period {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+.status-chip {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.04em;
+  border: 1px solid;
+}
+.status-chip.draft {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.qbr-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid;
+  letter-spacing: 0.04em;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.btn-primary:hover { background: var(--brand); color: var(--text-on-brand); }
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+}
+.btn-ghost:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.p0-assumption {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--medium);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  background: rgba(227,179,65,0.08);
+  border: 1px solid rgba(227,179,65,0.25);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+}
+.stat-cell {
+  background: var(--bg-surface);
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.stat-unit {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.stat-trend {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--low);
+  margin-top: 2px;
+}
+.seed-badge {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  background: rgba(167,139,250,0.12);
+  border: 1px solid rgba(167,139,250,0.3);
+  color: var(--alpha-accent);
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+/* ── Data Sources Strip ── */
+.data-sources {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-deep);
+}
+.ds-label {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.ds-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-family: var(--font-mono);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+.ds-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--low); }
+.ds-native-only {
+  margin-left: auto;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  background: var(--brand-soft);
+  border: 1px solid rgba(88,166,255,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--brand);
+}
+
+/* ── Governance Strip ── */
+.governance-strip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.gov-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+}
+.gov-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--alpha-accent);
+  text-transform: uppercase;
+}
+.gov-subtitle {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-left: auto;
+}
+.gov-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+.gov-panel {
+  background: var(--bg-surface);
+  padding: 14px 16px;
+}
+.gov-panel-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gov-panel-icon { font-size: 11px; }
+.scope-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  padding: 3px 0;
+}
+.scope-check { color: var(--low); font-size: 10px; }
+.scope-blocked { color: var(--critical); font-size: 10px; }
+.audit-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.audit-entry:last-child { border-bottom: none; }
+.audit-actor {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.audit-action {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.audit-ts {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.approval-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.approval-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--brand-soft);
+  border: 1px solid rgba(88,166,255,0.25);
+  border-radius: var(--radius-md);
+}
+.approval-icon { font-size: 14px; }
+.approval-text {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--brand);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.approval-sub {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  line-height: 1.4;
+}
+
+/* ── Right Rail ── */
+.bradley-rail {
+  width: 380px;
+  background: var(--rail-bg);
+  border-left: 4px solid var(--rail-border);
+  box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-shrink: 0;
+  position: relative;
+}
+.bradley-rail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(167,139,250,0.015) 0px,
+    rgba(167,139,250,0.015) 1px,
+    transparent 1px,
+    transparent 18px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.rail-inner { position: relative; z-index: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+.rail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bradley-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--alpha-accent);
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.readiness-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-md);
+  padding: 5px 10px;
+}
+.readiness-tier {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--alpha-accent);
+  letter-spacing: 0.08em;
+}
+.readiness-sep { width: 1px; height: 12px; background: rgba(167,139,250,0.3); }
+
+.score-block {
+  background: rgba(248,81,73,0.06);
+  border: 1px solid rgba(248,81,73,0.2);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.score-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.score-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--critical);
+}
+.score-note {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.score-warn {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--medium);
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: rgba(227,179,65,0.08);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(227,179,65,0.2);
+}
+
+.rail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rail-section-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(167,139,250,0.15);
+}
+.rail-section-label.nailed { color: var(--low); }
+.rail-section-label.hurt { color: var(--critical); }
+.rail-section-label.gaps { color: var(--medium); }
+.rail-section-label.routing { color: var(--brand); }
+.rail-section-label.council { color: var(--alpha-accent); }
+
+.nail-item, .hurt-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  padding: 4px 0;
+}
+.nail-icon { color: var(--low); flex-shrink: 0; font-size: 10px; margin-top: 1px; }
+.hurt-icon { color: var(--critical); flex-shrink: 0; font-size: 10px; margin-top: 1px; }
+
+.gap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 6px 8px;
+  background: rgba(227,179,65,0.05);
+  border: 1px solid rgba(227,179,65,0.15);
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+}
+.gap-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--medium);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.gap-text {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.gap-tag {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Routing cards */
+.routing-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.routing-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.routing-team {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.team-product { color: var(--brand); }
+.team-design { color: var(--alpha-accent); }
+.team-research { color: var(--medium); }
+.team-eng { color: var(--low); }
+.routing-chevron {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.15s;
+}
+.routing-chevron.open { transform: rotate(90deg); }
+.routing-body {
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+}
+.routing-body.open { display: flex; }
+.routing-action {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.roi-block {
+  background: var(--bg-deep);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  margin-top: 2px;
+}
+.roi-label {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.roi-line {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
+.roi-line span { color: var(--text-muted); }
+
+/* Council button + modal */
+.council-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--alpha-accent);
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: all 0.15s;
+}
+.council-btn:hover { background: rgba(167,139,250,0.2); }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(1,4,9,0.85);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-lg);
+  width: 680px;
+  max-width: 95vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(1,4,9,0.8), 0 0 0 1px rgba(167,139,250,0.2);
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-deep);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.modal-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--alpha-accent);
+  text-transform: uppercase;
+}
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 16px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  transition: color 0.12s;
+}
+.modal-close:hover { color: var(--text-primary); }
+.modal-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.tension-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.tension-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--alpha-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.tension-vs {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.tension-body {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.tension-punchline {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--medium);
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: rgba(227,179,65,0.08);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--medium);
+}
+.synthesis-block {
+  background: var(--bg-deep);
+  border: 1px dashed rgba(167,139,250,0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-top: 4px;
+}
+.synthesis-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--alpha-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.synthesis-text {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Responsive note */
+@media (max-width: 1100px) {
+  .bradley-rail { width: 320px; }
+}
+@media (max-width: 900px) {
+  .bradley-rail { display: none; }
+  .sidebar { width: 200px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Fidelity Banner -->
+<div class="fidelity-banner">
+  <div class="banner-label">
+    <span class="tier-badge">TIER 1</span>
+    <span class="concept-badge">CONCEPT · RERUN</span>
+    <span>ACP CONTROL PLANE · QBR NATIVE · 2026-07-21</span>
+  </div>
+  <div class="mode-toggle">
+    <button class="mode-btn" id="btn-light" onclick="setTheme('light')">LIGHT</button>
+    <button class="mode-btn active" id="btn-dark" onclick="setTheme('dark')">DARK</button>
+    <button class="mode-btn" id="btn-system" onclick="setTheme('system')">SYS</button>
+  </div>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-dot"></div>
+    N-able
+  </div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-product">AUTONOMOUS CONTROL PLANE</div>
+  <div class="topbar-right">
+    <div class="status-pill"><div class="status-dot"></div>All systems operational</div>
+    <div class="topbar-avatar">CI</div>
+  </div>
+</div>
+
+<!-- App Shell -->
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" aria-label="Control Plane navigation">
+    <div class="sidebar-section-label">Packages</div>
+
+    <a class="nav-item" href="#" aria-label="Control Plane overview">
+      <span class="nav-icon">⬡</span>
+      Control Plane
+    </a>
+    <a class="nav-item active" href="#" aria-current="page" aria-label="QBR — active">
+      <span class="nav-icon">📊</span>
+      QBR Native
+      <span class="nav-badge">ACTIVE</span>
+    </a>
+    <a class="nav-item" href="#" aria-label="IR/RCA">
+      <span class="nav-icon">🔴</span>
+      IR / RCA
+    </a>
+    <a class="nav-item" href="#" aria-label="vCISO/vCIO">
+      <span class="nav-icon">🛡</span>
+      vCISO / vCIO
+    </a>
+    <a class="nav-item" href="#" aria-label="Triage">
+      <span class="nav-icon">🎫</span>
+      Ticket Triage
+    </a>
+
+    <div class="sidebar-section-label" style="margin-top: 8px;">Governance</div>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">📋</span>
+      Audit Log
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🔒</span>
+      Agent Scope
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">✅</span>
+      Approvals
+    </a>
+
+    <div class="sidebar-section-label" style="margin-top: 8px;">MSP</div>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🏢</span>
+      Cascade IT Partners
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">⚙</span>
+      Settings
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">
+        Agent scope: N-able stack only<br>
+        EU AI Act: enforcement 2026-08-02<br>
+        <span style="color: var(--critical);">Compliance owner: TBD</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" aria-label="QBR Native dashboard">
+
+    <!-- Package Nav Strip -->
+    <div class="package-strip" role="tablist" aria-label="Package selection">
+      <div class="pkg-item active" role="tab" aria-selected="true" tabindex="0">
+        📊 QBR Native
+      </div>
+      <div class="pkg-item blocked" role="tab" aria-selected="false" tabindex="0" aria-disabled="true" title="Cross-vendor normalization: Not started">
+        📈 QBR Cross-Vendor <span class="pkg-blocker">NOT STARTED</span>
+      </div>
+      <div class="pkg-item" role="tab" aria-selected="false" tabindex="0">
+        🔴 Live IR/RCA <span class="pkg-avail">AVAIL</span>
+      </div>
+      <div class="pkg-item" role="tab" aria-selected="false" tabindex="0">
+        🛡 vCISO/vCIO <span class="pkg-avail">AVAIL</span>
+      </div>
+      <div class="pkg-item" role="tab" aria-selected="false" tabindex="0">
+        🎫 Ticket Triage <span class="pkg-avail">AVAIL</span>
+      </div>
+    </div>
+
+    <!-- Section: QBR Journey Map -->
+    <div style="padding:16px 0 8px;">
+      <div class="section-header">
+        <span class="section-title">How QBR Native runs</span>
+        <div class="section-line"></div>
+      </div>
+      <div style="display:flex;gap:0;align-items:stretch;margin-top:10px;border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;">
+        <!-- Stage 1 -->
+        <div style="flex:1;padding:12px 10px;background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.08em;">01 TRIGGER</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-primary);">MSP schedules QBR</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Cadence set. Period locked. Customer named.</div>
+        </div>
+        <!-- Stage 2 -->
+        <div style="flex:1;padding:12px 10px;background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.08em;">02 CONNECTIONS</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-primary);">MCP data pull</div>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:2px;">
+            <span style="font-size:10px;color:var(--low);">● N-central (RMM)</span>
+            <span style="font-size:10px;color:var(--low);">● Adlumin (SecOps)</span>
+            <span style="font-size:10px;color:var(--low);">● Cove (DRaaS)</span>
+            <span style="font-size:10px;color:var(--text-muted);">✗ Third-party (blocked)</span>
+          </div>
+        </div>
+        <!-- Stage 3 -->
+        <div style="flex:1.3;padding:12px 10px;background:var(--bg-elevated);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--alpha-accent);letter-spacing:.08em;">03 ANALYZE</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-primary);">N-able AI Experts</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px;">
+            <div style="padding:4px 6px;background:var(--alpha-soft);border-radius:3px;font-size:10px;color:var(--alpha-accent);">🔒 Security/MDR Expert (N-able)</div>
+            <div style="padding:4px 6px;background:var(--alpha-soft);border-radius:3px;font-size:10px;color:var(--alpha-accent);">🔍 Endpoint Expert (N-able)</div>
+            <div style="padding:4px 6px;background:var(--alpha-soft);border-radius:3px;font-size:10px;color:var(--alpha-accent);">💾 Backup Expert (N-able)</div>
+          </div>
+        </div>
+        <!-- Stage 4 -->
+        <div style="flex:1.3;padding:12px 10px;background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--brand);letter-spacing:.08em;">04 SYNTHESIZE</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-primary);">AI Coworker assembles</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Draft QBR built. Upsell gaps flagged. Routed to MSP for review.</div>
+          <div style="margin-top:4px;padding:3px 6px;background:var(--brand-soft);border-radius:3px;font-size:10px;color:var(--brand);">⏸ MSP Review Gate</div>
+        </div>
+        <!-- Stage 5 -->
+        <div style="flex:1;padding:12px 10px;background:var(--bg-surface);display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--low);letter-spacing:.08em;">05 DELIVER</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-primary);">Approved & sent</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Full audit log. Customer receives durable artifact.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Active QBR -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Active QBR</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="qbr-card" role="region" aria-label="Active QBR for Westbrook Financial Services">
+        <div class="qbr-card-header">
+          <div class="qbr-client-info">
+            <div class="qbr-msp">MSP: Cascade IT Partners (fictional)</div>
+            <div class="qbr-client-name">Westbrook Financial Services</div>
+            <div class="qbr-meta">
+              <span class="qbr-period">Q2 2026 · Apr–Jun</span>
+              <span class="status-chip draft">Draft — awaiting MSP review</span>
+            </div>
+          </div>
+          <div class="qbr-card-actions">
+            <button class="btn btn-primary" aria-label="Edit QBR — 15-minute edit affordance (P0 assumption)">
+              ✏ Edit QBR
+            </button>
+            <div class="p0-assumption">⚠ 15-min edit path — P0 assumption [A ~35%]</div>
+            <button class="btn btn-ghost">Preview PDF</button>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" role="list" aria-label="QBR key statistics">
+          <div class="stat-cell" role="listitem">
+            <div class="stat-value">94<span class="stat-unit">%</span></div>
+            <div class="stat-label">Patch Compliance</div>
+            <div class="stat-trend">↑ +3% vs Q1</div>
+            <div style="margin-top:4px"><span class="seed-badge">SEED</span></div>
+          </div>
+          <div class="stat-cell" role="listitem">
+            <div class="stat-value">127</div>
+            <div class="stat-label">Incidents Resolved</div>
+            <div class="stat-trend">↓ −8 vs Q1</div>
+            <div style="margin-top:4px"><span class="seed-badge">SEED</span></div>
+          </div>
+          <div class="stat-cell" role="listitem">
+            <div class="stat-value">99.1<span class="stat-unit">%</span></div>
+            <div class="stat-label">Backup Success Rate</div>
+            <div class="stat-trend">→ stable</div>
+            <div style="margin-top:4px"><span class="seed-badge">SEED</span></div>
+          </div>
+          <div class="stat-cell" role="listitem">
+            <div class="stat-value">2.3<span class="stat-unit">h</span></div>
+            <div class="stat-label">Mean Time to Resolve</div>
+            <div class="stat-trend">↓ −0.7h vs Q1</div>
+            <div style="margin-top:4px"><span class="seed-badge">SEED</span></div>
+          </div>
+        </div>
+
+        <!-- Data Sources -->
+        <div class="data-sources" aria-label="Data sources">
+          <span class="ds-label">Sources</span>
+          <span class="ds-chip"><span class="ds-dot"></span>RMM (N-able)</span>
+          <span class="ds-chip"><span class="ds-dot"></span>Cove (N-able)</span>
+          <span class="ds-chip"><span class="ds-dot"></span>Security (N-able)</span>
+          <span class="ds-native-only">N-able stack only — no cross-vendor data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Expert Analysis Pipeline -->
+    <div style="margin-top:16px;">
+      <div class="section-header">
+        <span class="section-title">How this QBR was built</span>
+        <div class="section-line"></div>
+      </div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+        <!-- Expert row -->
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;padding:10px 12px;background:var(--bg-surface);border:1px solid var(--alpha-soft);border-radius:var(--radius-md);">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--alpha-accent);margin-bottom:4px;">SECURITY/MDR EXPERT <span style="font-size:9px;opacity:.6;">(N-able)</span></div>
+            <div style="font-size:12px;color:var(--text-primary);">Interpreted 127 incident events. Classified 9 high-severity. Flagged 2 open CVEs.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">Source: Adlumin MDR (N-able) <span class="seed-badge" style="margin-left:4px;">SEED</span></div>
+          </div>
+          <div style="flex:1;padding:10px 12px;background:var(--bg-surface);border:1px solid var(--alpha-soft);border-radius:var(--radius-md);">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--alpha-accent);margin-bottom:4px;">ENDPOINT EXPERT <span style="font-size:9px;opacity:.6;">(N-able)</span></div>
+            <div style="font-size:12px;color:var(--text-primary);">Scored 94% patch compliance. Identified 3 endpoints with outstanding critical patches.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">Source: N-central RMM (N-able) <span class="seed-badge" style="margin-left:4px;">SEED</span></div>
+          </div>
+          <div style="flex:1;padding:10px 12px;background:var(--bg-surface);border:1px solid var(--alpha-soft);border-radius:var(--radius-md);">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--alpha-accent);margin-bottom:4px;">BACKUP EXPERT <span style="font-size:9px;opacity:.6;">(N-able)</span></div>
+            <div style="font-size:12px;color:var(--text-primary);">Validated 99.1% backup success. 1 failed job flagged. RPO within SLA.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">Source: Cove DRaaS (N-able) <span class="seed-badge" style="margin-left:4px;">SEED</span></div>
+          </div>
+        </div>
+        <!-- AI Coworker assembly row -->
+        <div style="padding:10px 14px;background:var(--bg-elevated);border:1px solid var(--brand-soft);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+          <div style="font-size:10px;font-family:var(--font-mono);color:var(--brand);white-space:nowrap;">AI COWORKER</div>
+          <div style="flex:1;font-size:12px;color:var(--text-primary);">Assembled expert findings into QBR draft. Flagged 1 upsell gap (cross-stack QBR not available — cross-vendor normalization not started). Human review required before delivery.</div>
+          <div style="padding:4px 10px;background:var(--brand-soft);border-radius:3px;font-size:10px;color:var(--brand);white-space:nowrap;">⏸ Awaiting MSP review</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: QBR Report Sections -->
+    <div style="margin-top:16px;">
+      <div class="section-header">
+        <span class="section-title">QBR Report Sections</span>
+        <div class="section-line"></div>
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <div style="padding:8px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;color:var(--text-primary);cursor:pointer;" title="Executive summary section">📋 Executive Summary</div>
+        <div style="padding:8px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;color:var(--text-primary);cursor:pointer;" title="Risk scorecard section">🔴 Risk Scorecard</div>
+        <div style="padding:8px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;color:var(--text-primary);cursor:pointer;" title="Patch compliance section">🛡 Patch Compliance</div>
+        <div style="padding:8px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;color:var(--text-primary);cursor:pointer;" title="Vulnerability trends section">📈 Vulnerability Trends</div>
+        <div style="padding:8px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;color:var(--text-primary);cursor:pointer;" title="Backup and recovery section">💾 Backup &amp; Recovery</div>
+        <div style="padding:8px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;color:var(--text-primary);cursor:pointer;" title="Ticket volume analysis section">🎫 Ticket Volume Analysis</div>
+        <div style="padding:8px 12px;background:var(--brand-soft);border:1px solid var(--brand);border-radius:var(--radius-sm);font-size:11px;color:var(--brand);cursor:pointer;" title="Next steps section">→ Recommended Next Steps</div>
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">7 sections · N-able-native data only · No cross-vendor normalization <span class="seed-badge" style="margin-left:4px;">SEED</span></div>
+    </div>
+
+    <!-- Section: Control Plane Governance Strip -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Control Plane Governance</span>
+        <div class="section-line"></div>
+        <span style="font-size:9px;font-family:var(--font-mono);color:var(--alpha-accent);letter-spacing:0.06em;">QBR NATIVE → VALUE LEDGER → ADVISORY ROLE — THIS IS THE THESIS</span>
+      </div>
+
+      <div class="governance-strip" role="region" aria-label="Control Plane governance">
+        <div class="gov-header">
+          <div class="gov-title">⬡ Governed Agent Layer</div>
+          <div class="gov-subtitle">All agent actions scoped, logged, and approval-gated before customer delivery</div>
+        </div>
+        <div class="gov-body">
+
+          <!-- Agent Scope -->
+          <div class="gov-panel">
+            <div class="gov-panel-title"><span class="gov-panel-icon">🔒</span>Agent Scope</div>
+            <div class="scope-item"><span class="scope-check">✓</span> RMM telemetry</div>
+            <div class="scope-item"><span class="scope-check">✓</span> Cove backup logs</div>
+            <div class="scope-item"><span class="scope-check">✓</span> N-able Security events</div>
+            <div class="scope-item" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);">
+              <span class="scope-blocked">✗</span>
+              <span style="color:var(--critical);font-size:10px;font-family:var(--font-mono);">Third-party data — blocked</span>
+            </div>
+            <div class="scope-item"><span class="scope-blocked">✗</span> <span style="color:var(--critical);font-size:10px;font-family:var(--font-mono);">Cross-vendor normalization — not started</span></div>
+          </div>
+
+          <!-- Audit Log -->
+          <div class="gov-panel">
+            <div class="gov-panel-title"><span class="gov-panel-icon">📋</span>Audit Log</div>
+            <div class="audit-entry">
+              <div class="audit-actor">Agent: QBR-Runbook-v2</div>
+              <div class="audit-action">Generated Q2 draft from N-able telemetry</div>
+              <div class="audit-ts">2026-07-21 · 09:14 UTC <span class="seed-badge">SEED</span></div>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-actor">Agent: Value-Ledger-v3</div>
+              <div class="audit-action">Computed ROI narrative from patch compliance delta</div>
+              <div class="audit-ts">2026-07-21 · 09:15 UTC <span class="seed-badge">SEED</span></div>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-actor">System: Scope Check</div>
+              <div class="audit-action">Cross-vendor request blocked — out of scope</div>
+              <div class="audit-ts">2026-07-21 · 09:15 UTC <span class="seed-badge">SEED</span></div>
+            </div>
+          </div>
+
+          <!-- Approval Status -->
+          <div class="gov-panel">
+            <div class="gov-panel-title"><span class="gov-panel-icon">✅</span>Approval Status</div>
+            <div class="approval-block">
+              <div class="approval-status">
+                <div class="approval-icon">⏳</div>
+                <div>
+                  <div class="approval-text">MSP Review Required</div>
+                  <div class="approval-sub">Cascade IT Partners must approve before delivery to Westbrook Financial Services</div>
+                </div>
+              </div>
+              <div style="font-size:10px;font-family:var(--font-mono);color:var(--text-muted);line-height:1.45;padding:6px 0;">
+                MSP owns what their customer sees. Agent output is never delivered without explicit MSP approval. This is not a setting — it is the service model.
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;" aria-label="Submit QBR for MSP review">
+                Submit for Review →
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bradley Rail -->
+  <aside class="bradley-rail" aria-label="Bradley — prototype analysis rail">
+    <div class="rail-inner">
+
+      <div>
+        <div class="bradley-label">Bradley · Council Rail</div>
+      </div>
+
+      <!-- Readiness Badge -->
+      <div class="readiness-badge" role="status" aria-label="Tier 1 Concept — not spec-ready">
+        <span class="readiness-tier">TIER 1</span>
+        <div class="readiness-sep"></div>
+        <span class="readiness-tier" style="color:var(--text-secondary);">CONCEPT</span>
+      </div>
+
+      <!-- Score Block -->
+      <div class="score-block">
+        <div class="score-label">Assumption density</div>
+        <div class="score-value">46% <span style="font-size:13px;color:var(--text-muted);">[A]+[?]</span></div>
+        <div class="score-note">16 of 35 tagged world-claims — grep-verified</div>
+        <div class="score-warn">⚠ Above 30% threshold — NOT SPEC-READY without one operator session</div>
+      </div>
+
+      <!-- What you nailed -->
+      <div class="rail-section">
+        <div class="rail-section-label nailed">What you nailed</div>
+        <div class="nail-item">
+          <span class="nail-icon">✓</span>
+          QBR demand signal is the strongest in the portfolio — #1 across 3 independent instruments
+        </div>
+        <div class="nail-item">
+          <span class="nail-icon">✓</span>
+          Runbook Engine (49/49) is built. Value Ledger is the continuous advisory evidence dashboard — cumulative proof of value the MSP delivers to their end customer. QBR Native generates the snapshot that populates it. The MSP role shifts from operator to advisory partner. This is real architecture, not a concept.
+        </div>
+        <div class="nail-item">
+          <span class="nail-icon">✓</span>
+          Governance layer visible in the prototype without overshadowing the QBR artifact
+        </div>
+        <div class="nail-item">
+          <span class="nail-icon">✓</span>
+          Failure modes named honestly in the brief — counter-metric defined
+        </div>
+      </div>
+
+      <!-- What will hurt you -->
+      <div class="rail-section">
+        <div class="rail-section-label hurt">What will hurt you</div>
+        <div class="hurt-item">
+          <span class="hurt-icon">✗</span>
+          The narrowed job (N-able-native vs. cross-vendor) was never independently tested. The audience may be evaluating a product that doesn't exist yet.
+        </div>
+        <div class="hurt-item">
+          <span class="hurt-icon">✗</span>
+          15-minute edit assumption: ~35% confidence, P0, unowned. If this fails, the MSP sends unreviewed AI output to their customer.
+        </div>
+        <div class="hurt-item">
+          <span class="hurt-icon">✗</span>
+          EU AI Act enforcement 2026-08-02. Compliance owner TBD. A governance-lens council member will ask this in the first 5 minutes.
+        </div>
+        <div class="hurt-item">
+          <span class="hurt-icon">✗</span>
+          QBR Native landing as "a report feature" is the primary failure mode. The governance strip is load-bearing. If it reads as decoration, the prototype fails.
+        </div>
+      </div>
+
+      <!-- Gap Inventory -->
+      <div class="rail-section">
+        <div class="rail-section-label gaps">Gap Inventory</div>
+        <div class="gap-item">
+          <div class="gap-num">1</div>
+          <div class="gap-text">
+            Operator session needed: N-able-native QBR job never tested <span class="gap-tag">[?]</span>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-num">2</div>
+          <div class="gap-text">
+            15-min edit path: ~35% confidence, P0, unowned <span class="gap-tag">[A]</span>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-num">3</div>
+          <div class="gap-text">
+            Gate C (Adlumin data access): technical + legal, unresolved <span class="gap-tag">[?]</span>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-num">4</div>
+          <div class="gap-text">
+            EU AI Act compliance owner: TBD, enforcement 2026-08-02 <span class="gap-tag">[?]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Routing Cards -->
+      <div class="rail-section">
+        <div class="rail-section-label routing">Routing</div>
+
+        <!-- Product -->
+        <div class="routing-card">
+          <div class="routing-card-header" onclick="toggleRouting(this)" role="button" tabindex="0" aria-expanded="false" aria-controls="routing-product">
+            <span class="routing-team team-product">PRODUCT</span>
+            <span class="routing-chevron">▶</span>
+          </div>
+          <div class="routing-body" id="routing-product">
+            <div class="routing-action">Run one operator session before Tier 2. Ask: "Would you use N-able-native QBR alone, or does it need cross-vendor data to be valuable?"</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">Why now: de-risks the core assumption before build spend</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">If you skip it: you spec a product no one wants in its narrowed form</div>
+            <div class="roi-block">
+              <div class="roi-label">ROI</div>
+              <div class="roi-line"><span>Business:</span> De-risks core assumption before build spend</div>
+              <div class="roi-line"><span>User:</span> Gives operators a say in what ships</div>
+              <div class="roi-line"><span>Unknown:</span> Whether N-able-native satisfies the job at all</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Design -->
+        <div class="routing-card">
+          <div class="routing-card-header" onclick="toggleRouting(this)" role="button" tabindex="0" aria-expanded="false" aria-controls="routing-design">
+            <span class="routing-team team-design">DESIGN</span>
+            <span class="routing-chevron">▶</span>
+          </div>
+          <div class="routing-body" id="routing-design">
+            <div class="routing-action">Test the 15-minute edit affordance with one MSP. The edit path is P0 — without it, the QBR value prop collapses.</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">Why now: catches a P0 failure before spec</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">If you skip it: you build an edit flow MSPs don't trust or won't use</div>
+            <div class="roi-block">
+              <div class="roi-label">ROI</div>
+              <div class="roi-line"><span>Business:</span> Catches P0 failure before spec investment</div>
+              <div class="roi-line"><span>User:</span> MSPs retain control over what their customer sees</div>
+              <div class="roi-line"><span>Unknown:</span> How much editing MSPs actually want to do</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Research -->
+        <div class="routing-card">
+          <div class="routing-card-header" onclick="toggleRouting(this)" role="button" tabindex="0" aria-expanded="false" aria-controls="routing-research">
+            <span class="routing-team team-research">RESEARCH</span>
+            <span class="routing-chevron">▶</span>
+          </div>
+          <div class="routing-body" id="routing-research">
+            <div class="routing-action">Measure whether council members exit with the Control Plane frame or the "report feature" frame. Collect verbatim exit quotes.</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">Why now: determines whether the thesis landed</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">If you skip it: you don't know if the governance strip read as load-bearing or decoration</div>
+            <div class="roi-block">
+              <div class="roi-label">ROI</div>
+              <div class="roi-line"><span>Business:</span> Determines whether the thesis landed before Tier 2</div>
+              <div class="roi-line"><span>User:</span> Surfaces whether governance layer is legible</div>
+              <div class="roi-line"><span>Unknown:</span> What makes the governance strip feel real vs. decorative</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eng -->
+        <div class="routing-card">
+          <div class="routing-card-header" onclick="toggleRouting(this)" role="button" tabindex="0" aria-expanded="false" aria-controls="routing-eng">
+            <span class="routing-team team-eng">ENG</span>
+            <span class="routing-chevron">▶</span>
+          </div>
+          <div class="routing-body" id="routing-eng">
+            <div class="routing-action">Name an EU AI Act compliance owner before 2026-08-02. This is a legal/governance decision, not a build task.</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">Why now: enforcement begins in 12 days</div>
+            <div class="routing-action" style="color:var(--text-muted);font-size:9px;">If you skip it: you ship into enforcement exposure with no named owner</div>
+            <div class="roi-block">
+              <div class="roi-label">ROI</div>
+              <div class="roi-line"><span>Business:</span> Avoids enforcement exposure — legal risk</div>
+              <div class="roi-line"><span>User:</span> Unknown — likely invisible to end user</div>
+              <div class="roi-line"><span>Unknown:</span> Scope of N-able's exposure under the Act</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Council -->
+      <div class="rail-section">
+        <div class="rail-section-label council">Council</div>
+        <button class="council-btn" onclick="document.getElementById('council-modal').classList.add('open')" aria-haspopup="dialog" aria-controls="council-modal">
+          ⬡ Open Council — 7 tensions
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+</div>
+
+<!-- Council Modal -->
+<div class="modal-overlay" id="council-modal" role="dialog" aria-modal="true" aria-labelledby="council-modal-title" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="council-modal-title">⬡ Council — Fast Mode · 7 Tensions</div>
+      <button class="modal-close" onclick="document.getElementById('council-modal').classList.remove('open')" aria-label="Close council modal">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 1</div>
+        <div class="tension-vs">Jobs-to-Be-Done vs. Disruptive Innovation</div>
+        <div class="tension-body">JTBD says MSPs want evidence they can show customers. Disruptive theory says a "good enough" N-able-only QBR undercuts cross-vendor aspirations before the market develops.</div>
+        <div class="tension-punchline">→ Ship the native floor first, but name the ceiling.</div>
+      </div>
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 2</div>
+        <div class="tension-vs">Self-Determination Theory vs. Scope Discipline</div>
+        <div class="tension-body">Operators want felt competence — the ability to edit the QBR themselves. The 15-minute edit assumption puts autonomy at the center of the value prop. If the edit path is wrong, SDT predicts disengagement, not workaround.</div>
+        <div class="tension-punchline">→ The edit path isn't a feature. It's the mechanism of trust.</div>
+      </div>
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 3</div>
+        <div class="tension-vs">Value Chain vs. Market Scan</div>
+        <div class="tension-body">Value chain says N-able owns the data layer advantage. Market scan shows Valarian ($50M Series A) and Arcade.dev ($60M) building governance on infrastructure they don't own. The owned-telemetry advantage is real but not permanent.</div>
+        <div class="tension-punchline">→ Time-bounded advantage. Speed matters.</div>
+      </div>
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 4</div>
+        <div class="tension-vs">Service Blueprint vs. Pricing Model</div>
+        <div class="tension-body">The service blueprint of "MSP reviews, approves, sends" requires the pricing model to reward the MSP for time spent. Per-tech-tool pricing penalizes use. Practice-based pricing rewards it. The pricing decision is upstream of the service model.</div>
+        <div class="tension-punchline">→ You can't spec the service without the pricing decision upstream.</div>
+      </div>
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 5</div>
+        <div class="tension-vs">EU AI Act vs. Speed</div>
+        <div class="tension-body">Enforcement is 2026-08-02. No compliance owner named. A governance-first council will ask this in the first five minutes of any stakeholder review.</div>
+        <div class="tension-punchline">→ 12 days. Name an owner or name the risk explicitly.</div>
+      </div>
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 6</div>
+        <div class="tension-vs">Cross-Vendor Gap vs. #1 Demand Signal</div>
+        <div class="tension-body">Demand was measured for cross-vendor QBR. The narrowed job — N-able-native — is an inference from adjacent data. The risk: ship the native floor and lose the market to whoever ships the cross-vendor ceiling first.</div>
+        <div class="tension-punchline">→ The demand signal is real. The product it measured may not be this one.</div>
+      </div>
+
+      <div class="tension-item">
+        <div class="tension-num">Tension 7</div>
+        <div class="tension-vs">Control Plane Thesis vs. Shawn Eftink's Veto</div>
+        <div class="tension-body">Shawn's "won't pay for governance alone" is still real evidence. The reframe says QBR Native makes governance worth paying for. That claim is [A] — it has not been tested.</div>
+        <div class="tension-punchline">→ One operator session tests this. It hasn't happened.</div>
+      </div>
+
+      <div class="synthesis-block">
+        <div class="synthesis-label">Synthesis</div>
+        <div class="synthesis-text">[0% Claude — fill this in]</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Theme toggle
+function setTheme(mode) {
+  const html = document.documentElement;
+  if (mode === 'system') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  } else {
+    html.setAttribute('data-theme', mode);
+  }
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + mode).classList.add('active');
+}
+
+// Routing card toggle
+function toggleRouting(header) {
+  const card = header.parentElement;
+  const body = card.querySelector('.routing-body');
+  const chevron = header.querySelector('.routing-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+  header.setAttribute('aria-expanded', String(!isOpen));
+}
+
+// Routing cards — keyboard support
+document.querySelectorAll('.routing-card-header').forEach(h => {
+  h.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleRouting(h); }
+  });
+});
+
+// Close modal on overlay click
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('council-modal')) {
+    document.getElementById('council-modal').classList.remove('open');
+  }
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('council-modal').classList.remove('open');
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+# Spanning Backup
+slug: spanning
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Spanning Backup is a cloud-to-cloud SaaS backup solution owned by Kaseya, protecting Microsoft 365, Google Workspace, and Salesforce data for 24,000+ organizations. Spanning differentiates through Spanning 360 — which adds phishing defense and dark web monitoring to SaaS backup — creating a bundled SaaS protection offering beyond simple data backup. As a Kaseya subsidiary, Spanning integrates with the broader Kaseya platform and is increasingly part of the unified Kaseya Cyber Resiliency Platform alongside Datto SaaS Protection (Backupify).
+
+## MSP Relevance
+Spanning is a standard MSP resale product for protecting client M365, Google Workspace, and Salesforce environments. For Kaseya-aligned MSPs, Spanning integrates with Autotask PSA and Datto RMM. Its DCIG top-5 ranking for Microsoft 365 SaaS backup (2025-2026) and competitive per-user pricing make it a credible alternative to Veeam Backup for Microsoft 365 and Druva for MSPs prioritizing cost-efficiency. Spanning 360's phishing defense and dark web monitoring expand the product into light security territory.
+
+## Key Offerings & Capabilities
+- Microsoft 365 backup — Exchange, OneDrive, SharePoint, Teams, Calendar, Contacts with automated daily backups
+- Google Workspace backup — Gmail, Drive, Calendar, Contacts protection
+- Salesforce backup — object and field-level backup with granular restore capabilities
+- Spanning 360 — adds AI-assisted phishing defense and dark web monitoring to core SaaS backup
+- Automated user protection — via native Google Groups or Organizational Units (no manual user management)
+- Multi-format export — .pst and .eml export formats for data portability and legal holds
+- Multi-tenant management — single dashboard for MSP management of all client environments
+- PSA and RMM integration — Kaseya BMS, Autotask, Datto RMM connected for billing and ticket automation
+- April 2026 integration — unified restore workflow combining Spanning M365 backup, Datto SaaS Protection, and Datto Backup for Entra ID
+
+## Recent Announcements
+- April 2026: Spanning integrated into Kaseya unified cyber resilience platform — single-workflow restore combining Spanning M365 data, Datto Entra ID backup, and Datto SaaS Protection
+- 2025: South Africa (Cape Town) data center added as new region for M365 backup — expanding data residency options
+- 2025: Automated user protection via Google Groups and Organizational Units — reduces manual MSP configuration time
+- DCIG top-5 ranking for Microsoft 365 SaaS Backup (2025-2026) — independent analyst validation
+- December 2025: Pricing model transition from High Watermark to Committed Minimum Quantity + Variable Consumption model
+
+## Pricing Model
+Per-user per-year pricing. Starting at $48/user/year (standard pricing per G2/public sources). Volume pricing available for larger deployments. Marketed as 30% lower cost than leading competitors. Monthly or annual billing options. Note: users report significant cost escalation for organizations with large data storage needs — base pricing covers standard data volumes; heavy users incur overages. Custom MSP pricing via Kaseya sales; specific MSP partner tiers not publicly disclosed.
+
+## Strengths
+- Salesforce backup is a differentiator vs. most M365/Google-focused SaaS backup competitors — addresses a less-served need
+- Spanning 360 phishing + dark web monitoring expands the product into a bundled security offering, increasing per-user ARPU opportunity
+- DCIG top-5 ranking for M365 backup provides independent analyst validation for MSP selling conversations
+- Automated Google Groups-based user provisioning reduces ongoing management labor for Google Workspace clients
+- South Africa data center (2025) expands compliance options for MSPs serving clients with data residency requirements
+
+## Weaknesses / Gaps
+- Heavy overlap with Backupify (also Kaseya) — two SaaS backup products in the same portfolio creates internal channel confusion
+- Pricing escalation for data-heavy users reduces MSP margin predictability
+- Spanning 360 security features are light compared to dedicated endpoint security vendors — not a replacement for a security stack
+- High Watermark-to-Committed-Minimum pricing transition (December 2025) creates short-term billing uncertainty for MSPs
+- No standalone public pricing for MSP channel tiers — requires Kaseya sales engagement
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Spanning is a SaaS backup product with no meaningful overlap with NZO's AI agent and automation platform. As a Kaseya component, it is part of the broader Kaseya ecosystem NZO monitors — but Spanning itself is not a competitive product to NZO. The April 2026 Kaseya unified cyber resilience platform is more relevant as a competitive signal.
+
+## Notes
+- The Spanning/Backupify portfolio redundancy within Kaseya is worth monitoring — Kaseya may rationalize to a single SaaS backup product, disrupting the channel for whichever product is discontinued
+- Spanning 360's phishing + dark web monitoring additions are Kaseya's attempt to expand revenue per user beyond backup — signal that Kaseya sees backup as a loss leader for security upsell
+- The DCIG top-5 ranking provides MSPs with defensible third-party validation when selling against Veeam and Acronis
+- April 2026 Entra ID integration is strategically important — unifying identity and data restore into a single workflow addresses a real MSP pain point in ransomware recovery scenarios

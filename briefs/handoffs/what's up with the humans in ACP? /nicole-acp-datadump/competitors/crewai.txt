@@ -1,0 +1,57 @@
+# CrewAI
+slug: crewai
+category: AI Agent Control Planes
+last_updated: 2026-05-14
+
+---
+
+## Overview
+CrewAI is an open-source multi-agent AI orchestration framework that enables developers and enterprises to build role-based teams of AI agents collaborating on complex tasks. Each agent in a "crew" has a defined role, backstory, goals, and tool access — enabling structured division of labor across sophisticated workflows. With 47.8K+ GitHub stars, 27M+ downloads, and 150+ enterprise customers executing over 2 billion agent tasks in 12 months, CrewAI is one of the most adopted multi-agent frameworks after LangChain/LangGraph.
+
+## MSP Relevance
+CrewAI is relevant to MSPs building custom multi-agent AI solutions for enterprise clients, particularly in verticals where role-specialized agents (IT analyst, security reviewer, documentation writer) map naturally to existing organizational workflows. For MSPs offering Managed AI Services, CrewAI provides a framework for building structured agent teams without starting from scratch. Its role-driven architecture appeals to MSPs whose clients think about AI in terms of job functions rather than abstract automation pipelines.
+
+## Key Offerings & Capabilities
+- CrewAI Framework — open-source Python library for defining agent roles, goals, backstories, and tool access; agents collaborate on shared tasks
+- Multi-agent orchestration — role-based agent coordination with defined responsibilities, sequential and parallel task execution
+- CrewAI Enterprise (AMP Suite) — cloud-based and on-premises deployment with SOC2 Type II, HIPAA compliance, SSO, PII detection, and dedicated support
+- Memory and tool integration — agents share memory, access external tools, and retrieve from knowledge bases
+- Observability — TrueFoundry integration for production monitoring
+- Enterprise security — secret manager integration, PII detection/masking, uptime SLAs
+- Certified developer community — 100K+ developers trained through community courses
+
+## Recent Announcements
+- October 2024: $18 million funding raised (inception round by boldstart ventures + Series A by Insight Partners)
+- 2B agent executions in 12 months — milestone announced validating production adoption at scale
+- Enterprise AMP Suite launched with cloud and on-premises deployment options
+- SOC2 Type II and HIPAA compliance available in Enterprise tier — addressing regulated industry requirements
+- DocuSign deployed CrewAI for lead data consolidation; PwC for code-generation accuracy improvement
+- 100% of surveyed enterprises plan to expand agentic AI in 2026 (CrewAI State of Agentic AI survey)
+
+## Pricing Model
+Free tier: 50 workflow executions/month. Professional: $25/month (100 workflow executions). Enterprise: $60,000–$120,000/year estimated; includes SOC2/HIPAA compliance, SSO, secret management, PII detection/masking, dedicated support, and uptime SLAs. Open-source framework itself is free — Enterprise pricing covers compliance, managed deployment, and support.
+
+## Strengths
+- Role-driven architecture makes multi-agent design intuitive — maps naturally to how organizations think about team workflows
+- Strong open-source community with 47.8K GitHub stars and 27M+ downloads — ecosystem of pre-built agents and integrations
+- 2B agent executions validates production-scale deployment; not just a demo framework
+- Enterprise compliance tier (SOC2/HIPAA) unlocks regulated industry use cases that competing open-source frameworks cannot address
+- PwC and DocuSign deployments provide credible enterprise case studies
+- Insight Partners backing provides runway for continued development and GTM expansion
+
+## Weaknesses / Gaps
+- Less observability tooling than LangGraph (LangSmith is the production standard; CrewAI uses TrueFoundry which is less widely adopted)
+- Smaller enterprise customer count (150+) vs. LangChain ecosystem scale
+- Professional tier ($25/month) is restrictively limited at 100 workflow executions — meaningful use requires Enterprise at $60K+/year
+- No dedicated MSP or reseller program identified — GTM focused on direct enterprise and developer community
+- Enterprise pricing at $60K-$120K/year places it above what most MSPs can absorb for client-facing deployments
+
+## Competitive Threat to NZO
+Level: Low
+Reason: CrewAI is a developer framework for building multi-agent systems — it is potential infrastructure rather than a competing MSP product. MSPs building proprietary AI orchestration may evaluate CrewAI as an alternative to LangGraph or building from scratch. If NZO uses CrewAI internals or competes in the same enterprise agent-building market, the relevance increases. Currently, CrewAI does not have MSP-specific vertical features or a partner channel.
+
+## Notes
+- The role-driven architecture is CrewAI's most distinctive design choice — worth tracking whether this becomes an industry standard for how agents are defined
+- SOC2/HIPAA in Enterprise tier is a genuine differentiator for healthcare and financial services MSPs
+- The $60K-$120K Enterprise pricing puts CrewAI in the same category as ServiceNow and Workato — large enterprise platform purchases, not MSP tooling
+- Watch whether Insight Partners pushes CrewAI toward an MSP or reseller channel as part of the growth strategy

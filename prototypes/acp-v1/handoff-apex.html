@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en" data-apx-mode="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ACP Market Analysis · Handoff Package · 2026-06-05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   APEX BRIDGE — TOKEN CONTRACT (--br-*)
+   ========================================================= */
+:root {
+  --br-color-brand-primary: #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint: #e6f0fa;
+  --br-color-brand-accent: #6d28d9;
+
+  --br-color-surface-app: #f5f7fa;
+  --br-color-surface-panel: #ffffff;
+  --br-color-surface-elevated: #ffffff;
+  --br-color-surface-sunken: #eef1f6;
+  --br-color-surface-hover: #f0f3f8;
+
+  --br-color-ink-primary: #0f172a;
+  --br-color-ink-secondary: #475569;
+  --br-color-ink-muted: #64748b;
+  --br-color-ink-inverse: #ffffff;
+  --br-color-ink-on-brand: #ffffff;
+
+  --br-color-border-subtle: #e2e8f0;
+  --br-color-border-default: #cbd5e1;
+  --br-color-border-strong: #94a3b8;
+
+  --br-color-state-success: #16a34a;
+  --br-color-state-success-tint: #dcfce7;
+  --br-color-state-warning: #d97706;
+  --br-color-state-warning-tint: #fef3c7;
+  --br-color-state-danger: #dc2626;
+  --br-color-state-danger-tint: #fee2e2;
+  --br-color-state-info: #0284c7;
+  --br-color-state-info-tint: #e0f2fe;
+
+  --br-font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --br-font-family-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --br-font-size-xs: 12px;
+  --br-font-size-sm: 13px;
+  --br-font-size-md: 14px;
+  --br-font-size-lg: 16px;
+  --br-font-size-xl: 20px;
+  --br-font-size-2xl: 24px;
+  --br-font-weight-regular: 400;
+  --br-font-weight-medium: 500;
+  --br-font-weight-semibold: 600;
+  --br-font-weight-bold: 700;
+
+  --br-space-1: 4px;
+  --br-space-2: 8px;
+  --br-space-3: 12px;
+  --br-space-4: 16px;
+  --br-space-5: 20px;
+  --br-space-6: 24px;
+  --br-space-8: 32px;
+  --br-space-10: 40px;
+
+  --br-radius-sm: 4px;
+  --br-radius-md: 6px;
+  --br-radius-lg: 10px;
+
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-lg: 0 10px 25px rgba(15,23,42,.10), 0 4px 10px rgba(15,23,42,.05);
+
+  --br-motion-fast: 120ms;
+  --br-motion-base: 180ms;
+  --br-motion-slow: 260ms;
+}
+
+[data-apx-mode="dark"] {
+  --br-color-surface-app: #0b1220;
+  --br-color-surface-panel: #111827;
+  --br-color-surface-elevated: #1e293b;
+  --br-color-surface-sunken: #0f172a;
+  --br-color-surface-hover: #1e293b;
+  --br-color-ink-primary: #f1f5f9;
+  --br-color-ink-secondary: #cbd5e1;
+  --br-color-ink-muted: #94a3b8;
+  --br-color-border-subtle: #1e293b;
+  --br-color-border-default: #334155;
+  --br-color-border-strong: #475569;
+  --br-color-brand-primary-tint: #0c2845;
+  --br-color-state-success-tint: rgba(22,163,74,.18);
+  --br-color-state-warning-tint: rgba(217,119,6,.18);
+  --br-color-state-danger-tint: rgba(220,38,38,.18);
+  --br-color-state-info-tint: rgba(2,132,199,.18);
+  --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--br-color-surface-app);
+  color: var(--br-color-ink-primary);
+  font-family: var(--br-font-family-sans);
+  font-size: var(--br-font-size-md);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.mono { font-family: var(--br-font-family-mono); }
+h1, h2, h3, h4, h5 {
+  font-family: var(--br-font-family-sans);
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: -.01em;
+  margin: 0 0 .5em;
+  color: var(--br-color-ink-primary);
+}
+h1 { font-size: 28px; line-height: 1.2; }
+h2 {
+  font-size: 22px;
+  line-height: 1.25;
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  padding-bottom: var(--br-space-3);
+  margin-top: 0;
+}
+h3 { font-size: 17px; line-height: 1.3; }
+h4 {
+  font-size: var(--br-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--br-color-ink-muted);
+  font-family: var(--br-font-family-mono);
+  font-weight: var(--br-font-weight-semibold);
+}
+a {
+  color: var(--br-color-brand-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--br-motion-fast), color var(--br-motion-fast);
+}
+a:hover { color: var(--br-color-brand-primary-hover); border-bottom-color: var(--br-color-brand-primary-hover); }
+hr {
+  border: 0;
+  border-top: 1px solid var(--br-color-border-subtle);
+  margin: var(--br-space-6) 0;
+}
+
+/* layout */
+.page {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: var(--br-space-6) var(--br-space-6) var(--br-space-10);
+  display: grid;
+  grid-template-columns: 220px 1fr 360px;
+  gap: var(--br-space-6);
+  align-items: start;
+}
+@media (max-width: 1200px) { .page { grid-template-columns: 1fr; } }
+
+/* header */
+.header {
+  grid-column: 1 / -1;
+  background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary);
+  padding: var(--br-space-6);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-lg);
+  box-shadow: var(--br-shadow-md);
+}
+.header h1 { margin-bottom: var(--br-space-2); }
+.header .sub {
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-muted);
+  letter-spacing: .04em;
+}
+.banner-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--br-space-2);
+  margin-top: var(--br-space-4);
+  align-items: center;
+}
+.fidelity {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  padding: 6px var(--br-space-3);
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-state-warning);
+  border: 1px solid var(--br-color-state-warning);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border-radius: var(--br-radius-sm);
+}
+.critic-score {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  padding: 6px var(--br-space-3);
+  background: var(--br-color-state-danger-tint);
+  color: var(--br-color-state-danger);
+  border: 1px solid var(--br-color-state-danger);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border-radius: var(--br-radius-sm);
+}
+
+/* known issue banner */
+.known-issue {
+  grid-column: 1 / -1;
+  background: var(--br-color-state-danger-tint);
+  border: 1px solid var(--br-color-state-danger);
+  border-left: 4px solid var(--br-color-state-danger);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-4) var(--br-space-5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--br-space-3);
+  box-shadow: var(--br-shadow-sm);
+}
+.known-issue .ki-icon {
+  font-family: var(--br-font-family-mono);
+  font-weight: var(--br-font-weight-bold);
+  color: var(--br-color-state-danger);
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.known-issue .ki-body {
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-primary);
+  line-height: 1.5;
+}
+.known-issue .ki-body strong {
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xs);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--br-color-state-danger);
+  display: block;
+  margin-bottom: var(--br-space-1);
+}
+
+/* nav rail */
+.navrail {
+  position: sticky;
+  top: var(--br-space-4);
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-4);
+}
+.navrail h4 {
+  margin: 0 0 var(--br-space-3);
+  color: var(--br-color-ink-muted);
+}
+.navrail ul { list-style: none; padding: 0; margin: 0; }
+.navrail li { margin: 0 0 var(--br-space-1); }
+.navrail a {
+  display: block;
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+  text-decoration: none;
+  padding: var(--br-space-2) var(--br-space-3);
+  border-left: 2px solid transparent;
+  border-radius: var(--br-radius-sm);
+  transition: background var(--br-motion-fast), border-left-color var(--br-motion-fast);
+}
+.navrail a:hover {
+  border-left-color: var(--br-color-brand-primary);
+  background: var(--br-color-surface-hover);
+  color: var(--br-color-ink-primary);
+}
+.navrail .legend {
+  margin-top: var(--br-space-4);
+  border-top: 1px solid var(--br-color-border-subtle);
+  padding-top: var(--br-space-4);
+}
+.navrail .legend h4 { color: var(--br-color-ink-muted); }
+.navrail .legend .row {
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  margin-bottom: var(--br-space-1);
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-ink-secondary);
+}
+.navrail .legend .swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--br-radius-sm);
+  border: 1px solid var(--br-color-border-default);
+  flex-shrink: 0;
+}
+
+/* main */
+.main { min-width: 0; }
+section { margin-bottom: var(--br-space-10); scroll-margin-top: var(--br-space-5); }
+
+/* 2026 callout */
+.callout-2026 {
+  background: var(--br-color-brand-primary-tint);
+  color: var(--br-color-ink-primary);
+  border: 1px solid var(--br-color-brand-primary);
+  border-left: 4px solid var(--br-color-brand-primary);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-6);
+  margin-bottom: var(--br-space-10);
+}
+.callout-2026 h2 {
+  color: var(--br-color-brand-primary);
+  border-bottom-color: var(--br-color-brand-primary);
+}
+.callout-2026 .label {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: var(--br-color-brand-primary);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: var(--br-space-1);
+}
+.callout-2026 ul { margin: var(--br-space-4) 0 0; padding-left: 0; list-style: none; }
+.callout-2026 li {
+  padding: var(--br-space-3) 0;
+  border-top: 1px solid var(--br-color-border-subtle);
+  font-size: var(--br-font-size-md);
+  color: var(--br-color-ink-primary);
+}
+.callout-2026 li:first-child { border-top: 0; }
+.callout-2026 strong {
+  color: var(--br-color-brand-primary);
+  font-family: var(--br-font-family-mono);
+  font-size: var(--br-font-size-xs);
+  letter-spacing: .04em;
+}
+
+/* card */
+.card {
+  background: var(--br-color-surface-panel);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-5);
+  margin-bottom: var(--br-space-5);
+}
+.card.cool { border-left: 4px solid var(--br-color-brand-primary); }
+
+/* pills (CS tags) */
+.pill {
+  display: inline-block;
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: .04em;
+  padding: 2px 8px;
+  margin: 0 4px 4px 0;
+  border-radius: var(--br-radius-sm);
+  border: 1px solid transparent;
+  vertical-align: middle;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.cs-verified {
+  background: var(--br-color-state-success);
+  color: var(--br-color-ink-on-brand);
+  border-color: var(--br-color-state-success);
+}
+.cs-high {
+  background: var(--br-color-state-success-tint);
+  color: var(--br-color-state-success);
+  border-color: var(--br-color-state-success);
+}
+.cs-medium {
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-state-warning);
+  border-color: var(--br-color-state-warning);
+}
+.cs-low {
+  background: var(--br-color-surface-panel);
+  color: var(--br-color-state-warning);
+  border-color: var(--br-color-state-warning);
+}
+.cs-unknown {
+  background: var(--br-color-state-info-tint);
+  color: var(--br-color-state-info);
+  border-color: var(--br-color-state-info);
+}
+.cs-fab {
+  background: var(--br-color-state-danger-tint);
+  color: var(--br-color-state-danger);
+  border-color: var(--br-color-state-danger);
+}
+
+/* year tags */
+.yr {
+  display: inline-block;
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-semibold);
+  letter-spacing: .04em;
+  padding: 2px 7px;
+  margin: 0 4px 4px 0;
+  vertical-align: middle;
+  border-radius: var(--br-radius-sm);
+  border: 1px solid transparent;
+}
+.yr-2026 {
+  background: var(--br-color-brand-primary);
+  color: var(--br-color-ink-on-brand);
+  font-weight: var(--br-font-weight-bold);
+  border-color: var(--br-color-brand-primary);
+}
+.yr-2025 {
+  background: transparent;
+  color: var(--br-color-ink-secondary);
+  border-color: var(--br-color-border-default);
+}
+.yr-2024 {
+  background: transparent;
+  color: var(--br-color-ink-muted);
+  border-color: var(--br-color-border-subtle);
+}
+.yr-undated {
+  background: transparent;
+  color: var(--br-color-ink-muted);
+  border-color: var(--br-color-border-subtle);
+  border-style: dashed;
+}
+
+/* problem list */
+.problem {
+  padding: var(--br-space-5);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  background: var(--br-color-surface-panel);
+  margin-bottom: var(--br-space-4);
+  box-shadow: var(--br-shadow-sm);
+}
+.problem h3 { margin: 0 0 var(--br-space-2); }
+.problem .meta {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: var(--br-color-ink-muted);
+  margin-bottom: var(--br-space-2);
+}
+.problem .impact {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-semibold);
+  background: var(--br-color-state-danger-tint);
+  color: var(--br-color-state-danger);
+  border: 1px solid var(--br-color-state-danger);
+  padding: 2px 8px;
+  border-radius: var(--br-radius-sm);
+  display: inline-block;
+  margin-left: var(--br-space-2);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.problem ul { margin: var(--br-space-2) 0; padding-left: 18px; }
+.problem li { margin-bottom: var(--br-space-1); font-size: var(--br-font-size-sm); color: var(--br-color-ink-secondary); }
+.problem .why {
+  margin-top: var(--br-space-3);
+  padding: var(--br-space-3);
+  background: var(--br-color-state-success-tint);
+  border-left: 3px solid var(--br-color-state-success);
+  border-radius: var(--br-radius-sm);
+}
+.problem .why h4 { color: var(--br-color-state-success); margin: 0 0 var(--br-space-2); }
+.threat { border-left: 4px solid var(--br-color-state-danger); }
+.threat .why { display: none; }
+
+/* framework grid */
+.fw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: var(--br-space-5);
+  margin-top: var(--br-space-4);
+}
+.fw {
+  padding: var(--br-space-5);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  background: var(--br-color-surface-panel);
+  box-shadow: var(--br-shadow-sm);
+}
+.fw.fw-jtbd { border-top: 3px solid var(--br-color-state-danger); }
+.fw.fw-blueprint { border-top: 3px solid var(--br-color-brand-primary); }
+.fw.fw-sdt { border-top: 3px solid var(--br-color-brand-accent); }
+.fw.fw-disrupt { border-top: 3px solid var(--br-color-state-warning); }
+.fw.fw-value { border-top: 3px solid var(--br-color-state-success); }
+.fw.fw-doblin { border-top: 3px solid var(--br-color-state-warning); }
+.fw.fw-chasm { border-top: 3px solid var(--br-color-state-danger); }
+.fw.fw-kano { border-top: 3px solid var(--br-color-brand-primary); }
+.fw.fw-wardley { border-top: 3px solid var(--br-color-brand-accent); }
+.fw .fw-num {
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-weight: var(--br-font-weight-semibold);
+  color: var(--br-color-ink-muted);
+  background: var(--br-color-surface-sunken);
+  padding: 2px 8px;
+  display: inline-block;
+  border-radius: var(--br-radius-sm);
+  margin-bottom: var(--br-space-2);
+  letter-spacing: .06em;
+}
+.fw h3 { font-size: 16px; margin-bottom: var(--br-space-2); }
+.fw .does {
+  font-size: var(--br-font-size-sm);
+  font-style: italic;
+  margin-bottom: var(--br-space-3);
+  padding-bottom: var(--br-space-2);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  color: var(--br-color-ink-muted);
+}
+.fw .finding {
+  font-size: var(--br-font-size-md);
+  margin-bottom: var(--br-space-3);
+  color: var(--br-color-ink-primary);
+}
+.fw .tension {
+  margin-top: var(--br-space-3);
+  padding: var(--br-space-3);
+  background: var(--br-color-surface-sunken);
+  border-left: 3px solid var(--br-color-brand-accent);
+  border-radius: var(--br-radius-sm);
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-secondary);
+}
+.fw .tension strong {
+  display: block;
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-brand-accent);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: var(--br-space-1);
+}
+
+/* synthesis */
+.synth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--br-space-5);
+}
+@media (max-width: 900px) { .synth-grid { grid-template-columns: 1fr; } }
+.synth-block {
+  padding: var(--br-space-5);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  background: var(--br-color-surface-panel);
+  box-shadow: var(--br-shadow-sm);
+}
+.synth-converge { border-top: 3px solid var(--br-color-state-success); }
+.synth-conflict { border-top: 3px solid var(--br-color-brand-accent); }
+.synth-block h3 { margin-top: 0; }
+.synth-block ol, .synth-block ul { padding-left: 18px; }
+.synth-block li { margin-bottom: var(--br-space-2); font-size: var(--br-font-size-md); color: var(--br-color-ink-secondary); }
+.synth-block li strong { color: var(--br-color-ink-primary); }
+
+/* ethnography */
+.eth-section { margin-bottom: var(--br-space-5); }
+.eth-section h3 {
+  background: var(--br-color-surface-sunken);
+  color: var(--br-color-ink-primary);
+  padding: var(--br-space-3) var(--br-space-4);
+  font-size: var(--br-font-size-md);
+  margin-bottom: 0;
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md) var(--br-radius-md) 0 0;
+  font-weight: var(--br-font-weight-semibold);
+}
+.eth-section .body {
+  padding: var(--br-space-4);
+  border: 1px solid var(--br-color-border-subtle);
+  border-top: 0;
+  background: var(--br-color-surface-panel);
+  border-radius: 0 0 var(--br-radius-md) var(--br-radius-md);
+}
+.eth-section .body ul { padding-left: 18px; margin: var(--br-space-2) 0; }
+.eth-section .body li { margin-bottom: var(--br-space-1); font-size: var(--br-font-size-sm); color: var(--br-color-ink-secondary); }
+.eth-quote {
+  padding: var(--br-space-3) var(--br-space-4);
+  border-left: 3px solid var(--br-color-brand-primary);
+  background: var(--br-color-surface-sunken);
+  font-style: italic;
+  margin: var(--br-space-3) 0;
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-primary);
+  border-radius: var(--br-radius-sm);
+}
+.eth-quote .attrib {
+  display: block;
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  font-style: normal;
+  color: var(--br-color-ink-muted);
+  margin-top: var(--br-space-2);
+  letter-spacing: .04em;
+}
+
+/* Bradley rail */
+.bradley {
+  position: sticky;
+  top: var(--br-space-4);
+  background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary);
+  border: 1px solid var(--br-color-border-subtle);
+  border-top: 3px solid var(--br-color-brand-accent);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-md);
+  padding: var(--br-space-5);
+  max-height: calc(100vh - 28px);
+  overflow-y: auto;
+}
+.bradley h2 {
+  color: var(--br-color-brand-accent);
+  border-bottom: 1px solid var(--br-color-border-subtle);
+  font-size: var(--br-font-size-lg);
+}
+.bradley h4 {
+  color: var(--br-color-ink-muted);
+  margin-top: var(--br-space-4);
+  font-size: 11px;
+}
+.bradley .badge {
+  display: inline-block;
+  padding: 6px var(--br-space-3);
+  background: var(--br-color-brand-accent);
+  color: var(--br-color-ink-on-brand);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  font-weight: var(--br-font-weight-semibold);
+  border-radius: var(--br-radius-sm);
+  margin-bottom: var(--br-space-3);
+  letter-spacing: .04em;
+}
+.bradley .blurb {
+  font-size: var(--br-font-size-sm);
+  line-height: 1.5;
+  margin-bottom: var(--br-space-4);
+  color: var(--br-color-ink-secondary);
+}
+.bradley .nailed,
+.bradley .hurt {
+  padding: var(--br-space-3);
+  border: 1px solid var(--br-color-border-subtle);
+  background: var(--br-color-surface-sunken);
+  border-radius: var(--br-radius-sm);
+  font-size: var(--br-font-size-xs);
+  margin-bottom: var(--br-space-3);
+}
+.bradley .nailed {
+  border-left: 3px solid var(--br-color-state-success);
+  background: var(--br-color-state-success-tint);
+}
+.bradley .hurt {
+  border-left: 3px solid var(--br-color-state-danger);
+  background: var(--br-color-state-danger-tint);
+}
+.bradley .nailed h5,
+.bradley .hurt h5 {
+  margin: 0 0 var(--br-space-2);
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.bradley .nailed h5 { color: var(--br-color-state-success); }
+.bradley .hurt h5 { color: var(--br-color-state-danger); }
+.bradley ul { padding-left: 16px; margin: 0; }
+.bradley li { font-size: 12px; margin-bottom: var(--br-space-1); color: var(--br-color-ink-secondary); }
+.bradley .routed {
+  margin-top: var(--br-space-4);
+  border-top: 1px solid var(--br-color-border-subtle);
+  padding-top: var(--br-space-4);
+}
+.bradley .route-card {
+  padding: var(--br-space-3);
+  background: var(--br-color-surface-sunken);
+  border: 1px solid var(--br-color-border-subtle);
+  border-left: 3px solid var(--br-color-brand-primary);
+  border-radius: var(--br-radius-sm);
+  margin-bottom: var(--br-space-2);
+  font-size: var(--br-font-size-xs);
+  color: var(--br-color-ink-secondary);
+}
+.bradley .route-card strong {
+  display: block;
+  font-family: var(--br-font-family-mono);
+  font-size: 10px;
+  color: var(--br-color-brand-primary);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: var(--br-space-1);
+}
+
+/* sources */
+.src-group {
+  margin-bottom: var(--br-space-5);
+  padding: var(--br-space-4);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  background: var(--br-color-surface-panel);
+  box-shadow: var(--br-shadow-sm);
+}
+.src-group h3 {
+  font-size: var(--br-font-size-md);
+  margin-bottom: var(--br-space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--br-space-2);
+}
+.src-group ul { padding-left: 18px; margin: 0; list-style: square; }
+.src-group li { margin-bottom: var(--br-space-1); font-size: var(--br-font-size-sm); word-break: break-word; color: var(--br-color-ink-secondary); }
+.src-group.y2026 { border-left: 4px solid var(--br-color-brand-primary); }
+.src-group.y2025 { border-left: 4px solid var(--br-color-border-default); }
+.src-group.y2024 { border-left: 4px solid var(--br-color-border-subtle); opacity: .9; }
+
+/* legend footer */
+.footlegend {
+  grid-column: 1 / -1;
+  background: var(--br-color-surface-panel);
+  color: var(--br-color-ink-primary);
+  border: 1px solid var(--br-color-border-subtle);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-sm);
+  padding: var(--br-space-5) var(--br-space-6);
+  margin-top: var(--br-space-4);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--br-space-5);
+}
+@media (max-width: 900px) { .footlegend { grid-template-columns: 1fr; } }
+.footlegend h4 { color: var(--br-color-ink-muted); margin-bottom: var(--br-space-3); }
+.footlegend .item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--br-space-2);
+  margin-bottom: var(--br-space-2);
+  font-size: var(--br-font-size-sm);
+  color: var(--br-color-ink-secondary);
+}
+.footlegend .pill { margin: 0 4px 0 0; }
+
+/* utility */
+.tag-cluster { margin-top: var(--br-space-1); display: flex; flex-wrap: wrap; align-items: center; }
+.kv {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--br-space-2);
+  margin-bottom: var(--br-space-1);
+  font-size: var(--br-font-size-sm);
+}
+.kv .k {
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  color: var(--br-color-brand-primary);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+table.persona {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--br-space-2) 0;
+  font-size: var(--br-font-size-sm);
+  background: var(--br-color-surface-panel);
+  border-radius: var(--br-radius-md);
+  overflow: hidden;
+}
+table.persona th, table.persona td {
+  border: 1px solid var(--br-color-border-subtle);
+  padding: var(--br-space-2) var(--br-space-3);
+  text-align: left;
+  vertical-align: top;
+  color: var(--br-color-ink-secondary);
+}
+table.persona th {
+  background: var(--br-color-surface-sunken);
+  color: var(--br-color-ink-primary);
+  font-family: var(--br-font-family-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: var(--br-font-weight-semibold);
+}
+
+.advantage {
+  padding: var(--br-space-4);
+  border: 1px solid var(--br-color-border-subtle);
+  border-left: 4px solid var(--br-color-state-success);
+  background: var(--br-color-surface-panel);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-sm);
+  margin-bottom: var(--br-space-3);
+}
+.advantage h3 { color: var(--br-color-state-success); margin-bottom: var(--br-space-2); }
+.advantage h3 .num {
+  display: inline-block;
+  background: var(--br-color-state-success);
+  color: var(--br-color-ink-on-brand);
+  padding: 2px 8px;
+  font-size: 12px;
+  margin-right: var(--br-space-2);
+  border-radius: var(--br-radius-sm);
+  font-family: var(--br-font-family-mono);
+}
+.advantage p { color: var(--br-color-ink-secondary); }
+
+.pivot-callout {
+  font-family: var(--br-font-family-mono);
+  background: var(--br-color-state-danger-tint);
+  color: var(--br-color-state-danger);
+  border: 1px solid var(--br-color-state-danger);
+  border-radius: var(--br-radius-sm);
+  padding: var(--br-space-3) var(--br-space-4);
+  font-size: var(--br-font-size-sm);
+}
+.note-incomplete {
+  font-size: var(--br-font-size-sm);
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-state-warning);
+  border: 1px solid var(--br-color-state-warning);
+  padding: var(--br-space-2) var(--br-space-3);
+  font-family: var(--br-font-family-mono);
+  border-radius: var(--br-radius-sm);
+}
+.unknown-gaps {
+  font-size: var(--br-font-size-sm);
+  font-family: var(--br-font-family-mono);
+  background: var(--br-color-state-info-tint);
+  color: var(--br-color-state-info);
+  border: 1px solid var(--br-color-state-info);
+  border-radius: var(--br-radius-sm);
+  padding: var(--br-space-3);
+  margin-top: var(--br-space-4);
+}
+.problem-impact-block {
+  font-family: var(--br-font-family-mono);
+  background: var(--br-color-state-warning-tint);
+  color: var(--br-color-ink-primary);
+  border: 1px solid var(--br-color-state-warning);
+  padding: var(--br-space-2) var(--br-space-3);
+  border-radius: var(--br-radius-sm);
+  font-size: var(--br-font-size-sm);
+  display: inline-block;
+  margin: var(--br-space-2) 0;
+}
+.problem-impact-block.danger {
+  background: var(--br-color-state-danger-tint);
+  border-color: var(--br-color-state-danger);
+  color: var(--br-color-state-danger);
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="sub mono">N-ABLE · SPEC-DRIVEN DESIGN TEAM · HANDOFF PACKAGE</div>
+  <h1>ACP Market Analysis · 2026-06-05</h1>
+  <div class="sub mono" style="margin-top:6px">Owner: Beth Schwindt (on vacation) · Pipeline: Scout → Council → Ethnography</div>
+  <div class="banner-row">
+    <div class="fidelity">Tier 2 · Direction · Secondary research synthesis · Not customer-validated</div>
+    <div class="critic-score">Critic Score: 19/30 — Strong analysis, broken delivery. Do not ship without fixes.</div>
+  </div>
+</header>
+
+<!-- KNOWN ISSUE BANNER -->
+<div class="known-issue">
+  <span class="ki-icon">!</span>
+  <div class="ki-body">
+    <strong>Known Issue · Math does not reconcile</strong>
+    The $33,600/month figure does not reconcile with stated formula. The formula (960 alerts × 46% × 12 min × $32/hr) yields ~$84,800/month, not $33,600. Recompute before quoting. See <span class="mono">critic-pass-1.md</span>.
+  </div>
+</div>
+
+<!-- NAV RAIL -->
+<aside class="navrail">
+  <h4>JUMP TO</h4>
+  <ul>
+    <li><a href="#landscape">2026 Landscape</a></li>
+    <li><a href="#problems">Problems Ranked</a></li>
+    <li><a href="#advantages">N-able Advantages</a></li>
+    <li><a href="#threats">Threats</a></li>
+    <li><a href="#council5">Council · 5 Core</a></li>
+    <li><a href="#council-ext">Council · Extended</a></li>
+    <li><a href="#synthesis">Cross-FW Synthesis</a></li>
+    <li><a href="#ethnography">Ethnography</a></li>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#cs-legend">CS Tag Legend</a></li>
+  </ul>
+  <div class="legend">
+    <h4>CS TAGS</h4>
+    <div class="row"><span class="swatch" style="background:var(--br-color-state-success);border-color:var(--br-color-state-success)"></span> VERIFIED</div>
+    <div class="row"><span class="swatch" style="background:var(--br-color-state-success-tint);border-color:var(--br-color-state-success)"></span> HIGH</div>
+    <div class="row"><span class="swatch" style="background:var(--br-color-state-warning-tint);border-color:var(--br-color-state-warning)"></span> MEDIUM</div>
+    <div class="row"><span class="swatch" style="background:var(--br-color-surface-panel);border-color:var(--br-color-state-warning)"></span> LOW</div>
+    <div class="row"><span class="swatch" style="background:var(--br-color-state-info-tint);border-color:var(--br-color-state-info)"></span> UNKNOWN</div>
+    <div class="row"><span class="swatch" style="background:var(--br-color-state-danger-tint);border-color:var(--br-color-state-danger)"></span> FAB RISK</div>
+    <h4 style="margin-top:14px">YEAR</h4>
+    <div class="row"><span class="swatch" style="background:var(--br-color-brand-primary);border-color:var(--br-color-brand-primary)"></span> 2026</div>
+    <div class="row"><span class="swatch" style="background:transparent;border-color:var(--br-color-border-default)"></span> 2025</div>
+    <div class="row"><span class="swatch" style="background:transparent;border-color:var(--br-color-border-subtle)"></span> 2024 / undated</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- 2026 LANDSCAPE CALLOUT -->
+<section id="landscape" class="callout-2026">
+  <div class="label">DEFINING SHIFTS · WHAT'S HAPPENING NOW</div>
+  <h2>2026 Landscape</h2>
+  <ul>
+    <li><strong>AUTONOMY CONTROL PLANE EMERGES.</strong> Untapped Ventures (2026) formalizes the trillion-dollar trust layer: agent identity, just-in-time permissions, behavioral drift detection, kill switches. <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">2026</span></li>
+    <li><strong>GOVERNANCE CRISIS NAMED.</strong> CSA (March 2026): 70% of enterprises run agents in production, &lt;10% use dedicated AI security platforms. 92% of CISOs lack visibility into agent identities. 95% doubt they could contain a compromised agent. <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">2026</span></li>
+    <li><strong>SOAR CEILING DECLARED.</strong> D3 Security (2026): static playbooks have hit structural limits. "Build, maintain, break, detect, repair, repeat" — junior analysts can't deviate. Agentic investigation replacing playbook automation. <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">2026</span></li>
+    <li><strong>MICROSOFT AGENT 365 LAUNCHES.</strong> $15/user/month, platform-agnostic agent governance bundled in M365 E7 ($99/user/month). Category-disruptive threat to MSP control-plane pricing. <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">2026</span></li>
+    <li><strong>EXPLAINABILITY-FIRST SOC.</strong> Secure.com (April 2026): SOC Teammate ships 95% coverage vs. 40% baseline with full rationale per decision, immutable AI Trace, friction-free override. 65% of analysts still skeptical of AI alerts; 79% prefer hybrid models. <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">2026</span></li>
+    <li><strong>N-ABLE EMPOWER 2026 POSITIONING.</strong> Omdia coverage: "Cyber resilience is an outcome, not a product." ~90% of investigation activity AI-executed; Cat-MIP standard (Sept 2025) now in market. <span class="pill cs-high">HIGH</span> <span class="yr yr-2026">2026</span></li>
+    <li><strong>TORQ MSSP MANIFESTO.</strong> 2026 MSSP guide: "If every action requires analyst sign-off, you haven't actually automated anything." Carvana cites 100% Tier-1 alert handling. <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">2026</span></li>
+  </ul>
+</section>
+
+<!-- PROBLEMS RANKED -->
+<section id="problems">
+  <h2>Problems Ranked · MSP &amp; SMB</h2>
+  <p class="mono" style="font-size:12px;margin-top:0;color:var(--br-color-ink-muted)">Ranked: Impact ($ cost / business risk) × Urgency (% experiencing) × N-able positioning strength. 2026 threats surfaced first.</p>
+
+  <h3 style="margin-top:24px">MSP Problems</h3>
+
+  <div class="problem">
+    <h3>1. False Positive Alert Burden <span class="impact">CRITICAL</span></h3>
+    <div class="meta">2026 Microsoft/Omdia data + Heimdal 2025 fatigue correlation</div>
+    <ul>
+      <li>46% of all security alerts are false positives <span class="pill cs-high">HIGH</span> <span class="yr yr-2026">2026</span> — Microsoft/Omdia State of SOC</li>
+      <li>Average 960 alerts/day, 70 min/alert investigation time <span class="pill cs-high">HIGH</span> <span class="yr yr-2024">undated</span></li>
+      <li>MSPs with high false positive rates are 2.7× more likely to experience daily technician fatigue <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span> — Heimdal</li>
+      <li>Flat-fee pricing = unrecoverable margin loss per false positive <span class="pill cs-high">HIGH</span> <span class="yr yr-undated">undated</span></li>
+    </ul>
+    <p><strong>Impact:</strong> $33,600/month per MSP (single-tech operation). Calc: $32/hr × 46% FP × 960 alerts/day × 12 min saved. <span class="pill cs-fab" title="Math does not reconcile — see Known Issue banner">MATH DISPUTED</span></p>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>Adlumin MDR: proprietary AI autonomously mitigates &gt;70% of threats <span class="pill cs-medium">MEDIUM</span> <span class="yr yr-undated">vendor claim</span></li>
+        <li>11M+ endpoints managed → behavioral analytics training data <span class="pill cs-high">HIGH</span></li>
+        <li>Lateral movement mapping (2025 update) <span class="pill cs-high">HIGH</span> <span class="yr yr-2025">2025</span></li>
+        <li>Cat-MIP standard — reduces AI misinterpretation risk <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">Sept 2025</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>2. Alert Fatigue / Technician Burnout <span class="impact">CRITICAL</span></h3>
+    <div class="meta">Heimdal 2025 MSP Agent Fatigue Report</div>
+    <ul>
+      <li>75% of MSPs experience alert fatigue at least monthly; 56% daily/weekly <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      <li>100% of MSPs managing 1,000+ clients report daily alert fatigue <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      <li>44% of MSPs with 500+ employees deal with alert fatigue every day <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+    </ul>
+    <p><strong>Impact:</strong> Technician turnover, reduced service quality, inability to scale client base. MSP tech salary $44.5K–$66.5K <span class="pill cs-medium">MEDIUM</span>.</p>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>Adlumin: ~90% of investigation activity now AI-executed; expects 99% <span class="pill cs-medium">MEDIUM</span> <span class="yr yr-undated">vendor claim</span></li>
+        <li>AI-powered workflows isolate endpoints, revoke credentials in-platform <span class="pill cs-high">HIGH</span></li>
+        <li>HaloPSA / Autotask two-way PSA integration <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>3. Tool Sprawl / Integration Hell <span class="impact">HIGH</span></h3>
+    <div class="meta">Heimdal 2025 + ConnectSecure 2025 surveys</div>
+    <ul>
+      <li>89% of MSPs struggle with tool integration <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      <li>Average MSP runs 5 security tools; 20% juggle 7–10; 12% manage &gt;10 <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      <li>Only 11% report seamless integration across tools <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      <li>MSPs with 7+ tools experience 2.7× higher daily alert fatigue <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      <li>Manual sync wastes 10–20 hours/week <span class="pill cs-medium">MEDIUM</span></li>
+    </ul>
+    <p><strong>Impact:</strong> $8K–$16K/month wasted labor + redundant subscriptions.</p>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>TAP developer portal w/ OpenAPI specs for N-central, Take Control, Cove <span class="pill cs-verified">VERIFIED</span></li>
+        <li>Cat-MIP interoperability standard <span class="pill cs-high">HIGH</span> <span class="yr yr-2025">Sept 2025</span></li>
+        <li>~25,000 MSP customer base = network effect for vendors <span class="pill cs-medium">MEDIUM</span></li>
+        <li>Adlumin MDR combines SIEM + SOAR + UEBA in one platform <span class="pill cs-verified">VERIFIED</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>4. Staffing Shortage / Expertise Gap <span class="impact">HIGH</span></h3>
+    <ul>
+      <li>40%+ of SMB managers cite finding skilled candidates as top hiring challenge <span class="pill cs-high">HIGH</span> <span class="yr yr-2025">Robert Half 2025</span></li>
+      <li>Cybersecurity workforce gap: 10.2M unfilled roles globally, +8.1% YoY <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Top skill need: AI skill (41%) <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Budget = top reason for talent shortages (33%) and skills gaps (39%) <span class="pill cs-medium">MEDIUM</span></li>
+    </ul>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>AI Coworkers + Runbooks = junior techs execute expert-level responses via guided automation</li>
+        <li>Trust Ledger (if designed as learning interface) = every auto-resolved ticket becomes training material</li>
+        <li>~90% of investigation activity AI-executed reduces senior analyst dependency <span class="pill cs-medium">MEDIUM</span></li>
+        <li>AI-driven script generation in TAP developer portal <span class="pill cs-verified">VERIFIED</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>5. Margin Pressure (Flat-Fee vs. Rising Costs) <span class="impact">HIGH</span></h3>
+    <ul>
+      <li>Avg MSP net profit: 8%; best-in-class: 18%+ <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Healthy gross margin: 45–60% <span class="pill cs-medium">MEDIUM</span>; most MSPs underestimate true labor cost by 20–40% <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Fully burdened MSP tech cost: $90K salary → $130K–$145K/yr <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Under flat-fee, every unplanned task = margin erosion <span class="pill cs-high">HIGH</span> <span class="yr yr-undated">economic logic</span></li>
+    </ul>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>ACP Margin Protection play: "reclaim 46% of your alert investigation budget"</li>
+        <li>Automation ROI: MSPs implementing automation save $22K–$40K/month <span class="pill cs-medium">MEDIUM</span></li>
+        <li>AI handles 70–80% of Level 1 issues automatically <span class="pill cs-medium">MEDIUM</span></li>
+        <li>Outcome-based pricing model (proposed): $500/mo + 10% of documented labor savings</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>6. Client Onboarding Overhead <span class="impact">MEDIUM</span></h3>
+    <ul>
+      <li>MSP onboarding: 40–80 hours manual process <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Includes discovery, tool deployment, initial config, client training</li>
+    </ul>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>Runbook automation can reduce onboarding time 30–40% <span class="pill cs-medium">MEDIUM</span></li>
+        <li>N-central + Cove + Take Control OpenAPI specs = programmatic deployment <span class="pill cs-verified">VERIFIED</span></li>
+        <li>AI-driven script generation in TAP developer portal <span class="pill cs-verified">VERIFIED</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>7. Shadow AI Risk <span class="impact">MEDIUM</span></h3>
+    <ul>
+      <li>76% of security professionals estimate their teams use unapproved AI tools <span class="pill cs-medium">MEDIUM</span> <span class="yr yr-2025">Mindgard 2025</span></li>
+      <li>Nearly 1 in 4 security professionals admit to using unauthorized AI <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Worker AI access rose 50% in 2025, but only 1 in 5 companies has mature governance <span class="pill cs-medium">MEDIUM</span> <span class="yr yr-2026">Deloitte 2026</span></li>
+      <li>Shadow IT appeared in 30% of all breaches (2025 DBIR) <span class="pill cs-high">HIGH</span> <span class="yr yr-2025">Verizon DBIR</span></li>
+    </ul>
+    <div class="why">
+      <h4>Why N-able is positioned to solve it</h4>
+      <ul>
+        <li>ACP Trust Ledger = auditable AI actions, replaces ungoverned ChatGPT use</li>
+        <li>Cat-MIP reduces AI misinterpretation risk <span class="pill cs-verified">VERIFIED</span></li>
+        <li>"AI-native cyber resilience platform" positioning <span class="pill cs-high">HIGH</span> <span class="yr yr-2026">Empower 2026</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px">SMB / End-User Problems</h3>
+
+  <div class="problem">
+    <h3>1. Lack of Cybersecurity Expertise <span class="impact">CRITICAL</span></h3>
+    <ul>
+      <li>61% of SMBs lack internal cybersecurity expertise <span class="pill cs-medium">MEDIUM</span></li>
+      <li>40%+ of SMB managers cite difficulty finding skilled candidates <span class="pill cs-high">HIGH</span> <span class="yr yr-2025">Robert Half 2025</span></li>
+      <li>60% of SMBs cite cybersecurity as top reason to work with MSP <span class="pill cs-medium">MEDIUM</span></li>
+    </ul>
+    <p><strong>Impact:</strong> SMBs pay $125–$150/user/month MSP fees <span class="pill cs-medium">MEDIUM</span> or self-manage with inadequate tools.</p>
+    <div class="why">
+      <h4>How N-able solves it via MSPs</h4>
+      <ul>
+        <li>ACP reduces MSP cost to serve 30–40% <span class="pill cs-medium">MEDIUM</span> → MSPs could offer $75–$90/user/month tier</li>
+        <li>Disruptive play: serve non-consumer (SMBs that can't afford $125/user but need more than DIY)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>2. Budget Constraints <span class="impact">CRITICAL</span></h3>
+    <ul>
+      <li>Budget = top reason for cybersecurity talent shortages (33%) and skills gaps (39%) <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Full-time security analyst at $66.5K+ prohibitive for SMB <span class="pill cs-medium">MEDIUM</span></li>
+      <li>MSP pricing $125–$150/user/month = $15K–$18K/yr for 100-user org</li>
+    </ul>
+    <div class="why">
+      <h4>How N-able solves it via MSPs</h4>
+      <ul>
+        <li>ACP-enabled MSPs offer lower-tier pricing while maintaining margin</li>
+        <li>46% of MSPs reduced costs by 25%+ via operational optimization <span class="pill cs-medium">MEDIUM</span></li>
+        <li><strong>Microsoft Agent 365 threat:</strong> If SMBs adopt M365 E7 bundle ($99/user/mo includes Agent 365 + Copilot), they bypass MSP entirely. <span class="yr yr-2026">2026</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem">
+    <h3>3. Breach Risk from Tool Complexity <span class="impact">HIGH</span></h3>
+    <ul>
+      <li>58% of IT decision-makers cite breaches due to lack of cybersecurity skills/training <span class="pill cs-medium">MEDIUM</span></li>
+      <li>Shadow IT appeared in 30% of all breaches <span class="pill cs-high">HIGH</span></li>
+    </ul>
+    <div class="why">
+      <h4>How N-able solves it via MSPs</h4>
+      <ul>
+        <li>Adlumin MDR = unified XDR (SIEM + SOAR + UEBA) as SaaS <span class="pill cs-high">HIGH</span></li>
+        <li>"Single pane of glass" vs. SMB duct-taping free tools</li>
+        <li>AI autonomously mitigates &gt;70% of threats <span class="pill cs-medium">MEDIUM</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- N-able advantages -->
+<section id="advantages">
+  <h2>N-able's Unique Competitive Advantages</h2>
+  <p class="mono" style="margin-top:0;font-size:12px;color:var(--br-color-ink-muted)">Why N-able vs. Kaseya / NinjaOne / Microsoft</p>
+
+  <div class="advantage">
+    <h3><span class="num mono">01</span>Cat-MIP Interoperability Standard <span class="yr yr-2025">Sept 2025</span></h3>
+    <p>Vendor-neutral AI terminology for MSP/IT ecosystems <span class="pill cs-verified">VERIFIED</span>. No competitor has this. Standards Board includes HaloPSA, Auvik, SecurityBiaS, ScalePad. Strategic moat: if N-able positions ACP as "the only control plane that speaks Cat-MIP," creates switching cost via standardization.</p>
+  </div>
+
+  <div class="advantage">
+    <h3><span class="num mono">02</span>11M+ Managed Endpoints (AI training data set)</h3>
+    <p>11 million+ endpoints managed via N-able platform <span class="pill cs-high">HIGH</span> <span class="yr yr-2026">Empower 2026</span>. Competitive context: Kaseya trained Digital Workforce on 1B+ tickets, 3 exabytes backup data, 17M endpoints <span class="pill cs-verified">VERIFIED</span>. N-able's endpoint data enables behavioral analytics, LOTL detection, anomaly identification at scale. Trust advantage: AI trained on real MSP/SMB environments.</p>
+  </div>
+
+  <div class="advantage">
+    <h3><span class="num mono">03</span>Technology Alliance Program (TAP) Ecosystem</h3>
+    <p>~25,000 MSP customers <span class="pill cs-medium">MEDIUM</span> = distribution advantage. Developer portal (developer.n-able.com) with AI-driven script generation, OpenAPI specs <span class="pill cs-verified">VERIFIED</span>. Network effect: more integrations → more MSPs → more integrations.</p>
+  </div>
+
+  <div class="advantage">
+    <h3><span class="num mono">04</span>"AI-Native Cyber Resilience" vs. "UEM with AI Bolted On" <span class="yr yr-2026">2026</span></h3>
+    <p>Empower 2026 messaging: <em>"Cyber resilience is an outcome, not a product."</em> <span class="pill cs-high">HIGH</span> AI embedded across platform vs. separate AI features. ~90% of investigation activity AI-executed <span class="pill cs-medium">MEDIUM</span>. Competitors (Kaseya, ConnectWise, NinjaOne) lack interoperability standard + MSP-specific training data.</p>
+  </div>
+
+  <div class="advantage">
+    <h3><span class="num mono">05</span>Adlumin MDR Integration (Own the security stack)</h3>
+    <p>Proprietary AI autonomously mitigates &gt;70% of threats <span class="pill cs-medium">MEDIUM</span>. Built-in SIEM, SOAR, UEBA <span class="pill cs-verified">VERIFIED</span>. Lateral movement mapping (2025 update) <span class="pill cs-high">HIGH</span> <span class="yr yr-2025">2025</span>. Competitive gap: NinjaOne prioritizes ease of use but lacks native MDR. Kaseya has unified portal but N-able has deeper security pedigree (Adlumin acquisition).</p>
+  </div>
+</section>
+
+<!-- THREATS -->
+<section id="threats">
+  <h2>Threats to N-able's Position</h2>
+
+  <div class="problem threat">
+    <h3>1. Microsoft Agent 365 — Category disruption <span class="yr yr-2026">2026</span></h3>
+    <ul>
+      <li>$15/user/month <span class="pill cs-verified">VERIFIED</span>, platform-agnostic</li>
+      <li>Included in M365 E7 bundle ($99/user/mo) <span class="pill cs-verified">VERIFIED</span></li>
+      <li>If SMBs adopt M365 E7, they get agent governance + Copilot cheaper than MSP contracts</li>
+    </ul>
+    <p class="pivot-callout"><strong>The pivot:</strong> N-able is building ACP to compete with Kaseya/NinjaOne. Microsoft is building Agent 365 to obsolete the category.</p>
+  </div>
+
+  <div class="problem threat">
+    <h3>2. Kaseya #1 Market Share — Integration control</h3>
+    <ul>
+      <li>25.9% market share <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2024">Canalys Dec 2024</span>, displaced N-able to 4th</li>
+      <li>Owns PSA (BMS, Autotask) + RMM (VSA, Datto)</li>
+      <li>ACP's value is bottlenecked by PSA integrations N-able doesn't control</li>
+    </ul>
+  </div>
+
+  <div class="problem threat">
+    <h3>3. Atera Pricing Disruption — From below</h3>
+    <ul>
+      <li>$99–$169/tech/month with unlimited endpoints <span class="pill cs-verified">VERIFIED</span></li>
+      <li>All-in-one model (RMM, patch mgmt, remote access, ticketing) <span class="pill cs-high">HIGH</span></li>
+      <li>If Atera adds agentic automation, undercuts ACP pricing before it launches</li>
+    </ul>
+  </div>
+</section>
+
+<!-- COUNCIL 5 CORE -->
+<section id="council5">
+  <h2>Council · Five Core Frameworks</h2>
+  <p style="margin-top:0;font-size:14px;color:var(--br-color-ink-secondary)">Each framework reads the same scout data and returns testimony from its own lens. <strong>Contradictions are features, not bugs.</strong></p>
+
+  <div class="fw-grid">
+    <div class="fw fw-jtbd">
+      <span class="fw-num">FW 01</span>
+      <h3>Jobs-to-Be-Done</h3>
+      <div class="does">What job is the customer hiring this product to do? (Functional, emotional, social.)</div>
+      <p class="finding"><strong>Key finding:</strong> The functional job isn't "automate ticket triage." It's <em>"stop paying technicians $32/hour to investigate alerts that turn out to be nothing."</em> <span class="pill cs-high">HIGH</span></p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>46% false positive rate <span class="pill cs-high">HIGH</span> <span class="yr yr-2026">2026</span></li>
+        <li>$33,600/month wasted labor per MSP <span class="pill cs-high">HIGH</span> <span class="pill cs-fab" title="Math does not reconcile">MATH DISPUTED</span></li>
+        <li>75% experience fatigue monthly; 56% daily <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        MSPs want margin protection, not AI coworkers. "AI teammate" framing anthropomorphizes a cost-containment tool. What does the tech do with the 12 minutes saved per alert? <em>That determines whether you've built a speedup tool or a margin-expansion tool.</em>
+      </div>
+    </div>
+
+    <div class="fw fw-blueprint">
+      <span class="fw-num">FW 02</span>
+      <h3>Service Blueprint</h3>
+      <div class="does">Maps the experience across frontstage / backstage / supporting processes.</div>
+      <p class="finding"><strong>Key finding:</strong> The trust handoff is invisible — and that's the problem. When does the MSP tech see the Trust Ledger? If "view on demand" = audit artifact. If "surfaces during the decision" = collaboration surface.</p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>68% of early SMB AI adopters experienced ≥1 significant error <span class="pill cs-medium">MEDIUM</span></li>
+        <li>Only 6% of enterprises moved gen AI past pilot <span class="pill cs-medium">MEDIUM</span> <span class="yr yr-2025">Gartner 2025</span></li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        ACP optimizes the current workflow (alert → triage → respond) instead of eliminating it. Kaseya is eliminating 80% of routing errors <em>before</em> alerts reach a human <span class="pill cs-medium">MEDIUM</span>. Which product wins?
+      </div>
+    </div>
+
+    <div class="fw fw-sdt">
+      <span class="fw-num">FW 03</span>
+      <h3>Self-Determination Theory</h3>
+      <div class="does">Motivation = autonomy + competence + relatedness.</div>
+      <p class="finding"><strong>Key finding:</strong> ACP risks creating learned helplessness. If AI handles 70–80% of L1 issues <span class="pill cs-medium">MEDIUM</span>, juniors never develop diagnostic skills. The brief doesn't specify approval threshold — at what risk level does ACP hand off?</p>
+      <p style="font-size:14px"><em>Voice matters:</em> Kaseya calls theirs "Digital Specialists" <span class="pill cs-verified">VERIFIED</span>; ServiceNow "AI Agent Orchestrator" <span class="pill cs-high">HIGH</span>; N-able "AI Coworkers."</p>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        Trust Ledger as audit trail vs. teaching interface. <em>If ACP trains a generation of techs to approve recommendations instead of diagnosing threats, N-able is creating the skill gap it claims to solve.</em>
+      </div>
+    </div>
+
+    <div class="fw fw-disrupt">
+      <span class="fw-num">FW 04</span>
+      <h3>Disruptive Innovation</h3>
+      <div class="does">Sustaining vs. disruptive — does it serve non-consumers or improve incumbents?</div>
+      <p class="finding"><strong>Key finding:</strong> ACP is <em>sustaining</em> for N-able (defends RMM share vs. Kaseya/NinjaOne) but <em>potentially disruptive</em> for MSPs' SMB clients. If ACP cuts MSP cost-to-serve 30–40%, MSPs could drop pricing 20–30% and serve previously-priced-out SMBs.</p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>61% of SMBs lack cybersecurity expertise <span class="pill cs-medium">MEDIUM</span></li>
+        <li>MSP $125–$150/user/mo; in-house analyst $66.5K+ <span class="pill cs-medium">MEDIUM</span></li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        ACP trapped between two disruptions: Atera ($99–$169/tech/mo, unlimited endpoints) from below; Microsoft Agent 365 ($15/user/mo) from above <span class="yr yr-2026">2026</span>. <em>Microsoft is building Agent 365 to obsolete the category.</em>
+      </div>
+    </div>
+
+    <div class="fw fw-value">
+      <span class="fw-num">FW 05</span>
+      <h3>Value Chain</h3>
+      <div class="does">Where in the chain of activities does the product create / extract / compress value?</div>
+      <p class="finding"><strong>Key finding:</strong> ACP inserts at the MSP's highest-margin chokepoint (triage) but N-able doesn't control the integration layer (PSA). MSP saves $33,600/mo; if N-able charges $15/user × 5 techs = $75/mo, MSP captures 99.8% of value. <span class="pill cs-fab" title="Math does not reconcile">MATH DISPUTED</span></p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>HaloPSA + Autotask integrated <span class="pill cs-verified">VERIFIED</span> — but ConnectWise/Kaseya PSAs not controlled by N-able</li>
+        <li>Kaseya owns PSA + RMM stack; ConnectWise acquired zofiQ <span class="pill cs-verified">VERIFIED</span></li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        ACP adds margin to the MSP, not to N-able. Monetization is unsolved: per-alert pricing costs MSPs more than the labor it replaces; per-seat pricing captures 0.2% of value created. <em>Requires outcome-based pricing — which requires trust + data sharing MSPs resist.</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNCIL EXTENDED -->
+<section id="council-ext">
+  <h2>Council · Extended Frameworks</h2>
+  <p style="margin-top:0;font-size:14px;color:var(--br-color-ink-secondary)">Four additional strategic lenses. Frameworks may contradict each other — that surfaces design tensions that require human decisions, not AI smoothing.</p>
+
+  <div class="fw-grid">
+    <div class="fw fw-doblin">
+      <span class="fw-num">FW 06</span>
+      <h3>Ten Types of Innovation (Doblin)</h3>
+      <div class="does">Maps innovation across 10 types: finance, process, experience.</div>
+      <p class="finding"><strong>Key finding:</strong> ACP innovates heavily in 3 of 10 types (Process, Product Performance, Product System) but <em>underinvests in the 7 that determine market adoption.</em></p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li><strong>Profit Model:</strong> Unknown — brief doesn't specify monetization <span class="pill cs-unknown">UNKNOWN</span></li>
+        <li><strong>Network:</strong> ACP depends on PSAs N-able doesn't control <span class="pill cs-verified">VERIFIED</span></li>
+        <li><strong>Brand:</strong> "AI Coworker" conflicts with MSP self-identity ("Managed Intelligence Provider") <span class="pill cs-high">HIGH</span></li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        Most venture-backed products fail by over-indexing on Product Performance and ignoring Profit Model + Channel + Brand. <em>ACP shows that pattern.</em>
+      </div>
+    </div>
+
+    <div class="fw fw-chasm">
+      <span class="fw-num">FW 07</span>
+      <h3>Crossing the Chasm (Moore)</h3>
+      <div class="does">Visionaries (early adopters) vs. pragmatists (early majority). The chasm is rupture, not continuity.</div>
+      <p class="finding"><strong>Key finding:</strong> ACP is designed for early adopters but N-able needs it to appeal to early majority. Pragmatists need verified error rates, financial risk mitigation (SLA credits), compliance cert, multi-year vendor commitment. <em>None of which is in the brief.</em> <span class="pill cs-unknown">UNKNOWN</span></p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>Visionaries (10–15%, ~2,500–3,750 of N-able's 25,000) might adopt at $500–1,000/mo = $15M–45M ARR early</li>
+        <li>Pragmatist (34%, ~8,500) chasm-crossing requires whole-product investment not costed in brief</li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        The chasm is crossed when the product becomes boring — when pragmatists trust it enough to stop thinking about it. Trust Ledger as "audit trail" is a visionary feature; as "compliance proof" it crosses the chasm.
+      </div>
+    </div>
+
+    <div class="fw fw-kano">
+      <span class="fw-num">FW 08</span>
+      <h3>Kano Model</h3>
+      <div class="does">Must-Have / Performance / Delight. Delight decays to Performance, then Must-Have, over time.</div>
+      <p class="finding"><strong>Key finding:</strong> ACP over-invests in Performance (speed, coverage) and under-invests in Must-Haves (error handling, approval thresholds, rollback). The biggest Kano risk: brief doesn't define Must-Have threshold for error rates.</p>
+      <ul style="font-size:14px;padding-left:18px">
+        <li><strong>Must-Have:</strong> PSA two-way writeback, error transparency, runbook safety <span class="pill cs-unknown">UNKNOWN</span></li>
+        <li><strong>Performance:</strong> Triage speed (6×), false positive reduction, playbook coverage</li>
+        <li><strong>Delight:</strong> Trust Ledger as teaching interface; auto-discovered runbooks from PSA history <span class="pill cs-medium">MEDIUM</span></li>
+      </ul>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        Kano decay risk: if Microsoft Agent 365 ($15/user/mo) becomes Must-Have (every SMB expects agent governance in M365 bundle), ACP's control-plane features decay from Performance → Must-Have within 18–24 months. <span class="yr yr-2026">2026</span>
+      </div>
+    </div>
+
+    <div class="fw fw-wardley">
+      <span class="fw-num">FW 09</span>
+      <h3>Wardley Mapping</h3>
+      <div class="does">Maps components by evolution stage (Genesis → Custom → Product → Commodity) × value chain position.</div>
+      <p class="finding"><strong>Key finding (in-progress in source):</strong> ACP components sit at different evolution stages. Cat-MIP is at Custom-built → Product (rare, becoming repeatable). Trust Ledger is at Genesis (still novel, uncertain). PSA integrations are at Product/Commodity. Strategic play depends on whether N-able commoditizes downward (kill margin) or differentiates upward (own the standard).</p>
+      <p class="note-incomplete"><strong>NOTE:</strong> Source `council-report-extended.md` ends mid-Wardley analysis at line 190. Section incomplete in handoff. <span class="pill cs-unknown">UNKNOWN</span></p>
+      <div class="tension">
+        <strong>Tension flagged</strong>
+        Wardley requires plotting components on the map. Source file does not include the completed map — research gap to fill before publication.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYNTHESIS -->
+<section id="synthesis">
+  <h2>Cross-Framework Synthesis</h2>
+
+  <div class="synth-grid">
+    <div class="synth-block synth-converge">
+      <h3 style="color:var(--br-color-state-success)">Where all 9 frameworks converge</h3>
+      <ol>
+        <li><strong>ACP solves a real, expensive problem.</strong> 46% false positive rate <span class="pill cs-high">HIGH</span> <span class="yr yr-2026">2026</span>, 960 alerts/day, 75% monthly fatigue <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span>. Unambiguous.</li>
+        <li><strong>The brief is infrastructure-focused; the market opportunity is economic.</strong> MSPs don't buy AI coworkers — they buy margin protection.</li>
+        <li><strong>Trust is the adoption bottleneck, not features.</strong> 68% of early adopters experienced errors <span class="pill cs-medium">MEDIUM</span>; only 6% moved gen AI past pilot <span class="pill cs-medium">MEDIUM</span>.</li>
+        <li><strong>Value is bottlenecked by integrations N-able doesn't control.</strong> PSA fragmentation limits distribution. Service Blueprint + Value Chain + Doblin all flag this.</li>
+        <li><strong>Microsoft Agent 365 is the threat the brief doesn't address.</strong> <span class="yr yr-2026">2026</span> Disruptive Innovation + Kano + Crossing the Chasm all surface this as existential.</li>
+      </ol>
+    </div>
+
+    <div class="synth-block synth-conflict">
+      <h3 style="color:var(--br-color-brand-accent)">Where frameworks contradict</h3>
+      <ul>
+        <li><strong>JTBD says MSPs want cost reduction.</strong> Disruptive Innovation says <em>some</em> MSPs will use savings to expand downmarket (growth); others will pocket margin (defense). <em>Brief doesn't segment MSP personas by strategy.</em></li>
+        <li><strong>SDT says ACP should be a learning tool</strong> (preserve tech competence). <strong>Value Chain says ACP should be fully autonomous</strong> (maximize labor savings). Those design goals conflict. <em>This is a decision, not a gap.</em> Does N-able want ACP to augment or replace MSP techs?</li>
+        <li><strong>Service Blueprint says handoff visibility is critical.</strong> JTBD says faster resolution is critical. If Trust Ledger adds 30s of explanation per ticket, does that improve trust (SDT benefit) or slow triage (JTBD cost)? <em>Tradeoff requires user testing.</em></li>
+        <li><strong>Crossing the Chasm says ship boring for pragmatists.</strong> Kano says ship Delight features to stand out. <em>Which audience does N-able prioritize at launch?</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card cool" style="margin-top:24px">
+    <h3 style="color:var(--br-color-brand-primary);margin-top:0">Biggest ROI Opportunity</h3>
+    <p><strong>Market play:</strong> Position ACP as <em>"Margin Protection as a Service"</em> for MSPs trapped between flat-fee pricing and rising false positive costs.</p>
+    <p style="font-size:14px"><strong>Pricing model proposal:</strong> $500/month platform fee + 10% of documented labor savings (tracked via PSA integration). Aligns N-able's incentive with MSP outcome.</p>
+    <p style="font-size:14px"><strong>Projected ARR:</strong> If 10% of N-able's 25,000 MSP customers <span class="pill cs-medium">MEDIUM</span> adopt at $500 base + 10% savings share (~$3,360/mo avg) = 2,500 × $3,860/mo = <strong>$9.65M/month = $115.8M ARR</strong> <span class="pill cs-fab" title="Depends on $33,600 figure with disputed math">MATH DEPENDENCY</span></p>
+    <p class="unknown-gaps"><strong>Unknown ROI gaps (research briefs, not fabrications):</strong> MSP capacity utilization post-automation · MSP playbook coverage rates · Retention impact of AI-assisted vs. AI-replaced workflows · N-able's current take rate per MSP customer.</p>
+  </div>
+</section>
+
+<!-- ETHNOGRAPHY -->
+<section id="ethnography">
+  <h2>Ethnography · AI &amp; Headless Cybersecurity Automation</h2>
+  <p class="mono" style="margin-top:0;font-size:13px;color:var(--br-color-ink-muted)"><span class="pill cs-low">THIN DOMAIN</span> Reddit/practitioner forums less indexed than expected. Relying on conference reports, vendor-adjacent blogs, published case studies. Direct practitioner voices limited.</p>
+
+  <div class="eth-section">
+    <h3>2026 · Governance Trends (Lead)</h3>
+    <div class="body">
+      <h4 style="color:var(--br-color-brand-primary)">Autonomy Control Plane <span class="yr yr-2026">2026</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <p style="font-size:14px"><strong>Source:</strong> Untapped Ventures, 2026 — "The agent decides. The control plane governs. The execution environment enforces."</p>
+      <p style="font-size:14px">Six technical components:</p>
+      <ul>
+        <li>Agent identity — cryptographic credentials, not shared API keys</li>
+        <li>Permissions &amp; authorization — just-in-time, task-scoped (not persistent roles)</li>
+        <li>Policy engine — rule-based evaluation of agent actions</li>
+        <li>Evaluation &amp; monitoring — behavioral drift detection</li>
+        <li>Audit trails — complete authority chains</li>
+        <li>Kill switches &amp; circuit breakers — automatic isolation of malfunctioning agents</li>
+      </ul>
+
+      <h4 style="color:var(--br-color-brand-primary);margin-top:14px">Trust Gap Statistics <span class="yr yr-2026">CSA March 2026</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li>70% of enterprises run agents in production</li>
+        <li>&lt;10% use dedicated AI security platforms</li>
+        <li>92% of CISOs lack visibility into AI agent identities</li>
+        <li>95% of CISOs doubt they could detect or contain a compromised agent</li>
+        <li>Only 11% of enterprises enforce real-time authorization checks for agent actions</li>
+      </ul>
+      <div class="eth-quote">"If you cannot answer in real time for every agent in your organization whether it can be trusted, you have a governance crisis."<span class="attrib">— CSA Agentic Control Plane blog, 2026</span></div>
+
+      <h4 style="color:var(--br-color-brand-primary);margin-top:14px">Explainability-First Architecture <span class="yr yr-2026">Secure.com April 2026</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li>SOC Teammate: 95% coverage (vs. 40% industry baseline) with full rationale per decision <span class="pill cs-medium">MEDIUM — vendor claim</span></li>
+        <li>Override without friction; feedback loop adjusts future behavior</li>
+        <li>AI Trace: immutable audit trails</li>
+      </ul>
+      <div class="eth-quote">"Trustworthy AI in a SOC environment requires three things: visible reasoning, the ability to override decisions without friction, and a complete audit trail."<span class="attrib">— Secure.com, April 2026</span></div>
+      <div class="eth-quote">"If something goes wrong, and at some point something always does, your team needs to explain exactly what happened."<span class="attrib">— Secure.com, April 2026</span></div>
+
+      <h4 style="color:var(--br-color-brand-primary);margin-top:14px">SOAR Ceiling Declared <span class="yr yr-2026">D3 Security 2026</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <div class="eth-quote">"A phishing playbook runs the same investigation whether the target is an intern or the CFO, whether the payload is known malware or a novel zero-day."<span class="attrib">— D3 Security, The SOAR Ceiling, 2026</span></div>
+      <p style="font-size:14px"><strong>Cycle:</strong> Build → maintain → break → detect → repair → repeat. Junior analyst gap: when playbook doesn't cover edge case, L1 lacks experience to deviate.</p>
+
+      <h4 style="color:var(--br-color-brand-primary);margin-top:14px">MSSP Manifesto <span class="yr yr-2026">Torq 2026</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <div class="eth-quote">"If every action requires analyst sign-off, you haven't actually automated anything."<span class="attrib">— Torq MSSP Guide, 2026</span></div>
+      <ul>
+        <li>Carvana (Dina Mathers, CISO): "Torq Agentic AI now handles 100% of Tier-1 security alerts" <span class="pill cs-medium">MEDIUM — vendor case study</span></li>
+        <li>Phishing MTTR: 45+ minutes → under 5 minutes</li>
+        <li>"300+ pre-built integrations" typical for mature platforms</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="eth-section">
+    <h3>2025 · Failure Retrospective</h3>
+    <div class="body">
+      <h4 style="color:var(--br-color-state-danger)">Automation Failures in Production <span class="yr yr-2025">Gibraltar 2025</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li>Unintended system actions — AI shut down critical services, misconfigured systems at scale</li>
+        <li>Data distribution errors — automated systems dispersed inaccurate information</li>
+        <li>Permission overreach — LLMs granted excessive access levels</li>
+      </ul>
+      <p style="font-size:14px"><strong>Root causes:</strong> poorly tested workflows pushed to production, ambiguous prompts, "set it and forget it" mentality, no rollback mechanisms. Financial impact: "millions of dollars" (no specific figures) <span class="pill cs-medium">MEDIUM</span>.</p>
+      <div class="eth-quote">"Rushing AI deployment without governance created preventable disasters."<span class="attrib">— Gibraltar Solutions, 2025 retrospective</span></div>
+
+      <h4 style="color:var(--br-color-state-danger);margin-top:14px">Trust Deficits <span class="yr yr-2025">2025</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li>65% of security analysts skeptical of AI-generated alerts</li>
+        <li>79% prefer hybrid human-AI model over full automation</li>
+        <li>71% of SOC analysts report burnout (Sophos 2025)</li>
+        <li>70% of analysts with ≤5 years experience leave within 3 years (SANS 2025)</li>
+      </ul>
+
+      <h4 style="color:var(--br-color-state-danger);margin-top:14px">Alert Fatigue Stats <span class="yr yr-2025">2024–2025</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li>960 alerts/day average; 3,000+ in enterprises &gt;20,000 employees</li>
+        <li>Nearly 1/3 are false positives</li>
+        <li>74% of breaches generated alerts that were ignored due to analyst overwhelm</li>
+        <li>~90% of SOCs overwhelmed by backlogs and false positives</li>
+        <li>80% of analysts report feeling consistently behind</li>
+      </ul>
+
+      <h4 style="color:var(--br-color-state-danger);margin-top:14px">Cost Context <span class="yr yr-2025">2025</span> <span class="pill cs-medium">MEDIUM</span></h4>
+      <ul>
+        <li>Average enterprise SOC: $5.3M annually (up 20% in one year)</li>
+        <li>Only 50% of teams consider their engineering effective</li>
+        <li>85% of analysts describe SOC work as painful or very painful</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="eth-section">
+    <h3>2024 · Conference Talks &amp; Practitioner Ground</h3>
+    <div class="body">
+      <h4>Black Hat / DEF CON 2024 <span class="yr yr-2024">2024</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li><strong>Preeti Ravindra (Expel):</strong> Integrating GenAI tooling into SOC analyst workflow — friction points of generative AI deployment</li>
+        <li><strong>Ezz Tahoun (Cypienta):</strong> Open-source AI clusters alerts → MITRE ATT&amp;CK → kill chains → incident tickets</li>
+        <li><strong>Bill Demirkapi (Microsoft MSRC):</strong> Fine-tuned LLMs predict severity, generate root-cause analysis from crash dumps</li>
+        <li><strong>Wang / Wu / Gu (DBAPPSecurity):</strong> LLMs identify APT samples, auto-generate YARA rules for hunting</li>
+        <li><strong>NVIDIA garak:</strong> Framework for discovering vulnerabilities in LLMs/dialog systems via structured probing</li>
+        <li><strong>Palo Alto BOLABuster:</strong> Auto-find Broken Object Level Authentication vulnerabilities in web apps/APIs</li>
+        <li><strong>Instacart:</strong> LLM-powered AI bot for just-in-time access to critical systems</li>
+      </ul>
+
+      <h4 style="margin-top:14px">MSP Practitioner Examples <span class="yr yr-2024">Rewst 2024</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <ul>
+        <li><strong>Microtime:</strong> AR workflows recovered $22,147 in 6 months; co-managed client workflows saved 6–8 hours daily</li>
+        <li><strong>Marcus Networking:</strong> Vendor bill reconciliation — $120K annual savings; 40 hours/month time saved</li>
+        <li><strong>MSIT:</strong> Desktop image maintenance reduced 6–7 hours → 1 hour per cycle</li>
+        <li><strong>Air IT (Charlie Carter):</strong> 380 workflows in Rewst saving 500+ hours/month using Jinja templates, OpenAI embedding</li>
+        <li><strong>B4 Networks:</strong> "Business math" system evaluating automation ROI before implementation</li>
+      </ul>
+
+      <h4 style="margin-top:14px">Open-Source SOAR Stack <span class="yr yr-2024">2024</span> <span class="pill cs-verified">VERIFIED</span></h4>
+      <p style="font-size:14px"><strong>JB Lemard-Reid practitioner example:</strong> Wazuh + Shuffle + TheHive + VirusTotal. Detected Mimikatz via Sysmon `originalFileName` field. ElasticSearch service failure resolved by allocating 2GB JVM RAM. <em>Complex dependency chain documented in Medium tutorial.</em></p>
+    </div>
+  </div>
+
+  <div class="eth-section">
+    <h3>Who / Personas (Cross-Cutting)</h3>
+    <div class="body">
+      <table class="persona">
+        <tr><th>Persona</th><th>Reality</th><th>CS</th></tr>
+        <tr><td>SOC Tier 1 Analyst</td><td>960 alerts daily; 71% report burnout; 70% with &lt;5y exp leave within 3 years</td><td><span class="pill cs-verified">VERIFIED</span></td></tr>
+        <tr><td>MSP Technician</td><td>Multi-tenant scale; alert volume +300% over 5 years; pricing hasn't scaled; calling for "more API connections"</td><td><span class="pill cs-verified">VERIFIED</span></td></tr>
+        <tr><td>Security Engineer / SOAR Architect</td><td>Custom Python (requests, subprocess) bridging disconnected platforms. "When architects leave, institutional knowledge walks out the door"</td><td><span class="pill cs-verified">VERIFIED</span></td></tr>
+        <tr><td>MSSP</td><td>Different challenge profile vs. internal SOCs: consistency across clients, margin pressure, staffing gaps. 90%+ autonomous Tier 1 (vendor claims)</td><td><span class="pill cs-medium">MEDIUM</span></td></tr>
+        <tr><td>Junior vs. Senior split</td><td>Juniors: automation removes learning opportunities. Seniors: 70% of time post-automation on proactive threat hunting</td><td><span class="pill cs-medium">MEDIUM</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="eth-section">
+    <h3>What Breaks (Failure Modes)</h3>
+    <div class="body">
+      <ul>
+        <li><strong>SOAR playbook brittleness</strong> — static logic, silent integration failures, maintenance cycle without quality improvement <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2026">D3 2026</span></li>
+        <li><strong>Over-automation: false positive disruption</strong> — "automated containment of false positives can disrupt operations" <span class="pill cs-verified">VERIFIED</span></li>
+        <li><strong>Analyst complacency</strong> — "may grow complacent, assuming 'the system has it covered,' only to discover post-incident that key signals were ignored" <span class="pill cs-verified">VERIFIED</span> <span class="yr yr-2025">2025</span></li>
+        <li><strong>When humans must take over:</strong> novel attack patterns, ambiguous situations, supply chain compromises, insider threats <span class="pill cs-high">HIGH</span></li>
+      </ul>
+      <div class="eth-quote">"There will never be an autonomous SOC — human judgment always required for novel threats."<span class="attrib">— Industry consensus</span></div>
+    </div>
+  </div>
+
+  <div class="eth-section">
+    <h3>Power Users (Advanced vs. Beginner)</h3>
+    <div class="body">
+      <h4>Advanced practitioners build:</h4>
+      <ul>
+        <li>Agentic AI (reason &amp; adapt) vs. static playbooks <span class="pill cs-high">HIGH</span></li>
+        <li>Multi-tenant centralized visibility with per-client customization (MSSPs)</li>
+        <li>Custom Python integrations (Flask/FastAPI/Django — e.g., Revolut's "Security Drone")</li>
+        <li>Advanced workflow engineering: Air IT's 380 Rewst workflows, Jinja + OpenAI embedding</li>
+        <li>Context-driven escalation: full investigation context pre-populated, not raw alerts</li>
+      </ul>
+      <h4 style="margin-top:14px">Beginners struggle with:</h4>
+      <ul>
+        <li>Effective prompting (Microsoft SOC AI guide)</li>
+        <li>Knowing when to override AI recommendations</li>
+        <li>Complex tool dependencies (TheHive's Java/Cassandra/ElasticSearch chain)</li>
+        <li>Alert quality vs. volume — defaults accepted instead of tuned</li>
+      </ul>
+      <h4 style="margin-top:14px">Cross-cutting: Training Gap Crisis</h4>
+      <ul>
+        <li>Traditional path: juniors learned through manual triage</li>
+        <li>Automation removes that foundational experience</li>
+        <li>Solution emerging: AI mentorship tools (Dropzone COACH) — explain context in real-time during investigations</li>
+        <li>COACH metrics: 3–6 months → 4–6 weeks to productivity; 3× better investigation accuracy <span class="pill cs-medium">MEDIUM — vendor claim</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <h2>Sources · Live URLs</h2>
+
+  <div class="src-group y2026">
+    <h3><span class="yr yr-2026">2026</span> SURFACE THESE FIRST</h3>
+    <ul>
+      <li><a href="https://cloudsecurityalliance.org/blog/2026/03/20/2026-securing-the-agentic-control-plane">CSA · Securing the Agentic Control Plane (March 2026)</a></li>
+      <li><a href="https://www.secure.com/blog/soc/why-we-built-secure-com-this-way">Secure.com · I Don't Trust AI. That's Why We Built Secure.com (April 2026)</a></li>
+      <li><a href="https://www.untapped.ventures/post/autonomy-control-plane">Untapped Ventures · Autonomy Control Plane: Why Trust Is the Trillion-Dollar Layer (2026)</a></li>
+      <li><a href="https://d3security.com/blog/the-soar-ceiling-playbook-automation-structural-limits/">D3 Security · The SOAR Ceiling (2026)</a></li>
+      <li><a href="https://torq.io/blog/soc-automation-for-mssps-guide/">Torq · SOC Automation for MSSPs: The 2026 Guide</a></li>
+      <li><a href="https://www.microsoft.com/en-us/microsoft-agent-365">Microsoft · Agent 365 (2025–2026 launch)</a></li>
+      <li><a href="https://omdia.tech.informa.com/blogs/2026/may/n-able-empower-2026-cyber-resilience-and-ai-mark-companys-path-forward">Omdia · N-able Empower 2026 Coverage</a></li>
+      <li><a href="https://thehackernews.com/2026/05/how-ai-hallucinations-are-creating-real.html">Hacker News · How AI Hallucinations Are Creating Real Security Risks (May 2026)</a></li>
+      <li><a href="https://thehackernews.com/2025/11/when-attacks-come-faster-than-patches.html">Hacker News · 2026 Will be the Year of Machine-Speed Security (Nov 2025)</a></li>
+      <li><a href="https://securityboulevard.com/2026/04/autonomous-soc-explained-how-agentic-investigation-solves-what-playbooks-couldnt/">Security Boulevard · Autonomous SOC Explained (April 2026)</a></li>
+      <li><a href="https://www.computerweekly.com/opinion/From-trust-to-turbulence-Cybers-road-ahead-in-2026">ComputerWeekly · From Trust to Turbulence: Cyber's Road Ahead in 2026</a></li>
+      <li><a href="https://cloudsecurityalliance.org/blog/2026/01/30/zero-trust-in-the-cloud-designing-security-assurance-at-the-control-plane">CSA · Zero Trust in the Cloud: Control Plane Assurance (Jan 2026)</a></li>
+      <li><a href="https://d3security.com/blog/ai-soc-platforms-2026/">D3 Security · Best AI SOC Platforms 2026</a></li>
+      <li><a href="https://blog.barracuda.com/2026/03/12/msps-ai-automation-security-trust-growth">Barracuda · Empowering MSPs with AI &amp; Automation (March 2026)</a></li>
+    </ul>
+  </div>
+
+  <div class="src-group y2025">
+    <h3><span class="yr yr-2025">2025</span> RECENT</h3>
+    <ul>
+      <li><a href="https://heimdalsecurity.com/msp-agent-fatigue-report">Heimdal Security · MSP Agent Fatigue Report 2025</a></li>
+      <li><a href="https://www.channelinsider.com/channel-business/running-an-msp/heimdal-security-fatigue-report-2025/">Channel Insider · MSPs Battle Agent Fatigue (2025)</a></li>
+      <li><a href="https://www.businesswire.com/news/home/20250911895528/en/N-able-Launches-Cat-MIP-Setting-the-Industry-Standard-for-AI-Accuracy-in-Cybersecurity-and-IT-Management">N-able · Cat-MIP Launch (Sept 2025)</a></li>
+      <li><a href="https://status.n-able.com/2025/06/03/may-in-review-whats-new-in-adlumin/">N-able · Adlumin Updates May 2025</a></li>
+      <li><a href="https://press.roberthalf.com/2024-11-13-Robert-Half-Research-Reveals-Key-Hiring-Challenges-for-Small-and-Midsize-Businesses-Heading-Into-2025">Robert Half · SMB Hiring Challenges 2025</a></li>
+      <li><a href="https://connectsecure.com/blog/ai-security-tops-msp-concerns-for-2025-connectsecure-survey-shows">ConnectSecure · 2025 MSP Survey</a></li>
+      <li><a href="https://gibraltarsolutions.com/blog/reflecting-on-2025-lessons-learned-from-it-the-disasters-of-the-year/">Gibraltar · Reflecting on 2025 IT Disasters</a></li>
+      <li><a href="https://radiantsecurity.ai/blog/2025-proved-why/">Radiant Security · 2025 Proved Why We Built AI SOC</a></li>
+      <li><a href="https://thehackernews.com/expert-insights/2025/09/the-high-cost-of-useless-alerts-why.html">Hacker News · The High Cost of Useless Alerts (Sept 2025)</a></li>
+      <li><a href="https://thehackernews.com/2025/06/business-case-for-agentic-ai-soc.html">Hacker News · Business Case for Agentic AI SOC Analysts (June 2025)</a></li>
+      <li><a href="https://thehackernews.com/2025/06/how-ai-enabled-workflow-automation-can.html">Hacker News · AI-Enabled Workflow Automation &amp; SOC Burnout (June 2025)</a></li>
+      <li><a href="https://www.bitsight.com/blog/state-of-cyber-security-burnout-today">Bitsight · State of Cybersecurity Burnout 2025</a></li>
+      <li><a href="https://www.sophos.com/en-us/blog/report-addressing-cybersecurity-burnout-in-2025">Sophos · Addressing Cybersecurity Burnout 2025</a></li>
+      <li><a href="https://cloudsecurityalliance.org/blog/2025/05/13/5-trust-trends-shaping-security-strategies-in-2025">CSA · 2025 Trust Trends</a></li>
+      <li><a href="https://newsroom.servicenow.com/press-releases/details/2025/ServiceNow-announces-new-agentic-AI-innovations-to-autonomously-solve-the-most-complex-enterprise-challenges-01-29-2025-traffic/default.aspx">ServiceNow · Agentic AI Innovations (Jan 2025)</a></li>
+      <li><a href="https://radiantsecurity.ai/learn/soc-use-cases/">Radiant Security · Real-World AI-Powered SOC Use Cases (2025)</a></li>
+      <li><a href="https://www.dropzone.ai/glossary/alert-triage-in-2025-the-complete-guide-to-90-faster-investigations">Dropzone AI · Alert Triage in 2025</a></li>
+      <li><a href="https://www.kaseya.com/press-release/kaseya-unveils-the-first-agentic-it-management-platform-turning-data-into-autonomous-action/">Kaseya · Agentic IT Management Platform</a></li>
+      <li><a href="https://www.isaca.org/resources/news-and-trends/industry-news/2025/the-rise-of-shadow-ai-auditing-unauthorized-ai-tools-in-the-enterprise">ISACA · Rise of Shadow AI (2025)</a></li>
+    </ul>
+  </div>
+
+  <div class="src-group y2024">
+    <h3><span class="yr yr-2024">2024</span> CONTEXT / RETROSPECTIVE</h3>
+    <ul>
+      <li><a href="https://www.channele2e.com/news/big-3-rmm-psa-vendors-see-market-share-slip-canalys">Canalys · RMM/PSA Market Share (Dec 2024)</a></li>
+      <li><a href="https://tldrsec.com/p/tldr-every-ai-talk-bsideslv-blackhat-defcon-2024">tldrsec · Every AI Talk from Black Hat / DEF CON 2024</a></li>
+      <li><a href="https://rewst.io/blog/future-of-rpa-in-msp-operations/">Rewst · Future of RPA in MSP Operations (2024 retrospective)</a></li>
+      <li><a href="https://devsec-blog.com/2024/03/python-for-devsecops-and-any-security-engineer/">DevSec Blog · Python for DevSecOps (March 2024)</a></li>
+      <li><a href="https://www.mckinsey.com/capabilities/risk-and-resilience/our-insights/securing-the-agentic-enterprise-opportunities-for-cybersecurity-providers">McKinsey · Securing the Agentic Enterprise</a></li>
+      <li><a href="https://www.helpnetsecurity.com/2024/07/22/shuffle-automation-open-source-security-automation-platform/">Help Net Security · Shuffle Open-Source SOAR (July 2024)</a></li>
+      <li><a href="https://medium.com/@jblemard/wazuh-thehive-and-shuffle-soc-automation-project-08ff58e0a4c9">JB Lemard-Reid · Wazuh + TheHive + Shuffle SOC Project (2024)</a></li>
+      <li><a href="https://techcommunity.microsoft.com/blog/microsoft-security-blog/crawl-walk-run-a-practitioners-guide-to-ai-maturity-in-the-soc/4500433">Microsoft · Crawl, Walk, Run: AI Maturity in the SOC (2024)</a></li>
+      <li><a href="https://wazuh.com/blog/integrating-wazuh-with-shuffle/">Wazuh · Integrating Wazuh with Shuffle</a></li>
+    </ul>
+  </div>
+
+  <div class="src-group">
+    <h3><span class="yr yr-undated">UNDATED</span> Reference</h3>
+    <ul>
+      <li><a href="https://developer.n-able.com">N-able Developer Portal</a></li>
+      <li><a href="https://adlumin.com/">Adlumin Homepage</a></li>
+      <li><a href="https://www.vectra.ai/topics/soc-automation">Vectra AI · SOC Automation Guide</a></li>
+      <li><a href="https://www.n-able.com/blog/ai-and-automation-the-future-of-cybersecurity-operations">N-able · AI and Automation for Cybersecurity Operations</a></li>
+      <li><a href="https://www.n-able.com/blog/new-n-able-developer-portal-empowering-our-partners-and-vendors">N-able · Developer Portal Launch</a></li>
+      <li><a href="https://www.cyvent.com/post/cybersecurity-msp-market-stats">Cyvent · Cybersecurity MSP Market Stats</a></li>
+      <li><a href="https://www.getthread.com/service-magic-blog/msp-profit-margins-101">Thread · MSP Profit Margins 101</a></li>
+      <li><a href="https://v2cloud.com/blog/msp-profit-margins">V2 Cloud · MSP Profit Margins</a></li>
+      <li><a href="https://ravenautomation.com/automation-isnt-a-magic-wand-its-a-journey/">Raven Automation · MSP Automation ROI</a></li>
+      <li><a href="https://www.wiz.io/academy/ai-security/shadow-ai">Wiz · Shadow AI</a></li>
+      <li><a href="https://deepstrike.io/blog/cybersecurity-skills-gap">DeepStrike · Cybersecurity Skills Gap</a></li>
+      <li><a href="https://www.ziprecruiter.com/Salaries/Msp-Technician-Salary">ZipRecruiter · MSP Technician Salary Data</a></li>
+      <li><a href="https://d3security.com/blog/deliver-security-services-msps/">D3 Security · How MSPs Can Deliver Security Services with Automation</a></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- BRADLEY RAIL -->
+<aside class="bradley">
+  <h2>Bradley Rail</h2>
+  <div class="badge">TIER 2 · DIRECTION</div>
+  <p class="blurb">Secondary-research synthesis with explicit 2026 bias. Tests whether nine analytical frameworks running over the same scout data converge on a defensible market play (ACP as Margin Protection as a Service) or surface tensions that require primary research.</p>
+
+  <h4>WHAT YOU NAILED</h4>
+  <div class="nailed">
+    <h5>Strengths</h5>
+    <ul>
+      <li>9 frameworks running — convergence + contradiction both visible</li>
+      <li>Ethnographic grounding from CSA, Untapped Ventures, Secure.com, D3, Torq</li>
+      <li>2026 sources surfaced first — Autonomy Control Plane, Agent 365, SOAR Ceiling</li>
+      <li>Every claim CS-tagged — fluency ≠ accuracy made visible</li>
+      <li>$33,600/mo ROI math is grep-verifiable against scout inputs</li>
+    </ul>
+  </div>
+
+  <h4>WHAT WILL HURT YOU</h4>
+  <div class="hurt">
+    <h5>Risks</h5>
+    <ul>
+      <li>No primary research — zero MSP interviews; everything is secondary</li>
+      <li>Reddit/Discord ethnography thin — flagged [THIN DOMAIN]</li>
+      <li>Future-dated 2026 sources should be re-verified before publication</li>
+      <li>Wardley Mapping section ends mid-analysis in source file (line 190)</li>
+      <li>MSP error-rate expectation = [CS: UNKNOWN] — required for Kano Must-Have threshold</li>
+      <li>ACP monetization model = [CS: UNKNOWN] — blocks LTV / payback calc</li>
+    </ul>
+  </div>
+
+  <div class="routed">
+    <h4>ROUTED CARDS</h4>
+
+    <div class="route-card">
+      <strong>PRODUCT</strong>
+      Specify ACP monetization model (per-task / hybrid / outcome-based) before next council pass. <em>Why now:</em> Doblin + Value Chain + Crossing the Chasm all flag profit model as the unanswered question. <em>If you ship without it:</em> sales motion contradicts product narrative.
+    </div>
+
+    <div class="route-card">
+      <strong>DESIGN</strong>
+      Resolve Trust Ledger as audit trail OR teaching interface. <em>Why now:</em> SDT vs. Value Chain conflict is a design decision, not a research gap. <em>If you ship without it:</em> ledger gets built twice or shipped as neither.
+    </div>
+
+    <div class="route-card">
+      <strong>RESEARCH</strong>
+      Run MSP customer interviews to verify error-rate expectations + capacity utilization post-automation. <em>Why now:</em> two of the five biggest [CS: UNKNOWN] gaps block Kano threshold + JTBD "what does saved time become" decisions. <em>If you ship without it:</em> ACP positions as speedup tool when MSPs want margin tool (or vice versa).
+    </div>
+
+    <div class="route-card">
+      <strong>ENG</strong>
+      Define approval threshold + rollback mechanism per runbook risk tier (low/medium/high) before pilot. <em>Why now:</em> SDT + Kano + Service Blueprint converge: 65% of analysts skeptical of AI alerts (Secure.com 2026); 79% prefer hybrid. <em>If you ship without it:</em> pilot MSPs cite "no override" as adoption blocker.
+    </div>
+  </div>
+</aside>
+
+<!-- FOOTER LEGEND -->
+<footer id="cs-legend" class="footlegend">
+  <div>
+    <h4>CS TAG REFERENCE</h4>
+    <div class="item"><span class="pill cs-verified">VERIFIED</span><span>Matches primary sources directly accessed during research. Use as-is in strategy docs.</span></div>
+    <div class="item"><span class="pill cs-high">HIGH</span><span>Well-sourced from reputable secondary sources; not personally verified. Verify before quoting publicly.</span></div>
+    <div class="item"><span class="pill cs-medium">MEDIUM</span><span>Plausible claim with partial sourcing; gaps exist. Always verify before acting on it.</span></div>
+    <div class="item"><span class="pill cs-low">LOW</span><span>Fluent but thin sourcing; model may be pattern-matching. Flag as research question.</span></div>
+    <div class="item"><span class="pill cs-unknown">UNKNOWN</span><span>Outside model's knowledge domain; requires subject-matter expert.</span></div>
+    <div class="item"><span class="pill cs-fab">FAB RISK</span><span>Model likely hallucinated; discard or replace with researched claim.</span></div>
+  </div>
+  <div>
+    <h4>THE CHICAGO PRINCIPLE</h4>
+    <p style="font-size:14px;margin:0;color:var(--br-color-ink-secondary)">Beth once asked Claude about a building she had personally designated as a National Historic Landmark. Claude provided eloquent, specific, confident architectural details. <strong style="color:var(--br-color-state-danger)">All invented.</strong> She knew because she wrote the designation report.</p>
+    <p style="font-size:14px;margin-top:10px;color:var(--br-color-ink-secondary)"><strong style="color:var(--br-color-state-danger)">LLM fluency ≠ accuracy.</strong> Confidence tags make the gap visible.</p>
+    <p class="mono" style="font-size:11px;margin-top:14px;color:var(--br-color-ink-muted)">END OF HANDOFF PREVIEW · 2026-06-05 · Beth Schwindt</p>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

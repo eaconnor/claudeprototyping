@@ -3,8 +3,6 @@
 .claude/launch.json
 
 # Generated outputs
-prototypes/
-briefs/handoffs/
 critic-*.md
 council-testimony.md
 proctor-*.md

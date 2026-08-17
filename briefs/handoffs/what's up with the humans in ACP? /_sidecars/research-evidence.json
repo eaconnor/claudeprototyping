@@ -1,0 +1,787 @@
+{
+  "_source_md": "research-evidence.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-RESEARCH",
+    "title": "Research Evidence \u2014 Primary Partners \u00b7 Competitors \u00b7 Industry Ethnography",
+    "version": "1.0.0",
+    "status": "Combined doc (merged 3 sources into one)",
+    "date": "2026-06-05",
+    "owners": {
+      "product": "Beth Schwindt"
+    },
+    "combines": [
+      "HANDOFF-PRIMARY-RESEARCH (22 partner interviews)",
+      "HANDOFF-COMPETITIVE-LANDSCAPE (60+ competitor synthesis)",
+      "HANDOFF-ETHNOGRAPHY (broader cybersecurity industry context)"
+    ],
+    "sections": [
+      "#part-1-primary-research \u2014 22 named MSP partner interviews",
+      "#part-2-competitive-landscape \u2014 Direct MSP / Security / AI infra / Automation",
+      "#part-3-industry-ethnography \u2014 Broader cybersecurity practitioner patterns"
+    ]
+  },
+  "sections": [
+    {
+      "level": 1,
+      "title": "Part 1 \u00b7 Primary Research",
+      "id": "part-1-primary-research"
+    },
+    {
+      "level": 2,
+      "title": "1. Quantified ROI Claims (Named Sources)",
+      "id": "ROI-NAMED"
+    },
+    {
+      "level": 3,
+      "title": "QBR / Business Review",
+      "id": "ROI-QBR"
+    },
+    {
+      "level": 3,
+      "title": "Asset Analysis / Recommendations",
+      "id": "ROI-ASSETS"
+    },
+    {
+      "level": 3,
+      "title": "Documentation / KB Self-Service",
+      "id": "ROI-DOCS"
+    },
+    {
+      "level": 3,
+      "title": "Alert Triage (Aspirational)",
+      "id": "ROI-ALERTS"
+    },
+    {
+      "level": 2,
+      "title": "2. Direct Adoption Signals",
+      "id": "ADOPTION-SIGNALS"
+    },
+    {
+      "level": 2,
+      "title": "3. Pain Points Cited by Multiple Partners (Consensus Signals)",
+      "id": "PAIN-CONSENSUS"
+    },
+    {
+      "level": 3,
+      "title": "A. License/Cost Reconciliation \u2014 near-universal MSP pain",
+      "id": "PAIN-LICENSE"
+    },
+    {
+      "level": 3,
+      "title": "B. Patching \u2014 single biggest operational time-sink",
+      "id": "PAIN-PATCHING"
+    },
+    {
+      "level": 3,
+      "title": "C. Vulnerability/Advisory Triage \u2014 manual today",
+      "id": "PAIN-VULN"
+    },
+    {
+      "level": 3,
+      "title": "D. Ticket Resolution \u2014 manual screen-hunting",
+      "id": "PAIN-TICKETS"
+    },
+    {
+      "level": 3,
+      "title": "E. Root Cause Analysis \u2014 context-awareness gap",
+      "id": "PAIN-RCA"
+    },
+    {
+      "level": 3,
+      "title": "F. Distilled Insight (not just data dump)",
+      "id": "PAIN-INSIGHT"
+    },
+    {
+      "level": 3,
+      "title": "G. Persona Split: Numbers vs. Narrative",
+      "id": "PAIN-PERSONA"
+    },
+    {
+      "level": 2,
+      "title": "4. Blockers / Friction (Reliability + Data Gaps)",
+      "id": "BLOCKERS"
+    },
+    {
+      "level": 3,
+      "title": "Data Accuracy \u2014 the #1 blocker",
+      "id": "BLOCKER-DATA-ACCURACY"
+    },
+    {
+      "level": 3,
+      "title": "Documentation Reliability Bug",
+      "id": "BLOCKER-DOC-RELIABILITY"
+    },
+    {
+      "level": 3,
+      "title": "Broad Queries Fail / Specificity Required",
+      "id": "BLOCKER-QUERY-BREADTH"
+    },
+    {
+      "level": 3,
+      "title": "Discoverability & Memory Gaps",
+      "id": "BLOCKER-DISCOVERABILITY"
+    },
+    {
+      "level": 3,
+      "title": "Missing Data Fields (repeatedly cited)",
+      "id": "BLOCKER-DATA-FIELDS"
+    },
+    {
+      "level": 2,
+      "title": "5. Platform / Capability Asks",
+      "id": "ASKS"
+    },
+    {
+      "level": 3,
+      "title": "MCP as Platform Unlock",
+      "id": "ASK-MCP"
+    },
+    {
+      "level": 3,
+      "title": "Output Format Asks (chat-only is insufficient)",
+      "id": "ASK-OUTPUT-FORMATS"
+    },
+    {
+      "level": 3,
+      "title": "Persona Split: Data vs. Narrative",
+      "id": "ASK-PERSONA-SPLIT"
+    },
+    {
+      "level": 2,
+      "title": "6. Interview Source List",
+      "id": "SOURCES"
+    },
+    {
+      "level": 2,
+      "title": "7. Confidence Notes",
+      "id": "CONFIDENCE-NOTES"
+    },
+    {
+      "level": 1,
+      "title": "Part 2 \u00b7 Competitive Landscape",
+      "id": "part-2-competitive-landscape"
+    },
+    {
+      "level": 2,
+      "title": "CAT-DIRECT-MSP \u00b7 Direct MSP Competitors (RMM / PSA / All-in-One)",
+      "id": "CAT-DIRECT-MSP"
+    },
+    {
+      "level": 3,
+      "title": "What differentiator matters",
+      "id": "DIFF-DIRECT-MSP"
+    },
+    {
+      "level": 2,
+      "title": "CAT-SECURITY-MDR \u00b7 Security / MDR / EDR",
+      "id": "CAT-SECURITY-MDR"
+    },
+    {
+      "level": 3,
+      "title": "What differentiator matters",
+      "id": "DIFF-SECURITY"
+    },
+    {
+      "level": 2,
+      "title": "CAT-AI-INFRA \u00b7 AI Infrastructure (Foundation Models + Agent Frameworks)",
+      "id": "CAT-AI-INFRA"
+    },
+    {
+      "level": 3,
+      "title": "What differentiator matters",
+      "id": "DIFF-AI-INFRA"
+    },
+    {
+      "level": 2,
+      "title": "CAT-AUTOMATION \u00b7 Adjacent Automation (PSA Automation, iPaaS, Enterprise Agents)",
+      "id": "CAT-AUTOMATION"
+    },
+    {
+      "level": 3,
+      "title": "What differentiator matters",
+      "id": "DIFF-AUTOMATION"
+    },
+    {
+      "level": 2,
+      "title": "Cross-Category Patterns",
+      "id": "PATTERNS"
+    },
+    {
+      "level": 3,
+      "title": "PATTERN-MCP-CONVERGENCE \u00b7 Industry convergence on MCP",
+      "id": "PATTERN-MCP-CONVERGENCE"
+    },
+    {
+      "level": 3,
+      "title": "PATTERN-PRICING-SHIFT \u00b7 Pricing model shift away from seat / device",
+      "id": "PATTERN-PRICING-SHIFT"
+    },
+    {
+      "level": 3,
+      "title": "PATTERN-L1-AUTONOMOUS-SHIPPED \u00b7 Autonomous L1 no longer novel",
+      "id": "PATTERN-L1-AUTONOMOUS-SHIPPED"
+    },
+    {
+      "level": 3,
+      "title": "PATTERN-BUNDLE-VS-HEADLESS \u00b7 Vendor bundling vs. headless pattern",
+      "id": "PATTERN-BUNDLE-VS-HEADLESS"
+    },
+    {
+      "level": 3,
+      "title": "PATTERN-COVERAGE-GAPS \u00b7 Master list flags tracked gaps",
+      "id": "PATTERN-COVERAGE-GAPS"
+    },
+    {
+      "level": 2,
+      "title": "Confidence Notes",
+      "id": "CONFIDENCE-NOTES"
+    },
+    {
+      "level": 1,
+      "title": "Part 3 \u00b7 Industry Ethnography",
+      "id": "part-3-industry-ethnography"
+    }
+  ],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Source",
+        "Quote / claim",
+        "Confidence"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Source": "**David (MSP partner)**",
+          "Quote / claim": "\"It would have taken me easily an hour, hour and a half to put something like this together, and I managed to do it in like 15\u201320 minutes.\"",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "Source": "**Taciano T.**",
+          "Quote / claim": "~2 hours saved per QBR",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "Source": "**Aaron B.**",
+          "Quote / claim": "Would adopt and pay ~$30/user if ROI is clear",
+          "Confidence": "VERIFIED \u2014 pricing signal"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Source",
+        "Quote / claim",
+        "Confidence"
+      ],
+      "is_id_table": false,
+      "row_count": 2,
+      "rows": [
+        {
+          "Source": "**Robby Swartenbroekx, b-inside** *(APPROVED for external use)*",
+          "Quote / claim": "\"Ask N-zo quickly identified where resources could be freed across servers. What used to take hours of manual analysis now takes minutes.\"",
+          "Confidence": "VERIFIED \u2014 approved quote"
+        },
+        {
+          "Source": "**Jim L.**",
+          "Quote / claim": "Lifecycle planning surfaced a Celeron for refresh \u2014 \"20 minutes \u2192 under a minute.\"",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Source",
+        "Quote / claim",
+        "Confidence"
+      ],
+      "is_id_table": false,
+      "row_count": 1,
+      "rows": [
+        {
+          "Source": "**Louis O.**",
+          "Quote / claim": "Valentine's Day SentinelOne self-service let him \"basically figure it out myself between myself and Ask Enzo\u2026 [saved] at least two hours per day.\"",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Source",
+        "Quote / claim",
+        "Confidence"
+      ],
+      "is_id_table": false,
+      "row_count": 1,
+      "rows": [
+        {
+          "Source": "**David (MSP partner)**",
+          "Quote / claim": "\"[A] dedicated person\u2026 spends probably 20 hours a week going through alerts\u2026 80\u201390%\u2026 just checking\u2026 definitely automatable.\"",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Use Case",
+        "Before",
+        "After",
+        "Source"
+      ],
+      "is_id_table": false,
+      "row_count": 6,
+      "rows": [
+        {
+          "Use Case": "QBR report generation",
+          "Before": "1\u20131.5 hr",
+          "After": "15\u201320 min",
+          "Source": "David (MSP partner)"
+        },
+        {
+          "Use Case": "QBR (per report)",
+          "Before": "\u2014",
+          "After": "~2 hrs saved",
+          "Source": "Taciano T."
+        },
+        {
+          "Use Case": "Asset analysis",
+          "Before": "hours / half day",
+          "After": "minutes",
+          "Source": "Robby Swartenbroekx (b-inside, approved)"
+        },
+        {
+          "Use Case": "Lifecycle / refresh lookup",
+          "Before": "20 min",
+          "After": "<1 min",
+          "Source": "Jim L."
+        },
+        {
+          "Use Case": "Documentation self-service",
+          "Before": "\u2014",
+          "After": "~2 hrs/day saved",
+          "Source": "Louis O."
+        },
+        {
+          "Use Case": "Alert triage",
+          "Before": "~20 hrs/wk",
+          "After": "(aspirational \u2014 automatable)",
+          "Source": "David (MSP partner)"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "ID",
+        "Vendor",
+        "Key facts",
+        "Threat to NZO",
+        "Confidence"
+      ],
+      "is_id_table": true,
+      "row_count": 6,
+      "rows": [
+        {
+          "ID": "COMP-NINJAONE",
+          "Vendor": "**NinjaOne**",
+          "Key facts": "$500M+ ARR (2025); #1 G2 RMM satisfaction 23 consecutive quarters; 98% CSAT; Patch Intelligence AI; acquired Dropsuite $270M; partnered Blackpoint Aug 2025",
+          "Threat to NZO": "**High**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-KASEYA",
+          "Vendor": "**Kaseya**",
+          "Key facts": "Largest MSP software vendor by revenue; Kaseya Intelligence launched Connect 2026; Kaseya 365 Ops bundle $119\u2013129/user/mo; **Pia** provides autonomous L1 resolution; FIPS 140-3 + CMMC Level 2 in progress",
+          "Threat to NZO": "**High**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-CONNECTWISE",
+          "Vendor": "**ConnectWise**",
+          "Key facts": "Largest installed base of mid-to-large MSPs; RMM fully rebuilt on Asio platform Nov 2025; 1,200 monitors, 300+ scripts, 7,000+ third-party apps for patching; AI-powered RPA bot generation in dev",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-ATERA",
+          "Vendor": "**Atera**",
+          "Key facts": "**Robin by Atera** (formerly IT Autopilot, rebranded March 2026) \u2014 one of the most advanced shipped autonomous L1 resolution products; per-technician/unlimited-device pricing (~$149\u2013189/tech/mo); Azure OpenAI integration",
+          "Threat to NZO": "**High**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-HALOPSA",
+          "Vendor": "**HaloPSA**",
+          "Key facts": "Fastest-growing PSA among MSPs migrating off ConnectWise Manage; weekly release cadence; public community roadmap; AI features in \"suggest mode\" today; stated roadmap toward autonomous AI agents",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-SUPEROPS",
+          "Vendor": "**SuperOps**",
+          "Key facts": "AI-first all-in-one PSA+RMM; Category Leader in RMM Q1 2025 (Channel Program); AI features assist-mode only, not autonomous",
+          "Threat to NZO": "**Low-Medium**",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "ID",
+        "Vendor",
+        "Key facts",
+        "Threat to NZO",
+        "Confidence"
+      ],
+      "is_id_table": true,
+      "row_count": 5,
+      "rows": [
+        {
+          "ID": "COMP-CROWDSTRIKE",
+          "Vendor": "**CrowdStrike Falcon**",
+          "Key facts": "Market-leading EDR/XDR; Fall 2025 rebrand \"Agentic Security Platform\" with Enterprise Graph + Charlotte AI AgentWorks; GA Falcon AIDR Dec 2025 (blocks prompt injection); integrating Claude Opus 4.7",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-SENTINELONE",
+          "Vendor": "**SentinelOne**",
+          "Key facts": "Purple AI attach rate >50% of new licenses Q4 2025; One-Click Auto Investigation GA at RSAC 2026; FedRAMP High for Purple AI",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-SOPHOS",
+          "Vendor": "**Sophos**",
+          "Key facts": "Strong EMEA presence; >75,000 orgs on XDR/MDR; free third-party integrations for all MDR/XDR subscribers (Nov 2025); MSP Elevate bundle (June 2025)",
+          "Threat to NZO": "**Low**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-ARCTICWOLF",
+          "Vendor": "**Arctic Wolf**",
+          "Key facts": "Concierge Security Team model; Aurora Superintelligence Platform with \"Swarm of Experts\" agentic AI (March 2026); Aurora Exposure Management (May 12, 2026)",
+          "Threat to NZO": "**Low-Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-HUNTRESS",
+          "Vendor": "**Huntress**",
+          "Key facts": "MDR purpose-built for MSPs serving SMBs; per-partner transparent pricing; 24/7 human ThreatOps SOC; Managed SIEM (April 2025), ESPM + ISPM (March 2026); IPO reportedly planned for 2026",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "ID",
+        "Vendor",
+        "Key facts",
+        "Threat to NZO",
+        "Confidence"
+      ],
+      "is_id_table": true,
+      "row_count": 5,
+      "rows": [
+        {
+          "ID": "COMP-ANTHROPIC",
+          "Vendor": "**Anthropic Claude**",
+          "Key facts": "$100M Claude Channel Partner Program targeting MSPs (2025); Claude Opus 4.7 (April 2026) \u2014 87.6% SWE-bench, 1M context; Claude for Small Business May 2026; available on Bedrock + Vertex AI; 470K Deloitte professionals deployed",
+          "Threat to NZO": "**Medium** (infra + potential competitor)",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-OPENAI",
+          "Vendor": "**OpenAI**",
+          "Key facts": "Responses API + Agents SDK + full MCP support across product line (March 2025); GPT-5 family standardized Feb 2026; Assistants API deprecated Aug 2026; no dedicated MSP channel",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-LANGCHAIN",
+          "Vendor": "**LangChain / LangGraph**",
+          "Key facts": "130K+ applications; 300% YoY download growth; LangGraph 1.0 stable Oct 2025; LangSmith observability at **94% adoption in production agents**; AWS Marketplace July 2025",
+          "Threat to NZO": "**Low-Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-CREWAI",
+          "Vendor": "**CrewAI**",
+          "Key facts": "47.8K GitHub stars; 27M+ downloads; 2B agent executions in 12 months; role-based multi-agent architecture; Enterprise $60K\u2013120K/year SOC2/HIPAA",
+          "Threat to NZO": "**Low**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-AUTOGEN-MS",
+          "Vendor": "**AutoGen / Microsoft Agent Framework**",
+          "Key facts": "v1.0 GA April 2026 for Python + .NET; free open-source; AutoGen transitioning to maintenance mode",
+          "Threat to NZO": "**Low**",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "ID",
+        "Vendor",
+        "Key facts",
+        "Threat to NZO",
+        "Confidence"
+      ],
+      "is_id_table": true,
+      "row_count": 5,
+      "rows": [
+        {
+          "ID": "COMP-REWST",
+          "Vendor": "**Rewst**",
+          "Key facts": "Purpose-built MSP automation; 200+ integrations; no-code workflow builder; **MCP Server launched June 2025** (FLOW conference) \u2014 external AI agents can call Rewst automations; RoboRewsty AI Workflow Builder GA March 2026; 2026 State of MSP Automation: 97% plan to automate more, only 4% have",
+          "Threat to NZO": "**High**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-SERVICENOW",
+          "Vendor": "**ServiceNow AI Agents**",
+          "Key facts": "Acquired Moveworks $2.85B (March 2025, closed Dec 2025); AI Control Tower with MCP Server; Autonomous Workforce framework (Knowledge 2026); L1 Service Desk AI Specialist (Q2 2026); enterprise-only ($500K\u2013$5M+ contracts)",
+          "Threat to NZO": "**High** (SMB gap is N-able opportunity)",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-WORKATO",
+          "Vendor": "**Workato**",
+          "Key facts": "8 consecutive Gartner Magic Quadrant Leader for iPaaS; **Enterprise MCP platform launched October 2025** \u2014 industry's first; supports Claude Desktop, ChatGPT, Cursor, Windsurf; 1,400+ pre-built connectors",
+          "Threat to NZO": "**Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-AGENTFORCE",
+          "Vendor": "**Salesforce Agentforce**",
+          "Key facts": "Atlas Reasoning Engine; Agentforce 360 GA October 2025; **1,000+ enterprise customers within weeks of GA**; Agentforce Operations April 2026; $2/conversation pricing",
+          "Threat to NZO": "**Low-Medium**",
+          "Confidence": "VERIFIED"
+        },
+        {
+          "ID": "COMP-PIA-KASEYA",
+          "Vendor": "**Pia (Kaseya)**",
+          "Key facts": "Already in Kaseya stack; most mature autonomous L1 resolution purpose-built for MSPs; CRN AI 100 (2026); Pia Chat Teams-native (2026)",
+          "Threat to NZO": "**High**",
+          "Confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Action Risk",
+        "Approval Pattern",
+        "Examples"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Action Risk": "**Low-risk, high-confidence**",
+          "Approval Pattern": "Execute autonomously",
+          "Examples": "Block known malicious IPs, close confirmed false positives"
+        },
+        {
+          "Action Risk": "**Medium-risk**",
+          "Approval Pattern": "Surface for analyst review",
+          "Examples": "Ambiguous phishing, unclear user behavior anomalies"
+        },
+        {
+          "Action Risk": "**High-impact**",
+          "Approval Pattern": "Require explicit approval",
+          "Examples": "Disable user accounts, isolate production systems, critical config changes"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Action Risk",
+        "Approval Pattern",
+        "Examples"
+      ],
+      "is_id_table": false,
+      "row_count": 3,
+      "rows": [
+        {
+          "Action Risk": "**Low-risk, high-confidence**",
+          "Approval Pattern": "Execute autonomously",
+          "Examples": "Block known malicious IPs, close confirmed false positives"
+        },
+        {
+          "Action Risk": "**Medium-risk**",
+          "Approval Pattern": "Surface for analyst review",
+          "Examples": "Ambiguous phishing, unclear user behavior anomalies"
+        },
+        {
+          "Action Risk": "**High-impact**",
+          "Approval Pattern": "Require explicit approval",
+          "Examples": "Disable user accounts, isolate production systems, critical config changes"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Method",
+        "Time to Productivity"
+      ],
+      "is_id_table": false,
+      "row_count": 2,
+      "rows": [
+        {
+          "Method": "**Traditional onboarding**",
+          "Time to Productivity": "3\u20136 months"
+        },
+        {
+          "Method": "**With AI guidance (COACH)**",
+          "Time to Productivity": "4\u20136 weeks"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Library",
+        "Purpose"
+      ],
+      "is_id_table": false,
+      "row_count": 5,
+      "rows": [
+        {
+          "Library": "**requests**",
+          "Purpose": "HTTP API interactions (SIEM, SOAR, scanners, endpoint monitoring)"
+        },
+        {
+          "Library": "**subprocess**",
+          "Purpose": "Executing security tools (Semgrep, etc.)"
+        },
+        {
+          "Library": "**json/csv**",
+          "Purpose": "Output processing and reporting"
+        },
+        {
+          "Library": "**argparse**",
+          "Purpose": "Building parameterized security scripts"
+        },
+        {
+          "Library": "**Beautiful Soup**",
+          "Purpose": "Parsing web content when APIs unavailable"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Challenge",
+        "Impact"
+      ],
+      "is_id_table": false,
+      "row_count": 5,
+      "rows": [
+        {
+          "Challenge": "**Multi-tenant scale**",
+          "Impact": "Managing dozens/hundreds of clients with different stacks simultaneously"
+        },
+        {
+          "Challenge": "**24/7 coverage requirements**",
+          "Impact": "Shift-based staffing is expensive; automation enables continuous operation"
+        },
+        {
+          "Challenge": "**Margin pressure**",
+          "Impact": "Alert volume +300% over 5 years; pricing hasn't scaled proportionally"
+        },
+        {
+          "Challenge": "**Analyst burnout**",
+          "Impact": "70% of junior analysts leave within 3 years"
+        },
+        {
+          "Challenge": "**Consistency across clients**",
+          "Impact": "Must standardize workflows while allowing client-specific customization"
+        }
+      ]
+    },
+    {
+      "headers": [
+        "Method",
+        "Time to Productivity"
+      ],
+      "is_id_table": false,
+      "row_count": 2,
+      "rows": [
+        {
+          "Method": "Traditional onboarding",
+          "Time to Productivity": "3\u20136 months"
+        },
+        {
+          "Method": "With AI guidance (COACH)",
+          "Time to Productivity": "4\u20136 weeks"
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [
+    "ASK-MCP",
+    "ASK-OUTPUT-FORMATS",
+    "ASK-PERSONA-SPLIT",
+    "BLOCKER-DATA-ACCURACY",
+    "BLOCKER-DATA-FIELDS",
+    "BLOCKER-DISCOVERABILITY",
+    "BLOCKER-DOC-RELIABILITY",
+    "BLOCKER-QUERY-BREADTH",
+    "CAT-AI-INFRA",
+    "CAT-AUTOMATION",
+    "CAT-DIRECT-MSP",
+    "CAT-SECURITY-MDR",
+    "COMP-AGENTFORCE",
+    "COMP-ANTHROPIC",
+    "COMP-ARCTICWOLF",
+    "COMP-ATERA",
+    "COMP-AUTOGEN-MS",
+    "COMP-CONNECTWISE",
+    "COMP-CREWAI",
+    "COMP-CROWDSTRIKE",
+    "COMP-HALOPSA",
+    "COMP-HUNTRESS",
+    "COMP-KASEYA",
+    "COMP-LANGCHAIN",
+    "COMP-NINJAONE",
+    "COMP-OPENAI",
+    "COMP-PIA-KASEYA",
+    "COMP-REWST",
+    "COMP-SENTINELONE",
+    "COMP-SERVICENOW",
+    "COMP-SOPHOS",
+    "COMP-SUPEROPS",
+    "COMP-WORKATO",
+    "DIFF-AI-INFRA",
+    "DIFF-AUTOMATION",
+    "DIFF-DIRECT-MSP",
+    "DIFF-SECURITY",
+    "PAIN-CONSENSUS",
+    "PAIN-INSIGHT",
+    "PAIN-LICENSE",
+    "PAIN-PATCHING",
+    "PAIN-PERSONA",
+    "PAIN-RCA",
+    "PAIN-TICKETS",
+    "PAIN-VULN",
+    "PATTERN-BUNDLE-VS-HEADLESS",
+    "PATTERN-COVERAGE-GAPS",
+    "PATTERN-L1-AUTONOMOUS-SHIPPED",
+    "PATTERN-MCP-CONVERGENCE",
+    "PATTERN-PRICING-SHIFT",
+    "ROI-ALERTS",
+    "ROI-ASSETS",
+    "ROI-DOCS",
+    "ROI-NAMED",
+    "ROI-QBR"
+  ],
+  "cs_tag_histogram": {
+    "VERIFIED": 145,
+    "HIGH": 62,
+    "UNKNOWN": 5,
+    "MEDIUM": 55,
+    "LOW": 4
+  }
+}

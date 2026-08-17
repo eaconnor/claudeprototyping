@@ -1,0 +1,958 @@
+
+--- PAGE 1 ---
+Control Plane / Headless IT Tech in the AI Agent world
+The Full Positioning Document
+prototype of what it could look like 
+Why the MSP cares sectionHow Seth Godin would sell this
+What we are building
+Technical OverviewAgent typesControl plane responsibilitiesOrchestration layer (first-party agents)
+Management plane (vendor agents)
+The ACP-First MSP: From Zero to Running Without Opening a Single Product (the ultimate aspiration)Discovery
+First Login: The ACP Dashboard
+Customer Onboarding: 
+Customization: When Defaults Are Not Enough
+Reporting and Value: Proving the Business
+How does this work with N-zo and in the other products (Cove, UEM, Adlumin) in the near term? 
+Monitoring the Control PlaneAgent and Coworker Lifecycle
+Execution TelemetryRunbook Telemetry
+Identity and Access Events
+MCP and Tool Transaction Log
+LLM Inference Telemetry
+Policy and Governance Events
+Value Ledger
+It answers: what did the ACP actually do for this MSP, and what is that worth?
+Monetization Metering (Billing Events)
+Use Cases: Example with us and a Halo Expert Set of 10 Use Cases we are sending to customers to rank:Business Report for your customer
+Alert Flood Suppression Coworker
+Security Tabletop Exercise Simulator
+Continuous Environment Health Coworker
+MSP Employee Onboarding Coworker
+Existing Customer New Employee Onboarding/Offboarding Coworker
+New Customer Onboarding Coworker
+Network Incident Resolution Coworker
+MSP Benchmarking & Threat Hardening Coworker
+Ticket Triage and Dispatch “Coworker” that:
+MSP Acquisition Integration Coworker
+Disaster Recovery Orchestration Coworker  
+Other use cases consideredNetwork Incident Resolution: Deterministic + Non-Deterministic in Action
+Monetization: The ACP as a Revenue ArchitectureMonetization: The ACP as a Revenue Architecture
+--- PAGE 2 ---
+The Per-Device Model Is Broken
+How the Market Already Prices This
+Seven Revenue Layers (They Stack)
+How the Layers Compound
+How the MSP Charges Their Customer
+The (not named Marketplace) Vendor onboarding, access, and monetization processOnboarding a Vendors' AI Expert
+CertificationRevenue Model
+Versioning
+The Marketplace
+Ongoing Governance
+The Full Positioning Document
+prototype of what it could look like 
+Thank  you to @Elizabeth Connor
+Why the MSP cares section
+How Seth Godin would sell this
+The MSP industry has a story it tells itself.
+"We manage your IT." That is the story. And for twenty years, it worked. You charge per device,
+you hire technicians, you grow linearly. More customers, more people, more overhead. Repeat.
+Here is the problem with that story: it is a commodity story. Every MSP tells it. The customer
+cannot tell the difference between you and the next one. So they shop on price. And you race to
+the bottom.
+Now. What if you told a different story?
+"We run 14 AI Coworkers across your environment. Last month they resolved 340 incidents,
+onboarded 12 employees, closed 2,100 vulnerabilities, and generated your quarterly business
+review. Here is the proof."
+That is a story no one else is telling. That is a story the customer cannot compare to anything.
+That is a purple cow.
+The Autonomous Control Plane is not a product. It is the infrastructure for a new story.
+ACP_Positioning_Document.docx
+https://n-able.atlassian.net/wiki/spaces/AI/pages/61995876354/ACP+prototype
+--- PAGE 3 ---
+The old story sells time. The new story sells outcomes.
+The old story says "trust us, we have good people." The new story says "here is a ledger of
+every action, every result, every dollar of value we created for you last month."
+The MSPs who adopt this will not compete with the MSPs who do not. They will be playing a
+different game entirely. Their customers will not be able to go back to the old way, because the
+old way cannot show its receipts.
+That is the shift. Not "we added AI." Nobody cares that you added AI. They care that you
+changed what you deliver, how you prove it, and what it is worth.
+The ACP just makes that change possible at scale.
+The interesting question is not whether the technology works. It does. The interesting question
+is whether you are ready to tell a different story.
+What we are building
+The ACP lets MSPs build, run, and govern AI agents that automate their operations, and we
+meter every execution.
+It controls who they are, what they can do, what tools they can touch, and what happens when
+they run. Every action is logged, every permission is scoped, and every execution is metered.
+MSPs use it to build AI Coworkers that automate real operational work: onboarding, triage,
+patching, incident response, reporting. They assemble Coworkers from N-able Experts, vendor
+Experts, their own runbooks, and their own tool connections.
+The ACP is an independent product line, and may be purchased without other N-able products.
+However, it is our intent that our AI Experts and runbooks are so high value that they cant help
+but purchase them. 
+Technical Overview
+The N-able control plane is the governing layer for AI Agents operating within the N-able
+product ecosystem. It serves three distinct but related functions: it is a full orchestration layer
+for N-able's own first-party AI agents (AI Experts), managing their execution path, resource
+allocation, and runtime policy; and it is a management plane for vendor-supplied agents and
+skills, governing their lifecycle, certification, and the conditions under which they operate within
+a customer environment and for Customer created AI Agents called AI Coworkers.
+--- PAGE 4 ---
+The control plane, and N-able generallhy, does not build or host its own AI models for this
+purpose. All inference is delegated to external LLMs, either provided through N-able's own
+processing infrastructure (aka Bedrock) or supplied directly by the customer.
+The thing which is being controlled in this case are AI Agents, the Skills those AI Agents call,
+and the tooling which the skills utilize. These are at once:
+Non-Human Identities (NHI) as well as 
+Software and each AI Agent is in itself 
+a mini-control plane
+We can imagine it looks a little like this:
+with the AI Coworker detail view:
+
+--- PAGE 5 ---
+We can extend the concept so that “Once the coworkers works, you can export it as an MCP
+server so Claude can call it like a tool instead of making you rewrite the same prompt over and
+over. See :
+( ) 
+So the coworker ends up acting as a mini control plane on its own, managing workflows withinthe context of the MSP.
+https://app.therundown.ai/guides/build-a-custom-blog-writing-agent-with-no-code-langflow?
+utm_source=www.therundown.ai&utm_medium=newsletter&utm_campaign=zuckerberg-s-
+500m-ai-biology-swing&_bhlid=37e6fee453673027723409b34b64f4aaffd8aea7
+Experiment outline with Omni as a base 
+--- PAGE 6 ---
+AI Agent is the fundamental unit of the ecosystem. An agent combines an identity, a runbook, a
+set of tool access permissions, and a designated LLM into a deployable entity. Each deployed
+agent instance receives its own scoped identity there is no shared service principal across
+customers or deployments. This means two customers running the same Agent Expert are
+operating distinct principals with independent permission scopes.
+Agent identity is modelled on the concept of an office worker with a defined role and access
+rights. Each deployment gets an identity that expresses what the agent is permitted to do,
+which systems it can reach, and under what conditions. Identity is enforced at runtime, not at
+configuration time.
+  PLEASE SEE THE
+RUNBOOK WRITEUP 
+MCP servers (and CLI and APIs and whatever mechanism comes next) are the mechanism
+by which agents access software systems. They form the tool access layer sitting between an
+agent and the services it needs to operate. Which MCP servers an agent may use, and with
+what scope, is governed by the control plane (particularly for vendor agents, where permitted
+servers and scopes are explicitly bounded).
+MCP keys and credentials are managed by a dedicated key service, separate from the
+control plane itself. The key service is responsible for credential vaulting and issuance, and
+issues credentials scoped to a specific deployment rather than to an agent type. This means
+credential rotation and revocation operate at the deployment level.
+LLMs are always external. N-able does not build or operate its own models. Customers may use
+N-able's processing infrastructure (which routes to a supported external model) or bring their
+own model and API key (BYOK/BYOM). In the bring-your-own case, the control plane hands off
+to the customer's chosen model and does not sit in the inference path. LLM selection is a per-
+agent configuration.
+The script repository provides deterministic, non-AI tooling that agents can invoke for activities
+where predictable, auditable execution is required. This is distinct from MCP-based access and
+represents a lower-variance execution path for well-defined operations.
+Runbooks describe what an agent will do (can be as simple as a prompt or as complex as
+multiple SOPs). Runbooks can be authored by N-able, by vendor partners, or by customers
+directly. They can be uploaded or generated. The control plane does not pre-screen or approve
+runbooks before use. This places responsibility on the runtime layer to catch out-of-policy
+behavior regardless of runbook provenance. This is a big ‘unknownʼ. Runbooks may be as
+simple as a prompt, or as complex as containing multiple workflows.
+HERE
+--- PAGE 7 ---
+Agent types
+AI Agent Experts are fully preconfigured AI agents released by N-able. They carry a complete
+end-to-end use case, a fixed runbook, defined tool access, and an N-able-managed identity.
+They require no customer configuration to deploy and operate entirely within the orchestration
+layer.
+Approved Vendor Experts are AI agents built by third-party vendor partners and certified by N-
+able for use within the ecosystem. Certification involves N-able reviewing the agent's intended
+behavior, permitted MCP scopes, and compatibility with ecosystem policy. Once certified, a
+Vendor Expert is listed in the agent catalogue and available to customers. Vendor Experts are
+managed through the management plane rather than the orchestration layer. N-able governs
+their lifecycle, versioning, and policy compliance, but does not necessarily own their runtime.
+Control plane responsibilities
+Orchestration layer (first-party agents)
+For Agent Experts and Coworkers executing on N-able infrastructure, the control plane owns the
+full execution path. Its responsibilities include:
+Routing agent requests to the appropriate LLM endpoint, whether N-able-hosted or handed
+off to a customer-supplied model
+Enforcing agent identity and permission boundaries at runtime
+Brokering MCP server access by requesting appropriately scoped credentials 
+Applying runtime policy against agent actions If it owns the runbook provenance
+Providing execution context and resource management for the agent's lifecycle
+Management plane (vendor agents)
+For Approved Vendor Experts, the control plane acts as a governance and certification authority
+rather than a runtime executor. Its responsibilities include:
+Operating the agent catalogue: onboarding, versioning, and certification of vendor agents
+Allowing the vendor to define permitted MCP server access and credential scopes for each
+vendor agent
+AI Coworkers are user-assembled super-agents. A customer builds a Coworker by combining
+their own runbooks, their own MCP configurations, and any mix of Agent Experts and Approved
+Vendor Experts. The result is a custom workflow tailored to the customer's environment.
+Coworkers execute within the orchestration layer, but the vendor agents they embed may
+execute either on N-able infrastructure or on the vendor's own infrastructure, at the customer's
+discretion.
+--- PAGE 8 ---
+?Establishing the policy conditions under which a vendor agent may be embedded into a AI
+Coworker
+When a vendor agent executes on the customer's own infrastructure, the control plane governs
+???( BIG QUESTION TO ANSWER HERE … ? credentials ?, ?what it is permitted to request?, and
+?how its outputs are validated? before they re-enter a Coworker's execution context. The
+vendor's runtime is trusted within the bounds N-able has defined, but not unconditionally.
+Audit and observability provides logging, tracing, and policy check records across all agent
+activity. Because runbooks are not pre-approved, the audit layer is the primary mechanism for
+detecting and investigating out-of-policy behavior after the fact.
+hich intercepts requests and
+transforms LLMs calls into script or API calls (pulling from the repo of available deterministic
+outcomes )
+The ACP-First MSP: From Zero to Running Without Opening a Single Product(the ultimate aspiration)
+If the control plane works, a new MSP should never need to learn UEM. They should never need
+to learn Cove. They should never need to learn Adlumin. Those products become infrastructure,
+engines running underneath, while the ACP is the only interface the MSP touches.
+The MSP does not buy a collection of tools and figure out how to stitch them together. They buy
+a business-in-a-box that happens to run on N-able's product lines underneath.
+Discovery
+An MSP owner hears about the ACP the same way they hear about everything: a peer mentions
+it, they see it at a conference, or they find it searching for "how to start an MSP" or "automate
+MSP operations."  
+They land on a page that says: Build AI Coworkers that run your MSP operations across
+every customer, every tool, every shift. They do not see a pitch for endpoint management
+software. They do not see a pitch for backup software. They see a pitch for running an MSP.
+They sign up for a trial.
+First Login: The ACP Dashboard
+The MSP logs into the ACP. There is no redirect to UEM. No redirect to Cove. No redirect to
+Adlumin. The ACP is the front door and the only door they need.
+There is an opportunity for a  Deterministic Substitution Engine w
+--- PAGE 9 ---
+What they see:
+A setup N-zo that asks three questions: How many customers do you have today? What
+services do you plan to offer (endpoint management, backup, security, lists all existing Vendor
+Experts)? Do you have existing tools or are you starting fresh?
+A catalogue of pre-built AI Experts & Coworkers organized by MSP function: onboarding,
+monitoring, patching, backup, security, triage, reporting
+A getting-started N-zo experience that walks them through their first deployment in under
+an hour
+Based on their answers, we provision the underlying product infrastructure automatically. If they
+selected endpoint management, UEM is provisioned behind the scenes. If they selected
+backup, Cove is provisioned. Security, Adlumin. The MSP never sees these provisioning steps.
+They see: "Your environment is ready."
+Customer Onboarding: 
+In the ACP, they click Activate on the New Customer Onboarding Coworker. It is a pre-built,
+N-able-authored Coworker that ships with the platform. It comes with a default runbook that
+covers the standard onboarding flow.
+The MSP provides the basics: customer name, primary contact, number of endpoints, service
+tier. The Coworker does the rest.
+Behind the scenes, the Coworker delegates to default Experts:
+The Endpoint Expert provisions the customer in UEM, generates the agent installer, and sets
+default monitoring policies. The MSP never opens UEM.
+The Backup Expert creates the customer in Cove, configures default backup schedules
+based on the service tier, and validates the first backup completes. The MSP never opens
+Cove.
+The Security Expert enrolls the customer in Adlumin, deploys EDR, and applies the baseline
+security policy. The MSP never opens Adlumin.
+The Documentation Expert creates the customer record, logs every action taken, and
+generates a customer-ready onboarding summary.
+The MSP sees a single execution log in the ACP: "Customer onboarded. 47 actions completed.
+0 failures. Onboarding summary ready for delivery." They click, review the summary, and send it
+to their customer.
+They just onboarded a customer across three product lines without opening any of them.
+--- PAGE 10 ---
+Customization: When Defaults Are Not Enough
+Eventually, the MSP wants to customize. Their biggest customer has a specific onboarding
+policy. Their vertical requires a particular compliance report. They want alerts from a third-party
+tool correlated alongside N-able alerts.
+They open the Coworker Builder in the ACP. They clone the default Onboarding Coworker. They
+modify the runbook to add the custom steps. They add a Vendor Expert from the marketplace
+(the Halo Ticket Expert, the SentinelOne Expert, whatever they need). They test it in sandbox
+mode. They publish it.
+At no point do they open UEM, Cove, or Adlumin to make this customization. The ACP is the
+authoring environment. The products are the execution infrastructure.
+If they write a custom script for a specific remediation, they write it in the ACP's script
+repository. It becomes available to any Coworker. If they build a custom runbook for a niche use
+case, it lives in the ACP and any Coworker can reference it.
+Reporting and Value: Proving the Business
+The MSP opens the Value Ledger in the ACP. It shows, across all customers, all Coworkers, all
+time periods:
+Executions run
+Incidents resolved without human intervention
+Employees onboarded and offboarded
+Vulnerabilities remediated
+Backup failures caught and fixed
+Manual equivalent hours saved
+Estimated cost avoidance
+They pull a report for a single customer. It shows everything the automation did for that
+customer last month. They attach it to the QBR the Business Report Coworker already
+generated. They walk into the customer meeting with proof of value they assembled in five
+minutes.
+How does this work with N-zo and in the other products (Cove, UEM,Adlumin) in the near term? 
+for simplicity, we will just call Cove, UEM, Adlumin “apps”
+ACP → Apps (Publish)
+--- PAGE 11 ---
+ACP is the authoring environment for Coworkers and Experts
+Publish targets include N-zo in UEM, Cove, and Adlumin
+Each Coworker is flagged as autonomous-only, interactive-compatible, or both
+N-zo invokes interactive-compatible Coworkers using a delegation model that respects both
+the Coworker's NHI and the calling user's permissions
+Autonomous Coworkers are available as triggers or background actions, not conversational
+experiences
+Apps → ACP (Reverse Publish)
+Scripts, skills, and runbooks created in any product are available in the ACP
+Each carries provenance metadata: authoring product, author type (product team vs.
+customer), product context assumptions, cross-product validation status
+Assets are versioned independently; the ACP pins to a version and surfaces updates without
+forcing them
+Permission-gated: the logged-in user must have rights in both the source product and the
+ACP
+N-zo's Role
+N-zo remains the in-app assistant with product-scoped context as its primary function
+Published Coworkers appear as a clearly separated capability layer within N-zo, visually and
+functionally distinct from native app assistance
+N-zo can trigger both interactive and autonomous Coworkers, with appropriate UX for each
+(conversational response vs. "kicked off, I will notify you when complete")
+There is also a world in which the customers are ACP customers only and you could imagine N-
+zo as exposed through the ACP
+--- PAGE 12 ---
+Monitoring the Control Plane
+The job of monitoring is to capture every agent action, every tool call, every credential issuance,
+and every customer outcome, categorize it, and make it usable for three distinct audiences:
+operations (is it working), finance (what do we charge), and compliance (can we prove what
+happened).
+Agent and Coworker Lifecycle
+Every entity that exists inside the ACP has a lifecycle. Creation, configuration, deployment,
+modification, retirement. All of it gets tracked.
+AI Coworkers created — who created it, when, which tenant, which Experts and runbooks
+were embedded, which MCP servers were connected
+AI Coworkers modified — what changed, who changed it, previous version vs. current
+version, timestamp
+AI Coworkers deleted or retired — when, by whom, reason if provided, whether active
+executions were in flight
+Agent Experts activated — which Expert, which tenant, deployment-scoped identity issued,
+LLM configuration at activation
+Vendor Experts onboarded — certification date, permitted MCP scopes, policy constraints,
+version
+Vendor Expert version changes — old version, new version, re-certification status, rollout
+scope
+
+--- PAGE 13 ---
+Coworker export events — when a Coworker is exported as an MCP server (per the export
+model described elsewhere), who exported it, what was exposed
+Execution Telemetry
+Every workflow run, every Expert delegation, every step inside a Coworker.
+Coworker executions — trigger event, start time, end time, duration, completion status
+(success / partial / failure / timeout)
+Runbook invocations — which runbook, version, provenance (N-able authored, vendor
+authored, customer authored), whether the runbook was modified since last run
+Expert delegations within a Coworker — which Experts were called, in what order, parallel
+vs. sequential, per-Expert start/end/duration/status
+Step-level trace — every discrete action inside an execution: tool call, LLM inference, script
+execution, approval gate, conditional branch taken, data transformation
+Trigger source — what initiated the execution (scheduled, event-driven, manual, API call,
+upstream Coworker)
+Retry and fallback events — when a step fails and retries, how many attempts, whether a
+fallback path was taken, final disposition
+Queue and wait times — time between trigger and execution start, time spent waiting for
+approvals, time spent waiting for external system responses
+Runbook Telemetry
+Runbooks are the behavioral core of every agent.  
+Runbook inventory — all runbooks in the system, version, author, provenance, last modified
+date, associated Coworkers
+Runbook runs — count per runbook, per tenant, per time period
+Runbook drift — when a runbook is modified between runs, delta between versions 
+?Runbook complexity metrics — number of steps, number of conditional branches, number
+of tool calls, number of approval gates, estimated token cost per run
+Runbook failure rate — per runbook, per version, over time, with root cause tagging (tool
+failure, LLM error, policy block, timeout, bad input)
+Runbook coverage — which operational areas have runbooks, which are still handled
+manually, gap analysis over time
+--- PAGE 14 ---
+Out-of-policy events by runbook — when a runbook execution triggers a policy violation,
+tagged to the specific runbook and version
+Identity and Access Events
+Every agent is a Non-Human Identity. 
+Identity issuance — when a deployment-scoped identity is created, for which agent, in
+which tenant, with what permissions
+Identity modification — scope changes, permission additions or removals, who authorized
+the change
+Identity revocation — when and why an identity was revoked, whether active sessions were
+terminated
+Credential requests to the key service — which agent requested credentials, for which MCP
+server, scope requested vs. scope granted
+Credential rotation events — automated rotations, forced rotations, rotation failures
+Credential revocation — when, why, which deployment, whether dependent executions were
+affected
+Scope violations — when an agent attempts an action outside its permitted scope, whether it
+was blocked, what it attempted
+MCP and Tool Transaction Log
+Every interaction between an agent and an external system flows through the tool access layer.
+Every one gets logged.
+MCP server calls — which server, which agent, which method, request payload summary
+(not full payload for privacy), response status, latency
+API calls — endpoint, agent, method, status code, latency, payload size
+Script executions — which script from the repository, which agent invoked it, input
+parameters, execution result, runtime duration
+Deterministic Substitution Engine intercepts — when the engine intercepts a request that
+would have gone to an LLM and routes it to a script instead: original intent, substituted script,
+result, tokens saved
+Tool failures — which tool, error type, whether the failure was transient or persistent, retry
+outcome
+Tool access denied — when an agent requests a tool it is not permitted to use, logged with
+full context
+--- PAGE 15 ---
+Tool latency and availability — per MCP server, per API endpoint, over time, for SLA tracking
+and capacity planning
+Transaction volume by tool — counts per MCP server, per API, per script, per tenant, per
+time period
+This is the metering backbone for Layer 4 (MCP and Tool Transactions)
+LLM Inference Telemetry
+Inference requests — which agent, which model, prompt token count, completion token
+count, total tokens, latency
+Model selection — which LLM was used (N-able Bedrock vs. BYOK/BYOM), per agent, per
+execution
+Inference cost — calculated cost per call based on model pricing, aggregated per execution,
+per Coworker, per tenant, per billing period
+Inference failures — model errors, timeouts, rate limit hits, fallback behavior
+Deterministic substitution rate — percentage of potential LLM calls intercepted by the
+Substitution Engine, tokens saved, cost avoided
+Model quality signals — when available: confidence scores, hallucination flags, policy check
+failures attributable to model output
+BYOK/BYOM routing events — when inference is handed off to a customer-supplied model,
+logged for audit even though N-able does not sit in the inference path
+This is the metering backbone for Layer 5 monetization
+Policy and Governance Events
+Policy violations detected — what was attempted, which policy was violated, whether the
+action was blocked or flagged for review
+Escalations to human — when and why an agent escalated (low confidence, policy
+requirement, separation of duties), who received the escalation, resolution
+Value Ledger
+It answers: what did the ACP actually do for this MSP, and what is that worth?
+Manual equivalent hours saved — per Coworker execution, estimated time a technician
+would have spent performing the same work manually, aggregated per tenant, per billing
+period. May be taken from the Runbook estimated time for task
+monetization
+--- PAGE 16 ---
+Incidents resolved without human intervention — count, severity distribution, mean time to
+resolution vs. historical manual baseline
+For Experts where we know the intended outcome: 
+Tickets triaged and routed — count, accuracy rate (did the triage match the eventual
+resolution category), time saved per ticket - if we have the ticket data
+Remediations executed — patches applied, vulnerabilities closed, configurations
+corrected, drift remediated, with before/after posture scores
+Employees onboarded/offboarded (for — count, time from trigger to completion, systems
+provisioned or deprovisioned
+Customers onboarded — count, time from trigger to completion, controls verified
+QBRs and reports generated — count, data sources integrated, customer delivery
+confirmation
+Alert noise reduced — alerts ingested vs. alerts surfaced to humans, suppression ratio,
+false positive rate
+Cost avoidance — estimated cost of incidents prevented, breaches avoided (based on
+industry benchmarks), SLA penalties avoided
+Revenue influenced — upsell opportunities surfaced by Coworkers (e.g., QBR Coworker
+identifies posture gaps that lead to new service sales), tracked if the MSP closes on them
+LLM cost savings from deterministic substitution — tokens that would have been
+consumed, actual tokens consumed, delta
+The Value Ledger is customer-facing. It is the artifact the MSP shows their customer to justify
+the price. It is also the artifact N-able shows the MSP to justify the platform fee.
+Monetization Metering ( )
+This is the subset of telemetry that directly feeds invoicing. 
+Execution count — per Coworker, per tenant, per billing period (Layer 2)
+Expert activations — which Experts are active, per tenant, activation and deactivation dates
+(Layer 3)
+MCP and tool transaction count — per server, per API, per script, per tenant, per billing
+period (Layer 4)
+LLM token consumption — per model, per tenant, per billing period, with cost calculation
+(Layer 5)
+Outcome events — per resolved incident, per onboarded employee, per generated report,
+per billing period (Layer 6, future state)
+Billing Events
+--- PAGE 17 ---
+Tier and entitlement tracking — which tier the tenant is on, included allotments, overage
+thresholds, current consumption vs. entitlement
+Billing anomaly flags — sudden consumption spikes, usage patterns inconsistent with tenant
+size, potential misconfigurations driving unnecessary cost
+Use Cases: Example with us and a Halo Expert 
+A managed service provider (MSP) uses Halo as their ticketing system. When a new employee
+joins one of their customers, someone raises a ticket in Halo to kick off the onboarding process.
+The MSP has built an Onboarding AI Coworker in N-able. They wrote a runbook for it that says:
+when an onboarding ticket comes in, provision an identity for the new user and allocate them an
+asset. They've embedded the N-able Identity Expert and Asset Expert into the Coworker to
+handle those two jobs.
+Here's what happens end to end:
+Halo's Ticket Expert — a vendor agent certified in the N-able ecosystem ingests the ticket and
+passes it to the control plane. The management plane validates the payload and checks it
+
+--- PAGE 18 ---
+against policy before anything proceeds.
+The control plane then triggers the Onboarding Coworker. It reads its runbook, sees it needs to
+do two things, and delegates to the Identity Expert and Asset Expert in parallel. Before either
+Expert does anything, the orchestration layer issues each one its own scoped identity and
+fetches the right MCP credentials from the key service. 
+The Identity Expert provisions the new user's identity in N-able. The Asset Expert allocates a
+device or asset to them. 
+When both complete, the Coworker collects the results and confirms the runbook is satisfied.
+The full execution trace is written to audit.
+Finally, the result is passed back to the Halo Ticket Expert, which updates the ticket to show
+onboarding is complete.
+Set of 10 Use Cases we are sending to customers to rank:
+( workign document  )Top 10 ACP Use Cases.docx
+Business Report for your customer 1
+Alert Flood Suppression Coworker 2
+Security Tabletop Exercise Simulator 3
+MSP Employee Onboarding Coworker 3
+Existing Customer New Employee Onboarding/Offboarding Coworker 4
+New Customer Onboarding Coworker 4
+Network Incident Resolution Coworker 5
+MSP Benchmarking & Threat Hardening Coworker 5
+Ticket Triage and Dispatch “Coworker” that: 6
+MSP Acquisition Integration Coworker 7
+Disaster Recovery Orchestration Coworker 7
+--- PAGE 19 ---
+Business Report for your customer
+Integrates: PSA, RMM/UEM, Security (MDR), Backup, Reporting , etc.
+SUMMARY FOR SURVEY:
+What do these agents do?
+Generate a customer-ready report with charts, summaries, and recommended next steps. It
+shows progress, risk reduction, and remaining gaps in clear business terms, using data pulled
+from across MSP tools to highlight trends in patching, vulnerabilities, incidents, backups, and
+ticket volume.
+Whatʼs in it for you?
+Turns QBR prep from days of manual work into minutes. It helps shift customer conversations
+from ticket noise to business outcomes, clearly proving the MSPʼs impact while naturally
+uncovering growth opportunities and building trust through professionalism and transparency.
+Explanation:
+·       Pulls operational, security, and service data from across all MSP vendor tools
+·       Normalizes metrics across vendors so results are consistent and comparable
+·       Analyzes trends in patching, vulnerability exposure, incidents, backups, and ticket volume
+·       Translates raw metrics into clear business‑level insights and narratives
+·       Highlights risk reduction, improvements made, and gaps that remain
+·       Generates a customer‑ready report with charts, summaries, and recommended next steps
+Whatʼs in it for you:
+·       QBRs take minutes instead of days of manual data gathering
+·       Conversations shift from tickets and noise to outcomes and value delivered
+·       The MSP clearly proves its impact on security, uptime, and risk reduction
+·       Upsell and expansion opportunities are surfaced naturally through data
+--- PAGE 20 ---
+·       Customers see professionalism and transparency, increasing trust and retention
+Alert Flood Suppression Coworker
+Integrates: MDR tools, Backup tools, AlertOps, PSA tools, RMM alerts
+SUMMARY FOR SURVEY
+Cuts alert noise by correlating duplicate events, suppressing known benign or cascading alerts,
+and grouping related issues into a single problem record. It escalates to a human when patterns
+change or confidence drops, helping the team stay focused on what actually needs attention.
+Whatʼs in it for you? It reduces alert noise, lowers burnout, and improves response time.
+Correlates duplicate alerts across tools and devices
+Suppresses known‑benign or cascading alerts under policy
+Groups alerts into a single problem record
+Escalates when patterns shift or confidence drops
+Whatʼs in it for you: Less noise, lower burnout, better response time
+Incident Response Root Cause Analysis
+Integrates: Adlumin XDR/MDR, RMM/UEM, Identity Provider, Backup (Cove), PSA,
+Documentation (Hudu)
+SUMMRY
+Generates a customer-ready Root Cause Analysis report with a clear timeline, key findings,
+actions taken, and recommended hardening steps. It automatically captures the full incident as
+it happens, connects every detection and response into a single chain of evidence, and traces
+the root cause across security, identity, endpoint, and network data. It also identifies
+contributing factors and updates documentation with lessons learned and improved SOPs.
+--- PAGE 21 ---
+Whatʼs in it for you? Builds the RCA as the incident happens, so the report is ready in hours
+instead of days. Every action, decision, and tool call is automatically logged and traced, giving
+the MSP a professional, defensible report without the usual manual digging. The result is faster
+delivery, stronger customer trust, and a natural conversation about how to prevent the issue
+from happening again.
+Explanation:
+Captures the full incident timeline automatically as events unfold across tools
+Maps every detection, decision, approval, tool call, and remediation action to a single chain of
+evidence
+Correlates the root cause by tracing backward from impact to origin across security, identity,
+endpoint, and network data
+Identifies contributing factors: missed patches, policy drift, access gaps, configuration
+weaknesses
+Generates a customer‑ready Root Cause Analysis report with timeline, findings, actions taken,
+and recommended hardening steps
+Updates documentation systems with lessons learned and revised SOPs
+What's in It for you:
+Today, writing an RCA takes hours of digging across tools, Slack threads, and ticket notes, and
+the result is inconsistent and often late. ACP builds the RCA as the incident happens, not after.
+Every action is already logged, every decision already traced, every tool call already
+timestamped. The MSP delivers a professional, defensible report to the customer within hours
+instead of days. That report becomes a trust builder, an insurance artifact, and a natural upsell
+conversation: "Here's what happened, here's what we did, and here's what we recommend to
+prevent it."
+Security Tabletop Exercise Simulator
+Integrates: N‑able MDR, UEM, Backup, Vendor Security Expert, N‑able Vulnerability Expert,
+N‑able Script Expert, Script Repository
+SUMMARY
+--- PAGE 22 ---
+Simulates a real security incident using the MSPʼs actual tools, SOPs, and environment, with
+realistic alerts instead of hypothetical scenarios. It walks through detection, investigation, and
+response exactly as they would happen, evaluating decisions, approvals, and escalation paths
+along the way. The result is a clear record of what happened, where gaps exist, and where
+automation or controls should be improved.
+Whatʼs in it for you? Lets teams rehearse real incidents before they happen, so gaps in SOPs,
+permissions, and tooling surface safely instead of during a breach. It builds muscle memory
+without risking customer environments, gives leadership clear proof of readiness, and helps the
+MSP strengthen customer trust by demonstrating real response maturity.
+Explanation:
+Simulates a real security incident using the MSPʼs actual tools, SOPs, and environment
+Injects realistic alerts and signals instead of hypothetical scenarios
+Uses AI reasoning to walk through detection, investigation, and response paths
+Evaluates decision points, approvals, and escalation flows exactly as they would occur
+Identifies when remediation actions would be deterministic versus require human approval
+Documents actions taken, gaps found, and where automation or controls should improve
+Whatʼs in It for the you:
+Rehearse real incidents before they happen 
+Gaps in SOPs, permissions, and tooling surface safely instead of during a breach
+Teams build muscle memory without risking customer environments
+Leadership gains clear evidence of readiness and improvement areas
+The MSP strengthens trust with customers by proving response maturity, not just claiming it
+Continuous Environment Health Coworker
+Integrates: RMM/UEM, Security (Adlumin / EDR), Backup (Cove), PSA
+SUMMARY
+Runs continuous health sweeps across every customer environment to catch issues early and
+keep systems aligned with policy. It checks patching, backups, security posture, agent health,
+and core system performance, automatically fixing routine drift and opening tickets only when
+--- PAGE 23 ---
+human judgment is needed. The result is a daily summary of what was found, what was fixed,
+and what still needs attention.
+Whatʼs in it for you? Keeps your customer environments healthy without requiring technicians to
+start each day by checking dashboards across multiple tools. It automatically handles routine
+drift before anyone logs in, reducing manual effort and helping the MSP deliver more consistent
+operations at scale. The result is fewer missed issues, less repetitive work, and a more reliable
+service experience for customers.
+Explanation:
+Runs continuous health sweeps across every customer environment on a defined schedule
+Checks patch compliance, agent health, backup success, security posture, disk/memory/CPU,
+and certificate expiry
+Automatically remediates drift: restarts agents, retriggers backups, pushes missing patches,
+clears temp files
+Opens tickets only for issues that require human judgment
+Produces a daily operations summary: what was found, what was fixed, what needs attention
+What's in It for the MSP:
+Today a technician spends the first hour of every morning checking dashboards across tools.
+ACP eliminates that entirely. The environment is already healthy before anyone logs in. The MSP
+replaces a daily human ritual with a persistent, cross‑product coworker that never misses, never
+forgets, and never calls in sick.
+MSP Employee Onboarding Coworker
+Integrates: HR system, Identity Provider, PSA, RMM/UEM, Security tools
+SUMMARY
+Automatically starts onboarding across all required systems when a new employee is added. It
+provisions identity, device, and application access based on role and policy, validates security
+posture before access is granted, and requires approval for any sensitive permissions. Every
+step is logged for traceability and compliance.
+--- PAGE 24 ---
+Whatʼs in it for you? Gets new hires productive on day one without manual coordination or
+missed steps. It reduces security risk by making access consistent and policy-driven, cuts
+repetitive setup work for the team, and gives leadership clear proof that onboarding was done
+correctly and safely.
+Explanation:
+When a new employee is added, this coworker automatically initiates onboarding across all
+required systems. It provisions identities, devices, and application access based on role and
+policy, enforces least‑privilege permissions, and validates device and security posture before
+access is granted. Any elevated or sensitive access requires approval, and every step is logged
+for traceability and compliance.
+Whatʼs in It for the you:
+New hires are productive on day one without manual coordination or missed steps. Security risk
+is reduced because access is consistent and policy‑driven, not handled ad hoc. The team
+spends less time on repetitive setup, senior techs arenʼt needed for every onboarding, and
+leadership has clear proof that access was granted correctly and safely.
+Existing Customer New Employee Onboarding/Offboarding Coworker
+Integrates: Customer HR System, Identity Provider (IdP), Backup, RMM/UEM, Security (EDR),
+M365/SaaS, PSA
+SUMMARY
+Automatically detects when a customer adds or offboards an employee and starts the right
+onboarding or offboarding workflow based on customer and MSP policy. It provisions or
+removes access with least-privilege defaults, validates device and security readiness, and
+requires approval for any sensitive permissions. Every step is confirmed and logged for audit,
+compliance, and consistency.
+Whatʼs in it for you? Gets customer employees productive faster without manual back-and-forth
+or inconsistent handoffs. It reduces security risk by making access and device readiness
+consistent across customers, helps the MSP scale onboarding and offboarding more safely, and
+provides clear proof that every step was completed correctly and compliantly.
+--- PAGE 25 ---
+Explanation:
+Detects when a customer adds / offboards a new employee via HR or service request
+Resolves role, department, location, and risk profile using customer and MSP policy
+Provisions identity, device access, and required SaaS applications with least‑privilege defaults
+Validates device readiness and security posture before granting access
+Requires approval for elevated or sensitive permissions
+Confirms completion and logs all actions for audit and compliance
+Whatʼs in It for you:
+New customer employees are productive on day one without manual back‑and‑forth
+Security risk is reduced by enforcing consistent access and posture across customers
+Onboarding becomes repeatable and scalable instead of ticket‑driven and error‑prone
+Junior techs can handle onboarding safely without senior oversight
+The MSP demonstrates operational maturity with clear evidence of secure, compliant
+onboarding
+New Customer Onboarding Coworker
+Integrates: PSA, RMM/UEM, Security (MDR), Backup, Documentation, Reporting  
+SUMMARY
+Starts a standardized onboarding flow across every connected system when a new customer is
+signed. It sets up the customer in the PSA, deploys baseline configurations across core tools,
+applies standard policies, verifies critical controls, and keeps risky changes behind approvals. It
+finishes with a customer-ready summary showing what was deployed, what was verified, and
+what still needs human input.
+What's in it for you? Gets new customers onboarded faster without relying on manual
+coordination across tools and teams. It makes onboarding more consistent, reduces the risk of
+missed controls or unsafe changes, and gives the MSP clear proof that standards were applied
+from.
+Explanation:
+When the MSP signs a new customer, this coworker kicks off a standardized onboarding flow
+--- PAGE 26 ---
+across every connected system. It creates the customer record and onboarding project in the
+PSA, then provisions the tenant and baseline configurations across RMM/UEM, security, and
+backup tools. 
+It automatically deploys agents, applies standard policies, sets monitoring thresholds, and
+verifies critical controls are active (backup success, endpoint protection present, alert routing
+working). 
+Risky changes (admin access, firewall modifications, exception policies, broad scripting) are
+gated behind approvals, and the coworker logs every step with timestamps for auditability. 
+It finishes by generating a customer‑ready onboarding summary: what was deployed, what was
+verified, what still needs human input, and the proof that standards were met.
+Network Incident Resolution Coworker
+Integrates: N‑able, Vendor Network Expert, MDR, Backup, Vulnerability Expert, N‑able Script
+Expert, Script Execution Engine
+Detects network issues and triggers the customerʼs AI Coworker using their SOPs, then gathers
+the topology, device state, and logs needed to diagnose the problem. It uses AI reasoning to
+choose the right remediation, then shifts to validated script execution as soon as the path is
+deterministic, avoiding generated commands. Every action and outcome is logged end to end
+for speed, safety, and auditability.
+What's in it for you? Resolves network incidents faster without manual triage or constant tool
+switching. It reduces risk by executing approved, validated scripts instead of generated
+commands, lowers AI costs by stopping model use once execution is deterministic, and creates
+a clear audit trail of what changed, why, and with what result.
+Explanation:
+Detects network errors and triggers the customerʼs AI Coworker using their SOPs
+Orchestrates vendor and N‑able experts to gather topology, device state, and logs
+Uses AI reasoning to diagnose the issue and select the correct remediation
+Identifies when an action can be executed deterministically
+Executes validated scripts directly without LLM‑generated commands
+Stops model usage once deterministic execution is possible
+Logs execution results and outcomes end‑to‑end
+--- PAGE 27 ---
+Whatʼs in It for you:
+Faster incident resolution without manual triage or tool switching
+Lower risk by executing known‑safe, approved scripts instead of generated commands
+Reduced AI costs by eliminating unnecessary token usage during execution
+Repeatable outcomes that donʼt depend on senior technician intervention
+Clear audit trails that prove what changed, why, and how
+MSP Benchmarking & Threat Hardening Coworker
+Integrates: MDR, UEM, Vulnerability scanner, EDR/Security tools, Backup, PSA/Reporting   
+Pulls together patching, vulnerability, and security posture data across your customer base and
+normalizes it so comparisons across vendors are actually meaningful. It places you into a peer
+group based on MSP profile and benchmarks you on key operational metrics, then highlights
+where youʼre ahead, where youʼre behind, and which controls will improve results fastest. It
+finishes with customer-ready charts and messaging for QBRs.
+What's in it for you? Shows exactly how your MSP compares to similar peers, making it easier to
+prove progress and explain priorities to customers. It turns benchmarking into a practical
+hardening tool by spotlighting the gaps that matter most and giving you a clear story about what
+youʼre improving next.
+Explanation:
+Ingests your patching, vulnerability, and security posture across your full customer profile
+Normalizes data across vendors so “apples to apples” comparisons are actually possible
+Segments you into a “peer group” based on MSP size, customer mix, industry, endpoint
+count, and tool stack
+Benchmarks you against peers on daily operational metrics, for example: patch compliance
+timelines, critical vuln exposure window, EDR coverage, backup success rate, MFA/identity
+hygiene
+Flags where youʼre outperforming, where youʼre behind, and what specific controls would
+move the needle fastest
+Produces a customer‑ready narrative and charts for QBRs, including “hereʼs where you stand
+vs similar MSPs” and “hereʼs what weʼre improving next
+--- PAGE 28 ---
+Ticket Triage and Dispatch “Coworker” that:
+Integrates: PSA/Helpdesk, RMM/UEM, Security (MDR), Backup, Identity
+SUMMARY
+Ingests new tickets from any PSA or helpdesk and adds live endpoint, user, and tenant context
+so triage starts with the right information. It uses bounded AI reasoning to classify severity,
+category, and likely root cause, then runs safe diagnostics automatically while stopping before
+any disruptive remediation. When confidence is low or policy requires separation of duties, it
+escalates to a human technician.
+What's in it for you? Routes tickets correctly the first time, reducing bounce-around and wasted
+effort. It gives technicians the context and diagnostics they need up front, speeds up routine
+work without risking customer impact, and helps junior staff handle more tickets safely. The
+result is faster response, fewer mistakes, and clearer auditability for leadership.
+Explanation:
+Ingests new tickets from any PSA or helpdesk and enriches them with live endpoint, user, and
+tenant context
+Classifies severity, category, and likely root cause using bounded AI reasoning
+Automatically runs safe, non‑disruptive diagnostics such as log collection, service checks, and
+backup validation
+Stops before any disruptive remediation and routes those actions for approval
+Escalates to a human technician when confidence is low or separation‑of‑duties policies apply
+Whatʼs in It for the MSP:
+Tickets get routed correctly the first time, reducing bounce‑around and wasted effort
+Technicians start with context and diagnostics already done, cutting time‑to‑resolution
+Automation speeds up routine work without risking customer impact
+Junior techs handle more tickets safely, easing pressure on senior staff
+Customers see faster responses and fewer mistakes, while leadership gets clear auditability
+MSP Acquisition Integration Coworker
+Integrates: PSA, RMM/UEM, Security (EDR), Backup, Identity, Documentation
+Explanation:
+Detects the acquisition of a new MSP and initiates a controlled integration workflow
+Inventories tools, customers, technicians, and configurations from the acquired MSP
+--- PAGE 29 ---
+Maps differences in SOPs, security posture, patching standards, and access models
+Safely migrates customers, endpoints, and technicians into the acquiring MSPʼs standards
+Runs side‑by‑side validation to confirm monitoring, backup, and security are active
+Requires approval for destructive changes or policy overrides
+Logs every action and decision for audit, compliance, and post‑merger review
+Whatʼs in It for the MSP:
+Acquisitions integrate faster without breaking customer service
+Risk is reduced by standardizing security, patching, and access before changes go live
+Operational consistency improves instead of inheriting chaos
+Senior engineers arenʼt pulled into weeks of manual cleanup
+Leadership gains clear visibility into progress, gaps, and readiness
+The MSP turns M&A into a repeatable playbook instead of a one‑off fire drill
+Disaster Recovery Orchestration Coworker  
+Integrates: Cove DR/Standby Image (incl. Azure recovery option), PSA, Approval Workflow,
+Customer Comms  
+Explanation:
+Detects an outage (ticket, monitoring event, or customer call) and initiates a DR workflow.  
+Enforces step-level approvals for failover, network changes, and “declare disaster” moments,
+then executes only whatʼs authorized.  
+Captures the full DR timeline: what was approved, what ran, where it recovered, and when
+service was restored.
+[NR1]
+--- PAGE 30 ---
+Other use cases considered
+Network Incident Resolution: Deterministic + Non-Deterministic in Action
+A network error fires. The N-able Monitor Expert catches it and triggers the customer's AI
+Coworker, which orchestrates the entire response (it has their SOPs and connections to their
+favored network vendor).
+
+--- PAGE 31 ---
+The Coworker calls the Vendor Network Expert, a third-party agent that pulls device state,
+topology, and error logs. That data flows to the N-able Vulnerability Expert, which analyzes it
+against known CVEs and determines a specific remediation: patch a firewall rule on Device X.
+The Coworker then consults the N-able Script Expert, which searches the Script Repository
+and finds a validated script that performs exactly this action via direct API calls. The Script
+Expert flags it as deterministic, meaning no model reasoning is required to execute it.
+The Coworker hits a decision gate: "Can this action be completed without a model?" The
+answer is yes. So instead of having the LLM generate API calls (burning tokens and risking
+hallucinated parameters), the Coworker hands off execution to the Script Execution Engine,
+which runs the script directly. The agent process pauses. The script runs, the result comes
+back, and the Coworker logs the outcome.
+Five agents collaborated using model reasoning to diagnose the problem and identify the fix. But
+the moment the action could be performed deterministically, the system stopped spending
+tokens and handed off to validated, auditable code. 
+Monetization: The ACP as a Revenue Architecture
+Monetization: The ACP as a Revenue Architecture
+The Per-Device Model Is Broken
+Per-device pricing worked when a scan surfaced 10 findings a day. AI agents surface 3,000 in
+one pass. The volume of valuable work exploded and the MSP currently does charge more for
+the same 500 laptops because AI found more things to fix.
+This is industry-wide. SAP is shifting to consumption-based AI pricing. McKinsey found the TAM
+for AI+SaaS now includes labor itself, and incumbents must price on consumption to capture it.
+BCG found 40% of enterprise buyers cite seat reduction as their primary lever to cut software
+spending. [SAPinsider ] [ ] [Strategic Management Consulting | Boston Cons
+ulting Group ]
+If the pricing model counts laptops while agents do 100x the work, revenue stays flat while
+value multiplies.
+mckinsey.com
+
+--- PAGE 32 ---
+How the Market Already Prices This
+n8n charges per workflow execution. €20/month for 2,500 runs. No per-user or per-workflow
+caps. [Latenode — AI Workflow Automation with 1,200+ apps and LLMs Built In ]
+AI Workflow Automation Software & Tools  charges per operation. Five-step workflow, five
+operations. Shifted to credits in 2025 to handle AI workloads. [AI Workflow Automation Softw
+are & Tools ]
+Salesforce Agentforce launched at $2/conversation, then Flex Credits at $0.10/action. Three
+buying models: pay-as-you-go, pre-commit, pre-purchase. [Salesforce: The #1 Agentic AI CR
+M ]
+Zendesk charges $1.50 per automated resolution. If the AI escalates to a human, you pay
+nothing. [AI-Powered Service Platform | Zendesk ]
+Same conclusion everywhere: price the work, not the laptop.
+Seven Revenue Layers (They Stack)
+1. Platform Access (Subscription) Access to the control plane, builder, audit system, key
+service. You pay for the right to build and run.  
+2. Workflow Execution (Consumption) Every Coworker run is a billable event. 200 tenants, 200
+executions. The n8n model applied to MSP operations.
+3. Expert Licensing (Catalogue Revenue) Each Expert carries its own recurring license. The
+Identity Expert, the Vulnerability Expert, the Halo Ticket Expert. MSPs activate what they
+need.
+4. Vendor Ecosystem (Marketplace Economics) Three streams:
+Revenue share on Vendor Expert transactions. 0% on the first $X0K (seeds the ecosystem),
+15% to $5M, 10% above (rewards scale). Same logic as Shopify. [Shopify: The All-in-One C
+ommerce Platform for Businesses - Shopify ]
+Certification fees. One-time $500 to $2,000 registration. Waived for Technology Alliance
+partners. 
+Ecosystem-driven execution volume. Every Vendor Expert in the catalogue gives MSPs a
+reason to build another Coworker, which generates more executions (Layer 2), more tool
+transactions (Layer 5), and more inference calls (Layer 6). The vendor ecosystem amplifies
+every other layer.
+5. MCP and Tool Transactions (Metered Access) Every MCP call, API call, or script execution
+can be metered. AI Workflow Automation Software & Tools 's per-operation model at the
+
+--- PAGE 33 ---
+tool level. Pricing reflects actual resource consumption.
+6. LLM Inference Pass-Through (Cost Recovery + Margin) Bedrock customers pay inference
+cost plus margin. BYOK/BYOM customers skip this layer. The Deterministic Substitution
+Engine reduces N-able's cost every time it routes to a script instead of an LLM call. The
+execution still counts. The Substitution Engine is a margin engine.
+7. Outcome-Based Pricing (Future State) Per resolved incident. Per onboarded employee. Per
+QBR generated. Requires clean baselines and attribution. Highest margins because price
+anchors to business value. [AI-Powered Service Platform | Zendesk ]
+How the Layers Compound
+An MSP subscribes (Layer 1). Activates three N-able Experts and two Vendor Experts (Layers 3,
+4). Builds a Coworker that runs across 150 tenants nightly (Layer 2). Each execution generates
+MCP transactions (Layer 5) and inference calls (Layer 6). The vendor revenue share flows to N-
+able (Layer 4).  
+How the MSP Charges Their Customer
+The ACP gives MSPs a new pricing vocabulary. Each Coworker is a named, demonstrable unit of
+value they can show the customer.
+Bundled. Include Coworkers in the monthly fee. Treat AI as a margin play.
+Tiered. Basic gets monitoring. Premium gets automated remediation plus QBR reports.
+Consumption. "Your environment ran 3,200 remediations this month. Here is the invoice."
+Outcome-based. Per onboarded employee. Per resolved incident. Capture the spread
+between execution cost and outcome value.
+The (not named Marketplace) Vendor onboarding, access, and monetizationprocess
+The ACP vendor ecosystem follows the same structural pattern as every major platform
+marketplace: submission, review, certification, listing, ongoing compliance.
+Onboarding a Vendors' AI Expert
+A vendor submits four things:
+1. The Expert — the deployable agent with its runbook and default configuration
+2. Declared MCP scopes — what it accesses, what methods it calls, maximum credential scope
+3. Proof that the AI Expert passes our minimum test suite (we will supply our working test
+environment, Vendorʼs team can install it and run it.)
+
+--- PAGE 34 ---
+4. A sales contract, support contact and security response SLA
+Certification
+N-able runs automated scope validation (does the Expert only do what it says it does?).
+Upon certification we ‘publishʼ the AI Expert as an available resource in the marketplace.
+Experts may set a list price for utilization (see 
+  )
+Revenue Model
+Keep it simple.  
+One-time registration fee ($500 to $2,000) to cover review costs. Waived for existing
+Technology Alliance partners. Vendor retains full IP. N-able holds a distribution license.
+Versioning
+Updates enter certification review before publishing. New versions publish alongside old
+versions. MSPs pin to the version they built against. They adopt new versions when they
+choose. Security patches are the one exception: N-able can mandate adoption within 72 hours.
+Breaking changes require the vendor to declare them upfront. Affected MSPs get notified with a
+specific impact assessment. Minimum 90-day migration window before the old version sunsets.
+New Expert ??
+Minor update (no scope change) ??
+Scope change or new MCP access??
+Critical security patch 48 hours
+Type Timeline
+Control Plane / Headless IT Tech in the AI Agen
+t world | [hardBreak][hardBreak]Monetization: The ACP as a Revenue Architecture
+First $50K annual revenue 0%
+$50K to $5M 15%
+Above $5M 10%
+Tier N-able Take
+--- PAGE 35 ---
+The Marketplace
+MSPs discover Experts by category, vendor, product line compatibility, and rating. Each listing
+shows a star rating, number of MSPs using it, execution success rate, and which Experts it is
+commonly paired with.
+Vendors see aggregate adoption, usage, failure rates, and revenue. They do not see individual
+MSP names or customer data.
+Ongoing Governance
+Three mechanisms:
+Runtime monitoring — the audit layer tracks whether the Expert stays within its certified
+scope during production use
+Annual re-certification — lighter than initial review, vendor confirms behavior, N-able runs
+automated validation
+Emergency delisting — if a critical vulnerability or data violation is found, N-able pulls the
+listing immediately and notifies affected MSPs

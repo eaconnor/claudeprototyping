@@ -1,0 +1,56 @@
+# Nerdio
+slug: nerdio
+category: AI Purpose-Built for MSPs
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Nerdio is a Microsoft cloud management platform built specifically for MSPs, focused on Azure Virtual Desktop (AVD), Windows 365, Microsoft 365, and Azure cost optimization. Nerdio Manager for MSP 7.0 launched May 4, 2026, amid triple-digit Microsoft 365 growth — M365 users on the platform surged 300%+ YoY. Key new features include PSA integrations (Autotask, ConnectWise, HaloPSA), Microsoft Purview compliance baselines, a custom reporting engine, and a Prospect Tenant Assessment Wizard that scans a prospect's M365 environment to generate a client-ready security gap report.
+
+## MSP Relevance
+Nerdio is the dominant MSP platform for delivering Microsoft cloud services — Azure, AVD, Windows 365, and M365. MSPs who build practices around Microsoft cloud rely on Nerdio to manage AVD cost scaling, compliance policies, and multi-tenant M365 administration. The Prospect Assessment Wizard is a significant new tool for MSP sales motions. NerdioCon is one of the premier Microsoft-focused MSP conferences.
+
+## Key Offerings & Capabilities
+- Nerdio Manager for MSP — multi-tenant Microsoft cloud management for AVD, Windows 365, M365, Azure
+- Auto-scaling for Azure Virtual Desktop — reduces Azure compute costs by scaling session hosts dynamically
+- Purview Solution Baselines (v7.0) — manage Microsoft Purview policies and compliance baselines across M365 environments
+- Custom white-labeled Reporting Engine (v7.0) — cost, usage, performance, and compliance reports across AVD, M365, Azure
+- PSA integrations (v7.0) — native connections with Autotask, ConnectWise PSA, HaloPSA
+- Prospect Tenant Assessment Wizard (v7.0) — scans prospect M365, identifies security gaps, generates client-ready report
+- Nerdio Manager for Enterprise — equivalent platform for internal IT teams
+- Gov Edition — early adopter pricing for government-adjacent MSPs ($12/user/month through Dec 2025)
+
+## Recent Announcements
+- Nerdio Manager for MSP 7.0 launched May 4, 2026 — major release with PSA integrations, Purview baselines, reporting engine, assessment wizard
+- M365 users on the platform grew 300%+ YoY in 2025 — significant platform expansion beyond AVD
+- MSP user base doubled in 2025
+- Gov Edition launched — Nerdio Manager for MSP: Gov Edition for government-adjacent MSP work
+- NerdioCon 2026 announced as premier Microsoft cloud partner conference
+- Triple-digit growth amid MSP expansion into full Microsoft cloud practices
+
+## Pricing Model
+Per-user per-month for Nerdio Manager for MSP. Gov Edition at $12/user/month (early adopter pricing). Standard pricing requires sales engagement. Azure consumption costs are managed through the platform but billed separately through Microsoft. MSP resale pricing with margin opportunities.
+
+## Strengths
+- Dominant in Azure Virtual Desktop management for MSPs — essentially the category leader
+- 300% M365 growth shows the platform expanding beyond AVD into full Microsoft cloud management
+- Prospect Tenant Assessment Wizard is a strong MSP sales enablement tool
+- PSA integrations (v7.0) connect Nerdio into MSP billing and ticketing workflows
+- Gov Edition opens government-adjacent MSP opportunities
+- NerdioCon builds strong community and mindshare among Microsoft-focused MSPs
+
+## Weaknesses / Gaps
+- Narrowly focused on Microsoft cloud — not relevant for non-Microsoft MSP environments
+- Auto-scaling and cost optimization require MSPs to have established Azure practices — high entry bar
+- No meaningful AI automation or agentic features in the platform
+- Less relevant for MSPs serving SMBs on simpler Microsoft 365 setups without AVD
+
+## Competitive Threat to NZO
+Level: Low-Medium
+Reason: Nerdio focuses on Microsoft cloud management (AVD, Azure, M365), not AI agent automation. However, the Prospect Assessment Wizard and reporting engine are moving Nerdio into analytics and client-facing intelligence, which is adjacent to NZO's MSP value demonstration territory. As Nerdio expands M365 management, it competes for MSP mind-share and budget.
+
+## Notes
+- The Prospect Assessment Wizard (v7.0) is a best-in-class MSP sales tool — generates automatic client-ready security gap reports from M365 data. NZO should evaluate building equivalent AI-driven assessment capability
+- 300% M365 growth means Nerdio is now a significant M365 management platform, not just an AVD tool
+- PSA integrations make Nerdio a meaningful workflow participant in MSP operations

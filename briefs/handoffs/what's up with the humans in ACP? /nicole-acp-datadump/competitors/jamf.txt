@@ -1,0 +1,54 @@
+# Jamf
+slug: jamf
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Jamf is the leading Apple device management platform, covering MDM, security, and identity for macOS, iOS, iPadOS, tvOS, and visionOS. In October 2025, Jamf agreed to be acquired by Francisco Partners for $2.2 billion, with the deal expected to close Q1 2026, taking the company private. Apple's WWDC 2025 introduced significant MDM changes — traditional remote command-based software update management is deprecated and being removed in 2026, shifting to Declarative Device Management (DDM).
+
+## MSP Relevance
+Jamf is the go-to Apple MDM for MSPs serving education, creative industries, financial services, and enterprise clients with significant Apple deployments. As Apple devices continue to grow in enterprise, MSPs need Jamf expertise to manage and secure macOS and iOS fleets at scale. The Francisco Partners acquisition may shift Jamf's focus or pricing, creating opportunity for Kandji and Addigy.
+
+## Key Offerings & Capabilities
+- Jamf Pro — enterprise Apple MDM for macOS, iOS, iPadOS, tvOS, visionOS
+- Jamf Now — simplified MDM for small businesses
+- Jamf School — Apple MDM for education
+- Jamf Protect — Apple-native endpoint security and EDR
+- Jamf Connect — identity and authentication management (Okta, Azure AD, Google integration)
+- Declarative Device Management (DDM) support — Apple's next-generation proactive MDM framework
+- MDM migration without device wipe — new Apple capability (WWDC 2025) removing major migration barrier
+
+## Recent Announcements
+- October 2025: Agreed to acquisition by Francisco Partners for $2.2 billion (all-cash); deal expected to close Q1 2026
+- WWDC 2025: Full DDM support — Apple's declarative management framework across macOS, iOS, and visionOS
+- WWDC 2025: Traditional MDM software update remote command deprecated — will be removed late 2026
+- WWDC 2025: MDM migration without device wipe announced — organizations can change MDM without wiping devices
+- WWDC 2025: Platform SSO simplified setup with macOS Tahoe 26 — PSSO as first step in device enrollment
+- Jamf Nation Live 2026 — hands-on learning events in six US cities
+
+## Pricing Model
+Per-device per-year subscription. Jamf Pro pricing starts around $7–8/device/year at small scale, volume discounts at higher counts. Jamf Protect is an add-on. Jamf Connect is a separate add-on license. MSP reseller pricing available through partner program.
+
+## Strengths
+- Dominant Apple MDM platform — deepest Apple ecosystem integration of any MDM vendor
+- First-party Apple DDM support keeps Jamf ahead of Apple's evolving management framework
+- Jamf Protect provides Apple-native security alongside MDM — avoids Windows-centric EDR agents
+- MDM migration without wipe (WWDC 2025) makes it easier for MSPs to consolidate clients onto Jamf
+- Large certified admin and community ecosystem (Jamf Nation)
+
+## Weaknesses / Gaps
+- Francisco Partners acquisition creates uncertainty — pricing, product direction, and investment may change
+- Apple-only — irrelevant for Windows or cross-platform endpoint management
+- Higher price point than Kandji or Addigy for Apple MDM
+- DDM transition requires MSPs to update management workflows as traditional remote commands are deprecated
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Jamf focuses on Apple MDM, not AI agent automation or MSP workflow platforms. No meaningful overlap with NZO's core platform. However, as Jamf expands into security (Jamf Protect) and identity (Jamf Connect), it builds a fuller MSP services stack for Apple-heavy environments.
+
+## Notes
+- Francisco Partners acquisition (closing Q1 2026) worth monitoring — private equity ownership may change Jamf's pricing or channel strategy
+- DDM shift is significant — MSPs managing Apple fleets need to update patching and update workflows
+- MDM migration without wipe is a strategic enabler for MSPs consolidating Apple clients onto Jamf

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Cost Calculator — Tier 1 Concept</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Kalam:wght@400;700&display=swap');
+
+  :root {
+    --vermillion: #D8472B;
+    --ultramarine: #1F3C96;
+    --ochre: #C99A2E;
+    --violet: #5B3A7E;
+    --green-earth: #5E7A3F;
+    --cadmium: #E8B93A;
+    --ink: #1a1612;
+    --paper: #efe7d6;
+    --card: #f7f0df;
+    --grid: rgba(26,22,18,.055);
+    --line: var(--ink);
+    --unit: 28px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #efe7d6;
+      --paper: #1a1612;
+      --card: #241f19;
+      --grid: rgba(239,231,214,.07);
+      --line: var(--ink);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Kalam', cursive;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: var(--unit) var(--unit);
+  }
+
+  h1, h2, h3, .mono, button, .badge, .pip-label {
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ---------- Fidelity banner ---------- */
+  .fidelity-banner {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px var(--unit);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    border-bottom: 3px solid var(--vermillion);
+  }
+  .fidelity-banner .tier-label { font-weight: 700; letter-spacing: 0.5px; }
+  .pip-row { display: flex; gap: 4px; }
+  .pip { width: 10px; height: 10px; border: 1px solid var(--paper); }
+  .pip.on { background: var(--cadmium); }
+  .check-matrix { display: flex; gap: 14px; flex-wrap: wrap; }
+  .check-item { display: flex; align-items: center; gap: 5px; opacity: .9; }
+  .check-mark { font-weight: 700; }
+  .check-mark.yes { color: var(--green-earth); }
+  .check-mark.partial { color: var(--cadmium); }
+  .check-mark.no { color: var(--vermillion); }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--unit);
+    padding: var(--unit);
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- App surface ---------- */
+  .app-surface {
+    background: var(--card);
+    border: 2px solid var(--line);
+    box-shadow: 6px 6px 0 var(--line);
+    padding: calc(var(--unit) * 1.5);
+  }
+  .app-surface h1 {
+    margin: 0 0 6px 0;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+  }
+  .app-surface .subtitle {
+    margin: 0 0 var(--unit) 0;
+    opacity: .75;
+    font-size: 15px;
+  }
+
+  .inputs-row {
+    display: flex;
+    gap: var(--unit);
+    flex-wrap: wrap;
+    margin-bottom: var(--unit);
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 160px;
+  }
+  .field label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: .7;
+  }
+  .field input {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    padding: 8px 10px;
+    border: 2px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 0;
+  }
+  .field input:focus {
+    outline: 3px solid var(--ultramarine);
+    outline-offset: 1px;
+  }
+
+  .readout {
+    background: var(--paper);
+    border: 2px solid var(--line);
+    padding: var(--unit);
+    margin-bottom: var(--unit);
+    text-align: center;
+  }
+  .readout .running-cost {
+    font-family: 'Space Mono', monospace;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--vermillion);
+    transition: color .2s;
+  }
+  .readout .running-cost.ticking {
+    color: var(--vermillion);
+  }
+  .readout .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: .7;
+    margin-bottom: 8px;
+  }
+  .burn-rate {
+    margin-top: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    opacity: .8;
+  }
+  .burn-rate strong { color: var(--ochre); }
+
+  .elapsed {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    opacity: .6;
+    margin-top: 4px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+  }
+  button.control-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border: 2px solid var(--line);
+    background: var(--green-earth);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 var(--line);
+    cursor: pointer;
+    border-radius: 0;
+  }
+  button.control-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--line); }
+  button.control-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--line); }
+  button.control-btn.stop { background: var(--vermillion); }
+  button.control-btn.reset { background: var(--card); color: var(--ink); }
+  button.control-btn:focus-visible { outline: 3px solid var(--ultramarine); outline-offset: 2px; }
+  button.control-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  .attribution {
+    margin-top: var(--unit);
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    opacity: .6;
+  }
+
+  /* ---------- Readiness rail ---------- */
+  .rail {
+    background: #e4d9bc;
+    border: 2px solid var(--line);
+    border-left: 8px solid var(--ochre);
+    padding: var(--unit);
+    font-size: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .rail { background: #2a241c; }
+  }
+  .rail h2 {
+    margin: 0 0 10px 0;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--ochre);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border: 2px solid var(--line);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  .rail .blurb {
+    margin: 0 0 var(--unit) 0;
+    line-height: 1.5;
+  }
+
+  .dual-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: var(--unit);
+  }
+  .dual-block .block {
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 12px;
+  }
+  .dual-block .block-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .dual-block .nailed .block-title { color: var(--green-earth); }
+  .dual-block .hurt .block-title { color: var(--vermillion); }
+  .dual-block ul { margin: 0; padding-left: 18px; }
+  .dual-block li { margin-bottom: 4px; }
+
+  .routed-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: var(--unit); }
+  .routed-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 12px;
+  }
+  .routed-card .team-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    padding: 2px 8px;
+    margin-bottom: 6px;
+    color: var(--paper);
+  }
+  .routed-card.product .team-tag { background: var(--ultramarine); }
+  .routed-card.design .team-tag { background: var(--violet); }
+  .routed-card.research .team-tag { background: var(--green-earth); }
+  .routed-card.eng .team-tag { background: var(--vermillion); }
+  .routed-card p { margin: 4px 0; }
+  .roi-block {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--line);
+    font-size: 12px;
+  }
+  .roi-block div { margin-bottom: 2px; }
+  .roi-block .unknown { color: var(--vermillion); font-weight: 700; }
+
+  .council-btn {
+    width: 100%;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px;
+    border: 2px solid var(--line);
+    background: var(--violet);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 var(--line);
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .council-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--line); }
+  .council-btn:focus-visible { outline: 3px solid var(--ultramarine); outline-offset: 2px; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: var(--unit);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    border: 2px solid var(--line);
+    box-shadow: 8px 8px 0 var(--line);
+    max-width: 560px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: var(--unit);
+  }
+  .modal h2 { margin-top: 0; }
+  .modal .synthesis-slot {
+    border: 2px dashed var(--vermillion);
+    padding: 12px;
+    margin-top: var(--unit);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--vermillion);
+  }
+  .modal-close {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    background: var(--card);
+    border: 2px solid var(--line);
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: var(--unit);
+  }
+</style>
+</head>
+<body>
+
+<div class="fidelity-banner">
+  <span class="tier-label">TIER 1 · CONCEPT</span>
+  <div class="pip-row" aria-hidden="true">
+    <span class="pip on"></span><span class="pip"></span><span class="pip"></span>
+  </div>
+  <div class="check-matrix">
+    <span class="check-item"><span class="check-mark no">✕</span> real copy</span>
+    <span class="check-item"><span class="check-mark yes">✓</span> seed data fictional</span>
+    <span class="check-item"><span class="check-mark yes">✓</span> core interaction works</span>
+    <span class="check-item"><span class="check-mark no">✕</span> full workflow built</span>
+    <span class="check-item"><span class="check-mark partial">~</span> visual hierarchy</span>
+    <span class="check-item"><span class="check-mark no">✕</span> production ready</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <main class="app-surface">
+    <h1>Meeting Cost Calculator</h1>
+    <p class="subtitle">Watch what this meeting is actually costing, live, in dollars.</p>
+
+    <div class="inputs-row">
+      <div class="field">
+        <label for="attendees">Attendees</label>
+        <input type="number" id="attendees" value="6" min="1" max="200">
+      </div>
+      <div class="field">
+        <label for="rate">Avg. hourly rate ($)</label>
+        <input type="number" id="rate" value="75" min="1" max="2000">
+      </div>
+    </div>
+
+    <div class="readout">
+      <div class="label">Running cost</div>
+      <div class="running-cost" id="runningCost">$0.00</div>
+      <div class="burn-rate">Burn rate: <strong id="burnRate">$0.00</strong> / second</div>
+      <div class="elapsed" id="elapsed">Elapsed: 00:00</div>
+    </div>
+
+    <div class="controls">
+      <button class="control-btn" id="startBtn">Start meeting</button>
+      <button class="control-btn stop" id="stopBtn" disabled>Stop</button>
+      <button class="control-btn reset" id="resetBtn">Reset</button>
+    </div>
+
+    <div class="attribution">0% Beth Connor — AI-generated, not yet reviewed or edited.</div>
+  </main>
+
+  <aside class="rail">
+    <span class="badge">Tier 1 · Concept — score 2.7/5</span>
+    <h2>What this is testing</h2>
+    <p class="blurb">
+      Whether making meeting cost visible in real time is worth building further. No research backs this yet —
+      it's a fast, honest sketch, not a validated feature. See
+      <span class="mono" style="font-size:12px;">meeting-cost-calculator.brief.md</span> for the full evidence math (100% <span class="mono">[A]</span>/<span class="mono">[?]</span>).
+    </p>
+
+    <div class="dual-block">
+      <div class="block nailed">
+        <div class="block-title">What you nailed</div>
+        <ul>
+          <li>The core loop (start → watch number climb → stop) demos in under 30 seconds — no walkthrough needed.</li>
+          <li>Inputs are editable, not hardcoded — makes "this is your number, not ours" visible immediately.</li>
+        </ul>
+      </div>
+      <div class="block hurt">
+        <div class="block-title">What will hurt you</div>
+        <ul>
+          <li>Zero research backs the premise that visibility changes behavior — could just produce anxiety instead. <span class="mono" style="font-size:11px;">[?]</span></li>
+          <li>No mitigation built for the counter-metric (shaming people out of legitimate meetings).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="routed-cards">
+      <div class="routed-card product">
+        <span class="team-tag">PRODUCT</span>
+        <p><strong>Product does:</strong> decide if this is a standalone tool or a feature bolted onto an existing calendar/meeting product.</p>
+        <p><strong>Why now:</strong> assumed demand, not sourced. <span class="mono">[A]</span></p>
+        <p><strong>If you ship without it:</strong> risk building a feature nobody asked for into a product that already has one.</p>
+        <div class="roi-block">
+          <div>Business: <span class="unknown">Unknown: gap</span></div>
+          <div>User: <span class="unknown">Unknown: gap</span></div>
+          <div>Unknown: no data on whether cost-visibility changes scheduling behavior at all.</div>
+        </div>
+      </div>
+      <div class="routed-card design">
+        <span class="team-tag">DESIGN</span>
+        <p><strong>Design does:</strong> design a non-shaming visual language for the cost number before this goes past concept — right now vermillion-on-climb reads punitive.</p>
+        <p><strong>Why now:</strong> counter-metric named in the brief but not designed against. <span class="mono">[A]</span></p>
+        <p><strong>If you ship without it:</strong> the tool teaches people to dread the number instead of respecting the time.</p>
+        <div class="roi-block">
+          <div>Business: <span class="unknown">Unknown: gap</span></div>
+          <div>User: reduced anxiety if done right — unmeasured.</div>
+          <div>Unknown: whether tone can be fixed with color alone or needs copy/framing work too.</div>
+        </div>
+      </div>
+      <div class="routed-card research">
+        <span class="team-tag">RESEARCH</span>
+        <p><strong>Research does:</strong> 5–10 short manager interviews — does a visible number change how meetings get scheduled, or just how people feel?</p>
+        <p><strong>Why now:</strong> this is the one gate-1 claim the whole concept rests on, and it's currently 100% assumed. <span class="mono">[?]</span></p>
+        <p><strong>If you ship without it:</strong> building on a guess that could be backwards (visibility could increase avoidance, not reduce meeting bloat).</p>
+        <div class="roi-block">
+          <div>Business: <span class="unknown">Unknown: gap</span></div>
+          <div>User: <span class="unknown">Unknown: gap</span></div>
+          <div>Unknown: everything — this is the actual research gap.</div>
+        </div>
+      </div>
+      <div class="routed-card eng">
+        <span class="team-tag">ENG</span>
+        <p><strong>Eng does:</strong> nothing new for this demo — it's a single static file, no backend. If it grows: persistence for attendee/rate defaults per user.</p>
+        <p><strong>Why now:</strong> scope discipline — Tier 1 doesn't need infra. <span class="mono">[A]</span></p>
+        <p><strong>If you ship without it:</strong> not applicable at this tier.</p>
+        <div class="roi-block">
+          <div>Business: negligible eng cost at this tier — cheap to test the idea.</div>
+          <div>User: n/a at this tier.</div>
+          <div>Unknown: cost of a real integration (calendar API) if this moves past concept.</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="council-btn" id="councilBtn">View council testimony</button>
+  </aside>
+
+</div>
+
+<div class="modal-overlay" id="councilModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="councilTitle">
+    <h2 id="councilTitle">Council — not yet run</h2>
+    <p>
+      The expert-framework panel (44 methods, 14 clusters) hasn't been run against this brief yet.
+      Council is recommended, not automatic — ask for it explicitly if you want clash-detection
+      before this goes further than a demo.
+    </p>
+    <div class="synthesis-slot">[0% AI — this slot stays blank until council runs and a human fills in synthesis]</div>
+    <button class="modal-close" id="closeModal">Close</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var attendeesInput = document.getElementById('attendees');
+    var rateInput = document.getElementById('rate');
+    var runningCostEl = document.getElementById('runningCost');
+    var burnRateEl = document.getElementById('burnRate');
+    var elapsedEl = document.getElementById('elapsed');
+    var startBtn = document.getElementById('startBtn');
+    var stopBtn = document.getElementById('stopBtn');
+    var resetBtn = document.getElementById('resetBtn');
+
+    var timerId = null;
+    var elapsedSeconds = 0;
+
+    function fmtMoney(n) {
+      return '$' + n.toFixed(2);
+    }
+
+    function fmtElapsed(totalSeconds) {
+      var m = Math.floor(totalSeconds / 60);
+      var s = totalSeconds % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function currentBurnRate() {
+      var attendees = parseFloat(attendeesInput.value) || 0;
+      var rate = parseFloat(rateInput.value) || 0;
+      return (attendees * rate) / 3600;
+    }
+
+    function render() {
+      var burn = currentBurnRate();
+      runningCostEl.textContent = fmtMoney(burn * elapsedSeconds);
+      burnRateEl.textContent = fmtMoney(burn);
+      elapsedEl.textContent = 'Elapsed: ' + fmtElapsed(elapsedSeconds);
+    }
+
+    function tick() {
+      elapsedSeconds += 1;
+      render();
+    }
+
+    startBtn.addEventListener('click', function () {
+      if (timerId) return;
+      timerId = setInterval(tick, 1000);
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      attendeesInput.disabled = true;
+      rateInput.disabled = true;
+    });
+
+    stopBtn.addEventListener('click', function () {
+      clearInterval(timerId);
+      timerId = null;
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      attendeesInput.disabled = false;
+      rateInput.disabled = false;
+    });
+
+    resetBtn.addEventListener('click', function () {
+      clearInterval(timerId);
+      timerId = null;
+      elapsedSeconds = 0;
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      attendeesInput.disabled = false;
+      rateInput.disabled = false;
+      render();
+    });
+
+    [attendeesInput, rateInput].forEach(function (el) {
+      el.addEventListener('input', render);
+    });
+
+    render();
+
+    var councilBtn = document.getElementById('councilBtn');
+    var councilModal = document.getElementById('councilModal');
+    var closeModal = document.getElementById('closeModal');
+
+    councilBtn.addEventListener('click', function () {
+      councilModal.classList.add('open');
+    });
+    closeModal.addEventListener('click', function () {
+      councilModal.classList.remove('open');
+    });
+    councilModal.addEventListener('click', function (e) {
+      if (e.target === councilModal) councilModal.classList.remove('open');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') councilModal.classList.remove('open');
+    });
+  })();
+</script>
+
+</body>
+</html>

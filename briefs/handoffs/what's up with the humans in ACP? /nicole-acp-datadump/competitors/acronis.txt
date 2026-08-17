@@ -1,0 +1,57 @@
+# Acronis Cyber Protect
+slug: acronis
+category: Backup & Recovery
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Acronis Cyber Protect Cloud is an integrated backup, disaster recovery, and cybersecurity platform delivered exclusively through MSPs. It combines traditional BCDR with anti-malware, EDR, email security, and DLP in a single agent and management console. Acronis operates an MSP-first distribution model, selling only through service provider partners. In 2025, security integration adoption through the platform grew 123% YoY, signaling rapid platform expansion beyond core backup.
+
+## MSP Relevance
+Acronis is one of the most widely deployed backup platforms in the MSP market. Its single-agent approach covering both backup and security reduces the number of tools MSPs must manage. 300+ integrations and fast-growing XDR adoption make it a platform consolidator for MSPs seeking to reduce vendor count.
+
+## Key Offerings & Capabilities
+- Acronis Cyber Protect Cloud — backup, DR, anti-malware, EDR, URL filtering in one agent
+- Cloud backup for physical, virtual, and cloud workloads
+- Microsoft 365 and Google Workspace backup
+- Managed Detection & Response (MDR) service tier
+- Disaster recovery with cloud failover
+- Email security and anti-phishing
+- Vulnerability assessment and patch management
+- AI assistant chat embedded in partner console (Jan 2025) — answers product and sales questions 24/7
+- 300+ integrations with PSA, RMM, and security tools
+- SLA reporting widgets for MDR — tracks MTTR, compliance trends, and configurable objectives
+
+## Recent Announcements
+- AI assistant chat enabled for all partners in Acronis Cyber Protect Cloud console (Jan 2025) — multilingual, 24/7
+- Windows Server 2025 support added — extends DR coverage to newer server workloads
+- New MDR SLA reporting widgets — tracks mean time to react, respond, and resolve against service targets
+- Security integration adoption grew 123% YoY; third-party XDR integrations grew 162%
+- MSPs using native XDR capabilities grew 136% in 2025
+- Named Canalys Champion in Cybersecurity Leadership Matrix and Managed Backup and DR Leadership Matrix (2025)
+
+## Pricing Model
+Per-workload and per-GB pricing through MSP partner tier. MSPs set their own markup and margin. Storage costs are separate from protection licensing. Tiered by feature set — Essentials (backup only) through Advanced (full cyber protection). No per-technician fees.
+
+## Strengths
+- Single agent for both backup and security — reduces endpoint footprint and complexity
+- MSP-only distribution — no channel conflict with direct sales
+- 300+ integrations make it easy to embed in existing MSP stacks
+- Strong recognition in backup/DR segment (Canalys Champion two years running)
+- Price-competitive for SMB workloads
+- Growing MDR and XDR adoption signals platform maturation beyond backup
+
+## Weaknesses / Gaps
+- Security features less mature than dedicated EDR vendors (CrowdStrike, SentinelOne)
+- Unified console can feel cluttered compared to single-purpose tools
+- MDR service newer and less proven than Huntress or Blackpoint
+- Perceived as a "backup company adding security" — limits credibility with security-first buyers
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Acronis competes in backup/DR with adjacent security. AI features are assistant-level (chatbot in console), not agentic workflow automation. Low direct overlap with NZO's core automation and agent platform play, though MSPs consolidating on Acronis reduce budget available for additional tools.
+
+## Notes
+- 123% security integration growth signals MSPs want unified stacks — Acronis is capitalizing on this
+- Watch for Acronis to add AI-driven automation to MDR tier, which would increase competitive overlap

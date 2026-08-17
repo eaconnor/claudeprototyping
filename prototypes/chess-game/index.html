@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess Game — Three Interaction Models</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --board-light: #f0d9b5;
+      --board-dark: #b58863;
+      --board-border: #8b6f47;
+      --text-primary: #2c2416;
+      --text-secondary: #5a4a3a;
+      --bg-main: #faf8f3;
+      --surface: #ffffff;
+      --accent: #6b8e23;
+      --accent-soft: rgba(107,142,35,0.15);
+      --error: #c53030;
+      --error-soft: rgba(197,48,48,0.12);
+      --highlight: #9bc53d;
+      --highlight-soft: rgba(155,197,61,0.4);
+    }
+
+    body {
+      font-family: 'Merriweather', Georgia, serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 32px;
+    }
+
+    .main-area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      background: var(--surface);
+      padding: 20px 24px;
+      border-radius: 8px;
+      border: 1px solid #e8e4da;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .fidelity-banner {
+      display: inline-block;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      margin-top: 8px;
+    }
+
+    .instructions {
+      background: #fffbf0;
+      border: 1px solid #e8d9a8;
+      border-left: 4px solid #d4af37;
+      padding: 16px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .instructions strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .board-container {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid #e8e4da;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .status {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--bg-main);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status .active-player {
+      font-weight: 500;
+    }
+
+    .status .move-count {
+      color: var(--text-secondary);
+    }
+
+    .chessboard {
+      display: grid;
+      grid-template-columns: repeat(8, 60px);
+      grid-template-rows: repeat(8, 60px);
+      border: 3px solid var(--board-border);
+      margin: 0 auto;
+      width: fit-content;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .square {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transition: background-color 0.15s ease;
+    }
+
+    .square.light { background: var(--board-light); }
+    .square.dark { background: var(--board-dark); }
+
+    .square.selected {
+      background: var(--highlight) !important;
+      box-shadow: inset 0 0 0 3px rgba(155,197,61,0.6);
+    }
+
+    .square.legal-move {
+      background: var(--highlight-soft) !important;
+    }
+
+    .square.legal-move::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--highlight);
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    .square.has-piece.legal-move::after {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      background: transparent;
+      border: 3px solid var(--highlight);
+      opacity: 0.6;
+    }
+
+    .piece {
+      cursor: grab;
+      pointer-events: auto;
+    }
+
+    .piece.dragging {
+      opacity: 0.5;
+      cursor: grabbing;
+    }
+
+    .square:hover {
+      filter: brightness(1.05);
+    }
+
+    .square:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .notation-input-area {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--bg-main);
+      border-radius: 4px;
+    }
+
+    .notation-input-area label {
+      display: block;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .notation-input-area input {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 16px;
+      border: 2px solid #d8d0c0;
+      border-radius: 4px;
+      background: white;
+    }
+
+    .notation-input-area input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .notation-input-area button {
+      margin-top: 8px;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .notation-input-area button:hover {
+      background: #5a7a1e;
+    }
+
+    .error-message {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: var(--error-soft);
+      border: 1px solid var(--error);
+      border-radius: 4px;
+      color: var(--error);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      display: none;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .move-history {
+      background: var(--surface);
+      border: 1px solid #e8e4da;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .move-history h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .move-list {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      max-height: 400px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+
+    .move-list:empty::after {
+      content: 'No moves yet';
+      color: var(--text-secondary);
+      font-style: italic;
+      font-family: 'Merriweather', serif;
+    }
+
+    .move-entry {
+      padding: 4px 8px;
+      border-radius: 3px;
+    }
+
+    .move-entry:nth-child(odd) {
+      background: var(--bg-main);
+    }
+
+    .attribution {
+      background: var(--surface);
+      border: 1px solid #e8e4da;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13px;
+    }
+
+    .attribution h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .attribution p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .attr-value {
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .chessboard {
+        grid-template-columns: repeat(8, 50px);
+        grid-template-rows: repeat(8, 50px);
+      }
+
+      .square {
+        width: 50px;
+        height: 50px;
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main-area">
+      <header>
+        <h1>Chess Game Interface</h1>
+        <p>Testing three interaction models: drag-and-drop, click-to-move, and algebraic notation entry.</p>
+        <span class="fidelity-banner">Tier 1 · Concept · 30% fidelity</span>
+      </header>
+
+      <div class="instructions">
+        <strong>How to move:</strong>
+        <p><strong>Drag pieces</strong> from one square to another · <strong>Click a piece</strong> to select it (legal moves will highlight), then click a destination · <strong>Type moves</strong> in algebraic notation below (e.g., "e4", "Nf3")</p>
+        <p style="margin-top: 8px; font-size: 13px; color: var(--text-secondary);">Lo-fi prototype: Only pawns and knights can move. Other pieces are frozen.</p>
+      </div>
+
+      <div class="board-container">
+        <div class="status">
+          <span class="active-player">Active: <strong id="current-player">White</strong></span>
+          <span class="move-count">Move <span id="move-number">1</span></span>
+        </div>
+
+        <div class="chessboard" id="chessboard" role="grid" aria-label="Chess board"></div>
+
+        <div class="notation-input-area">
+          <label for="move-input">Enter move in algebraic notation (e.g., "e4", "Nf3"):</label>
+          <input
+            type="text"
+            id="move-input"
+            placeholder="e.g., e4, Nf3, Nc3"
+            autocomplete="off"
+            aria-label="Move input in algebraic notation"
+          >
+          <button id="submit-move">Submit Move</button>
+          <div class="error-message" id="error-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="move-history">
+        <h2>Move History</h2>
+        <div class="move-list" id="move-list"></div>
+      </div>
+
+      <div class="attribution">
+        <h3>Ownership Attribution</h3>
+        <p>This prototype was generated by Claude Code (Sonnet 4.6) as part of the Band Protocol testing workflow.</p>
+        <p style="margin-top: 8px;"><span class="attr-value">0% Beth</span> — Full tool generation, no human edits yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA STRUCTURES =====
+
+    const PIECE_SYMBOLS = {
+      'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
+      'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟'
+    };
+
+    const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+    const RANKS = ['8', '7', '6', '5', '4', '3', '2', '1'];
+
+    // Initial board state: standard chess starting position
+    // Row 0 = rank 8 (black back rank), Row 7 = rank 1 (white back rank)
+    let board = [
+      ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'], // rank 8
+      ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'], // rank 7
+      [null, null, null, null, null, null, null, null], // rank 6
+      [null, null, null, null, null, null, null, null], // rank 5
+      [null, null, null, null, null, null, null, null], // rank 4
+      [null, null, null, null, null, null, null, null], // rank 3
+      ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'], // rank 2
+      ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']  // rank 1
+    ];
+
+    let activePlayer = 'white'; // 'white' or 'black'
+    let moveHistory = [];
+    let selectedSquare = null;
+    let legalMoves = [];
+
+    // ===== BOARD RENDERING =====
+
+    function renderBoard() {
+      const chessboard = document.getElementById('chessboard');
+      chessboard.innerHTML = '';
+
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          const square = document.createElement('div');
+          square.className = 'square';
+          square.className += (row + col) % 2 === 0 ? ' light' : ' dark';
+          square.dataset.row = row;
+          square.dataset.col = col;
+          square.dataset.square = FILES[col] + RANKS[row];
+          square.tabIndex = 0;
+          square.setAttribute('role', 'gridcell');
+          square.setAttribute('aria-label', FILES[col] + RANKS[row]);
+
+          const piece = board[row][col];
+          if (piece) {
+            const pieceSpan = document.createElement('span');
+            pieceSpan.className = 'piece';
+            pieceSpan.textContent = PIECE_SYMBOLS[piece];
+            pieceSpan.dataset.piece = piece;
+            pieceSpan.draggable = canMovePiece(piece);
+
+            square.appendChild(pieceSpan);
+            square.classList.add('has-piece');
+
+            if (canMovePiece(piece)) {
+              pieceSpan.addEventListener('dragstart', handleDragStart);
+              pieceSpan.addEventListener('dragend', handleDragEnd);
+            }
+          }
+
+          square.addEventListener('dragover', handleDragOver);
+          square.addEventListener('drop', handleDrop);
+          square.addEventListener('click', handleSquareClick);
+          square.addEventListener('keydown', handleSquareKeydown);
+
+          chessboard.appendChild(square);
+        }
+      }
+
+      updateStatus();
+    }
+
+    function canMovePiece(piece) {
+      if (!piece) return false;
+      const pieceColor = piece === piece.toUpperCase() ? 'white' : 'black';
+      const pieceType = piece.toUpperCase();
+      // Only pawns and knights are movable in this lo-fi prototype
+      return pieceColor === activePlayer && (pieceType === 'P' || pieceType === 'N');
+    }
+
+    function updateStatus() {
+      document.getElementById('current-player').textContent = activePlayer === 'white' ? 'White' : 'Black';
+      document.getElementById('move-number').textContent = Math.floor(moveHistory.length / 2) + 1;
+    }
+
+    // ===== DRAG-AND-DROP =====
+
+    let draggedPiece = null;
+    let draggedFrom = null;
+
+    function handleDragStart(e) {
+      draggedPiece = e.target.dataset.piece;
+      draggedFrom = {
+        row: parseInt(e.target.parentElement.dataset.row),
+        col: parseInt(e.target.parentElement.dataset.col)
+      };
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleDragEnd(e) {
+      e.target.classList.remove('dragging');
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      if (!draggedPiece || !draggedFrom) return;
+
+      const toRow = parseInt(e.currentTarget.dataset.row);
+      const toCol = parseInt(e.currentTarget.dataset.col);
+
+      const moveValid = isLegalMove(draggedFrom.row, draggedFrom.col, toRow, toCol, draggedPiece);
+
+      if (moveValid) {
+        executeMove(draggedFrom.row, draggedFrom.col, toRow, toCol, draggedPiece);
+      } else {
+        showError('Illegal move. Only pawns (forward 1 square) and knights (L-shape) can move in this prototype.');
+      }
+
+      draggedPiece = null;
+      draggedFrom = null;
+    }
+
+    // ===== CLICK-TO-MOVE =====
+
+    function handleSquareClick(e) {
+      const square = e.currentTarget;
+      const row = parseInt(square.dataset.row);
+      const col = parseInt(square.dataset.col);
+      const piece = board[row][col];
+
+      // If a square is already selected
+      if (selectedSquare) {
+        // If clicking the same square, deselect
+        if (selectedSquare.row === row && selectedSquare.col === col) {
+          clearSelection();
+          return;
+        }
+
+        // If clicking a legal move destination
+        if (legalMoves.some(m => m.row === row && m.col === col)) {
+          executeMove(selectedSquare.row, selectedSquare.col, row, col, selectedSquare.piece);
+          clearSelection();
+          return;
+        }
+
+        // Otherwise, clear and potentially select new piece
+        clearSelection();
+      }
+
+      // Select a piece if it's the active player's and movable
+      if (piece && canMovePiece(piece)) {
+        selectedSquare = { row, col, piece };
+        legalMoves = getLegalMoves(row, col, piece);
+        highlightSquare(row, col);
+        highlightLegalMoves();
+      }
+    }
+
+    function handleSquareKeydown(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleSquareClick(e);
+      }
+    }
+
+    function highlightSquare(row, col) {
+      document.querySelectorAll('.square').forEach(sq => sq.classList.remove('selected'));
+      const square = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+      if (square) square.classList.add('selected');
+    }
+
+    function highlightLegalMoves() {
+      document.querySelectorAll('.square').forEach(sq => sq.classList.remove('legal-move'));
+      legalMoves.forEach(move => {
+        const square = document.querySelector(`[data-row="${move.row}"][data-col="${move.col}"]`);
+        if (square) square.classList.add('legal-move');
+      });
+    }
+
+    function clearSelection() {
+      selectedSquare = null;
+      legalMoves = [];
+      document.querySelectorAll('.square').forEach(sq => {
+        sq.classList.remove('selected', 'legal-move');
+      });
+    }
+
+    // ===== ALGEBRAIC NOTATION ENTRY =====
+
+    document.getElementById('submit-move').addEventListener('click', handleNotationSubmit);
+    document.getElementById('move-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleNotationSubmit();
+      }
+    });
+
+    function handleNotationSubmit() {
+      const input = document.getElementById('move-input');
+      const notation = input.value.trim();
+
+      if (!notation) return;
+
+      const move = parseNotation(notation);
+
+      if (!move) {
+        showError(`Invalid notation: "${notation}". Try "e4", "Nf3", "Nc3", etc.`);
+        return;
+      }
+
+      const { fromRow, fromCol, toRow, toCol, piece } = move;
+
+      if (!isLegalMove(fromRow, fromCol, toRow, toCol, piece)) {
+        showError(`Illegal move: "${notation}". Only pawns (forward 1) and knights (L-shape) can move.`);
+        return;
+      }
+
+      executeMove(fromRow, fromCol, toRow, toCol, piece);
+      input.value = '';
+      hideError();
+    }
+
+    function parseNotation(notation) {
+      // Simplified parsing: handles pawn moves (e.g., "e4") and knight moves (e.g., "Nf3")
+      // Does NOT handle disambiguation, captures, check indicators, etc.
+
+      const pawnMoveRegex = /^([a-h])([1-8])$/; // e.g., "e4"
+      const knightMoveRegex = /^N([a-h])([1-8])$/; // e.g., "Nf3"
+
+      let match;
+
+      // Pawn move
+      if (match = notation.match(pawnMoveRegex)) {
+        const toFile = match[1];
+        const toRank = match[2];
+        const toCol = FILES.indexOf(toFile);
+        const toRow = RANKS.indexOf(toRank);
+
+        // Find the pawn of active player that can move to this square
+        const piece = activePlayer === 'white' ? 'P' : 'p';
+        const direction = activePlayer === 'white' ? -1 : 1;
+        const fromRow = toRow - direction;
+        const fromCol = toCol;
+
+        if (fromRow >= 0 && fromRow < 8 && board[fromRow][fromCol] === piece) {
+          return { fromRow, fromCol, toRow, toCol, piece };
+        }
+      }
+
+      // Knight move
+      if (match = notation.match(knightMoveRegex)) {
+        const toFile = match[1];
+        const toRank = match[2];
+        const toCol = FILES.indexOf(toFile);
+        const toRow = RANKS.indexOf(toRank);
+
+        const piece = activePlayer === 'white' ? 'N' : 'n';
+
+        // Find which knight can legally move to this square
+        const knightMoves = [
+          [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+          [1, -2], [1, 2], [2, -1], [2, 1]
+        ];
+
+        for (let dRow of [-2, -1, 1, 2]) {
+          for (let dCol of [-2, -1, 1, 2]) {
+            if (Math.abs(dRow) + Math.abs(dCol) !== 3) continue; // Not an L-shape
+            const fromRow = toRow - dRow;
+            const fromCol = toCol - dCol;
+
+            if (fromRow >= 0 && fromRow < 8 && fromCol >= 0 && fromCol < 8) {
+              if (board[fromRow][fromCol] === piece) {
+                return { fromRow, fromCol, toRow, toCol, piece };
+              }
+            }
+          }
+        }
+      }
+
+      return null; // Could not parse
+    }
+
+    // ===== LEGAL MOVE LOGIC (hardcoded for pawns + knights) =====
+
+    function getLegalMoves(row, col, piece) {
+      const moves = [];
+      const pieceType = piece.toUpperCase();
+      const pieceColor = piece === piece.toUpperCase() ? 'white' : 'black';
+
+      if (pieceType === 'P') {
+        // Pawn: moves forward one square (no captures, no two-square initial move in lo-fi)
+        const direction = pieceColor === 'white' ? -1 : 1;
+        const newRow = row + direction;
+        const newCol = col;
+
+        if (newRow >= 0 && newRow < 8 && !board[newRow][newCol]) {
+          moves.push({ row: newRow, col: newCol });
+        }
+      }
+
+      if (pieceType === 'N') {
+        // Knight: L-shaped moves
+        const knightMoves = [
+          [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+          [1, -2], [1, 2], [2, -1], [2, 1]
+        ];
+
+        knightMoves.forEach(([dRow, dCol]) => {
+          const newRow = row + dRow;
+          const newCol = col + dCol;
+
+          if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            const targetPiece = board[newRow][newCol];
+            // Can move to empty square or capture opposite color
+            if (!targetPiece || (targetPiece && ((targetPiece === targetPiece.toUpperCase()) !== (piece === piece.toUpperCase())))) {
+              moves.push({ row: newRow, col: newCol });
+            }
+          }
+        });
+      }
+
+      return moves;
+    }
+
+    function isLegalMove(fromRow, fromCol, toRow, toCol, piece) {
+      const legal = getLegalMoves(fromRow, fromCol, piece);
+      return legal.some(m => m.row === toRow && m.col === toCol);
+    }
+
+    // ===== EXECUTE MOVE =====
+
+    function executeMove(fromRow, fromCol, toRow, toCol, piece) {
+      // Update board state
+      board[toRow][toCol] = piece;
+      board[fromRow][fromCol] = null;
+
+      // Record move in history
+      const notation = formatMove(fromRow, fromCol, toRow, toCol, piece);
+      moveHistory.push(notation);
+
+      // Update move history display
+      const moveList = document.getElementById('move-list');
+      const moveEntry = document.createElement('div');
+      moveEntry.className = 'move-entry';
+      moveEntry.textContent = `${moveHistory.length}. ${notation}`;
+      moveList.appendChild(moveEntry);
+      moveList.scrollTop = moveList.scrollHeight;
+
+      // Swap active player
+      activePlayer = activePlayer === 'white' ? 'black' : 'white';
+
+      // Re-render board
+      renderBoard();
+    }
+
+    function formatMove(fromRow, fromCol, toRow, toCol, piece) {
+      const pieceType = piece.toUpperCase();
+      const fromSquare = FILES[fromCol] + RANKS[fromRow];
+      const toSquare = FILES[toCol] + RANKS[toRow];
+
+      if (pieceType === 'P') {
+        return toSquare; // Pawn moves are just the destination square
+      } else {
+        return pieceType + toSquare; // e.g., "Nf3"
+      }
+    }
+
+    // ===== ERROR HANDLING =====
+
+    function showError(message) {
+      const errorDiv = document.getElementById('error-message');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('visible');
+    }
+
+    function hideError() {
+      const errorDiv = document.getElementById('error-message');
+      errorDiv.classList.remove('visible');
+    }
+
+    // ===== INITIALIZE =====
+
+    renderBoard();
+  </script>
+</body>
+</html>

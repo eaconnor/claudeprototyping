@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACP Vision Sketches — words &amp; boxes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1612; --paper:#efe7d6; --card:#f7f0df; --line:#1a1612;
+    --grid:rgba(26,22,18,.06); --muted:#6b6459;
+    --r:#3f6d3f;   /* research green */
+    --a:#b6892b;   /* assumption ochre */
+    --q:#a23b26;   /* unknown / risk vermillion */
+    --violet:#5B3A7E;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink); font-family:"Kalam",cursive; font-size:17px; line-height:1.45;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+  .mono{font-family:"Space Mono",monospace}
+  .fidelity{
+    border:2px dashed var(--line); background:var(--card);
+    padding:10px 16px; margin-bottom:28px; font-family:"Space Mono",monospace; font-size:12px;
+    display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center;
+  }
+  .fidelity b{background:var(--ink);color:var(--paper);padding:2px 8px}
+  h1{font-size:38px;line-height:1.05;margin:6px 0 2px}
+  .sub{color:var(--muted);font-size:16px;margin-bottom:6px}
+  .tag{font-family:"Space Mono",monospace;font-size:10.5px;padding:1px 6px;border:1.5px solid;border-radius:2px;white-space:nowrap}
+  .tag.r{color:var(--r);border-color:var(--r)}
+  .tag.a{color:var(--a);border-color:var(--a)}
+  .tag.q{color:var(--q);border-color:var(--q)}
+  .tag.cs{color:var(--violet);border-color:var(--violet)}
+
+  /* value prop hero */
+  .hero{
+    background:var(--card); border:2.5px solid var(--line);
+    box-shadow:7px 7px 0 var(--line); padding:22px 24px; margin:22px 0 40px;
+  }
+  .hero .not{color:var(--q);text-decoration:line-through;text-decoration-thickness:2px}
+  .hero .is{font-size:26px;font-weight:700;line-height:1.2;margin:8px 0}
+  .hero .eq{font-family:"Space Mono",monospace;font-size:13px;color:var(--muted);margin-top:10px}
+
+  .section-label{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin:44px 0 14px;border-bottom:2px solid var(--line);padding-bottom:6px}
+
+  .sketch{
+    background:var(--card); border:2.5px solid var(--line);
+    box-shadow:6px 6px 0 var(--line); padding:20px 22px; margin-bottom:34px;
+    position:relative;
+  }
+  .sketch .no{
+    position:absolute;top:-16px;left:-14px;width:38px;height:38px;
+    background:var(--ink);color:var(--paper);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-family:"Space Mono",monospace;font-weight:700;font-size:16px;
+    transform:rotate(-6deg);
+  }
+  .sketch h3{font-size:24px;margin:2px 0 2px}
+  .who{font-family:"Space Mono",monospace;font-size:11px;color:var(--violet);text-transform:uppercase;letter-spacing:.08em}
+  .vp{font-size:18px;font-weight:700;margin:12px 0 14px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .feat{margin:0;padding:0;list-style:none}
+  .feat li{margin:0 0 9px;padding-left:20px;position:relative}
+  .feat li::before{content:"▢";position:absolute;left:0;top:0;font-size:13px}
+  .feat li b{font-weight:700}
+
+  /* ascii-ish wireframe box */
+  .wire{
+    border:2px dashed var(--line); background:rgba(26,22,18,.03);
+    padding:14px; font-family:"Space Mono",monospace; font-size:11.5px; line-height:1.55; white-space:pre; overflow-x:auto; color:#2a251d;
+  }
+  .risk{margin-top:16px;font-size:14px;border-top:1.5px dotted var(--line);padding-top:10px}
+  .risk .rl{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--muted)}
+  .tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .note{color:var(--muted);font-size:14px;margin:6px 0 0}
+  footer{margin-top:50px;border-top:2px solid var(--line);padding-top:16px;font-size:13px;color:var(--muted)}
+  .attrib{font-family:"Space Mono",monospace;font-size:11px;color:var(--muted);text-align:right;margin-top:10px}
+  a{color:var(--violet)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="fidelity mono">
+    <b>SUPER LO-FI</b>
+    <span>Tier 0 · vision sketch — words &amp; boxes, not a screen</span>
+    <span>✓ real framing &nbsp; ~ seed numbers fictional &nbsp; ✗ no working interaction &nbsp; ✗ not production</span>
+    <span style="color:var(--violet)">anchored: nicole-actual-acp-vision.md + North Star (62176526400)</span>
+  </div>
+
+  <h1>ACP — vision sketches</h1>
+  <div class="sub">Value prop + key features · five concept directions · to react to, not to build yet</div>
+  <div class="tags-row">
+    <span class="tag cs">CS: MIXED</span>
+    <span class="tag r">[R] jobs are real (n=8)</span>
+    <span class="tag a">[A] the framing</span>
+    <span class="tag q">[?] concepts untested</span>
+  </div>
+
+  <!-- ================= VALUE PROP HERO ================= -->
+  <div class="hero">
+    <div class="mono" style="font-size:12px;color:var(--muted)">THE VALUE PROP</div>
+    <div><span class="not">Not an AI control plane the MSP logs into.</span></div>
+    <div class="is">We sell the MSP the thing they sell their client:<br>vCISO + vCIO — at scale.</div>
+    <p style="margin:6px 0 0">The six coworkers are the <b>delivery mechanism</b>. The QBR is where the service becomes <b>visible</b>. The product isn't for the MSP's engineer — it's for the MSP's <b>client relationship</b>.</p>
+    <div class="eq">underneath (Nicole, VERIFIED): UEM · Cove · Adlumin become invisible infrastructure &nbsp;→&nbsp; ACP is the only interface the MSP touches. Shopify, not Kaseya.</div>
+    <div class="tags-row">
+      <span class="tag cs">CS: LOW — the reframe is [A], the premise of the bet</span>
+      <span class="tag r">[R] MSP OS layer verified in Nicole's doc</span>
+    </div>
+  </div>
+
+  <!-- ================= CROSS-CUTTING: THE PROOF ================= -->
+  <div class="section-label">The spine — what makes it visible</div>
+  <div class="sketch">
+    <div class="no mono">★</div>
+    <h3>The Value Ledger <span class="who">— customer-facing proof, NOT an audit log</span></h3>
+    <div class="vp">"The artifact the MSP shows their client to justify the price — and the one N-able shows the MSP to justify the platform fee."</div>
+    <div class="cols">
+      <ul class="feat">
+        <li><b>Hours saved</b> — manual-equivalent, per coworker run</li>
+        <li><b>Incidents resolved</b> — count · severity · MTTR vs baseline</li>
+        <li><b>Noise reduced</b> — alert suppression &amp; false-positive rate</li>
+        <li><b>Cost avoided</b> + <b>revenue influenced</b> (upsell from surfaced gaps)</li>
+      </ul>
+<div class="wire">┌─ VALUE LEDGER · Northwind IT ───────────┐
+│ This quarter, your MSP:                 │
+│                                         │
+│  ⏱  312 hrs returned   ▓▓▓▓▓▓▓░  (seed) │
+│  🛡  47 incidents auto-resolved         │
+│  🔕  alert noise  ↓ 68%                 │
+│  💵  ~$41k cost avoided        (seed)   │
+│                                         │
+│  [ Add to QBR ▸ ]   [ Export ▸ ]        │
+└─────────────────────────────────────────┘</div>
+    </div>
+    <div class="risk">
+      <span class="rl">RISKIEST →</span> Is the Ledger serving the <b>client-value story</b> (QBR) or drifting into internal metrics? <span class="tag q" style="margin-left:6px">[?] North Star open-Q #4</span>
+      <div class="tags-row"><span class="tag r">[R] concept verified in Nicole's doc</span><span class="tag a">[A] seed numbers fictional</span></div>
+    </div>
+  </div>
+
+  <!-- ================= FIVE CONCEPT DIRECTIONS ================= -->
+  <div class="section-label">Five concept directions · [CS: LOW — generative, untested] · from North Star</div>
+
+  <!-- 1 -->
+  <div class="sketch">
+    <div class="no mono">1</div>
+    <h3>Prep Room</h3>
+    <div class="who">QBR + vCIO · the capstone · MVP FIRST</div>
+    <div class="vp">The coworker drafts the whole quarterly review; the MSP walks in, edits, and owns it.</div>
+    <div class="cols">
+      <ul class="feat">
+        <li><b>Draft-first</b> — assembled from the quarter, not a blank page</li>
+        <li><b>Review &amp; edit before send</b> — the MSP is the author</li>
+        <li><b>Right info at the right moment</b> — client + meeting date aware</li>
+        <li><b>Gaps surface</b> — "here's what I couldn't normalize"</li>
+      </ul>
+<div class="wire">┌ PREP ROOM ── QBR: Contoso · due Fri ────┐
+│ ┌ draft narrative ─────────┐  ┌ edit ─┐ │
+│ │ "Strong quarter. Patch   │  │ ✎     │ │
+│ │  compliance up to 96%…"  │  │ trim  │ │
+│ │  [from Value Ledger]     │  │ tone  │ │
+│ └──────────────────────────┘  └───────┘ │
+│  gaps: ⚠ 2 assets un-normalized         │
+│  [ Looks right — send to me ▸ ]         │
+└──────────────────────────── ~15 min? ───┘</div>
+    </div>
+    <div class="risk">
+      <span class="rl">RISKIEST →</span> <b>Does the edit really fit ~15 min?</b> + <b>is data clean enough to normalize (75–80%)?</b>
+      <div class="tags-row">
+        <span class="tag q">🔴 P0 edit-time — Low ~35%, unowned</span>
+        <span class="tag q">🔴 P0 normalize — Low ~30%, unowned</span>
+        <span class="tag r">[R] review-before-send High ~85% (Guidepoint n=8)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="sketch">
+    <div class="no mono">2</div>
+    <h3>Two Voices</h3>
+    <div class="who">audience-adaptive · vCISO ↔ vCIO · same facts, two tellings</div>
+    <div class="vp">One set of evidence, told two ways — the risk story for the security buyer, the business story for the exec.</div>
+    <div class="cols">
+      <ul class="feat">
+        <li><b>Toggle the audience</b> — technical board vs. business owner</li>
+        <li><b>Same ledger, re-voiced</b> — not two data pulls, one truth</li>
+        <li><b>MSP is the hero</b> — the coworker never fronts the client</li>
+        <li><b>Predict what lands</b> — MSP tunes for their client</li>
+      </ul>
+<div class="wire">┌ TWO VOICES ─────────────────────────────┐
+│  audience:  ( vCISO ) ‹●›  ( vCIO  )     │
+│                                          │
+│  vCIO view →  "Your tech spend is        │
+│    aligned; two renewals to plan for."   │
+│  vCISO view→  "Exposure down 30%; one    │
+│    critical gap remains open."           │
+│                                          │
+│  [ send this version ▸ ]                 │
+└──────────────────────────────────────────┘</div>
+    </div>
+    <div class="risk">
+      <span class="rl">RISKIEST →</span> Can the MSP actually <b>predict what lands</b> with their client? <span class="tag a" style="margin-left:6px">Accepted — Beth, 14 Jul (Med ~60%)</span>
+      <div class="tags-row"><span class="tag r">[R] audience-adaptive — MSP-B</span><span class="tag a">[A] vCIO job underdeveloped vs vCISO</span></div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="sketch">
+    <div class="no mono">3</div>
+    <h3>Strategy Layer</h3>
+    <div class="who">forward-looking · vCIO planning · the SHOULD tenet</div>
+    <div class="vp">Past the report — what to do next quarter, sequenced and costed, so the QBR ends on a plan.</div>
+    <div class="cols">
+      <ul class="feat">
+        <li><b>Roadmap, not recap</b> — renewals, refreshes, risks ahead</li>
+        <li><b>Costed recommendations</b> — each carries the upsell hook</li>
+        <li><b>Ties to the Ledger</b> — "this gap cost you X; here's the fix"</li>
+        <li><b>Close the loop</b> — did last quarter's plan land?</li>
+      </ul>
+<div class="wire">┌ STRATEGY LAYER ── next quarter ─────────┐
+│  ① renew EDR (12 seats)        ~$—       │
+│  ② refresh 8 aging laptops    plan Q3    │
+│  ③ close backup gap (3 sites) ▲ risk     │
+│                                          │
+│  last qtr plan:  2/3 done  ◑             │
+│  [ turn into upsell ▸ ]                  │
+└──────────────────────────────────────────┘</div>
+    </div>
+    <div class="risk">
+      <span class="rl">RISKIEST →</span> <b>Upsell mechanics named but unexplored</b>; whole vCIO job thin.
+      <div class="tags-row"><span class="tag r">[R] forward-looking — MSP-E/B</span><span class="tag q">[?] upsell mechanics — North Star gap #3</span></div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="sketch">
+    <div class="no mono">4</div>
+    <h3>Evidence Locker</h3>
+    <div class="who">IR RCA + vCISO · compliance driver · MVP SECOND</div>
+    <div class="vp">Every incident writes its own chain of evidence as it happens — RCA that's already assembled when the auditor (or insurer) asks.</div>
+    <div class="cols">
+      <ul class="feat">
+        <li><b>Auto chain-of-evidence</b> — captured in real time, not after</li>
+        <li><b>Two outputs</b> — technical RCA + compliance/insurance pull</li>
+        <li><b>Read + write-with-approval</b> — rollback always on the table</li>
+        <li><b>Cross-stack correlation</b> — the moat, and the risk</li>
+      </ul>
+<div class="wire">┌ EVIDENCE LOCKER ── INC-2214 ────────────┐
+│ 09:14 alert  →  09:15 correlated 3 stacks│
+│ 09:16 root cause: expired cert           │
+│ 09:17 fix proposed  ⟶  ⏸ awaiting approve│
+│                                          │
+│ outputs:  [ RCA ▸ ]   [ insurer pack ▸ ] │
+│ rollback: ready                          │
+└──────────────────────────────────────────┘</div>
+    </div>
+    <div class="risk">
+      <span class="rl">RISKIEST →</span> <b>Zero-holes cross-stack correlation?</b> + do MSPs use RCA <b>during</b> the incident, not after?
+      <div class="tags-row">
+        <span class="tag q">🔴 P1 zero-holes — Low ~30%</span>
+        <span class="tag q">🟡 P2 during-not-after — Med ~50%</span>
+        <span class="tag r">[R] approval-gate lands — High ~90% (8/8)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="sketch">
+    <div class="no mono">5</div>
+    <h3>Coworker Handoff</h3>
+    <div class="who">earned autonomy · gated by default · the trust UX</div>
+    <div class="vp">The coworker reasons to the fix, then hands off to validated code — and graduates from "human confirms" to "AI executes, human audits" as it earns it.</div>
+    <div class="cols">
+      <ul class="feat">
+        <li><b>Reason → substitute</b> — stops spending tokens once the action is deterministic <span class="tag r">Substitution Engine (VERIFIED)</span></li>
+        <li><b>Gated autonomy by default</b> — approval before risky writes</li>
+        <li><b>Show its work</b> — the reasoning is legible, not a black box</li>
+        <li><b>Earns its dial</b> — track record unlocks scope over time</li>
+      </ul>
+<div class="wire">┌ COWORKER HANDOFF ───────────────────────┐
+│  🤖 reasoning ▸▸▸  ⟶  ⚙ validated script │
+│      (LLM, 5 agents)     (deterministic) │
+│                                          │
+│  autonomy:  confirm ●──○──○  audit-only  │
+│  this action: MEDIUM risk → ⏸ approve?   │
+│  [ approve ▸ ]  [ show reasoning ▸ ]     │
+└──────────────────────────────────────────┘</div>
+    </div>
+    <div class="risk">
+      <span class="rl">RISKIEST →</span> Build <b>picked risk-tier/scope-based autonomy</b> at config-time — research tested 3 models. <b>Ratify or reverse.</b>
+      <div class="tags-row">
+        <span class="tag r">[R] gated autonomy universal — 8/8 + 13/17</span>
+        <span class="tag a">[A] un-ratified — Vision Clash Report</span>
+        <span class="tag q">[?] data-trust has no concept yet — P1</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= WHAT'S WOBBLY ================= -->
+  <div class="section-label">What's wobbly — say it out loud</div>
+  <div class="sketch" style="box-shadow:6px 6px 0 var(--violet);border-color:var(--violet)">
+    <div class="no mono" style="background:var(--violet)">?</div>
+    <ul class="feat">
+      <li>The whole reframe (<b>"we sell vCISO+vCIO, not a control plane"</b>) is <span class="tag a">[A]</span> — the premise of the bet, unvalidated.</li>
+      <li><b>Six coworkers = one job, QBR = capstone</b> is the load-bearing framing — directional from demand data, not proven.</li>
+      <li>Both MVP P0s (edit-in-15, data-clean-enough) are <b>~30–35% likely and unowned</b> — each blocked on a study nobody's running.</li>
+      <li><b>Customer POV</b> is an accepted assumption (MSP-as-proxy), not open research. Beth's call, 14 Jul.</li>
+      <li>Day-1 build ships <b>Ticket Triage</b>, vision leads with <b>QBR</b> — sequencing or drift? Unresolved.</li>
+    </ul>
+    <p class="note">These aren't bugs in the sketch — they're the decisions the sketch exists to make visible.</p>
+  </div>
+
+  <footer>
+    <div>Anchored to <b>nicole-actual-acp-vision.md</b> [CS: VERIFIED] + <b>ACP North Star</b> (Confluence AI 62176526400). Concept directions are Beth+Nicole's own, tagged [CS: LOW — generative]. All numbers are fictional seed data.</div>
+    <div class="attrib">vision sketch · 0% Claude on the strategy — the framing is Beth's · sketch fidelity: Tier 0</div>
+  </footer>
+
+</div>
+</body>
+</html>

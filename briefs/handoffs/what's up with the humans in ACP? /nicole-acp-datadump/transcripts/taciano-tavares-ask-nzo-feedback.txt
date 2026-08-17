@@ -1,0 +1,159 @@
+﻿TRANSCRIPT: Taciano Tavares - Ask N-zo Feedback Session
+Source: tattiano.vtt
+============================================================
+
+Taciano Tavares  Recap: Taciano Tavares - Ask N-zo Feedback Session Friday, March 6 | Meeting | Microsoft Teams
+ 
+Its ok to use once in a while as is, but doesn't solve his problems. The wish list:
+Taciano Tavares — Ask N‑zo Wish List
+1. Patch information with explanations
+He wants to understand patch status and why something is missing or disabled.
+Patch visibility in Ask N‑zo
+Explanation for patch failures or disabled patching
+“Why a patch wasn’t put on a device or why patch wasn’t enabled?” [Taciano Ta...Recording | Video]
+2. Vulnerability management with prioritization
+ 
+Vulnerability visibility inside Ask N‑zo
+Risk‑based prioritization of vulnerabilities
+“We need to ask to answer to prioritize which vulnerabilities we need to treat.” [Taciano Ta...Recording | Video]
+3. Network device visibility
+Ask N‑zo should include network infrastructure, not only endpoints.
+Network devices (firewalls, switches, etc.)
+Network stability insights
+“They don’t get network devices, just the servers and workstation.”
+“If you have the network devices, you can see the network.”
+“Network stability.” [Taciano Ta...Recording | Video]
+4. Alerts access with root cause analysis
+This is one of his strongest asks.
+Access to alerts inside Ask N‑zo
+Root cause analysis instead of alert noise
+Alert hierarchy across infrastructure
+“I have 100 alerts, but how is the root cause?”
+“I need to manage just the fire alert. This is the main event, not all of them.” [Taciano Ta...Recording | Video]
+5. Infrastructure hierarchy and dependency awareness
+He wants Ask N‑zo to understand how components relate to each other.
+Device and infrastructure hierarchy
+Correlation between network, servers, and users
+“I have the firewall, I have the network switch… I have the users using this infrastructure.” [Taciano Ta...Recording | Video]
+6. QBR‑style environment analysis and maturity guidance
+Ask N‑zo should help him advise customers, not just observe systems.
+Full‑environment analysis
+Maturity recommendations
+Guidance on how to improve customer infrastructure
+“A QBR inside so they have analysis for all the environment and propose what we need to do to elevate our maturity.” [Taciano Ta...Recording | Video]
+7. Top alert and device analysis
+Help him focus attention where it matters most.
+Identify top alert‑generating devices or services
+“The top 10 services devices generating most alerts.” [Taciano Ta...Recording | Video]
+8. More historical data (beyond 24 hours)
+The current data window limits usefulness.
+At least a week of historical data
+“Our impression is that we have just the 24 hours.”
+“Twenty‑four is nothing.” [Taciano Ta...Recording | Video]
+9. Reporting and export for customer delivery
+Reduce manual work explaining incidents and environment state.
+Export Ask N‑zo output to Word or PDF
+Use exports for customer communication
+“The opportunity to prompt it and exporting doc in Word or PDF certainly attains our needs.” [Taciano Ta...Recording | Video]
+ 
+ 
+What Taciano Liked About Ask N‑zo
+1. Real value from environment and device analysis
+Taciano consistently highlighted value in Ask N‑zo’s ability to analyze devices and environments, especially for understanding current state and history.
+On overall usefulness:
+“The device performance evaluation. My first infrastructure analysis, configuration, inventory and categorisation, improvement recommendations for the environment, a history oriented analysis of managed device.”
+ BUT WE ARE MISSING DATA, so not a huge win.  Rather we are 'directionally accurate"
+ 
+2. Helpful for exploratory and scenario-based questions
+His team used Ask N‑zo in an exploratory way, asking questions to better understand their environment or specific devices.
+On how technicians used it:
+“To discover more about our environment or a specific device.”
+On usage style:
+“That use and made a exploratory on scenario basis or a volume basis to measure these interactions.”
+ 
+3. Fast enough to be operationally useful
+Speed was explicitly called out as a positive. While not described as “zippy,” performance was good enough that it did not block usage.
+On response speed:
+“It’s good. The response for the delivery quickly for our perception. The speed was good and it’s so operational use.”
+When prompted to clarify:
+“Not bad.”
+ 
+4. UI improvement: expanded chat experience
+Taciano specifically praised the ability to expand or maximize the chat, calling out a concrete UX improvement that made a real difference.
+On chat expansion:
+“The option to maximize the chat is very cool and solve all of the difficulties we have in the UX.”
+Why it mattered:
+“Because if you ask and the response is too big, they it looks like poor.”
+ 
+5. Strong interest in report generation and exports
+While framed partly as a wish, Taciano clearly saw Ask N‑zo as valuable because it could eliminate manual reporting work.
+On report creation value:
+“The opportunity to prompt it and exporting doc in Word or PDF certainly attains our needs.”
+On time savings:
+“A couple of hours of our technicians.”
+Even though exports were discussed as future capability, the perceived value is already there, which reflects positively on the core analysis N‑zo provides today.
+ 
+6. Willingness to adopt Ask N‑zo when GA
+Despite gaps and a long wish list, Taciano was unambiguous about adoption.
+On adoption intent:
+“Yeah, for sure. For sure.”
+On team usage:
+“I use for sure and improve our team to use to.”
+ 
+Bottom line
+Taciano  sees it as a tool worth adopting and expanding into daily workflows once richer data and reporting are added.
+ 
+What Can Be Improved in Ask N‑zo (Taciano Feedback)
+1. Patch and vulnerability visibility, including why something is missing
+Taciano repeatedly came back to patching and vulnerability management, not just seeing status but understanding root causes.
+On missing patch insight:
+“Why a patch wasn’t put on a device or why patch wasn’t enabled?” [Taciano Ta...Recording | Video]
+On vulnerability prioritization:
+“We need to ask to answer to prioritize which vulnerabilities we need to treat.” [Taciano Ta...Recording | Video]
+ 
+2. Network device coverage (not just servers and workstations)
+A clear gap for Taciano was the absence of network devices in Ask N‑zo’s answers.
+On what’s missing:
+“They don’t get network devices, just the servers and workstation.” [Taciano Ta...Recording | Video]
+Why it matters:
+“If you have the network devices, you can see the network.”
+“Network stability.” [Taciano Ta...Recording | Video]
+Without network context, infrastructure analysis feels incomplete.
+3. Alerts context and root cause analysis
+This was one of the strongest pain points. Taciano doesn’t just want alerts; he wants hierarchy and causality.
+On the problem:
+“I have 100 alerts, but how is the root cause?” [Taciano Ta...Recording | Video]
+On device hierarchy:
+“I have the firewall, I have the network switch, or I have the server… I have alerts in all these devices, but I need to manage just the fire alert. This is the main event, not all of them.” [Taciano Ta...Recording | Video]
+This is a direct request for alert correlation and root‑cause-driven summaries.
+4. More historical data (24 hours is not enough)
+Taciano explicitly called out the data retention window as limiting real analysis.
+On current limitation:
+“Our impression is that we have just the 24 hours.” [Taciano Ta...Recording | Video]
+Why that fails operationally:
+“Twenty‑four is nothing because if I have a 24/7 operation… I lost the possible to use Enzo.” [Taciano Ta...Recording | Video]
+He asked for at least a week, ideally more, to support meaningful investigation.
+5. Daily usefulness vs. weekly check‑in
+Taciano was clear that, today, Ask N‑zo is something he checks weekly, not daily, because it lacks live operational signals.
+On current usage:
+“If on the way that Enzo is working today, Tasiano only see value looking to nzo once a week.” [Taciano Ta...Recording | Video]
+What would change that:
+“With this point of this wish list, probably Taciano can use this nzo every day.” [Taciano Ta...Recording | Video]
+ 
+Daily value depends on alerts, network data, and root cause insights.
+ 
+ 
+ 
+6. QBR‑style analysis and maturity recommendations
+Taciano wants Ask N‑zo to help him advise customers, not just observe environments.
+On his wish list:
+“A QBR inside so they have analysis for all the environment and propose what we need to do to elevate our maturity.” [Taciano Ta...Recording | Video]
+On outcomes:
+“Improve their infrastructure.” [Taciano Ta...Recording | Video]
+ 
+7. Reporting and export, especially for customer communication
+While not his top priority, this was still framed as a meaningful improvement that saves real time.
+On exports:
+“The opportunity to prompt it and exporting doc in Word or PDF certainly attains our needs.” [Taciano Ta...Recording | Video]
+On time saved:
+“A couple of hours of our technicians.” [Taciano Ta...Recording | Video]

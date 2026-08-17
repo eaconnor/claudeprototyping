@@ -1,0 +1,58 @@
+# Sophos MDR
+slug: sophos
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Sophos is a cybersecurity vendor with a strong MSP channel presence, offering endpoint protection, MDR, XDR, firewall, email security, and ITDR under a unified platform. In October 2025, Sophos made all third-party technology integrations free for all MDR and XDR subscribers, removing a significant pricing barrier. The MSP Elevate program (June 2025) provides an MDR bundle combining MDR Complete, 1-year data retention, NDR, and all integration packs in a single SKU for partners.
+
+## MSP Relevance
+Sophos is one of the most widely deployed security platforms in the MSP market, particularly strong in EMEA and mid-market. The channel-first model with dedicated MSP pricing (MSP Flex), the MSP Elevate program, and quarterly security posture reports give MSPs tools to demonstrate ongoing security value to clients. Over 75,000 organizations globally are protected through Sophos XDR and MDR.
+
+## Key Offerings & Capabilities
+- Sophos Endpoint — AV, EDR, XDR with AI-powered threat prevention
+- Sophos MDR — 24/7 managed detection and response with human analysts
+- Sophos MDR Complete — highest tier MDR with full incident response
+- Sophos ITDR — Identity Threat Detection and Response (GA October 2025)
+- Sophos XDR — extended detection across endpoint, firewall, cloud, email, identity
+- Sophos NDR — Network Detection and Response
+- Sophos Firewall — integrated hardware and software firewall with Synchronized Security
+- Third-party integrations — now included free for all MDR/XDR subscribers (November 2025)
+- Security Posture Report — quarterly report for MDR customers (April 2026)
+- MSP Elevate bundle — MDR Complete + 1yr data retention + NDR + all integrations in one SKU
+
+## Recent Announcements
+- October 2025: Sophos ITDR generally available — identity threat detection for MDR and XDR customers
+- November 2025: All third-party integrations free for all MDR/XDR subscribers (endpoint, firewall, cloud, email, identity, backup, productivity)
+- June 2025: MSP Elevate program launched — premium MDR bundle in a single SKU for MSP partners
+- April 2026: Security Posture Report launched for Sophos MDR customers — helps MSPs demonstrate ongoing security value
+- 2025: Expanded data center presence for localized XDR/MDR data residency for MSP partners
+- Sophos EMEA MSP Coffee Talk events (ongoing) — dedicated MSP partner engagement
+
+## Pricing Model
+MSP Flex — per-device consumption billing for MSPs with no minimum commitments. Per-seat and per-device models for specific products. MSP Elevate bundle simplifies SKU into a single package. Integration packs now included at no additional cost. Annual and multi-year terms available.
+
+## Strengths
+- Strong EMEA presence — dominant in the European MSP market
+- Free third-party integrations removes a major friction point vs. competitors
+- MSP Flex consumption model gives MSPs flexibility to scale billing with clients
+- Security Posture Report gives MSPs a quarterly client-facing deliverable
+- Synchronized Security (Sophos Firewall + Endpoint) provides automatic threat response across devices
+- ITDR launch rounds out identity coverage alongside endpoint and network
+
+## Weaknesses / Gaps
+- Less AI-native than CrowdStrike or SentinelOne — security AI features are adding on rather than built-in
+- MDR reputation is solid but not the first choice for US-centric MSPs (Huntress, Blackpoint lead there)
+- Sophos Central management UI is functional but not as modern as newer platforms
+- Less innovation velocity compared to pure-play MDR vendors
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Sophos competes in security endpoint and MDR, not workflow automation or AI agent platforms. The free integrations and MSP Flex model strengthen Sophos's position within security but do not expand into NZO's territory.
+
+## Notes
+- Free integrations (November 2025) is a competitive move designed to match CrowdStrike and SentinelOne's ecosystem approach
+- Security Posture Report (April 2026) is a good example of a product feature that demonstrates client value — a pattern worth emulating in NZO's reporting
+- MSP Elevate program watch: bundled MDR creates a "one SKU for security" narrative that reduces MSP decision fatigue

@@ -1,0 +1,118 @@
+{
+  "_source_md": "nicole-actual-acp-vision.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-NICOLE-VISION",
+    "title": "Nicole's Actual ACP Vision \u2014 Strategic Synthesis & Council Corrections",
+    "version": "0.2.0",
+    "status": "Hybrid \u00b7 Pattern Applied",
+    "date": "2026-06-05",
+    "owners": {
+      "product": "Beth Schwindt",
+      "ai_strategy": "Nicole Reineke"
+    },
+    "relationship": "This is the STRATEGIC SYNTHESIS \u2014 what changes about the council analysis\nnow that Nicole's source PDFs are available.\nFor the source-grounded catalog of what the PDFs say \u2192 HANDOFF-ACP-VISION-PDFS.\n",
+    "sources": [
+      {
+        "id": "SRC-NICOLE-001",
+        "title": "Headless IT Tech in the AI Agent world (Nicole's master positioning doc)",
+        "pages": 35
+      },
+      {
+        "id": "SRC-NICOLE-002",
+        "title": "AI Coworker Description",
+        "pages": 13
+      },
+      {
+        "id": "SRC-NICOLE-003",
+        "title": "AI-Runbooks Definition",
+        "pages": 3
+      },
+      {
+        "id": "SRC-NICOLE-004",
+        "title": "Top 10 ACP Use Cases",
+        "type": "docx"
+      },
+      {
+        "id": "SRC-NICOLE-005",
+        "title": "N-UEM Coworker Use Cases (22 partner interview catalog)",
+        "type": "docx"
+      }
+    ],
+    "council_corrections": [
+      "COUNCIL-CORRECTION-MONETIZATION",
+      "COUNCIL-CORRECTION-VALUE-LEDGER",
+      "COUNCIL-CORRECTION-WARDLEY-STACK",
+      "COUNCIL-CORRECTION-AUG-VS-REPLACE",
+      "COUNCIL-CORRECTION-PSA-CHOKEPOINT",
+      "COUNCIL-CORRECTION-MICROSOFT-AGENT365"
+    ],
+    "council_findings_still_valid": [
+      "TENSION-TRUST-UX",
+      "TENSION-JUNIOR-TRAINING",
+      "TENSION-CROSSING-CHASM",
+      "TENSION-CUSTOMER-VALIDATION-GAP"
+    ],
+    "supersedes_in_handoff": [
+      "HANDOFF-COUNCIL-REPORT (5 frameworks \u2014 6 of its findings corrected here)",
+      "HANDOFF-COUNCIL-EXTENDED (4 frameworks \u2014 partially corrected)"
+    ]
+  },
+  "sections": [],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Layer",
+        "What it bills",
+        "Precedent"
+      ],
+      "is_id_table": false,
+      "row_count": 7,
+      "rows": [
+        {
+          "Layer": "**1. Platform Access**",
+          "What it bills": "Subscription to control plane, builder, audit, key service",
+          "Precedent": "Standard SaaS"
+        },
+        {
+          "Layer": "**2. Workflow Execution**",
+          "What it bills": "Every Coworker run is a billable event",
+          "Precedent": "n8n: \u20ac20/mo for 2,500 runs"
+        },
+        {
+          "Layer": "**3. Expert Licensing**",
+          "What it bills": "Each Expert carries recurring license",
+          "Precedent": "Catalogue revenue"
+        },
+        {
+          "Layer": "**4. Vendor Ecosystem**",
+          "What it bills": "Rev share on Vendor Expert transactions + certification fees",
+          "Precedent": "Shopify: 0% first $50K, 15% to $5M, 10% above"
+        },
+        {
+          "Layer": "**5. MCP/Tool Transactions**",
+          "What it bills": "Every MCP call, API call, script execution metered",
+          "Precedent": "Zapier: per-operation"
+        },
+        {
+          "Layer": "**6. LLM Inference Pass-Through**",
+          "What it bills": "Bedrock customers pay inference + margin; BYOK skips this layer",
+          "Precedent": "Cost recovery + margin"
+        },
+        {
+          "Layer": "**7. Outcome-Based Pricing**",
+          "What it bills": "Per resolved incident, per onboarded employee, per QBR",
+          "Precedent": "Zendesk: $1.50/automated resolution"
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [],
+  "cs_tag_histogram": {
+    "VERIFIED": 20,
+    "UNKNOWN": 1,
+    "HIGH": 2,
+    "MEDIUM": 1
+  }
+}

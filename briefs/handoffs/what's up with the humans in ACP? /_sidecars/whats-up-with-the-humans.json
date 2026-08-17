@@ -1,0 +1,24 @@
+{
+  "_source_md": "whats-up-with-the-humans.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": {
+    "doc_id": "HANDOFF-HUMANS",
+    "title": "What's Up With The Humans",
+    "version": "0.1.0",
+    "status": "Starter doc \u00b7 designer journal \u00b7 keep adding",
+    "date": "2026-06-05",
+    "owner": "Beth Schwindt",
+    "purpose": "The other docs are analytical. This one is for the humans.\nWhat MSP techs are feeling, fearing, hoping for. What gets in their way.\nWhat ACP needs to honor, not just enable. Read like a designer's field notes.\n",
+    "sources_drawn_from": [
+      "research-evidence.md (22 partner interviews)",
+      "nicole-actual-acp-vision.md",
+      "council-frameworks.md (SDT section)"
+    ],
+    "note_to_reader": "This is a STARTER. I added what jumped out from one read of the research.\nAdd to it as you learn. Quotes anonymized as first name + last initial."
+  },
+  "sections": [],
+  "structured_blocks": [],
+  "tables": [],
+  "inline_id_references": [],
+  "cs_tag_histogram": {}
+}

@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOTL Detection — Adlumin SOC</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --br-bg-base: #0d0f18;
+    --br-bg-surface: #13162a;
+    --br-bg-elevated: #1a1e33;
+    --br-bg-card: #1f2440;
+    --br-border: rgba(255,255,255,0.08);
+    --br-border-strong: rgba(255,255,255,0.15);
+    --br-text-primary: #e8eaf6;
+    --br-text-secondary: #8b90b8;
+    --br-text-tertiary: #555a80;
+    --br-accent-blue: #4f7cf7;
+    --br-accent-purple: #9b6dff;
+    --br-accent-red: #e84855;
+    --br-accent-orange: #f5893a;
+    --br-accent-amber: #f5c842;
+    --br-accent-green: #3dd68c;
+    --br-radius: 4px;
+    --br-radius-sm: 2px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--br-bg-base);
+    color: var(--br-text-primary);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* TOP NAV */
+  .top-nav {
+    background: var(--br-bg-surface);
+    border-bottom: 1px solid var(--br-border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .nav-brand-logo {
+    width: 28px;
+    height: 28px;
+    background: var(--br-accent-blue);
+    border-radius: var(--br-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-brand-logo svg {
+    width: 16px;
+    height: 16px;
+    fill: white;
+  }
+
+  .nav-brand-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--br-text-primary);
+    letter-spacing: 0.01em;
+  }
+
+  .nav-brand-sub {
+    font-size: 11px;
+    color: var(--br-text-tertiary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--br-border);
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    height: 100%;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--br-text-secondary);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 16px;
+    height: 100%;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover {
+    color: var(--br-text-primary);
+  }
+
+  .tab-btn.active {
+    color: var(--br-accent-blue);
+    border-bottom-color: var(--br-accent-blue);
+  }
+
+  .nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--br-accent-green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* PAGE LAYOUT */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .page-header {
+    padding: 24px 24px 0;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--br-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    color: var(--br-text-tertiary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* KPI CARDS */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 0 24px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-card {
+    background: var(--br-bg-card);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 16px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .kpi-card.blue::before { background: var(--br-accent-blue); }
+  .kpi-card.purple::before { background: var(--br-accent-purple); }
+  .kpi-card.green::before { background: var(--br-accent-green); }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--br-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--br-text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--br-text-secondary);
+  }
+
+  .kpi-delta {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .kpi-delta.up { color: var(--br-accent-amber); }
+  .kpi-delta.down { color: var(--br-accent-green); }
+
+  /* SECTION */
+  .section {
+    padding: 0 24px;
+    margin-bottom: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+  }
+
+  .section-action {
+    font-size: 11px;
+    color: var(--br-accent-blue);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* FEED TABLE */
+  .feed-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--br-bg-card);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    overflow: hidden;
+  }
+
+  .feed-table th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+    background: var(--br-bg-elevated);
+    border-bottom: 1px solid var(--br-border);
+    white-space: nowrap;
+  }
+
+  .feed-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--br-border);
+    vertical-align: middle;
+  }
+
+  .feed-table tr:last-child td { border-bottom: none; }
+
+  .feed-table tr:hover td {
+    background: rgba(79,124,247,0.04);
+  }
+
+  .time-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--br-text-secondary);
+    white-space: nowrap;
+  }
+
+  /* SEVERITY BADGE */
+  .sev {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: var(--br-radius-sm);
+    white-space: nowrap;
+  }
+
+  .sev-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .sev-critical { background: rgba(232,72,85,0.15); color: var(--br-accent-red); }
+  .sev-critical .sev-dot { background: var(--br-accent-red); }
+  .sev-high { background: rgba(245,137,58,0.12); color: var(--br-accent-orange); }
+  .sev-high .sev-dot { background: var(--br-accent-orange); }
+  .sev-medium { background: rgba(245,200,66,0.10); color: var(--br-accent-amber); }
+  .sev-medium .sev-dot { background: var(--br-accent-amber); }
+  .sev-low { background: rgba(79,124,247,0.10); color: #7aa0fa; }
+  .sev-low .sev-dot { background: #7aa0fa; }
+
+  /* TECHNIQUE CELL */
+  .technique-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--br-text-primary);
+    margin-bottom: 2px;
+  }
+
+  .mitre-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--br-accent-purple);
+    background: rgba(155,109,255,0.10);
+    padding: 1px 5px;
+    border-radius: var(--br-radius-sm);
+  }
+
+  /* HOST / USER */
+  .host-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--br-text-primary);
+  }
+
+  .user-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--br-text-secondary);
+  }
+
+  /* CONFIDENCE BAR */
+  .conf-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 90px;
+  }
+
+  .conf-bar-track {
+    height: 4px;
+    background: rgba(255,255,255,0.07);
+    border-radius: var(--br-radius-sm);
+    overflow: hidden;
+  }
+
+  .conf-bar-fill {
+    height: 100%;
+    border-radius: var(--br-radius-sm);
+    transition: width 0.3s ease;
+  }
+
+  .conf-fill-high { background: var(--br-accent-red); }
+  .conf-fill-med-high { background: var(--br-accent-orange); }
+  .conf-fill-med { background: var(--br-accent-amber); }
+  .conf-fill-low { background: var(--br-text-tertiary); }
+
+  .conf-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--br-text-primary);
+    line-height: 1;
+  }
+
+  /* SOURCE BADGE */
+  .source-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .source-ai {
+    background: rgba(155,109,255,0.15);
+    color: var(--br-accent-purple);
+    border: 1px solid rgba(155,109,255,0.25);
+  }
+
+  .source-analyst {
+    background: rgba(79,124,247,0.12);
+    color: var(--br-accent-blue);
+    border: 1px solid rgba(79,124,247,0.2);
+  }
+
+  /* ACTION BUTTONS */
+  .btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: var(--br-radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.12s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-investigate {
+    background: var(--br-accent-blue);
+    color: white;
+    border-color: var(--br-accent-blue);
+  }
+  .btn-investigate:hover { background: #3d6be5; }
+
+  .btn-review {
+    background: transparent;
+    color: var(--br-accent-blue);
+    border-color: rgba(79,124,247,0.4);
+  }
+  .btn-review:hover { background: rgba(79,124,247,0.08); }
+
+  .btn-monitor {
+    background: transparent;
+    color: var(--br-text-secondary);
+    border-color: var(--br-border-strong);
+  }
+  .btn-monitor:hover { background: rgba(255,255,255,0.04); }
+
+  .btn-green {
+    background: var(--br-accent-green);
+    color: #0d1a0f;
+    border-color: var(--br-accent-green);
+    font-weight: 700;
+  }
+  .btn-green:hover { background: #30c47a; }
+
+  .btn-red-outline {
+    background: transparent;
+    color: var(--br-accent-red);
+    border-color: rgba(232,72,85,0.4);
+  }
+  .btn-red-outline:hover { background: rgba(232,72,85,0.08); }
+
+  .btn-blue-outline {
+    background: transparent;
+    color: var(--br-accent-blue);
+    border-color: rgba(79,124,247,0.4);
+  }
+  .btn-blue-outline:hover { background: rgba(79,124,247,0.08); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--br-text-secondary);
+    border-color: var(--br-border-strong);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.04); color: var(--br-text-primary); }
+
+  /* ===================== TAB 2 — INCIDENT DETAIL ===================== */
+  .detail-layout {
+    display: grid;
+    grid-template-columns: 60fr 40fr;
+    gap: 16px;
+    padding: 0 24px;
+    align-items: start;
+  }
+
+  .panel {
+    background: var(--br-bg-card);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--br-border);
+    background: var(--br-bg-elevated);
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+  }
+
+  .panel-body { padding: 18px; }
+
+  .incident-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--br-text-primary);
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+
+  .incident-conf {
+    margin-bottom: 16px;
+  }
+
+  .conf-big {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+
+  .conf-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--br-accent-orange);
+    line-height: 1;
+  }
+
+  .conf-label-stack { display: flex; flex-direction: column; gap: 2px; }
+
+  .conf-label-main {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--br-text-primary);
+  }
+
+  .conf-label-sub {
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .conf-bar-big {
+    height: 6px;
+    background: rgba(255,255,255,0.07);
+    border-radius: var(--br-radius-sm);
+    overflow: hidden;
+  }
+
+  .conf-bar-big-fill {
+    height: 100%;
+    width: 91%;
+    background: linear-gradient(90deg, var(--br-accent-orange), var(--br-accent-amber));
+    border-radius: var(--br-radius-sm);
+  }
+
+  .mitre-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mitre-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(155,109,255,0.12);
+    border: 1px solid rgba(155,109,255,0.2);
+    border-radius: var(--br-radius);
+    padding: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--br-accent-purple);
+    font-weight: 600;
+  }
+
+  .tactic-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(79,124,247,0.10);
+    border: 1px solid rgba(79,124,247,0.18);
+    border-radius: var(--br-radius);
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--br-accent-blue);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .narrative {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--br-text-primary);
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    background: var(--br-bg-elevated);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    border-left: 3px solid var(--br-accent-orange);
+  }
+
+  .narrative p { margin: 0; }
+
+  .subsection-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+    margin-bottom: 10px;
+    margin-top: 18px;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 58px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--br-border);
+  }
+
+  .tl-event {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding: 8px 0;
+    position: relative;
+  }
+
+  .tl-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--br-text-tertiary);
+    width: 50px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .tl-dot-wrap {
+    width: 16px;
+    display: flex;
+    justify-content: center;
+    padding-top: 5px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tl-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--br-bg-card);
+    border: 2px solid var(--br-text-tertiary);
+  }
+
+  .tl-dot.alert {
+    border-color: var(--br-accent-orange);
+    background: rgba(245,137,58,0.2);
+  }
+
+  .tl-dot.detection {
+    border-color: var(--br-accent-red);
+    background: rgba(232,72,85,0.2);
+  }
+
+  .tl-content {
+    flex: 1;
+    padding-left: 12px;
+  }
+
+  .tl-action {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--br-text-primary);
+    margin-bottom: 1px;
+  }
+
+  .tl-detail {
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* COLLAPSIBLE RAW SIGNAL */
+  .collapsible-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 8px 12px;
+    color: var(--br-text-secondary);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    margin-top: 18px;
+    transition: background 0.12s;
+  }
+
+  .collapsible-btn:hover { background: rgba(255,255,255,0.03); }
+
+  .collapsible-arrow {
+    margin-left: auto;
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+
+  .collapsible-btn.open .collapsible-arrow { transform: rotate(180deg); }
+
+  .raw-signal {
+    display: none;
+    margin-top: 8px;
+    background: var(--br-bg-base);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--br-accent-green);
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .raw-signal.open { display: block; }
+
+  /* RIGHT PANEL */
+  .action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .action-stack .btn {
+    font-size: 12px;
+    padding: 9px 14px;
+    text-align: left;
+  }
+
+  .feedback-note {
+    font-size: 10px;
+    color: var(--br-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--br-border);
+  }
+
+  /* CONTEXT ROWS */
+  .ctx-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ctx-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ctx-label {
+    font-size: 10px;
+    color: var(--br-text-tertiary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+    min-width: 80px;
+    padding-top: 1px;
+  }
+
+  .ctx-value {
+    font-size: 12px;
+    color: var(--br-text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+  }
+
+  .ctx-value-sub {
+    font-size: 10px;
+    color: var(--br-text-secondary);
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .risk-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: var(--br-radius-sm);
+    background: rgba(245,200,66,0.12);
+    color: var(--br-accent-amber);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* MITRE MINI MAP */
+  .mitre-map {
+    background: var(--br-bg-base);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .mitre-map-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+    margin-bottom: 10px;
+  }
+
+  .mitre-chain {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .mitre-step {
+    background: var(--br-bg-elevated);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius-sm);
+    padding: 4px 8px;
+    font-size: 9px;
+    color: var(--br-text-tertiary);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    min-width: 64px;
+    position: relative;
+  }
+
+  .mitre-step.active {
+    background: rgba(155,109,255,0.15);
+    border-color: rgba(155,109,255,0.4);
+    color: var(--br-accent-purple);
+    font-weight: 600;
+  }
+
+  .mitre-step.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 3px solid var(--br-accent-purple);
+  }
+
+  .mitre-step-label {
+    display: block;
+    font-size: 7px;
+    color: inherit;
+    margin-top: 1px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ===================== TAB 3 — OUTCOMES ===================== */
+  .outcomes-kpi {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 0 24px;
+    margin-bottom: 20px;
+  }
+
+  .outcome-card {
+    background: var(--br-bg-card);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 20px 20px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .outcome-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--br-text-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .outcome-number.green { color: var(--br-accent-green); }
+  .outcome-number.blue { color: var(--br-accent-blue); }
+
+  .outcome-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--br-text-secondary);
+    line-height: 1.3;
+  }
+
+  .outcome-sub {
+    font-size: 10px;
+    color: var(--br-text-tertiary);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* BAR CHART */
+  .chart-wrap {
+    background: var(--br-bg-card);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 18px;
+  }
+
+  .chart-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+    margin-bottom: 18px;
+  }
+
+  .bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bar-label {
+    font-size: 12px;
+    color: var(--br-text-secondary);
+    width: 160px;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: var(--br-radius-sm);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: var(--br-radius-sm);
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill.blue { background: rgba(79,124,247,0.7); }
+  .bar-fill.purple { background: rgba(155,109,255,0.7); }
+  .bar-fill.orange { background: rgba(245,137,58,0.7); }
+  .bar-fill.amber { background: rgba(245,200,66,0.7); }
+  .bar-fill.green { background: rgba(61,214,140,0.7); }
+
+  .bar-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--br-text-secondary);
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* FEEDBACK LOOP PANEL */
+  .feedback-panel {
+    background: var(--br-bg-card);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    padding: 18px;
+    margin-top: 12px;
+  }
+
+  .feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .feedback-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--br-text-tertiary);
+  }
+
+  .feedback-metrics {
+    display: flex;
+    gap: 24px;
+  }
+
+  .fm-item { display: flex; flex-direction: column; gap: 3px; }
+
+  .fm-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--br-text-primary);
+    line-height: 1;
+  }
+
+  .fm-value.green { color: var(--br-accent-green); }
+
+  .fm-label {
+    font-size: 11px;
+    color: var(--br-text-secondary);
+  }
+
+  .fm-trend {
+    height: 40px;
+    background: var(--br-bg-elevated);
+    border: 1px solid var(--br-border);
+    border-radius: var(--br-radius);
+    overflow: hidden;
+    position: relative;
+    margin-top: 12px;
+  }
+
+  .fm-trend-label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: var(--br-text-tertiary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .fm-trend-bar-wrap {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 28px;
+  }
+
+  .fm-mini-bar {
+    width: 8px;
+    border-radius: var(--br-radius-sm) var(--br-radius-sm) 0 0;
+    background: rgba(79,124,247,0.4);
+  }
+
+  .fm-mini-bar.last {
+    background: var(--br-accent-green);
+  }
+
+  .export-row {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-export {
+    background: var(--br-accent-blue);
+    color: white;
+    border: none;
+    border-radius: var(--br-radius);
+    padding: 9px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.12s;
+  }
+
+  .btn-export:hover { background: #3d6be5; }
+
+  /* OUTCOMES TWO-COL */
+  .outcomes-lower {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 24px;
+  }
+
+  /* UTILITY */
+  .divider {
+    height: 1px;
+    background: var(--br-border);
+    margin: 14px 0;
+  }
+
+  .tag-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="nav-brand">
+    <div class="nav-brand-logo">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-brand-name">Adlumin</div>
+      <div class="nav-brand-sub">SOC PLATFORM</div>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('feed', this)">Detection Feed</button>
+    <button class="tab-btn" onclick="switchTab('detail', this)">Incident Detail</button>
+    <button class="tab-btn" onclick="switchTab('outcomes', this)">Outcomes</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-status">
+      <div class="status-dot"></div>
+      PowerShell Ensemble · Live
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== TAB 1: DETECTION FEED ==================== -->
+<div id="tab-feed" class="tab-content active">
+  <div class="page-header">
+    <div class="page-title">LOTL Detection</div>
+    <div class="page-subtitle">Behavioral threat analysis — PowerShell Ensemble · RACE Correlation · Identity Monitoring</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card blue">
+      <div class="kpi-label">Threats Detected Today</div>
+      <div class="kpi-value">23</div>
+      <div class="kpi-meta">
+        <span class="kpi-delta up">↑ 4</span>
+        <span>from yesterday</span>
+      </div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Avg Confidence Score</div>
+      <div class="kpi-value">84%</div>
+      <div class="kpi-meta">
+        <span style="color: var(--br-accent-purple); font-size: 10px; font-weight: 600;">◈ AI-SCORED</span>
+      </div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Mean Time to Triage</div>
+      <div class="kpi-value">6m 14s</div>
+      <div class="kpi-meta">
+        <span class="kpi-delta down">↓ 38%</span>
+        <span>this week</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Live Detections — Today 00:00–14:32</div>
+      <button class="section-action">Filter &amp; Export</button>
+    </div>
+
+    <table class="feed-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Severity</th>
+          <th>Technique</th>
+          <th>Host</th>
+          <th>User</th>
+          <th>Confidence</th>
+          <th>Source</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1 -->
+        <tr>
+          <td class="time-cell">14:32</td>
+          <td><span class="sev sev-critical"><span class="sev-dot"></span>CRITICAL</span></td>
+          <td>
+            <div class="technique-name">rundll32 → External HTTPS</div>
+            <span class="mitre-tag">T1218.011</span>
+          </td>
+          <td class="host-cell">WIN-SOC-04</td>
+          <td class="user-cell">svc-backup</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-high" style="width:96%"></div></div>
+              <span class="conf-pct">96%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-ai">AI</span></td>
+          <td><button class="btn btn-investigate">Investigate</button></td>
+        </tr>
+        <!-- Row 2 -->
+        <tr>
+          <td class="time-cell">14:28</td>
+          <td><span class="sev sev-high"><span class="sev-dot"></span>HIGH</span></td>
+          <td>
+            <div class="technique-name">WMI Lateral Movement</div>
+            <span class="mitre-tag">T1047</span>
+          </td>
+          <td class="host-cell">WIN-EXCH-01</td>
+          <td class="user-cell">j.martinez</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-high" style="width:91%"></div></div>
+              <span class="conf-pct">91%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-ai">AI</span></td>
+          <td><button class="btn btn-investigate" onclick="switchTab('detail', document.querySelectorAll('.tab-btn')[1])">Investigate</button></td>
+        </tr>
+        <!-- Row 3 -->
+        <tr>
+          <td class="time-cell">13:55</td>
+          <td><span class="sev sev-high"><span class="sev-dot"></span>HIGH</span></td>
+          <td>
+            <div class="technique-name">PowerShell LOLBin Execution</div>
+            <span class="mitre-tag">T1059.001</span>
+          </td>
+          <td class="host-cell">WIN-DC-02</td>
+          <td class="user-cell">admin</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-high" style="width:87%"></div></div>
+              <span class="conf-pct">87%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-ai">AI</span></td>
+          <td><button class="btn btn-investigate">Investigate</button></td>
+        </tr>
+        <!-- Row 4 -->
+        <tr>
+          <td class="time-cell">13:41</td>
+          <td><span class="sev sev-medium"><span class="sev-dot"></span>MEDIUM</span></td>
+          <td>
+            <div class="technique-name">Scheduled Task: whoami Discovery</div>
+            <span class="mitre-tag">T1053.005</span>
+          </td>
+          <td class="host-cell">WIN-FIN-07</td>
+          <td class="user-cell">t.wilson</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-med-high" style="width:74%"></div></div>
+              <span class="conf-pct">74%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-ai">AI</span></td>
+          <td><button class="btn btn-review">Review</button></td>
+        </tr>
+        <!-- Row 5 -->
+        <tr>
+          <td class="time-cell">13:20</td>
+          <td><span class="sev sev-medium"><span class="sev-dot"></span>MEDIUM</span></td>
+          <td>
+            <div class="technique-name">Node.js LoLBIN Loader Chain</div>
+            <span class="mitre-tag">T1059.001</span>
+          </td>
+          <td class="host-cell">WIN-DEV-03</td>
+          <td class="user-cell">b.chen</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-med" style="width:68%"></div></div>
+              <span class="conf-pct">68%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-ai">AI</span></td>
+          <td><button class="btn btn-review">Review</button></td>
+        </tr>
+        <!-- Row 6 -->
+        <tr>
+          <td class="time-cell">12:55</td>
+          <td><span class="sev sev-low"><span class="sev-dot"></span>LOW</span></td>
+          <td>
+            <div class="technique-name">Suspicious certutil Download</div>
+            <span class="mitre-tag">T1140</span>
+          </td>
+          <td class="host-cell">WIN-HR-11</td>
+          <td class="user-cell">l.park</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-med" style="width:54%"></div></div>
+              <span class="conf-pct">54%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-ai">AI</span></td>
+          <td><button class="btn btn-monitor">Monitor</button></td>
+        </tr>
+        <!-- Row 7 -->
+        <tr>
+          <td class="time-cell">12:18</td>
+          <td><span class="sev sev-low"><span class="sev-dot"></span>LOW</span></td>
+          <td>
+            <div class="technique-name">Encoded PowerShell Invocation</div>
+            <span class="mitre-tag">T1027</span>
+          </td>
+          <td class="host-cell">WIN-MKT-02</td>
+          <td class="user-cell">r.jones</td>
+          <td>
+            <div class="conf-wrap">
+              <div class="conf-bar-track"><div class="conf-bar-fill conf-fill-low" style="width:49%"></div></div>
+              <span class="conf-pct">49%</span>
+            </div>
+          </td>
+          <td><span class="source-badge source-analyst">Analyst</span></td>
+          <td><button class="btn btn-monitor">Monitor</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== TAB 2: INCIDENT DETAIL ==================== -->
+<div id="tab-detail" class="tab-content">
+  <div class="page-header">
+    <div class="page-title">Incident Detail</div>
+    <div class="page-subtitle">WIN-EXCH-01 · WMI Lateral Movement · Opened 14:28 today</div>
+  </div>
+
+  <div class="detail-layout">
+    <!-- LEFT PANEL -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Detection Analysis</div>
+        </div>
+        <div class="panel-body">
+          <div class="incident-title">WMI Lateral Movement — j.martinez → WIN-EXCH-01</div>
+
+          <div class="incident-conf">
+            <div class="conf-big">
+              <div class="conf-number">91%</div>
+              <div class="conf-label-stack">
+                <div class="conf-label-main">High Confidence</div>
+                <div class="conf-label-sub">
+                  <span style="color: var(--br-accent-purple); font-size: 10px;">◈</span>
+                  AI Detected · PowerShell Ensemble
+                </div>
+              </div>
+            </div>
+            <div class="conf-bar-big">
+              <div class="conf-bar-big-fill"></div>
+            </div>
+          </div>
+
+          <div class="mitre-row">
+            <span class="mitre-pill">T1047</span>
+            <span class="tactic-pill">Lateral Movement</span>
+          </div>
+
+          <div class="narrative">
+            <p>At 14:28, user j.martinez initiated a WMI connection from WIN-SOC-04 to WIN-EXCH-01 — unusual for this user's baseline. The command executed remotely matches patterns associated with lateral movement in 91% of similar sequences in the training corpus. No malicious binary was dropped; the attack uses only native Windows Management Instrumentation. The PowerShell Ensemble flagged 3 preceding commands in the session as anomalous within the last 40 minutes.</p>
+          </div>
+
+          <div class="subsection-label">Event Timeline</div>
+          <div class="timeline">
+            <div class="tl-event">
+              <div class="tl-time">13:48</div>
+              <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+              <div class="tl-content">
+                <div class="tl-action">Credential access — LSASS memory read</div>
+                <div class="tl-detail">WIN-SOC-04 · j.martinez · PID 3812</div>
+              </div>
+            </div>
+            <div class="tl-event">
+              <div class="tl-time">14:01</div>
+              <div class="tl-dot-wrap"><div class="tl-dot alert"></div></div>
+              <div class="tl-content">
+                <div class="tl-action">Anomalous PowerShell — encoded command block</div>
+                <div class="tl-detail">WIN-SOC-04 · powershell.exe -enc JABj...</div>
+              </div>
+            </div>
+            <div class="tl-event">
+              <div class="tl-time">14:14</div>
+              <div class="tl-dot-wrap"><div class="tl-dot alert"></div></div>
+              <div class="tl-content">
+                <div class="tl-action">Network enumeration — SMB sweep detected</div>
+                <div class="tl-detail">WIN-SOC-04 · 192.168.1.0/24 · 47 hosts probed</div>
+              </div>
+            </div>
+            <div class="tl-event">
+              <div class="tl-time">14:21</div>
+              <div class="tl-dot-wrap"><div class="tl-dot alert"></div></div>
+              <div class="tl-content">
+                <div class="tl-action">WMI remote execution initiated</div>
+                <div class="tl-detail">Source: WIN-SOC-04 → Target: WIN-EXCH-01</div>
+              </div>
+            </div>
+            <div class="tl-event">
+              <div class="tl-time">14:28</div>
+              <div class="tl-dot-wrap"><div class="tl-dot detection"></div></div>
+              <div class="tl-content">
+                <div class="tl-action" style="color: var(--br-accent-red);">Detection — High Confidence LOTL sequence</div>
+                <div class="tl-detail">WMI remote command confirmed · Ensemble score 91%</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="collapsible-btn" id="rawBtn" onclick="toggleRaw()">
+            <span style="color: var(--br-accent-green); font-family: 'JetBrains Mono', monospace; font-size: 10px;">$</span>
+            Raw Signal — WMI Command String
+            <span class="collapsible-arrow">▼</span>
+          </button>
+          <div class="raw-signal" id="rawSignal">Invoke-WmiMethod -Class Win32_Process -Name Create \
+  -ComputerName WIN-EXCH-01 \
+  -ArgumentList "cmd.exe /c powershell.exe -NoP -NonI -W Hidden \
+    -Enc JABjAG0AZAAgAD0AIAAiAHcAaABvAGEAbQBpACIACgBJAG4AdgBvAGsAZQAtAEUAeABwAHI..." \
+  -Credential $cred
+
+# Decoded payload fragment:
+# $cmd = "whoami"
+# Invoke-Expression $cmd | Out-File \\WIN-EXCH-01\C$\Windows\Temp\.sys_log</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <!-- ANALYST ACTIONS -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Analyst Actions</div>
+        </div>
+        <div class="panel-body">
+          <div class="action-stack">
+            <button class="btn btn-green">✓ Confirm Threat</button>
+            <button class="btn btn-red-outline">⊘ Override: False Positive</button>
+            <button class="btn btn-blue-outline">↑ Escalate to L2</button>
+            <button class="btn btn-ghost">+ Add to Watchlist</button>
+          </div>
+          <div class="feedback-note">
+            <span style="color: var(--br-accent-purple); font-size: 12px;">◈</span>
+            Your feedback trains the model — every override improves future scoring.
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTEXT -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Context</div>
+        </div>
+        <div class="panel-body">
+          <div class="subsection-label" style="margin-top:0;">User</div>
+          <div class="ctx-grid" style="margin-bottom: 12px;">
+            <div class="ctx-row">
+              <span class="ctx-label">Identity</span>
+              <div>
+                <div class="ctx-value">j.martinez</div>
+                <div class="ctx-value-sub">Network Engineer</div>
+              </div>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-label">Last Login</span>
+              <div>
+                <div class="ctx-value" style="font-size: 11px;">08:43 today</div>
+                <div class="ctx-value-sub">Normal hours</div>
+              </div>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-label">Risk Score</span>
+              <div style="text-align:right;"><span class="risk-pill">MEDIUM</span></div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="subsection-label">Host</div>
+          <div class="ctx-grid" style="margin-bottom: 12px;">
+            <div class="ctx-row">
+              <span class="ctx-label">Machine</span>
+              <div>
+                <div class="ctx-value">WIN-EXCH-01</div>
+                <div class="ctx-value-sub">Exchange Server</div>
+              </div>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-label">Last Patch</span>
+              <div>
+                <div class="ctx-value" style="font-size: 11px; color: var(--br-accent-amber);">14 days ago</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="ctx-row" style="margin-top:12px;">
+            <span class="ctx-label" style="min-width:unset; font-size:10px; color: var(--br-text-tertiary);">Similar incidents (30d)</span>
+            <span class="ctx-value" style="color: var(--br-accent-green); font-size: 13px; font-weight: 700;">0</span>
+          </div>
+          <div style="font-size: 10px; color: var(--br-text-tertiary); margin-top: 4px;">No prior LOTL activity for this user.</div>
+
+          <!-- MITRE MINI MAP -->
+          <div class="mitre-map">
+            <div class="mitre-map-title">MITRE ATT&amp;CK Kill Chain</div>
+            <div class="mitre-chain">
+              <div class="mitre-step">
+                TA0001
+                <span class="mitre-step-label">Initial Access</span>
+              </div>
+              <div class="mitre-step">
+                TA0004
+                <span class="mitre-step-label">Privilege Esc</span>
+              </div>
+              <div class="mitre-step active">
+                TA0008
+                <span class="mitre-step-label">Lateral Mvmt</span>
+              </div>
+              <div class="mitre-step">
+                TA0009
+                <span class="mitre-step-label">Collection</span>
+              </div>
+              <div class="mitre-step">
+                TA0010
+                <span class="mitre-step-label">Exfiltration</span>
+              </div>
+            </div>
+            <div style="margin-top: 8px; font-size: 10px; color: var(--br-text-tertiary); font-family: 'JetBrains Mono', monospace;">
+              T1047 · Active stage detected
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 3: OUTCOMES ==================== -->
+<div id="tab-outcomes" class="tab-content">
+  <div class="page-header">
+    <div class="page-title">Security Outcomes</div>
+    <div class="page-subtitle">Last 30 Days — LOTL Behavioral Threat Analysis</div>
+  </div>
+
+  <div class="outcomes-kpi">
+    <div class="outcome-card">
+      <div class="outcome-number">847</div>
+      <div class="outcome-label">LOTL threats analyzed</div>
+      <div class="outcome-sub">PowerShell Ensemble</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-number" style="color: var(--br-accent-red);">23</div>
+      <div class="outcome-label">Confirmed incidents</div>
+      <div class="outcome-sub">2.7% confirmation rate</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-number green">6m 14s</div>
+      <div class="outcome-label">Average triage time</div>
+      <div class="outcome-sub">vs 34m industry avg</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-number blue">$0</div>
+      <div class="outcome-label">Estimated breach cost</div>
+      <div class="outcome-sub">This period</div>
+    </div>
+  </div>
+
+  <div class="outcomes-lower">
+    <!-- CHART -->
+    <div class="chart-wrap">
+      <div class="chart-title">Threats by Technique — Last 30 Days</div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">PowerShell Execution</span>
+          <div class="bar-track">
+            <div class="bar-fill blue" style="width: 88%;">312</div>
+          </div>
+          <span class="bar-count">312</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">WMI Lateral Movement</span>
+          <div class="bar-track">
+            <div class="bar-fill purple" style="width: 52%;">187</div>
+          </div>
+          <span class="bar-count">187</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Scheduled Tasks</span>
+          <div class="bar-track">
+            <div class="bar-fill orange" style="width: 35%;">143</div>
+          </div>
+          <span class="bar-count">143</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">LOLBin Chains</span>
+          <div class="bar-track">
+            <div class="bar-fill amber" style="width: 28%;">119</div>
+          </div>
+          <span class="bar-count">119</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Encoded Execution</span>
+          <div class="bar-track">
+            <div class="bar-fill green" style="width: 22%;">86</div>
+          </div>
+          <span class="bar-count">86</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEEDBACK LOOP -->
+    <div>
+      <div class="feedback-panel">
+        <div class="feedback-header">
+          <div class="feedback-title">Analyst Feedback Loop</div>
+        </div>
+        <div class="feedback-metrics">
+          <div class="fm-item">
+            <div class="fm-value">4</div>
+            <div class="fm-label">Your overrides this month</div>
+          </div>
+          <div class="fm-item">
+            <div class="fm-value green">−12%</div>
+            <div class="fm-label">False positive rate improvement</div>
+          </div>
+        </div>
+        <div class="fm-trend">
+          <span class="fm-trend-label">FP rate · rolling 30d</span>
+          <div class="fm-trend-bar-wrap">
+            <div class="fm-mini-bar" style="height: 22px;"></div>
+            <div class="fm-mini-bar" style="height: 20px;"></div>
+            <div class="fm-mini-bar" style="height: 19px;"></div>
+            <div class="fm-mini-bar" style="height: 18px;"></div>
+            <div class="fm-mini-bar" style="height: 16px;"></div>
+            <div class="fm-mini-bar" style="height: 15px;"></div>
+            <div class="fm-mini-bar" style="height: 13px;"></div>
+            <div class="fm-mini-bar last" style="height: 10px;"></div>
+          </div>
+        </div>
+        <div style="margin-top: 10px; font-size: 11px; color: var(--br-text-secondary); line-height: 1.5;">
+          Each analyst override is fed back into the scoring model. The model recalibrates confidence thresholds weekly. Your team's feedback directly reduces noise for every analyst on the platform.
+        </div>
+      </div>
+
+      <div class="export-row">
+        <button class="btn-export">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="white"><path d="M6 1v7M3 5l3 3 3-3M2 10h8"/><path stroke="white" stroke-width="1.2" stroke-linecap="round" d="M6 1v7M3 5l3 3 3-3M2 10h8" fill="none"/></svg>
+          Generate QBR Report
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleRaw() {
+    const btn = document.getElementById('rawBtn');
+    const signal = document.getElementById('rawSignal');
+    btn.classList.toggle('open');
+    signal.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+# Microsoft Intune
+slug: microsoft-intune
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Microsoft Intune is Microsoft's cloud-native MDM and MAM (Mobile Application Management) platform, included in Microsoft 365 Business Premium and Enterprise licenses. It provides policy management, app deployment, compliance enforcement, and conditional access across Windows, macOS, iOS, Android, and Linux. Intune is tightly integrated with Microsoft Defender, Entra ID (formerly Azure AD), and the broader Microsoft 365 compliance stack.
+
+## MSP Relevance
+Intune is present in virtually every Microsoft 365 Business Premium and E3/E5 tenant — making it the default MDM available to MSPs at no incremental cost. MSPs increasingly manage Intune as part of their M365 management services. For Windows-heavy SMB clients, Intune + Defender provides a baseline device management and security stack that reduces the need for additional MDM tools. Nerdio (v7.0) and other Microsoft-focused MSP platforms are building Intune management into their offerings.
+
+## Key Offerings & Capabilities
+- MDM for Windows, macOS, iOS, Android, Linux — policy enforcement, app management, compliance
+- Microsoft Endpoint Configuration Manager (MECM) co-management — hybrid cloud + on-prem management
+- Windows Autopilot — zero-touch Windows device provisioning for MSPs and IT teams
+- Conditional Access integration with Entra ID — block non-compliant devices from accessing M365
+- App protection policies (MAM) — mobile app data protection without full device enrollment
+- Intune Suite add-ons — Endpoint Privilege Management, Advanced Endpoint Analytics, Remote Help
+- Integration with Microsoft Defender for Endpoint for device compliance and threat response
+
+## Recent Announcements
+- Ongoing monthly feature updates to Intune as part of Microsoft 365 release cadence
+- Intune Suite features (Endpoint Privilege Management, Remote Help) available as add-on to Business Premium
+- Microsoft 365 pricing update July 2026 — Business Premium unchanged, incentivizing MSPs to standardize at the tier that includes full Intune
+- Continued investment in Autopilot improvements for zero-touch deployment at MSP scale
+- Nerdio Manager for MSP 7.0 (May 2026) — deeper M365 and Purview management built on top of Intune/Entra ID
+
+## Pricing Model
+Included in Microsoft 365 Business Premium ($22/user/month), E3 ($36/user/month), E5 ($57/user/month). Intune Suite add-on available separately for additional features. MSPs resell through CSP with standard margin structures.
+
+## Strengths
+- Included at no incremental cost in Business Premium and Enterprise M365 licenses
+- Native Microsoft integration — Defender, Entra ID, and M365 compliance in one ecosystem
+- Windows Autopilot enables zero-touch provisioning — significant efficiency gain for MSPs
+- Conditional Access is a powerful security control that non-Microsoft MDMs cannot replicate natively
+- Constantly improving as part of Microsoft's broader M365 investment
+
+## Weaknesses / Gaps
+- Management complexity — Intune requires expertise to configure correctly for SMB clients
+- macOS, iOS, and Linux management less mature than Windows
+- Not as feature-rich for Apple environments as Jamf, Kandji, or Addigy
+- Multi-tenant management for MSPs is cumbersome without tools like Nerdio or Microsoft's own GDAP
+- Not a replacement for RMM — lacks scripting depth, remote troubleshooting, and patch automation that MSPs need
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: Intune's ubiquity means every MSP client already has an MDM in place. As MSPs mature their Intune management practices (through tools like Nerdio), the gap for additional device management tooling narrows. However, Intune does not address workflow automation or AI agent capabilities — NZO's core territory.
+
+## Notes
+- Business Premium price stability (July 2026) and the Business Standard increase will push more SMB clients toward Business Premium — increasing Intune adoption
+- Nerdio Manager v7.0 building on top of Intune/Entra ID creates a compelling Microsoft-native management stack
+- GDAP (Granular Delegated Admin Privileges) is the MSP access model for Intune — MSPs need to understand this for multi-tenant management

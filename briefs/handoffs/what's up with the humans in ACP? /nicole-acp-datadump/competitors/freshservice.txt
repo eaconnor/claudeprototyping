@@ -1,0 +1,55 @@
+# Freshservice
+slug: freshservice
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Freshservice is a cloud-based ITSM (IT Service Management) platform from Freshworks, targeting IT teams and increasingly moving into the MSP market. It offers ticketing, asset management, change management, project management, and AI-powered automation through Freddy AI. Freshservice competes primarily with ServiceNow and Jira Service Management in enterprise ITSM, but its SMB-friendly pricing and modern UI make it relevant for MSPs managing internal IT or delivering managed services for clients.
+
+## MSP Relevance
+Freshservice is most relevant to MSPs as a competitive threat in the "IT team wants enterprise-grade ITSM" space, rather than the core SMB MSP market served by ConnectWise, HaloPSA, or Autotask. Some mid-market MSPs use Freshservice for internal IT operations or adopt it for clients who request a self-service portal. Its AI automation (Freddy AI) is more mature than most PSA-native AI features.
+
+## Key Offerings & Capabilities
+- ITSM ticketing — incident, problem, change, and release management
+- Asset management — hardware and software inventory
+- Project management — project tracking and resource management
+- Self-service portal — client-facing knowledge base and ticket submission
+- Freddy AI — AI-powered ticket classification, auto-resolution, and knowledge suggestions
+- Freddy Copilot — AI assistant for agents: summarization, suggested responses, knowledge extraction
+- Freddy Insights — AI-powered analytics and trend detection
+- Automation workflows — codeless process automation within the platform
+- MSP mode — multi-tenant management for service providers
+
+## Recent Announcements
+- Freddy AI expanded throughout 2025 with improved auto-triage, resolution suggestions, and knowledge automation
+- Freddy Copilot matured as an agent-facing AI assistant in 2025
+- Freddy Insights added predictive analytics for ticket volume forecasting
+- Freshservice continues to position against ServiceNow for mid-market ITSM
+- MSP multi-tenant features incrementally improved but not a primary go-to-market focus
+
+## Pricing Model
+Per-agent per-month. Starter (~$19), Growth (~$49), Pro (~$95), Enterprise (~$119) tiers per agent per month. AI features (Freddy Copilot) available at Pro and Enterprise tiers. Annual billing discounts available. Free trial. Higher price point than pure-MSP PSAs like Syncro or Atera.
+
+## Strengths
+- Mature Freddy AI — one of the more developed AI assistants in the ITSM/PSA space
+- Clean, modern UI — consistently rated higher than ServiceNow in user satisfaction
+- Strong self-service portal — good for client-facing knowledge base and deflection
+- Enterprise ITSM capabilities (change management, problem management) that pure MSP PSAs lack
+- Freshworks ecosystem — integrates with Freshdesk, Freshsales, and other Freshworks products
+
+## Weaknesses / Gaps
+- Not purpose-built for MSPs — lacks MSP-specific features like per-client billing, technician dispatch optimization
+- MSP mode is less mature than ConnectWise Manage, HaloPSA, or Autotask for multi-tenant management
+- Higher price per agent than MSP-native alternatives
+- Fewer integrations with MSP-specific tooling (RMM, backup, security) than purpose-built PSAs
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Freshservice competes in ITSM more than pure MSP automation. Its Freddy AI features are strong but positioned for IT teams, not agentic MSP workflow automation. Low direct overlap with NZO's MSP-specific AI agent platform.
+
+## Notes
+- Freddy AI's maturity is a useful benchmark for AI features in ITSM/PSA — shows what's achievable with dedicated AI investment
+- Freshservice may capture some MSPs who want ITSM pedigree for their internal operations
+- Watch for Freshservice to deepen its MSP mode — if they invest in channel-specific features, the threat increases

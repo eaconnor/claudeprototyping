@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha (RACE) · Phase 2 · Customer Demo Shell · DRAFT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ALPHA RACE · PHASE 2 · CUSTOMER DEMO SHELL
+   Concept fidelity (Tier 1) — content is [DRAFT]
+   Based on Phase 1 (alpha-race-apex.html) + Phase 2 anatomy
+   (alpha-race-phase2-anatomy.html) by Alaina Schneider
+   ============================================================ */
+:root {
+  --bg-app: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-elevated: #182238;
+  --bg-deep: #070d18;
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  --brand: #3b82f6;
+  --brand-strong: #2563eb;
+  --brand-soft: rgba(59,130,246,0.14);
+
+  --critical: #ef4444;
+  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;
+  --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;
+  --medium-soft: rgba(234,179,8,0.12);
+  --low: #22c55e;
+  --low-soft: rgba(34,197,94,0.12);
+  --alpha-accent: #a78bfa;
+  --alpha-soft: rgba(167,139,250,0.13);
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   TIER 2 FIDELITY BANNER
+   ============================================================ */
+.fidelity-banner {
+  background: repeating-linear-gradient(135deg,
+    rgba(239,68,68,0.08) 0, rgba(239,68,68,0.08) 12px,
+    transparent 12px, transparent 24px), var(--bg-deep);
+  border-bottom: 1px solid var(--critical);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.fidelity-banner.tier2 {
+  background: repeating-linear-gradient(135deg,
+    rgba(249,115,22,0.08) 0, rgba(249,115,22,0.08) 12px,
+    transparent 12px, transparent 24px), var(--bg-deep);
+  border-bottom: 1px solid var(--high);
+}
+.fidelity-flag {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 12px;
+  background: var(--critical);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: var(--radius-sm);
+}
+.tier2-flag { background: var(--high); }
+.fidelity-flag .dot {
+  width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.6);
+}
+.fidelity-label {
+  color: var(--text-secondary); font-size: 12px;
+}
+.fidelity-checks { display: flex; gap: 12px; flex-wrap: wrap; }
+.fidelity-check { display: flex; align-items: center; gap: 5px; color: var(--text-tertiary); font-size: 11px; }
+.mark { font-weight: 700; font-family: var(--font-mono); font-size: 11px; }
+.mark.fail { color: var(--critical); }
+.mark.warn { color: var(--medium); }
+.mark.pass { color: var(--low); }
+.fidelity-tier { display: flex; align-items: center; gap: 6px; margin-left: auto; font-size: 11px; color: var(--text-tertiary); }
+.tier-pill { width: 22px; height: 7px; border-radius: 3px; background: var(--bg-elevated); border: 1px solid var(--border-strong); }
+.tier-pill.on { background: var(--high); border-color: var(--high); }
+
+/* ============================================================
+   DRAFT BADGE (floated, appears in main content)
+   ============================================================ */
+.draft-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px;
+  background: rgba(249,115,22,0.15);
+  border: 1px solid var(--high);
+  border-radius: var(--radius-sm);
+  color: var(--high);
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* ============================================================
+   PHASE LINEAGE STRIP
+   ============================================================ */
+.lineage-strip {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 24px;
+  display: flex; align-items: center; gap: 16px;
+  font-size: 11px; color: var(--text-secondary); position: relative;
+}
+.lineage-step { display: flex; align-items: center; gap: 6px; }
+.lineage-step.done { color: var(--low); }
+.lineage-step.active { color: var(--text-primary); font-weight: 600; }
+.lineage-step.planned { color: var(--text-muted); }
+.lineage-marker { font-size: 12px; }
+.lineage-label { font-weight: 500; }
+.lineage-detail { color: var(--text-tertiary); font-size: 10px; }
+.lineage-step.done .lineage-detail,
+.lineage-step.active .lineage-detail { color: inherit; opacity: 0.85; }
+.lineage-arrow { color: var(--text-muted); font-size: 13px; margin: 0 4px; }
+.lineage-spacer { flex: 1; }
+.lineage-ref {
+  padding: 2px 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--brand);
+  text-decoration: none;
+  font-size: 10px; font-family: var(--font-mono);
+}
+.lineage-ref:hover { background: var(--brand-soft); }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app-shell {
+  display: grid;
+  grid-template-columns: 56px 1fr 400px;
+  height: calc(100vh - 49px - 41px);
+}
+
+/* ============================================================
+   SIDE NAV
+   ============================================================ */
+.sidenav {
+  background: var(--bg-deep);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 0; gap: 4px;
+}
+.nav-logo {
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  background: var(--brand); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; margin-bottom: 12px;
+}
+.nav-item {
+  width: 36px; height: 36px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); cursor: pointer; font-size: 15px;
+}
+.nav-item:hover { background: var(--bg-elevated); color: var(--text-secondary); }
+.nav-item.active { background: var(--brand-soft); color: var(--brand); }
+.nav-divider { width: 24px; height: 1px; background: var(--border); margin: 8px 0; }
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+.main {
+  background: var(--bg-app);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 48px; min-height: 48px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; gap: 16px;
+}
+.breadcrumbs { display: flex; align-items: center; gap: 6px; color: var(--text-tertiary); font-size: 12px; }
+.breadcrumbs .sep { color: var(--border-strong); }
+.breadcrumbs .current { color: var(--text-primary); font-weight: 500; }
+.topbar-actions { display: flex; align-items: center; gap: 12px; }
+
+/* TOPBAR CONTROLS */
+.theme-toggle, .review-toggle {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 11px; font-family: var(--font-ui); cursor: pointer;
+}
+.theme-toggle:hover, .review-toggle:hover { border-color: var(--brand); color: var(--text-primary); }
+.review-toggle[aria-pressed="true"] { background: var(--alpha-soft); border-color: var(--alpha-accent); color: var(--alpha-accent); }
+.review-toggle-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
+.review-toggle[aria-pressed="true"] .review-toggle-dot { background: var(--alpha-accent); box-shadow: 0 0 5px var(--alpha-accent); }
+.theme-icon-moon { display: none; }
+.theme-toggle-icon { font-size: 12px; }
+.beta-pill {
+  padding: 3px 8px;
+  background: var(--alpha-soft);
+  border: 1px solid var(--alpha-accent);
+  border-radius: var(--radius-sm);
+  color: var(--alpha-accent);
+  font-size: 11px; font-family: var(--font-mono);
+  position: relative;
+}
+.user-chip { display: flex; align-items: center; gap: 8px; }
+.user-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-strong); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; }
+.user-name { font-weight: 500; font-size: 12px; }
+.user-role { color: var(--text-tertiary); font-size: 10px; }
+
+/* METRICS */
+.metrics {
+  display: grid; grid-template-columns: 1fr 1fr 2fr;
+  gap: 0; border-bottom: 1px solid var(--border);
+}
+.metric {
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.metric:last-child { border-right: none; }
+.metric.hero { background: var(--bg-surface); }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 6px; }
+.metric-value { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.metric-delta { font-size: 11px; color: var(--text-tertiary); }
+.metric-delta.down::before { content: "▼ "; color: var(--low); }
+.consolidation-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.consol-from { font-size: 28px; font-weight: 700; color: var(--critical); line-height: 1; }
+.consol-arrow { font-size: 11px; color: var(--text-muted); }
+.consol-to { font-size: 28px; font-weight: 700; color: var(--low); line-height: 1; }
+.consol-unit { font-size: 12px; color: var(--text-tertiary); }
+.consol-detail { font-size: 11px; color: var(--text-tertiary); line-height: 1.4; }
+
+/* WORKSPACE */
+.workspace {
+  flex: 1; display: grid; grid-template-columns: 280px 1fr; gap: 0;
+  min-height: 0;
+}
+
+/* INCIDENT LIST */
+.list-card {
+  border-right: 1px solid var(--border);
+  background: var(--bg-surface);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.list-head { padding: 14px 16px 10px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--border); }
+.list-head-title { font-weight: 600; font-size: 13px; }
+.list-head-count { font-size: 11px; color: var(--text-muted); }
+.list-filters { padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border); }
+.filter-chip { padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-secondary); font-size: 11px; cursor: pointer; }
+.filter-chip.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+
+.incident-row { padding: 12px 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
+.incident-row:hover { background: var(--bg-elevated); }
+.incident-row.selected { background: var(--brand-soft); border-left: 2px solid var(--brand); }
+.incident-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.incident-left { display: flex; align-items: center; gap: 8px; }
+.score-chip { padding: 2px 7px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 700; font-family: var(--font-mono); }
+.score-chip.critical { background: var(--critical-soft); color: var(--critical); border: 1px solid rgba(239,68,68,0.3); position: relative; }
+.score-chip.high { background: var(--high-soft); color: var(--high); border: 1px solid rgba(249,115,22,0.3); }
+.score-chip.medium { background: var(--medium-soft); color: var(--medium); border: 1px solid rgba(234,179,8,0.3); }
+.score-chip.low { background: var(--low-soft); color: var(--low); border: 1px solid rgba(34,197,94,0.3); }
+.incident-id { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+.incident-age { font-size: 10px; color: var(--text-muted); }
+.incident-title { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+.incident-meta { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--text-muted); }
+.corr-tag { padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.corr-tag.three { background: var(--alpha-soft); color: var(--alpha-accent); }
+.corr-tag.two { background: var(--brand-soft); color: var(--brand); }
+
+/* DETAIL CARD */
+.detail-card {
+  background: var(--bg-app);
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  min-width: 0;
+}
+.detail-head {
+  padding: 20px 24px 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px;
+}
+.detail-meta-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+.id-bold { font-family: var(--font-mono); font-weight: 600; color: var(--text-secondary); }
+.detail-title { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 0; }
+.detail-title .em { color: var(--critical); }
+.score-display { text-align: right; min-width: 100px; }
+.score-display-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 4px; }
+.score-display-value { font-size: 38px; font-weight: 800; color: var(--critical); line-height: 1; }
+.score-display-of { font-size: 16px; color: var(--text-muted); }
+.score-display-band { font-size: 11px; font-weight: 600; color: var(--critical); }
+.score-display-conf { font-size: 10px; color: var(--text-muted); }
+
+/* TABS */
+.tabs { display: flex; gap: 0; padding: 0 24px; border-bottom: 1px solid var(--border); margin-top: 16px; }
+.tab { padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
+.tab:hover { color: var(--text-secondary); }
+.tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+/* SECTIONS */
+.section { padding: 20px 24px; border-bottom: 1px solid var(--border); position: relative; }
+.section-head { margin-bottom: 14px; }
+.section-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.section-sub { font-size: 11px; color: var(--text-muted); }
+
+/* STORY GRID */
+.story-grid { display: grid; grid-template-columns: 120px 1fr; gap: 10px 16px; }
+.story-q { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); padding-top: 2px; }
+.story-a { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.ent { font-family: var(--font-mono); font-size: 12px; color: var(--brand); background: var(--brand-soft); padding: 1px 4px; border-radius: 3px; }
+.emph { font-weight: 600; color: var(--text-primary); }
+.time { font-family: var(--font-mono); font-size: 12px; color: var(--alpha-accent); }
+.suppress-pill { padding: 2px 7px; border-radius: var(--radius-sm); background: var(--medium-soft); border: 1px solid rgba(234,179,8,0.3); color: var(--medium); font-size: 10px; font-family: var(--font-mono); position: relative; }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 12px; }
+.tl-event { display: flex; gap: 12px; align-items: flex-start; }
+.tl-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.tl-dot.detect { background: var(--critical); }
+.tl-dot.action { background: var(--low); }
+.tl-dot.system { background: var(--brand); }
+.tl-time { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); min-width: 78px; }
+.tl-title { font-size: 12px; font-weight: 500; }
+.tl-body { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top: 2px; }
+.tl-source { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
+
+/* SCORING SECTION */
+.score-bars { display: flex; flex-direction: column; gap: 10px; }
+.score-bar-row { display: flex; align-items: center; gap: 10px; }
+.score-bar-label { font-size: 11px; color: var(--text-secondary); min-width: 160px; }
+.score-bar-track { flex: 1; height: 6px; background: var(--bg-elevated); border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 3px; background: var(--brand); }
+.score-bar-fill.high { background: var(--critical); }
+.score-bar-fill.med { background: var(--high); }
+.score-bar-value { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); min-width: 30px; text-align: right; }
+.score-explain { margin-top: 12px; padding: 12px 14px; background: var(--bg-elevated); border-left: 2px solid var(--brand); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+/* DRAFT OVERLAY — content pending decisions */
+.draft-section {
+  position: relative;
+}
+.draft-overlay {
+  position: absolute; inset: 0;
+  background: rgba(11,18,32,0.7);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+  z-index: 10;
+  backdrop-filter: blur(2px);
+  border-radius: var(--radius-sm);
+}
+.draft-overlay-label {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--high);
+  border: 1px solid var(--high);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+}
+.draft-overlay-note {
+  font-size: 11px; color: var(--text-secondary);
+  text-align: center; max-width: 240px; line-height: 1.4;
+}
+
+/* ============================================================
+   HOTSPOTS + REVIEW MODE
+   ============================================================ */
+.hotspot-anchor { position: relative; }
+.hotspot {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--alpha-accent);
+  color: #fff;
+  font-size: 10px; font-weight: 700; font-family: var(--font-mono);
+  display: none;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 0 0 2px rgba(167,139,250,0.4);
+  user-select: none;
+}
+.hotspot.top-right { top: 8px; right: 8px; }
+.hotspot.inline {
+  position: relative;
+  display: none;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+body.review-mode-on .hotspot { display: flex; }
+body.review-mode-on .hotspot.inline { display: inline-flex; }
+.hotspot:hover, .hotspot.pulsed {
+  box-shadow: 0 0 0 4px rgba(167,139,250,0.35);
+  transform: scale(1.1);
+}
+
+/* LEADER LINES */
+.leader-layer {
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 200;
+  display: none;
+}
+body.review-mode-on .leader-layer { display: block; }
+.leader-path {
+  fill: none;
+  stroke: var(--alpha-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  opacity: 0.55;
+}
+
+/* ============================================================
+   PM ACTION DASHBOARD
+   ============================================================ */
+body.review-mode-on .action-dashboard {
+  border-left-color: var(--alpha-accent);
+}
+
+.action-dashboard {
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  height: calc(100vh - 49px - 41px);
+}
+.ad-head {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ad-head-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.ad-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary); }
+.ad-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.ad-mode-pill {
+  padding: 2px 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap; flex-shrink: 0;
+}
+.ad-mode-pill.on { background: var(--alpha-soft); border-color: var(--alpha-accent); color: var(--alpha-accent); }
+.ad-intro { font-size: 11px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px; }
+.ad-summary { display: flex; gap: 12px; }
+.ad-stat { text-align: center; }
+.ad-stat-num { font-size: 18px; font-weight: 700; line-height: 1; }
+.ad-stat-label { font-size: 9px; color: var(--text-muted); line-height: 1.3; text-align: center; }
+
+.ad-cards { flex: 1; overflow-y: auto; padding: 12px 0; }
+
+.ad-card {
+  margin: 0 12px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.ad-card.focused { border-color: var(--alpha-accent); box-shadow: 0 0 0 1px var(--alpha-accent); }
+.ad-card-head {
+  padding: 10px 12px;
+  display: flex; align-items: flex-start; gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+.ad-num {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--alpha-accent);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; font-family: var(--font-mono);
+  margin-top: 1px;
+}
+.ad-card-titleblock { flex: 1; min-width: 0; }
+.ad-card-anchor { font-size: 9px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+.ad-card-title { font-size: 11px; font-weight: 600; line-height: 1.3; }
+.ad-card-tag {
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.ad-card-tag.product { background: rgba(59,130,246,0.15); color: var(--brand); border: 1px solid rgba(59,130,246,0.3); }
+.ad-card-tag.research { background: rgba(167,139,250,0.12); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,0.3); }
+.ad-card-tag.design { background: rgba(34,197,94,0.12); color: var(--low); border: 1px solid rgba(34,197,94,0.3); }
+.ad-card-tag.product-eng { background: rgba(249,115,22,0.13); color: var(--high); border: 1px solid rgba(249,115,22,0.3); }
+
+.ad-fields { margin: 0; padding: 10px 12px; }
+.ad-fields dt { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-top: 8px; margin-bottom: 2px; }
+.ad-fields dt:first-of-type { margin-top: 0; }
+.ad-fields dd { margin: 0; font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+.ad-sample { margin: 4px 0 0 0; padding-left: 14px; }
+.ad-sample li { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 3px; }
+
+.ad-roi {
+  margin: 8px 12px 12px;
+  padding: 8px 10px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.ad-roi-head { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 6px; }
+.ad-roi-row { display: flex; gap: 6px; margin-bottom: 3px; font-size: 10px; }
+.ad-roi-key { color: var(--text-muted); min-width: 54px; flex-shrink: 0; }
+.ad-roi-val { color: var(--text-secondary); }
+.ad-roi-unknown { color: var(--text-muted); font-style: italic; }
+
+.ad-foot {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ad-foot-row { margin-bottom: 6px; }
+.ad-foot-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 700; }
+.ad-foot-links { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.ad-foot-links a {
+  font-size: 10px; font-family: var(--font-mono); color: var(--brand);
+  text-decoration: none; padding: 2px 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.ad-foot-links a:hover { background: var(--brand-soft); }
+.ad-foot-note { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+
+/* ============================================================
+   LIGHT THEME
+   ============================================================ */
+body.dashboard-light {
+  --bg-app: #f5f0e8;
+  --bg-surface: #ede7d6;
+  --bg-elevated: #e6dfc9;
+  --bg-deep: #dfd8c2;
+  --border: rgba(0,0,0,0.1);
+  --border-strong: rgba(0,0,0,0.18);
+  --text-primary: #1a1612;
+  --text-secondary: #3d3529;
+  --text-tertiary: #6b5e48;
+  --text-muted: #8a7a62;
+  --brand-soft: rgba(37,99,235,0.1);
+  --alpha-soft: rgba(109,40,217,0.09);
+}
+body.dashboard-light .fidelity-banner.tier2 {
+  background: repeating-linear-gradient(135deg,
+    rgba(249,115,22,0.08) 0, rgba(249,115,22,0.08) 12px,
+    transparent 12px, transparent 24px), #ede7d6;
+}
+body.dashboard-light .lineage-strip { border-color: var(--border); }
+body.dashboard-light .action-dashboard { border-left-color: var(--border); }
+body.dashboard-light .ad-card { background: var(--bg-elevated); }
+body.dashboard-light .ad-card-head { background: var(--bg-deep); }
+body.dashboard-light .theme-icon-sun { display: none; }
+body.dashboard-light .theme-icon-moon { display: inline; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .app-shell { grid-template-columns: 56px 1fr; }
+  .action-dashboard { display: none; }
+}
+@media (max-width: 780px) {
+  .workspace { grid-template-columns: 1fr; }
+  .list-card { display: none; }
+  .metrics { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TIER 1 FIDELITY BANNER -->
+<div class="fidelity-banner">
+  <div class="fidelity-flag">
+    <span class="dot"></span>
+    Apex Prototype · Tier 1 · Concept · DRAFT
+  </div>
+  <div class="fidelity-label">Concept fidelity — content pending 4 decisions · do not demo without resolving NEXT-STEPS.md</div>
+  <div class="fidelity-checks">
+    <span class="fidelity-check"><span class="mark warn">~</span> Tokens (real Apex)</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> apx-* components</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> schema.json contract</span>
+    <span class="fidelity-check"><span class="mark fail">✕</span> Customer profile locked</span>
+    <span class="fidelity-check"><span class="mark fail">✕</span> Success criteria defined</span>
+    <span class="fidelity-check"><span class="mark fail">✕</span> Live data binding</span>
+  </div>
+  <div class="fidelity-tier">
+    <span>Fidelity tier:</span>
+    <span class="tier-pill on"></span>
+    <span class="tier-pill"></span>
+    <span class="tier-pill"></span>
+    <span style="color: var(--critical); font-weight: 600;">1 / 3</span>
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- LEFT NAV -->
+  <nav class="sidenav">
+    <div class="nav-logo">A</div>
+    <div class="nav-item">⌂</div>
+    <div class="nav-item active">⚠</div>
+    <div class="nav-item">⊟</div>
+    <div class="nav-item">⟐</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item">⚙</div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="breadcrumbs">
+        <span>MDR · XDR</span>
+        <span class="sep">/</span>
+        <span>Incidents</span>
+        <span class="sep">/</span>
+        <span class="current">INC-2026-0834</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleDashboardTheme()" aria-pressed="false" title="Toggle light/dark theme">
+          <span class="theme-toggle-icon theme-icon-sun">☀</span>
+          <span class="theme-toggle-icon theme-icon-moon">☾</span>
+          <span class="theme-toggle-label">Theme</span>
+        </button>
+        <button class="review-toggle" id="reviewToggle" onclick="toggleReviewMode()" aria-pressed="false">
+          <span class="review-toggle-dot"></span>
+          <span class="review-toggle-label">Review Mode</span>
+          <span class="review-toggle-state">Off</span>
+        </button>
+        <span class="beta-pill">● Alpha (RACE) · Phase 2 · Customer Demo [DRAFT]</span>
+        <div class="user-chip">
+          <div class="user-avatar">R</div>
+          <div>
+            <div class="user-name">Raj D.</div>
+            <div class="user-role">PM · Alpha engine</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE LINEAGE STRIP -->
+    <div class="lineage-strip">
+      <div class="lineage-step done">
+        <span class="lineage-marker">✓</span>
+        <span class="lineage-label">Phase 1 · PUT-1166</span>
+        <span class="lineage-detail">MDR Black Team · shipped 2026-05-12</span>
+      </div>
+      <span class="lineage-arrow">→</span>
+      <div class="lineage-step active">
+        <span class="lineage-marker">◐</span>
+        <span class="lineage-label">Phase 2 · this prototype</span>
+        <span class="lineage-detail">Customer demo path · DRAFT</span>
+      </div>
+      <span class="lineage-arrow">→</span>
+      <div class="lineage-step planned">
+        <span class="lineage-marker">○</span>
+        <span class="lineage-label">Phase 3 · TBD</span>
+        <span class="lineage-detail">Partner / MSP self-service (Q1 2027 candidate)</span>
+      </div>
+      <span class="lineage-spacer"></span>
+      <a class="lineage-ref" href="https://n-able.atlassian.net/browse/ADL-1836" target="_blank">ADL-1836</a>
+      <a class="lineage-ref" href="https://n-able.atlassian.net/browse/ADL-1839" target="_blank">ADL-1839</a>
+      <a class="lineage-ref" href="https://n-able.atlassian.net/browse/PUT-1166" target="_blank">PUT-1166</a>
+    </div>
+
+    <!-- METRICS STRIP (hotspot 2 — success criteria anchor) -->
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Open Incidents</div>
+        <div class="metric-value">12</div>
+        <div class="metric-delta down">22 fewer than yesterday</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Median Investigation Time</div>
+        <div class="metric-value">17m</div>
+        <div class="metric-delta down">25m faster than pre-Alpha</div>
+      </div>
+      <div class="metric hero hotspot-anchor">
+        <span class="hotspot top-right" data-hotspot="2">2</span>
+        <div class="metric-label">Today's Consolidation</div>
+        <div class="consolidation-row">
+          <span class="consol-from">47</span>
+          <span class="consol-arrow">alerts collapsed into</span>
+          <span class="consol-to">12</span>
+          <span class="consol-unit">incidents</span>
+        </div>
+        <div class="consol-detail">3.9× consolidation ratio today. These numbers are illustrative — <strong>[DRAFT: adjust to match customer's actual alert volume and environment once Decision 1 is made]</strong></div>
+      </div>
+    </div>
+
+    <!-- WORKSPACE -->
+    <div class="workspace">
+
+      <!-- INCIDENT LIST -->
+      <div class="list-card">
+        <div class="list-head">
+          <div class="list-head-title">Incidents</div>
+          <div class="list-head-count">12 today</div>
+        </div>
+        <div class="list-filters">
+          <button class="filter-chip active">Risk</button>
+          <button class="filter-chip">Recent</button>
+          <button class="filter-chip">Customer</button>
+        </div>
+
+        <div class="incident-row selected hotspot-anchor">
+          <span class="hotspot" data-hotspot="1" style="top:8px;right:8px;">1</span>
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip critical">94</span>
+              <span class="incident-id">INC-2026-0834</span>
+            </div>
+            <span class="incident-age">18m ago</span>
+          </div>
+          <div class="incident-title">Lateral movement → privilege escalation suspected</div>
+          <div class="incident-meta">
+            <span class="corr-tag three">⊕ 3</span>
+            <span>user.acme · 2 hosts · 1 SOAR</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip high">72</span>
+              <span class="incident-id">INC-2026-0833</span>
+            </div>
+            <span class="incident-age">52m ago</span>
+          </div>
+          <div class="incident-title">Suspicious OAuth grant + impossible travel</div>
+          <div class="incident-meta">
+            <span class="corr-tag two">⊕ 2</span>
+            <span>finance.dept · 4 users</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip high">61</span>
+              <span class="incident-id">INC-2026-0831</span>
+            </div>
+            <span class="incident-age">2h 14m</span>
+          </div>
+          <div class="incident-title">Defender malware + SOAR isolation (repeated)</div>
+          <div class="incident-meta">
+            <span class="corr-tag three">⊕ 3</span>
+            <span>helpdesk-lab-03</span>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-top">
+            <div class="incident-left">
+              <span class="score-chip medium">48</span>
+              <span class="incident-id">INC-2026-0830</span>
+            </div>
+            <span class="incident-age">3h 41m</span>
+          </div>
+          <div class="incident-title">Brute-force attempt against external auth</div>
+          <div class="incident-meta">
+            <span class="corr-tag two">⊕ 2</span>
+            <span>edge-vpn-eu1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INCIDENT DETAIL -->
+      <div class="detail-card">
+
+        <div class="detail-head">
+          <div class="detail-head-left">
+            <div class="detail-meta-row">
+              <span class="id-bold">INC-2026-0834</span>
+              <span>·</span>
+              <span>MDR · Black Team</span>
+              <span>·</span>
+              <!-- HOTSPOT 1 anchor: customer name -->
+              <span class="hotspot-anchor" style="position:relative; display:inline-flex; align-items:center; gap:6px;">
+                <span style="color:var(--high);">[DRAFT: customer name]</span>
+                <span class="hotspot" data-hotspot="1" style="position:relative;display:none;width:16px;height:16px;font-size:9px;flex-shrink:0;">1</span>
+                <span class="draft-badge">?</span>
+              </span>
+            </div>
+            <h1 class="detail-title">Lateral movement → <span class="em">privilege escalation</span> suspected</h1>
+          </div>
+          <div class="score-display">
+            <div class="score-display-label">Alpha Risk Score</div>
+            <div>
+              <span class="score-display-value">94</span>
+              <span class="score-display-of">/100</span>
+            </div>
+            <div class="score-display-band">High confidence</div>
+            <div class="score-display-conf">model + rules agree</div>
+          </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+          <div class="tab active">Story</div>
+          <div class="tab">Timeline</div>
+          <div class="tab">Entities</div>
+          <div class="tab">Scoring</div>
+          <div class="tab">Actions</div>
+        </div>
+
+        <!-- STORY SECTION (hotspot 3 — incident story source) -->
+        <section class="section hotspot-anchor">
+          <span class="hotspot top-right" data-hotspot="3">3</span>
+          <div class="section-head">
+            <div class="section-title">
+              The Story
+              <span class="draft-badge" style="margin-left:8px;">DRAFT — Decision 3 pending</span>
+            </div>
+            <!-- HOTSPOT 4 anchor: narrative format label -->
+            <div class="section-sub hotspot-anchor" style="display:inline-flex;align-items:center;gap:6px;">
+              what happened · what we did · what to do next
+              <span class="hotspot" data-hotspot="4" style="position:relative;width:16px;height:16px;font-size:9px;display:none;">4</span>
+            </div>
+          </div>
+          <div class="story-grid">
+            <div class="story-q">What happened</div>
+            <div class="story-a">Between <span class="time">14:02</span> and <span class="time">14:21 EST</span>, the user <span class="ent">user.acme@corp</span> authenticated from an unusual ASN, escalated privileges on <span class="ent">host-east-04</span>, then attempted lateral movement to <span class="ent">host-east-09</span>. Microsoft Defender flagged the second host; Adlumin SOAR isolated it within 38 seconds. <span class="draft-badge">DRAFT — map to customer's industry once Decision 1 is made</span></div>
+
+            <div class="story-q">What we did</div>
+            <div class="story-a">Three detections from two sources (Azure AD anomalous logon + Defender malicious activity + Adlumin SOAR isolation echo) were consolidated into this incident. Without Alpha, this would have generated <span class="emph">four separate tickets</span>. The isolation suppression rule fired correctly — <span class="suppress-pill hotspot-anchor">notification suppressed · consolidated<span class="hotspot" data-hotspot="3" style="top:-8px;right:-8px;width:16px;height:16px;font-size:9px;display:none;">3</span></span></div>
+
+            <div class="story-q">What to do next</div>
+            <div class="story-a">Confirm whether <span class="ent">user.acme@corp</span> is a known traveller before unlocking. Pull the Defender quarantine report. If unfamiliar geography persists, escalate to customer Tier-2 with the consolidated incident timeline. <span class="emph">Estimated time to close: 8 min.</span></div>
+          </div>
+        </section>
+
+        <!-- TIMELINE (abbreviated) -->
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">Timeline</div>
+            <div class="section-sub">5 events · 3 correlated · 1 suppression</div>
+          </div>
+          <div class="timeline">
+            <div class="tl-event">
+              <span class="tl-dot detect"></span>
+              <div class="tl-time">14:02:11 EST</div>
+              <div>
+                <div class="tl-title">Azure AD · anomalous sign-in</div>
+                <div class="tl-body">Sign-in from ASN AS396982 (Google Cloud, US-Iowa). User profile last seen ASN AS7922 (Comcast, Chicago).</div>
+                <div class="tl-source">Azure AD</div>
+              </div>
+            </div>
+            <div class="tl-event">
+              <span class="tl-dot detect"></span>
+              <div class="tl-time">14:14:47 EST</div>
+              <div>
+                <div class="tl-title">Defender · privilege escalation attempt</div>
+                <div class="tl-body">PsExec invocation on host-east-04 originating from interactive logon session of user.acme@corp.</div>
+                <div class="tl-source">MS Defender</div>
+              </div>
+            </div>
+            <div class="tl-event">
+              <span class="tl-dot action"></span>
+              <div class="tl-time">14:21:02 EST</div>
+              <div>
+                <div class="tl-title">SOAR · host isolated</div>
+                <div class="tl-body">host-east-09 isolated automatically. Duplicate ticket suppressed. Customer not notified separately — consolidated into this incident.</div>
+                <div class="tl-source">Adlumin SOAR</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCORING SECTION -->
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">Why 94</div>
+            <div class="section-sub">contribution breakdown · model + rules</div>
+          </div>
+          <div class="score-bars">
+            <div class="score-bar-row">
+              <span class="score-bar-label">Lateral movement pattern</span>
+              <div class="score-bar-track"><div class="score-bar-fill high" style="width:88%"></div></div>
+              <span class="score-bar-value">+38</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label">Cross-source correlation (×3)</span>
+              <div class="score-bar-track"><div class="score-bar-fill high" style="width:72%"></div></div>
+              <span class="score-bar-value">+31</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label">Privilege escalation signal</span>
+              <div class="score-bar-track"><div class="score-bar-fill med" style="width:55%"></div></div>
+              <span class="score-bar-value">+24</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label">Asset criticality (Sales-Floor)</span>
+              <div class="score-bar-track"><div class="score-bar-fill" style="width:20%"></div></div>
+              <span class="score-bar-value">+01</span>
+            </div>
+          </div>
+          <div class="score-explain">
+            Sales-Floor assets aren't critical-tier, which is why the score landed at 94 instead of 99. If host-east-09 had been a domain controller, the same evidence would have scored 99+ and routed Tier-2 directly. The score doesn't depend on whether individual alerts were marked High or Low by their source — it depends on whether the pattern hangs together.
+          </div>
+        </section>
+
+      </div><!-- /detail-card -->
+    </div><!-- /workspace -->
+  </main>
+
+  <!-- PM ACTION DASHBOARD -->
+  <aside class="action-dashboard" id="actionDashboard">
+
+    <div class="ad-head">
+      <div class="ad-head-top">
+        <div>
+          <div class="ad-title">PM Action Dashboard</div>
+          <div class="ad-sub">Phase 2 · Alpha (RACE) · Customer Demo · for Raj D.</div>
+        </div>
+        <div class="ad-mode-pill" id="modePill">Review Off</div>
+      </div>
+      <div class="ad-intro">
+        Four decisions are blocking the full build. Each card maps to a numbered point on the prototype when Review Mode is on. Turn Review Mode on to see where each decision lives in the design.
+      </div>
+      <div class="ad-summary">
+        <div class="ad-stat">
+          <div class="ad-stat-num">2</div>
+          <div class="ad-stat-label">need Beth<br>+ Raj</div>
+        </div>
+        <div class="ad-stat">
+          <div class="ad-stat-num">1</div>
+          <div class="ad-stat-label">need Beth<br>+ Sales</div>
+        </div>
+        <div class="ad-stat">
+          <div class="ad-stat-num">1</div>
+          <div class="ad-stat-label">need Raj<br>+ Research</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-cards">
+
+      <!-- CARD 1 — Customer profile -->
+      <article class="ad-card" id="adCard1" data-hotspot-target="1">
+        <header class="ad-card-head">
+          <span class="ad-num">1</span>
+          <div class="ad-card-titleblock">
+            <div class="ad-card-anchor">Score chip + "Acme Bldg Supply"</div>
+            <div class="ad-card-title">Who is this demo actually for?</div>
+          </div>
+          <span class="ad-card-tag product">Product</span>
+        </header>
+        <dl class="ad-fields">
+          <dt>Meet with</dt>
+          <dd><strong>Beth Schwindt</strong> + <strong>Raj Dhesi</strong> · with Sales/CSM input</dd>
+          <dt>Why this meeting</dt>
+          <dd>The incident story is anchored to a fictional construction company in a mid-market environment. That's a placeholder. Every content decision in this prototype — asset type, attack surface, score context, "why this matters to you" — scales from this one call.</dd>
+          <dt>Sample items to address</dt>
+          <dd>
+            <ul class="ad-sample">
+              <li>What vertical does the actual customer operate in?</li>
+              <li>What's their endpoint count and SOC maturity level?</li>
+              <li>What tooling are they running today? (The "four tickets vs. one" framing only resonates if it maps to their workflow.)</li>
+              <li>What's the fictional proxy profile that goes in the prototype? (Not their real name — a stand-in that feels true to their industry.)</li>
+            </ul>
+          </dd>
+          <dt>Decision you own coming out</dt>
+          <dd>The fictional customer profile the full build runs against. This unblocks every other content decision in this shell.</dd>
+        </dl>
+        <div class="ad-roi">
+          <div class="ad-roi-head">ROI from this decision</div>
+          <div class="ad-roi-row"><span class="ad-roi-key">Business:</span><span class="ad-roi-unknown">Unknown — industry-matched vs. generic demo conversion lift [CS: UNKNOWN]</span></div>
+          <div class="ad-roi-row"><span class="ad-roi-key">User:</span><span class="ad-roi-unknown">Unknown — no data on vertical-matched comprehension [CS: UNKNOWN]</span></div>
+        </div>
+      </article>
+
+      <!-- CARD 2 — Success criteria -->
+      <article class="ad-card" id="adCard2" data-hotspot-target="2">
+        <header class="ad-card-head">
+          <span class="ad-num">2</span>
+          <div class="ad-card-titleblock">
+            <div class="ad-card-anchor">Metrics strip · KPIs</div>
+            <div class="ad-card-title">What does this demo need to trigger?</div>
+          </div>
+          <span class="ad-card-tag product">Product</span>
+        </header>
+        <dl class="ad-fields">
+          <dt>Meet with</dt>
+          <dd><strong>Beth Schwindt</strong> + Sales lead</dd>
+          <dt>Why this meeting</dt>
+          <dd>Gate 3 of the brief is almost entirely [?]. Without a success definition the prototype can't be validated, the demo can't be debriefed, and "it went well" means nothing. The brief currently marks the OKR key result as "[?] Customer signs/expands after demo" — that's aspirational, not testable for this specific interaction.</dd>
+          <dt>Sample items to address</dt>
+          <dd>
+            <ul class="ad-sample">
+              <li>What commitment from the customer counts as a win? (Next meeting? Pilot scoping? Contract?)</li>
+              <li>What does a failed demo look like? ("Interesting, let us think about it" — what does that tell Sales?)</li>
+              <li>Does Sales have a standard ask at this stage of their motion?</li>
+            </ul>
+          </dd>
+          <dt>Decision you own coming out</dt>
+          <dd>One sentence: "This demo succeeds when ___." That sentence defines Gate 3 and makes the prototype testable against a real criterion.</dd>
+        </dl>
+        <div class="ad-roi">
+          <div class="ad-roi-head">ROI from this decision</div>
+          <div class="ad-roi-row"><span class="ad-roi-key">Business:</span><span class="ad-roi-val">Defined success criteria reduce wasted demo cycles [CS: MEDIUM]</span></div>
+          <div class="ad-roi-row"><span class="ad-roi-key">User:</span><span class="ad-roi-val">Beth + Sales aligned before the room → clearer debrief [CS: HIGH]</span></div>
+        </div>
+      </article>
+
+      <!-- CARD 3 — Incident story source -->
+      <article class="ad-card" id="adCard3" data-hotspot-target="3">
+        <header class="ad-card-head">
+          <span class="ad-num">3</span>
+          <div class="ad-card-titleblock">
+            <div class="ad-card-anchor">Story section · suppression chip</div>
+            <div class="ad-card-title">Real Alpha output or Beth-designed synthetic?</div>
+          </div>
+          <span class="ad-card-tag product-eng">Product + Eng</span>
+        </header>
+        <dl class="ad-fields">
+          <dt>Meet with</dt>
+          <dd><strong>Raj Dhesi</strong> (Alpha engine) + <strong>Beth Schwindt</strong></dd>
+          <dt>Why this meeting</dt>
+          <dd>The prototype uses a synthetic lateral movement story. That's illustrative. The demo's credibility depends on whether the story reflects what Alpha's engine actually produces. If Raj can provide a real correlated incident (anonymized), the story earns credibility the current placeholder can't. If the engine isn't there yet, Beth designs a synthetic story mapped to the customer's industry.</dd>
+          <dt>Sample items to address</dt>
+          <dd>
+            <ul class="ad-sample">
+              <li>Is Alpha's correlation output ready for demo use? (Format, completeness, score accuracy?)</li>
+              <li>If Option A (real): can Raj pull one real incident and anonymize it to fictional identities?</li>
+              <li>If Option B (synthetic): what does Raj need to give Beth? (Attack type, asset profile, affected services)</li>
+              <li>Pete Hegseth rule: real company names, real tenant IDs, real employee names → stay out of the HTML.</li>
+            </ul>
+          </dd>
+          <dt>Decision you own coming out</dt>
+          <dd>Option A (real Alpha output, anonymized) or Option B (Beth-designed synthetic). Either is defensible. It has to be chosen before content is written.</dd>
+        </dl>
+        <div class="ad-roi">
+          <div class="ad-roi-head">ROI from this decision</div>
+          <div class="ad-roi-row"><span class="ad-roi-key">Business:</span><span class="ad-roi-unknown">Unknown — real vs. synthetic demo story conversion difference [CS: UNKNOWN]</span></div>
+          <div class="ad-roi-row"><span class="ad-roi-key">User:</span><span class="ad-roi-val">If Option A: saves Beth ~2–4h incident story research [CS: MEDIUM]</span></div>
+        </div>
+      </article>
+
+      <!-- CARD 4 — Narrative validation -->
+      <article class="ad-card" id="adCard4" data-hotspot-target="4">
+        <header class="ad-card-head">
+          <span class="ad-num">4</span>
+          <div class="ad-card-titleblock">
+            <div class="ad-card-anchor">Story format · "what/what we did/next"</div>
+            <div class="ad-card-title">Has this narrative structure been tested?</div>
+          </div>
+          <span class="ad-card-tag research">Research</span>
+        </header>
+        <dl class="ad-fields">
+          <dt>Meet with</dt>
+          <dd><strong>Raj Dhesi</strong> + <strong>Julian Mason</strong> (Research) if available</dd>
+          <dt>Why this meeting</dt>
+          <dd>Twelve of the brief's [A] claims reduce to one underlying assumption: "what happened / what we did / what to do next" is comprehensible to a customer without explanation. Phase 1 used this format with analysts. Phase 2 puts it in front of customers. Those audiences are different — the gap between "analyst reads it immediately" and "customer needs 10 minutes to parse" may matter at demo time.</dd>
+          <dt>Sample items to address</dt>
+          <dd>
+            <ul class="ad-sample">
+              <li>Has any analyst given feedback on this format? What did they say?</li>
+              <li>Has it been shown to a customer — even once, casually? What was their first question?</li>
+              <li>Ewan's hypothesis (ADL-1837) names three competing mental models for trust calibration — was any tested?</li>
+            </ul>
+          </dd>
+          <dt>What you need to know going in</dt>
+          <dd>If tested: seven [A] claims in the brief resolve to [R]. Brief strengthens substantially. If never tested: that's honest, and the brief says so. Named assumption is better than invisible one.</dd>
+          <dt>Decision you own coming out</dt>
+          <dd>What evidence exists. If yes: tell Beth what was tested and what was learned. If no: acknowledge it, flag for post-demo research, and the brief carries the assumption explicitly.</dd>
+        </dl>
+        <div class="ad-roi">
+          <div class="ad-roi-head">ROI from this decision</div>
+          <div class="ad-roi-row"><span class="ad-roi-key">Business:</span><span class="ad-roi-unknown">Unknown — narrative failure rate on customer demos has no data [CS: UNKNOWN]</span></div>
+          <div class="ad-roi-row"><span class="ad-roi-key">User:</span><span class="ad-roi-val">If tested first: ~1 week research prevents rebuilding narrative post-launch [CS: MEDIUM]</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- DASHBOARD FOOT -->
+    <div class="ad-foot">
+      <div class="ad-foot-row">
+        <span class="ad-foot-label">Source tickets</span>
+      </div>
+      <div class="ad-foot-links">
+        <a href="https://n-able.atlassian.net/browse/ADL-1839" target="_blank">ADL-1839 · customer proto brief</a>
+        <a href="https://n-able.atlassian.net/browse/ADL-1836" target="_blank">ADL-1836 · Alpha (RACE)</a>
+        <a href="https://n-able.atlassian.net/browse/ADL-1837" target="_blank">ADL-1837 · research spike</a>
+        <a href="https://n-able.atlassian.net/browse/PUT-1166" target="_blank">PUT-1166 · Phase 1 ship</a>
+      </div>
+      <div class="ad-foot-note">
+        Dashboard is meeting-prep, not design verdict. Decisions live with Raj + Beth. Updated 2026-05-27.
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /app-shell -->
+
+<!-- LEADER LINE LAYER -->
+<svg class="leader-layer" id="leaderLayer" aria-hidden="true"></svg>
+
+<script>
+  function toggleDashboardTheme() {
+    const body = document.body;
+    const toggle = document.getElementById('themeToggle');
+    const isLight = body.classList.toggle('dashboard-light');
+    toggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+    try { localStorage.setItem('alpha-phase2-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+    if (body.classList.contains('review-mode-on') && typeof drawLeaderLines === 'function') {
+      requestAnimationFrame(drawLeaderLines);
+    }
+  }
+
+  (function restoreTheme() {
+    try {
+      const saved = localStorage.getItem('alpha-phase2-theme');
+      if (saved === 'light') {
+        document.body.classList.add('dashboard-light');
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) toggle.setAttribute('aria-pressed', 'true');
+      }
+    } catch(e) {}
+  })();
+
+  function toggleReviewMode() {
+    const body = document.body;
+    const toggle = document.getElementById('reviewToggle');
+    const stateLabel = toggle.querySelector('.review-toggle-state');
+    const modePill = document.getElementById('modePill');
+    const isOn = body.classList.toggle('review-mode-on');
+    toggle.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    stateLabel.textContent = isOn ? 'On' : 'Off';
+    modePill.textContent = isOn ? 'Review On' : 'Review Off';
+    modePill.classList.toggle('on', isOn);
+    if (isOn) { drawLeaderLines(); } else { clearLeaderLines(); clearHighlights(); }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.hotspot').forEach(h => {
+      h.addEventListener('click', (e) => {
+        e.stopPropagation();
+        focusCard(h.dataset.hotspot);
+      });
+    });
+    document.querySelectorAll('.ad-card').forEach(card => {
+      card.addEventListener('mouseenter', () => highlightHotspot(card.dataset.hotspotTarget));
+      card.addEventListener('mouseleave', () => clearHighlights());
+    });
+    window.addEventListener('resize', () => {
+      if (document.body.classList.contains('review-mode-on')) drawLeaderLines();
+    });
+    window.addEventListener('scroll', () => {
+      if (document.body.classList.contains('review-mode-on')) drawLeaderLines();
+    }, true);
+  });
+
+  function focusCard(n) {
+    document.querySelectorAll('.ad-card').forEach(c => c.classList.remove('focused'));
+    const card = document.getElementById('adCard' + n);
+    if (!card) return;
+    card.classList.add('focused');
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function highlightHotspot(n) {
+    document.querySelectorAll('.hotspot').forEach(h => {
+      h.classList.toggle('pulsed', h.dataset.hotspot === n);
+    });
+  }
+  function clearHighlights() {
+    document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('pulsed'));
+    document.querySelectorAll('.ad-card').forEach(c => c.classList.remove('focused'));
+  }
+
+  function drawLeaderLines() {
+    const svg = document.getElementById('leaderLayer');
+    if (!svg) return;
+    svg.innerHTML = '';
+    svg.setAttribute('width', window.innerWidth);
+    svg.setAttribute('height', document.documentElement.scrollHeight);
+    document.querySelectorAll('.hotspot').forEach(h => {
+      if (h.style.display === 'none' && !document.body.classList.contains('review-mode-on')) return;
+      const n = h.dataset.hotspot;
+      const card = document.getElementById('adCard' + n);
+      if (!card) return;
+      const hRect = h.getBoundingClientRect();
+      const cRect = card.getBoundingClientRect();
+      const scrollY = window.scrollY;
+      const x1 = hRect.left + hRect.width / 2;
+      const y1 = hRect.top + hRect.height / 2 + scrollY;
+      const x2 = cRect.left;
+      const y2 = cRect.top + 28 + scrollY;
+      const midX = (x1 + x2) / 2;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`);
+      path.setAttribute('class', 'leader-path');
+      path.dataset.hotspot = n;
+      svg.appendChild(path);
+    });
+  }
+  function clearLeaderLines() {
+    const svg = document.getElementById('leaderLayer');
+    if (svg) svg.innerHTML = '';
+  }
+</script>
+
+</body>
+</html>

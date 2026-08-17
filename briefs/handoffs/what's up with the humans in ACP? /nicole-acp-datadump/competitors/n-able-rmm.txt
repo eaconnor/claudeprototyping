@@ -1,0 +1,54 @@
+# N-able RMM
+slug: n-able-rmm
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+N-able RMM (formerly SolarWinds MSP) is a mature remote monitoring and management platform for MSPs, bundled with Cove Data Protection (cloud-first backup) and N-sight as the MSP management portal. N-able is a standalone company (spun off from SolarWinds in 2021) focused exclusively on the MSP market. Its platform covers endpoint monitoring, patching, remote access, EDR (via SentinelOne integration), and cloud backup through Cove — all accessible from the N-sight single-pane portal.
+
+## MSP Relevance
+N-able serves thousands of MSPs globally with a strong EMEA presence. Its differentiation is the integration of RMM + cloud-first backup (Cove) in a single vendor relationship, with N-sight providing unified visibility across both. MSPs who value a single vendor for RMM and backup with strong European data residency options favor N-able.
+
+## Key Offerings & Capabilities
+- N-able RMM — endpoint monitoring, patching, remote access, scripting
+- N-sight — unified MSP management portal for RMM and Cove
+- Cove Data Protection — cloud-first backup for endpoints, servers, and SaaS (M365, Google Workspace)
+- SentinelOne EDR integration — managed security available through the platform
+- Network monitoring and discovery
+- HaloPSA automated ticketing integration (in development) — auto-creates and tracks backup failure tickets
+- Remote support via Take Control
+
+## Recent Announcements
+- Cove 26.3 (March 2026): Group-Based Data Protection now GA — uses Microsoft Entra ID security groups to define M365 protection scope
+- Windows Server 2025 and Ubuntu 24.04 LTS support added to Cove
+- Roadmap: Entra ID backup (identity settings and recovery) — protecting against admin errors and security incidents
+- Roadmap: Google Workspace backup — Gmail, Drive, Shared Drive protection for MSPs
+- Roadmap: Co-managed DRaaS hosted in N-able Cloud
+- Roadmap: HaloPSA automated ticketing for backup incidents — auto-creates tickets when failures occur
+
+## Pricing Model
+Per-device per-month for RMM. Cove Data Protection priced per protected user/seat for SaaS and per device for endpoint/server backup. N-able MSP partner pricing with volume discounts. No public pricing — requires partner agreement.
+
+## Strengths
+- Strong EMEA presence with data residency options — important for European MSPs
+- Cove's cloud-first architecture means no hardware appliances needed
+- N-sight unified portal provides single-pane management for RMM + backup
+- SentinelOne EDR integration provides enterprise-grade endpoint security through the platform
+- Group-Based Data Protection (Cove 26.3) simplifies M365 backup administration at scale
+
+## Weaknesses / Gaps
+- Less AI automation than NinjaOne or Kaseya — automation features are lagging
+- HaloPSA integration still in development — limits PSA-native backup ticketing
+- Google Workspace and Entra ID backup still on roadmap, not shipped
+- Brand recognition lower than NinjaOne or ConnectWise in North America
+
+## Competitive Threat to NZO
+Level: Low
+Reason: N-able focuses on RMM and cloud backup, with limited AI automation investment compared to NinjaOne or Kaseya. The platform is solid but not competing for NZO's AI agent and workflow automation territory.
+
+## Notes
+- HaloPSA automated ticketing for backup failures (roadmap) is worth tracking — shows trend toward tighter PSA-backup integration
+- Entra ID backup is a timely addition as MSPs take on more identity management responsibility
+- Google Workspace backup roadmap puts N-able in competition with Backupify and SaaS Protection for the Google Workspace MSP segment

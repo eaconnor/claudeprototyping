@@ -1,0 +1,112 @@
+[
+  {
+    "id": "E1",
+    "label": "It is ACP's job at all (not a finance/PSA/accounting product)",
+    "probability": 0.25,
+    "required": true,
+    "stage": "gate-0",
+    "kill_criterion": "Discovery reveals cross-tool money reconciliation is owned by the MSP's PSA and/or accounting system (or their bookkeeper), and MSPs expect it from those tools, not from a platform vendor like N-able.",
+    "test_that_resolves_it": "Discovery interview series (8-10 MSPs, mixed owner + ops): (a) whose job is cross-tool money reconciliation today, which tool/person owns it; (b) would you buy this from your platform vendor or expect it from your PSA/accounting stack.",
+    "evidence": "[?] - the existential question. UC-B's own framing 'active vs billed' reads as an AP/AR finance function; buyer and category both point away from ACP's ops/security lane."
+  },
+  {
+    "id": "E2",
+    "label": "Demand is real and survives a forced-rank tradeoff",
+    "probability": 0.45,
+    "required": true,
+    "stage": "gate-0",
+    "kill_criterion": "When reconciliation is forced-ranked against the other use cases (the instrument it has never faced), it drops out of budget priority - i.e. universal 'nice if free' but never 'trade budget for'.",
+    "test_that_resolves_it": "Add cross-tool reconciliation to a forced-rank instrument against the tested use-case set; fold into the same discovery series as E1.",
+    "evidence": "[A]/[R] CS:MEDIUM - UC-B 'ninety percent of the hands would go up' is a show-of-hands only; Jonathan/Derek unprompted; NEVER in the ranked six/eight, never forced-ranked under scarcity."
+  },
+  {
+    "id": "E2b",
+    "label": "Money-grade accuracy is achievable at a WTP that funds it",
+    "probability": 0.35,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "The accuracy engineering required so a reconciliation number can be billed/disputed on (near-zero error tolerance) costs more than the flat ~$30/user conditional WTP can fund; margin inverts.",
+    "test_that_resolves_it": "Model the validation/accuracy cost of a reconciliation engine whose errors are invoices; compare to the ~$30/user (ROI-conditional) WTP anchor; test error rate on real mixed billing data.",
+    "evidence": "[A] - accuracy bar is the highest in the portfolio (a wrong number is a wrong invoice), WTP is the lowest and most conditional; CLAIM-MATH-DISPUTED-001 ($33,600/mo does-not-reconcile) is a live omen the project already mis-did money math."
+  },
+  {
+    "id": "E3",
+    "label": "E does not fatally conflict with the PSA/billing partners ACP needs",
+    "probability": 0.45,
+    "required": true,
+    "stage": "launch",
+    "kill_criterion": "Building cross-tool billing intelligence puts N-able in direct competition with PSA/billing vendors (HaloPSA, ConnectWise, Autotask) that A and B depend on as must-integrate partners and marketplace Vendor-Experts, souring those integrations.",
+    "test_that_resolves_it": "Map E's capability against the roadmaps/revenue of the named must-integrate PSA partners; assess whether reconciliation is 'their' category; check partner-agreement conflict terms.",
+    "evidence": "[?] - PSA-software TAM $16.92B (2026, Mordor, CS:MEDIUM) dwarfs all of ACP's TAM; reconciliation-across-tools is squarely PSA/billing territory; partner conflict entirely unmodeled."
+  },
+  {
+    "id": "E4",
+    "label": "Demand is not idiosyncratic to two sophisticated self-builders",
+    "probability": 0.50,
+    "required": false,
+    "stage": "gate-0",
+    "kill_criterion": "The unprompted champions (Jonathan, Derek) are atypical high-sophistication operators who self-build; median-MSP demand is materially weaker.",
+    "test_that_resolves_it": "Segment the reconciliation-demand signal by MSP sophistication/size in the discovery series; confirm the pain and WTP hold in the median (non-self-building) segment.",
+    "evidence": "[A] - Jonathan/Derek anchor multiple high-WTP anecdotes elsewhere; Derek is on record he'd 'build that in Cloud in a day'; market[2] shows an MSP already DIY-built a cross-tool control plane."
+  },
+  {
+    "id": "E5",
+    "label": "Cross-tool FINANCIAL data egress is legally and contractually obtainable",
+    "probability": 0.35,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "Billing/invoice/license/contract data cannot be extracted from the PSA/accounting systems (ToS/DPA prohibit it, or the PSA competitor refuses egress to a rival), collapsing the cross-tool-money value prop.",
+    "test_that_resolves_it": "Legal/DPA review of financial-data egress + read one PSA ToS (Autotask or ConnectWise) on billing-data extraction rights; confirm a technical path that isn't a competitor's goodwill.",
+    "evidence": "[?] - this is A's H2 (cross-vendor egress, ~0.45) compounded: financial data carries higher legal weight and the primary data-owner (the PSA) is a competitor with no incentive to grant egress. Likely worse than A's H2."
+  },
+  {
+    "id": "E6",
+    "label": "A single buyer/user can be identified without fracturing the product",
+    "probability": 0.55,
+    "required": true,
+    "stage": "launch",
+    "kill_criterion": "The buyer is ambiguous (owner/money view vs ops/tools view), and the two readings are two different products with different accuracy bars, WTPs, and competitors - so no single spec can be written.",
+    "test_that_resolves_it": "In discovery, force the buyer question: owner/controller (finance dashboard) or ops (cross-tool status assistant); confirm one primary buyer whose job E serves.",
+    "evidence": "[?] - owner(money) => accounting-grade finance product; ops(tools) => cross-tool status assistant (closer to user[82]'s 'beyond RMM' ask). Unresolved; buyer choice fractures the spec."
+  },
+  {
+    "id": "E7",
+    "label": "The 'AI bookkeeper' frame does not over-promise regulated reliability",
+    "probability": 0.55,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "Marketing near 'bookkeeper' sets a bookkeeping-grade / professional-standard expectation the product cannot meet, importing professional-liability and financial-regulatory exposure.",
+    "test_that_resolves_it": "Legal/positioning review of the 'AI bookkeeper' framing; define disclaimers and the reliability tier E actually offers vs what the word implies.",
+    "evidence": "[A] - Derek's own term 'AI bookkeeper' invites a regulated professional frame; the current build cannot carry bookkeeping-grade controls."
+  },
+  {
+    "id": "E8",
+    "label": "A pricing / metering path exists for E",
+    "probability": 0.45,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "No monetization model can be defined for E, because the metering/usage model is not even decided for the offerings ahead of it (A, B).",
+    "test_that_resolves_it": "Depends on the upstream 'Usage Logic Decision' / 'First-In Usage Build' (Gaurav Bahl workstream) resolving for A/B first; then test a per-dollar-recovered or per-seat model for E.",
+    "evidence": "[?] - market[16]: pricing/metering is an open, high-priority workstream not yet decided for A/B; E's monetization is premature by two steps."
+  },
+  {
+    "id": "E9",
+    "label": "E is not commoditized by PSA bundling or DIY substitution",
+    "probability": 0.45,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "PSA incumbents bundle active-vs-billed reconciliation for free (they own the billing data), and/or sophisticated MSPs continue to self-build cross-tool visibility.",
+    "test_that_resolves_it": "Track PSA roadmaps for reconciliation features; measure how many target MSPs already DIY a cross-tool control plane.",
+    "evidence": "[R]/[A] - market[2]: an MSP already built Claude+Make control plane across Cove/Autotask/N-Central; reconciliation inside the billing system is a sustaining innovation for the PSA."
+  },
+  {
+    "id": "E10",
+    "label": "UC-B is not already the correctly-sized version of this",
+    "probability": 0.40,
+    "required": false,
+    "stage": "gate-0",
+    "kill_criterion": "The real, buildable thing is the narrower, already-scoped UC-B 'License & Cost Optimization'; 'Offering E' is a scope-inflation of it that adds the accuracy/legal/partner risk without adding validated demand.",
+    "test_that_resolves_it": "Compare UC-B's scope (license active-vs-billed) against Offering E's 'all money between all tools'; test whether the incremental scope has its own demand and is worth its incremental risk.",
+    "evidence": "[R] - UC-B 'License & Cost Optimization' already exists in the use-case set with a demand signal and a ~$30/user WTP anchor; E may be UC-B renamed and inflated."
+  }
+]

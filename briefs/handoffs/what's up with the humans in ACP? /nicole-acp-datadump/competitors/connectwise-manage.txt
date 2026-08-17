@@ -1,0 +1,58 @@
+# ConnectWise Manage
+slug: connectwise-manage
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+ConnectWise Manage is the dominant PSA platform for mid-to-large MSPs, now being migrated to ConnectWise PSA Powered by Asio — the modern, cloud-native rebuild. At IT Nation Secure 2025, ConnectWise launched PSA Powered by Asio alongside ConnectWise Pro, a bundled licensing model that includes PSA, RMM, RPA, remote support, documentation, and CPQ in a single contract. The PSA migration to Asio is the platform's most significant transition in years.
+
+## MSP Relevance
+ConnectWise Manage remains the most widely deployed PSA in the mid-market MSP segment. Its deep integration with ConnectWise RMM, deep partner ecosystem, and IT Nation community give it enormous distribution and stickiness. The Asio migration is both an opportunity (modern architecture) and a risk (migration friction), which is driving some MSPs to evaluate HaloPSA and Autotask.
+
+## Key Offerings & Capabilities
+- Full PSA — ticketing, time tracking, billing, SLA management, project management, dispatch portal
+- PSA Powered by Asio — cloud-native rebuild with Unified Billing Intake, Calendar View, custom fields
+- ConnectWise Pro bundle — PSA + RMM + RPA + remote support + documentation + CPQ in one contract
+- Integration with ConnectWise RMM, Automate, and ScreenConnect (remote access)
+- IT Nation community events — Connect (November), Secure (June)
+- Marketplace and partner ecosystem with hundreds of integrations
+- AI-powered RPA bot generation (in development within Asio)
+- Community Exchange for partner-contributed automations and templates
+
+## Recent Announcements
+- June 2025 (IT Nation Secure): PSA Powered by Asio launched — Unified Billing Intake, Calendar View, custom fields, upgrade wizard
+- June 2025: ConnectWise Pro launched — simplified all-in-one bundle replacing complex individual licensing
+- Broader PSA Asio rollout for selected partners from July 2025, continuing monthly through year-end
+- November 2025 (IT Nation Connect): Asio platform advances — RMM + PSA + RPA integration deepened
+- AI-powered RPA bot generation announced for future release within Asio
+- Pax8 partnership announced to expand marketplace and distribution
+
+## Pricing Model
+Per-technician per-month for Manage standalone. ConnectWise Pro bundles PSA + RMM + additional tools under a single contract with flexible per-user or per-device options. Legacy Manage pricing is separate from Asio PSA pricing. Volume discounts for larger MSPs. Historically complex pricing — Pro is an attempt to simplify.
+
+## Strengths
+- Largest PSA installed base in mid-market MSP segment — massive distribution
+- Deep IT Nation community and annual events create strong partner ecosystem
+- Asio rebuild modernizes architecture and performance
+- ConnectWise Pro simplifies purchasing and increases per-user value for existing customers
+- Deep integration with ConnectWise RMM, Automate, and ScreenConnect
+- Hundreds of marketplace integrations with MSP tooling vendors
+
+## Weaknesses / Gaps
+- Legacy Manage codebase creates migration friction — Asio rollout is slow and complex
+- UI historically criticized as dated and unintuitive compared to HaloPSA
+- Reputation for expensive, complex pricing has driven MSPs to HaloPSA and Autotask
+- Large organization means product velocity lags more agile competitors
+- RPA and AI features are in development, not yet shipping
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: ConnectWise PSA's massive install base means any AI or automation features they ship reach thousands of MSPs immediately. The RPA bot generation under development within Asio is heading toward NZO's automation territory. Execution speed is slow, but distribution reach is unmatched.
+
+## Notes
+- IT Nation Connect (November) and IT Nation Secure (June) are key announcement events
+- ConnectWise Pro bundle creates stickiness — MSPs who adopt the bundle are heavily locked in
+- HaloPSA and Autotask are the primary migration destinations for unhappy ConnectWise Manage customers
+- Pax8 partnership is significant for distribution reach through the distributor channel

@@ -1,0 +1,59 @@
+# Vertex AI Agent Builder
+slug: vertex-agent-builder
+category: AI Agent Control Planes
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Vertex AI Agent Builder (now subsumed into the Gemini Enterprise Agent Platform as of April 2026) was Google Cloud's managed platform for building and deploying enterprise AI agents, consolidating Vertex AI Search, Dialogflow CX, and agent orchestration into a unified environment. The April 2026 rebrand to Gemini Enterprise Agent Platform unified Vertex AI, Agentspace, and Dialogflow CX — ending Vertex AI Agent Builder as a distinct brand while maintaining all underlying capabilities. It remains the primary Google Cloud control plane for enterprise agent development and deployment.
+
+## MSP Relevance
+Vertex AI Agent Builder / Gemini Enterprise Agent Platform is relevant to MSPs operating on Google Cloud infrastructure or serving Google Workspace enterprise clients. It provides the managed runtime for deploying AI agents without managing compute infrastructure, and offers 200+ foundation models (including Claude alongside Gemini) via the model garden. MSPs building AI solutions on Google Cloud can deliver custom agent deployments to enterprise clients using Agent Engine Runtime.
+
+## Key Offerings & Capabilities
+- Agent Studio — low-code visual drag-and-drop builder for creating agents without writing code
+- Agent Development Kit (ADK) — open-source code-first framework with Python, TypeScript, Go, and Java support; 100+ pre-built enterprise connectors
+- Agent Engine Runtime — fully managed production runtime for deploying LangGraph and ADK agents; no infrastructure management
+- Memory Bank — persistent agent memory billed at $0.25 per 1,000 stored events
+- RAG (Retrieval Augmented Generation) — real-time data retrieval integrated with Google Cloud data sources (BigQuery, Datastore, etc.)
+- 200+ foundation models — Gemini 3.1 Pro/Flash, Claude Opus 4.7/Sonnet/Haiku, Lyria 3, Gemma 4, and open-source options
+- Enterprise governance — granular tool access control, session management (GA), security and compliance features
+- Vertex AI Search — enterprise document and data search integrated with agent knowledge retrieval
+- Conversational Agents (formerly Dialogflow CX) — unified console for voice and text conversational agent management
+- Pre-built connectors — Confluence, Jira, SharePoint, ServiceNow, and other enterprise system integrations
+
+## Recent Announcements
+- April 22, 2026: Gemini Enterprise Agent Platform launched at Google Cloud NEXT — consolidates Vertex AI Agent Builder, Agentspace, and Dialogflow CX into unified enterprise platform
+- Dialogflow CX standalone console deprecated October 31, 2025 — users migrated to unified Conversational Agents console
+- Session management generally available (January 2026) with per-event billing model
+- Memory Bank launched for persistent agent context ($0.25 per 1,000 stored events)
+- ADK open-source released with 100+ enterprise connectors for integration with common enterprise systems
+- Agent Engine Runtime announced as fully managed deployment service for production agents
+
+## Pricing Model
+Compute: $0.0864 per vCPU-hour. Memory: $0.25 per 1,000 stored session events/memories. Vertex AI Express Mode: Free limited access (up to 10 agent engines, 90-day trial). Free tier: 50 vCPU-hours and 100 GB-hours of memory per month. Vertex AI Search: $4.00–$6.00 per 1,000 queries. Model inference priced separately per foundation model token rates. Enterprise production pricing custom via Google Cloud sales. Available through Google Cloud solution provider channel.
+
+## Strengths
+- Broadest model selection — 200+ foundation models including both Gemini and Claude; model-agnostic approach reduces vendor lock-in risk
+- Agent Engine Runtime eliminates infrastructure management — MSPs focus on agent logic and client value, not compute
+- ADK open-source with enterprise connectors — lowers integration burden for common enterprise systems
+- Memory Bank provides persistent agent context without custom infrastructure — simplifies stateful agent design
+- Pay-as-you-go with free tier trial — enables proof-of-concept without billing commitment
+
+## Weaknesses / Gaps
+- No dedicated MSP channel — requires Google Cloud partnership (Select or Premium tier) for structured resale
+- Pricing complexity: multiple billing dimensions (compute, memory, models, search queries) make cost estimation difficult before production deployment
+- Recently rebranded (April 2026) — documentation and community knowledge still transitioning to new naming
+- Dialogflow CX deprecation of standalone console creates migration burden for existing deployments
+- Enterprise Agent Platform is newly unified — production maturity across all integrated components still being validated
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Vertex AI Agent Builder / Gemini Enterprise Agent Platform is cloud infrastructure, not a competing MSP product. For Google Cloud-committed MSPs, it provides the deployment layer for AI agents. NZO's competitive consideration is whether MSPs choose to build on this infrastructure directly versus using NZO's MSP-specific tooling. The lack of an MSP channel program limits Google's ability to displace NZO in the MSP market through this platform.
+
+## Notes
+- The April 2026 Gemini Enterprise Agent Platform consolidation is a significant event — all future Google Cloud AI agent work references this brand, not Vertex AI Agent Builder
+- The 200+ model garden including Claude alongside Gemini signals Google is positioning this as model-agnostic enterprise infrastructure
+- ADK's 100+ pre-built connectors is the strongest technical differentiator — reduces the integration work that is typically 60-70% of enterprise AI agent project cost
+- Monitor whether Google launches dedicated MSP program for Gemini Enterprise Agent Platform — that would significantly increase competitive relevance

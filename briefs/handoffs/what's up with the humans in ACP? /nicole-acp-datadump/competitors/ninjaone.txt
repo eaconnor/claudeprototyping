@@ -1,0 +1,59 @@
+# NinjaOne (NinjaRMM)
+slug: ninjaone
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+NinjaOne is a cloud-native RMM platform built primarily for MSPs and IT teams managing Windows, Mac, and Linux endpoints. It offers unified endpoint management, patching, remote access, backup, and ticketing in a single pane of glass. The company surpassed $500M ARR in 2025 and holds the G2 #1 RMM ranking for 23 consecutive quarters.
+
+## MSP Relevance
+NinjaOne is one of the most widely adopted RMM platforms in the MSP market. Its fast onboarding, strong automation, best-in-class patch management, and clean UI make it the preferred alternative for MSPs leaving Kaseya or ConnectWise. It competes directly for the same core RMM budget and is actively expanding into AI-driven automation.
+
+## Key Offerings & Capabilities
+- Endpoint monitoring and management (Windows, Mac, Linux, cloud VMs)
+- AI-powered Patch Intelligence — proactive risk scoring for Microsoft patches before deployment
+- Vulnerability management integrated directly with patching workflows
+- NinjaOne Remote — built-in remote access replacing need for third-party tools
+- Mobile device management (MDM) for macOS
+- NinjaOne Backup — BDR module included in platform
+- Ticketing and helpdesk module
+- Dropsuite integration (acquired 2025) — SaaS backup for M365 and Google Workspace
+
+## Recent Announcements
+- Acquired Dropsuite for $270M (2025) — adds cloud backup for M365 and Google Workspace
+- Launched Patch Intelligence AI — proactively flags risky Microsoft patches before deployment
+- Expanded platform with macOS MDM capabilities
+- Launched NinjaOne Remote as integrated and standalone remote access tool
+- Unified vulnerability management with patching in a single workflow
+- Announced first channel partner event, scheduled October 2026
+- Surpassed $500M ARR milestone in 2025
+- NinjaOne + Blackpoint Cyber partnership announced August 2025
+
+## Pricing Model
+Per-device per-month. Tiered bundles based on feature set (RMM-only vs. full platform with backup, ticketing, MDM). No per-technician fees. Commonly cited at $3–5/device/month for mid-tier. Exact pricing requires sales quote.
+
+## Strengths
+- #1 in G2 satisfaction ratings for RMM (23 consecutive quarters), 98% CSAT
+- Fast onboarding — MSPs report going live in days, not weeks
+- Clean, modern UI with low training overhead
+- Strong automation and scripting library
+- Aggressive product velocity — shipping major features quarterly
+- Dropsuite acquisition rounds out into a true all-in-one platform
+
+## Weaknesses / Gaps
+- PSA module less mature than ConnectWise Manage or HaloPSA — many MSPs pair with a separate PSA
+- Documentation tool not as full-featured as IT Glue standalone
+- Less dominant in enterprise or large-MSP segment vs. Kaseya
+- Limited non-North America presence compared to N-able
+
+## Competitive Threat to NZO
+Level: High
+Reason: NinjaOne is actively expanding into AI-driven automation and platform consolidation. Their Patch Intelligence AI and rapid feature shipping pace mirror the direction NZO is taking. MSPs already on NinjaOne may resist adding another tool if NinjaOne ships agentic workflow capabilities natively.
+
+## Notes
+- Channel partner event in October 2026 will likely include major product announcements — monitor closely
+- Dropsuite acquisition signals intent to own the full data protection stack
+- Explicitly named Kaseya and ConnectWise as migration targets in 2026 growth strategy
+- Partnership with Blackpoint Cyber (August 2025) creates a bundled RMM + MDR narrative

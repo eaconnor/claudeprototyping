@@ -1,0 +1,182 @@
+[
+  {
+    "id": "A1",
+    "label": "Data clean enough to normalize (75-80%)",
+    "probability": 0.30,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "Normalization error rate on real mixed-vendor data exceeds the threshold where a QBR number can be defended, producing wrong figures in client-facing output.",
+    "test_that_resolves_it": "Run normalization on 3 anonymized real mixed-vendor datasets; measure field-level error/conflict rate against ground truth.",
+    "evidence": "[A] CS:LOW - Vision Risk Register ~30%, P0, UNOWNED, no study run."
+  },
+  {
+    "id": "A2",
+    "label": "The 15-minute edit fits",
+    "probability": 0.35,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "Operators take substantially longer than 15 min to edit-and-trust the draft, or discard it and write from scratch.",
+    "test_that_resolves_it": "Timed operator prototype session: draft handed to a real vCIO/account manager, measure time-to-send and whether they trust the numbers.",
+    "evidence": "[A] CS:LOW - ~35%, P0, UNOWNED, no study run."
+  },
+  {
+    "id": "A3",
+    "label": "WTP holds vs buy-vs-build",
+    "probability": 0.45,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "Target MSPs decline to pay ACP's price because they self-build (small/technical) or already have it (large).",
+    "test_that_resolves_it": "Van Westendorp / Gabor-Granger pricing test with the 20-100 client, 10-50 tech segment.",
+    "evidence": "[A] CS:MEDIUM - flat per-tech anchors only; Derek self-builds, Vikram already-has."
+  },
+  {
+    "id": "A4",
+    "label": "ScalePad displacement window open",
+    "probability": 0.80,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "ScalePad Lifecycle Manager X is not actually being discontinued, or the window closes before ACP ships.",
+    "test_that_resolves_it": "Confirm ScalePad roadmap via second source; track migration timing.",
+    "evidence": "[A]/[?] CS:MEDIUM - single-source (Kenneth/Guidepoint), rated ~90% but single-anecdote."
+  },
+  {
+    "id": "A5",
+    "label": "Review/edit-before-send is wanted",
+    "probability": 0.85,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "MSPs want fully-autonomous send (no edit), or reject AI authorship entirely - either invalidates the edit-before-send mechanic.",
+    "test_that_resolves_it": "Confirmed; monitor in operator session for whether edit is cosmetic or substantive.",
+    "evidence": "[R] CS:HIGH - Guidepoint n=8 confirmed."
+  },
+  {
+    "id": "A6",
+    "label": "QBR demand exists (the destination)",
+    "probability": 0.90,
+    "required": false,
+    "stage": "launch",
+    "kill_criterion": "QBR demand collapses under independent quant (Qualtrics n=500) or proves an artifact of the shared 8-person qual base.",
+    "test_that_resolves_it": "Independent Qualtrics survey (Meaghan, 500-target, still out).",
+    "evidence": "[D] CS:HIGH - #1 across 3 instruments; two share the same 8 people, only n=39 adds independent n."
+  },
+  {
+    "id": "A7",
+    "label": "First-party full-stack telemetry is a real, defensible moat",
+    "probability": 0.65,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "Competitors normalize adequately via third-party APIs, or the moat only covers N-able's own stack (not cross-vendor), collapsing the differentiation.",
+    "test_that_resolves_it": "Scope which vendors' data is legally accessible (see H2); measure normalization quality first-party vs third-party API.",
+    "evidence": "[A] CS:MEDIUM - moat asserted but unbuilt (normalization Not started)."
+  },
+  {
+    "id": "A10",
+    "label": "Demand is for THIS solution, not just the destination",
+    "probability": 0.55,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "Operators want the cross-stack QBR outcome but reject the 'AI drafts, you edit and defend' mechanism - they want the number handed over, not a draft to babysit.",
+    "test_that_resolves_it": "Solution-fit operator session: present the draft-then-edit mechanic, observe whether it matches how they actually want the job done.",
+    "evidence": "[A] CS:MEDIUM - all demand data measured desire for the outcome, never for this mechanism."
+  },
+  {
+    "id": "H1",
+    "label": "No account-ending wrong-number event in front of a client",
+    "probability": 0.60,
+    "required": false,
+    "stage": "adopt",
+    "kill_criterion": "A normalized figure is wrong in a client boardroom, the client catches it, and the MSP loses trust in A permanently (asymmetric, unrecoverable).",
+    "test_that_resolves_it": "Add defensibility tiering (Measured/Benchmarked/Estimated/Unverified) to the QBR NARRATIVE, not just the ledger; test error-surfacing UX.",
+    "evidence": "[A] - asymmetric high-consequence risk, unmodeled; narrative layer has no defensibility tiering."
+  },
+  {
+    "id": "H2",
+    "label": "Cross-vendor data egress is legally and contractually permitted",
+    "probability": 0.45,
+    "required": true,
+    "stage": "build",
+    "kill_criterion": "Competing vendors' ToS/DPA prohibit N-able extracting and normalizing their data into a client-facing artifact, OR client consent for cross-tenant data use is not obtainable - collapsing cross-vendor to cross-N-able-stack.",
+    "test_that_resolves_it": "Legal/DPA review + read one competitor vendor ToS (ThreatLocker/Rapid7); confirm client-consent path in multi-tenant.",
+    "evidence": "[?] - unexamined; the moat 'normalize from inside' only holds for N-able's own stack. Possibly fatal to the cross-vendor promise."
+  },
+  {
+    "id": "H3",
+    "label": "The operator (not just the buyer) adopts",
+    "probability": 0.55,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "The vCIO/account manager/senior tech who runs the QBR routes around A or rejects it; tool becomes owner-bought shelfware.",
+    "test_that_resolves_it": "Operator ethnography + prototype session (collapses with A10 and A2 into one study).",
+    "evidence": "[A] CS:HIGH - ~93% [A]; every demand number is buyer purchase-intent, operator never studied (vision-synthesis section 5)."
+  },
+  {
+    "id": "H4",
+    "label": "Quarterly cadence survives a monthly subscription model",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "A tool used 4x/year cannot form a habit; MSPs feel monthly cost against quarterly value and churn; cold-start each quarter degrades experience.",
+    "test_that_resolves_it": "Model retention curve for a 4x/year tool on a monthly plan; consider bundling A with a daily-use coworker (Triage) for cadence support.",
+    "evidence": "[A] - cadence/pricing mismatch, unmodeled. Contrast daily-compounding Ticket Triage."
+  },
+  {
+    "id": "H5",
+    "label": "MSP brand is not homogenized by an AI house style",
+    "probability": 0.60,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "QBRs from different MSPs read identically ('the ACP look'), eroding the client-facing differentiation MSPs pay for; or an AI tell damages the MSP's brand.",
+    "test_that_resolves_it": "Blind read: can a client tell two different MSPs' ACP-generated QBRs apart? Test voice-customization depth.",
+    "evidence": "[A] - unexamined; directly contradicts 'the MSP owns the voice' claim."
+  },
+  {
+    "id": "H6",
+    "label": "The edit paradox is resolvable (fast AND defensible)",
+    "probability": 0.45,
+    "required": true,
+    "stage": "adopt",
+    "kill_criterion": "Trust-enough-to-be-fast and understand-enough-to-defend are mutually exclusive; the operator must pick one, breaking either the 15-min claim or the 'defend every number' claim.",
+    "test_that_resolves_it": "Operator session measuring BOTH time-to-send AND ability to correctly answer a challenge to a specific number.",
+    "evidence": "[A] - structural tension between the speed value prop and the defensibility value prop."
+  },
+  {
+    "id": "H7",
+    "label": "A does not cannibalize N-able's own reporting products",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "A displaces existing UEM/Cove/Adlumin reporting revenue and triggers internal margin/channel conflict; strategy-fit cannot be confirmed.",
+    "test_that_resolves_it": "Cannot fully test until FY27 strategy loads; scope overlap with existing reporting SKUs internally.",
+    "evidence": "[?] - n-able-strategy-context.md is a v0 placeholder; internal cannibalization cost unmodeled."
+  },
+  {
+    "id": "H8",
+    "label": "LLM cost per QBR fits inside the flat-WTP margin",
+    "probability": 0.50,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "Large-context cross-stack generation x (clients x 4 quarters x edit loops) produces COGS that inverts gross margin at the $25-50/tech/mo ceiling.",
+    "test_that_resolves_it": "Model token cost of one full cross-stack QBR generation + edit loop; multiply by realistic client/quarter volume; compare to WTP ceiling.",
+    "evidence": "[?] - unit economics unmodeled; DSE helps runbooks not free-form narrative."
+  },
+  {
+    "id": "H9",
+    "label": "Output is not pulled into an insurer/auditor reliance chain",
+    "probability": 0.55,
+    "required": false,
+    "stage": "defend",
+    "kill_criterion": "A client's cyber-insurer or auditor relies on an ACP-QBR number that is wrong, creating multi-party reliance-chain liability.",
+    "test_that_resolves_it": "Legal scoping: is QBR output 'advisory' or 'relied-upon'? Define disclaimer + defensibility-tier requirements.",
+    "evidence": "[?] - legal scope undefined; QBR content may enter the same reliance chain flagged for IR/RCA (#1 on cyber-insurance policies)."
+  },
+  {
+    "id": "H11",
+    "label": "Multi-tenant approval authority is resolvable",
+    "probability": 0.65,
+    "required": false,
+    "stage": "build",
+    "kill_criterion": "Approval authority must cascade to the end-customer admin in multi-tenant, breaking A's frictionless-draft promise at the tenancy boundary.",
+    "test_that_resolves_it": "Resolve build approval-model open questions OQ-001..005; test multi-tenant data-use approval flow.",
+    "evidence": "[?] - build has 5 open approval-model questions (OQ-001..005, findings JSON)."
+  }
+]

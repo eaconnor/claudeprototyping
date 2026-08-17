@@ -1,0 +1,57 @@
+# Workato
+slug: workato
+category: AI Purpose-Built for MSPs
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Workato is an enterprise iPaaS (integration Platform as a Service) and AI-powered automation platform, recognized as a Gartner Magic Quadrant Leader for iPaaS for 8 consecutive years (most recently "Furthest in Vision" in 2026 for agentic AI orchestration). In October 2025, Workato launched the industry's first Enterprise MCP (Model Context Protocol) platform — enabling AI agents (Claude, ChatGPT, Cursor, and others) to securely access and act across 1,400+ business applications with enterprise-grade identity, audit trails, and governance. Workato's evolution from iPaaS to "Agentic Enterprise" platform positions it as a control plane for AI agents operating across enterprise systems.
+
+## MSP Relevance
+Workato is relevant to MSPs that build and manage automation workflows for enterprise clients, and to MSPs evaluating Enterprise MCP as the integration layer for AI agent deployments. As MSPs adopt AI agents for client environments, the question of how agents securely access enterprise systems (ERP, CRM, ITSM, HR) becomes central — and Workato's Enterprise MCP is currently the most mature answer to that question. MSPs offering Managed Integration Services or AI automation implementation will encounter Workato in enterprise accounts alongside Zapier, Microsoft Power Automate, and MuleSoft.
+
+## Key Offerings & Capabilities
+- Enterprise MCP — Model Context Protocol server platform enabling AI agents to access 1,400+ business applications with RBAC, audit trails, and governance (October 2025)
+- Verified User Access (VUA) — agent actions inherit authenticated user identity, ensuring audit trails and role-based access control compliance
+- Recipe automation — visual low-code/no-code automation builder for complex multi-step workflows connecting enterprise applications
+- 1,400+ pre-built connectors — integrations with SAP, Salesforce, ServiceNow, Workday, Oracle, HubSpot, Gong, and hundreds more
+- Workato Genies — AI agents built natively on the Workato platform using Enterprise MCP infrastructure
+- IT Service Management automation — AI-based ticket classification, prioritization, and auto-resolution
+- Finance/AP automation — accounts payable agents transforming invoices and triggering ERP updates
+- Sales automation — lead data consolidation, opportunity analysis via Gong integration, automated outreach sequences
+- Centralized MCP governance — unified gateway managing all MCP servers from single console
+
+## Recent Announcements
+- October 2025: Enterprise MCP platform launched — industry's first; converts existing Recipe Functions to MCP servers without code changes; supports Claude Desktop, ChatGPT, Cursor, Windsurf, and any MCP-compatible agent
+- August 2025: AI Research Lab opened in San Francisco under CTO Adam Seligman
+- 2026: Named Leader in Gartner Magic Quadrant for iPaaS (8th consecutive year); ranked "Furthest in Vision" for agentic AI orchestration strategy
+- 2026 Partner Awards program: partner-sourced ARR grew 61% YoY; 24 new transacting partners added
+- Customer satisfaction: 4.8-4.9 out of 5.0 on G2 with 95% recommendation rate
+
+## Pricing Model
+Custom, quote-based enterprise pricing. No standard public pricing. Typical range: $10,000–$50,000+/year for basic to standard deployments. Enterprise example pricing: $143,750 for 1M tasks (Enterprise workspace + support); $84,200–$128,300 for 5M task workloads after standard discounts. Billing structure: task-based consumption, high-volume run (HVR) pricing tiers, premium connector access fees. Annual contracts standard with minimum spend commitments. Partner program pricing negotiated with 850+ global partners.
+
+## Strengths
+- Enterprise MCP is a genuine first-mover advantage — no competing iPaaS has launched an equivalent enterprise-grade MCP platform
+- 1,400+ pre-built connectors is the largest in the iPaaS category — integration work that takes months elsewhere takes hours on Workato
+- Verified User Access (VUA) is critical for enterprise governance — agents inheriting user identity with RBAC satisfies audit and compliance requirements that manual integration approaches cannot
+- 8 consecutive Gartner Magic Quadrant Leader recognitions provide unmatched enterprise credibility in the integration space
+- 61% partner-sourced ARR growth in 2026 signals healthy and expanding partner ecosystem
+
+## Weaknesses / Gaps
+- Enterprise-only pricing ($10K+ starting point) — not accessible for SMB-focused MSPs or clients
+- Opaque pricing model requires full sales cycle for any evaluation — cannot self-serve pricing for client proposals
+- Learning curve: Workato's recipe-based model and Enterprise MCP configuration require significant platform expertise
+- Not purpose-built for MSP multi-tenant operations — enterprise iPaaS model, not an MSP management platform
+- Competes with free/lower-cost alternatives (Microsoft Power Automate, Zapier) in mid-market where Workato's pricing is prohibitive
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: Workato's Enterprise MCP platform is the most direct large-scale overlap with NZO's control plane positioning. Enterprise MCP enables AI agents to securely access enterprise systems with governance — which is a capability core to what NZO builds for MSPs. The key differentiator is market segment: Workato targets enterprise IT with $10K+ minimum spend; NZO targets MSP-managed environments. If Workato introduces MSP-specific multi-tenant management or lower-tier pricing, the competitive relevance increases significantly.
+
+## Notes
+- Enterprise MCP is the product to watch most closely — it's building the enterprise governance layer for AI agents that NZO needs to match or differentiate against for MSP deployments
+- The 1,400+ connector library is the most significant network effect in the iPaaS market — attempting to replicate this is not viable; NZO should evaluate Workato as an integration partner layer rather than a rebuild target
+- 61% partner ARR growth signals the partner model is working — study Workato's partner economics and GTM as a benchmark for NZO's partner program design
+- Watch for Workato to release SMB or MSP tiers as agentic automation demand grows in the mid-market — that pricing move would create direct competitive pressure

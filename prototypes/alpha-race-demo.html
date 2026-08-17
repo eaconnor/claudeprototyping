@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Alpha RACE — Incident Story Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermillion:#D8472B;
+    --ultramarine:#1F3C96;
+    --ochre:#C99A2E;
+    --violet:#5B3A7E;
+    --green-earth:#5E7A3F;
+    --cadmium:#E8B93A;
+    --ink:#1a1612;
+    --paper:#efe7d6;
+    --card:#f7f0df;
+    --grid:rgba(26,22,18,.055);
+    --line:#1a1612;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:'Kalam',cursive;font-size:16px;line-height:1.5}
+  body{
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+    min-height:100vh;
+    padding:28px;
+  }
+  .mono{font-family:'Space Mono',monospace}
+  h1,h2,h3,h4,h5,.label{font-family:'Space Mono',monospace;font-weight:700;letter-spacing:-.01em}
+
+  /* HEADER */
+  .doc-head{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:28px;
+    align-items:end;
+    padding:28px 0 14px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:28px;
+  }
+  .doc-head h1{font-size:38px;line-height:1;letter-spacing:-.02em}
+  .doc-head .sub{font-family:'Kalam',cursive;font-size:17px;margin-top:8px;color:var(--ink);opacity:.85}
+  .doc-head .meta{font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;text-align:right;line-height:1.7}
+  .doc-head .meta .pill{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    padding:4px 8px;margin-left:6px
+  }
+
+  /* VALUE BAR */
+  .value-bar{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    margin-bottom:28px;
+  }
+  .stat{
+    background:var(--card);border:2px solid var(--ink);
+    box-shadow:6px 6px 0 var(--line);
+    padding:14px 16px;
+  }
+  .stat .k{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;opacity:.7}
+  .stat .v{font-family:'Space Mono',monospace;font-size:30px;font-weight:700;line-height:1.1;margin-top:4px}
+  .stat .d{font-size:14px;margin-top:4px;opacity:.85}
+  .stat.before .v{color:var(--vermillion)}
+  .stat.after .v{color:var(--green-earth)}
+
+  /* SPLIT */
+  .split{
+    display:grid;grid-template-columns:380px 1fr;gap:28px;
+    align-items:start;
+  }
+  @media (max-width:1100px){
+    .split{grid-template-columns:1fr}
+  }
+
+  /* COLUMN HEADS */
+  .col-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ink)
+  }
+  .col-head h2{font-size:18px;text-transform:uppercase;letter-spacing:.06em}
+  .col-head .tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);padding:3px 7px}
+
+  /* BEFORE — alert firehose */
+  .firehose{position:relative}
+  .firehose::before{
+    content:"BEFORE";position:absolute;top:-46px;right:0;
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;
+    color:var(--vermillion);font-weight:700
+  }
+  .alert{
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    border-left:6px solid var(--vermillion);
+    padding:10px 12px;margin-bottom:8px;
+    display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center;
+    font-size:13px;
+    box-shadow:3px 3px 0 var(--line);
+  }
+  .alert .t{font-family:'Space Mono',monospace;font-size:10px;opacity:.7;letter-spacing:.04em}
+  .alert .msg{font-family:'Space Mono',monospace;font-size:12px;line-height:1.4}
+  .alert .msg b{color:var(--vermillion)}
+  .alert .sev{
+    font-family:'Space Mono',monospace;font-size:9px;
+    background:var(--ink);color:var(--paper);
+    padding:2px 5px;letter-spacing:.08em
+  }
+  .alert.med{border-left-color:var(--ochre)}
+  .alert.med .sev{background:var(--ochre);color:var(--ink)}
+  .alert.low{border-left-color:var(--ultramarine);opacity:.85}
+  .alert.low .sev{background:var(--ultramarine)}
+  .firehose .note{
+    font-family:'Kalam',cursive;font-size:14px;margin-top:14px;
+    padding:12px;border:1.5px dashed var(--ink);background:transparent
+  }
+  .firehose .note b{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--vermillion)}
+
+  /* AFTER — incident card */
+  .incident{position:relative}
+  .incident::before{
+    content:"AFTER";position:absolute;top:-46px;right:0;
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;
+    color:var(--green-earth);font-weight:700
+  }
+  .incident-card{
+    background:var(--card);
+    border:2px solid var(--ink);
+    box-shadow:6px 6px 0 var(--line);
+    padding:0;
+  }
+  .ic-head{
+    display:grid;grid-template-columns: 1fr 160px;gap:0;
+    border-bottom:2px solid var(--ink);
+  }
+  .ic-head .title-wrap{padding:18px 22px}
+  .ic-head .id{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+  .ic-head h3{font-size:24px;line-height:1.15;margin-top:4px;letter-spacing:-.01em}
+  .ic-head .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .chip{
+    font-family:'Space Mono',monospace;font-size:10px;
+    border:1.5px solid var(--ink);padding:3px 7px;letter-spacing:.05em;
+    text-transform:uppercase;background:var(--paper)
+  }
+  .chip.tact{background:var(--violet);color:var(--paper);border-color:var(--violet)}
+  .chip.stat{background:var(--vermillion);color:var(--paper);border-color:var(--vermillion)}
+  .chip.conf{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+  .risk{
+    border-left:2px solid var(--ink);
+    background:var(--vermillion);
+    color:var(--paper);
+    padding:18px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center
+  }
+  .risk .k{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  .risk .v{font-family:'Space Mono',monospace;font-size:54px;font-weight:700;line-height:1}
+  .risk .m{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.85;margin-top:2px}
+  .risk .bar{
+    width:100%;height:6px;background:rgba(239,231,214,.25);margin-top:10px;position:relative
+  }
+  .risk .bar i{display:block;height:100%;background:var(--paper);width:87%}
+
+  /* SECTION blocks */
+  .ic-body{padding:22px;display:grid;gap:22px}
+  .narrative{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .nblock{
+    border:1.5px solid var(--ink);
+    padding:14px;
+    background:var(--paper);
+  }
+  .nblock h4{
+    font-size:11px;text-transform:uppercase;letter-spacing:.12em;
+    padding-bottom:6px;margin-bottom:8px;border-bottom:1.5px solid var(--ink);
+    display:flex;align-items:center;gap:6px;
+  }
+  .nblock h4::before{
+    content:"";display:inline-block;width:10px;height:10px;background:var(--ink)
+  }
+  .nblock.what h4::before{background:var(--vermillion)}
+  .nblock.done h4::before{background:var(--green-earth)}
+  .nblock.next h4::before{background:var(--ultramarine)}
+  .nblock p{font-size:15px;line-height:1.5}
+
+  /* TIMELINE */
+  .section-label{
+    font-family:'Space Mono',monospace;font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;
+    padding-bottom:8px;border-bottom:1.5px solid var(--ink);margin-bottom:12px;
+    display:flex;justify-content:space-between;align-items:baseline
+  }
+  .section-label .hint{font-family:'Kalam',cursive;font-size:13px;text-transform:none;letter-spacing:0;opacity:.7}
+
+  .timeline{position:relative;padding-left:24px}
+  .timeline::before{
+    content:"";position:absolute;left:6px;top:6px;bottom:6px;
+    width:2px;background:var(--ink)
+  }
+  .tev{
+    position:relative;padding:8px 0 12px 14px;
+    display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;
+    border-bottom:1px dashed rgba(26,22,18,.25)
+  }
+  .tev:last-child{border-bottom:none}
+  .tev::before{
+    content:"";position:absolute;left:-22px;top:14px;
+    width:14px;height:14px;background:var(--card);border:2px solid var(--ink);
+  }
+  .tev.crit::before{background:var(--vermillion)}
+  .tev.high::before{background:var(--ochre)}
+  .tev.med::before{background:var(--ultramarine)}
+  .tev .time{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.04em}
+  .tev .desc{font-size:14px;line-height:1.4}
+  .tev .desc b{font-family:'Space Mono',monospace;font-size:12px}
+  .tev .src{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;
+    background:var(--ink);color:var(--paper);padding:2px 6px;text-transform:uppercase}
+
+  /* DETECTIONS rollup */
+  .detections{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .det{
+    border:1.5px solid var(--ink);padding:10px 12px;
+    background:var(--paper);
+    display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+    font-size:13px;
+  }
+  .det .num{font-family:'Space Mono',monospace;font-size:11px;
+    background:var(--ink);color:var(--paper);padding:3px 6px;letter-spacing:.06em}
+  .det .name{font-family:'Space Mono',monospace;font-size:12px;line-height:1.3}
+  .det .mitre{font-family:'Space Mono',monospace;font-size:10px;
+    border:1.5px solid var(--ink);padding:2px 5px;letter-spacing:.04em}
+
+  /* ASSETS / ENTITIES */
+  .entities{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .ent{
+    border-left:4px solid var(--ink);
+    padding:8px 12px;background:var(--paper);
+    border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)
+  }
+  .ent.user{border-left-color:var(--violet)}
+  .ent.host{border-left-color:var(--ultramarine)}
+  .ent.ip{border-left-color:var(--vermillion)}
+  .ent .k{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+  .ent .v{font-family:'Space Mono',monospace;font-size:14px;margin-top:2px}
+  .ent .role{font-size:12px;font-family:'Kalam',cursive;margin-top:2px;opacity:.85}
+
+  /* ACTIONS */
+  .actions{
+    display:flex;gap:10px;flex-wrap:wrap;
+    border-top:2px solid var(--ink);padding-top:18px;margin-top:4px
+  }
+  .btn{
+    font-family:'Space Mono',monospace;font-size:12px;
+    text-transform:uppercase;letter-spacing:.08em;
+    border:2px solid var(--ink);padding:10px 14px;
+    background:var(--paper);color:var(--ink);
+    box-shadow:4px 4px 0 var(--line);
+    cursor:pointer
+  }
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--line)}
+  .btn.primary{background:var(--ink);color:var(--paper)}
+  .btn.warn{background:var(--vermillion);color:var(--paper);border-color:var(--vermillion);box-shadow:4px 4px 0 var(--line)}
+
+  /* FOOTNOTE */
+  .footnote{
+    margin-top:32px;padding-top:14px;border-top:1.5px dashed var(--ink);
+    font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:'Space Mono',monospace
+  }
+  .footnote .l{opacity:.75;text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+  .footnote .r{font-size:11px;letter-spacing:.06em}
+
+  /* CALLOUT — value */
+  .value-call{
+    background:var(--ink);color:var(--paper);
+    padding:18px 22px;margin-bottom:28px;
+    border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ochre);
+    display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center
+  }
+  .value-call .badge{
+    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;
+    background:var(--ochre);color:var(--ink);padding:5px 9px
+  }
+  .value-call p{font-family:'Kalam',cursive;font-size:18px;line-height:1.4}
+  .value-call p b{font-family:'Space Mono',monospace;font-weight:700}
+
+  @media print{ body{background:#fff} .btn{display:none} }
+</style>
+</head>
+<body>
+
+  <header class="doc-head">
+    <div>
+      <h1>Alpha RACE — Incident Story</h1>
+      <div class="sub">Multi-event detection correlation. Twelve alerts become one decision.</div>
+    </div>
+    <div class="meta">
+      <div>Adlumin Alpha · Engine v0.9 <span class="pill">DEMO</span></div>
+      <div style="margin-top:6px">Scenario: Lateral Movement · ADL-1839</div>
+      <div style="margin-top:6px">2026-05-27 · 14:32 UTC</div>
+    </div>
+  </header>
+
+  <section class="value-call">
+    <div class="badge">THE SHIFT</div>
+    <p>Analysts investigate <b>incidents</b>, not alerts. Alpha consolidates related detections into one ranked story — <b>fewer escalations, stronger context, faster decisions.</b></p>
+  </section>
+
+  <section class="value-bar">
+    <div class="stat before">
+      <div class="k">Before — raw alerts</div>
+      <div class="v">12</div>
+      <div class="d">individual detections, 47 min apart</div>
+    </div>
+    <div class="stat after">
+      <div class="k">After — incidents</div>
+      <div class="v">1</div>
+      <div class="d">consolidated story, ranked &amp; narrated</div>
+    </div>
+    <div class="stat">
+      <div class="k">Noise reduction</div>
+      <div class="v mono" style="color:var(--ultramarine)">−91%</div>
+      <div class="d">queue depth on this scenario</div>
+    </div>
+    <div class="stat">
+      <div class="k">Time to triage</div>
+      <div class="v mono" style="color:var(--ochre)">38s</div>
+      <div class="d">narrative-first vs. raw-feed dig</div>
+    </div>
+  </section>
+
+  <div class="split">
+
+    <!-- LEFT: BEFORE / FIREHOSE -->
+    <aside class="firehose">
+      <div class="col-head">
+        <h2>Alert Firehose</h2>
+        <span class="tag">Raw Feed</span>
+      </div>
+
+      <div class="alert">
+        <div class="t">14:02:11</div>
+        <div class="msg">Auth anomaly — login from <b>Bucharest, RO</b> for <b>m.alvarez@</b></div>
+        <div class="sev">HIGH</div>
+      </div>
+      <div class="alert med">
+        <div class="t">14:02:46</div>
+        <div class="msg">Impossible travel — same user logged in <b>Austin, TX</b> 22 min prior</div>
+        <div class="sev">MED</div>
+      </div>
+      <div class="alert">
+        <div class="t">14:04:09</div>
+        <div class="msg">MFA push fatigue — <b>14 prompts</b> in 90s, 1 approved</div>
+        <div class="sev">HIGH</div>
+      </div>
+      <div class="alert low">
+        <div class="t">14:07:33</div>
+        <div class="msg">New device enrollment — <b>WIN-7K2P</b></div>
+        <div class="sev">LOW</div>
+      </div>
+      <div class="alert med">
+        <div class="t">14:11:50</div>
+        <div class="msg">Unusual process tree — <b>winword.exe → powershell.exe</b></div>
+        <div class="sev">MED</div>
+      </div>
+      <div class="alert">
+        <div class="t">14:12:04</div>
+        <div class="msg">PowerShell encoded command — base64, <b>1.4 KB</b> payload</div>
+        <div class="sev">HIGH</div>
+      </div>
+      <div class="alert">
+        <div class="t">14:13:21</div>
+        <div class="msg">LSASS access attempt — <b>FIN-WS-04</b> by powershell.exe</div>
+        <div class="sev">HIGH</div>
+      </div>
+      <div class="alert med">
+        <div class="t">14:15:02</div>
+        <div class="msg">SMB session opened — <b>FIN-WS-04 → FIN-DB-01</b></div>
+        <div class="sev">MED</div>
+      </div>
+      <div class="alert">
+        <div class="t">14:17:48</div>
+        <div class="msg">Service install — <b>WinRM listener</b> on FIN-DB-01</div>
+        <div class="sev">HIGH</div>
+      </div>
+      <div class="alert med">
+        <div class="t">14:21:11</div>
+        <div class="msg">Kerberos TGT request — <b>svc_backup</b> from FIN-WS-04</div>
+        <div class="sev">MED</div>
+      </div>
+      <div class="alert low">
+        <div class="t">14:24:35</div>
+        <div class="msg">DNS query — <b>cdn-update[.]xyz</b> (newly registered)</div>
+        <div class="sev">LOW</div>
+      </div>
+      <div class="alert">
+        <div class="t">14:29:02</div>
+        <div class="msg">Outbound C2 beacon — <b>185.220.x.x</b>, 60s interval</div>
+        <div class="sev">HIGH</div>
+      </div>
+
+      <div class="note">
+        <b>Analyst reality</b>
+        Twelve tickets across three queues. Five analysts touching the same kill chain. No one sees the whole picture until the post-mortem.
+      </div>
+    </aside>
+
+    <!-- RIGHT: AFTER / INCIDENT -->
+    <main class="incident">
+      <div class="col-head">
+        <h2>Consolidated Incident</h2>
+        <span class="tag">Alpha RACE</span>
+      </div>
+
+      <article class="incident-card">
+
+        <div class="ic-head">
+          <div class="title-wrap">
+            <div class="id">INC-2026-0527-0148 · opened 14:29 UTC</div>
+            <h3>Lateral movement from compromised finance workstation, targeting database tier</h3>
+            <div class="chips">
+              <span class="chip tact">MITRE · TA0008 Lateral Movement</span>
+              <span class="chip tact">TA0006 Credential Access</span>
+              <span class="chip stat">ACTIVE · CONTAINED</span>
+              <span class="chip conf">CORRELATION CONFIDENCE 0.94</span>
+            </div>
+          </div>
+          <div class="risk">
+            <div class="k">Risk score</div>
+            <div class="v">87</div>
+            <div class="m">CRITICAL</div>
+            <div class="bar"><i></i></div>
+          </div>
+        </div>
+
+        <div class="ic-body">
+
+          <!-- NARRATIVE -->
+          <section>
+            <div class="section-label">Narrative <span class="hint">generated by Alpha · reviewed by analyst</span></div>
+            <div class="narrative">
+              <div class="nblock what">
+                <h4>What happened</h4>
+                <p>An attacker phished credentials from <b>m.alvarez</b> (Finance Ops), bypassed MFA via push fatigue, then ran encoded PowerShell on <b>FIN-WS-04</b> to dump LSASS and pivot via SMB to the finance database server <b>FIN-DB-01</b>, where they installed a WinRM listener and established a C2 beacon to <code>185.220.x.x</code>.</p>
+              </div>
+              <div class="nblock done">
+                <h4>What was done</h4>
+                <p>Alpha auto-isolated <b>FIN-WS-04</b> and <b>FIN-DB-01</b> from the network at 14:29:14. The <b>m.alvarez</b> session and all active tokens were revoked. The newly enrolled device <b>WIN-7K2P</b> was quarantined. C2 destination added to the deny list. Incident handoff packet sent to on-call analyst.</p>
+              </div>
+              <div class="nblock next">
+                <h4>What to do next</h4>
+                <p>Force credential reset for <b>m.alvarez</b> and <b>svc_backup</b>. Image <b>FIN-WS-04</b> for forensics — confirm initial phishing vector. Review last 7 days of finance database access for <b>svc_backup</b>. Brief Finance leadership before market open. Pilot phishing-resistant MFA for Finance group.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- TIMELINE -->
+          <section>
+            <div class="section-label">Correlated timeline <span class="hint">12 events · ordered by kill-chain phase</span></div>
+            <div class="timeline">
+              <div class="tev high">
+                <div class="time">14:02:11</div>
+                <div class="desc"><b>Initial access</b> — Unusual geo login from Bucharest, RO (m.alvarez)</div>
+                <div class="src">IDP</div>
+              </div>
+              <div class="tev high">
+                <div class="time">14:02:46</div>
+                <div class="desc"><b>Impossible travel</b> — Same identity active in Austin, TX 22 min prior</div>
+                <div class="src">IDP</div>
+              </div>
+              <div class="tev crit">
+                <div class="time">14:04:09</div>
+                <div class="desc"><b>MFA push fatigue</b> — 14 prompts in 90s, 1 approved</div>
+                <div class="src">IDP</div>
+              </div>
+              <div class="tev med">
+                <div class="time">14:07:33</div>
+                <div class="desc"><b>New device enrollment</b> — WIN-7K2P bound to m.alvarez</div>
+                <div class="src">IDP</div>
+              </div>
+              <div class="tev high">
+                <div class="time">14:11:50</div>
+                <div class="desc"><b>Suspicious process tree</b> — winword.exe spawned powershell.exe on FIN-WS-04</div>
+                <div class="src">EDR</div>
+              </div>
+              <div class="tev crit">
+                <div class="time">14:12:04</div>
+                <div class="desc"><b>Encoded PowerShell</b> — base64 payload, AMSI bypass attempt</div>
+                <div class="src">EDR</div>
+              </div>
+              <div class="tev crit">
+                <div class="time">14:13:21</div>
+                <div class="desc"><b>Credential dump</b> — LSASS access by powershell.exe (T1003.001)</div>
+                <div class="src">EDR</div>
+              </div>
+              <div class="tev high">
+                <div class="time">14:15:02</div>
+                <div class="desc"><b>Lateral movement</b> — SMB session FIN-WS-04 → FIN-DB-01</div>
+                <div class="src">NDR</div>
+              </div>
+              <div class="tev crit">
+                <div class="time">14:17:48</div>
+                <div class="desc"><b>Persistence</b> — WinRM listener installed on FIN-DB-01</div>
+                <div class="src">EDR</div>
+              </div>
+              <div class="tev high">
+                <div class="time">14:21:11</div>
+                <div class="desc"><b>Privilege escalation</b> — Kerberos TGT requested for svc_backup</div>
+                <div class="src">IDP</div>
+              </div>
+              <div class="tev med">
+                <div class="time">14:24:35</div>
+                <div class="desc"><b>Staging</b> — DNS resolution for newly registered cdn-update[.]xyz</div>
+                <div class="src">DNS</div>
+              </div>
+              <div class="tev crit">
+                <div class="time">14:29:02</div>
+                <div class="desc"><b>Command &amp; control</b> — Beacon to 185.220.x.x · 60s jitter — <i>Alpha auto-contains</i></div>
+                <div class="src">NDR</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ENTITIES -->
+          <section>
+            <div class="section-label">Entities involved</div>
+            <div class="entities">
+              <div class="ent user">
+                <div class="k">Identity</div>
+                <div class="v">m.alvarez@</div>
+                <div class="role">Finance Ops · last clean login Austin 13:40</div>
+              </div>
+              <div class="ent user">
+                <div class="k">Service account</div>
+                <div class="v">svc_backup</div>
+                <div class="role">DB backup role · used out of pattern</div>
+              </div>
+              <div class="ent host">
+                <div class="k">Host (origin)</div>
+                <div class="v">FIN-WS-04</div>
+                <div class="role">isolated 14:29:14</div>
+              </div>
+              <div class="ent host">
+                <div class="k">Host (target)</div>
+                <div class="v">FIN-DB-01</div>
+                <div class="role">finance database · isolated 14:29:14</div>
+              </div>
+              <div class="ent host">
+                <div class="k">Device (rogue)</div>
+                <div class="v">WIN-7K2P</div>
+                <div class="role">enrolled during MFA fatigue · quarantined</div>
+              </div>
+              <div class="ent ip">
+                <div class="k">External (C2)</div>
+                <div class="v">185.220.x.x</div>
+                <div class="role">added to deny list · 60s beacon</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DETECTIONS ROLLUP -->
+          <section>
+            <div class="section-label">Underlying detections <span class="hint">12 of 12 rolled up · click to expand</span></div>
+            <div class="detections">
+              <div class="det"><span class="num">D-01</span><span class="name">Unusual geo login</span><span class="mitre">T1078.004</span></div>
+              <div class="det"><span class="num">D-02</span><span class="name">Impossible travel</span><span class="mitre">T1078</span></div>
+              <div class="det"><span class="num">D-03</span><span class="name">MFA push fatigue</span><span class="mitre">T1621</span></div>
+              <div class="det"><span class="num">D-04</span><span class="name">New device enrollment</span><span class="mitre">T1098.005</span></div>
+              <div class="det"><span class="num">D-05</span><span class="name">Office spawns shell</span><span class="mitre">T1059.001</span></div>
+              <div class="det"><span class="num">D-06</span><span class="name">Encoded PowerShell</span><span class="mitre">T1027</span></div>
+              <div class="det"><span class="num">D-07</span><span class="name">LSASS memory access</span><span class="mitre">T1003.001</span></div>
+              <div class="det"><span class="num">D-08</span><span class="name">SMB lateral session</span><span class="mitre">T1021.002</span></div>
+              <div class="det"><span class="num">D-09</span><span class="name">WinRM service install</span><span class="mitre">T1543.003</span></div>
+              <div class="det"><span class="num">D-10</span><span class="name">Anomalous TGT request</span><span class="mitre">T1558</span></div>
+              <div class="det"><span class="num">D-11</span><span class="name">Suspicious DNS (NRD)</span><span class="mitre">T1568</span></div>
+              <div class="det"><span class="num">D-12</span><span class="name">C2 beaconing</span><span class="mitre">T1071.001</span></div>
+            </div>
+          </section>
+
+          <div class="actions">
+            <button class="btn warn">Escalate to Tier 3</button>
+            <button class="btn primary">Open response playbook</button>
+            <button class="btn">View raw detections</button>
+            <button class="btn">Export incident packet</button>
+            <button class="btn">Annotate &amp; close</button>
+          </div>
+
+        </div>
+      </article>
+    </main>
+
+  </div>
+
+  <footer class="footnote">
+    <div class="l">Alpha RACE · Multi-Event Detection Correlation &amp; Incident Story · ADL-1839</div>
+    <div class="r">Synthetic data · prototype for customer demonstration · Band Protocol × Zero Vector</div>
+  </footer>
+
+</body>
+</html>

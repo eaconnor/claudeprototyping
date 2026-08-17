@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Service Blueprint — QBR Analyst / EBR Flow · Ridgemont Financial Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --br-color-brand-primary:       #0066cc;
+  --br-color-brand-primary-hover: #0052a3;
+  --br-color-brand-primary-tint:  #e6f0fa;
+  --br-color-brand-accent:        #6d28d9;
+
+  --br-color-surface-app:         #f4f6fb;
+  --br-color-surface-panel:       #ffffff;
+  --br-color-surface-elevated:    #eef1f8;
+  --br-color-surface-sunken:      #e6eaf3;
+  --br-color-surface-hover:       #f0f3f8;
+
+  --br-color-ink-primary:         #0d1424;
+  --br-color-ink-secondary:       #45506b;
+  --br-color-ink-muted:           #6b7790;
+
+  --br-color-border-subtle:       #d8deeb;
+  --br-color-border-default:      #c3ccdd;
+  --br-color-border-strong:       #94a0b8;
+
+  --br-color-state-success:       #16a34a;
+  --br-color-state-success-tint:  #dcfce7;
+  --br-color-state-warning:       #d97706;
+  --br-color-state-warning-tint:  #fef3c7;
+  --br-color-state-danger:        #dc2626;
+  --br-color-state-danger-tint:   #fee2e2;
+  --br-color-state-info:          #0284c7;
+  --br-color-state-info-tint:     #e0f2fe;
+
+  --br-font-family-sans:  "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --br-font-family-brand: "Manrope", -apple-system, sans-serif;
+  --br-font-family-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  --br-radius-sm: 4px; --br-radius-md: 6px; --br-radius-lg: 10px;
+  --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --topbar-bg: #0a1730; --topbar-border: var(--br-color-brand-primary);
+  --alpha-accent: #a78bfa;
+
+  --lane-w: 236px;
+  --label-w: 168px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{ background: var(--br-color-surface-app); color: var(--br-color-ink-primary); font-family: var(--br-font-family-sans); font-size: 13.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 50; height: 48px;
+  background: var(--topbar-bg); border-bottom: 2px solid var(--topbar-border);
+  display: flex; align-items: center; gap: 12px; padding: 0 24px;
+}
+.topbar-wordmark { font-family: var(--br-font-family-brand); font-size: 12px; font-weight: 800; color: rgba(255,255,255,.92); letter-spacing:.04em; text-transform: uppercase; }
+.topbar-divider { width:1px; height:20px; background: rgba(255,255,255,.15); }
+.topbar-title { font-size: 13px; color: rgba(255,255,255,.65); }
+.topbar-spacer { flex: 1; }
+.topbar-badge { font-family: var(--br-font-family-mono); font-size: 11px; background: rgba(167,139,250,.2); color: var(--alpha-accent); border: 1px solid rgba(167,139,250,.35); border-radius: 4px; padding: 2px 8px; }
+
+.page { max-width: 1500px; margin: 0 auto; padding: 24px 24px 64px; display: flex; flex-direction: column; gap: 22px; }
+
+.title-block { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-lg); padding: 20px 24px; box-shadow: var(--br-shadow-sm); }
+.title-block h1 { font-family: var(--br-font-family-brand); font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.title-block .sub { font-size: 13px; color: var(--br-color-ink-secondary); max-width: 900px; }
+.title-block .meta { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { font-family: var(--br-font-family-mono); font-size: 11px; padding: 3px 10px; border-radius: 99px; border: 1px solid var(--br-color-border-default); color: var(--br-color-ink-secondary); background: var(--br-color-surface-elevated); white-space: nowrap; }
+
+.legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-md); padding: 10px 16px; font-size: 12px; }
+.legend b { font-family: var(--br-font-family-mono); font-size: 10.5px; text-transform: uppercase; color: var(--br-color-ink-muted); margin-right: 4px; }
+.tag { font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid; white-space: nowrap; }
+.tag.d { color: var(--br-color-state-success); background: var(--br-color-state-success-tint); border-color: rgba(22,163,74,.35); }
+.tag.r { color: var(--br-color-state-info); background: var(--br-color-state-info-tint); border-color: rgba(2,132,199,.3); }
+.tag.a { color: var(--br-color-state-warning); background: var(--br-color-state-warning-tint); border-color: rgba(217,119,6,.3); }
+.tag.q { color: var(--br-color-state-danger); background: var(--br-color-state-danger-tint); border-color: rgba(220,38,38,.3); }
+
+.bp-scroll { overflow-x: auto; border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); background: var(--br-color-surface-panel); }
+.bp-grid { display: grid; grid-template-columns: var(--label-w) repeat(8, var(--lane-w)); min-width: max-content; }
+
+.bp-cell { padding: 12px 14px; border-bottom: 1px solid var(--br-color-border-subtle); border-right: 1px solid var(--br-color-border-subtle); font-size: 12px; }
+.bp-grid > .bp-cell:nth-child(9n) { border-right: none; }
+
+.stage-head { position: sticky; top: 0; z-index: 10; background: var(--topbar-bg); color: #fff; font-family: var(--br-font-family-brand); font-weight: 800; font-size: 12px; padding: 12px 14px; border-right: 1px solid rgba(255,255,255,.12); display: flex; flex-direction: column; gap: 2px; }
+.stage-head .sn { font-family: var(--br-font-family-mono); font-size: 9.5px; color: var(--alpha-accent); text-transform: uppercase; letter-spacing: .05em; }
+.stage-head.corner { background: var(--br-color-surface-elevated); color: var(--br-color-ink-muted); }
+
+.row-label { position: sticky; left: 0; z-index: 5; background: var(--br-color-surface-elevated); font-family: var(--br-font-family-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--br-color-ink-muted); display: flex; align-items: flex-start; font-weight: 700; border-right: 2px solid var(--br-color-border-default); }
+
+.bp-cell.evidence { background: var(--br-color-surface-panel); }
+.bp-cell.customer { background: #fff; }
+.bp-cell.frontstage { background: var(--br-color-brand-primary-tint); }
+.bp-cell.backstage { background: #fdf4ff; }
+.bp-cell.support { background: var(--br-color-surface-elevated); }
+.bp-cell.empty { color: var(--br-color-ink-muted); font-style: italic; }
+
+.bp-cell ul { padding-left: 16px; display: flex; flex-direction: column; gap: 6px; }
+.bp-cell li { line-height: 1.45; }
+.bp-cell p { line-height: 1.45; }
+
+.line-row { grid-column: 1 / -1; }
+.line-row .line-cell {
+  padding: 5px 14px; font-family: var(--br-font-family-mono); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--br-color-brand-accent);
+  background: repeating-linear-gradient(90deg, rgba(109,40,217,.18) 0 10px, transparent 10px 18px);
+  border-top: 2px dashed rgba(109,40,217,.4); border-bottom: 2px dashed rgba(109,40,217,.4);
+}
+
+.gap-note { margin-top: 6px; font-size: 11px; color: var(--br-color-state-danger); }
+
+.register-wrap { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 20px 22px; overflow-x: auto; }
+.register-wrap h2, .qs-wrap h2 { font-family: var(--br-font-family-brand); font-size: 15px; font-weight: 800; margin-bottom: 12px; }
+table.reg { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 900px; }
+table.reg th { text-align: left; font-family: var(--br-font-family-mono); font-size: 10px; text-transform: uppercase; color: var(--br-color-ink-muted); padding: 8px 10px; border-bottom: 1px solid var(--br-color-border-default); }
+table.reg td { padding: 9px 10px; border-bottom: 1px solid var(--br-color-border-subtle); vertical-align: top; line-height: 1.45; }
+table.reg tr.risk td:first-child { color: var(--br-color-state-danger); font-weight: 700; }
+table.reg tr.asset td:first-child { color: var(--br-color-state-success); font-weight: 700; }
+
+.qs-wrap { background: var(--br-color-surface-panel); border: 1px solid var(--br-color-border-subtle); border-radius: var(--br-radius-lg); box-shadow: var(--br-shadow-sm); padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.qs-item { border-left: 3px solid var(--br-color-brand-primary); padding: 4px 0 4px 14px; }
+.qs-item .q { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.qs-item .a { font-size: 12.5px; color: var(--br-color-ink-secondary); }
+
+.synthesis { background: var(--br-color-surface-elevated); border: 2px dashed var(--br-color-border-strong); border-radius: var(--br-radius-lg); padding: 20px 22px; font-family: var(--br-font-family-mono); font-size: 12.5px; color: var(--br-color-ink-muted); text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-wordmark">Band Protocol</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-title">Service Blueprint — QBR Analyst / EBR Flow</span>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-badge">Council · Service Blueprint voice</span>
+</div>
+
+<div class="page">
+
+  <div class="title-block">
+    <h1>Service Blueprint — QBR Analyst / EBR Flow</h1>
+    <p class="sub">Grounded in <code>qbr-hifi.html</code> (working prototype, verified in-browser 2026-08-07) and <code>punch-list-hifi.md</code>. Two actors: Priya Shah (Delivery Lead, frontstage) and Jordan Ellis (technician, backstage). One client scoped: Ridgemont Financial Services, out of Laissez Faire Fellows' 142-client book.</p>
+    <div class="meta">
+      <span class="pill">Full markdown: service-blueprint.md</span>
+      <span class="pill">Council voice: Service Blueprint (Shostack/Bitner)</span>
+      <span class="pill">Tier 1 · Concept — most backstage is named, not built, on purpose</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><b>Tags</b></span>
+    <span class="tag d">D</span> demonstrated — built and behaves this way today
+    <span class="tag r">R</span> spec-grounded — cited to a real spec, not invented here
+    <span class="tag a">A</span> assumed — named in the prototype's own copy, not built
+    <span class="tag q">?</span> open — named as unsolved by the build itself
+  </div>
+
+  <div class="bp-scroll">
+    <div class="bp-grid">
+
+      <!-- header row -->
+      <div class="stage-head corner">Lane ↓ / Stage →</div>
+      <div class="stage-head"><span class="sn">Stage 1</span>Onboarding<span class="sn" style="margin-top:2px;">Priya · once</span></div>
+      <div class="stage-head"><span class="sn">Stage 2</span>Always Current<span class="sn" style="margin-top:2px;">ongoing monitoring</span></div>
+      <div class="stage-head"><span class="sn">Stage 3</span>Register Build<span class="sn" style="margin-top:2px;">Jordan · pure backstage</span></div>
+      <div class="stage-head"><span class="sn">Stage 4</span>Draft Work<span class="sn" style="margin-top:2px;">Priya · 8-tab structure</span></div>
+      <div class="stage-head"><span class="sn">Stage 5</span>Finalize<span class="sn" style="margin-top:2px;">per-tab, not global</span></div>
+      <div class="stage-head"><span class="sn">Stage 6</span>The Room<span class="sn" style="margin-top:2px;">client-facing meeting</span></div>
+      <div class="stage-head"><span class="sn">Stage 7</span>Follow-Up<span class="sn" style="margin-top:2px;">post-meeting</span></div>
+      <div class="stage-head"><span class="sn">Stage 8</span>Loop Closes<span class="sn" style="margin-top:2px;">next cycle's onboarding</span></div>
+
+      <!-- PHYSICAL EVIDENCE -->
+      <div class="row-label">Physical<br>evidence</div>
+      <div class="bp-cell evidence"><ul>
+        <li>6-step wizard</li>
+        <li>142-client tier table</li>
+        <li>Template-vs-import branch cards</li>
+        <li>Auths &amp; permissions table</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell evidence"><ul>
+        <li>Portfolio table</li>
+        <li>Tier-count pills</li>
+        <li>Cadence / risk flags</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell evidence"><ul>
+        <li>4-tier confidence badges</li>
+        <li>Per-finding evidence trail cards</li>
+        <li>Baseline Read table</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell evidence"><ul>
+        <li>8-tab strip</li>
+        <li>Decision-prompt cards</li>
+        <li>Accept / Edit / Dispute buttons</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell evidence"><ul>
+        <li>"✓ Finalized" per-tab state</li>
+        <li>N/8 finalized → Ready pill</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell evidence"><ul>
+        <li>Finalized deck, presented live</li>
+        <li>Agenda meeting-details header</li>
+      </ul><span class="tag d">D</span> structure only</div>
+      <div class="bp-cell evidence"><ul>
+        <li>"This cycle's commitments" list</li>
+        <li>Pasted summary-email textarea</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell evidence"><ul>
+        <li>"Pulled from last EBR" card</li>
+        <li>Live promise-status pills</li>
+      </ul><span class="tag d">D</span></div>
+
+      <!-- CUSTOMER ACTIONS -->
+      <div class="row-label">Customer<br>actions<br>(Ridgemont)</div>
+      <div class="bp-cell customer empty">none — onboarding is MSP-internal</div>
+      <div class="bp-cell customer empty">none</div>
+      <div class="bp-cell customer empty">none</div>
+      <div class="bp-cell customer empty">none yet</div>
+      <div class="bp-cell customer empty">none</div>
+      <div class="bp-cell customer"><p><strong>Derek Iannotti (owner)</strong> attends via Teams, is walked through the deck, hears the renewal ask.</p><span class="tag d">D</span> structure; content fictional</div>
+      <div class="bp-cell customer"><p>Implicitly makes commitments in the room — captured after the fact, not live.</p></div>
+      <div class="bp-cell customer"><p>Derek's own words from last cycle re-enter as a takeaway.</p></div>
+
+      <!-- LINE OF INTERACTION -->
+      <div class="line-row"><div class="line-cell">Line of interaction — real only at Stage 6, where a customer first appears</div></div>
+
+      <!-- FRONTSTAGE -->
+      <div class="row-label">Frontstage<br>(Priya / UI)</div>
+      <div class="bp-cell frontstage"><ul>
+        <li>Picks QBR Analyst Coworker</li>
+        <li>Confirms client list, tiers, industry flags</li>
+        <li>Chooses template vs. import</li>
+        <li>Uploads/pastes last cycle's history</li>
+        <li>Sets Value Ledger baseline</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell frontstage"><p>Standing view of the whole book — replaces the old "Prep-Assemble" step.</p><span class="tag d">D</span></div>
+      <div class="bp-cell frontstage empty">none by design — "his register, read-only to Priya"</div>
+      <div class="bp-cell frontstage"><ul>
+        <li>Accept / Edit / Dispute → Jordan</li>
+        <li>Resolves ask-client &amp; gap findings</li>
+        <li>Score recalculates live</li>
+      </ul><span class="tag d">D</span></div>
+      <div class="bp-cell frontstage"><p>Each tab owner finalizes independently, own pace.</p><span class="tag d">D</span> resolved PRIME item</div>
+      <div class="bp-cell frontstage"><p>Presents. Only the finalized draft is meant to be shown.</p>
+        <div class="gap-note">No access-control split exists between internal draft &amp; client-facing export. <span class="tag a">A</span></div>
+      </div>
+      <div class="bp-cell frontstage"><ul>
+        <li>Drafts this cycle's promises</li>
+        <li>Pastes sent summary email</li>
+      </ul>
+        <div class="gap-note">Promises auto-drafted from roadmap, not from the room. <span class="tag a">A</span></div>
+      </div>
+      <div class="bp-cell frontstage"><p>Uploads/pastes history; sees live promise status vs. current register.</p><span class="tag d">D</span> behavior; <span class="tag a">A</span> fidelity</div>
+
+      <!-- LINE OF VISIBILITY -->
+      <div class="line-row"><div class="line-cell">Line of visibility — frontstage above / backstage below</div></div>
+
+      <!-- BACKSTAGE -->
+      <div class="row-label">Backstage<br>(Jordan / AI Experts)</div>
+      <div class="bp-cell backstage"><ul>
+        <li>ConnectWise client/tier pull</li>
+        <li>MCP gateway issues scoped tokens</li>
+        <li>EBR-history parse into takeaways/promises/risks</li>
+      </ul><span class="tag a">A</span> pull &amp; parse · <span class="tag r">R</span> gateway scoping</div>
+      <div class="bp-cell backstage"><ul>
+        <li>Cross-source join formulas (shown, not run)</li>
+        <li>Risk-triggered nudge, off-cadence</li>
+      </ul><span class="tag a">A</span></div>
+      <div class="bp-cell backstage"><ul>
+        <li>Per-source reconciliation into confidence tier</li>
+        <li>Baseline Read vs. peer + stretch client</li>
+      </ul>
+        <div class="gap-note">Runbook + Expert governance layer spec'd, zero UI surface anywhere. <span class="tag a">A</span></div>
+      </div>
+      <div class="bp-cell backstage"><p>Escalation sets status to "Escalated → Jordan."</p>
+        <div class="gap-note">No Jordan-side screen exists to receive or resolve it. <span class="tag a">A</span> confirmed gap</div>
+      </div>
+      <div class="bp-cell backstage empty">none new — pure state derivation</div>
+      <div class="bp-cell backstage empty">none at this stage</div>
+      <div class="bp-cell backstage empty">none defined — least-instrumented tab in the build</div>
+      <div class="bp-cell backstage"><div class="gap-note">Document parser that would extract from a real upload doesn't exist — runs on one hand-authored history object. <span class="tag a">A</span></div></div>
+
+      <!-- LINE OF INTERNAL INTERACTION -->
+      <div class="line-row"><div class="line-cell">Line of internal interaction — backstage above / support systems below</div></div>
+
+      <!-- SUPPORT PROCESSES -->
+      <div class="row-label">Support<br>processes<br>(systems / specs)</div>
+      <div class="bp-cell support"><p>ConnectWise, N-central, Cove, Adlumin, Entra ID, KnowBe4, Inforcer — 7 sources, each scoped read-only to one client.</p><span class="tag r">R</span> scoping mechanism · <span class="tag a">A</span> specific pulls</div>
+      <div class="bp-cell support"><p>Same 7 sources + an unbuilt cross-source join layer.</p><span class="tag a">A</span></div>
+      <div class="bp-cell support"><p>Same 7 sources + a cross-tenant read of a peer client's data.</p>
+        <div class="gap-note">No consent/authorization model for reading across tenants. <span class="tag q">?</span> named unsolved by the build itself</div>
+      </div>
+      <div class="bp-cell support"><p>Security-score deduction math, computed live off the findings array.</p><span class="tag d">D</span></div>
+      <div class="bp-cell support empty">none new</div>
+      <div class="bp-cell support empty">none</div>
+      <div class="bp-cell support empty">none — weakest joint in the build</div>
+      <div class="bp-cell support empty">none — biggest named hole in the whole loop</div>
+
+    </div>
+  </div>
+
+  <div class="register-wrap">
+    <h2>Register — risks and assets</h2>
+    <table class="reg">
+      <thead><tr><th style="width:60px;">Type</th><th style="width:40px;">Gate</th><th>Named item</th><th style="width:70px;">Evidence</th><th>Crux test (risk) / Compounds-or-decays (asset)</th></tr></thead>
+      <tbody>
+        <tr class="risk"><td>Risk</td><td>3</td><td>EBR-history document parser doesn't exist (Stage 8)</td><td><span class="tag a">A</span></td><td><strong>Crux.</strong> If it can't reliably extract promises/risks from an arbitrary upload, "closes the loop" collapses back into the manual re-entry the product exists to remove.</td></tr>
+        <tr class="risk"><td>Risk</td><td>3</td><td>Dispute → Jordan has no receiving screen (Stage 4)</td><td><span class="tag d">D</span> confirmed</td><td><strong>Crux.</strong> "Ownership, not rubber-stamp" is the rail's own stated thesis — a dispute that goes nowhere visible makes it untestable, not just incomplete.</td></tr>
+        <tr class="risk"><td>Risk</td><td>3</td><td>Runbook / Expert governance layer has zero UI surface (Stage 3)</td><td><span class="tag a">A</span></td><td>Crux for trust, not for this build's UX. If it never gets built, every claim about what Jordan's backstage is allowed to do stays unenforceable.</td></tr>
+        <tr class="risk"><td>Risk</td><td>2/3</td><td>Cross-tenant benchmarking has no consent model (Stage 3)</td><td><span class="tag q">?</span></td><td><strong>Crux.</strong> Named unsolved by the build itself. Resolved badly, Baseline Read has to be cut or restricted to same-tenant data.</td></tr>
+        <tr class="risk"><td>Risk</td><td>3</td><td>Internal-draft vs. client-facing export has no access control (Stage 6)</td><td><span class="tag a">A</span></td><td>Note, not quite a crux yet — nothing fails today (single-user prototype), but it fails loudly the first time two clearance levels touch the same client.</td></tr>
+        <tr class="asset"><td>Asset</td><td>3</td><td>MCP gateway tenant/client double-filter scoping</td><td><span class="tag r">R</span> verified</td><td><strong>Compounds.</strong> Real infrastructure, cited to a real spec. Every future Coworker/Expert inherits it for free.</td></tr>
+        <tr class="asset"><td>Asset</td><td>3</td><td>Confidence-tier vocabulary already authored per finding</td><td><span class="tag d">D</span> as content</td><td><strong>Compounds, conditionally.</strong> A future reconciliation engine has a schema to target rather than invent — but decays if nobody ever builds the engine.</td></tr>
+        <tr class="asset"><td>Asset</td><td>2</td><td>Comparable-client cohort named before Baseline Read needed it</td><td><span class="tag a">A</span></td><td><strong>Decays.</strong> One illustrative example, not a live selection algorithm — a head start, not a moat.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="qs-wrap">
+    <h2>The four open questions — answered where the build permits</h2>
+    <div class="qs-item">
+      <div class="q">1. Templating — how does a customer's own EBR structure get in, and does the system feed back into it?</div>
+      <div class="a">Named, not built. The import branch exists at onboarding <span class="tag a">A</span>. No feedback mechanism exists for a structure change mid-relationship propagating anywhere — not even named as a future stage yet.</div>
+    </div>
+    <div class="qs-item">
+      <div class="q">2. What defines "good" — a baseline standard, or invented per-client?</div>
+      <div class="a">The build already answers this without anyone deciding it on purpose: Baseline Read compares against a peer cohort (same tier + industry), not an absolute standard — cohort-relative, chosen once at onboarding, never revisited per finding. <span class="tag d">D</span> as built.</div>
+    </div>
+    <div class="qs-item">
+      <div class="q">3. Co-authoring — is Accept/Edit/Dispute real threading, or one-directional?</div>
+      <div class="a">One-directional, confirmed. Real threading needs at minimum: a Jordan-side queue, a resolution action he can take, and a way for Priya to see what he resolved and why — three missing screens, not a small patch.</div>
+    </div>
+    <div class="qs-item">
+      <div class="q">4. The logistical magic — does it have a backstage process now?</div>
+      <div class="a">Named more precisely, not solved. Reconciliation has vocabulary + authored reasoning but no engine. Cross-tenant benchmarking has a named-but-unauthorized cohort. History extraction has zero parser. API normalization across the 7 sources has never been named at all — this build can't even point to a stub.</div>
+    </div>
+  </div>
+
+  <div class="synthesis">[0% Claude — fill this in]</div>
+
+</div>
+</body>
+</html>

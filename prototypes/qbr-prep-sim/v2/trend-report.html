@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N-able Harness Trend Report — businesses like yours · H1 2026 · concept artifact</title>
+<script>
+/* apply mode pref before first paint — shared localStorage key: apx-mode-pref
+   light-mode-first: this artifact is print-like, so the no-preference default is LIGHT */
+(function () {
+  try {
+    var pref = localStorage.getItem('apx-mode-pref') || 'light';
+    var dark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ===== canvas — [CS: UNKNOWN], no dark-mode Apex pull yet ===== */
+  --bg-app: #0b1220;       /* main app canvas */
+  --bg-surface: #121b2e;   /* cards, panels */
+  --bg-elevated: #182238;  /* hover, raised */
+  --bg-deep: #070d18;      /* wells, insets */
+  --border: #1f2c47;
+  --border-strong: #2a3a5c;
+
+  /* ===== text — [CS: UNKNOWN], no dark-mode Apex pull yet ===== */
+  --text-primary: #e6edf7;
+  --text-secondary: #9aa8c2;
+  --text-tertiary: #6b7a96;
+  --text-muted: #4b5772;
+
+  /* ===== brand — [CS: VERIFIED] live Figma pull, Apex 2.0, 2026-07-31 ===== */
+  --brand: #c046ff;        /* color/brand/base */
+  --brand-strong: #8500cc; /* surface/app/product-bar/product-block */
+  --brand-soft: rgba(192,70,255,0.14);
+
+  /* ===== status — [CS: UNKNOWN], only fill/active (#058142, maps to "low") verified ===== */
+  --critical: #ef4444;  --critical-soft: rgba(239,68,68,0.13);
+  --high: #f97316;      --high-soft: rgba(249,115,22,0.13);
+  --medium: #eab308;    --medium-soft: rgba(234,179,8,0.12);
+  --low: #058142;       --low-soft: rgba(5,129,66,0.12);  /* [CS: VERIFIED] fill/active */
+
+  /* ===== Bradley / council accent (violet) — Band's own, not Apex ===== */
+  --alpha-accent: #a78bfa;  --alpha-soft: rgba(167,139,250,0.13);
+
+  /* ===== DISTINCT SURFACES — topbar + Bradley rail are their OWN color ===== */
+  --topbar-bg: #0a1730;          /* brand cast, darker than app — [CS: UNKNOWN] dark variant */
+  --topbar-border: var(--brand); /* 2px brand line under topbar */
+  --rail-bg: #16112e;            /* violet-tinted — visibly NOT the app */
+  --rail-border: var(--alpha-accent);  /* 4px solid left border */
+
+  /* ===== shape + type — [CS: VERIFIED] radius; font family verified, JetBrains Mono is NOT Apex-sourced ===== */
+  --radius-sm: 2px;  --radius-md: 4px;  --radius-lg: 16px;  --radius-full: 999px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;      /* fonts/context/brand/family */
+  --font-brand: 'Manrope', -apple-system, sans-serif;                    /* product-bar/heading font, verified */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;                /* Band Protocol convention for metrics/code — not from Apex */
+}
+
+/* Light mode (3-way toggle: light · dark · system) — [CS: VERIFIED] live Figma pull, Apex 2.0, 2026-07-31 */
+[data-theme="light"] {
+  --bg-app: #fafafa;       /* surface/container/tertiary/default */
+  --bg-surface: #ffffff;   /* surface/container/default, surface/app/background/default */
+  --bg-elevated: #f8ebff;  /* surface/container/active/default — brand-tinted hover */
+  --bg-deep: #fafafa;
+  --border: #d5d5d5;       /* border/default */
+  --border-strong: #c046ff; /* border/container/active */
+  --text-primary: #18191a;  /* content/default/heading */
+  --text-secondary: #2e2e33; /* content/default/body */
+  --text-tertiary: #404047;  /* content/default/secondary */
+  --text-muted: #5c5c66;     /* content/default/placeholder */
+  --topbar-bg: #0a1730;          /* keep topbar dark + branded in both modes — [CS: UNKNOWN] */
+  --rail-bg: #f0eafa;            /* violet-tinted light surface */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+a { color: var(--brand); }
+[data-theme="light"] a { color: var(--brand-strong); }
+
+/* ============ CHIPS + BADGES + BUTTONS (verbatim from v2 index) ============ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.chip.wrap { white-space: normal; }
+.chip.cs { border-color: var(--medium); color: var(--medium); background: var(--medium-soft); }
+.chip.cs-a { border-color: var(--high); color: var(--high); background: var(--high-soft); }
+.chip.cs-d { border-color: var(--low); color: var(--text-secondary); }
+.chip.seed { border-style: dashed; color: var(--text-tertiary); }
+.chip.src {
+  border-color: var(--brand); color: var(--brand); background: var(--brand-soft);
+  text-transform: none;
+}
+[data-theme="light"] .chip.src { color: var(--brand-strong); }
+
+.btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none;
+}
+.btn:hover { border-color: var(--brand); }
+[data-theme="light"] a.btn { color: var(--text-primary); }
+
+/* ============ TOPBAR — distinct surface, dark in both modes ============ */
+.topbar {
+  position: sticky; top: 0; z-index: 60;
+  background: var(--topbar-bg);
+  border-bottom: 2px solid var(--topbar-border);
+  padding: 8px 18px;
+  display: flex; align-items: center; gap: 14px;
+  color: #e6edf7;
+  min-height: 48px;
+}
+.topbar .product {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  display: flex; align-items: center; gap: 8px;
+  color: #e6edf7;
+}
+.topbar .product .block {
+  background: var(--brand-strong);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 2px 8px;
+  font-size: 0.8rem;
+}
+.topbar .crumb { color: #9aa8c2; font-size: 0.82rem; }
+.topbar .spacer { flex: 1; }
+.topbar .chip { background: rgba(255,255,255,0.06); border-color: rgba(192,70,255,0.5); color: #cbb8e8; }
+.mode-toggle {
+  display: inline-flex;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.mode-toggle button {
+  background: transparent;
+  color: #9aa8c2;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+}
+.mode-toggle button[aria-pressed="true"] { background: var(--brand-strong); color: #fff; }
+
+/* ============ CONCEPT BANNER — [A — proposed product surface] ============ */
+.concept-banner {
+  border: 1px solid var(--high);
+  background: var(--high-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin: 18px auto 0;
+  max-width: 900px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.concept-banner strong { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: var(--text-primary); }
+
+/* ============ PERMANENT TIER BANNER — sticky, Estimated/Unverified ============ */
+.tier-banner {
+  position: sticky;
+  top: 48px;
+  z-index: 50;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-strong);
+  padding: 8px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 12px -8px rgba(0,0,0,0.4);
+}
+.tier-banner .tag {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: var(--medium);
+  border: 1px solid var(--medium);
+  background: var(--medium-soft);
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  white-space: nowrap;
+}
+.tier-banner .txt { flex: 1; min-width: 260px; }
+
+/* ============ REPORT DOC (typography verbatim from v2 index §④) ============ */
+.report-wrap { padding: 20px 18px 60px; }
+.report-doc {
+  max-width: 900px;
+  margin: 18px auto 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 14px 40px -22px rgba(0,0,0,0.45);
+  overflow: hidden;
+}
+[data-theme="light"] .report-doc { box-shadow: 0 18px 50px -30px rgba(24,25,26,0.35); }
+
+/* cover block */
+.rpt-cover {
+  padding: 56px 64px 40px;
+  border-bottom: 4px solid var(--brand);
+  background:
+    radial-gradient(1200px 300px at 10% -20%, var(--brand-soft), transparent 70%),
+    var(--bg-surface);
+}
+.rpt-cover .eyebrow {
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--brand); margin-bottom: 14px;
+}
+[data-theme="light"] .rpt-cover .eyebrow { color: var(--brand-strong); }
+.rpt-cover h1 {
+  font-family: var(--font-brand); font-size: 2.1rem; font-weight: 800;
+  line-height: 1.15; margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.rpt-cover .period { font-size: 1rem; color: var(--text-secondary); margin-bottom: 22px; }
+.rpt-cover .prep-lines { font-size: 0.82rem; color: var(--text-tertiary); line-height: 1.7; margin-bottom: 18px; }
+.rpt-cover .prep-lines strong { color: var(--text-secondary); font-weight: 600; }
+.rpt-cover .cover-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rpt-cover .cover-chips .lbl {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em; align-self: center;
+}
+
+/* section anatomy */
+.rpt-section { padding: 40px 64px; border-bottom: 1px solid var(--border); }
+.rpt-section:last-of-type { border-bottom: none; }
+.rpt-kicker {
+  font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px;
+}
+.rpt-section h2 {
+  font-family: var(--font-brand); font-size: 1.4rem; font-weight: 800;
+  margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.rpt-section .rule { width: 44px; height: 3px; background: var(--brand); border-radius: var(--radius-full); margin: 10px 0 18px; }
+.rpt-sowhat {
+  font-size: 1.02rem; line-height: 1.65; color: var(--text-primary);
+  max-width: 64ch; margin-bottom: 16px; font-weight: 500;
+}
+.rpt-section p { font-size: 0.88rem; color: var(--text-secondary); max-width: 68ch; margin-bottom: 12px; }
+.rpt-section ul { padding-left: 20px; max-width: 68ch; margin-bottom: 12px; }
+.rpt-section li { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 6px; }
+.rpt-srcline { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 18px; }
+.rpt-srcline .lbl { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* talking-point strip — the love language of the business owner */
+.talk-strip {
+  border-left: 4px solid var(--brand);
+  background: var(--brand-soft);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 16px 22px;
+  margin: 20px 0 4px;
+  max-width: 66ch;
+}
+.talk-strip .tp-label {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--brand); display: block; margin-bottom: 6px;
+}
+[data-theme="light"] .talk-strip .tp-label { color: var(--brand-strong); }
+.talk-strip .tp-quote {
+  font-size: 1.02rem; font-style: italic; line-height: 1.6;
+  color: var(--text-primary); font-weight: 500;
+}
+
+/* trend card anatomy — this artifact's own unit */
+.trend-h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; max-width: 64ch; }
+.trend-lbl {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); display: block; margin: 14px 0 4px;
+}
+.cohort-signal {
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-app);
+  padding: 12px 16px;
+  margin: 14px 0;
+  max-width: 66ch;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px;
+}
+.cohort-signal .num { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; color: var(--brand); }
+[data-theme="light"] .cohort-signal .num { color: var(--brand-strong); }
+.cohort-signal .what { font-size: 0.82rem; color: var(--text-secondary); flex: 1; min-width: 220px; }
+.cohort-signal .chips { display: flex; flex-wrap: wrap; gap: 4px; width: 100%; }
+
+/* cohort snapshot table */
+.rpt-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-bottom: 12px; }
+.rpt-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary);
+  padding: 10px 12px; border-bottom: 2px solid var(--border-strong);
+}
+.rpt-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+.rpt-table tr:last-child td { border-bottom: none; }
+.rpt-table .rowlead { font-weight: 600; color: var(--text-primary); }
+.rpt-table .mono { font-family: var(--font-mono); font-size: 0.78rem; }
+.rr-note { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); margin-bottom: 8px; max-width: none; }
+
+/* feed list in the honesty block */
+.feed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+.feed-card { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-app); padding: 14px 16px; }
+.feed-card h4 { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand); margin-bottom: 8px; }
+[data-theme="light"] .feed-card h4 { color: var(--brand-strong); }
+.feed-card ul { padding-left: 16px; margin-bottom: 8px; }
+.feed-card li { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 5px; }
+.feed-card .note { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); }
+@media (max-width: 760px) {
+  .feed-grid { grid-template-columns: 1fr; }
+  .rpt-cover, .rpt-section { padding-left: 24px; padding-right: 24px; }
+}
+
+/* footer */
+.rpt-foot {
+  max-width: 900px; margin: 16px auto 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  font-size: 0.74rem; color: var(--text-tertiary);
+}
+.rpt-foot .attr { font-family: var(--font-mono); font-size: 0.66rem; }
+
+@media print {
+  .topbar, .tier-banner .tag { position: static; }
+  .topbar { display: none; }
+  .report-doc { box-shadow: none; border: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOPBAR — distinct surface ============ -->
+<header class="topbar">
+  <span class="product"><span class="block">N-able</span> Harness</span>
+  <span class="crumb">qbr-prep-sim v2 · artifact: Trend Report (concept)</span>
+  <span class="spacer"></span>
+  <span class="chip wrap">[A — proposed product surface, Beth 2026-07-31]</span>
+  <div class="mode-toggle" role="group" aria-label="Colour mode">
+    <button type="button" id="mode-light" aria-pressed="false" onclick="setMode('light')">light</button>
+    <button type="button" id="mode-dark" aria-pressed="false" onclick="setMode('dark')">dark</button>
+    <button type="button" id="mode-system" aria-pressed="false" onclick="setMode('system')">system</button>
+  </div>
+</header>
+
+<!-- ============ PERMANENT TIER BANNER ============ -->
+<div class="tier-banner" role="note" aria-label="Evidence tier — permanent">
+  <span class="tag">Estimated/Unverified — always</span>
+  <span class="txt">Every claim in this report is Estimated/Unverified — web-gathered and cohort-inferred, never platform telemetry. This banner does not dismiss.</span>
+</div>
+
+<!-- ============ CONCEPT BANNER ============ -->
+<div class="concept-banner" role="note">
+  <strong>[A — proposed product surface, Beth 2026-07-31]</strong> — the "N-able Harness Trend Report" is a concept artifact from the qbr-prep-sim prototype. No such product exists. Feeds named below are real publications; every number, percentage, and cohort value on this page is SEED DATA — invented 2026-07-31.
+</div>
+
+<main class="report-wrap">
+  <article class="report-doc" aria-label="N-able Harness Trend Report — concept artifact">
+
+    <!-- ============ COVER ============ -->
+    <div class="rpt-cover">
+      <div class="eyebrow">N-able Harness · Trend Report · businesses like yours</div>
+      <h1>Trend Report</h1>
+      <p class="period">H1 2026 · January – June</p>
+      <div class="prep-lines">
+        <strong>Prepared for Dibbler &amp; Sons Chartered Accountants Ltd</strong> · via SuperN-able Shop<br>
+        Reviewed and released by J. Garlick, Delivery Lead — an agent drafts this report; a person releases it<br>
+        Cohort basis: published sector sources + fleet-cohort aggregates (see "How this report is made")
+      </div>
+      <div class="cover-chips">
+        <span class="lbl">cohort</span>
+        <span class="chip src">UK accountancy practices</span>
+        <span class="chip src">35–75 staff</span>
+        <span class="chip src">North of England</span>
+        <span class="chip src">prepared for Dibbler &amp; Sons Chartered Accountants Ltd</span>
+        <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+        <span class="chip cs-a wrap">[A — proposed product surface, Beth 2026-07-31]</span>
+      </div>
+    </div>
+
+    <!-- ============ HOW THIS REPORT IS MADE ============ -->
+    <section class="rpt-section" aria-label="How this report is made">
+      <div class="rpt-kicker">Provenance · read this first</div>
+      <h2>How this report is made</h2>
+      <div class="rule"></div>
+      <p class="rpt-sowhat">Nothing on this page comes from your systems. Two kinds of feed produce it, and both arrive Estimated/Unverified — this report is for conversation and planning, never for proof.</p>
+      <div class="feed-grid">
+        <div class="feed-card">
+          <h4>Feed A · Public publications, agent-swept</h4>
+          <ul>
+            <li>NCSC Annual Review</li>
+            <li>ICO data security incident trends</li>
+            <li>Verizon DBIR sector cuts</li>
+            <li>KnowBe4 Phishing by Industry Benchmarking Report</li>
+            <li>Cyber Essentials scheme updates</li>
+            <li>Microsoft lifecycle announcements</li>
+          </ul>
+          <p class="note">[CS: HIGH — these exist as publications; every figure attributed to them on this page is invented] · SEED DATA — invented 2026-07-31</p>
+        </div>
+        <div class="feed-card">
+          <h4>Feed B · Fleet-cohort aggregates</h4>
+          <ul>
+            <li>"Peers like you in the N-able fleet" — anonymised aggregates from practices matching the cohort chips on the cover.</li>
+            <li>Small cohorts are suppressed by k-anonymity, so no practice is identifiable — the suppression mechanism exists in the Value Ledger spec, T039–041 [D].</li>
+            <li>A cross-tenant cohort product would need its own privacy/GDPR review before any of this could be real [?].</li>
+          </ul>
+          <p class="note">cohort values on this page: SEED DATA — invented 2026-07-31, never real telemetry</p>
+        </div>
+      </div>
+      <p class="rr-note">tier: everything below renders Estimated/Unverified, always — the tier is structural, not a disclaimer that wears off</p>
+    </section>
+
+    <!-- ============ TREND 1 · MTD ============ -->
+    <section class="rpt-section" aria-label="Trend 1 — Making Tax Digital">
+      <div class="rpt-kicker">Trend 01 · regulation</div>
+      <h2>Making Tax Digital deadlines are forcing client digitisation</h2>
+      <div class="rule"></div>
+      <span class="trend-lbl">What we're seeing</span>
+      <p>MTD for Income Tax pulls sole traders and landlords into quarterly digital filing, and the pressure lands on their accountants first. Practices across the cohort report clients arriving with shoeboxes and leaving expecting a portal.</p>
+      <span class="trend-lbl">For a practice like yours</span>
+      <p class="rpt-sowhat">Your own systems become either the bottleneck or the thing that wins you the work. A practice that can onboard a digitising client in a week takes that client from the practice that cannot.</p>
+      <div class="cohort-signal">
+        <span class="num">3 in 5</span>
+        <span class="what">cohort practices report active client pressure to digitise records ahead of MTD deadlines this half.</span>
+        <span class="chips"><span class="chip seed">cohort signal · SEED DATA — invented 2026-07-31</span><span class="chip cs">Estimated/Unverified</span></span>
+      </div>
+      <div class="rpt-srcline"><span class="lbl">fed by</span><span class="chip src">agent web sweep — HMRC / sector press</span><span class="chip src">fleet-cohort aggregate [A — proposed]</span></div>
+      <div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">When a client asks you to take them digital, do you want your answer to be a plan or an apology?</span></div>
+    </section>
+
+    <!-- ============ TREND 2 · AI CONFIDENTIALITY ============ -->
+    <section class="rpt-section" aria-label="Trend 2 — AI and confidentiality">
+      <div class="rpt-kicker">Trend 02 · technology</div>
+      <h2>AI adoption in practice workflows raises the confidentiality bar</h2>
+      <div class="rule"></div>
+      <span class="trend-lbl">What we're seeing</span>
+      <p>Firms around you are adopting AI for bookkeeping, drafting, and client correspondence — and their clients are asking harder questions about where the numbers go. The question has moved from "do you use AI?" to "show me your controls."</p>
+      <span class="trend-lbl">For a practice like yours</span>
+      <p class="rpt-sowhat">The practices that can evidence their controls will win the nervous clients the others lose. Confidentiality has always been your product; AI just made it something you have to prove.</p>
+      <div class="cohort-signal">
+        <span class="num">41%</span>
+        <span class="what">of cohort practices have adopted AI tools in client-facing workflows; far fewer report a written AI-use policy to show a client who asks.</span>
+        <span class="chips"><span class="chip seed">cohort signal · SEED DATA — invented 2026-07-31</span><span class="chip cs">Estimated/Unverified</span></span>
+      </div>
+      <div class="rpt-srcline"><span class="lbl">fed by</span><span class="chip src">agent web sweep — NCSC guidance / sector press</span><span class="chip src">fleet-cohort aggregate [A — proposed]</span></div>
+      <div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">If your biggest client asked tomorrow "where does my data go when your team uses AI?" — what would you hand them?</span></div>
+    </section>
+
+    <!-- ============ TREND 3 · CYBER-INSURANCE ============ -->
+    <section class="rpt-section" aria-label="Trend 3 — cyber-insurance renewals">
+      <div class="rpt-kicker">Trend 03 · commercial</div>
+      <h2>Cyber-insurance renewals now demand documented controls</h2>
+      <div class="rule"></div>
+      <span class="trend-lbl">What we're seeing</span>
+      <p>Renewal forms across the cohort have grown teeth: insurers want documented MFA, endpoint coverage, and tested backups before they quote. Practices that answer "partially" are seeing longer forms, not shorter premiums.</p>
+      <span class="trend-lbl">For a practice like yours</span>
+      <p class="rpt-sowhat">What you can prove is becoming as commercially important as what you run. The evidence pack you assemble for the insurer is the same one a client's due-diligence questionnaire will ask for.</p>
+      <div class="cohort-signal">
+        <span class="num">7 in 10</span>
+        <span class="what">cohort renewals this half asked for documented MFA evidence, up from roughly half a year ago.</span>
+        <span class="chips"><span class="chip seed">cohort signal · SEED DATA — invented 2026-07-31</span><span class="chip cs">Estimated/Unverified</span></span>
+      </div>
+      <div class="rpt-srcline"><span class="lbl">fed by</span><span class="chip src">agent web sweep — insurance market reports</span><span class="chip src">fleet-cohort aggregate [A — proposed]</span></div>
+      <div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">Would you rather build the evidence pack in September on your schedule, or in the week the renewal form arrives?</span></div>
+    </section>
+
+    <!-- ============ TREND 4 · SEASONAL PHISHING ============ -->
+    <section class="rpt-section" aria-label="Trend 4 — seasonal phishing targeting">
+      <div class="rpt-kicker">Trend 04 · threat</div>
+      <h2>Phishing against accountancy practices clusters around filing deadlines</h2>
+      <div class="rule"></div>
+      <span class="trend-lbl">What we're seeing</span>
+      <p>Industry benchmark reporting describes a seasonal pattern: lure emails impersonating HMRC, clients, and payroll spike in the fortnights before filing deadlines, when accounts teams are busiest and most likely to click. The attacker's calendar is your calendar.</p>
+      <span class="trend-lbl">For a practice like yours</span>
+      <p class="rpt-sowhat">Your riskiest inbox weeks are the same weeks your team can least afford a bad click. Awareness refreshers land best in the quiet month before the season, not during it.</p>
+      <div class="cohort-signal">
+        <span class="num">peak: late Jan</span>
+        <span class="what">cohort phish-prone rate in H1 peaked in the fortnight before the 31 January self-assessment deadline — the highest reading of the half.</span>
+        <span class="chips"><span class="chip seed">cohort signal · SEED DATA — invented 2026-07-31</span><span class="chip cs">Estimated/Unverified</span></span>
+      </div>
+      <div class="rpt-srcline"><span class="lbl">fed by</span><span class="chip src">KnowBe4 Phishing by Industry Benchmarking Report (genre, not figures)</span><span class="chip src">fleet-cohort aggregate [A — proposed]</span></div>
+      <div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">If someone in accounts clicks the wrong email on the 28th of January, what does that week cost you? That is the week we train for.</span></div>
+    </section>
+
+    <!-- ============ TREND 5 · WINDOWS 10 EOS TAIL ============ -->
+    <section class="rpt-section" aria-label="Trend 5 — OS end-of-life replacement budgets">
+      <div class="rpt-kicker">Trend 05 · lifecycle</div>
+      <h2>The Windows 10 end-of-support tail is driving replacement budgets</h2>
+      <div class="rule"></div>
+      <span class="trend-lbl">What we're seeing</span>
+      <p>Per Microsoft lifecycle announcements, Windows 10's end of support has left a long tail of machines that still work but no longer receive fixes. SMB practices across the cohort are converting that tail into phased replacement budgets rather than emergency purchases.</p>
+      <span class="trend-lbl">For a practice like yours</span>
+      <p class="rpt-sowhat">A machine out of support is a machine out of your insurer's good graces and out of security fixes — the practices handling this well are budgeting the replacements across quiet quarters, keeping busy season untouched.</p>
+      <div class="cohort-signal">
+        <span class="num">22%</span>
+        <span class="what">of cohort endpoints were still running an out-of-support OS at the end of H1 — most practices are clearing theirs over two to three quarters.</span>
+        <span class="chips"><span class="chip seed">cohort signal · SEED DATA — invented 2026-07-31</span><span class="chip cs">Estimated/Unverified</span></span>
+      </div>
+      <div class="rpt-srcline"><span class="lbl">fed by</span><span class="chip src">Microsoft lifecycle announcements</span><span class="chip src">fleet-cohort aggregate [A — proposed]</span></div>
+      <div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">Three of your machines are already on this list. Do you want them replaced on a plan, or on the Tuesday they fail?</span></div>
+    </section>
+
+    <!-- ============ COHORT SNAPSHOT ============ -->
+    <section class="rpt-section" aria-label="Cohort snapshot — practices like yours vs your practice">
+      <div class="rpt-kicker">Snapshot · where you sit in the cohort</div>
+      <h2>Practices like yours vs. your practice</h2>
+      <div class="rule"></div>
+      <p class="rpt-sowhat">Four controls, side by side. The cohort column is what peers report; your column is what your Executive Business Review documents this period. Neither column is a grade — it is the starting point for the roadmap conversation.</p>
+      <table class="rpt-table">
+        <thead>
+          <tr>
+            <th scope="col">Control</th>
+            <th scope="col">Practices like yours</th>
+            <th scope="col">Your practice</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rowlead">MFA coverage</td>
+            <td class="mono">84% of accounts (cohort median)</td>
+            <td>37 of 48 accounts — 11 still password-only; rollout proposed in your review</td>
+          </tr>
+          <tr>
+            <td class="rowlead">Endpoint detection (EDR) coverage</td>
+            <td class="mono">91% of devices (cohort median)</td>
+            <td>52 of 61 devices — 9 uncovered, deployment awaiting a maintenance window</td>
+          </tr>
+          <tr>
+            <td class="rowlead">Backup restore verification</td>
+            <td class="mono">62% verified a restore in the last 6 months</td>
+            <td>Backups run nightly; restorability not yet verified — exercise scheduled</td>
+          </tr>
+          <tr>
+            <td class="rowlead">Phish-prone rate</td>
+            <td class="mono">4.8% (cohort median, H1)</td>
+            <td>Elevated in the accounts team — last test interrupted; re-test scheduled</td>
+          </tr>
+          <tr>
+            <td class="rowlead">Out-of-support operating systems</td>
+            <td class="mono">22% of cohort endpoints</td>
+            <td>3 of 61 devices — first in the phased replacement plan</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="rr-note">cohort column: k-anonymity-suppressed fleet aggregate [A — proposed] · all cohort values SEED DATA — invented 2026-07-31 · your-practice values SEED DATA — invented 2026-07-31, consistent with the EBR Report</p>
+      <div class="rpt-srcline"><span class="lbl">tier</span><span class="chip cs">Estimated/Unverified — web-gathered and cohort-inferred, never platform telemetry</span><span class="chip seed">SEED DATA — invented 2026-07-31</span></div>
+      <div class="talk-strip"><span class="tp-label">Talking point — say it like this</span><span class="tp-quote">You do not need to lead the cohort on every line — but you should choose which lines you are comfortable trailing on.</span></div>
+    </section>
+
+  </article>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="rpt-foot">
+    <span class="attr">Generated by N-able Harness (concept) · reviewed and released by J. Garlick — an agent drafts, a person releases</span>
+    <span class="chip cs-a wrap">[A — proposed product surface, Beth 2026-07-31]</span>
+    <span>Feeds named above are real publications; every number in this report is invented seed data.</span>
+    <span class="chip seed">SEED DATA — invented 2026-07-31</span>
+    <a class="btn" href="index.html">&larr; EBR Report &sect;06</a>
+  </footer>
+</main>
+
+<script>
+/* =========================================================
+   Mode manager — 3-way toggle, shared localStorage key: apx-mode-pref
+   (pre-paint script in <head>; light is this artifact's no-pref default)
+   ========================================================= */
+function applyMode(pref) {
+  var dark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  var modes = ['light', 'dark', 'system'];
+  for (var i = 0; i < modes.length; i++) {
+    document.getElementById('mode-' + modes[i]).setAttribute('aria-pressed', modes[i] === pref ? 'true' : 'false');
+  }
+}
+function setMode(pref) {
+  try { localStorage.setItem('apx-mode-pref', pref); } catch (e) {}
+  applyMode(pref);
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+  var pref = 'light';
+  try { pref = localStorage.getItem('apx-mode-pref') || 'light'; } catch (e) {}
+  if (pref === 'system') applyMode('system');
+});
+(function () {
+  var pref = 'light';
+  try { pref = localStorage.getItem('apx-mode-pref') || 'light'; } catch (e) {}
+  applyMode(pref);
+})();
+</script>
+</body>
+</html>

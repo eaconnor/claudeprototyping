@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Branch A — QBR Cross-Vendor · Concept Sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --surface-bg:#ffffff; --surface-container:#ffffff; --surface-tertiary:#fafafa;
+  --surface-status:#f2f2f2; --surface-active-wash:#f8ebff;
+  --border-default:#d5d5d5; --border-active:#c046ff;
+  --brand:#8500cc; --brand-strong:#c046ff; --brand-wash:#f8ebff;
+  --extended-phlox:#f2d6ff; --extended-blue:#3c5edd; --extended-neon-blue:#4c63e5; --extended-pink:#ed186b;
+  --success:#058142;
+  --text-heading:#18191a; --text-body:#2e2e33; --text-secondary:#404047; --text-placeholder:#5c5c66; --text-oncolor:#fafafa;
+  --radius-sm:4px; --radius-full:999px; --radius-xl:16px;
+  --font-ui:'Inter',-apple-system,sans-serif; --font-brand:'Manrope',sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--surface-tertiary);font-family:var(--font-ui);color:var(--text-body);font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--font-ui);color:var(--text-heading);letter-spacing:-0.02em;margin:0;}
+.wrap{max-width:1280px;margin:0 auto;padding:28px 32px 80px;}
+
+/* fidelity banner */
+.fidelity-banner{
+  background:var(--surface-status);
+  border:1px solid var(--border-default);
+  border-radius:var(--radius-sm);
+  padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+  font-size:12px;color:var(--text-secondary);
+}
+.fidelity-banner strong{color:var(--text-heading);font-weight:700;}
+.fidelity-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--brand-wash);color:var(--brand);
+  border:1px solid var(--extended-phlox);
+  border-radius:var(--radius-full);
+  padding:3px 10px;font-weight:700;font-size:11px;letter-spacing:.02em;text-transform:uppercase;
+}
+
+/* header */
+.page-header{margin-bottom:22px;}
+.eyebrow{font-family:var(--font-brand);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:6px;}
+h1.title{font-size:30px;font-weight:700;line-height:1.15;margin-bottom:10px;}
+.subhead{font-size:15px;color:var(--text-secondary);max-width:780px;}
+
+/* section framing */
+.section{margin-top:36px;}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-placeholder);margin-bottom:12px;}
+
+/* plain-language board cards */
+.board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.board-card{
+  background:var(--surface-container);
+  border:1px solid var(--border-default);
+  border-radius:var(--radius-sm);
+  padding:18px 20px;
+}
+.board-card h3{font-size:14px;font-weight:700;margin-bottom:8px;}
+.board-card p{font-size:13.5px;color:var(--text-secondary);margin:0;}
+
+/* ===== the mock: sketch chrome around real "payload" ===== */
+.sketch-frame{
+  position:relative;
+  margin-top:16px;
+  border:1.5px dashed #9a9aa3;
+  border-radius:var(--radius-xl);
+  background:repeating-linear-gradient(135deg, rgba(197,197,207,0.10) 0 2px, transparent 2px 14px), var(--surface-bg);
+  overflow:hidden;
+}
+.sketch-frame::before{
+  content:"CONCEPT — REACT, DON'T BUILD";
+  position:absolute;
+  top:38%;left:-12%;
+  width:130%;
+  text-align:center;
+  transform:rotate(-14deg);
+  font-family:var(--font-brand);
+  font-weight:800;
+  font-size:34px;
+  letter-spacing:.08em;
+  color:rgba(133,0,204,0.07);
+  pointer-events:none;
+  z-index:1;
+  white-space:nowrap;
+}
+.app-shell{display:grid;grid-template-columns:220px 1fr;min-height:560px;position:relative;z-index:2;}
+
+/* fake topbar */
+.app-topbar{
+  grid-column:1 / -1;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;
+  border-bottom:1.5px dashed var(--border-default);
+  background:var(--surface-bg);
+}
+.app-topbar .crumb{font-size:12.5px;color:var(--text-secondary);}
+.app-topbar .crumb b{color:var(--text-heading);font-weight:600;}
+.app-topbar .actions{display:flex;gap:8px;}
+.btn{
+  font-family:var(--font-ui);font-size:12.5px;font-weight:600;
+  border-radius:var(--radius-sm);padding:6px 14px;cursor:default;border:1px solid var(--border-default);
+  background:var(--surface-bg);color:var(--text-body);
+}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--text-oncolor);}
+.btn.ghost-ai{border-color:var(--extended-phlox);color:var(--brand);background:var(--brand-wash);}
+
+/* fake left nav — deliberately underdrawn */
+.app-nav{
+  grid-row:2;
+  border-right:1.5px dashed var(--border-default);
+  background:var(--surface-tertiary);
+  padding:16px 12px;
+}
+.nav-group{margin-bottom:16px;}
+.nav-group-label{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-placeholder);margin:0 6px 6px;}
+.nav-item{
+  font-size:12.5px;color:var(--text-secondary);
+  padding:6px 8px;border-radius:var(--radius-sm);
+  border:1px dashed transparent;
+}
+.nav-item.active{
+  background:var(--surface-active-wash);
+  color:var(--brand);
+  font-weight:600;
+  border:1px dashed var(--extended-phlox);
+}
+
+/* main panel — the actual QBR mock, drawn with more resolution than the chrome */
+.app-main{grid-row:2;padding:22px 26px;overflow:hidden;}
+.qbr-doc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.qbr-doc-title{font-size:18px;font-weight:700;color:var(--text-heading);margin-bottom:4px;}
+.qbr-doc-sub{font-size:12.5px;color:var(--text-secondary);}
+.vendor-strip{display:flex;gap:8px;flex-wrap:wrap;}
+.vendor-chip{
+  font-family:var(--font-brand);font-weight:700;font-size:11.5px;
+  padding:5px 12px;border-radius:var(--radius-full);
+  border:1px solid var(--border-default);background:var(--surface-status);color:var(--text-body);
+}
+.normalize-note{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--brand);font-weight:600;
+  margin:10px 0 18px;
+}
+.normalize-note .arrow{color:var(--text-placeholder);font-weight:400;}
+
+.qbr-narrative{
+  background:var(--surface-container);border:1px solid var(--border-default);
+  border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:14px;
+}
+.qbr-narrative h4{font-size:13.5px;font-weight:700;margin-bottom:8px;}
+.qbr-narrative p{font-size:13px;color:var(--text-body);line-height:1.6;margin:0 0 10px;}
+.qbr-narrative p:last-child{margin-bottom:0;}
+
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--font-ui);font-weight:700;font-size:10.5px;letter-spacing:.03em;text-transform:uppercase;
+  padding:2px 9px;border-radius:var(--radius-full);
+  vertical-align:middle;margin-left:6px;
+  border:1px solid transparent;
+}
+.tag.measured{background:#e6f5ee;color:var(--success);border-color:#bfe6d3;}
+.tag.benchmarked{background:#e8ecfc;color:var(--extended-blue);border-color:#cdd6f8;}
+.tag.estimated{background:var(--brand-wash);color:var(--brand);border-color:var(--extended-phlox);}
+.tag.unverified{background:#fde6ee;color:var(--extended-pink);border-color:#f9c4d8;}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--text-secondary);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-default);}
+.legend span{display:inline-flex;align-items:center;gap:6px;}
+.legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.legend .dot.measured{background:var(--success);}
+.legend .dot.benchmarked{background:var(--extended-blue);}
+.legend .dot.estimated{background:var(--brand);}
+.legend .dot.unverified{background:var(--extended-pink);}
+
+.placeholder-block{
+  border:1px dashed var(--border-default);border-radius:var(--radius-sm);
+  background:var(--surface-tertiary);height:14px;margin:8px 0;
+}
+.placeholder-block.w60{width:60%;}
+.placeholder-block.w40{width:40%;}
+
+/* risk callout */
+.risk-box{
+  margin-top:16px;
+  border:1.5px solid var(--extended-pink);
+  background:#fff5f9;
+  border-radius:var(--radius-sm);
+  padding:20px 22px;
+}
+.risk-box .risk-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.risk-box .risk-head .icon{
+  width:24px;height:24px;border-radius:50%;background:var(--extended-pink);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none;
+}
+.risk-box h3{font-size:15px;font-weight:700;color:var(--text-heading);}
+.risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.risk-item{background:var(--surface-bg);border:1px solid #f9c4d8;border-radius:var(--radius-sm);padding:14px 16px;}
+.risk-item .k{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--extended-pink);margin-bottom:6px;}
+.risk-item .v{font-size:13px;color:var(--text-body);line-height:1.5;}
+.risk-item .v b{color:var(--text-heading);}
+
+/* bradley rail / footer */
+.rail{
+  margin-top:40px;
+  border:1px solid var(--extended-phlox);
+  background:var(--brand-wash);
+  border-radius:var(--radius-xl);
+  padding:24px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.rail::before{
+  content:"";position:absolute;inset:0;left:0;width:5px;background:var(--brand);
+}
+.rail-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.rail-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#ffffff;border:1px solid var(--extended-phlox);
+  border-radius:var(--radius-full);padding:6px 14px;
+  font-weight:700;font-size:12.5px;color:var(--brand);
+}
+.rail-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);}
+.rail h2{font-size:16px;font-weight:700;margin-bottom:6px;}
+.rail p.lede{font-size:13.5px;color:var(--text-secondary);max-width:760px;margin-bottom:18px;}
+.rail-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.rail-card{background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:16px 18px;}
+.rail-card h4{font-size:12.5px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.rail-card ul{margin:0;padding-left:18px;font-size:13px;color:var(--text-body);}
+.rail-card li{margin-bottom:6px;line-height:1.5;}
+.routing{margin-top:16px;display:flex;align-items:flex-start;gap:10px;background:#ffffff;border:1px dashed var(--border-active);border-radius:var(--radius-sm);padding:14px 16px;}
+.routing .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--brand);white-space:nowrap;}
+.routing p{margin:0;font-size:13px;color:var(--text-body);}
+
+footer.foot{margin-top:32px;text-align:center;font-size:11.5px;color:var(--text-placeholder);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="fidelity-banner">
+    <div><strong>Tier 0 — Concept.</strong> This is a sketch to react to, not a working product or a commitment to build. Nothing in the mock below is real data.</div>
+    <span class="fidelity-pill">● Reacting Only</span>
+  </div>
+
+  <div class="page-header">
+    <div class="eyebrow">Branch A · Package 5 · Client-Facing Proof, Cross-Vendor</div>
+    <h1 class="title">A QBR coworker that tells one story across every vendor in the stack</h1>
+    <p class="subhead">Most MSPs run 6&ndash;8 competing tools per client and cannot tell a single comparable story from them. This concept asks: what would it look like if an AI coworker normalized that whole mixed-vendor stack into one client-ready quarterly narrative &mdash; and what would it take, legally and technically, to get there?</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">For the board</div>
+    <div class="board-grid">
+      <div class="board-card">
+        <h3>The problem</h3>
+        <p>An MSP can't prove its value in one narrative because the evidence lives in 6+ vendor tools that don't talk to each other. The most convincing comparison &mdash; across the whole stack, not just N-able's slice &mdash; is also the one that's hardest to legally assemble.</p>
+      </div>
+      <div class="board-card">
+        <h3>The value prop</h3>
+        <p>For MSPs who assemble quarterly reviews by hand: a client-ready, evidence-tagged narrative across the full vendor stack in under 20 minutes &mdash; not another single-vendor dashboard, but one normalized story with defensibility built in.</p>
+      </div>
+      <div class="board-card">
+        <h3>Why now</h3>
+        <p>This is the #1 requested capability across all three Guidepoint research instruments &mdash; MSPs call it "the holy grail." No incumbent ships it. But demand has only been tested for the destination (a cross-stack QBR), never for the mechanism (AI drafts, human edits).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What this could look like &mdash; concept mock</div>
+    <div class="sketch-frame">
+      <div class="app-shell">
+        <div class="app-topbar">
+          <div class="crumb">Coworkers / <b>QBR Coworker</b> / Client: Meridian IT Partners &middot; Q2 Review</div>
+          <div class="actions">
+            <button class="btn ghost-ai">✦ Ask N-zo</button>
+            <button class="btn primary">Save</button>
+          </div>
+        </div>
+        <div class="app-nav">
+          <div class="nav-group">
+            <div class="nav-group-label">Control Plane</div>
+            <div class="nav-item active">Coworkers</div>
+            <div class="nav-item">Agents</div>
+            <div class="nav-item">In Flight</div>
+          </div>
+          <div class="nav-group">
+            <div class="nav-group-label">Capabilities</div>
+            <div class="nav-item">Runbooks</div>
+            <div class="nav-item">Skills</div>
+            <div class="nav-item">Tools</div>
+            <div class="nav-item">Scripts</div>
+          </div>
+          <div class="nav-group">
+            <div class="nav-group-label">Context</div>
+            <div class="nav-item">Experts</div>
+            <div class="nav-item">Knowledge Base</div>
+          </div>
+          <div class="nav-group">
+            <div class="nav-group-label">Connectors</div>
+            <div class="nav-item">Models</div>
+            <div class="nav-item">MCP Servers</div>
+            <div class="nav-item">Integrations</div>
+          </div>
+          <div class="nav-group">
+            <div class="nav-group-label">Governance</div>
+            <div class="nav-item">Value Ledger</div>
+            <div class="nav-item">Metering &amp; Chargeback</div>
+            <div class="nav-item">Usage</div>
+            <div class="nav-item">Logs</div>
+          </div>
+        </div>
+        <div class="app-main">
+          <div class="qbr-doc-header">
+            <div>
+              <div class="qbr-doc-title">Quarterly Security Review — Meridian IT Partners</div>
+              <div class="qbr-doc-sub">Draft generated from full client stack &middot; operator edit pending</div>
+            </div>
+            <div class="vendor-strip">
+              <span class="vendor-chip">ConnectWise</span>
+              <span class="vendor-chip">SentinelOne</span>
+              <span class="vendor-chip">Adlumin</span>
+            </div>
+          </div>
+          <div class="normalize-note">3 vendors <span class="arrow">→ normalization layer →</span> 1 narrative</div>
+
+          <div class="qbr-narrative">
+            <h4>Executive summary</h4>
+            <p>Across the client's full stack, the team closed 214 alerts this quarter and reduced mean time to containment by [?].<span class="tag measured">Measured</span></p>
+            <p>Endpoint coverage held steady relative to peer MSPs running a comparable tool mix.<span class="tag benchmarked">Benchmarked</span></p>
+            <p>Estimated hours of manual triage avoided this quarter through automated correlation across tools.<span class="tag estimated">Estimated</span></p>
+            <p>Cross-vendor ticket-to-incident linkage for the ConnectWise leg of the stack.<span class="tag unverified">Unverified</span></p>
+            <div class="placeholder-block w60"></div>
+            <div class="placeholder-block w40"></div>
+            <div class="legend">
+              <span><i class="dot measured"></i>Measured — first-party telemetry, defensible today</span>
+              <span><i class="dot benchmarked"></i>Benchmarked — compared to peer baseline</span>
+              <span><i class="dot estimated"></i>Estimated — modeled, not directly observed</span>
+              <span><i class="dot unverified"></i>Unverified — normalization/legal path not yet cleared</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="risk-box">
+      <div class="risk-head">
+        <span class="icon">!</span>
+        <h3>Honest risk read — do not skip this slide</h3>
+      </div>
+      <div class="risk-grid">
+        <div class="risk-item">
+          <div class="k">Idea Chess survival</div>
+          <div class="v">~<b>0.43%</b> (cross-vendor floor) to ~<b>0.64%</b> (blended) &mdash; the <b>lowest naive survival</b> of the five packages in the portfolio.</div>
+        </div>
+        <div class="risk-item">
+          <div class="k">Where it dies</div>
+          <div class="v">At <b>Build — Ford 1</b>. Normalization is <b>"Not started."</b> Data-egress from competitor tools may be legally unavailable, not just unbuilt.</div>
+        </div>
+        <div class="risk-item">
+          <div class="k">The lever</div>
+          <div class="v"><b>Buy</b> the normalization moat (an existing small-player category) and <b>partner</b> past the egress wall (marketplace / vendor-as-partner dissolves the ToS problem).</div>
+        </div>
+        <div class="risk-item">
+          <div class="k">Riskiest assumption</div>
+          <div class="v">Three correlated beliefs, none tested: normalization clears legal [P≈0.30], operators want less verification work not just output [P≈0.55], defensibility tiering survives legal review [P≈0.45].</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rail">
+    <div class="rail-top">
+      <div>
+        <h2>Bradley rail — what this is testing</h2>
+      </div>
+      <span class="rail-badge"><i class="dot"></i>Tier 0 &middot; Concept, reacting only</span>
+    </div>
+    <p class="lede">This sketch is testing whether the board finds the cross-vendor QBR narrative compelling enough to justify examining the buy/partner path &mdash; not whether the normalization engine should be built in-house. No build commitment is implied by this artifact.</p>
+    <div class="rail-cols">
+      <div class="rail-card">
+        <h4>What's strong here</h4>
+        <ul>
+          <li>#1 demand signal across all three Guidepoint research instruments &mdash; MSPs unprompted call this "the holy grail."</li>
+          <li>The two things that kill it (normalization, egress) are buy/partner lines, not build lines &mdash; which is exactly why the fleet synthesis calls this the <b>most winnable</b> package despite the lowest floor.</li>
+          <li>N-able's first-party telemetry (Adlumin + Cove + UEM) is already a normalized source &mdash; "Measured" tags are defensible for N-able-native clients today, with no acquisition required.</li>
+        </ul>
+      </div>
+      <div class="rail-card">
+        <h4>What will hurt you</h4>
+        <ul>
+          <li>Demand was tested for the destination (a cross-stack QBR), never for the mechanism (AI drafts, human edits) &mdash; that's a known hole.</li>
+          <li>Cross-vendor data egress is legally unexamined. This is the single most decisive open test in the whole portfolio.</li>
+          <li>The three riskiest assumptions are correlated, so the ~0.43% floor behaves like a ceiling, not a floor, until at least one is tested.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="routing">
+      <span class="label">Routing</span>
+      <p>The data-egress legal call (can N-able pull competitors' data into a client-facing artifact?) is not a design or product decision &mdash; it belongs with Legal/Compliance, informed by Product's Q1 legal read. Design and Product hold the narrative and tiering pattern; Legal holds go/no-go on the mechanism.</p>
+    </div>
+  </div>
+
+  <footer class="foot">Branch A &middot; Package 5 &middot; Client-Facing Proof (Cross-Vendor) &middot; concept.html &middot; not for external distribution</footer>
+</div>
+</body>
+</html>

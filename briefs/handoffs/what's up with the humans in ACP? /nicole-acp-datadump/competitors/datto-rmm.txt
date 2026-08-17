@@ -1,0 +1,59 @@
+# Datto RMM
+slug: datto-rmm
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Datto RMM is a cloud-native Remote Monitoring and Management platform built for MSPs, providing agent-based monitoring, automation, patch management, remote control, and integrated ransomware detection across Windows, macOS, and Linux endpoints. Acquired by Kaseya in 2022 alongside Datto's full product portfolio, Datto RMM operates as the RMM component within Kaseya's "IT Complete" platform strategy. With an 18% global MSP software market share (2025) and deep Autotask PSA integration, Datto RMM is among the top three RMMs in MSP market share alongside NinjaOne and ConnectWise Automate.
+
+## MSP Relevance
+Datto RMM is a primary RMM platform for MSPs managing Windows, macOS, and Linux endpoints across client environments. Its deep integration with Autotask PSA (bidirectional ticketing, billing, and reporting) and the Kaseya 365 Endpoint bundle ($3.99–$5.25/endpoint/month including RMM + security + backup) make it a compelling platform for Kaseya-aligned MSPs. Kaseya's AI Digital Workforce (agentic AI for autonomous technical resolution, Spring 2026) is being built on top of the Datto RMM and Kaseya VSA foundation — making RMM the substrate for Kaseya's autonomous MSP vision.
+
+## Key Offerings & Capabilities
+- Cloud-hosted agent-based monitoring — Windows, macOS, Linux endpoint monitoring with 99.99% platform availability SLA
+- Automation engine — PowerShell, batch, and shell scripting with visual component monitors and automation builders
+- Patch management — Windows OS patching with approval policies, compliance reporting, and third-party application patching (~500 apps)
+- Remote Control — integrated remote desktop and file management for technician access to managed endpoints
+- Ransomware detection and endpoint rollback — launched June 2024; detects active ransomware and rolls back affected files
+- Network monitoring — network device discovery and alerting alongside endpoint management
+- Integrated EDR and antivirus — RocketCyber EDR status visible within RMM interface; Datto EDR and Datto Antivirus available as add-ons
+- AI-enhanced automation — intelligent alert filtering, AI-powered screenshot verification for backup recovery validation
+- Kaseya ecosystem integration — KaseyaOne SSO, Autotask PSA, IT Glue, Datto BCDR, Datto Antivirus, Datto EDR
+- Kaseya 365 Endpoint bundle — RMM + antivirus + EDR + MDR + patch management + ransomware rollback + endpoint backup at $3.99–$5.25/endpoint/month
+
+## Recent Announcements
+- DattoCon 2025 (October 2025): Kaseya announces AI Digital Workforce — agentic AI specialists that reason and act like technicians; targeting Spring 2026 limited availability
+- December 2025: High Watermark pricing model ended; transition to Committed Minimum Quantity + Variable Consumption model for more flexible MSP billing
+- Q3-Q4 2025 product updates: UX modernization, AI-enhanced automation module, intelligent patching, improved remote control performance, network monitoring enhancements
+- AI-powered screenshot verification for backup recovery validation — reduces manual recovery verification labor
+- Kaseya 365 Endpoint bundle: introductory pricing at $3.99/endpoint/month through May 2026, then $5.25/endpoint/month — includes bundled RMM + security + backup
+
+## Pricing Model
+Per-endpoint per-month pricing in the $2.50–$4.50 range depending on volume and contract length. No published public pricing — requires direct Kaseya sales engagement. Mandatory 1-, 3-, or 5-year contracts (no month-to-month). Committed Minimum Quantity + Variable Consumption model as of December 2025. Kaseya 365 Endpoint bundle ($3.99–$5.25/endpoint/month) bundles RMM with security and backup at a price point that undercuts standalone licensing across multiple vendors.
+
+## Strengths
+- Deep Autotask PSA integration is the tightest RMM-to-PSA connection in the market for Autotask users
+- Kaseya 365 Endpoint bundle at $3.99/endpoint/month undercuts competitors on bundled total cost of ownership
+- Top 20% global BSIMM security assessment rating — security-certified cloud architecture for compliance-sensitive MSPs
+- Regional AWS data isolation across five instances satisfies data residency requirements for regulated verticals
+- Ransomware detection + rollback (June 2024) provides endpoint-level ransomware mitigation built into the RMM
+- 18% global MSP software market share (2025) demonstrates significant install base and ecosystem momentum
+
+## Weaknesses / Gaps
+- Third-party application patching limited to ~500 apps vs. 6,000+ available in N-able N-central — patching gap for MSPs managing complex software environments
+- Dated web UI (modernization in progress) — NinjaOne's interface is consistently rated superior for usability in G2 comparisons
+- Mandatory long-term contracts (1-5 years) with no month-to-month option reduces flexibility compared to NinjaOne's more flexible terms
+- Basic built-in reporting — MSPs typically require supplementary reporting tools to meet client QBR requirements
+- Kaseya ecosystem lock-in: Datto RMM's value is maximized within the Kaseya stack; cross-platform MSPs sacrifice integration benefits
+
+## Competitive Threat to NZO
+Level: High
+Reason: Datto RMM + Kaseya's AI Digital Workforce (Spring 2026) is one of the most direct competitive vectors to NZO. Kaseya is building agentic AI "digital specialists" that reason and act like top-tier technicians — directly on top of Datto RMM as the monitoring and control substrate. For NZO, the Kaseya AI Digital Workforce represents an integrated RMM + AI agent stack that NZO must compete against for MSP accounts that are Kaseya-aligned.
+
+## Notes
+- The AI Digital Workforce (Spring 2026 limited availability) is Kaseya's most important competitive move in the AI automation space — monitor the actual capability release and MSP adoption closely
+- The Kaseya 365 bundle undercuts standalone RMM pricing significantly; MSPs who evaluate cost-per-endpoint will find it difficult to beat without comparable security and backup included
+- NinjaOne continues to lead on usability (23 consecutive quarters as #1 G2 RMM) and pricing transparency — Datto RMM's advantage is ecosystem integration, not standalone product experience
+- The transition from High Watermark to Committed Minimum pricing (December 2025) is positive for MSPs with variable client sizes — watch if competitors follow with similar flexibility

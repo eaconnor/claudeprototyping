@@ -1,0 +1,3583 @@
+<!doctype html>
+<html lang="en" data-apx-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACP V1 · Apex Bridge prototype</title>
+<style>
+  /* =========================================================
+     APEX BRIDGE — TOKEN CONTRACT (--br-*)
+     The token surface is the contract. Components consume it.
+     ========================================================= */
+  :root {
+    /* Brand */
+    --br-color-brand-primary: #0066cc;
+    --br-color-brand-primary-hover: #0052a3;
+    --br-color-brand-primary-tint: #e6f0fa;
+    --br-color-brand-accent: #6d28d9;
+
+    /* Surface */
+    --br-color-surface-app: #f5f7fa;
+    --br-color-surface-panel: #ffffff;
+    --br-color-surface-elevated: #ffffff;
+    --br-color-surface-sunken: #eef1f6;
+    --br-color-surface-hover: #f0f3f8;
+
+    /* Ink (text) */
+    --br-color-ink-primary: #0f172a;
+    --br-color-ink-secondary: #475569;
+    --br-color-ink-muted: #64748b;
+    --br-color-ink-inverse: #ffffff;
+    --br-color-ink-on-brand: #ffffff;
+
+    /* Border */
+    --br-color-border-subtle: #e2e8f0;
+    --br-color-border-default: #cbd5e1;
+    --br-color-border-strong: #94a3b8;
+
+    /* Semantic state */
+    --br-color-state-success: #16a34a;
+    --br-color-state-success-tint: #dcfce7;
+    --br-color-state-warning: #d97706;
+    --br-color-state-warning-tint: #fef3c7;
+    --br-color-state-danger: #dc2626;
+    --br-color-state-danger-tint: #fee2e2;
+    --br-color-state-info: #0284c7;
+    --br-color-state-info-tint: #e0f2fe;
+
+    /* Typography */
+    --br-font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --br-font-family-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --br-font-size-xs: 12px;
+    --br-font-size-sm: 13px;
+    --br-font-size-md: 14px;
+    --br-font-size-lg: 16px;
+    --br-font-size-xl: 20px;
+    --br-font-size-2xl: 24px;
+    --br-font-weight-regular: 400;
+    --br-font-weight-medium: 500;
+    --br-font-weight-semibold: 600;
+    --br-font-weight-bold: 700;
+
+    /* Spacing */
+    --br-space-1: 4px;
+    --br-space-2: 8px;
+    --br-space-3: 12px;
+    --br-space-4: 16px;
+    --br-space-5: 20px;
+    --br-space-6: 24px;
+    --br-space-8: 32px;
+    --br-space-10: 40px;
+
+    /* Radius */
+    --br-radius-sm: 4px;
+    --br-radius-md: 6px;
+    --br-radius-lg: 10px;
+
+    /* Elevation */
+    --br-shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+    --br-shadow-md: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+    --br-shadow-lg: 0 10px 25px rgba(15,23,42,.10), 0 4px 10px rgba(15,23,42,.05);
+
+    /* Motion */
+    --br-motion-fast: 120ms;
+    --br-motion-base: 180ms;
+    --br-motion-slow: 260ms;
+  }
+
+  /* Dark mode — single attribute on <html>, cascade does the rest */
+  [data-apx-mode="dark"] {
+    --br-color-surface-app: #0b1220;
+    --br-color-surface-panel: #111827;
+    --br-color-surface-elevated: #1e293b;
+    --br-color-surface-sunken: #0f172a;
+    --br-color-surface-hover: #1e293b;
+    --br-color-ink-primary: #f1f5f9;
+    --br-color-ink-secondary: #cbd5e1;
+    --br-color-ink-muted: #94a3b8;
+    --br-color-border-subtle: #1e293b;
+    --br-color-border-default: #334155;
+    --br-color-border-strong: #475569;
+    --br-color-brand-primary-tint: #0c2845;
+    --br-color-state-success-tint: rgba(22,163,74,.18);
+    --br-color-state-warning-tint: rgba(217,119,6,.18);
+    --br-color-state-danger-tint: rgba(220,38,38,.18);
+    --br-color-state-info-tint: rgba(2,132,199,.18);
+    --br-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --br-shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+    --br-shadow-lg: 0 10px 25px rgba(0,0,0,.55), 0 4px 10px rgba(0,0,0,.35);
+  }
+
+  /* =========================================================
+     APP SHELL — uses tokens only
+     ========================================================= */
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--br-font-family-sans);
+    font-size: var(--br-font-size-md);
+    color: var(--br-color-ink-primary);
+    background: var(--br-color-surface-app);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color var(--br-motion-base), color var(--br-motion-base);
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    grid-template-rows: 56px minmax(0, 1fr);
+    grid-template-areas: "sidebar topbar" "sidebar main";
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* =========================================================
+     PROTOTYPE SHELL — fidelity banner + Bradley rail
+     ========================================================= */
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 420px;
+    grid-template-areas:
+      "banner banner"
+      "app    rail";
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* Wide-ish */
+  @media (max-width: 1400px) {
+    body { grid-template-columns: minmax(0, 1fr) 360px; }
+  }
+  /* Claude preview / narrow — stack rail under app, scroll the whole page */
+  @media (max-width: 1100px) {
+    body {
+      grid-template-columns: 100%;
+      grid-template-rows: auto minmax(560px, 1fr) auto;
+      grid-template-areas:
+        "banner"
+        "app"
+        "rail";
+      height: auto;
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .app { height: 70vh; }
+    .bradley-rail {
+      border-left: 0;
+      border-top: 1px solid var(--br-color-border-subtle);
+      max-height: none;
+      overflow: visible;
+    }
+  }
+  /* Very narrow — collapse sidebar to icons */
+  @media (max-width: 720px) {
+    .app { grid-template-columns: 56px minmax(0, 1fr); }
+  }
+  .fidelity-banner { grid-area: banner; }
+  .app { grid-area: app; }
+  .bradley-rail { grid-area: rail; }
+
+  /* ----- Fidelity banner ----- */
+  .fidelity-banner {
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(220,38,38,.06) 0 14px,
+        transparent 14px 28px),
+      var(--br-color-surface-panel);
+    border-bottom: 1px solid var(--br-color-state-danger);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--br-font-family-sans);
+    font-size: 12px;
+    color: var(--br-color-ink-secondary);
+  }
+  .fidelity-flag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--br-color-state-danger);
+    color: #fff;
+    font-weight: var(--br-font-weight-semibold);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 6px 10px;
+    border-radius: var(--br-radius-sm);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .fidelity-flag .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: fpulse 1.6s ease-in-out infinite; }
+  @keyframes fpulse { 50% { opacity: .35; } }
+  .fidelity-label { color: var(--br-color-ink-secondary); flex: 1; min-width: 200px; }
+  .fidelity-checks { display: flex; gap: 14px; flex-wrap: wrap; }
+  .fidelity-check { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--br-color-ink-muted); white-space: nowrap; }
+  .fidelity-check .mark { font-weight: var(--br-font-weight-bold); font-family: var(--br-font-family-mono); }
+  .fidelity-check .mark.fail { color: var(--br-color-state-danger); }
+  .fidelity-check .mark.warn { color: var(--br-color-state-warning); }
+  .fidelity-check .mark.pass { color: var(--br-color-state-success); }
+  .fidelity-tier {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; color: var(--br-color-ink-muted);
+    font-family: var(--br-font-family-mono);
+  }
+  .fidelity-tier .pips { display: inline-flex; gap: 3px; }
+  .fidelity-tier .pip { width: 10px; height: 10px; border-radius: 50%; background: var(--br-color-border-default); }
+  .fidelity-tier .pip.on { background: var(--br-color-state-danger); }
+
+  /* ----- Bradley rail ----- */
+  .bradley-rail {
+    background: var(--br-color-surface-sunken);
+    border-left: 1px solid var(--br-color-border-subtle);
+    padding: 20px;
+    overflow-y: auto;
+    font-family: var(--br-font-family-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--br-color-ink-secondary);
+    min-height: 0;
+  }
+  .rail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .rail-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--br-color-brand-accent);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: var(--br-font-weight-bold); font-size: 15px;
+    flex-shrink: 0;
+  }
+  .rail-title { font-size: 15px; color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); line-height: 1.1; }
+  .rail-sub { font-size: 11px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-top: 2px; }
+  .rail-blurb {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-left: 3px solid var(--br-color-brand-accent);
+    padding: 12px 14px;
+    border-radius: var(--br-radius-md);
+    margin-bottom: 16px;
+    color: var(--br-color-ink-primary);
+    font-size: 13px;
+  }
+
+  .readiness-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .readiness-card {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: 10px 12px;
+  }
+  .readiness-card-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+  .readiness-state { font-size: 13px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-state-warning); margin: 4px 0 4px; }
+  .readiness-card.cx-good .readiness-state { color: var(--br-color-state-success); }
+  .readiness-card-sub { font-size: 11px; color: var(--br-color-ink-muted); }
+
+  .mc-block {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+  }
+  .mc-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-bottom: 6px; }
+  .mc-body { font-size: 12px; color: var(--br-color-ink-secondary); }
+  .mc-body ul { margin: 6px 0 0; padding-left: 18px; }
+  .mc-body li { margin: 3px 0; }
+  .mc-body .pct { font-family: var(--br-font-family-mono); font-weight: var(--br-font-weight-bold); padding: 1px 5px; border-radius: 3px; }
+  .mc-body .win { color: var(--br-color-state-success); background: var(--br-color-state-success-tint); }
+  .mc-body .lose { color: var(--br-color-state-danger); background: var(--br-color-state-danger-tint); }
+  .mc-disclosure { font-size: 10px; color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-top: 8px; }
+
+  .dual-block { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
+  .dual-card {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: 12px 14px;
+  }
+  .dual-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--br-font-family-mono); margin-bottom: 6px; }
+  .dual-card.good { border-color: var(--br-color-state-success); }
+  .dual-card.good .dual-head { color: var(--br-color-state-success); }
+  .dual-card.fail { border-color: var(--br-color-state-danger); }
+  .dual-card.fail .dual-head { color: var(--br-color-state-danger); }
+  .dual-list { list-style: none; margin: 0; padding: 0; font-size: 12px; }
+  .dual-list li { position: relative; padding-left: 16px; margin: 6px 0; color: var(--br-color-ink-secondary); }
+  .dual-list li::before { position: absolute; left: 0; top: 0; font-weight: var(--br-font-weight-bold); font-family: var(--br-font-family-mono); }
+  .dual-card.good .dual-list li::before { content: '+'; color: var(--br-color-state-success); }
+  .dual-card.fail .dual-list li::before { content: '−'; color: var(--br-color-state-danger); }
+  .dual-list li strong { color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+
+  .routed-block { margin-bottom: 16px; }
+  .routed-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+  .routed-head .tag {
+    font-size: 10px; letter-spacing: 0.08em; padding: 3px 7px; border-radius: var(--br-radius-sm);
+    font-family: var(--br-font-family-mono); text-transform: uppercase;
+  }
+  .routed-head.product   .tag { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); }
+  .routed-head.design    .tag { background: rgba(109,40,217,.15); color: var(--br-color-brand-accent); }
+  .routed-head.research  .tag { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); }
+  .routed-head.eng       .tag { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+
+  .risk-card {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .risk-card:last-child { margin-bottom: 0; }
+  .risk-title { font-size: 13px; font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); margin-bottom: 8px; }
+  .risk-meta { display: grid; grid-template-columns: 90px 1fr; gap: 4px 10px; font-size: 12px; }
+  .risk-meta .k { color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; padding-top: 2px; }
+  .risk-meta .v { color: var(--br-color-ink-secondary); }
+  .risk-meta .v strong { color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+  .skip-risk {
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-top: 1px dashed var(--br-color-border-default);
+    font-size: 11px;
+    color: var(--br-color-ink-muted);
+  }
+  .skip-risk-label { display: block; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; color: var(--br-color-state-danger); font-family: var(--br-font-family-mono); margin-bottom: 3px; font-weight: var(--br-font-weight-semibold); }
+  .skip-risk .pct { font-family: var(--br-font-family-mono); font-weight: var(--br-font-weight-bold); color: var(--br-color-state-danger); }
+
+  .rail-foot {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--br-color-border-subtle);
+    font-size: 12px;
+    color: var(--br-color-ink-muted);
+    font-style: italic;
+  }
+  .rail-foot strong { font-style: normal; color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-semibold); }
+
+  apx-sidebar { grid-area: sidebar; }
+  apx-productbar { grid-area: topbar; }
+
+  .main-wrap {
+    grid-area: main;
+    overflow: auto;
+    padding: var(--br-space-6) var(--br-space-8);
+    min-height: 0;
+    min-width: 0;
+  }
+  #main { display: block; min-height: 200px; }
+  .app-foot { margin-top: var(--br-space-6); }
+
+  /* Page primitives (in light DOM, since pages are content-driven) */
+  .page-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--br-space-4);
+    margin-bottom: var(--br-space-5);
+    flex-wrap: wrap;
+  }
+  .page-head h1 {
+    margin: 0 0 var(--br-space-1) 0;
+    font-size: var(--br-font-size-2xl);
+    font-weight: var(--br-font-weight-semibold);
+    letter-spacing: -.01em;
+  }
+  .page-head p {
+    margin: 0;
+    color: var(--br-color-ink-secondary);
+    font-size: var(--br-font-size-sm);
+    max-width: 720px;
+  }
+  .page-actions { display: flex; gap: var(--br-space-2); }
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--br-space-4); }
+  .grid-2 { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--br-space-4); }
+  .detail-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--br-space-4); }
+  .settings-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--br-space-4); }
+  @media (max-width: 1200px) {
+    .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-2, .detail-grid, .settings-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .grid-4 { grid-template-columns: minmax(0, 1fr); }
+  }
+  .stack { display: flex; flex-direction: column; gap: var(--br-space-4); }
+
+  /* Buttons in light DOM (used widely; could be a component but kept here for layout reach) */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--br-space-2);
+    padding: 7px 14px;
+    border: 1px solid var(--br-color-border-default);
+    background: var(--br-color-surface-panel);
+    color: var(--br-color-ink-primary);
+    font-family: inherit;
+    font-size: var(--br-font-size-sm);
+    font-weight: var(--br-font-weight-medium);
+    border-radius: var(--br-radius-md);
+    cursor: pointer;
+    transition: background var(--br-motion-fast), border-color var(--br-motion-fast);
+  }
+  .btn:hover { background: var(--br-color-surface-hover); border-color: var(--br-color-border-strong); }
+  .btn.primary {
+    background: var(--br-color-brand-primary);
+    border-color: var(--br-color-brand-primary);
+    color: var(--br-color-ink-on-brand);
+  }
+  .btn.primary:hover { background: var(--br-color-brand-primary-hover); border-color: var(--br-color-brand-primary-hover); }
+  .btn.ghost { background: transparent; border-color: transparent; }
+  .btn.ghost:hover { background: var(--br-color-surface-hover); }
+  .btn.danger { color: var(--br-color-state-danger); border-color: var(--br-color-border-default); }
+  .btn.danger:hover { background: var(--br-color-state-danger-tint); border-color: var(--br-color-state-danger); }
+  .btn.sm { padding: 4px 10px; font-size: var(--br-font-size-xs); }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+  /* Filter bar */
+  .filterbar {
+    display: flex;
+    align-items: center;
+    gap: var(--br-space-3);
+    margin-bottom: var(--br-space-4);
+    flex-wrap: wrap;
+  }
+  .input, .select, textarea {
+    font-family: inherit;
+    font-size: var(--br-font-size-sm);
+    color: var(--br-color-ink-primary);
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-default);
+    border-radius: var(--br-radius-md);
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color var(--br-motion-fast), box-shadow var(--br-motion-fast);
+  }
+  .input:focus, .select:focus, textarea:focus {
+    border-color: var(--br-color-brand-primary);
+    box-shadow: 0 0 0 3px var(--br-color-brand-primary-tint);
+  }
+  .input.search { min-width: 280px; }
+  .flbl {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    font-weight: var(--br-font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  textarea { width: 100%; min-height: 80px; resize: vertical; line-height: 1.5; }
+
+  /* Tables (also wrappable in <apx-table>) */
+  .t { width: 100%; border-collapse: collapse; font-size: var(--br-font-size-sm); }
+  .t thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    font-weight: var(--br-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    background: var(--br-color-surface-sunken);
+    border-bottom: 1px solid var(--br-color-border-subtle);
+  }
+  .t tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--br-color-border-subtle);
+    vertical-align: top;
+    color: var(--br-color-ink-secondary);
+  }
+  .t tbody tr:last-child td { border-bottom: 0; }
+  .t tr.clickable { cursor: pointer; }
+  .t tr.clickable:hover { background: var(--br-color-surface-hover); }
+  .row-title {
+    font-weight: var(--br-font-weight-semibold);
+    color: var(--br-color-ink-primary);
+    margin-bottom: 2px;
+  }
+  .row-sub {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    line-height: 1.45;
+  }
+
+  /* Pills (sub-component, light) */
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--br-radius-sm);
+    background: var(--br-color-surface-sunken);
+    color: var(--br-color-ink-secondary);
+    font-size: var(--br-font-size-xs);
+    font-weight: var(--br-font-weight-medium);
+    border: 1px solid var(--br-color-border-subtle);
+  }
+  .pill.brand {
+    background: var(--br-color-brand-primary-tint);
+    color: var(--br-color-brand-primary);
+    border-color: transparent;
+  }
+
+  /* Trust badge (Ewan Cameron's 3-tier visible signal) */
+  .trust {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border-radius: var(--br-radius-sm);
+    font-size: var(--br-font-size-xs);
+    font-weight: var(--br-font-weight-semibold);
+    border: 1px solid;
+  }
+  .trust .mk { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .trust.t1 { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); border-color: var(--br-color-state-info); }
+  .trust.t1 .mk { background: var(--br-color-state-info); }
+  .trust.t2 { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); border-color: var(--br-color-state-warning); }
+  .trust.t2 .mk { background: var(--br-color-state-warning); }
+  .trust.t3 { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); border-color: var(--br-color-state-success); }
+  .trust.t3 .mk { background: var(--br-color-state-success); }
+
+  /* KPI tile */
+  .kpi {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: var(--br-space-4) var(--br-space-5);
+    box-shadow: var(--br-shadow-sm);
+  }
+  .kpi .label {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    font-weight: var(--br-font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: var(--br-space-2);
+  }
+  .kpi .value {
+    font-size: 28px;
+    font-weight: var(--br-font-weight-semibold);
+    color: var(--br-color-ink-primary);
+    letter-spacing: -.02em;
+  }
+  .kpi .delta {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-state-success);
+    margin-top: var(--br-space-1);
+    font-weight: var(--br-font-weight-medium);
+  }
+  .kpi .delta.down { color: var(--br-color-state-danger); }
+
+  /* Feed */
+  .feed { display: flex; flex-direction: column; }
+  .feed-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: var(--br-space-3);
+    padding: var(--br-space-3) 0;
+    border-bottom: 1px solid var(--br-color-border-subtle);
+    align-items: flex-start;
+  }
+  .feed-row:last-child { border-bottom: 0; }
+  .feed-icon {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--br-radius-sm);
+  }
+  .feed-icon.green { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+  .feed-icon.amber { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); }
+  .feed-icon.red   { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); }
+  .feed-text { font-size: var(--br-font-size-sm); color: var(--br-color-ink-primary); line-height: 1.5; }
+  .feed-meta { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); margin-top: 2px; }
+  .feed-time { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); white-space: nowrap; }
+
+  /* Ledger grid */
+  .ledger-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--br-space-3);
+  }
+  @media (max-width: 1200px) {
+    .ledger-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .ledger-item {
+    padding: var(--br-space-3) var(--br-space-4);
+    background: var(--br-color-surface-sunken);
+    border-radius: var(--br-radius-md);
+    border: 1px solid var(--br-color-border-subtle);
+  }
+  .ledger-item .num {
+    font-size: var(--br-font-size-xl);
+    font-weight: var(--br-font-weight-semibold);
+    color: var(--br-color-ink-primary);
+    letter-spacing: -.01em;
+  }
+  .ledger-item .nm {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    margin-top: 2px;
+  }
+
+  hr.thin { border: 0; border-top: 1px solid var(--br-color-border-subtle); margin: var(--br-space-4) 0; }
+  .row { display: flex; align-items: center; gap: var(--br-space-2); }
+  .row.wrap { flex-wrap: wrap; }
+  .spacer { flex: 1; }
+  .sub {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    text-decoration: none;
+  }
+  a.sub:hover { color: var(--br-color-brand-primary); }
+
+  .kv {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    row-gap: 10px;
+    column-gap: 16px;
+    font-size: var(--br-font-size-sm);
+  }
+  .kv .k { color: var(--br-color-ink-muted); font-weight: var(--br-font-weight-medium); }
+  .kv .v { color: var(--br-color-ink-primary); }
+
+  /* Tile grid (Experts) */
+  .tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--br-space-4); }
+  .tile {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: var(--br-space-4);
+    box-shadow: var(--br-shadow-sm);
+    display: flex; flex-direction: column; gap: var(--br-space-3);
+  }
+  .tile-h { display: flex; justify-content: space-between; align-items: center; }
+  .tile-icon {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--br-color-brand-primary-tint);
+    color: var(--br-color-brand-primary);
+    border-radius: var(--br-radius-sm);
+  }
+  .tile-name { margin: 0; font-size: var(--br-font-size-md); font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); }
+  .tile-vendor { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); margin-top: 2px; }
+  .tile-desc { font-size: var(--br-font-size-sm); color: var(--br-color-ink-secondary); line-height: 1.5; flex: 1; }
+  .tile-meta { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); display: flex; gap: 6px; flex-wrap: wrap; }
+  .tile-actions { display: flex; gap: var(--br-space-2); padding-top: var(--br-space-2); border-top: 1px solid var(--br-color-border-subtle); }
+
+  /* Modal */
+  .modal-mount {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,.45);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 20px;
+    z-index: 100;
+    overflow: auto;
+  }
+  .modal-mount.open { display: flex; }
+  .modal {
+    background: var(--br-color-surface-panel);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-lg);
+    box-shadow: var(--br-shadow-lg);
+    width: 540px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .modal.wide { width: 720px; }
+  .modal-h {
+    padding: var(--br-space-4) var(--br-space-5);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--br-color-border-subtle);
+  }
+  .modal-h h2 { margin: 0; font-size: var(--br-font-size-lg); font-weight: var(--br-font-weight-semibold); }
+  .modal-body { padding: var(--br-space-5); }
+  .modal-foot {
+    padding: var(--br-space-3) var(--br-space-5);
+    border-top: 1px solid var(--br-color-border-subtle);
+    background: var(--br-color-surface-sunken);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .form-row { margin-bottom: var(--br-space-4); }
+  .form-row .f {
+    display: block;
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    font-weight: var(--br-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+  .form-row .hint {
+    font-size: var(--br-font-size-xs);
+    color: var(--br-color-ink-muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .form-row .hint a { color: var(--br-color-brand-primary); }
+  .form-row input.input, .form-row select.select { width: 100%; }
+
+  .check-list, .radio-list {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: var(--br-space-3);
+    background: var(--br-color-surface-sunken);
+    border-radius: var(--br-radius-md);
+    border: 1px solid var(--br-color-border-subtle);
+    max-height: 240px; overflow: auto;
+  }
+  .check-list label, .radio-list label {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: var(--br-font-size-sm);
+    color: var(--br-color-ink-primary);
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .check-list input, .radio-list input { margin-top: 2px; accent-color: var(--br-color-brand-primary); }
+
+  /* Stepper (wizard) */
+  .stepper {
+    display: flex; align-items: center; gap: var(--br-space-2);
+    margin-bottom: var(--br-space-5);
+    font-size: var(--br-font-size-xs);
+    flex-wrap: wrap;
+  }
+  .step { display: flex; align-items: center; gap: 6px; color: var(--br-color-ink-muted); }
+  .step .num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--br-color-surface-sunken);
+    border: 1px solid var(--br-color-border-default);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: var(--br-font-weight-semibold);
+    font-size: 11px;
+  }
+  .step.active { color: var(--br-color-brand-primary); font-weight: var(--br-font-weight-semibold); }
+  .step.active .num { background: var(--br-color-brand-primary); color: var(--br-color-ink-on-brand); border-color: var(--br-color-brand-primary); }
+  .step.done .num { background: var(--br-color-state-success); color: var(--br-color-ink-on-brand); border-color: var(--br-color-state-success); }
+  .stepper .sep { width: 16px; height: 1px; background: var(--br-color-border-default); }
+  .wizard-pane { display: none; }
+  .wizard-pane.active { display: block; }
+
+  /* Layer rows (metering) */
+  .layer-row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1.5fr) minmax(0, 1fr) 110px;
+    align-items: center;
+    gap: var(--br-space-3);
+    padding: var(--br-space-3) var(--br-space-5);
+    border-bottom: 1px solid var(--br-color-border-subtle);
+  }
+  @media (max-width: 900px) {
+    .layer-row {
+      grid-template-columns: 40px minmax(0, 1fr) 100px;
+    }
+    .layer-row .ln-metric { display: none; }
+  }
+  .layer-row:last-child { border-bottom: 0; }
+  .ln-ico {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--br-radius-md);
+    background: var(--br-color-brand-primary-tint);
+    color: var(--br-color-brand-primary);
+    font-weight: var(--br-font-weight-bold);
+    font-size: var(--br-font-size-sm);
+  }
+  .ln-name { font-size: var(--br-font-size-sm); font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); }
+  .ln-desc { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); margin-top: 2px; }
+  .ln-metric { font-size: var(--br-font-size-sm); color: var(--br-color-ink-secondary); }
+  .ln-cost { font-size: var(--br-font-size-md); font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); text-align: right; }
+
+  /* Execution trace */
+  .exec-trace {
+    background: var(--br-color-surface-sunken);
+    padding: var(--br-space-4) var(--br-space-5);
+    border-top: 1px solid var(--br-color-border-subtle);
+  }
+  .trace-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: var(--br-space-3);
+    padding: var(--br-space-2) 0;
+    border-bottom: 1px dashed var(--br-color-border-subtle);
+    align-items: flex-start;
+  }
+  .trace-row:last-child { border-bottom: 0; }
+  .trace-ico {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--br-radius-sm);
+    flex-shrink: 0;
+  }
+  .trace-ico.tool { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); }
+  .trace-ico.llm { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); }
+  .trace-ico.script { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+  .trace-ico.approval { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); }
+  .trace-ico.branch { background: var(--br-color-surface-sunken); color: var(--br-color-brand-accent); border: 1px solid var(--br-color-border-default); }
+  .trace-title { font-size: var(--br-font-size-sm); color: var(--br-color-ink-primary); font-weight: var(--br-font-weight-medium); }
+  .trace-meta { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); margin-top: 2px; }
+  .trace-dur { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); font-family: var(--br-font-family-mono); }
+  .ex-chev { transition: transform var(--br-motion-fast); color: var(--br-color-ink-muted); }
+
+  /* Settings rows */
+  .setting-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: var(--br-space-3) 0;
+    border-bottom: 1px solid var(--br-color-border-subtle);
+    gap: var(--br-space-3);
+  }
+  .setting-row:last-child { border-bottom: 0; }
+  .setting-row .lbl { font-size: var(--br-font-size-sm); font-weight: var(--br-font-weight-semibold); color: var(--br-color-ink-primary); }
+  .setting-row .sub { font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); margin-top: 2px; display: block; }
+  .switch {
+    width: 36px; height: 20px;
+    border-radius: 999px;
+    background: var(--br-color-border-default);
+    border: 0; padding: 0; cursor: pointer;
+    position: relative;
+    transition: background var(--br-motion-fast);
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform var(--br-motion-fast);
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  }
+  .switch.on { background: var(--br-color-brand-primary); }
+  .switch.on::after { transform: translateX(16px); }
+  .switch.disabled { background: var(--br-color-surface-sunken); cursor: not-allowed; opacity: .5; }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: var(--br-space-6);
+    color: var(--br-color-ink-muted);
+    font-size: var(--br-font-size-sm);
+  }
+  .e-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--br-color-surface-sunken);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--br-color-ink-muted);
+    margin-bottom: var(--br-space-2);
+  }
+
+  /* Charts */
+  .chart-wrap { width: 100%; overflow: hidden; }
+  .chart-wrap svg { width: 100%; height: auto; }
+  .legend { display: flex; gap: var(--br-space-4); margin-top: var(--br-space-2); font-size: var(--br-font-size-xs); color: var(--br-color-ink-muted); }
+  .legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--br-color-border-default);
+    border-top-color: var(--br-color-brand-primary);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    background: var(--br-color-ink-primary);
+    color: var(--br-color-ink-inverse);
+    padding: 10px 18px;
+    border-radius: var(--br-radius-md);
+    font-size: var(--br-font-size-sm);
+    box-shadow: var(--br-shadow-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--br-motion-base), transform var(--br-motion-base);
+    z-index: 200;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Mode toggle (in top bar) */
+  .mode-toggle {
+    display: inline-flex;
+    background: var(--br-color-surface-sunken);
+    border: 1px solid var(--br-color-border-subtle);
+    border-radius: var(--br-radius-md);
+    padding: 2px;
+    gap: 0;
+  }
+  .mode-toggle button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--br-color-ink-muted);
+    padding: 4px 10px;
+    font-size: var(--br-font-size-xs);
+    font-family: inherit;
+    font-weight: var(--br-font-weight-medium);
+    cursor: pointer;
+    border-radius: var(--br-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background var(--br-motion-fast), color var(--br-motion-fast);
+  }
+  .mode-toggle button:hover { color: var(--br-color-ink-primary); }
+  .mode-toggle button.active {
+    background: var(--br-color-surface-panel);
+    color: var(--br-color-ink-primary);
+    box-shadow: var(--br-shadow-sm);
+  }
+  .mode-toggle svg { width: 12px; height: 12px; }
+
+  .user-chip {
+    display: inline-flex; align-items: center; gap: var(--br-space-2);
+    padding: 4px 10px 4px 4px;
+    border-radius: 999px;
+    background: var(--br-color-surface-sunken);
+    border: 1px solid var(--br-color-border-subtle);
+  }
+  .user-chip .avi {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--br-color-brand-primary);
+    color: var(--br-color-ink-on-brand);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: var(--br-font-weight-bold);
+  }
+  .user-chip .nm { font-size: var(--br-font-size-xs); font-weight: var(--br-font-weight-medium); color: var(--br-color-ink-primary); }
+
+  /* Footer */
+  .app-foot {
+    padding: var(--br-space-5) var(--br-space-8);
+    border-top: 1px solid var(--br-color-border-subtle);
+    color: var(--br-color-ink-muted);
+    font-size: var(--br-font-size-xs);
+    display: flex; gap: var(--br-space-4); flex-wrap: wrap; justify-content: space-between;
+  }
+  .app-foot code {
+    font-family: var(--br-font-family-mono);
+    background: var(--br-color-surface-sunken);
+    padding: 1px 6px;
+    border-radius: var(--br-radius-sm);
+    color: var(--br-color-ink-secondary);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== FIDELITY BANNER ===================== -->
+<div class="fidelity-banner">
+  <div class="fidelity-flag">
+    <span class="dot"></span>
+    <span>ACP V1 Prototype · Tier 1 · Concept</span>
+  </div>
+  <div class="fidelity-label">Visual approximation of Apex Bridge — not bound to real tokens or production <code>apx-*</code> components</div>
+  <div class="fidelity-checks">
+    <span class="fidelity-check"><span class="mark fail">×</span> Tokens from Apex source</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> apx-* components</span>
+    <span class="fidelity-check"><span class="mark fail">×</span> schema.json contract</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> A11y baseline</span>
+    <span class="fidelity-check"><span class="mark fail">×</span> Production data binding</span>
+    <span class="fidelity-check"><span class="mark warn">~</span> Dark mode parity</span>
+  </div>
+  <div class="fidelity-tier">
+    Fidelity tier:
+    <span class="pips"><span class="pip on"></span><span class="pip"></span><span class="pip"></span></span>
+    1 / 3
+  </div>
+</div>
+
+<div class="app">
+  <apx-sidebar></apx-sidebar>
+  <apx-productbar></apx-productbar>
+
+  <div class="main-wrap">
+    <main id="main" aria-live="polite"></main>
+    <footer class="app-foot">
+      <div>
+        Apex Bridge prototype · <code>--br-*</code> token contract · vanilla web components · no framework runtime
+      </div>
+      <div>
+        2026-05-27 · Same delivery vehicle as N-central Apex Bridge POC
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===================== BRADLEY READINESS RAIL ===================== -->
+<aside class="bradley-rail" aria-label="Bradley's read on this prototype">
+
+  <div class="rail-head">
+    <div class="rail-avatar">B</div>
+    <div>
+      <div class="rail-title">Bradley's read</div>
+      <div class="rail-sub">on ACP V1 prototype · Apex Bridge · v0.1</div>
+    </div>
+  </div>
+
+  <div class="rail-blurb">
+    Nicole — this is your strategy rendered as a working surface. The seven V1 requirements are present. Coworker = Experts + Runbook + MCPs + Tools is intact. The Value Ledger is on screen. The trust-execution levels are visible. It's a Tier 1 concept. Two things will sharpen it before the room, and one is a strategic call only you can make.
+  </div>
+
+  <!-- Readiness row -->
+  <div class="readiness-row">
+    <div class="readiness-card">
+      <div class="readiness-card-label">Quality read</div>
+      <div class="readiness-state">⬤ Promising · not ready</div>
+      <div class="readiness-card-sub">Show it for alignment. Don't ship as design.</div>
+    </div>
+    <div class="readiness-card cx-good">
+      <div class="readiness-card-label">For the MSP</div>
+      <div class="readiness-state">⬤ Net Good (if it lands)</div>
+      <div class="readiness-card-sub">The receipts story is real. Customers can't find it anywhere else.</div>
+    </div>
+  </div>
+
+  <!-- Monte Carlo -->
+  <div class="mc-block">
+    <div class="mc-head">What happens to PMs in your spot</div>
+    <div class="mc-body">
+      Out of 1,000 PMs who've shown the strategy author a prototype this faithful:
+      <ul>
+        <li><span class="pct win">52%</span> paused, made the strategic call the prototype surfaced, iterated cleanly</li>
+        <li><span class="pct win">28%</span> killed a feature they didn't need, saved 4–6 weeks</li>
+        <li><span class="pct win">16%</span> ran past the open question and rebuilt that screen later</li>
+        <li><span class="pct lose">4%</span> shipped before naming the audience, got asked questions they couldn't answer</li>
+      </ul>
+      <div style="margin-top: 8px;">The biggest group made the call. The second biggest killed something on purpose. Both are wins. The 4% is the one to avoid.</div>
+    </div>
+    <div class="mc-disclosure">simulated · [CS: MEDIUM] · calibrating from PM behaviour data</div>
+  </div>
+
+  <!-- Dual: nailed / will hurt -->
+  <div class="dual-block">
+    <div class="dual-card good">
+      <div class="dual-head">⬤ What you nailed</div>
+      <ul class="dual-list">
+        <li><strong>Coworker = Experts + Runbook + MCPs + Tools.</strong> Faithfully rendered across Create flow, detail view, and execution trace. Nothing for you to translate.</li>
+        <li><strong>Value Ledger is on screen.</strong> Manual hours saved, cost avoided, success rate — the "receipts" story has a real surface.</li>
+        <li><strong>Trust-execution levels visible per Coworker.</strong> Human Confirms / AI Executes·Human Audits / Autonomous as <code>apx-badge</code> variants. L4-earned-autonomy lands without explanation.</li>
+        <li><strong>Apex Bridge as delivery vehicle.</strong> <code>--br-*</code> tokens, six <code>apx-*</code> components, dark mode via <code>data-apx-mode</code>. Same contract as Bryce + Patrick's POC.</li>
+        <li><strong>Source fidelity is high.</strong> Five monetization layers, MCP / key-service separation, runbook-as-governance-contract — sourced from your docs, not invented.</li>
+      </ul>
+    </div>
+
+    <div class="dual-card fail">
+      <div class="dual-head">⬤ What will hurt you</div>
+      <ul class="dual-list">
+        <li><strong>Narrative collision is unresolved.</strong> The Control Plane doc says "MSP never opens UEM, Cove, or Adlumin." The Bridge POC says "ACP renders inside N-central as overlay." These are two product stories. The room will ask which one V1 ships against. <strong>This is your call.</strong></li>
+        <li><strong>Coworker builder reads as a settings dialog.</strong> Your own doc says "build the UX to this up front. This does not need to be second." The wizard is behind a <code>+ New Coworker</code> button. It should be the front door.</li>
+        <li><strong>Trust-execution levels are pre-decided, not tested.</strong> Ewan's hypothesis names three competing mental models. V1 picks one and ships. Worth testing the other two before code lands.</li>
+        <li><strong>Chargeback is rendered, not modeled.</strong> Five monetization layers are listed with prices. The prototype doesn't show what gets metered against what in a multi-tenant case. Execs will ask.</li>
+        <li><strong>Component coverage gap.</strong> Bridge ships 7 components. V1 needs ~11. The net-new components (wizard, runbook editor, KPI tile, step-trace accordion) aren't yet speced as Bridge contributions.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PRODUCT (Nicole's calls) -->
+  <div class="routed-block">
+    <div class="routed-head product">
+      <span class="tag">Product</span>
+      <span>Three calls only you can make</span>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">1 · Resolve the narrative collision</div>
+      <div class="risk-meta">
+        <span class="k">Product does</span><span class="v">Pick one V1 story: <strong>ACP-First</strong> (ACP replaces UEM/Cove/Adlumin as the MSP's front door) or <strong>ACP-via-Bridge</strong> (ACP rides inside N-central as overlay). Both work; both can't be V1 at once.</span>
+        <span class="k">Why now</span><span class="v">The room will ask. The prototype can show either, but not both at once. Engineering and sales need the same answer.</span>
+        <span class="k">Source</span><span class="v">Control Plane doc §"The ACP-First MSP" vs. Bridge POC §"Non-Destructive Integration"</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        <span class="pct">41%</span> of cross-team prototypes fail in the room because the strategic question wasn't named before the design pass. Engineering builds against one story while sales pitches the other.
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">2 · Name the demo audience for each forum</div>
+      <div class="risk-meta">
+        <span class="k">Product does</span><span class="v">Confirm this prototype is for you + ACP exec review. Decide if MSP design partners need a different surface (interactive vs. read-only, with or without this rail).</span>
+        <span class="k">Why now</span><span class="v">Tone shifts. Internal review tolerates open questions in the rail. Design partner needs a cleaner front.</span>
+        <span class="k">Source</span><span class="v">PM playbook · audience-first framing</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        <span class="pct">22%</span> of prototypes get walked into the wrong audience and rebuilt before the next pass.
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">3 · Confirm the Value Ledger is V1, not V2</div>
+      <div class="risk-meta">
+        <span class="k">Product does</span><span class="v">Lock the Ledger as V1. The differentiation case rests on it. The brief currently marks it <code>[A]</code>; the prototype includes it. Reconcile.</span>
+        <span class="k">Why now</span><span class="v">If the Ledger slips, ACP V1 reads as "another ops console with AI in it." With it, ACP becomes the receipts product.</span>
+        <span class="k">Source</span><span class="v">Control Plane doc §"Value Ledger" — described as customer-facing</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        Differentiation collapses to feature-list parity. The MSP cannot tell the new story without the ledger to point at.
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN -->
+  <div class="routed-block">
+    <div class="routed-head design">
+      <span class="tag">Design</span>
+      <span>Three things Design owns from here</span>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">1 · Redraw the Coworker builder as the front door</div>
+      <div class="risk-meta">
+        <span class="k">Design does</span><span class="v">Promote the 5-step wizard from a modal to a first-class workflow. Dashboard empty state invites a first Coworker creation; doesn't list zero rows.</span>
+        <span class="k">Why now</span><span class="v">Customer-built Coworkers is the load-bearing capability. The current pattern buries it under a settings affordance.</span>
+        <span class="k">Source</span><span class="v">AI Coworker doc §7 — "build the UX to this up front"</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        <span class="pct">38%</span> of feature-defining flows get read as configuration when surfaced as modals. "AI Coworkers run your MSP" becomes "this app lets you configure agents."
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">2 · Surface the three trust-level mental models for testing</div>
+      <div class="risk-meta">
+        <span class="k">Design does</span><span class="v">Stub all three patterns — track record, graduated dial, scope-based guardrail — in a dedicated screen so Research can run a comprehension test.</span>
+        <span class="k">Why now</span><span class="v">Ewan's hypothesis is the closest thing to user research in the source set. Picking one before testing wastes the opportunity.</span>
+        <span class="k">Source</span><span class="v">AI Coworker doc §"Promoting Agent behavior" · Ewan's L4-autonomy experiment</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        <span class="pct">44%</span> of preselected mental models fail to match the user's actual decision frame. Trust UX has to be redesigned post-launch.
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">3 · Make Runbook ≠ Workflow visible</div>
+      <div class="risk-meta">
+        <span class="k">Design does</span><span class="v">In the Runbook detail view, show the workflow scaffold as stubbed ("workflows attached: 0 — runbook is text-only"). Don't conflate the two.</span>
+        <span class="k">Why now</span><span class="v">The source doc is unambiguous: workflow is a component of runbook. The current text-area pattern erases the relationship.</span>
+        <span class="k">Source</span><span class="v">Runbook doc §"Runbook vs Workflow"</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        Technical reviewers see a text-area with Intent + Steps and ask "where do workflows live?" Trust in the structural model erodes.
+      </div>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="routed-block">
+    <div class="routed-head research">
+      <span class="tag">Research</span>
+      <span>Two things Research owns from here</span>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">1 · Comprehension test on the three trust-level models</div>
+      <div class="risk-meta">
+        <span class="k">Research does</span><span class="v">10-second test with <strong>5–8 MSP technicians per segment</strong>. Which mental model is self-evident without explanation? Ewan's specific hypothesis.</span>
+        <span class="k">Why now</span><span class="v">Cheaper to test three than rebuild one. Trust UX is the load-bearing safety case for autonomous Coworkers.</span>
+        <span class="k">Source</span><span class="v">NN/g 2023+ AI testing · 5–8 per segment for generative</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        The trust model ships on a designer's intuition. <span class="pct">28%</span> of AI features tested at N&lt;10 misread the trust dynamic.
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">2 · Customer corroboration on the Value Ledger</div>
+      <div class="risk-meta">
+        <span class="k">Research does</span><span class="v">5–8 MSP customer interviews. Show the Ledger. Surface: do they want it customer-facing (their customer sees it), MSP-facing (internal proof), or both?</span>
+        <span class="k">Why now</span><span class="v">The Ledger is the differentiation. If MSPs won't actually show it to their customer, the QBR-Coworker story collapses.</span>
+        <span class="k">Source</span><span class="v">Control Plane doc §"Value Ledger" — described as customer-facing artifact</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        <span class="pct">31%</span> of value-prop UI gets built for the wrong audience and rebuilt within two sprints.
+      </div>
+    </div>
+  </div>
+
+  <!-- ENG -->
+  <div class="routed-block">
+    <div class="routed-head eng">
+      <span class="tag">Eng</span>
+      <span>Two things Eng owns from here</span>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">1 · Name the net-new components as Bridge contributions</div>
+      <div class="risk-meta">
+        <span class="k">Eng does</span><span class="v">Catalogue the ~7 ACP-specific components V1 needs that Bridge doesn't ship: wizard, runbook editor, KPI tile, step-trace accordion, modal, multi-select, filter dropdown. Decide which become <code>apx-*</code> (Bridge) vs. ACP-local.</span>
+        <span class="k">Why now</span><span class="v">Bridge's 2026.4 sprint is being scoped now. ACP components landing in that scope is cheaper than ACP building its own design language.</span>
+        <span class="k">Source</span><span class="v">Bridge POC §"What ships in this sprint" · 2026.4 adoption proposal</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        ACP grows its own component library. Design drift in 18 months. Bridge's compounding-marginal-cost story breaks.
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">2 · Bind the token contract to the Apex source-of-truth</div>
+      <div class="risk-meta">
+        <span class="k">Eng does</span><span class="v">Confirm <code>--br-*</code> values come from the Apex source-of-truth (Figma → bridge-tokens.css), not the values inlined in this prototype.</span>
+        <span class="k">Why now</span><span class="v">The prototype inlines reasonable approximations. Production must use the canonical Apex tokens.</span>
+        <span class="k">Source</span><span class="v">Bridge POC §"Token Bridge" · APEX Adoption Proposal §"How APEX Works"</span>
+      </div>
+      <div class="skip-risk">
+        <span class="skip-risk-label">If you ship without it</span>
+        Design intent and production behavior drift. The screen Nicole sees in the demo doesn't match what ships.
+      </div>
+    </div>
+  </div>
+
+  <!-- Foot -->
+  <div class="rail-foot">
+    <strong>Bradley · this is a read on the prototype, not a verdict on the strategy.</strong><br>
+    → Show it to Nicole for alignment. Don't ship as design.<br>
+    → Bring Design, Research, and Eng into the room before V1 freezes.<br>
+    → Next council: when the narrative call is made.
+  </div>
+
+</aside>
+
+<div id="modal-mount" class="modal-mount" role="dialog" aria-modal="true"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =========================================================
+   APEX BRIDGE — WEB COMPONENT LIBRARY
+   Vanilla Custom Elements + Shadow DOM. Consume --br-* tokens.
+   ========================================================= */
+
+/* ---------- icon library (lucide-style, currentColor) ---------- */
+const ICON = {
+  dashboard: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>',
+  coworkers: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  executions: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  runbooks: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  experts: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  mcp: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+  metering: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  ledger: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
+  settings: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+  monitor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+  search: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+  bell: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+  chevR: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  back: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+  close: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  x: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  pause: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+  warning: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  plus: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  toolWrench: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  cpu: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>',
+  terminal: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
+  shield: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  branch: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>'
+};
+
+/* ---------- Shared component CSS (tokens cascade in) ---------- */
+const COMPONENT_RESET = `
+  :host { display: block; box-sizing: border-box; font-family: var(--br-font-family-sans); color: var(--br-color-ink-primary); }
+  *, *::before, *::after { box-sizing: border-box; }
+`;
+
+/* ============ <apx-sidebar> ============ */
+class ApxSidebar extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    const items = [
+      { view: 'dashboard',  label: 'Dashboard',           icon: ICON.dashboard },
+      { view: 'coworkers',  label: 'Coworkers',           icon: ICON.coworkers },
+      { view: 'executions', label: 'Executions',          icon: ICON.executions },
+      { view: 'runbooks',   label: 'Runbooks',            icon: ICON.runbooks },
+      { view: 'experts',    label: 'Experts',             icon: ICON.experts },
+      { view: 'mcp',        label: 'MCP Servers',         icon: ICON.mcp },
+      { view: 'metering',   label: 'Metering & Chargeback', icon: ICON.metering },
+      { view: 'ledger',     label: 'Value Ledger',        icon: ICON.ledger },
+      { view: 'settings',   label: 'Settings',            icon: ICON.settings }
+    ];
+
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          background: var(--br-color-surface-panel);
+          border-right: 1px solid var(--br-color-border-subtle);
+          height: 100%;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
+        }
+        .brand {
+          padding: var(--br-space-4) var(--br-space-5);
+          display: flex;
+          align-items: center;
+          gap: var(--br-space-3);
+          border-bottom: 1px solid var(--br-color-border-subtle);
+          height: 56px;
+        }
+        .brand-mark {
+          width: 28px; height: 28px;
+          border-radius: var(--br-radius-sm);
+          background: var(--br-color-brand-primary);
+          color: var(--br-color-ink-on-brand);
+          display: inline-flex; align-items: center; justify-content: center;
+          font-weight: var(--br-font-weight-bold);
+          font-size: var(--br-font-size-sm);
+        }
+        .brand-name {
+          font-size: var(--br-font-size-md);
+          font-weight: var(--br-font-weight-semibold);
+          letter-spacing: -.01em;
+        }
+        .brand-sub {
+          font-size: 11px;
+          color: var(--br-color-ink-muted);
+          font-weight: var(--br-font-weight-medium);
+          letter-spacing: .04em;
+          text-transform: uppercase;
+        }
+        nav {
+          padding: var(--br-space-3);
+          flex: 1;
+          overflow: auto;
+        }
+        .nav-section {
+          font-size: 11px;
+          font-weight: var(--br-font-weight-semibold);
+          color: var(--br-color-ink-muted);
+          text-transform: uppercase;
+          letter-spacing: .06em;
+          padding: var(--br-space-3) var(--br-space-3) var(--br-space-1);
+        }
+        button {
+          appearance: none;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: var(--br-space-3);
+          padding: 8px 12px;
+          border: 0;
+          background: transparent;
+          color: var(--br-color-ink-secondary);
+          font-family: inherit;
+          font-size: var(--br-font-size-sm);
+          font-weight: var(--br-font-weight-medium);
+          border-radius: var(--br-radius-sm);
+          cursor: pointer;
+          text-align: left;
+          transition: background var(--br-motion-fast), color var(--br-motion-fast);
+        }
+        button:hover {
+          background: var(--br-color-surface-hover);
+          color: var(--br-color-ink-primary);
+        }
+        button.active {
+          background: var(--br-color-brand-primary-tint);
+          color: var(--br-color-brand-primary);
+        }
+        button .ico { display: inline-flex; width: 16px; height: 16px; flex-shrink: 0; }
+        .foot {
+          padding: var(--br-space-3) var(--br-space-4);
+          border-top: 1px solid var(--br-color-border-subtle);
+          font-size: 11px;
+          color: var(--br-color-ink-muted);
+        }
+      </style>
+      <div class="brand">
+        <span class="brand-mark">A</span>
+        <div>
+          <div class="brand-name">N-able ACP</div>
+          <div class="brand-sub">Apex Bridge</div>
+        </div>
+      </div>
+      <nav role="navigation" aria-label="Primary">
+        <div class="nav-section">Operate</div>
+        ${items.slice(0, 3).map(i => this._navBtn(i)).join('')}
+        <div class="nav-section">Build</div>
+        ${items.slice(3, 6).map(i => this._navBtn(i)).join('')}
+        <div class="nav-section">Govern</div>
+        ${items.slice(6).map(i => this._navBtn(i)).join('')}
+      </nav>
+      <div class="foot">v0.1 prototype · token contract</div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button[data-view]').forEach(b => {
+      b.addEventListener('click', () => {
+        this.dispatchEvent(new CustomEvent('apx-navigate', {
+          bubbles: true, composed: true,
+          detail: { view: b.dataset.view }
+        }));
+      });
+    });
+  }
+  _navBtn(i) {
+    return `<button data-view="${i.view}"><span class="ico">${i.icon}</span>${i.label}</button>`;
+  }
+  setActive(view) {
+    this.shadowRoot.querySelectorAll('button[data-view]').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === view);
+    });
+  }
+}
+customElements.define('apx-sidebar', ApxSidebar);
+
+/* ============ <apx-productbar> ============ */
+class ApxProductbar extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          background: var(--br-color-surface-panel);
+          border-bottom: 1px solid var(--br-color-border-subtle);
+          height: 56px;
+          padding: 0 var(--br-space-6);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: var(--br-space-4);
+        }
+        .crumbs {
+          display: flex; align-items: center; gap: 6px;
+          font-size: var(--br-font-size-sm);
+        }
+        .crumb {
+          color: var(--br-color-ink-muted);
+        }
+        .crumb.current {
+          color: var(--br-color-ink-primary);
+          font-weight: var(--br-font-weight-semibold);
+        }
+        .sep { color: var(--br-color-border-strong); }
+        .actions {
+          display: flex; align-items: center; gap: var(--br-space-3);
+        }
+        .icon-btn {
+          appearance: none;
+          width: 32px; height: 32px;
+          border-radius: var(--br-radius-sm);
+          border: 0;
+          background: transparent;
+          color: var(--br-color-ink-secondary);
+          display: inline-flex; align-items: center; justify-content: center;
+          cursor: pointer;
+        }
+        .icon-btn:hover {
+          background: var(--br-color-surface-hover);
+          color: var(--br-color-ink-primary);
+        }
+        .search-wrap {
+          position: relative;
+          display: inline-flex; align-items: center;
+        }
+        .search-wrap svg {
+          position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+          color: var(--br-color-ink-muted);
+          pointer-events: none;
+        }
+        .search-wrap input {
+          font-family: inherit;
+          font-size: var(--br-font-size-sm);
+          color: var(--br-color-ink-primary);
+          background: var(--br-color-surface-sunken);
+          border: 1px solid var(--br-color-border-subtle);
+          border-radius: var(--br-radius-md);
+          padding: 6px 10px 6px 28px;
+          width: 240px;
+          outline: none;
+          transition: border-color var(--br-motion-fast);
+        }
+        .search-wrap input:focus { border-color: var(--br-color-brand-primary); }
+        ::slotted([slot="left"]), ::slotted([slot="right"]) { display: inline-flex; align-items: center; gap: var(--br-space-2); }
+      </style>
+      <div><slot name="left"></slot></div>
+      <div class="actions">
+        <slot name="right"></slot>
+      </div>
+    `;
+  }
+}
+customElements.define('apx-productbar', ApxProductbar);
+
+/* ============ <apx-card> ============ */
+class ApxCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          background: var(--br-color-surface-panel);
+          border: 1px solid var(--br-color-border-subtle);
+          border-radius: var(--br-radius-md);
+          box-shadow: var(--br-shadow-sm);
+          overflow: hidden;
+        }
+        .head {
+          padding: var(--br-space-3) var(--br-space-5);
+          border-bottom: 1px solid var(--br-color-border-subtle);
+          display: flex; justify-content: space-between; align-items: center;
+          gap: var(--br-space-3);
+        }
+        .head:empty { display: none; }
+        ::slotted([slot="header-title"]) {
+          margin: 0;
+          font-size: var(--br-font-size-md);
+          font-weight: var(--br-font-weight-semibold);
+          color: var(--br-color-ink-primary);
+        }
+        .body { padding: var(--br-space-5); }
+        .body.no-pad { padding: 0; }
+        .foot {
+          padding: var(--br-space-3) var(--br-space-5);
+          border-top: 1px solid var(--br-color-border-subtle);
+          background: var(--br-color-surface-sunken);
+          display: flex; justify-content: flex-end; gap: var(--br-space-2);
+        }
+        .foot:empty { display: none; }
+      </style>
+      <div class="head">
+        <slot name="header-title"></slot>
+        <slot name="header-aside"></slot>
+      </div>
+      <div class="body ${this.hasAttribute('no-pad') ? 'no-pad' : ''}">
+        <slot></slot>
+      </div>
+      <div class="foot"><slot name="footer"></slot></div>
+    `;
+  }
+}
+customElements.define('apx-card', ApxCard);
+
+/* ============ <apx-badge> ============ */
+class ApxBadge extends HTMLElement {
+  static get observedAttributes() { return ['variant', 'size']; }
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { if (this.shadowRoot) this._render(); }
+  _render() {
+    const variant = this.getAttribute('variant') || 'neutral';
+    const size = this.getAttribute('size') || 'md';
+    const dot = this.hasAttribute('dot');
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: ${size === 'sm' ? '1px 7px' : '3px 9px'};
+          border-radius: var(--br-radius-sm);
+          font-size: ${size === 'sm' ? '11px' : 'var(--br-font-size-xs)'};
+          font-weight: var(--br-font-weight-semibold);
+          line-height: 1.4;
+          border: 1px solid transparent;
+          white-space: nowrap;
+        }
+        :host([variant="success"])  { background: var(--br-color-state-success-tint); color: var(--br-color-state-success); }
+        :host([variant="warning"])  { background: var(--br-color-state-warning-tint); color: var(--br-color-state-warning); }
+        :host([variant="danger"])   { background: var(--br-color-state-danger-tint); color: var(--br-color-state-danger); }
+        :host([variant="info"])     { background: var(--br-color-state-info-tint); color: var(--br-color-state-info); }
+        :host([variant="brand"])    { background: var(--br-color-brand-primary-tint); color: var(--br-color-brand-primary); }
+        :host([variant="accent"])   { background: rgba(109,40,217,.14); color: var(--br-color-brand-accent); }
+        :host([variant="neutral"]), :host(:not([variant])) {
+          background: var(--br-color-surface-sunken);
+          color: var(--br-color-ink-secondary);
+          border-color: var(--br-color-border-subtle);
+        }
+        .dot {
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          background: currentColor;
+          flex-shrink: 0;
+        }
+      </style>
+      ${dot ? '<span class="dot"></span>' : ''}<slot></slot>
+    `;
+  }
+}
+customElements.define('apx-badge', ApxBadge);
+
+/* ============ <apx-table> ============ */
+class ApxTable extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          display: block;
+          background: var(--br-color-surface-panel);
+          border: 1px solid var(--br-color-border-subtle);
+          border-radius: var(--br-radius-md);
+          box-shadow: var(--br-shadow-sm);
+          overflow: hidden;
+        }
+        .scroll { overflow-x: auto; }
+        ::slotted(table) {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: var(--br-font-size-sm);
+          color: var(--br-color-ink-primary);
+        }
+      </style>
+      <div class="scroll"><slot></slot></div>
+    `;
+  }
+}
+customElements.define('apx-table', ApxTable);
+
+/* ============ <apx-loader> ============ */
+class ApxLoader extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    const label = this.getAttribute('label') || '';
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${COMPONENT_RESET}
+        :host {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: var(--br-font-size-xs);
+          color: var(--br-color-ink-muted);
+        }
+        .ring {
+          width: 14px; height: 14px;
+          border: 2px solid var(--br-color-border-default);
+          border-top-color: var(--br-color-brand-primary);
+          border-radius: 50%;
+          animation: spin .8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+      </style>
+      <span class="ring" role="status" aria-label="Loading"></span>
+      ${label ? `<span>${label}</span>` : ''}
+    `;
+  }
+}
+customElements.define('apx-loader', ApxLoader);
+
+/* =========================================================
+   MODE TOGGLE — Light / Dark / System
+   data-apx-mode on <html>, localStorage persisted.
+   ========================================================= */
+const ModeManager = (() => {
+  const KEY = 'apx-mode-pref';
+  const html = document.documentElement;
+  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function getPref() {
+    return localStorage.getItem(KEY) || 'system';
+  }
+  function setPref(pref) {
+    localStorage.setItem(KEY, pref);
+    apply();
+    renderToggle();
+  }
+  function resolved(pref = getPref()) {
+    if (pref === 'system') return mql.matches ? 'dark' : 'light';
+    return pref;
+  }
+  function apply() {
+    html.setAttribute('data-apx-mode', resolved());
+  }
+  function renderToggle() {
+    const wrap = document.getElementById('mode-toggle');
+    if (!wrap) return;
+    const pref = getPref();
+    wrap.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.pref === pref);
+      b.setAttribute('aria-pressed', String(b.dataset.pref === pref));
+    });
+  }
+
+  mql.addEventListener('change', () => { if (getPref() === 'system') apply(); });
+
+  return { getPref, setPref, apply, renderToggle };
+})();
+
+/* =========================================================
+   SEED DATA — unchanged from previous build
+   ========================================================= */
+const today = new Date(2026, 4, 27);
+const dateStr = today.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+
+const TRUST = {
+  t1: { label: 'Human Confirms', cls: 't1' },
+  t2: { label: 'AI Executes · Human Audits', cls: 't2' },
+  t3: { label: 'Autonomous', cls: 't3' }
+};
+
+let coworkers = [
+  { id: 'cw1', name: 'New Customer Onboarding', desc: 'Provisions identity, devices, backup, MDR for a new tenant via PSA intake.',
+    experts: ['Identity Expert','Asset Expert','Backup Expert','Security/MDR Expert','Documentation Expert'],
+    runbook: 'Onboard New Customer (N-able default)',
+    mcp: ['Halo PSA','N-able UEM','N-able Cove Backup','N-able Adlumin MDR'],
+    trust: 't1', status: 'Active', lastRun: '2026-05-26 14:12', runs: 18, customer: 'Acme Corp', trigger: 'Manual' },
+  { id: 'cw2', name: 'Alert Flood Suppression', desc: 'Correlates duplicates, suppresses benign signals, escalates pattern shifts.',
+    experts: ['Security/MDR Expert','Endpoint Expert'],
+    runbook: 'Suppress Duplicate Alerts (N-able default)',
+    mcp: ['N-able Adlumin MDR','N-able UEM','Halo PSA'],
+    trust: 't3', status: 'Active', lastRun: '2026-05-27 09:04', runs: 412, customer: 'All', trigger: 'Event-driven' },
+  { id: 'cw3', name: 'QBR Report Generator', desc: 'Compiles quarterly business review across PSA, RMM, MDR, Backup.',
+    experts: ['Documentation Expert','Asset Expert','Security/MDR Expert','Backup Expert'],
+    runbook: 'Onboard New Customer (N-able default)',
+    mcp: ['Halo PSA','N-able UEM','N-able Cove Backup','N-able Adlumin MDR'],
+    trust: 't2', status: 'Active', lastRun: '2026-05-25 18:33', runs: 7, customer: 'Acme Corp', trigger: 'Scheduled' },
+  { id: 'cw4', name: 'Ticket Triage & Dispatch', desc: 'Classifies inbound tickets, runs safe diagnostics, routes to the right queue.',
+    experts: ['Halo Ticket Expert','Endpoint Expert','Identity Expert'],
+    runbook: 'Triage Inbound Ticket (Customer-authored)',
+    mcp: ['Halo PSA','N-able UEM'],
+    trust: 't2', status: 'Active', lastRun: '2026-05-27 08:51', runs: 96, customer: 'Northwind Industries', trigger: 'Event-driven' },
+  { id: 'cw5', name: 'Network Incident Resolution', desc: 'Diagnoses CPU/network spikes, recommends remediation, executes approved scripts.',
+    experts: ['Endpoint Expert','Script Generator Expert','Security/MDR Expert'],
+    runbook: 'Patch CPU Spike Incident (Customer-authored)',
+    mcp: ['N-able UEM','N-able Adlumin MDR'],
+    trust: 't1', status: 'Draft', lastRun: '—', runs: 0, customer: 'Globex', trigger: 'Manual' }
+];
+
+let experts = [
+  { name: 'Endpoint Expert', vendor: 'N-able', cert: 'First-party', desc: 'Device inventory, patch state, remote action via UEM.', scopes: ['UEM:read','UEM:action'], version: '2.4.0' },
+  { name: 'Backup Expert', vendor: 'N-able', cert: 'First-party', desc: 'Backup health, failure triage, recovery readiness via Cove.', scopes: ['Cove:read','Cove:action'], version: '1.9.3' },
+  { name: 'Security/MDR Expert', vendor: 'N-able', cert: 'First-party', desc: 'Detection triage, alert enrichment, containment via Adlumin.', scopes: ['Adlumin:read','Adlumin:action'], version: '3.1.0' },
+  { name: 'Identity Expert', vendor: 'N-able', cert: 'First-party', desc: 'User provisioning, deprovisioning, role assignment across IdPs.', scopes: ['IdP:read','IdP:write'], version: '1.5.1' },
+  { name: 'Asset Expert', vendor: 'N-able', cert: 'First-party', desc: 'Asset allocation, lifecycle, decommission.', scopes: ['Asset:read','Asset:write'], version: '1.2.0' },
+  { name: 'Documentation Expert', vendor: 'N-able', cert: 'First-party', desc: 'Generates runbook documentation, QBR sections, postmortems.', scopes: ['Docs:read','Docs:write'], version: '0.9.4' },
+  { name: 'Halo Ticket Expert', vendor: 'Halo Service Solutions', cert: 'Certified Vendor', desc: 'Ingest, classify, update tickets in Halo PSA.', scopes: ['Halo:read','Halo:write'], version: '1.0.2' },
+  { name: 'Script Generator Expert', vendor: 'N-able', cert: 'First-party', desc: 'Drafts net-new scripts under MSP risk policy for approval.', scopes: ['ScriptRepo:read','ScriptRepo:write'], version: '0.4.0' }
+];
+
+let runbooks = [
+  { id: 'rb1', name: 'Onboard New Customer (N-able default)', author: 'N-able', modified: '2026-05-19', steps: 14,
+    intent: 'When a new customer is created in PSA, provision tenant baselines: identity directory, asset baseline, backup policy, MDR sensor, documentation seed.',
+    body: '1. Validate intake payload from PSA\n2. Create tenant in identity directory\n3. Allocate baseline asset inventory\n4. Apply default backup policy\n5. Install/onboard MDR sensor\n6. Seed customer documentation\n7. Write QBR baseline\n8. Notify MSP technician with summary' },
+  { id: 'rb2', name: 'Suppress Duplicate Alerts (N-able default)', author: 'N-able', modified: '2026-05-22', steps: 8,
+    intent: 'When alert volume crosses noise threshold, group near-duplicates, suppress benign repeats, escalate on shift in signal pattern.',
+    body: '1. Collect alerts in window\n2. Cluster by signature\n3. Suppress benign repeats\n4. Detect drift in pattern\n5. Escalate via PSA if drift detected' },
+  { id: 'rb3', name: 'Triage Inbound Ticket (Customer-authored)', author: 'Acme Corp · K. Park', modified: '2026-05-24', steps: 11,
+    intent: 'When a ticket arrives, classify by impact and category, run safe diagnostics, route to the right queue with enriched context.',
+    body: '1. Read ticket from Halo\n2. Classify category + impact (bounded reasoning)\n3. Pull affected device telemetry from UEM\n4. Attach diagnostics summary\n5. Route to queue\n6. Notify on-call if P1' },
+  { id: 'rb4', name: 'Patch CPU Spike Incident (Customer-authored)', author: 'Acme Corp · K. Park', modified: '2026-05-26', steps: 9,
+    intent: 'When CPU exceeds 92% for 5+ minutes, enrich incident with running processes, suggest remediation, await human approval before any restart.',
+    body: '1. Evaluate CPU threshold (workflow)\n2. Ask AI to classify likely cause (bounded reasoning)\n3. Enrich ticket with running processes\n4. Recommend remediation\n5. Hold for human approval (no auto-execute)' }
+];
+
+let mcpServers = [
+  { name: 'Halo PSA', endpoint: 'https://acmecorp.halopsa.com/api', auth: 'OAuth 2.0', scope: 'tickets.rw, customers.r', status: 'Connected', latency: '124 ms', kind: 'Vendor' },
+  { name: 'N-able UEM', endpoint: 'mcp://nable.uem.prod', auth: 'N-able key service', scope: 'devices.r, scripts.x', status: 'Connected', latency: '88 ms', kind: 'N-able default' },
+  { name: 'N-able Cove Backup', endpoint: 'mcp://nable.cove.prod', auth: 'N-able key service', scope: 'jobs.r, recover.x', status: 'Connected', latency: '102 ms', kind: 'N-able default' },
+  { name: 'N-able Adlumin MDR', endpoint: 'mcp://nable.adlumin.prod', auth: 'N-able key service', scope: 'alerts.r, isolate.x', status: 'Connected', latency: '76 ms', kind: 'N-able default' },
+  { name: 'Acme Custom CRM', endpoint: 'https://crm.acme.local/mcp', auth: 'API Key', scope: 'contacts.r, deals.r', status: 'Connected', latency: '212 ms', kind: 'Customer BYO' }
+];
+
+let executions = [
+  { id: 'ex1', coworker: 'Alert Flood Suppression', customer: 'Acme Corp', trigger: 'Event-driven', start: '2026-05-27 09:04:12', dur: '00:00:18', status: 'Success', steps: 6, saved: '12 min' },
+  { id: 'ex2', coworker: 'Ticket Triage & Dispatch', customer: 'Northwind Industries', trigger: 'Event-driven', start: '2026-05-27 08:51:03', dur: '00:00:24', status: 'Success', steps: 7, saved: '18 min' },
+  { id: 'ex3', coworker: 'New Customer Onboarding', customer: 'Acme Corp', trigger: 'Manual', start: '2026-05-26 14:12:41', dur: '00:04:32', status: 'Success', steps: 14, saved: '4 h 20 min' },
+  { id: 'ex4', coworker: 'Network Incident Resolution', customer: 'Globex', trigger: 'Manual', start: '2026-05-26 11:42:08', dur: '00:01:55', status: 'Awaiting Approval', steps: 5, saved: '—' },
+  { id: 'ex5', coworker: 'QBR Report Generator', customer: 'Acme Corp', trigger: 'Scheduled', start: '2026-05-25 18:33:00', dur: '00:02:11', status: 'Success', steps: 8, saved: '6 h 0 min' },
+  { id: 'ex6', coworker: 'Alert Flood Suppression', customer: 'Northwind Industries', trigger: 'Event-driven', start: '2026-05-25 17:18:55', dur: '00:00:14', status: 'Success', steps: 6, saved: '9 min' },
+  { id: 'ex7', coworker: 'Ticket Triage & Dispatch', customer: 'Acme Corp', trigger: 'Event-driven', start: '2026-05-25 10:02:33', dur: '00:00:31', status: 'Success', steps: 7, saved: '14 min' },
+  { id: 'ex8', coworker: 'Network Incident Resolution', customer: 'Globex', trigger: 'Event-driven', start: '2026-05-24 22:48:19', dur: '00:00:12', status: 'Failed · Retried', steps: 4, saved: '—' },
+  { id: 'ex9', coworker: 'New Customer Onboarding', customer: 'Northwind Industries', trigger: 'Manual', start: '2026-05-24 09:05:11', dur: '00:03:58', status: 'Success', steps: 14, saved: '4 h 0 min' },
+  { id: 'ex10', coworker: 'Alert Flood Suppression', customer: 'Globex', trigger: 'Event-driven', start: '2026-05-23 21:11:02', dur: '00:00:17', status: 'Success', steps: 6, saved: '11 min' }
+];
+
+const traceTemplates = {
+  default: [
+    { type: 'tool', title: 'MCP call · Halo PSA → fetch ticket #48201', meta: 'scope: tickets.r · 88 ms', dur: '88 ms' },
+    { type: 'llm', title: 'LLM inference · classify(category, impact)', meta: 'model: Bedrock claude-sonnet · 412 tokens · 612 ms', dur: '612 ms' },
+    { type: 'tool', title: 'MCP call · N-able UEM → device telemetry', meta: 'scope: devices.r · 142 ms', dur: '142 ms' },
+    { type: 'script', title: 'Script · diagnose_cpu.ps1 (low-risk, auto)', meta: 'repository: customer-approved · exit 0 · 1.8 s', dur: '1.82 s' },
+    { type: 'branch', title: 'Conditional · risk classification = medium', meta: 'route to approval gate', dur: '—' },
+    { type: 'approval', title: 'Human approval gate · recommend remediation', meta: 'awaiting technician confirm', dur: '—' },
+    { type: 'tool', title: 'MCP call · Halo PSA → update ticket', meta: 'scope: tickets.w · 96 ms', dur: '96 ms' }
+  ],
+  awaiting: [
+    { type: 'tool', title: 'MCP call · N-able Adlumin MDR → alert detail', meta: 'scope: alerts.r · 71 ms', dur: '71 ms' },
+    { type: 'llm', title: 'LLM inference · root-cause hypothesis', meta: 'model: Bedrock claude-sonnet · 768 tokens · 1.2 s', dur: '1.20 s' },
+    { type: 'tool', title: 'MCP call · N-able UEM → process list', meta: 'scope: devices.r · 132 ms', dur: '132 ms' },
+    { type: 'branch', title: 'Conditional · proposed action = restart_service', meta: 'risk = medium → approval required', dur: '—' },
+    { type: 'approval', title: 'Awaiting human approval', meta: 'queued 18 min · technician: K. Park', dur: '—' }
+  ]
+};
+
+const customersBilling = [
+  { customer: 'Acme Corp', coworkers: 5, exec: 538, mcp: 12420, llmK: 84, cost: 412.18 },
+  { customer: 'Northwind Industries', coworkers: 3, exec: 312, mcp: 7180, llmK: 49, cost: 248.55 },
+  { customer: 'Globex', coworkers: 2, exec: 184, mcp: 4220, llmK: 31, cost: 152.40 }
+];
+
+const monetizationLayers = [
+  { n: 1, name: 'Platform Access', desc: 'Control plane, builder, audit, key service · subscription', metric: '3 tenants · enterprise tier', cost: 1499.00 },
+  { n: 2, name: 'Workflow Execution', desc: 'Every Coworker run is a billable event · $0.10 / execution', metric: '1,034 executions this period', cost: 103.40 },
+  { n: 3, name: 'Expert Licensing', desc: 'Per-Expert recurring license, catalogue-driven', metric: '7 N-able + 1 Vendor Expert active', cost: 240.00 },
+  { n: 4, name: 'MCP / Tool Transactions', desc: 'Metered access · $0.0008 / MCP call', metric: '23,820 MCP calls', cost: 19.06 },
+  { n: 5, name: 'LLM Inference Pass-Through', desc: 'Bedrock cost + margin · BYOK/BYOM bypasses this layer', metric: '164,000 tokens · margin 18%', cost: 8.92 }
+];
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const el = (tag, props={}, children=[]) => {
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(props)) {
+    if (k === 'class') n.className = v;
+    else if (k === 'html') n.innerHTML = v;
+    else if (k === 'text') n.textContent = v;
+    else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v);
+  }
+  (Array.isArray(children) ? children : [children]).forEach(c => {
+    if (c == null) return;
+    n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return n;
+};
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function statusBadge(s) {
+  if (/Success/i.test(s)) return `<apx-badge variant="success" dot>${escapeHtml(s)}</apx-badge>`;
+  if (/Active/i.test(s)) return `<apx-badge variant="success" dot>${escapeHtml(s)}</apx-badge>`;
+  if (/Connected/i.test(s)) return `<apx-badge variant="success" dot>${escapeHtml(s)}</apx-badge>`;
+  if (/Awaiting/i.test(s)) return `<apx-badge variant="warning" dot>${escapeHtml(s)}</apx-badge>`;
+  if (/Fail/i.test(s)) return `<apx-badge variant="danger" dot>${escapeHtml(s)}</apx-badge>`;
+  if (/Paused/i.test(s)) return `<apx-badge variant="neutral" dot>${escapeHtml(s)}</apx-badge>`;
+  if (/Draft/i.test(s)) return `<apx-badge variant="neutral" dot>${escapeHtml(s)}</apx-badge>`;
+  return `<apx-badge variant="neutral" dot>${escapeHtml(s)}</apx-badge>`;
+}
+function trustBadge(t) {
+  const tr = TRUST[t];
+  return `<span class="trust ${tr.cls}" title="Trust-execution level"><span class="mk"></span>${tr.label}</span>`;
+}
+
+/* =========================================================
+   ROUTER + PRODUCT BAR + TOP-LEVEL WIRING
+   ========================================================= */
+const TITLES = {
+  dashboard: 'Dashboard', coworkers: 'Coworkers', executions: 'Executions',
+  runbooks: 'Runbooks', experts: 'Experts', mcp: 'MCP Servers',
+  metering: 'Metering & Chargeback', ledger: 'Value Ledger', settings: 'Settings'
+};
+const views = {};
+
+function renderProductbar(viewName) {
+  const bar = document.querySelector('apx-productbar');
+  bar.innerHTML = `
+    <div slot="left" class="crumbs" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;">
+      <span style="color: var(--br-color-ink-muted);">ACP</span>
+      <span style="color: var(--br-color-border-strong);">/</span>
+      <span style="color: var(--br-color-ink-primary); font-weight: 600;" id="crumb-current">${TITLES[viewName] || 'Dashboard'}</span>
+    </div>
+    <div slot="right" style="display:inline-flex;align-items:center;gap:12px;">
+      <div class="search-wrap" style="position:relative;display:inline-flex;align-items:center;">
+        <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--br-color-ink-muted);pointer-events:none;display:inline-flex;">${ICON.search}</span>
+        <input placeholder="Search..." aria-label="Search" style="font-family:inherit;font-size:13px;color:var(--br-color-ink-primary);background:var(--br-color-surface-sunken);border:1px solid var(--br-color-border-subtle);border-radius:6px;padding:6px 10px 6px 28px;width:220px;outline:none;">
+      </div>
+      <div id="mode-toggle" class="mode-toggle" role="group" aria-label="Theme">
+        <button data-pref="light" aria-label="Light mode" title="Light">${ICON.sun}<span>Light</span></button>
+        <button data-pref="dark" aria-label="Dark mode" title="Dark">${ICON.moon}<span>Dark</span></button>
+        <button data-pref="system" aria-label="System mode" title="System">${ICON.monitor}<span>System</span></button>
+      </div>
+      <button class="btn ghost" style="padding:6px 8px;" aria-label="Notifications">${ICON.bell}</button>
+      <div class="user-chip">
+        <span class="avi">BS</span>
+        <span class="nm">Beth Schwindt</span>
+      </div>
+    </div>
+  `;
+
+  // Mode toggle wiring
+  const wrap = document.getElementById('mode-toggle');
+  wrap.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => ModeManager.setPref(b.dataset.pref));
+  });
+  ModeManager.renderToggle();
+}
+
+function setView(name) {
+  const f = views[name] || views.dashboard;
+  document.querySelector('apx-sidebar').setActive(name);
+  renderProductbar(name);
+  const main = $('#main');
+  main.innerHTML = '';
+  main.appendChild(f());
+  main.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+document.querySelector('apx-sidebar').addEventListener('apx-navigate', e => {
+  setView(e.detail.view);
+});
+
+/* =========================================================
+   VIEW · DASHBOARD
+   ========================================================= */
+views.dashboard = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Dashboard</h1>
+      <p>Your coworkers are automating critical workflows and delivering measurable value across your MSP operations.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Last 30 days</button>
+      <button class="btn primary" id="dash-newcw">${ICON.plus} Build a Coworker</button>
+    </div>
+  `}));
+
+  // Hero section - Your Coworkers Working for You
+  const hero = el('apx-card', { style:'margin-bottom: 20px; background: linear-gradient(135deg, var(--br-color-brand-primary-tint) 0%, var(--br-color-surface-panel) 100%); border-left: 4px solid var(--br-color-brand-primary);' });
+  hero.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 300px;">
+        <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--br-color-brand-primary); margin-bottom: 8px;">🤖 Your Coworkers Working Right Now</div>
+        <h2 style="margin: 0 0 12px; font-size: 22px; font-weight: 700; color: var(--br-color-ink-primary);">12 Active Coworkers Automating Your MSP</h2>
+        <p style="margin: 0 0 16px; color: var(--br-color-ink-secondary); font-size: 14px; line-height: 1.6;">From customer onboarding to incident response, your coworkers handle time-consuming workflows while your team focuses on strategic work.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn primary" id="hero-view-cw" style="gap: 6px;">${ICON.coworkers} View All Coworkers</button>
+          <button class="btn" data-go="executions">View Execution Log</button>
+        </div>
+      </div>
+      <div style="flex: 0 0 auto;">
+        <div class="kpi" style="margin: 0; min-width: 200px; background: var(--br-color-surface-panel);">
+          <div class="label">Total Value Delivered (30d)</div>
+          <div class="value" style="font-size: 32px;">412 hours</div>
+          <div class="delta">≈ $14,800 cost avoidance</div>
+        </div>
+      </div>
+    </div>
+  `;
+  wrap.appendChild(hero);
+
+  // Coworker performance grid
+  const perfCard = el('apx-card', { style:'margin-bottom: 20px;' });
+  perfCard.setAttribute('no-pad', '');
+  perfCard.innerHTML = `
+    <h3 slot="header-title">Top Performing Coworkers This Month</h3>
+    <a href="#" data-go="coworkers" slot="header-aside" class="sub">Manage coworkers →</a>
+    <table class="t">
+      <thead><tr><th>Coworker</th><th>What It Does</th><th>Executions</th><th>Time Saved</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="clickable" data-goto-cw="cw2">
+          <td><div class="row-title">Alert Flood Suppression</div></td>
+          <td><div style="font-size: 12px; color: var(--br-color-ink-secondary);">Reduces alert noise by 80% — correlates duplicates and escalates only when patterns shift</div></td>
+          <td><strong>284</strong></td>
+          <td><div style="font-weight: 600; color: var(--br-color-state-success);">42 hours</div></td>
+          <td>${statusBadge('Active')}</td>
+        </tr>
+        <tr class="clickable" data-goto-cw="cw1">
+          <td><div class="row-title">New Customer Onboarding</div></td>
+          <td><div style="font-size: 12px; color: var(--br-color-ink-secondary);">Provisions identity, devices, backup, and MDR for new tenants — zero manual intervention</div></td>
+          <td><strong>18</strong></td>
+          <td><div style="font-weight: 600; color: var(--br-color-state-success);">81 hours</div></td>
+          <td>${statusBadge('Active')}</td>
+        </tr>
+        <tr class="clickable" data-goto-cw="cw4">
+          <td><div class="row-title">Ticket Triage & Dispatch</div></td>
+          <td><div style="font-size: 12px; color: var(--br-color-ink-secondary);">Classifies and routes inbound tickets with enriched diagnostics — technicians get context immediately</div></td>
+          <td><strong>96</strong></td>
+          <td><div style="font-weight: 600; color: var(--br-color-state-success);">28 hours</div></td>
+          <td>${statusBadge('Active')}</td>
+        </tr>
+        <tr class="clickable" data-goto-cw="cw3">
+          <td><div class="row-title">QBR Report Generator</div></td>
+          <td><div style="font-size: 12px; color: var(--br-color-ink-secondary);">Compiles customer-ready quarterly reviews across all tools — ready to present without edits</div></td>
+          <td><strong>7</strong></td>
+          <td><div style="font-weight: 600; color: var(--br-color-state-success);">42 hours</div></td>
+          <td>${statusBadge('Active')}</td>
+        </tr>
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(perfCard);
+
+  const k = el('div', { class:'grid-4', style:'margin-bottom: 20px;' });
+  k.innerHTML = `
+    <div class="kpi">
+      <div class="label">Workflows Automated</div>
+      <div class="value">1,034</div>
+      <div class="delta">▲ 18% vs. last week</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Manual Hours Saved</div>
+      <div class="value">412</div>
+      <div class="delta">▲ 9.2% vs. last month</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Cost Avoidance</div>
+      <div class="value">$14.8K</div>
+      <div class="delta">Based on $36/hr technician cost</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Success Rate</div>
+      <div class="value">98.6%</div>
+      <div class="delta">2,108 actions completed successfully</div>
+    </div>
+  `;
+  wrap.appendChild(k);
+
+  const g = el('div', { class:'grid-2' });
+
+  // Activity feed in apx-card
+  const feedCard = el('apx-card');
+  feedCard.innerHTML = `
+    <h3 slot="header-title">Recent Coworker Activity</h3>
+    <a href="#" data-go="executions" slot="header-aside" class="sub">View all executions →</a>
+    <div class="feed">
+      ${[
+        { i:'green', icon:ICON.check, txt:`<strong>Alert Flood Suppression</strong> suppressed 142 duplicate alerts for <strong>Acme Corp</strong> · saved 12 min`, t:'2 min ago' },
+        { i:'green', icon:ICON.check, txt:`<strong>Ticket Triage & Dispatch</strong> classified 18 tickets for <strong>Northwind</strong> · saved 18 min`, t:'14 min ago' },
+        { i:'amber', icon:ICON.pause, txt:`<strong>Network Incident Resolution</strong> awaiting human approval · CPU spike detected on gx-prod-04`, t:'1 h ago' },
+        { i:'green', icon:ICON.check, txt:`<strong>New Customer Onboarding</strong> completed full provisioning for <strong>Acme Corp</strong> · saved 4.5 hours`, t:'Yesterday' },
+        { i:'green', icon:ICON.check, txt:`<strong>QBR Report Generator</strong> compiled quarterly review for <strong>Northwind</strong> · customer-ready PDF delivered`, t:'Yesterday' }
+      ].map(r => `
+        <div class="feed-row">
+          <span class="feed-icon ${r.i}">${r.icon}</span>
+          <div class="feed-text">${r.txt}<div class="feed-meta">automated workflow · full audit trail</div></div>
+          <div class="feed-time">${r.t}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  g.appendChild(feedCard);
+
+  const valueCard = el('apx-card');
+  valueCard.innerHTML = `
+    <h3 slot="header-title">Value by Workflow Type</h3>
+    <span slot="header-aside" class="sub">Last 30 days</span>
+    <div class="ledger-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
+      <div class="ledger-item">
+        <div style="font-size: 11px; color: var(--br-color-ink-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Customer Onboarding</div>
+        <div class="num">81 h</div>
+      </div>
+      <div class="ledger-item">
+        <div style="font-size: 11px; color: var(--br-color-ink-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Incident Response</div>
+        <div class="num">126 h</div>
+      </div>
+      <div class="ledger-item">
+        <div style="font-size: 11px; color: var(--br-color-ink-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Ticket Management</div>
+        <div class="num">98 h</div>
+      </div>
+      <div class="ledger-item">
+        <div style="font-size: 11px; color: var(--br-color-ink-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Reporting & QBRs</div>
+        <div class="num">107 h</div>
+      </div>
+    </div>
+    <hr class="thin">
+    <div class="row"><apx-badge variant="brand">Trend · last 6 months</apx-badge><span class="spacer"></span><span class="sub">Total hours automated per month</span></div>
+    ${miniBarChart([124, 186, 248, 317, 358, 412], ['Dec','Jan','Feb','Mar','Apr','May'])}
+    <div style="margin-top: 12px; padding: 10px 12px; background: var(--br-color-state-success-tint); border-radius: 6px;">
+      <div style="font-size: 12px; color: var(--br-color-state-success); font-weight: 600;">📈 232% growth in automated hours since December</div>
+    </div>
+  `;
+  g.appendChild(valueCard);
+
+  wrap.appendChild(g);
+
+  setTimeout(() => {
+    wrap.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); setView(a.dataset.go); }));
+    wrap.querySelector('#dash-newcw')?.addEventListener('click', openCoworkerWizard);
+    wrap.querySelector('#hero-view-cw')?.addEventListener('click', () => setView('coworkers'));
+    wrap.querySelectorAll('[data-goto-cw]').forEach(r => r.addEventListener('click', () => {
+      detailCw = r.dataset.gotoCw;
+      setView('coworkers');
+    }));
+  }, 0);
+
+  return wrap;
+};
+
+function miniBarChart(values, labels) {
+  const w = 480, h = 160, pad = 24;
+  const max = Math.max(...values);
+  const bw = (w - pad*2) / values.length - 8;
+  const bars = values.map((v, i) => {
+    const x = pad + i * ((w - pad*2) / values.length) + 4;
+    const bh = (v / max) * (h - pad*2 - 14);
+    const y = h - pad - bh;
+    return `
+      <rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="3" fill="var(--br-color-brand-primary)"></rect>
+      <text x="${x + bw/2}" y="${y - 4}" text-anchor="middle" font-size="10" fill="var(--br-color-ink-muted)">${v}</text>
+      <text x="${x + bw/2}" y="${h - 8}" text-anchor="middle" font-size="11" fill="var(--br-color-ink-muted)">${labels[i]}</text>
+    `;
+  }).join('');
+  return `<div class="chart-wrap"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
+    <line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="var(--br-color-border-subtle)" stroke-width="1"/>
+    ${bars}
+  </svg></div>`;
+}
+
+/* =========================================================
+   VIEW · COWORKERS (list + detail)
+   ========================================================= */
+let detailCw = null;
+
+views.coworkers = () => {
+  if (detailCw) return coworkerDetailView();
+
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Coworkers</h1>
+      <p>AI agents that automate critical MSP workflows — onboarding, ticket triage, QBR generation, alert suppression. Each coworker combines domain Experts, a governed runbook, and connected tools to deliver measurable time savings and cost avoidance for your organization.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Import</button>
+      <button class="btn primary" id="cw-new">${ICON.plus} Build Your Own Coworker</button>
+    </div>
+  `}));
+
+  // Ready-to-use coworkers section
+  const readyCard = el('apx-card', { style:'margin-bottom: 20px;' });
+  readyCard.innerHTML = `
+    <h3 slot="header-title">Ready-to-Use Coworkers · Shipped by N-able</h3>
+    <span slot="header-aside" class="sub">Deploy immediately — no configuration required</span>
+    <p style="margin: 0 0 16px; color: var(--br-color-ink-secondary); font-size: 13px;">These coworkers are pre-built, tested, and ready to activate. Each automates a common MSP workflow and delivers immediate value to your organization.</p>
+    <div class="tile-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+      ${[
+        { name: 'New Customer Onboarding', desc: 'Automates identity provisioning, device enrollment, backup policy setup, and MDR sensor deployment when a new customer is created in your PSA.', value: '4.5 hours saved per customer', icon: ICON.coworkers, badge: 'N-able Default' },
+        { name: 'Alert Flood Suppression', desc: 'Correlates duplicate alerts, suppresses benign noise, and escalates only when signal patterns shift — reducing alert fatigue across your team.', value: '12 min saved per incident', icon: ICON.warning, badge: 'N-able Default' },
+        { name: 'Ticket Triage & Dispatch', desc: 'Classifies inbound tickets by impact and category, runs safe diagnostics, enriches with device telemetry, and routes to the right queue.', value: '18 min saved per ticket', icon: ICON.executions, badge: 'N-able Default' },
+        { name: 'QBR Report Generator', desc: 'Compiles quarterly business reviews across PSA, RMM, MDR, and Backup — customer-ready reports that showcase your value delivery.', value: '6 hours saved per QBR', icon: ICON.ledger, badge: 'N-able Default' }
+      ].map(cw => `
+        <div class="tile">
+          <div class="tile-h">
+            <span class="tile-icon">${cw.icon}</span>
+            <apx-badge variant="info" dot>${cw.badge}</apx-badge>
+          </div>
+          <div>
+            <h4 class="tile-name">${escapeHtml(cw.name)}</h4>
+          </div>
+          <div class="tile-desc">${escapeHtml(cw.desc)}</div>
+          <div style="padding: 10px 12px; background: var(--br-color-state-success-tint); border-radius: 6px; margin-top: 8px;">
+            <div style="font-size: 11px; color: var(--br-color-state-success); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">Value Delivered</div>
+            <div style="font-size: 15px; font-weight: 700; color: var(--br-color-state-success);">${cw.value}</div>
+          </div>
+          <div class="tile-actions">
+            <button class="btn primary sm">Activate Now</button>
+            <button class="btn ghost sm">View Details</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  wrap.appendChild(readyCard);
+
+  wrap.appendChild(el('div', { html: '<h3 style="margin: 32px 0 16px; font-size: 16px; font-weight: 600; color: var(--br-color-ink-primary);">Your Custom Coworkers</h3>' }));
+
+  const filter = el('div', { class:'filterbar' });
+  filter.innerHTML = `
+    <input class="input search" placeholder="Search Coworkers...">
+    <label class="flbl">Status</label>
+    <select class="select"><option>All</option><option>Active</option><option>Draft</option><option>Paused</option></select>
+    <label class="flbl">Trust level</label>
+    <select class="select"><option>All</option><option>Human Confirms</option><option>AI Executes · Human Audits</option><option>Autonomous</option></select>
+  `;
+  wrap.appendChild(filter);
+
+  const tableWrap = el('apx-table');
+  tableWrap.innerHTML = `
+    <table class="t">
+      <thead><tr>
+        <th>Name</th><th>Embedded Experts</th><th>Runbook</th><th>Trust level</th><th>Trigger</th><th>Last run</th><th>Status</th>
+      </tr></thead>
+      <tbody>
+        ${coworkers.map(c => `
+          <tr class="clickable" data-cw="${c.id}">
+            <td>
+              <div class="row-title">${escapeHtml(c.name)}</div>
+              <div class="row-sub">${escapeHtml(c.desc)}</div>
+            </td>
+            <td><span class="pill">${c.experts.length} experts</span></td>
+            <td><apx-badge variant="brand">${escapeHtml(c.runbook)}</apx-badge></td>
+            <td>${trustBadge(c.trust)}</td>
+            <td>${escapeHtml(c.trigger)}</td>
+            <td>${escapeHtml(c.lastRun)}</td>
+            <td>${statusBadge(c.status)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(tableWrap);
+
+  setTimeout(() => {
+    tableWrap.querySelectorAll('tr[data-cw]').forEach(r => r.addEventListener('click', () => {
+      detailCw = r.dataset.cw;
+      setView('coworkers');
+    }));
+    wrap.querySelector('#cw-new').addEventListener('click', openCoworkerWizard);
+  }, 0);
+
+  return wrap;
+};
+
+function coworkerDetailView() {
+  const c = coworkers.find(x => x.id === detailCw);
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <div class="row" style="gap: 10px;">
+        <button class="btn ghost" id="cw-back">${ICON.back} Coworkers</button>
+      </div>
+      <h1 style="margin-top: 10px;">${escapeHtml(c.name)}</h1>
+      <p>${escapeHtml(c.desc)}</p>
+      <div class="row wrap" style="margin-top: 10px; gap: 10px;">
+        ${trustBadge(c.trust)}
+        ${statusBadge(c.status)}
+        <apx-badge variant="neutral" dot>${escapeHtml(c.trigger)}</apx-badge>
+        <apx-badge variant="info" dot>Customer: ${escapeHtml(c.customer)}</apx-badge>
+      </div>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Pause</button>
+      <button class="btn danger">Delete</button>
+      <button class="btn primary" id="cw-activate">Activate &amp; Run</button>
+    </div>
+  `}));
+
+  const grid = el('div', { class:'detail-grid' });
+
+  const left = el('div', { class:'stack' });
+  const config = el('apx-card');
+  config.innerHTML = `
+    <h3 slot="header-title">Configuration</h3>
+    <span slot="header-aside" class="sub">Editable</span>
+    <div class="kv">
+      <div class="k">Runbook</div><div class="v">${escapeHtml(c.runbook)}</div>
+      <div class="k">Trigger</div><div class="v">${escapeHtml(c.trigger)}</div>
+      <div class="k">LLM</div><div class="v">Bedrock · claude-sonnet (N-able default)</div>
+      <div class="k">Trust level</div><div class="v">${trustBadge(c.trust)}</div>
+      <div class="k">Owner</div><div class="v">Beth Schwindt</div>
+    </div>
+    <hr class="thin">
+    <div style="font-size: 12px; color: var(--br-color-ink-muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;">Embedded Experts</div>
+    <div class="row wrap" style="gap: 6px;">
+      ${c.experts.map(e => `<apx-badge variant="info">${escapeHtml(e)}</apx-badge>`).join('')}
+    </div>
+    <div style="font-size: 12px; color: var(--br-color-ink-muted); margin: 16px 0 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;">MCP Connections</div>
+    <div class="row wrap" style="gap: 6px;">
+      ${c.mcp.map(m => `<apx-badge variant="success" dot>${escapeHtml(m)}</apx-badge>`).join('')}
+    </div>
+  `;
+  left.appendChild(config);
+
+  const recentExec = executions.filter(e => e.coworker === c.name).slice(0, 5);
+  const exec = el('apx-card');
+  exec.setAttribute('no-pad', '');
+  exec.innerHTML = `
+    <h3 slot="header-title">Recent executions</h3>
+    <a href="#" data-go="executions" slot="header-aside" class="sub">View all →</a>
+    <table class="t">
+      <thead><tr><th>Started</th><th>Trigger</th><th>Duration</th><th>Status</th><th>Hours saved</th></tr></thead>
+      <tbody>
+        ${recentExec.length ? recentExec.map(e => `
+          <tr>
+            <td>${escapeHtml(e.start)}</td>
+            <td>${escapeHtml(e.trigger)}</td>
+            <td>${escapeHtml(e.dur)}</td>
+            <td>${statusBadge(e.status)}</td>
+            <td>${escapeHtml(e.saved)}</td>
+          </tr>
+        `).join('') : `<tr><td colspan="5"><div class="empty">No runs yet for this Coworker.</div></td></tr>`}
+      </tbody>
+    </table>
+  `;
+  left.appendChild(exec);
+  grid.appendChild(left);
+
+  const right = el('div', { class:'stack' });
+  const valCard = el('apx-card');
+  valCard.innerHTML = `
+    <h3 slot="header-title">Value contribution</h3>
+    <div class="ledger-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="ledger-item"><div class="num">${c.runs}</div><div class="nm">Total executions</div></div>
+      <div class="ledger-item"><div class="num">${(c.runs * 0.4).toFixed(1)} h</div><div class="nm">Manual equivalent</div></div>
+      <div class="ledger-item"><div class="num">$${(c.runs * 12).toLocaleString()}</div><div class="nm">Cost avoidance</div></div>
+      <div class="ledger-item"><div class="num">98.4%</div><div class="nm">Success rate</div></div>
+    </div>
+  `;
+  right.appendChild(valCard);
+
+  const govCard = el('apx-card');
+  govCard.innerHTML = `
+    <h3 slot="header-title">Governance</h3>
+    <div class="setting-row">
+      <div><div class="lbl">Step-level audit</div><div class="sub">Every action logged to executions</div></div>
+      <button class="switch on" aria-label="Step-level audit" disabled></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Scope enforcement</div><div class="sub">MCP scopes brokered by key service</div></div>
+      <button class="switch on" aria-label="Scope enforcement" disabled></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Out-of-policy flagging</div><div class="sub">Runtime policy detection</div></div>
+      <button class="switch on" aria-label="Out of policy flagging"></button>
+    </div>
+  `;
+  right.appendChild(govCard);
+  grid.appendChild(right);
+
+  wrap.appendChild(grid);
+
+  setTimeout(() => {
+    wrap.querySelector('#cw-back').addEventListener('click', () => { detailCw = null; setView('coworkers'); });
+    wrap.querySelector('#cw-activate').addEventListener('click', () => openActivateModal(c));
+    wrap.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); setView(a.dataset.go); }));
+    wrap.querySelectorAll('.switch:not([disabled])').forEach(s => s.addEventListener('click', () => s.classList.toggle('on')));
+  }, 0);
+
+  return wrap;
+}
+
+/* =========================================================
+   COWORKER WIZARD (5 steps)
+   ========================================================= */
+function openCoworkerWizard() {
+  const mount = $('#modal-mount');
+  let step = 1;
+  const state = { name: '', intent: '', experts: [], runbook: '', mcp: [], trigger: 'Manual', trust: 't1' };
+
+  function render() {
+    mount.innerHTML = '';
+    const modal = el('div', { class:'modal wide' });
+
+    modal.innerHTML = `
+      <div class="modal-h">
+        <h2>Create new Coworker</h2>
+        <button class="btn ghost" id="mclose" aria-label="Close">${ICON.close}</button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper">
+          <div class="step ${step>=1?(step===1?'active':'done'):''}"><span class="num">1</span> Identity</div>
+          <span class="sep"></span>
+          <div class="step ${step>=2?(step===2?'active':'done'):''}"><span class="num">2</span> Experts</div>
+          <span class="sep"></span>
+          <div class="step ${step>=3?(step===3?'active':'done'):''}"><span class="num">3</span> Runbook</div>
+          <span class="sep"></span>
+          <div class="step ${step>=4?(step===4?'active':'done'):''}"><span class="num">4</span> Tools</div>
+          <span class="sep"></span>
+          <div class="step ${step===5?'active':(step>5?'done':'')}"><span class="num">5</span> Trust &amp; Trigger</div>
+        </div>
+
+        <div class="wizard-pane ${step===1?'active':''}">
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">🎯 Building a Coworker</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">Focus on <strong>what problem this solves</strong> and <strong>what value it delivers</strong> to your organization. Think: "This coworker will save us X hours per week by automating Y workflow."</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Coworker name</label>
+            <input class="input" id="w-name" value="${escapeHtml(state.name)}" placeholder="e.g. After-Hours Emergency Response">
+          </div>
+          <div class="form-row">
+            <label class="f">What problem does this solve?</label>
+            <textarea id="w-intent" placeholder="Example: When a critical alert fires after hours, this coworker triages severity, gathers diagnostic data, and escalates to on-call only if human intervention is required — reducing false escalations by 80%.">${escapeHtml(state.intent)}</textarea>
+            <div class="hint">Be specific about the workflow, the trigger, and the value (time saved, costs avoided, incidents resolved). This clarity helps you choose the right Experts and runbook in the next steps.</div>
+          </div>
+          <div style="margin-top: 16px; padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--br-color-ink-muted); margin-bottom: 8px;">💡 Common Use Cases</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--br-color-ink-secondary);">
+              <li style="margin: 4px 0;">Employee onboarding/offboarding automation</li>
+              <li style="margin: 4px 0;">Proactive maintenance and patch management</li>
+              <li style="margin: 4px 0;">Security incident first response</li>
+              <li style="margin: 4px 0;">Client reporting and documentation generation</li>
+              <li style="margin: 4px 0;">Capacity planning and resource optimization</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wizard-pane ${step===2?'active':''}">
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">🧠 What are Experts?</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">Experts are specialized AI capabilities that give your coworker domain knowledge and scoped actions. For example, the <strong>Endpoint Expert</strong> knows how to read device telemetry and execute remote actions via UEM. The <strong>Security/MDR Expert</strong> understands alert triage and containment workflows.</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Select the Experts your coworker needs</label>
+            <div class="check-list" id="w-experts">
+              ${experts.map(e => `
+                <label>
+                  <input type="checkbox" value="${escapeHtml(e.name)}" ${state.experts.includes(e.name)?'checked':''}>
+                  <span><strong>${escapeHtml(e.name)}</strong> · <span style="color: var(--br-color-ink-muted)">${escapeHtml(e.desc)}</span></span>
+                </label>
+              `).join('')}
+            </div>
+            <div class="hint">Choose Experts that align with your workflow. For example, an onboarding coworker needs Identity Expert + Asset Expert + Backup Expert + Documentation Expert.</div>
+          </div>
+        </div>
+
+        <div class="wizard-pane ${step===3?'active':''}">
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">📋 What is a Runbook?</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary); margin-bottom: 8px;">A runbook defines <strong>how your coworker executes its workflow</strong>. It's the step-by-step process that governs what the AI does, when it needs human approval, and which tools it can invoke.</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);"><strong>Runbooks contain workflows:</strong> deterministic scripts, API calls, approval gates, and bounded AI reasoning steps. Think of it as the "operating procedure" your coworker follows.</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Choose a runbook</label>
+            <select class="select" id="w-runbook">
+              <option value="">— Choose a runbook —</option>
+              ${runbooks.map(r => `<option value="${escapeHtml(r.name)}" ${state.runbook===r.name?'selected':''}>${escapeHtml(r.name)} · ${escapeHtml(r.author)} · ${r.steps} steps</option>`).join('')}
+            </select>
+            <div class="hint">Use an N-able default runbook to get started quickly, or <a href="#" id="w-rb-new">author a custom runbook →</a> tailored to your specific workflow and governance requirements.</div>
+          </div>
+          <div style="margin-top: 16px; padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--br-color-ink-muted); margin-bottom: 8px;">✅ What's Included in N-able Default Runbooks</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--br-color-ink-secondary);">
+              <li style="margin: 4px 0;">Pre-built workflows for common MSP tasks</li>
+              <li style="margin: 4px 0;">Built-in approval gates for safety-critical actions</li>
+              <li style="margin: 4px 0;">Tested against real MSP environments</li>
+              <li style="margin: 4px 0;">Full audit trail of every step executed</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wizard-pane ${step===4?'active':''}">
+          <div class="form-row">
+            <label class="f">MCP server connections</label>
+            <div class="check-list" id="w-mcp">
+              ${mcpServers.map(m => `
+                <label>
+                  <input type="checkbox" value="${escapeHtml(m.name)}" ${state.mcp.includes(m.name)?'checked':''}>
+                  <span><strong>${escapeHtml(m.name)}</strong> · <span style="color: var(--br-color-ink-muted)">${escapeHtml(m.kind)} · ${escapeHtml(m.scope)}</span></span>
+                </label>
+              `).join('')}
+            </div>
+            <div class="hint">Scopes brokered via the key service. Credentials never touch the LLM context.</div>
+          </div>
+        </div>
+
+        <div class="wizard-pane ${step===5?'active':''}">
+          <div style="padding: 12px 14px; background: var(--br-color-state-success-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-state-success);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-state-success); margin-bottom: 6px;">🎉 Almost Done!</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">Now set <strong>when this coworker runs</strong> and <strong>how much autonomy</strong> it has. Start conservative — you can always increase autonomy as you build trust in the workflow.</div>
+          </div>
+          <div class="form-row">
+            <label class="f">When should this coworker run?</label>
+            <select class="select" id="w-trigger">
+              <option ${state.trigger==='Manual'?'selected':''}>Manual — Run on-demand when you trigger it</option>
+              <option ${state.trigger==='Scheduled'?'selected':''}>Scheduled — Runs automatically on a schedule</option>
+              <option ${state.trigger==='Event-driven'?'selected':''}>Event-driven — Triggered by alerts, tickets, or API calls</option>
+            </select>
+            <div class="hint">Start with <strong>Manual</strong> to test the workflow, then switch to Scheduled or Event-driven for production automation.</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Trust-execution level — How much autonomy?</label>
+            <div class="radio-list" id="w-trust">
+              <label>
+                <input type="radio" name="trust" value="t1" ${state.trust==='t1'?'checked':''}>
+                <div>
+                  <div><strong>Human Confirms</strong> — Maximum safety, minimum automation</div>
+                  <div style="font-size: 12px; color: var(--br-color-ink-muted); margin-top: 4px;">Every action pauses for technician approval. Best for new workflows or high-risk operations. You review every step before it executes.</div>
+                </div>
+              </label>
+              <label>
+                <input type="radio" name="trust" value="t2" ${state.trust==='t2'?'checked':''}>
+                <div>
+                  <div><strong>AI Executes · Human Audits</strong> — Balanced automation with oversight</div>
+                  <div style="font-size: 12px; color: var(--br-color-ink-muted); margin-top: 4px;">Coworker runs autonomously; you review the audit trail afterward. Best for proven workflows with low blast radius. <strong>Recommended starting point for most use cases.</strong></div>
+                </div>
+              </label>
+              <label>
+                <input type="radio" name="trust" value="t3" ${state.trust==='t3'?'checked':''}>
+                <div>
+                  <div><strong>Autonomous</strong> — Full automation, maximum time savings</div>
+                  <div style="font-size: 12px; color: var(--br-color-ink-muted); margin-top: 4px;">No per-action approval required. Scope-locked at configuration time. Best for high-volume, low-risk tasks like alert suppression or reporting. Only enable after successful testing at lower trust levels.</div>
+                </div>
+              </label>
+            </div>
+            <div class="hint">💡 <strong>Pro tip:</strong> Start at "Human Confirms" for new coworkers. After 5-10 successful runs, graduate to "AI Executes · Human Audits". Move to "Autonomous" only for proven, high-volume workflows.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn ghost" id="mcancel">Cancel</button>
+        <div class="row">
+          <button class="btn" id="mback" ${step===1?'disabled':''}>Back</button>
+          ${step < 5
+            ? `<button class="btn primary" id="mnext">Next</button>`
+            : `<button class="btn primary" id="msave">Create Coworker</button>`}
+        </div>
+      </div>
+    `;
+
+    mount.appendChild(modal);
+    mount.classList.add('open');
+
+    const save = () => {
+      if (step === 1) {
+        state.name = modal.querySelector('#w-name').value.trim();
+        state.intent = modal.querySelector('#w-intent').value.trim();
+      } else if (step === 2) {
+        state.experts = Array.from(modal.querySelectorAll('#w-experts input:checked')).map(x => x.value);
+      } else if (step === 3) {
+        state.runbook = modal.querySelector('#w-runbook').value;
+      } else if (step === 4) {
+        state.mcp = Array.from(modal.querySelectorAll('#w-mcp input:checked')).map(x => x.value);
+      } else if (step === 5) {
+        state.trigger = modal.querySelector('#w-trigger').value;
+        const t = modal.querySelector('input[name="trust"]:checked');
+        state.trust = t ? t.value : 't1';
+      }
+    };
+
+    modal.querySelector('#mclose').addEventListener('click', closeModal);
+    modal.querySelector('#mcancel').addEventListener('click', closeModal);
+    modal.querySelector('#mback').addEventListener('click', () => { save(); step = Math.max(1, step-1); render(); });
+    const next = modal.querySelector('#mnext');
+    if (next) next.addEventListener('click', () => {
+      save();
+      if (step === 1 && !state.name) { toast('Name is required.'); return; }
+      step = Math.min(5, step+1); render();
+    });
+    const saveBtn = modal.querySelector('#msave');
+    if (saveBtn) saveBtn.addEventListener('click', () => {
+      save();
+      if (!state.name) { toast('Name is required.'); return; }
+      coworkers.push({
+        id: 'cw' + (coworkers.length+1),
+        name: state.name,
+        desc: state.intent || 'Custom Coworker.',
+        experts: state.experts.length ? state.experts : ['Endpoint Expert'],
+        runbook: state.runbook || 'Onboard New Customer (N-able default)',
+        mcp: state.mcp.length ? state.mcp : ['N-able UEM'],
+        trust: state.trust, status: 'Draft', lastRun: '—', runs: 0, customer: 'Acme Corp', trigger: state.trigger
+      });
+      closeModal();
+      toast('Coworker created.');
+      detailCw = null;
+      setView('coworkers');
+    });
+    const rbNew = modal.querySelector('#w-rb-new');
+    if (rbNew) rbNew.addEventListener('click', e => { e.preventDefault(); closeModal(); setView('runbooks'); setTimeout(openRunbookEditor, 80); });
+  }
+
+  render();
+}
+
+function openActivateModal(c) {
+  const mount = $('#modal-mount');
+  mount.innerHTML = '';
+  const modal = el('div', { class:'modal' });
+  modal.innerHTML = `
+    <div class="modal-h">
+      <h2>Activate &amp; Run · ${escapeHtml(c.name)}</h2>
+      <button class="btn ghost" id="aclose" aria-label="Close">${ICON.close}</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-top: 0; color: var(--br-color-ink-secondary);">You are about to run this Coworker against the selected tenant. Every action will be logged to the execution trace.</p>
+      <div class="kv" style="margin-top: 12px;">
+        <div class="k">Tenant</div><div class="v">${escapeHtml(c.customer)}</div>
+        <div class="k">Trust level</div><div class="v">${trustBadge(c.trust)}</div>
+        <div class="k">Trigger</div><div class="v">${escapeHtml(c.trigger)}</div>
+        <div class="k">Experts</div><div class="v">${c.experts.length} attached</div>
+        <div class="k">MCP scopes</div><div class="v">${c.mcp.length} connections brokered via key service</div>
+      </div>
+      <hr class="thin">
+      <div class="row" style="font-size: 12.5px; color: var(--br-color-ink-secondary); gap: 8px; align-items: flex-start;">
+        <span style="color: var(--br-color-state-warning); flex-shrink: 0;">${ICON.warning}</span>
+        <span>This action is logged. Step trace, MCP calls, and LLM token usage will be visible in <a href="#" data-go-exec style="color: var(--br-color-brand-primary);">Executions</a> immediately.</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="acancel">Cancel</button>
+      <button class="btn primary" id="aconfirm">Confirm &amp; Run</button>
+    </div>
+  `;
+  mount.appendChild(modal);
+  mount.classList.add('open');
+  modal.querySelector('#aclose').addEventListener('click', closeModal);
+  modal.querySelector('#acancel').addEventListener('click', closeModal);
+  modal.querySelector('#aconfirm').addEventListener('click', () => {
+    closeModal();
+    toast('Coworker activated. Execution started.');
+    c.status = 'Active';
+    c.lastRun = new Date().toISOString().slice(0,16).replace('T',' ');
+    c.runs += 1;
+  });
+  modal.querySelector('[data-go-exec]').addEventListener('click', e => { e.preventDefault(); closeModal(); setView('executions'); });
+}
+
+function closeModal() {
+  const m = $('#modal-mount');
+  m.classList.remove('open');
+  m.innerHTML = '';
+}
+document.getElementById('modal-mount').addEventListener('click', e => {
+  if (e.target.id === 'modal-mount') closeModal();
+});
+
+/* =========================================================
+   VIEW · RUNBOOKS
+   ========================================================= */
+views.runbooks = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Runbooks</h1>
+      <p>Runbooks define how your coworkers execute workflows. Each runbook contains step-by-step instructions, service connections, and approval gates that govern what the AI can do.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Import from N-zo</button>
+      <button class="btn primary" id="rb-new">${ICON.plus} Build a Runbook</button>
+    </div>
+  `}));
+
+  // Getting started guide
+  const guideCard = el('apx-card', { style:'margin-bottom: 20px;' });
+  guideCard.innerHTML = `
+    <h3 slot="header-title">How Runbooks Work</h3>
+    <span slot="header-aside" class="sub">Understanding the execution model</span>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+      <div style="padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">1. Define Your Workflow</div>
+        <div style="font-size: 12px; color: var(--br-color-ink-secondary);">Describe what happens: API calls, scripts, AI reasoning, approval gates. Be explicit about each step.</div>
+      </div>
+      <div style="padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">2. Connect Services</div>
+        <div style="font-size: 12px; color: var(--br-color-ink-secondary);">Link your PSA, RMM, MDR, and other tools. We walk you through securing credentials via the key service.</div>
+      </div>
+      <div style="padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">3. Test & Deploy</div>
+        <div style="font-size: 12px; color: var(--br-color-ink-secondary);">Run your runbook in manual mode, review the trace, then attach it to a coworker for automated execution.</div>
+      </div>
+    </div>
+    <div style="padding: 12px; background: var(--br-color-state-info-tint); border-radius: 6px; border-left: 3px solid var(--br-color-state-info);">
+      <div style="font-size: 12px; font-weight: 600; color: var(--br-color-state-info); margin-bottom: 6px;">💡 Start with N-able Defaults</div>
+      <div style="font-size: 12px; color: var(--br-color-ink-secondary);">The runbooks below marked "N-able default" are pre-built, tested, and ready to use. Clone one to customize for your needs, or build from scratch.</div>
+    </div>
+  `;
+  wrap.appendChild(guideCard);
+
+  const filter = el('div', { class:'filterbar' });
+  filter.innerHTML = `
+    <input class="input search" placeholder="Search runbooks...">
+    <label class="flbl">Provenance</label>
+    <select class="select"><option>All</option><option>N-able default</option><option>Customer-authored</option><option>Vendor</option></select>
+  `;
+  wrap.appendChild(filter);
+
+  const tbl = el('apx-table');
+  tbl.innerHTML = `
+    <table class="t">
+      <thead><tr><th>Name</th><th>Author</th><th>Steps</th><th>Last modified</th><th>Used by</th><th></th></tr></thead>
+      <tbody>
+        ${runbooks.map(r => {
+          const usedBy = coworkers.filter(c => c.runbook === r.name).length;
+          return `
+            <tr class="clickable" data-rb="${r.id}">
+              <td>
+                <div class="row-title">${escapeHtml(r.name)}</div>
+                <div class="row-sub">${escapeHtml(r.intent)}</div>
+              </td>
+              <td>${escapeHtml(r.author)}</td>
+              <td>${r.steps}</td>
+              <td>${escapeHtml(r.modified)}</td>
+              <td>${usedBy ? `<apx-badge variant="brand">${usedBy} Coworker${usedBy>1?'s':''}</apx-badge>` : `<apx-badge variant="neutral">unattached</apx-badge>`}</td>
+              <td><button class="btn sm" data-edit="${r.id}">Edit</button></td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(tbl);
+
+  setTimeout(() => {
+    wrap.querySelector('#rb-new').addEventListener('click', () => openRunbookEditor());
+    tbl.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', e => {
+      e.stopPropagation();
+      openRunbookEditor(b.dataset.edit);
+    }));
+    tbl.querySelectorAll('tr[data-rb]').forEach(r => r.addEventListener('click', () => openRunbookEditor(r.dataset.rb)));
+  }, 0);
+
+  return wrap;
+};
+
+function openRunbookEditor(id) {
+  const existing = id ? runbooks.find(r => r.id === id) : null;
+  const mount = $('#modal-mount');
+  mount.innerHTML = '';
+  let rbStep = 1;
+  const rbState = {
+    name: existing?.name || '',
+    intent: existing?.intent || '',
+    body: existing?.body || '',
+    requiredServices: [],
+    workflowSteps: []
+  };
+
+  function renderRbEditor() {
+    mount.innerHTML = '';
+    const modal = el('div', { class:'modal wide', style:'max-width: 900px;' });
+    modal.innerHTML = `
+      <div class="modal-h">
+        <h2>${existing ? 'Edit Runbook' : 'Build a Runbook'}</h2>
+        <button class="btn ghost" id="rclose" aria-label="Close">${ICON.close}</button>
+      </div>
+      <div class="modal-body">
+        ${rbStep === 1 ? `
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">📋 What is a Runbook?</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">A runbook is the governed execution contract that defines exactly how your coworker automates a workflow. It contains: <strong>deterministic steps</strong> (scripts, API calls), <strong>approval gates</strong> (when to pause for human review), and <strong>bounded AI reasoning</strong> (where the AI decides what to do next within strict limits).</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Runbook Name</label>
+            <input class="input" id="rb-name" value="${escapeHtml(rbState.name)}" placeholder="e.g. Triage High-Priority Security Alert">
+            <div class="hint">Be specific about what workflow this automates</div>
+          </div>
+          <div class="form-row">
+            <label class="f">What does this runbook do?</label>
+            <textarea id="rb-intent" placeholder="Example: When a high-priority security alert fires, gather device context, check if the user is online, isolate the endpoint if malware is detected, create a ticket with all diagnostic data, and notify the on-call technician.">${escapeHtml(rbState.intent)}</textarea>
+            <div class="hint">Describe the complete workflow from trigger to completion. Think: What happens? When does it need approval? What's the end result?</div>
+          </div>
+          <div style="margin-top: 16px; padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--br-color-ink-muted); margin-bottom: 8px;">💡 Runbook Best Practices</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--br-color-ink-secondary);">
+              <li style="margin: 4px 0;"><strong>Start simple:</strong> Test with manual approval gates, then remove them as you build trust</li>
+              <li style="margin: 4px 0;"><strong>Exit AI early:</strong> Use deterministic scripts when you know exactly what to do</li>
+              <li style="margin: 4px 0;"><strong>Be explicit about safety:</strong> Define what the runbook can never do (delete data, disable security, etc.)</li>
+              <li style="margin: 4px 0;"><strong>Log everything:</strong> Every step creates an audit trail you can review</li>
+            </ul>
+          </div>
+        ` : rbStep === 2 ? `
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">🔌 Connect Required Services</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">Your runbook needs access to external systems (PSA, RMM, MDR, etc.). Check which services this workflow requires, then we'll help you connect them.</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Which services does this runbook need?</label>
+            <div class="check-list" style="max-height: 320px;">
+              ${[
+                { id: 'halo', name: 'Halo PSA', desc: 'Create/update tickets, read customer data', scopes: 'tickets.rw, customers.r' },
+                { id: 'uem', name: 'N-able UEM (RMM)', desc: 'Device inventory, remote scripts, patch status', scopes: 'devices.r, scripts.x' },
+                { id: 'cove', name: 'N-able Cove Backup', desc: 'Backup job status, recovery operations', scopes: 'jobs.r, recover.x' },
+                { id: 'adlumin', name: 'N-able Adlumin MDR', desc: 'Security alerts, threat analysis, endpoint isolation', scopes: 'alerts.r, isolate.x' },
+                { id: 'identity', name: 'Identity Provider (Azure AD / Okta)', desc: 'User provisioning, password resets, MFA', scopes: 'users.rw, auth.r' },
+                { id: 'email', name: 'Email (Office 365 / Gmail)', desc: 'Send notifications, read mailbox rules', scopes: 'mail.send, rules.r' }
+              ].map(s => `
+                <label>
+                  <input type="checkbox" value="${s.id}" ${rbState.requiredServices.includes(s.id)?'checked':''}>
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600;">${s.name}</div>
+                    <div style="font-size: 12px; color: var(--br-color-ink-muted); margin-top: 2px;">${s.desc}</div>
+                    <div style="font-size: 11px; color: var(--br-color-ink-muted); margin-top: 4px; font-family: var(--br-font-family-mono);">Scopes: ${s.scopes}</div>
+                  </div>
+                </label>
+              `).join('')}
+            </div>
+            <div class="hint">Don't worry if you haven't connected these services yet — we'll walk you through it in the next step.</div>
+          </div>
+          ${rbState.requiredServices.length > 0 ? `
+            <div style="margin-top: 16px; padding: 12px; background: var(--br-color-state-info-tint); border-radius: 6px; border-left: 3px solid var(--br-color-state-info);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--br-color-state-info); margin-bottom: 6px;">✓ ${rbState.requiredServices.length} service${rbState.requiredServices.length > 1 ? 's' : ''} selected</div>
+              <div style="font-size: 12px; color: var(--br-color-ink-secondary);">Next step: we'll verify these connections are configured and show you how to set up any missing ones.</div>
+            </div>
+          ` : ''}
+        ` : rbStep === 3 ? `
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">🔧 Service Connection Status</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">Here's the status of the services your runbook needs. Green = connected and ready. Yellow = needs configuration.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            ${rbState.requiredServices.map(svcId => {
+              const connected = mcpServers.some(m => m.name.toLowerCase().includes(svcId));
+              const svcName = { halo: 'Halo PSA', uem: 'N-able UEM', cove: 'N-able Cove', adlumin: 'N-able Adlumin', identity: 'Azure AD', email: 'Office 365' }[svcId] || svcId;
+              return `
+                <div style="padding: 12px 14px; background: var(--br-color-surface-panel); border: 1px solid ${connected ? 'var(--br-color-state-success)' : 'var(--br-color-state-warning)'}; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600; color: var(--br-color-ink-primary);">${svcName}</div>
+                    <div style="font-size: 12px; color: var(--br-color-ink-muted); margin-top: 2px;">
+                      ${connected
+                        ? '<span style="color: var(--br-color-state-success);">✓ Connected via MCP key service</span>'
+                        : '<span style="color: var(--br-color-state-warning);">⚠ Not yet configured</span>'}
+                    </div>
+                  </div>
+                  ${!connected ? `<button class="btn sm primary">Connect Now</button>` : `<apx-badge variant="success" dot>Ready</apx-badge>`}
+                </div>
+              `;
+            }).join('')}
+          </div>
+          ${rbState.requiredServices.some(s => !mcpServers.some(m => m.name.toLowerCase().includes(s))) ? `
+            <div style="margin-top: 16px; padding: 12px; background: var(--br-color-state-warning-tint); border-radius: 6px; border-left: 3px solid var(--br-color-state-warning);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--br-color-state-warning); margin-bottom: 6px;">⚠ Action Required</div>
+              <div style="font-size: 12px; color: var(--br-color-ink-secondary); margin-bottom: 8px;">Some services aren't connected yet. Click "Connect Now" for each service to:</div>
+              <ol style="margin: 4px 0 0; padding-left: 20px; font-size: 12px; color: var(--br-color-ink-secondary);">
+                <li style="margin: 4px 0;">Enter your API credentials (secured via N-able key service)</li>
+                <li style="margin: 4px 0;">Test the connection to verify it works</li>
+                <li style="margin: 4px 0;">Set the scopes (permissions) this runbook needs</li>
+              </ol>
+              <div style="margin-top: 8px; font-size: 11px; color: var(--br-color-ink-muted);">💡 Don't have API credentials? We'll link to each service's admin portal where you can generate them.</div>
+            </div>
+          ` : `
+            <div style="margin-top: 16px; padding: 12px; background: var(--br-color-state-success-tint); border-radius: 6px; border-left: 3px solid var(--br-color-state-success);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--br-color-state-success);">✓ All services connected</div>
+              <div style="font-size: 12px; color: var(--br-color-ink-secondary); margin-top: 4px;">Your runbook can access all required systems. Credentials are secured via the N-able key service — they never touch the LLM context.</div>
+            </div>
+          `}
+        ` : `
+          <div style="padding: 12px 14px; background: var(--br-color-brand-primary-tint); border-radius: 6px; margin-bottom: 20px; border-left: 3px solid var(--br-color-brand-primary);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--br-color-brand-primary); margin-bottom: 6px;">⚙️ Define Workflow Steps</div>
+            <div style="font-size: 13px; color: var(--br-color-ink-secondary);">Now define the step-by-step execution. Each step can be: a <strong>deterministic script</strong>, an <strong>API call</strong>, <strong>bounded AI reasoning</strong>, or an <strong>approval gate</strong>.</div>
+          </div>
+          <div class="form-row">
+            <label class="f">Workflow Steps</label>
+            <textarea id="rb-body" style="min-height: 200px; font-family: var(--br-font-family-mono); font-size: 12.5px;" placeholder="Example workflow steps:
+
+1. [API Call] Fetch alert details from Adlumin → get alert ID, severity, affected device
+2. [API Call] Query UEM for device status → is device online? recent patches? running processes?
+3. [AI Reasoning] Classify threat severity based on alert + device context (bounded: only output 'critical', 'high', 'medium', 'low')
+4. [Conditional] If severity = 'critical': isolate device via UEM, create P1 ticket
+5. [Approval Gate] If action = isolate device: pause for human confirmation before executing
+6. [API Call] Create Halo ticket with all diagnostic data + recommended actions
+7. [Notification] Send SMS to on-call via configured notification service
+
+Use this format to make your steps clear and explicit.">${escapeHtml(rbState.body)}</textarea>
+            <div class="hint">Use <strong>[brackets]</strong> to label step types. Be explicit about what each step does and when it needs approval.</div>
+          </div>
+          <div style="margin-top: 16px; padding: 12px; background: var(--br-color-surface-sunken); border-radius: 6px;">
+            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--br-color-ink-muted); margin-bottom: 8px;">💡 Step Type Guide</div>
+            <div style="font-size: 12px; color: var(--br-color-ink-secondary); display: grid; grid-template-columns: 120px 1fr; gap: 8px;">
+              <div style="font-family: var(--br-font-family-mono); color: var(--br-color-state-info);">[API Call]</div>
+              <div>Direct call to a service (PSA, RMM, MDR). No AI involved — just execute the request.</div>
+              <div style="font-family: var(--br-font-family-mono); color: var(--br-color-brand-accent);">[AI Reasoning]</div>
+              <div>Let the AI decide based on context. Always bound it: specify allowed outputs or constraints.</div>
+              <div style="font-family: var(--br-font-family-mono); color: var(--br-color-state-warning);">[Approval Gate]</div>
+              <div>Pause execution and wait for human confirmation before proceeding.</div>
+              <div style="font-family: var(--br-font-family-mono); color: var(--br-color-state-success);">[Script]</div>
+              <div>Run a deterministic PowerShell or Bash script. Use for complex logic that doesn't need AI.</div>
+              <div style="font-family: var(--br-font-family-mono); color: var(--br-color-ink-muted);">[Conditional]</div>
+              <div>Branch based on previous step results. Example: "If severity = high, then..."</div>
+            </div>
+          </div>
+        `}
+
+        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--br-color-border-subtle);">
+          <div style="font-size: 11px; color: var(--br-color-ink-muted); margin-bottom: 8px;">STEP ${rbStep} OF 4</div>
+          <div style="display: flex; gap: 4px; margin-bottom: 8px;">
+            ${[1,2,3,4].map(s => `<div style="flex: 1; height: 4px; background: ${s <= rbStep ? 'var(--br-color-brand-primary)' : 'var(--br-color-border-subtle)'}; border-radius: 2px;"></div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn ghost" id="rcancel">Cancel</button>
+        <div class="row">
+          <button class="btn" id="rb-back" ${rbStep === 1 ? 'disabled' : ''}>Back</button>
+          ${rbStep < 4
+            ? `<button class="btn primary" id="rb-next">Next Step</button>`
+            : `<button class="btn primary" id="rsave">${existing ? 'Save Runbook' : 'Create Runbook'}</button>`}
+        </div>
+      </div>
+    `;
+
+    mount.appendChild(modal);
+    mount.classList.add('open');
+
+    const saveStep = () => {
+      if (rbStep === 1) {
+        rbState.name = modal.querySelector('#rb-name')?.value.trim() || rbState.name;
+        rbState.intent = modal.querySelector('#rb-intent')?.value.trim() || rbState.intent;
+      } else if (rbStep === 2) {
+        rbState.requiredServices = Array.from(modal.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value);
+      } else if (rbStep === 4) {
+        rbState.body = modal.querySelector('#rb-body')?.value.trim() || rbState.body;
+      }
+    };
+
+    modal.querySelector('#rclose')?.addEventListener('click', closeModal);
+    modal.querySelector('#rcancel')?.addEventListener('click', closeModal);
+    modal.querySelector('#rb-back')?.addEventListener('click', () => { saveStep(); rbStep = Math.max(1, rbStep - 1); renderRbEditor(); });
+    modal.querySelector('#rb-next')?.addEventListener('click', () => {
+      saveStep();
+      if (rbStep === 1 && !rbState.name) { toast('Name is required'); return; }
+      rbStep = Math.min(4, rbStep + 1);
+      renderRbEditor();
+    });
+    modal.querySelector('#rsave')?.addEventListener('click', () => {
+      saveStep();
+      if (!rbState.name) { toast('Name is required.'); return; }
+      if (existing) {
+        existing.name = rbState.name;
+        existing.intent = rbState.intent;
+        existing.body = rbState.body;
+        existing.modified = today.toISOString().slice(0,10);
+        toast('Runbook saved.');
+      } else {
+        runbooks.push({
+          id: 'rb' + (runbooks.length + 1),
+          name: rbState.name,
+          intent: rbState.intent,
+          body: rbState.body,
+          author: 'Beth Schwindt',
+          modified: today.toISOString().slice(0,10),
+          steps: rbState.body.split('\n').filter(l => l.trim()).length || 1
+        });
+        toast('Runbook created.');
+      }
+      closeModal();
+      setView('runbooks');
+    });
+  }
+
+  renderRbEditor();
+}
+
+/* =========================================================
+   VIEW · EXPERTS
+   ========================================================= */
+views.experts = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Experts</h1>
+      <p>N-able first-party Experts and certified Vendor Experts. Each Expert ships with a runbook, declared MCP scopes, and a vendor-managed lifecycle.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Marketplace</button>
+      <button class="btn primary">${ICON.plus} Add Expert</button>
+    </div>
+  `}));
+
+  const filter = el('div', { class:'filterbar' });
+  filter.innerHTML = `
+    <input class="input search" placeholder="Search Experts...">
+    <label class="flbl">Vendor</label>
+    <select class="select"><option>All</option><option>N-able</option><option>Halo Service Solutions</option></select>
+    <label class="flbl">Certification</label>
+    <select class="select"><option>All</option><option>First-party</option><option>Certified Vendor</option></select>
+  `;
+  wrap.appendChild(filter);
+
+  const grid = el('div', { class:'tile-grid' });
+  experts.forEach(e => {
+    const tile = el('div', { class:'tile' });
+    const isVendor = e.cert === 'Certified Vendor';
+    tile.innerHTML = `
+      <div class="tile-h">
+        <span class="tile-icon">${ICON.experts}</span>
+        ${isVendor
+          ? `<apx-badge variant="accent" dot>Certified Vendor</apx-badge>`
+          : `<apx-badge variant="info" dot>N-able</apx-badge>`}
+      </div>
+      <div>
+        <h4 class="tile-name">${escapeHtml(e.name)}</h4>
+        <div class="tile-vendor">${escapeHtml(e.vendor)} · v${escapeHtml(e.version)}</div>
+      </div>
+      <div class="tile-desc">${escapeHtml(e.desc)}</div>
+      <div class="tile-meta">
+        <span>${e.scopes.length} scopes</span>
+        <span>·</span>
+        <span>${escapeHtml(e.scopes.join(', '))}</span>
+      </div>
+      <div class="tile-actions">
+        <button class="btn sm" data-add-cw="${escapeHtml(e.name)}">Add to Coworker</button>
+        <button class="btn sm ghost">Details</button>
+      </div>
+    `;
+    grid.appendChild(tile);
+  });
+  wrap.appendChild(grid);
+
+  setTimeout(() => {
+    grid.querySelectorAll('[data-add-cw]').forEach(b => b.addEventListener('click', () => openCoworkerWizard()));
+  }, 0);
+
+  return wrap;
+};
+
+/* =========================================================
+   VIEW · MCP SERVERS
+   ========================================================= */
+views.mcp = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>MCP Servers</h1>
+      <p>Connected tool access endpoints. The control plane brokers credentials and enforces scopes via the dedicated key service.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Key service</button>
+      <button class="btn primary" id="mcp-add">${ICON.plus} Add MCP Server</button>
+    </div>
+  `}));
+
+  const tbl = el('apx-table');
+  tbl.innerHTML = `
+    <table class="t">
+      <thead><tr><th>Name</th><th>Endpoint</th><th>Auth</th><th>Scope</th><th>Latency</th><th>Kind</th><th>Status</th></tr></thead>
+      <tbody>
+        ${mcpServers.map(m => `
+          <tr>
+            <td><div class="row-title">${escapeHtml(m.name)}</div></td>
+            <td><span class="pill" style="font-family: var(--br-font-family-mono);">${escapeHtml(m.endpoint)}</span></td>
+            <td>${escapeHtml(m.auth)}</td>
+            <td>${escapeHtml(m.scope)}</td>
+            <td>${escapeHtml(m.latency)}</td>
+            <td>${m.kind === 'Customer BYO'
+              ? `<apx-badge variant="accent">${escapeHtml(m.kind)}</apx-badge>`
+              : m.kind === 'Vendor'
+                ? `<apx-badge variant="neutral">${escapeHtml(m.kind)}</apx-badge>`
+                : `<apx-badge variant="info">${escapeHtml(m.kind)}</apx-badge>`}</td>
+            <td>${statusBadge(m.status)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(tbl);
+
+  setTimeout(() => {
+    wrap.querySelector('#mcp-add').addEventListener('click', openMcpModal);
+  }, 0);
+
+  return wrap;
+};
+
+function openMcpModal() {
+  const mount = $('#modal-mount');
+  mount.innerHTML = '';
+  const modal = el('div', { class:'modal' });
+  modal.innerHTML = `
+    <div class="modal-h">
+      <h2>Add MCP Server</h2>
+      <button class="btn ghost" id="xclose" aria-label="Close">${ICON.close}</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="f">Server name</label>
+        <input class="input" id="x-name" placeholder="e.g. ConnectWise PSA">
+      </div>
+      <div class="form-row">
+        <label class="f">Endpoint</label>
+        <input class="input" id="x-endpoint" placeholder="https://mcp.example.com/v1">
+      </div>
+      <div class="form-row">
+        <label class="f">Auth type</label>
+        <select class="select" id="x-auth">
+          <option>OAuth 2.0</option>
+          <option>API Key</option>
+          <option>N-able key service</option>
+          <option>mTLS</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="f">Scopes</label>
+        <div class="check-list">
+          <label><input type="checkbox" checked> tickets.r</label>
+          <label><input type="checkbox" checked> tickets.w</label>
+          <label><input type="checkbox"> devices.r</label>
+          <label><input type="checkbox"> devices.w</label>
+          <label><input type="checkbox"> scripts.x</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <button class="btn" id="x-test">Test connection</button>
+        <span id="x-test-out" style="margin-left: 10px; font-size: 12.5px; color: var(--br-color-ink-muted); display: inline-flex; align-items: center; gap: 6px;"></span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="xcancel">Cancel</button>
+      <button class="btn primary" id="xsave">Save Server</button>
+    </div>
+  `;
+  mount.appendChild(modal);
+  mount.classList.add('open');
+  modal.querySelector('#xclose').addEventListener('click', closeModal);
+  modal.querySelector('#xcancel').addEventListener('click', closeModal);
+  modal.querySelector('#x-test').addEventListener('click', () => {
+    const out = modal.querySelector('#x-test-out');
+    out.innerHTML = `<apx-loader label="Testing..."></apx-loader>`;
+    setTimeout(() => {
+      out.innerHTML = `<span style="color: var(--br-color-state-success); display: inline-flex; align-items: center; gap: 6px;">${ICON.check} Connection successful · 118 ms</span>`;
+    }, 1100);
+  });
+  modal.querySelector('#xsave').addEventListener('click', () => {
+    const name = modal.querySelector('#x-name').value.trim();
+    if (!name) { toast('Name is required.'); return; }
+    mcpServers.push({
+      name,
+      endpoint: modal.querySelector('#x-endpoint').value.trim() || 'mcp://new.endpoint',
+      auth: modal.querySelector('#x-auth').value,
+      scope: 'tickets.rw',
+      status: 'Connected',
+      latency: '118 ms',
+      kind: 'Customer BYO'
+    });
+    closeModal();
+    toast('MCP server added.');
+    setView('mcp');
+  });
+}
+
+/* =========================================================
+   VIEW · EXECUTIONS (with expandable trace)
+   ========================================================= */
+let openExec = null;
+views.executions = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Executions</h1>
+      <p>Audit log of every Coworker run. Click a row to expand the step-level trace: tool calls, LLM inferences, scripts, approval gates, conditional branches.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Export CSV</button>
+      <button class="btn">Filter</button>
+    </div>
+  `}));
+
+  const filter = el('div', { class:'filterbar' });
+  filter.innerHTML = `
+    <input class="input search" placeholder="Search executions...">
+    <label class="flbl">Period</label>
+    <select class="select"><option>Last 7 days</option><option>Last 30 days</option><option>Last 90 days</option></select>
+    <label class="flbl">Status</label>
+    <select class="select"><option>All</option><option>Success</option><option>Awaiting Approval</option><option>Failed</option></select>
+    <label class="flbl">Coworker</label>
+    <select class="select"><option>All</option>${coworkers.map(c => `<option>${escapeHtml(c.name)}</option>`).join('')}</select>
+  `;
+  wrap.appendChild(filter);
+
+  const tbl = el('apx-table');
+  tbl.innerHTML = `
+    <table class="t">
+      <thead><tr>
+        <th style="width: 24px;"></th>
+        <th>Started</th>
+        <th>Coworker</th>
+        <th>Customer</th>
+        <th>Trigger</th>
+        <th>Duration</th>
+        <th>Steps</th>
+        <th>Hours saved</th>
+        <th>Status</th>
+      </tr></thead>
+      <tbody>
+        ${executions.map(e => `
+          <tr class="clickable" data-ex="${e.id}">
+            <td><span class="ex-chev" data-chev="${e.id}" style="display: inline-flex;">${ICON.chevR}</span></td>
+            <td>${escapeHtml(e.start)}</td>
+            <td><span class="row-title">${escapeHtml(e.coworker)}</span></td>
+            <td>${escapeHtml(e.customer)}</td>
+            <td>${escapeHtml(e.trigger)}</td>
+            <td>${escapeHtml(e.dur)}</td>
+            <td>${e.steps}</td>
+            <td>${escapeHtml(e.saved)}</td>
+            <td>${statusBadge(e.status)}</td>
+          </tr>
+          <tr class="trace-host" data-trace="${e.id}" style="display: none;"><td colspan="9" style="padding: 0;"></td></tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(tbl);
+
+  setTimeout(() => {
+    tbl.querySelectorAll('tr[data-ex]').forEach(r => r.addEventListener('click', () => {
+      const id = r.dataset.ex;
+      const host = tbl.querySelector(`tr[data-trace="${id}"]`);
+      const chev = tbl.querySelector(`[data-chev="${id}"]`);
+      if (host.style.display === 'none') {
+        host.style.display = 'table-row';
+        host.firstElementChild.innerHTML = renderTrace(id);
+        chev.style.transform = 'rotate(90deg)';
+      } else {
+        host.style.display = 'none';
+        host.firstElementChild.innerHTML = '';
+        chev.style.transform = '';
+      }
+    }));
+  }, 0);
+
+  return wrap;
+};
+
+function renderTrace(id) {
+  const e = executions.find(x => x.id === id);
+  const template = /Awaiting/i.test(e.status) ? traceTemplates.awaiting : traceTemplates.default;
+  const iconFor = (type) => ({
+    tool: ICON.toolWrench, llm: ICON.cpu, script: ICON.terminal,
+    approval: ICON.shield, branch: ICON.branch
+  }[type] || ICON.toolWrench);
+  const rows = template.slice(0, e.steps).map((s, i) => `
+    <div class="trace-row">
+      <div class="trace-ico ${s.type}">${iconFor(s.type)}</div>
+      <div>
+        <div class="trace-title">Step ${i+1} · ${escapeHtml(s.title)}</div>
+        <div class="trace-meta">${escapeHtml(s.meta)}</div>
+      </div>
+      <div class="trace-dur">${escapeHtml(s.dur)}</div>
+    </div>
+  `).join('');
+  return `<div class="exec-trace">
+    <div class="row" style="margin-bottom: 10px;">
+      <apx-badge variant="brand">Execution ${escapeHtml(e.id)}</apx-badge>
+      <apx-badge variant="neutral">Trace · ${e.steps} steps</apx-badge>
+      <span class="spacer"></span>
+      <button class="btn sm">Download log</button>
+      <button class="btn sm">Replay</button>
+    </div>
+    ${rows}
+  </div>`;
+}
+
+/* =========================================================
+   VIEW · METERING & CHARGEBACK
+   ========================================================= */
+views.metering = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Metering &amp; Chargeback</h1>
+      <p>Five revenue layers metered per tenant. This is the billing backbone — execution count, MCP transactions, LLM tokens, Expert licenses, platform access.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Export</button>
+      <button class="btn">Billing cycle</button>
+    </div>
+  `}));
+
+  const filter = el('div', { class:'filterbar' });
+  filter.innerHTML = `
+    <label class="flbl">Period</label>
+    <select class="select"><option>Last 7 days</option><option>Last 30 days</option><option>Last 90 days</option></select>
+    <label class="flbl">Customer</label>
+    <select class="select"><option>All</option><option>Acme Corp</option><option>Northwind Industries</option><option>Globex</option></select>
+  `;
+  wrap.appendChild(filter);
+
+  const layers = el('apx-card', { style:'margin-bottom: 16px;' });
+  layers.setAttribute('no-pad', '');
+  layers.innerHTML = `
+    <h3 slot="header-title">Monetization layers (5 of 7 active in V1)</h3>
+    <span slot="header-aside" class="sub">Layer 6 (Outcome) and 7 (Vendor marketplace) future state</span>
+    ${monetizationLayers.map(l => `
+      <div class="layer-row">
+        <div class="ln-ico">L${l.n}</div>
+        <div>
+          <div class="ln-name">${escapeHtml(l.name)}</div>
+          <div class="ln-desc">${escapeHtml(l.desc)}</div>
+        </div>
+        <div class="ln-metric"><strong>${escapeHtml(l.metric)}</strong></div>
+        <div class="ln-cost">$${l.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+      </div>
+    `).join('')}
+    <div class="layer-row" style="background: var(--br-color-surface-sunken); font-weight: 600;">
+      <div></div>
+      <div><div class="ln-name">Total this period</div></div>
+      <div></div>
+      <div class="ln-cost">$${monetizationLayers.reduce((a,b)=>a+b.cost,0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+    </div>
+  `;
+  wrap.appendChild(layers);
+
+  const card = el('apx-card');
+  card.setAttribute('no-pad', '');
+  card.innerHTML = `
+    <h3 slot="header-title">Per-customer chargeback</h3>
+    <span slot="header-aside" class="sub">Period: last 30 days</span>
+    <table class="t">
+      <thead><tr><th>Customer</th><th>Coworkers</th><th>Executions</th><th>MCP transactions</th><th>LLM tokens</th><th>Estimated cost</th></tr></thead>
+      <tbody>
+        ${customersBilling.map(c => `
+          <tr>
+            <td><div class="row-title">${escapeHtml(c.customer)}</div></td>
+            <td>${c.coworkers}</td>
+            <td>${c.exec.toLocaleString()}</td>
+            <td>${c.mcp.toLocaleString()}</td>
+            <td>${c.llmK.toLocaleString()}K</td>
+            <td><strong>$${c.cost.toFixed(2)}</strong></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(card);
+
+  return wrap;
+};
+
+/* =========================================================
+   VIEW · VALUE LEDGER
+   ========================================================= */
+views.ledger = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Value Ledger · Acme Corp</h1>
+      <p>Customer-facing artifact. What the ACP actually did for this customer this period, and what it was worth in time and dollars.</p>
+    </div>
+    <div class="page-actions">
+      <select class="select"><option>Acme Corp</option><option>Northwind Industries</option><option>Globex</option></select>
+      <button class="btn">Export PDF</button>
+      <button class="btn primary">Send to customer</button>
+    </div>
+  `}));
+
+  const ledgerCard = el('apx-card');
+  ledgerCard.innerHTML = `
+    <h3 slot="header-title">This month at a glance</h3>
+    <span slot="header-aside" class="sub">May 2026 · billed monthly</span>
+    <div class="ledger-grid">
+      ${[
+        { num:'47 h', nm:'Manual equivalent hours saved' },
+        { num:'12', nm:'Incidents resolved autonomously' },
+        { num:'340', nm:'Vulnerabilities closed' },
+        { num:'1', nm:'QBR generated' },
+        { num:'96', nm:'Tickets triaged & routed' },
+        { num:'4', nm:'Employees onboarded' },
+        { num:'2,840', nm:'Alerts suppressed (noise reduction)' },
+        { num:'$4,200', nm:'Estimated cost avoidance' }
+      ].map(it => `
+        <div class="ledger-item">
+          <div class="num">${escapeHtml(it.num)}</div>
+          <div class="nm">${escapeHtml(it.nm)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  wrap.appendChild(ledgerCard);
+
+  const trend = el('apx-card', { style:'margin-top: 16px;' });
+  trend.innerHTML = `
+    <h3 slot="header-title">Trend · 6-month value contribution</h3>
+    <span slot="header-aside" class="sub">Hours saved &amp; cost avoidance</span>
+    ${dualBarChart(
+      [18, 24, 31, 36, 41, 47],
+      [1600, 2200, 2800, 3300, 3700, 4200],
+      ['Dec','Jan','Feb','Mar','Apr','May']
+    )}
+    <div class="legend">
+      <span><span class="sw" style="background: var(--br-color-brand-primary);"></span>Hours saved</span>
+      <span><span class="sw" style="background: var(--br-color-state-success);"></span>Cost avoidance ($)</span>
+    </div>
+  `;
+  wrap.appendChild(trend);
+
+  const contrib = el('apx-card', { style:'margin-top: 16px;' });
+  contrib.setAttribute('no-pad', '');
+  contrib.innerHTML = `
+    <h3 slot="header-title">Contribution by Coworker</h3>
+    <span slot="header-aside" class="sub">Acme Corp · May 2026</span>
+    <table class="t">
+      <thead><tr><th>Coworker</th><th>Executions</th><th>Hours saved</th><th>Cost avoidance</th><th>Success rate</th></tr></thead>
+      <tbody>
+        <tr><td><div class="row-title">Alert Flood Suppression</div></td><td>284</td><td>12 h</td><td>$1,140</td><td>99.6%</td></tr>
+        <tr><td><div class="row-title">Ticket Triage &amp; Dispatch</div></td><td>96</td><td>14 h</td><td>$1,320</td><td>98.9%</td></tr>
+        <tr><td><div class="row-title">New Customer Onboarding</div></td><td>3</td><td>13 h</td><td>$1,180</td><td>100%</td></tr>
+        <tr><td><div class="row-title">QBR Report Generator</div></td><td>1</td><td>6 h</td><td>$540</td><td>100%</td></tr>
+        <tr><td><div class="row-title">Network Incident Resolution</div></td><td>4</td><td>2 h</td><td>$20</td><td>75.0%</td></tr>
+      </tbody>
+    </table>
+  `;
+  wrap.appendChild(contrib);
+
+  return wrap;
+};
+
+function dualBarChart(seriesA, seriesB, labels) {
+  const w = 720, h = 220, pad = 36;
+  const maxA = Math.max(...seriesA);
+  const maxB = Math.max(...seriesB);
+  const groupW = (w - pad*2) / labels.length;
+  const bw = (groupW - 12) / 2;
+  let bars = '';
+  labels.forEach((lbl, i) => {
+    const gx = pad + i * groupW + 6;
+    const a = seriesA[i], b = seriesB[i];
+    const ah = (a / maxA) * (h - pad*2);
+    const bh = (b / maxB) * (h - pad*2);
+    bars += `
+      <rect x="${gx}" y="${h - pad - ah}" width="${bw}" height="${ah}" rx="3" fill="var(--br-color-brand-primary)"></rect>
+      <rect x="${gx + bw + 4}" y="${h - pad - bh}" width="${bw}" height="${bh}" rx="3" fill="var(--br-color-state-success)"></rect>
+      <text x="${gx + groupW/2 - 4}" y="${h - 12}" text-anchor="middle" font-size="11" fill="var(--br-color-ink-muted)">${lbl}</text>
+      <text x="${gx + bw/2}" y="${h - pad - ah - 4}" text-anchor="middle" font-size="10" fill="var(--br-color-brand-primary)">${a}h</text>
+      <text x="${gx + bw + 4 + bw/2}" y="${h - pad - bh - 4}" text-anchor="middle" font-size="10" fill="var(--br-color-state-success)">$${(b/1000).toFixed(1)}k</text>
+    `;
+  });
+  return `<div class="chart-wrap"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
+    <line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="var(--br-color-border-subtle)" stroke-width="1"/>
+    ${bars}
+  </svg></div>`;
+}
+
+/* =========================================================
+   VIEW · SETTINGS
+   ========================================================= */
+views.settings = () => {
+  const wrap = el('div');
+  wrap.appendChild(el('div', { class:'page-head', html: `
+    <div>
+      <h1>Settings</h1>
+      <p>Control plane configuration — LLM routing, triggers, policies. The control plane does not host inference; it routes to a chosen external model.</p>
+    </div>
+  `}));
+
+  const grid = el('div', { class:'settings-grid' });
+
+  const llm = el('apx-card');
+  llm.innerHTML = `
+    <h3 slot="header-title">LLM configuration</h3>
+    <div class="setting-row">
+      <div>
+        <div class="lbl">N-able Bedrock (default)</div>
+        <div class="sub">Route inference through N-able's processing infrastructure. Claude-sonnet.</div>
+      </div>
+      <button class="switch on" aria-label="Bedrock"></button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="lbl">BYOK (Bring Your Own Key)</div>
+        <div class="sub">Stub — V2. Connect customer-owned model + API key. Control plane out of inference path.</div>
+      </div>
+      <button class="switch disabled" aria-label="BYOK" disabled></button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="lbl">BYOM (Bring Your Own Model)</div>
+        <div class="sub">Stub — V2. Self-hosted model endpoint.</div>
+      </div>
+      <button class="switch disabled" aria-label="BYOM" disabled></button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="lbl">Deterministic Substitution Engine</div>
+        <div class="sub">Intercept LLM calls when a deterministic script can answer instead.</div>
+      </div>
+      <button class="switch" aria-label="DSE"></button>
+    </div>
+  `;
+  grid.appendChild(llm);
+
+  const trig = el('apx-card');
+  trig.innerHTML = `
+    <h3 slot="header-title">Triggers</h3>
+    <div class="setting-row">
+      <div><div class="lbl">Halo PSA ticket created</div><div class="sub">Routes to Ticket Triage &amp; Dispatch</div></div>
+      <button class="switch on"></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Adlumin MDR alert threshold</div><div class="sub">Routes to Alert Flood Suppression</div></div>
+      <button class="switch on"></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">UEM CPU spike &gt; 92%</div><div class="sub">Routes to Network Incident Resolution (human-in-loop)</div></div>
+      <button class="switch on"></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Schedule · QBR monthly</div><div class="sub">First Monday, 06:00 UTC</div></div>
+      <button class="switch on"></button>
+    </div>
+    <hr class="thin">
+    <div class="empty" style="padding: 14px 0;">
+      <div class="e-icon">${ICON.plus}</div>
+      Add a new trigger — schedule, event, or API call.
+      <div style="margin-top: 10px;"><button class="btn">${ICON.plus} Add Trigger</button></div>
+    </div>
+  `;
+  grid.appendChild(trig);
+
+  const pol = el('apx-card');
+  pol.innerHTML = `
+    <h3 slot="header-title">Policies</h3>
+    <div class="setting-row">
+      <div><div class="lbl">Out-of-policy detection (runtime)</div><div class="sub">Flag agent actions outside declared scope</div></div>
+      <button class="switch on"></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Credential rotation</div><div class="sub">Automatic key rotation every 30 days</div></div>
+      <button class="switch on"></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Vendor Expert auto-update</div><div class="sub">Pin to version unless critical security patch</div></div>
+      <button class="switch"></button>
+    </div>
+    <div class="setting-row">
+      <div><div class="lbl">Audit log retention</div><div class="sub">395 days · compliance default</div></div>
+      <button class="btn sm">Configure</button>
+    </div>
+  `;
+  grid.appendChild(pol);
+
+  const ks = el('apx-card');
+  ks.innerHTML = `
+    <h3 slot="header-title">Key service</h3>
+    <span slot="header-aside" class="sub">Separate from control plane</span>
+    <div class="kv">
+      <div class="k">Service status</div><div class="v">${statusBadge('Connected')}</div>
+      <div class="k">Stored credentials</div><div class="v">14 (scoped per deployment)</div>
+      <div class="k">Rotation events (30d)</div><div class="v">6 automatic · 0 forced</div>
+      <div class="k">Last revocation</div><div class="v">2026-05-19 · Halo PSA test key</div>
+    </div>
+  `;
+  grid.appendChild(ks);
+
+  wrap.appendChild(grid);
+
+  setTimeout(() => {
+    wrap.querySelectorAll('.switch:not([disabled])').forEach(s => s.addEventListener('click', () => s.classList.toggle('on')));
+  }, 0);
+
+  return wrap;
+};
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+ModeManager.apply();
+setView('dashboard');
+
+// Esc closes modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>

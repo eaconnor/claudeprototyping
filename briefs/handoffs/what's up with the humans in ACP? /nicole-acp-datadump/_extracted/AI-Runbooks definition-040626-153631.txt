@@ -1,0 +1,61 @@
+
+--- PAGE 1 ---
+Runbooks definition
+A Runbook is a governed execution contract that an  or  may invoke to
+achieve a goal. AI Coworkers “think”, Runbooks govern how thinking becomes action, runbooks
+may contain 
+Workflows (which execute the work).
+Runbooks captures:
+Intent and boundaries
+Approved reasoning and execution paths
+Deterministic workflows where precision matters
+Clear handoffs between humans, AI reasoning, and systems
+a Runbook requires an “executor” which may be an AI Agent, Expert or Coworker. 
+A Runbook does not replace an AI Coworker.
+A Runbook is what an AI Coworker uses to act safely, repeatedly, and audibly.
+Core Principles
+1. Text‑first
+A Runbook always begins as plain language intent
+It may remain text‑only or expand into structured execution
+2. Composable
+A Runbook may include one or more workflows
+A workflow may be reused across multiple Runbooks
+A Runbook can call other Runbooks
+3. Coworker‑invoked
+Runbooks are executed by AI Agents, not by users directly (except explicitly allowed cases)
+The Agent decides when to invoke a Runbook
+The Runbook governs how execution proceeds
+4. Deterministic-ish 
+AI reasoning is explicitly bounded
+Deterministic steps exit the AI context as early as possible
+Scope of a Runbook
+A Runbook may represent any of the following:
+A single prompt with output constraints
+AI CoworkerAI Expert
+--- PAGE 2 ---
+A SOP
+A decision tree with limited AI reasoning
+A workflow-backed process (monitor, automation, report)
+A multi-stage operational procedure
+Runbook vs Workflow (Explicit Relationship)
+Workflow
+A Workflow is:
+A deterministic execution graph
+Composed of typed nodes (evaluate, transform, action, output)
+Fully machine-driven
+Fully replayable
+Runbook
+A Runbook:
+Describes intent and policy
+Selects and sequences workflows
+Defines where AI reasoning is allowed
+Defines escalation, handoff, and approval behavior
+A workflow is a component of a Runbook.
+A Runbook is the operational wrapper that makes workflows safe to use
+with AI Coworkers.
+Runbook Example (Workflow‑Backed)
+1 ┌──────────────────────────────┐2 │         AI Coworker         │3 │  (persistent, role-based)   │4 └──────────────┬──────────────┘5 │   6 ▼7 ┌──────────────────────────────┐8 │            Runbook             │9 │   - Intent                     │10 │   - Policy & boundaries        │11 │   - AI reasoning rules         │12 │   - Handoff logic              │13 └──────────────┬──────────────┘14 │  invokes15 ▼16 ┌──────────────────────────────┐17 │           Workflow(s)          │
+--- PAGE 3 ---
+Example
+18 │   - Deterministic execution    │19 │   - Scripts / APIs             │20 │   - Monitors / Reports         │21 └──────────────┬──────────────┘22 │  returns outcomes23 ▼24 ┌──────────────────────────────┐25 │         AI Coworker            │26 │   - Summarizes                 │27 │   - Recommends                 │28 │   - Requests approval          │29 │   - Escalates if needed        │30 └──────────────────────────────┘
+1 Intent:2 When CPU exceeds threshold, enrich the incident and recommendremediation.34 Steps:5 1. Evaluate CPU threshold (workflow)6 2. Ask AI to classify likely cause (bounded reasoning)7 3. Enrich ticket with context (workflow)8 4. Recommend remediation (no auto-execute)

@@ -1,0 +1,61 @@
+{
+  "_source_md": "critic-pass-1.md",
+  "_generated_by": "_gen_sidecars.py",
+  "frontmatter": null,
+  "sections": [],
+  "structured_blocks": [],
+  "tables": [
+    {
+      "headers": [
+        "Dimension",
+        "Score",
+        "Note"
+      ],
+      "is_id_table": false,
+      "row_count": 7,
+      "rows": [
+        {
+          "Dimension": "Three-gate clarity",
+          "Score": "3/5",
+          "Note": "Gate 1 strong, Gate 2 partial (mission/OKR never named), Gate 3 missing \u2014 no test protocol, no success metric, no \"who tests this\""
+        },
+        {
+          "Dimension": "Sourcing & confidence",
+          "Score": "3/5",
+          "Note": "Tags applied widely but inconsistently calibrated; several [CS: VERIFIED] claims trace to vendor blogs or single-source secondary, not primary"
+        },
+        {
+          "Dimension": "Tension naming",
+          "Score": "4/5",
+          "Note": "Real contradictions surfaced (augment vs. replace, audit vs. teach, sustaining vs. disruptive) and not smoothed \u2014 best dimension of the package"
+        },
+        {
+          "Dimension": "Unknown honesty",
+          "Score": "4/5",
+          "Note": "Gaps consistently named as research briefs rather than fabricated"
+        },
+        {
+          "Dimension": "Actionability",
+          "Score": "2/5",
+          "Note": "Extended report ends mid-sentence in Wardley section; design team cannot act on incomplete deliverable"
+        },
+        {
+          "Dimension": "2026 currency",
+          "Score": "3/5",
+          "Note": "2026 sources cited but core fatigue/false-positive stats are 2024\u20132025; not labeled by year in body copy"
+        },
+        {
+          "Dimension": "**Total**",
+          "Score": "**19/30**",
+          "Note": "Strong analysis, broken delivery. Do not ship without finishing the extended report and reconciling tag inflation."
+        }
+      ]
+    }
+  ],
+  "inline_id_references": [],
+  "cs_tag_histogram": {
+    "VERIFIED": 4,
+    "HIGH": 2,
+    "MEDIUM": 2
+  }
+}

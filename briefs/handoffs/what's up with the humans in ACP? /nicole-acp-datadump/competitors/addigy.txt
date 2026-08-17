@@ -1,0 +1,53 @@
+# Addigy
+slug: addigy
+category: Endpoint Management (RMM / MDM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Addigy is an Apple MDM platform purpose-built for MSPs, offering multi-tenant macOS and iOS management with per-technician pricing rather than per-device. It differentiates from Jamf and Kandji by being explicitly MSP-native — built from the ground up for multi-client management, with a partner-first pricing model and MSP-friendly deployment workflows. Addigy serves smaller-to-mid-market MSPs managing Apple-heavy client environments.
+
+## MSP Relevance
+Addigy is the most MSP-native Apple MDM platform available. Its per-technician pricing removes the per-device cost escalation that Jamf and Kandji create for MSPs with large Apple fleets. Multi-tenant management is built-in rather than bolted on. For MSPs growing their Apple practice, Addigy provides a simpler, more economical path than enterprise-focused competitors.
+
+## Key Offerings & Capabilities
+- Apple MDM — macOS, iOS, iPadOS management, multi-tenant
+- Per-technician pricing — unlimited devices per technician license
+- Policy management and configuration profiles
+- App deployment and patch management
+- Automated remediation workflows
+- Integrations with PSA tools (ConnectWise, Autotask, HaloPSA)
+- Remote access and screen sharing for Mac
+- Compliance monitoring and reporting
+
+## Recent Announcements
+- Ongoing feature development with Apple DDM (Declarative Device Management) support
+- Integration ecosystem expanding with additional PSA and RMM connections
+- Positioned as the MSP-native Apple MDM alternative as Jamf's direction shifts under Francisco Partners
+- Continued focus on per-technician pricing as differentiator against per-device competitors
+
+## Pricing Model
+Per-technician per-month, unlimited devices. Pricing around $25–50/technician/month (varies by tier). No per-device fees. MSP partner pricing available. More economical than Jamf or Kandji for MSPs managing large Apple device counts per technician.
+
+## Strengths
+- MSP-native architecture — built for multi-client management from day one
+- Per-technician, unlimited-device pricing is the most MSP-friendly model in Apple MDM
+- Simpler deployment and configuration than Jamf Pro
+- PSA integrations connect Apple management into MSP billing and ticketing workflows
+- Responsive to MSP community feedback
+
+## Weaknesses / Gaps
+- Smaller brand recognition than Jamf in enterprise and larger organizations
+- Less mature compliance automation than Kandji
+- Fewer pre-built compliance blueprints than Kandji or Jamf Pro
+- Limited AI or automation features compared to cross-platform RMM tools
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Addigy focuses on Apple MDM — a specialized, cross-platform management niche. No meaningful overlap with NZO's AI agent and workflow automation platform.
+
+## Notes
+- Per-technician, unlimited-device pricing is a strong MSP-specific differentiator — Addigy and Atera both win on this model
+- Jamf's private equity acquisition creates an opening for Addigy among MSPs seeking a stable, MSP-native Apple MDM
+- Worth tracking as Apple device adoption continues to grow in enterprise — the Apple MDM market will expand

@@ -1,0 +1,50 @@
+# Fixie.ai
+slug: fixie
+category: AI Agent Control Planes
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Fixie.ai is a voice AI platform founded in 2022 by former Google engineers (Matt Welsh, Zach Koch, Justin Uberti — creators of Chrome and WebRTC technologies), providing a cloud-based platform for building, hosting, and scaling conversational voice AI agents with real-time speech processing. The company has evolved from a general AI agent platform toward specialization in enterprise voice-based automation, with a June 2025 partnership with Hexaware Technologies for enterprise voice operations.
+
+## MSP Relevance
+Fixie.ai has minimal direct MSP relevance. It targets a narrow voice AI niche focused on enterprise operations rather than managed services or IT automation. Its private pricing model, limited channel presence, and absence of MSP-specific tooling make it unsuitable for typical MSP service offerings. MSPs specializing in voice AI implementations or enterprise conversational interfaces might evaluate Fixie.ai, but it is not a mainstream MSP platform.
+
+## Key Offerings & Capabilities
+- Voice AI platform — real-time speech processing and transcription for enterprise applications
+- Conversational agent builder — natural language agents designed to answer questions and take autonomous actions via voice
+- Tool and API integration — agents connect to external tools, data sources, and APIs via voice-triggered commands
+- Business process automation — agents function as autonomous systems within enterprise voice workflows
+- Enterprise operations focus — particularly for customer-facing voice automation and employee-facing voice-driven IT requests
+
+## Recent Announcements
+- June 2025: Partnership with Hexaware Technologies to power voice AI for enterprise operations — primary public announcement of 2025
+- No Series A or follow-on funding announced since $17M Series Seed (March 2023, led by Redpoint Ventures)
+- Company operating in stealth mode relative to broader AI agent market — minimal public communication
+
+## Pricing Model
+Not publicly disclosed. Enterprise custom pricing assumed based on the absence of any published pricing tiers. Requires direct sales engagement for quotes.
+
+## Strengths
+- Voice-first differentiation — real-time speech processing is a specialized capability most general AI agent platforms do not prioritize
+- Strong founding team — Matt Welsh (Cornell CS professor), Zach Koch, Justin Uberti (Chrome/WebRTC origins) bring deep infrastructure expertise
+- Hexaware enterprise partnership validates voice AI use case for large-scale enterprise operations
+- Focused product scope — specialization in voice is clearer positioning than generalist AI agent platforms
+
+## Weaknesses / Gaps
+- No Series A funding in 2+ years — suggests difficulty raising or intentional profitability focus; limits product development and GTM investment relative to better-funded competitors
+- Minimal public visibility — few case studies, thought leadership, or community presence compared to contemporaries
+- Narrow product focus — voice-specific scope limits addressable market vs. multi-modal general agent platforms
+- No MSP channel program, reseller tier, or partner ecosystem identified
+- Private pricing reduces consideration in competitive evaluations where MSPs need to compare costs
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Fixie.ai's narrow voice AI focus, absence of MSP channel infrastructure, limited post-seed funding, and minimal market presence make it a non-factor in NZO's competitive landscape. The company has not announced growth initiatives since 2023 that would indicate aggressive expansion into MSP or IT automation territory.
+
+## Notes
+- Worth a brief monitor: if Fixie.ai raises a Series A and pivots toward enterprise IT automation or MSP integration, reassess
+- Voice AI for IT help desk (employees requesting support via voice) is an emerging use case that Fixie.ai's technology could address — but no public signal of this direction
+- The Hexaware partnership is the one data point suggesting enterprise traction — Hexaware is a major IT services firm; if this deployment expands, Fixie.ai could gain enterprise validation faster than its public profile suggests
+- Founded by same-generation technical talent as more prominent AI companies — worth tracking as a talent and technology bellwether even if the company itself remains small

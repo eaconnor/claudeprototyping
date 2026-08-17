@@ -1,0 +1,51 @@
+# Gradient MSP
+slug: gradient-msp
+category: MSP Automation & PSA
+last_updated: 2026-05-14
+
+---
+
+## Overview
+Gradient MSP is a vendor management and billing reconciliation platform for MSPs. Its core product, Synthesize, automatically reconciles vendor usage data against PSA billing records to identify discrepancies, missed billings, and overcharges. In January 2025, Gradient launched Managed Billing Reconciliation (MBR) — a fully managed service blending automation with human billing specialists. The company raised a $10.25M Series A to accelerate product development and partner enablement.
+
+## MSP Relevance
+Billing reconciliation is a persistent, painful MSP problem — vendor usage data rarely matches PSA records, resulting in revenue leakage. Gradient directly addresses this by automating the comparison and flagging discrepancies. MBR goes further by offloading the entire reconciliation process to Gradient's team, giving MSPs a fully managed option. For MSPs with complex vendor stacks, Gradient can recover significant monthly revenue.
+
+## Key Offerings & Capabilities
+- Synthesize — automated billing reconciliation tool comparing vendor usage data vs. PSA invoices
+- Managed Billing Reconciliation (MBR) — fully managed reconciliation service with human billing specialists
+- Vendor integrations — connects to 100+ MSP vendors for automated usage data ingestion
+- PSA integrations — syncs with ConnectWise, Autotask, HaloPSA, and others
+- Revenue recovery reporting — identifies specific missed billings and overcharges
+- Phin Security integration — security awareness training billing reconciliation
+
+## Recent Announcements
+- January 13, 2025: Launched Managed Billing Reconciliation (MBR) — fully managed billing reconciliation combining automation and human specialists
+- Raised $10.25M Series A — investing in product development and partner enablement
+- Expanded vendor integration coverage — continuous addition of new MSP vendor connections
+- Cove Data Protection integration — automated billing sync for N-able Cove backup
+
+## Pricing Model
+Synthesize: SaaS subscription per MSP, pricing based on number of vendor connections and reconciliation volume. MBR: managed service pricing based on complexity and number of vendors managed. Free trial available for Synthesize. Exact pricing requires contact with sales.
+
+## Strengths
+- Solves a real, persistent MSP problem with measurable ROI (revenue recovery)
+- MBR fully offloads billing reconciliation — removes a major operational burden
+- 100+ vendor integrations provide broad coverage of the MSP vendor ecosystem
+- $10.25M Series A funds continued development
+- Strong word-of-mouth in MSP community — billing leakage is universally painful
+
+## Weaknesses / Gaps
+- Narrow use case — focused exclusively on billing reconciliation, not broader MSP automation
+- Market education still needed — many MSPs don't realize the extent of their billing leakage
+- Smaller company and team vs. platform vendors
+- MBR is a service offering, not software autonomy — still requires human specialists
+
+## Competitive Threat to NZO
+Level: Low
+Reason: Gradient competes in a narrow billing reconciliation niche. It does not compete with NZO's AI agent and workflow automation platform. However, billing accuracy is a relevant MSP workflow that NZO's agents could eventually address — potentially making Gradient a partner or acquisition target rather than a competitor.
+
+## Notes
+- Billing reconciliation is a measurable ROI use case — NZO should consider whether AI agents can automate this workflow within its platform
+- $10.25M Series A signals investor confidence in the billing reconciliation category
+- MBR's human + automation model is the current-generation approach before full automation is viable

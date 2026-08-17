@@ -1,0 +1,57 @@
+# CrowdStrike Falcon
+slug: crowdstrike
+category: Security Detection & Response (EDR / MDR / SIEM)
+last_updated: 2026-05-14
+
+---
+
+## Overview
+CrowdStrike is the market-leading EDR/XDR platform, built on a cloud-native single-agent architecture. The Falcon platform covers endpoint protection, threat intelligence, identity protection, cloud security, and SIEM. With its Fall 2025 release, CrowdStrike repositioned Falcon as an "Agentic Security Platform," building toward autonomous SOC operations and AI agent governance.
+
+## MSP Relevance
+CrowdStrike is the gold standard in enterprise EDR and increasingly relevant to the MSP/MSSP market through its Falcon for MSPs partner program. MSPs use Falcon as their premium EDR offering for security-conscious enterprise clients. Charlotte AI AgentWorks is a direct signal of where AI-driven security automation is heading — territory that overlaps with NZO's agentic control plane.
+
+## Key Offerings & Capabilities
+- Falcon Endpoint Protection (EDR/XDR) — industry-leading detection and prevention
+- Charlotte AI — conversational AI security analyst across the entire Falcon platform
+- Charlotte AI AgentWorks — no-code platform to build, deploy, and orchestrate security AI agents
+- Falcon AI Detection and Response (AIDR) — secures AI agents against prompt injection and jailbreaks
+- Enterprise Graph — unified AI-ready data layer across all telemetry with common query language
+- Falcon Next-Gen SIEM — threat detection, investigation, and response
+- Falcon Identity Protection — ITDR for credential-based attack defense
+- Falcon OverWatch — 24/7 managed threat hunting
+- Falcon OverWatch for Defender — threat hunting layered on Microsoft Defender environments
+
+## Recent Announcements
+- Fall 2025 release rebranded Falcon as the "Agentic Security Platform" with Enterprise Graph and Charlotte AI AgentWorks
+- GA of Falcon AI Detection and Response (AIDR) — blocks prompt injection, jailbreaks, and unsafe AI content in real time (Dec 2025)
+- Spring 2026 release adds Agentic MDR capabilities and Falcon Next-Gen SIEM for third-party EDR
+- Launched Falcon OverWatch for Defender — elite threat hunting for Microsoft Defender environments
+- Fal.Con 2026 announced at Mandalay Bay with new Day Zero Threat Summit
+- Integrating Opus 4.7 AI across Falcon for vulnerability discovery and remediation
+
+## Pricing Model
+Per-endpoint per-year subscription. Modular — base Falcon Go/Pro/Enterprise tiers plus add-ons for Identity, Cloud, SIEM, OverWatch. Enterprise contracts typically six figures annually. MSP/MSSP pricing available through partner program with consumption-based options.
+
+## Strengths
+- Best-in-class threat detection — consistently top-rated in MITRE ATT&CK evaluations
+- Single lightweight agent covering endpoint, identity, and cloud
+- Charlotte AI is among the most capable security AI assistants in the market
+- AgentWorks gives security teams codeless AI agent building — a genuine no-code control plane
+- Massive threat intelligence dataset (trillions of events per week)
+- Strong enterprise brand — easier for MSPs to sell upmarket clients
+
+## Weaknesses / Gaps
+- Expensive — out of reach for many SMB MSP clients without careful packaging
+- July 2024 Falcon sensor update caused global BSOD outage — trust damage lingers
+- Complexity requires dedicated security staff, limiting self-service for smaller MSPs
+- OverWatch managed service is premium-priced
+
+## Competitive Threat to NZO
+Level: Medium
+Reason: CrowdStrike competes in security, not core MSP automation. However, Charlotte AI AgentWorks is a genuine no-code AI agent control plane for security workflows, and AIDR (securing AI agents from attacks) is white space NZO will need to address as AI agents proliferate in MSP stacks.
+
+## Notes
+- Fal.Con 2026 at Mandalay Bay — Day Zero Threat Summit is new, watch for agentic AI announcements
+- AgentWorks conceptually mirrors NZO's agent workflow model — worth tracking feature-by-feature
+- Opus 4.7 integration signals Anthropic partnership in enterprise security

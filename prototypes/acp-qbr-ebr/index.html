@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACP — QBR/EBR Prep (Tier 1 Concept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-app: #0b1220; --bg-surface: #121b2e; --bg-elevated: #182238; --bg-deep: #070d18;
+    --border: #1f2c47; --border-strong: #2a3a5c;
+    --text-primary: #e6edf7; --text-secondary: #9aa8c2; --text-tertiary: #6b7a96; --text-muted: #4b5772;
+    /* brand + radius corrected 2026-08-04 to match briefs/context/DESIGN.md — was guessed blue, verified brand is purple */
+    --brand: #c046ff; --brand-strong: #8500cc; --brand-soft: rgba(192,70,255,0.14);
+    --critical: #ef4444; --critical-soft: rgba(239,68,68,0.13);
+    --high: #f97316; --high-soft: rgba(249,115,22,0.13);
+    --medium: #eab308; --medium-soft: rgba(234,179,8,0.12);
+    --low: #058142; --low-soft: rgba(5,129,66,0.12);
+    --alpha-accent: #a78bfa; --alpha-soft: rgba(167,139,250,0.13);
+    --topbar-bg: #0a1730; --topbar-border: var(--brand);
+    --rail-bg: #16112e; --rail-border: var(--alpha-accent);
+    --radius-sm: 2px; --radius-md: 4px; --radius-lg: 16px; --radius-full: 999px;
+    --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  [data-theme="light"] {
+    --bg-app: #f4f6fb; --bg-surface: #ffffff; --bg-elevated: #eef1f8; --bg-deep: #e6eaf3;
+    --border: #d8deeb; --border-strong: #c3ccdd;
+    --text-primary: #0d1424; --text-secondary: #45506b; --text-tertiary: #6b7790; --text-muted: #94a0b8;
+    --topbar-bg: #0a1730; --rail-bg: #f0eafa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-ui); background: var(--bg-app); color: var(--text-primary);
+    font-size: 14px; line-height: 1.5; min-height: 100vh;
+  }
+  .topbar {
+    height: 56px; background: var(--topbar-bg); border-bottom: 2px solid var(--topbar-border);
+    display: flex; align-items: center; padding: 0 20px; gap: 16px; position: sticky; top: 0; z-index: 100;
+  }
+  .brand-mark { font-family: var(--font-mono); font-weight: 700; font-size: 15px; color: #fff; letter-spacing: 0.3px; }
+  .brand-mark span { color: var(--brand); }
+  .topbar-divider { width: 1px; height: 22px; background: var(--border-strong); }
+  .product-name { font-size: 13px; color: var(--text-secondary); }
+  .topbar-spacer { flex: 1; }
+  .pill {
+    font-family: var(--font-mono); font-size: 11px; padding: 3px 9px; border-radius: 20px;
+    background: var(--alpha-soft); color: var(--alpha-accent); border: 1px solid var(--alpha-accent);
+    font-weight: 600; letter-spacing: 0.4px;
+  }
+  .btn {
+    font-family: var(--font-ui); font-size: 12.5px; font-weight: 600; padding: 7px 13px;
+    border-radius: var(--radius-md); border: 1px solid var(--border-strong); background: var(--bg-elevated);
+    color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--brand); }
+  .btn-council { border-color: var(--alpha-accent); color: var(--alpha-accent); }
+  .btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn-primary:disabled { background: var(--bg-elevated); border-color: var(--border-strong); color: var(--text-muted); cursor: not-allowed; }
+  .mode-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius-md); overflow: hidden; }
+  .mode-toggle button {
+    font-family: var(--font-mono); font-size: 11px; padding: 6px 10px; background: var(--bg-elevated);
+    color: var(--text-tertiary); border: none; cursor: pointer; border-right: 1px solid var(--border-strong);
+  }
+  .mode-toggle button:last-child { border-right: none; }
+  .mode-toggle button.active { background: var(--brand); color: #fff; }
+
+  .shell { display: flex; align-items: flex-start; }
+  .main { flex: 1; padding: 24px 28px; max-width: calc(100% - 420px); }
+  .rail { width: 420px; background: var(--rail-bg); border-left: 4px solid var(--rail-border);
+    box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5); min-height: calc(100vh - 56px);
+    padding: 22px; position: sticky; top: 56px;
+    background-image: repeating-linear-gradient(135deg, rgba(167,139,250,0.035) 0px, rgba(167,139,250,0.035) 2px, transparent 2px, transparent 14px);
+  }
+
+  .fidelity-banner {
+    background: var(--bg-surface); border: 1px solid var(--medium); border-left: 4px solid var(--medium);
+    border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .fidelity-flag { font-family: var(--font-mono); font-weight: 700; font-size: 12px; color: var(--medium); }
+  .fidelity-check { font-size: 12px; color: var(--text-secondary); }
+  .fidelity-pip { width: 7px; height: 7px; border-radius: 50%; background: var(--medium); display: inline-block; margin-right: 5px; }
+
+  h1 { font-size: 19px; font-weight: 600; margin-bottom: 3px; }
+  .subhead { font-size: 12.5px; color: var(--text-tertiary); margin-bottom: 20px; }
+  .seed-stamp {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
+    border: 1px dashed var(--border-strong); padding: 1px 6px; border-radius: 3px; margin-left: 6px;
+  }
+
+  .card {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 18px; margin-bottom: 18px;
+  }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .card-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card-title .job-tag {
+    font-family: var(--font-mono); font-size: 9.5px; padding: 2px 6px; border-radius: 3px; font-weight: 600;
+  }
+  .job-hybrid { background: var(--medium-soft); color: var(--medium); }
+  .job-production { background: var(--low-soft); color: var(--low); }
+  .job-brains { background: var(--critical-soft); color: var(--critical); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th { text-align: left; color: var(--text-tertiary); font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.3px; padding: 8px 10px; border-bottom: 1px solid var(--border-strong); }
+  td { padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .tier-badge {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px;
+    white-space: nowrap; display: inline-block;
+  }
+  .tier-measured { background: var(--low-soft); color: var(--low); }
+  .tier-benchmarked { background: var(--brand-soft); color: var(--brand); }
+  .tier-estimated { background: var(--medium-soft); color: var(--medium); }
+  .tier-unverified { background: var(--critical-soft); color: var(--critical); border: 1px solid var(--critical); }
+
+  .unverified-row { position: relative; }
+  .unverified-row td { opacity: 0.55; filter: grayscale(0.3); }
+  .lock-icon { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--critical); font-weight: 600; }
+
+  .narrative-box {
+    background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 14px 16px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 10px;
+  }
+  .narrative-box strong { color: var(--text-primary); }
+
+  .surface-toggle { display: flex; gap: 0; margin-bottom: 14px; border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md); overflow: hidden; width: fit-content; }
+  .surface-toggle button { font-family: var(--font-ui); font-size: 12px; font-weight: 600; padding: 7px 14px;
+    background: var(--bg-elevated); color: var(--text-tertiary); border: none; cursor: pointer; }
+  .surface-toggle button.active { background: var(--brand-soft); color: var(--brand); }
+  .internal-only { background: var(--high-soft); border: 1px dashed var(--high); border-radius: 3px;
+    padding: 6px 9px; font-size: 11.5px; color: var(--high); margin-top: 8px; }
+
+  /* modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(4,7,16,0.72); z-index: 1000;
+    align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg-surface); border: 1px solid var(--critical); border-radius: var(--radius-lg);
+    width: 520px; max-width: 92vw; padding: 24px; box-shadow: 0 0 0 1px var(--critical), 0 20px 60px rgba(0,0,0,0.5); }
+  .modal-council { background: var(--bg-surface); border: 1px solid var(--alpha-accent); border-radius: var(--radius-lg);
+    width: 640px; max-width: 92vw; max-height: 80vh; overflow-y: auto; padding: 24px;
+    box-shadow: 0 0 0 1px var(--alpha-accent), 0 20px 60px rgba(0,0,0,0.5); }
+  .modal-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .modal-body { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 18px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary); }
+
+  /* rail contents */
+  .readiness-badge { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .readiness-badge .tier-pill { font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+    background: var(--alpha-soft); color: var(--alpha-accent); padding: 5px 11px; border-radius: 20px;
+    border: 1px solid var(--alpha-accent); }
+  .rail-section { margin-bottom: 20px; }
+  .rail-section-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--alpha-accent); margin-bottom: 10px; }
+  .rail-blurb { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .math-block { display: flex; gap: 8px; margin-bottom: 4px; }
+  .math-stat { flex: 1; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 8px 6px; text-align: center; }
+  .math-stat .num { font-family: var(--font-mono); font-weight: 700; font-size: 17px; }
+  .math-stat .lbl { font-size: 9.5px; color: var(--text-tertiary); margin-top: 2px; }
+  .math-lead .num { color: var(--critical); }
+  .math-note { font-size: 10.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+
+  details.rail-collapse { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px;
+    background: var(--bg-deep); }
+  details.rail-collapse summary { padding: 10px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  details.rail-collapse summary::-webkit-details-marker { display: none; }
+  details.rail-collapse .rail-collapse-body { padding: 0 12px 12px; font-size: 12px; color: var(--text-secondary); }
+  details.rail-collapse .rail-collapse-body ul { padding-left: 16px; margin-top: 6px; }
+  details.rail-collapse .rail-collapse-body li { margin-bottom: 6px; line-height: 1.5; }
+
+  .routed-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 13px; margin-bottom: 10px;
+    background: var(--bg-deep); }
+  .routed-card .team { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--brand);
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+  .routed-card .action { font-size: 12.5px; margin-bottom: 6px; line-height: 1.45; }
+  .routed-card .why { font-size: 11.5px; color: var(--text-tertiary); margin-bottom: 6px; }
+  .routed-card .roi { font-size: 11px; border-top: 1px solid var(--border); padding-top: 7px; margin-top: 7px; }
+  .routed-card .roi-line { display: flex; gap: 6px; margin-bottom: 3px; }
+  .roi-tag { font-family: var(--font-mono); font-weight: 700; font-size: 9.5px; min-width: 58px; color: var(--text-tertiary); }
+
+  .tension-card { border: 1px solid var(--alpha-accent); border-radius: var(--radius-md); padding: 11px 13px;
+    margin-bottom: 9px; background: var(--alpha-soft); }
+  .tension-voices { font-family: var(--font-mono); font-size: 10px; color: var(--alpha-accent); font-weight: 700;
+    margin-bottom: 5px; }
+  .tension-text { font-size: 12px; line-height: 1.5; }
+  .synth-slot { border: 1px dashed var(--text-muted); border-radius: var(--radius-md); padding: 10px 12px;
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); text-align: center; margin-top: 10px; }
+
+  .assumption-line { font-size: 11.5px; color: var(--text-tertiary); border-left: 2px solid var(--brand);
+    padding-left: 9px; margin-bottom: 8px; line-height: 1.5; }
+  .assumption-line b { color: var(--text-secondary); }
+
+  @media (max-width: 1100px) {
+    .shell { flex-direction: column; }
+    .main { max-width: 100%; }
+    .rail { width: 100%; position: static; }
+  }
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="brand-mark">ACP <span>·</span> AGENT CONTROL PLANE</div>
+  <div class="topbar-divider"></div>
+  <div class="product-name">QBR/EBR Prep — Risk &amp; Security Review</div>
+  <div class="topbar-spacer"></div>
+  <span class="pill">TIER 1 · CONCEPT</span>
+  <div class="mode-toggle">
+    <button id="modeLight" onclick="setMode('light')">Light</button>
+    <button id="modeDark" class="active" onclick="setMode('dark')">Dark</button>
+    <button id="modeSystem" onclick="setMode('system')">System</button>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="main">
+
+    <div class="fidelity-banner">
+      <span class="fidelity-flag"><span class="fidelity-pip"></span>TIER 1 · CONCEPT</span>
+      <span class="fidelity-check">Testing: one hybrid template section (Risk &amp; Security Review) + the confirm-gate on Unverified content</span>
+      <span class="fidelity-check">·</span>
+      <span class="fidelity-check">World-claims: <strong>43% [A]/[?]</strong> — over the 30% threshold, named not buried</span>
+      <span class="fidelity-check">·</span>
+      <span class="fidelity-check">Static screen — no live PSA/RMM connection</span>
+    </div>
+
+    <h1>Executive Business Review — Prep: Anders Manufacturing Co.<span class="seed-stamp">seed data — fictional client</span></h1>
+    <div class="subhead">Prepared by Dana Ferris, Client Delivery Lead <span class="seed-stamp">seed data — fictional persona, modeled on a verified non-technical delivery-lead archetype</span> · Next EBR: 2026-08-14 · Cadence: client-tuned (last: 2026-05-09, ~13 weeks)</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Risk &amp; Security Review <span class="job-tag job-hybrid">HYBRID — register pullable, narrative is judgment</span></div>
+      </div>
+
+      <div class="surface-toggle">
+        <button class="active" id="btnInternal" onclick="showSurface('internal')">Internal draft</button>
+        <button id="btnClient" onclick="showSurface('client')">Client-facing export</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Threat / Risk</th><th>Risk Level</th><th>Existing Controls</th><th>Treatment Plan</th><th>Owner</th><th>Confidence</th></tr>
+        </thead>
+        <tbody id="riskTableBody">
+          <tr>
+            <td>Endpoint coverage gap — 3 workstations unmanaged</td>
+            <td><span class="tier-badge tier-measured">MEASURED</span></td>
+            <td>UEM deployed org-wide except flagged devices</td>
+            <td>Enroll remaining 3 devices — scheduled next maintenance window</td>
+            <td>MSP — technical</td>
+            <td><span class="tier-badge tier-measured">MEASURED</span></td>
+          </tr>
+          <tr>
+            <td>Backup verification — last successful restore test</td>
+            <td><span class="tier-badge tier-benchmarked">BENCHMARKED</span></td>
+            <td>Nightly backup running; restore test overdue vs. quarterly standard</td>
+            <td>Schedule restore test this cycle</td>
+            <td>MSP — technical</td>
+            <td><span class="tier-badge tier-benchmarked">BENCHMARKED</span></td>
+          </tr>
+          <tr class="internal-only-row">
+            <td>Staff phishing susceptibility <span class="seed-stamp">internal note</span></td>
+            <td><span class="tier-badge tier-estimated">ESTIMATED</span></td>
+            <td>Quarterly awareness training in place</td>
+            <td>Increase simulated-phishing cadence</td>
+            <td>MSP — technical</td>
+            <td><span class="tier-badge tier-estimated">ESTIMATED</span></td>
+          </tr>
+          <tr class="unverified-row" id="gatedRow">
+            <td>Cyber-insurance premium reduction from documented risk posture</td>
+            <td><span class="tier-badge tier-unverified">UNVERIFIED</span></td>
+            <td>—</td>
+            <td>AI-drafted claim, not yet reviewed</td>
+            <td>—</td>
+            <td><span class="lock-icon">🔒 Locked — confirm required</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="narrative-box" id="narrativeInternal">
+        <strong>Overall posture:</strong> Anders Manufacturing is in solid shape heading into this
+        review — the two open items (endpoint enrollment, backup restore test) are both scheduled,
+        not open-ended risks. <span style="color:var(--critical); font-weight:600;">One drafted line
+        item overclaims legal/insurance protection and is locked pending your review</span> — the
+        record doesn't support quoting a premium benefit from documentation alone (see rail, Must 8).
+        Framing kept in business terms deliberately: this is about protecting the operations Anders
+        depends on, not a list of patched CVEs.
+      </div>
+      <div class="narrative-box" id="narrativeClient" style="display:none;">
+        <strong>Overall posture:</strong> Your environment is in solid shape heading into this
+        quarter. Two minor items are already scheduled for resolution before your next review.
+        No unresolved risks are outstanding.
+      </div>
+      <div class="internal-only" id="internalFlag">Internal-only content is visible in this view — will not appear in the client-facing export.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Export</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+        One line item is Unverified-tier and is hard-blocking export — not a dismissible warning.
+        Clear it below to unlock.
+      </p>
+      <button class="btn btn-primary" id="exportBtn" disabled onclick="showToast()">Export client-facing EBR</button>
+      <button class="btn" style="margin-left:8px;" onclick="document.getElementById('gateModal').classList.add('open')">Review locked item →</button>
+      <div id="exportToast" style="display:none; margin-top:12px; font-size:12px; color:var(--text-tertiary); background:var(--bg-deep); border:1px solid var(--border); border-radius:var(--radius-md); padding:10px 12px;">
+        Seed-data prototype — export is not wired to a real document pipeline.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BRADLEY RAIL -->
+  <div class="rail">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+      <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Internal review tooling — not part of the ACP product</span>
+      <button class="btn btn-council" onclick="document.getElementById('councilModal').classList.add('open')">◆ Council</button>
+    </div>
+    <div class="readiness-badge">
+      <span class="tier-pill">TIER 1 · CONCEPT</span>
+      <span style="font-size:11.5px; color:var(--text-tertiary);">Not ready per the 30% rule — named, not buried</span>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">What this is testing</div>
+      <div class="rail-blurb">
+        One hybrid section of Stefanie Hammond's real 15-tab EBR template (Risk &amp; Security
+        Review) plus the confirm-gate mechanism that already exists in code over the Value Ledger's
+        Defensibility tier. Grounded in Candidate 2 (tactical QBR-only) of the three ACP
+        problem-statement altitudes — <b>that altitude choice is not resolved</b>, this is a scoped
+        test of one slice, not a commitment to the whole shape.
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">The math (grep-verified, not self-reported)</div>
+      <div class="math-block">
+        <div class="math-stat math-lead"><div class="num">43%</div><div class="lbl">WORLD-CLAIMS<br>[A]/[?]</div></div>
+        <div class="math-stat"><div class="num">25%</div><div class="lbl">TEST-PLAN<br>READY</div></div>
+        <div class="math-stat"><div class="num">~63%</div><div class="lbl">INFLATED —<br>DO NOT QUOTE</div></div>
+      </div>
+      <div class="math-note">
+        43% is the lead number to quote. The original pass miscounted this as 56% — Bradley (the
+        pipeline's verification gate) caught it on re-derivation; corrected 2026-07-28. See
+        <code>briefs/qbr-ebr-prototype.math-recount.md</code>.
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">What you nailed</div>
+      <details class="rail-collapse" open>
+        <summary>5 points ▾</summary>
+        <div class="rail-collapse-body">
+          <ul>
+            <li>Scoped to one hybrid section + confirm-gate — not all 15 tabs.</li>
+            <li>Confirm-gate reuses an existing mechanism (Defensibility tier), not new design.</li>
+            <li>Must 8 (no overclaiming legal/liability protection) is explicit and enforced in this
+              screen, not just described.</li>
+            <li>Four failure modes named with teeth, including the uncomfortable one (Q2).</li>
+            <li>Math self-corrected through the pipeline's own verification gate — the 47% rule
+              caught a real miscount before it shipped.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">What will hurt you</div>
+      <details class="rail-collapse">
+        <summary>7 risks ▾</summary>
+        <div class="rail-collapse-body">
+          <ul>
+            <li>No OKR/KR/counter-metric exists anywhere in source — this offering has nothing to
+              be scored against post-build except "did it look good."</li>
+            <li>Only 2 of 8 Musts have a Built-in Test runnable at this fidelity — 75% of "what
+              counts as good" is invisible in this demo.</li>
+            <li>Q2 unanswered: does the operator want this mechanism (AI drafts, human edits) or
+              just the finished destination? Every signal in hand is buyer purchase-intent.</li>
+            <li>A polished static demo can visually imply "blocking" without the gate being modal —
+              watch for reviewers reading "looks done" as "is done."</li>
+            <li>If demo copy drifts into technical/metric language, the prototype demonstrates the
+              exact failure mode (Must 1) it argues against.</li>
+            <li>Candidate 2 is named in its own source as "the shape a competitor can commoditize
+              fastest" — a compelling demo can build urgency for a fast competitor response as
+              easily as internal conviction.</li>
+            <li>Positioning fork (delivery-lead vs. owner) is still open — this build assumed the
+              delivery-lead lens (see Assumptions below); a different lens is still on the table.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">Assumptions made in this build</div>
+      <div class="assumption-line"><b>Persona lens:</b> delivery-lead operator (Dana Ferris,
+        fictional stand-in for the verified Vanessa Chart archetype) — not the unverified
+        owner/buyer persona. Positioning fork stays open; this is one lens, not a resolution.</div>
+      <div class="assumption-line"><b>Confirm-gate rendering:</b> hard block — greyed row, disabled
+        export button, no dismiss action — chosen because a passive warning was named directly as
+        a failure mode to avoid (warning-fatigue).</div>
+      <div class="assumption-line"><b>"Done" criteria:</b> adopted as proposed in the brief (draft
+        surfaces business-value framing + a real blocking gate + a real dual-surface split) — not
+        yet confirmed by Beth/Meaghan/Nicole.</div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">Routed cards</div>
+
+      <div class="routed-card">
+        <div class="team">Product</div>
+        <div class="action">Confirm which ACP altitude (Candidate 1/2/3) this offering builds
+          toward before scoping past Tier 1.</div>
+        <div class="why">Why now: every downstream design/eng decision inherits this call — building
+          further without it risks re-work.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> Avoids sunk design/eng cost
+            on the wrong altitude.</div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> N/A — organizational decision.</div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> No target date named for this
+            decision anywhere in source.</div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="team">Design</div>
+        <div class="action">Design the confirm-gate as an actual modal interaction (not a static
+          mockup) and usability-test whether it reads as blocking vs. dismissible.</div>
+        <div class="why">Why now: this is the exact mechanism named as the highest-risk failure
+          mode in the brief (warning-fatigue-in-disguise).</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> Protects against the
+            documentation-as-shield overclaim risk (Must 8) reaching a real client.</div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> Operator trusts what ships to
+            their client without re-checking it line by line.</div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> No usability-test plan exists
+            yet — this card is the ask to build one.</div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="team">Research</div>
+        <div class="action">Answer Q2 — has the operator (not the buyer) ever been asked whether
+          they want the AI-drafts/human-edits mechanism, or just the finished output?</div>
+        <div class="why">Why now: every demand signal in the corpus so far is buyer purchase-intent;
+          this prototype's core interaction is untested against operator preference.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> Could redirect the whole
+            interaction model before eng builds against the wrong one.</div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> Operator gets a tool that matches
+            how they actually want to work, not an assumed preference.</div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> No study designed yet — sample
+            size, recruitment, and protocol are all open.</div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="team">Eng</div>
+        <div class="action">Wire the confirm-gate to the existing Defensibility-tier field
+          (`baseline_source` in the Value Ledger) rather than building a parallel gate mechanism.</div>
+        <div class="why">Why now: the Runbook Engine (49/49) and Value Ledger producer (52/52) are
+          already built — this is a wiring job on existing plumbing, not new infrastructure.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> Faster ship — reuses built
+            infrastructure instead of duplicating it.</div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> Consistent gating behavior across
+            every surface that touches Unverified-tier claims, not just this screen.</div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> Whether the existing gate
+            implementation already supports a hard-block UX, or only a flag — unverified against
+            actual code in this pass.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONFIRM-GATE MODAL (hard block, no dismiss) -->
+<div class="modal-overlay" id="gateModal">
+  <div class="modal">
+    <div class="modal-title">🔒 Unverified claim — review required</div>
+    <div class="modal-body">
+      <strong>Drafted line:</strong> "Cyber-insurance premium reduction from documented risk
+      posture."<br><br>
+      This claim is tagged <span class="tier-badge tier-unverified">UNVERIFIED</span> — no case
+      law or carrier practice in the research record supports documentation-as-shield as a premium
+      or claims factor. This is not a passive warning: the export stays locked until you actively
+      resolve it below. There is no "dismiss and continue."
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="resolveGate('remove')">Remove this claim from the draft</button>
+      <button class="btn btn-primary" onclick="resolveGate('rewrite')">Rewrite as Estimated, with caveat</button>
+    </div>
+  </div>
+</div>
+
+<!-- COUNCIL MODAL (Fast Mode — full 44-voice pass is Step 6 of this pipeline, not yet run) -->
+<div class="modal-overlay" id="councilModal">
+  <div class="modal-council">
+    <div class="modal-title">◆ Council — Fast Mode <span class="seed-stamp">7 tensions</span></div>
+    <div class="modal-body">
+      <strong>Executive summary:</strong> five voices already reviewed the underlying context.md
+      (2026-07-28, full pass in <code>prototypes/acp-qbr-ebr/council-testimony.md</code>). This
+      modal surfaces the tensions most relevant to what's on screen. <b>The full 44-voice Hard Mode
+      pass (this pipeline's Step 6) has not run yet</b> — do not read this as that step.
+    </div>
+
+    <div class="tension-card">
+      <div class="tension-voices">JTBD ↔ SDT</div>
+      <div class="tension-text">JTBD reads automation as reducing unwanted effort; SDT flags that
+        automating register-building could reduce the delivery lead's <em>felt competence</em>, not
+        just free their time. Untested — Q2 again, from a different angle.</div>
+    </div>
+    <div class="tension-card">
+      <div class="tension-voices">Service Blueprint</div>
+      <div class="tension-text">Gate 3 acceptance criteria are being handed to eng on top of an
+        admittedly-unreconciled backstage process map. The confirm-gate is frontstage; the register
+        that feeds it is backstage and still messy.</div>
+    </div>
+    <div class="tension-card">
+      <div class="tension-voices">Value Chain</div>
+      <div class="tension-text">Whoever resolves Q1 (data-egress legality) first controls "the last
+        mile of proof" chokepoint — this screen only shows the N-able-native slice, not the
+        cross-vendor branch that chokepoint actually gates.</div>
+    </div>
+    <div class="tension-card">
+      <div class="tension-voices">Disruptive Innovation ↔ Value Chain</div>
+      <div class="tension-text">Named divergence, unresolved: Disruptive Innovation reads Candidate
+        1's wider scope as the real opportunity; Value Chain reads it as diluting the one chokepoint
+        N-able can actually defend.</div>
+    </div>
+
+    <div class="synth-slot">[0% Claude — fill this in]</div>
+
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn btn-ghost" onclick="document.getElementById('councilModal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setMode(mode) {
+    const body = document.body;
+    document.querySelectorAll('.mode-toggle button').forEach(b => b.classList.remove('active'));
+    if (mode === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      document.getElementById('modeSystem').classList.add('active');
+    } else {
+      body.setAttribute('data-theme', mode);
+      document.getElementById(mode === 'light' ? 'modeLight' : 'modeDark').classList.add('active');
+    }
+    localStorage.setItem('apx-mode-pref', mode);
+  }
+  (function initMode() {
+    const saved = localStorage.getItem('apx-mode-pref') || 'dark';
+    setMode(saved);
+  })();
+
+  function showSurface(which) {
+    document.getElementById('btnInternal').classList.toggle('active', which === 'internal');
+    document.getElementById('btnClient').classList.toggle('active', which === 'client');
+    document.getElementById('narrativeInternal').style.display = which === 'internal' ? 'block' : 'none';
+    document.getElementById('narrativeClient').style.display = which === 'client' ? 'block' : 'none';
+    document.getElementById('internalFlag').style.display = which === 'internal' ? 'block' : 'none';
+    document.querySelectorAll('.internal-only-row').forEach(r => r.style.display = which === 'internal' ? 'table-row' : 'none');
+    document.getElementById('gatedRow').style.display = which === 'internal' ? 'table-row' : 'none';
+  }
+
+  function showToast() {
+    const t = document.getElementById('exportToast');
+    t.style.display = 'block';
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 4000);
+  }
+
+  function resolveGate(action) {
+    const row = document.getElementById('gatedRow');
+    if (action === 'remove') {
+      row.querySelector('td:first-child').textContent = 'Cyber-insurance premium reduction — REMOVED per review';
+      row.querySelector('.lock-icon').outerHTML = '<span class="tier-badge tier-measured">CLEARED — removed</span>';
+    } else {
+      row.querySelector('td:first-child').textContent = 'Documented risk posture may support future insurance discussion (unconfirmed)';
+      row.querySelector('.lock-icon').outerHTML = '<span class="tier-badge tier-estimated">CLEARED — rewritten as Estimated</span>';
+    }
+    row.classList.remove('unverified-row');
+    document.getElementById('exportBtn').disabled = false;
+    document.getElementById('gateModal').classList.remove('open');
+  }
+</script>
+
+</body>
+</html>

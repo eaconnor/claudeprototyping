@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACP · QBR Native · Meridian Logistics Q2 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* ── Apex Bridge token contract ─────────────────────────────── */
+:root {
+  --font-ui:   'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+[data-theme="dark"] {
+  --bg-app:       #0d1117;
+  --bg-surface:   #161b22;
+  --bg-elevated:  #21262d;
+  --bg-deep:      #010409;
+  --text-primary:   #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted:     #484f58;
+  --border:       rgba(240,246,252,.1);
+  --brand:        #58a6ff;
+  --brand-strong: #1f6feb;
+  --brand-soft:   rgba(31,111,235,.15);
+  --critical:     #f85149;
+  --high:         #e3b341;
+  --medium:       #d29922;
+  --low:          #3fb950;
+  --alpha-accent: #a78bfa;
+  --alpha-soft:   rgba(167,139,250,.12);
+  --topbar-bg:    #010409;
+  --topbar-border:rgba(240,246,252,.1);
+  --rail-bg:      #16112e;
+  --rail-border:  #a78bfa;
+  --seed-bg:      rgba(88,166,255,.08);
+  --seed-border:  rgba(88,166,255,.25);
+  --value-bg:     rgba(63,185,80,.08);
+  --value-border: rgba(63,185,80,.25);
+}
+[data-theme="light"] {
+  --bg-app:       #f6f8fa;
+  --bg-surface:   #ffffff;
+  --bg-elevated:  #f0f2f4;
+  --bg-deep:      #eaeef2;
+  --text-primary:   #1f2328;
+  --text-secondary: #656d76;
+  --text-muted:     #9198a1;
+  --border:       rgba(31,35,40,.12);
+  --brand:        #0969da;
+  --brand-strong: #0550ae;
+  --brand-soft:   rgba(9,105,218,.1);
+  --critical:     #cf222e;
+  --high:         #9a6700;
+  --medium:       #7d4e00;
+  --low:          #1a7f37;
+  --alpha-accent: #8250df;
+  --alpha-soft:   rgba(130,80,223,.1);
+  --topbar-bg:    #010409;
+  --topbar-border:rgba(240,246,252,.1);
+  --rail-bg:      #f0eafa;
+  --rail-border:  #8250df;
+  --seed-bg:      rgba(9,105,218,.06);
+  --seed-border:  rgba(9,105,218,.2);
+  --value-bg:     rgba(26,127,55,.06);
+  --value-border: rgba(26,127,55,.2);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:var(--font-ui);background:var(--bg-app);color:var(--text-primary);font-size:14px;line-height:1.5;}
+
+/* ── Fidelity banner ──────────────────────────── */
+.fidelity-banner{
+  background:var(--bg-deep);border-bottom:1px solid var(--border);
+  padding:4px 16px;display:flex;align-items:center;gap:10px;
+  font-size:10px;font-family:var(--font-mono);color:var(--text-muted);
+}
+.fidelity-tier{background:var(--alpha-soft);color:var(--alpha-accent);padding:2px 6px;border-radius:var(--radius-sm);font-weight:500;}
+
+/* ── Topbar ───────────────────────────────────── */
+.topbar{
+  height:52px;background:var(--topbar-bg);border-bottom:2px solid var(--brand-strong);
+  display:flex;align-items:center;padding:0 16px;gap:10px;
+  position:sticky;top:0;z-index:200;
+}
+.topbar-brand{font-size:15px;font-weight:700;color:var(--brand);letter-spacing:-.02em;white-space:nowrap;}
+.topbar-brand small{color:var(--text-muted);font-weight:400;font-size:11px;margin-left:4px;}
+.tb-div{width:1px;height:20px;background:var(--border);}
+.tenant-chip{
+  display:flex;align-items:center;gap:6px;background:var(--bg-elevated);
+  border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:4px 10px;font-size:12px;font-weight:500;color:var(--text-primary);cursor:pointer;
+}
+.customer-chip{
+  display:flex;align-items:center;gap:6px;background:var(--brand-soft);
+  border:1px solid var(--brand-strong);border-radius:var(--radius-md);
+  padding:4px 10px;font-size:12px;font-weight:600;color:var(--brand);
+}
+.tb-spacer{flex:1;}
+.verified-pill{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--low);font-family:var(--font-mono);}
+.vdot{width:6px;height:6px;border-radius:50%;background:var(--low);}
+.mode-toggle{display:flex;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.mode-btn{padding:4px 8px;font-size:10px;font-family:var(--font-mono);background:none;border:none;color:var(--text-muted);cursor:pointer;transition:all .15s;}
+.mode-btn.active{background:var(--brand-strong);color:#fff;}
+.user-chip{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-md);font-size:11px;color:var(--text-secondary);}
+.avatar{width:22px;height:22px;border-radius:50%;background:var(--brand-strong);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;}
+
+/* ── Layout ───────────────────────────────────── */
+.layout{display:flex;height:calc(100vh - 80px);overflow:hidden;}
+
+/* ── Sidebar ──────────────────────────────────── */
+.sidebar{
+  width:196px;min-width:196px;background:var(--bg-surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  padding:10px 8px;gap:2px;overflow-y:auto;
+}
+.nav-lbl{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.08em;padding:8px 8px 3px;}
+.nav-item{
+  display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--radius-md);
+  font-size:12px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.nav-item:hover{background:var(--bg-elevated);color:var(--text-primary);}
+.nav-item.active{background:var(--brand-soft);color:var(--brand);}
+.nav-ic{font-size:13px;width:16px;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--critical);color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;font-weight:600;}
+.sidebar-foot{margin-top:auto;padding:8px;font-size:9px;font-family:var(--font-mono);color:var(--text-muted);border-top:1px solid var(--border);}
+
+/* ── Main ─────────────────────────────────────── */
+.main{flex:1;overflow-y:auto;padding:22px 26px;}
+
+/* ── Bradley Rail ─────────────────────────────── */
+.bradley-rail{
+  width:340px;min-width:340px;background:var(--rail-bg);
+  border-left:4px solid var(--rail-border);
+  box-shadow:inset 6px 0 14px -10px rgba(167,139,250,.5);
+  overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:12px;
+  background-image:repeating-linear-gradient(
+    135deg,transparent,transparent 18px,rgba(167,139,250,.025) 18px,rgba(167,139,250,.025) 19px);
+}
+@media(max-width:1100px){.bradley-rail{display:none;}}
+.rail-header{font-size:9px;font-family:var(--font-mono);color:var(--alpha-accent);letter-spacing:.1em;
+  padding-bottom:8px;border-bottom:1px solid rgba(167,139,250,.2);display:flex;align-items:center;gap:6px;}
+.rail-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(167,139,250,.12);
+  border:1px solid rgba(167,139,250,.3);border-radius:3px;padding:4px 8px;font-size:9px;
+  font-family:var(--font-mono);color:var(--alpha-accent);font-weight:600;}
+.rail-score{font-size:22px;font-weight:700;color:var(--alpha-accent);font-family:var(--font-mono);line-height:1;}
+.rail-score-lbl{font-size:9px;color:rgba(167,139,250,.6);font-family:var(--font-mono);}
+.rail-stat-row{display:flex;gap:16px;align-items:flex-end;}
+.rail-section{margin-top:2px;}
+.rail-section-head{font-size:9px;font-family:var(--font-mono);color:rgba(167,139,250,.7);letter-spacing:.08em;
+  margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.rail-section-head::after{content:'';flex:1;height:1px;background:rgba(167,139,250,.15);}
+.rail-item{font-size:10px;color:rgba(230,237,243,.75);line-height:1.6;margin-bottom:5px;
+  display:flex;gap:6px;align-items:flex-start;}
+.rail-dot{flex-shrink:0;width:4px;height:4px;border-radius:50%;margin-top:6px;}
+.rail-dot-g{background:var(--low);}
+.rail-dot-r{background:var(--critical);}
+.rail-dot-a{background:var(--high);}
+.rail-gap-row{font-size:10px;display:grid;grid-template-columns:1fr auto;gap:6px;
+  padding:5px 7px;background:rgba(0,0,0,.25);border-radius:3px;margin-bottom:4px;border-left:2px solid rgba(167,139,250,.3);}
+.rail-gap-tag{font-size:9px;font-family:var(--font-mono);color:var(--high);white-space:nowrap;}
+.rail-route-card{background:rgba(0,0,0,.3);border-radius:4px;padding:9px 10px;border-left:2px solid var(--alpha-accent);margin-bottom:6px;}
+.rail-route-head{font-size:9px;font-family:var(--font-mono);color:var(--alpha-accent);font-weight:600;margin-bottom:5px;}
+.rail-route-body{font-size:10px;color:rgba(230,237,243,.7);line-height:1.55;}
+.rail-route-roi{margin-top:5px;font-size:9px;color:rgba(167,139,250,.6);font-family:var(--font-mono);}
+.rail-warning{background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.2);border-radius:3px;
+  padding:7px 9px;font-size:10px;color:var(--critical);margin-bottom:4px;line-height:1.5;}
+
+/* ── Shared utilities ─────────────────────────── */
+.seed{display:inline-block;font-size:8px;font-family:var(--font-mono);background:var(--seed-bg);border:1px solid var(--seed-border);color:var(--brand);padding:1px 4px;border-radius:2px;vertical-align:middle;margin-left:3px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--radius-md);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s;font-family:var(--font-ui);}
+.btn-primary{background:var(--brand-strong);color:#fff;}
+.btn-primary:hover{opacity:.85;}
+.btn-secondary{background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border);}
+.btn-secondary:hover{border-color:var(--brand);color:var(--brand);}
+.btn-ghost{background:none;color:var(--text-secondary);border:1px solid var(--border);}
+.btn-ghost:hover{color:var(--text-primary);}
+
+/* ── QBR page header ──────────────────────────── */
+.qbr-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;}
+.qbr-title h1{font-size:21px;font-weight:700;color:var(--text-primary);line-height:1.2;}
+.qbr-meta{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:12px;color:var(--text-secondary);flex-wrap:wrap;}
+.qbr-sep{color:var(--text-muted);}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:var(--radius-sm);font-size:10px;font-weight:600;font-family:var(--font-mono);}
+.status-review{background:rgba(227,179,65,.12);border:1px solid rgba(227,179,65,.3);color:var(--high);}
+.status-ready{background:rgba(63,185,80,.12);border:1px solid rgba(63,185,80,.3);color:var(--low);}
+.qbr-actions{display:flex;gap:7px;align-items:center;flex-shrink:0;}
+
+/* ── Expert strip ─────────────────────────────── */
+.expert-strip{
+  background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:9px 14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;
+}
+.strip-lbl{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.08em;white-space:nowrap;}
+.expert-chip{
+  display:inline-flex;align-items:center;gap:4px;background:var(--alpha-soft);
+  border:1px solid rgba(167,139,250,.2);border-radius:var(--radius-sm);
+  padding:3px 8px;font-size:10px;color:var(--alpha-accent);font-family:var(--font-mono);white-space:nowrap;
+}
+.strip-sep{color:var(--text-muted);font-size:11px;}
+.strip-tail{margin-left:auto;font-size:10px;color:var(--text-muted);font-family:var(--font-mono);}
+
+/* ── Value Ledger banner ──────────────────────── */
+.vl-banner{
+  background:var(--value-bg);border:1px solid var(--value-border);border-left:4px solid var(--low);
+  border-radius:var(--radius-md);padding:13px 16px;margin-bottom:18px;
+  display:flex;align-items:flex-start;gap:13px;
+}
+.vl-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.vl-lbl{font-size:9px;font-family:var(--font-mono);color:var(--low);letter-spacing:.08em;margin-bottom:3px;}
+.vl-headline{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px;}
+.vl-body{font-size:11px;color:var(--text-secondary);}
+.vl-score{flex-shrink:0;text-align:right;}
+.vl-score-val{font-size:30px;font-weight:700;color:var(--low);line-height:1;}
+.vl-score-lbl{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);margin-top:2px;}
+
+/* ── Metric tiles ─────────────────────────────── */
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.metric-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:15px;display:flex;gap:13px;align-items:center;}
+.metric-info{flex:1;min-width:0;}
+.metric-lbl{font-size:9px;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:.06em;margin-bottom:3px;}
+.metric-val{font-size:22px;font-weight:700;line-height:1;margin-bottom:4px;}
+.metric-delta{font-size:10px;font-family:var(--font-mono);}
+.metric-src{font-size:9px;color:var(--text-muted);margin-top:4px;}
+
+/* ── Section grid ─────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:15px;}
+.card.span2{grid-column:1/-1;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.card-title{font-size:12px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;gap:6px;}
+.card-ic{font-size:13px;}
+.card-tag{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);background:var(--bg-elevated);padding:2px 6px;border-radius:var(--radius-sm);}
+.card-tag.ai{color:var(--alpha-accent);background:var(--alpha-soft);}
+
+/* ── Executive summary ────────────────────────── */
+.exec-text{font-size:12px;color:var(--text-secondary);line-height:1.7;border-left:2px solid var(--brand-strong);padding-left:12px;}
+
+/* ── Stats ────────────────────────────────────── */
+.stat-row{display:flex;gap:18px;margin-bottom:12px;flex-wrap:wrap;}
+.stat-val{font-size:22px;font-weight:700;color:var(--text-primary);line-height:1;}
+.stat-val.g{color:var(--low);}
+.stat-val.w{color:var(--high);}
+.stat-lbl{font-size:9px;color:var(--text-muted);font-family:var(--font-mono);margin-top:2px;}
+
+/* ── Incident rows ────────────────────────────── */
+.inc-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.inc-row:last-child{border-bottom:none;}
+.sev{font-size:9px;font-family:var(--font-mono);font-weight:600;padding:2px 6px;border-radius:var(--radius-sm);white-space:nowrap;}
+.sev-ok{background:rgba(63,185,80,.12);color:var(--low);}
+.inc-name{flex:1;color:var(--text-primary);}
+.inc-meta{color:var(--text-muted);font-size:10px;font-family:var(--font-mono);}
+.more-link{font-size:10px;color:var(--text-muted);margin-top:4px;}
+.more-link a{color:var(--brand);cursor:pointer;text-decoration:none;}
+
+/* ── Bar chart ────────────────────────────────── */
+.bar-row{display:flex;align-items:center;gap:8px;font-size:10px;margin-bottom:6px;}
+.bar-lbl{width:120px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:6px;background:var(--bg-elevated);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;}
+.bar-pct{width:30px;text-align:right;font-family:var(--font-mono);color:var(--text-muted);}
+
+/* ── Backup rows ──────────────────────────────── */
+.backup-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.backup-row:last-child{border-bottom:none;}
+.backup-status{display:flex;align-items:center;gap:5px;font-size:10px;}
+.sdot{width:6px;height:6px;border-radius:50%;}
+
+/* ── Rec cards ────────────────────────────────── */
+.rec{display:flex;gap:10px;padding:11px;background:var(--bg-elevated);border-radius:var(--radius-sm);margin-bottom:8px;border-left:3px solid transparent;align-items:flex-start;}
+.rec:last-child{margin-bottom:0;}
+.rec.secure{border-color:var(--critical);}
+.rec.automate{border-color:var(--brand);}
+.rec.expand{border-color:var(--low);}
+.rec-type{font-size:8px;font-family:var(--font-mono);font-weight:700;letter-spacing:.08em;white-space:nowrap;padding-top:2px;min-width:58px;}
+.rec-type.secure{color:var(--critical);}
+.rec-type.automate{color:var(--brand);}
+.rec-type.expand{color:var(--low);}
+.rec-body{flex:1;}
+.rec-title{font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px;}
+.rec-desc{font-size:10px;color:var(--text-secondary);line-height:1.55;}
+.rec-cta{flex-shrink:0;align-self:center;}
+
+/* ── Section headings ─────────────────────────── */
+.section-heading{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.1em;margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── KPI Scorecard ────────────────────────────── */
+.kpi-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:4px;}
+.kpi-table thead th{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.06em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border);}
+.kpi-table thead th:not(:first-child){text-align:center;}
+.kpi-table tbody td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.kpi-table tbody tr:last-child td{border-bottom:none;}
+.kpi-name{font-weight:500;color:var(--text-primary);}
+.kpi-src{font-size:9px;color:var(--text-muted);margin-top:1px;}
+.kpi-num{text-align:center;font-weight:700;font-family:var(--font-mono);}
+.kpi-rag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:10px;font-weight:700;margin:0 auto;}
+.rag-g{background:rgba(63,185,80,.18);color:var(--low);}
+.rag-a{background:rgba(227,179,65,.18);color:var(--high);}
+.rag-r{background:rgba(248,81,73,.18);color:var(--critical);}
+.kpi-delta{font-size:10px;font-family:var(--font-mono);text-align:center;}
+
+/* ── Wins & Challenges ────────────────────────── */
+.wc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
+.wc-col{}
+.wc-col-head{font-size:9px;font-family:var(--font-mono);letter-spacing:.08em;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.wc-win-head{color:var(--low);}
+.wc-chal-head{color:var(--high);}
+.wc-item{display:flex;gap:7px;font-size:11px;color:var(--text-secondary);line-height:1.55;margin-bottom:6px;align-items:flex-start;}
+.wc-item:last-child{margin-bottom:0;}
+.wc-dot{flex-shrink:0;width:5px;height:5px;border-radius:50%;margin-top:5px;}
+.wc-dot-g{background:var(--low);}
+.wc-dot-a{background:var(--high);}
+
+/* ── Financial / Value table ──────────────────── */
+.fin-table{width:100%;border-collapse:collapse;font-size:11px;}
+.fin-table thead th{font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:.06em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border);}
+.fin-table thead th:not(:first-child){text-align:right;}
+.fin-table tbody td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+.fin-table tbody tr:last-child td{border-bottom:none;}
+.fin-table tfoot td{padding:9px 10px;font-weight:600;border-top:2px solid var(--border);font-size:12px;}
+.fin-num{text-align:right;font-family:var(--font-mono);}
+.fin-positive{color:var(--low);}
+.fin-neutral{color:var(--text-secondary);}
+.fin-label{color:var(--text-primary);font-weight:500;}
+.fin-sub{font-size:9px;color:var(--text-muted);margin-top:2px;}
+
+/* ── Priority action items ────────────────────── */
+.priority-row{display:flex;gap:10px;padding:11px;background:var(--bg-elevated);border-radius:var(--radius-sm);margin-bottom:8px;border-left:3px solid transparent;align-items:flex-start;}
+.priority-row:last-child{margin-bottom:0;}
+.priority-row.p1{border-color:var(--critical);}
+.priority-row.p2{border-color:var(--high);}
+.priority-row.p3{border-color:var(--brand);}
+.priority-num{font-size:10px;font-family:var(--font-mono);font-weight:700;padding-top:1px;min-width:22px;color:var(--text-muted);}
+.priority-body{flex:1;}
+.priority-title{font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:4px;}
+.priority-meta{display:flex;gap:12px;font-size:10px;color:var(--text-muted);flex-wrap:wrap;}
+.priority-meta span{display:flex;align-items:center;gap:3px;}
+.priority-chip{font-size:9px;font-family:var(--font-mono);padding:1px 5px;border-radius:2px;font-weight:600;}
+.chip-critical{background:rgba(248,81,73,.12);color:var(--critical);}
+.chip-high{background:rgba(227,179,65,.12);color:var(--high);}
+.chip-medium{background:rgba(88,166,255,.12);color:var(--brand);}
+
+/* ── Review gate ──────────────────────────────── */
+.review-gate{
+  background:var(--bg-surface);border:1px solid var(--border);border-top:3px solid var(--high);
+  border-radius:var(--radius-md);padding:13px 16px;display:flex;align-items:center;gap:12px;margin-bottom:24px;
+}
+.rg-icon{font-size:18px;flex-shrink:0;}
+.rg-body{flex:1;}
+.rg-lbl{font-size:9px;font-family:var(--font-mono);color:var(--high);letter-spacing:.08em;margin-bottom:2px;}
+.rg-text{font-size:12px;color:var(--text-primary);font-weight:500;}
+.rg-sub{font-size:10px;color:var(--text-muted);margin-top:3px;}
+.rg-actions{display:flex;gap:8px;flex-shrink:0;}
+
+/* ── Scrollbar ────────────────────────────────── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- Fidelity banner -->
+<div class="fidelity-banner">
+  <span class="fidelity-tier">TIER 1 · CONCEPT</span>
+  <span>·</span>
+  <span>QBR Native · Vision Demo · 2026-07-21</span>
+  <span>·</span>
+  <span>Seed data only — Pete Hegseth test passing</span>
+  <span>·</span>
+  <span style="color:var(--alpha-accent)">Autonomous Control Plane</span>
+</div>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar-brand">ACP <small>Autonomous Control Plane</small></div>
+  <div class="tb-div"></div>
+  <div class="tenant-chip">
+    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="12" height="7" rx="1"/><path d="M5 7V5a3 3 0 016 0v2"/></svg>
+    Vertex IT Partners
+    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+  </div>
+  <div class="tb-div"></div>
+  <div class="customer-chip">
+    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+    Meridian Logistics
+  </div>
+  <div class="tb-spacer"></div>
+  <div class="verified-pill"><div class="vdot"></div>Data verified · live</div>
+  <div class="tb-div"></div>
+  <div class="mode-toggle">
+    <button class="mode-btn" onclick="setTheme('light')">L</button>
+    <button class="mode-btn active" onclick="setTheme('dark')">D</button>
+    <button class="mode-btn" onclick="setTheme('system')">S</button>
+  </div>
+  <div class="user-chip"><div class="avatar">AR</div>Alex Rivera · Tier 2</div>
+</header>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-lbl">WORKSPACE</div>
+    <a class="nav-item" href="#"><span class="nav-ic">⊞</span>Dashboard</a>
+    <a class="nav-item" href="#"><span class="nav-ic">▶</span>Playbooks</a>
+    <a class="nav-item" href="#"><span class="nav-ic">⚠</span>Incidents<span class="nav-badge">3</span></a>
+    <a class="nav-item" href="#"><span class="nav-ic">□</span>Devices</a>
+    <a class="nav-item active" href="#"><span class="nav-ic">◈</span>QBR Native</a>
+    <div class="nav-lbl">CUSTOMERS</div>
+    <a class="nav-item active" href="#" style="padding-left:18px;font-size:11px;">◉ Meridian Logistics</a>
+    <a class="nav-item" href="#" style="padding-left:18px;font-size:11px;color:var(--text-muted);">○ Apex Freight</a>
+    <a class="nav-item" href="#" style="padding-left:18px;font-size:11px;color:var(--text-muted);">○ NovaChem Inc.</a>
+    <a class="nav-item" href="#" style="padding-left:18px;font-size:11px;color:var(--text-muted);">○ Ridgeline Health</a>
+    <div class="sidebar-foot">
+      N-able-native data only<br>Cross-vendor: NOT STARTED
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- QBR header -->
+    <div class="qbr-header">
+      <div class="qbr-title">
+        <h1>Q2 2026 Business Review<span class="seed">SEED</span></h1>
+        <div class="qbr-meta">
+          <span>Meridian Logistics</span>
+          <span class="qbr-sep">·</span>
+          <span>Apr 1 – Jun 30, 2026</span>
+          <span class="qbr-sep">·</span>
+          <span>Prepared by Vertex IT Partners via ACP</span>
+          <span class="qbr-sep">·</span>
+          <span class="status-pill status-review">⏸ MSP Review</span>
+        </div>
+      </div>
+      <div class="qbr-actions">
+        <button class="btn btn-ghost">↓ Export PDF</button>
+        <button class="btn btn-secondary" onclick="showEditAlert()">
+          ✎ Edit QBR
+          <span style="font-size:9px;color:var(--high);font-weight:400;">⚠ P0 [A~35%]</span>
+        </button>
+        <button class="btn btn-primary">→ Send to Customer</button>
+      </div>
+    </div>
+
+    <!-- AI Expert attribution strip -->
+    <div class="expert-strip">
+      <span class="strip-lbl">BUILT BY</span>
+      <span class="expert-chip">🔒 Security/MDR Expert (N-able)</span>
+      <span class="strip-sep">·</span>
+      <span class="expert-chip">🔍 Endpoint Expert (N-able)</span>
+      <span class="strip-sep">·</span>
+      <span class="expert-chip">💾 Backup Expert (N-able)</span>
+      <span class="strip-sep">·</span>
+      <span class="expert-chip">🏢 Asset Expert (N-able)</span>
+      <span class="strip-tail">ACP AI Coworker · 4 experts · N-able data only</span>
+    </div>
+
+    <!-- Value Ledger banner -->
+    <div class="vl-banner">
+      <div class="vl-icon">📊</div>
+      <div style="flex:1">
+        <div class="vl-lbl">VALUE LEDGER · Q2 2026 SNAPSHOT</div>
+        <div class="vl-headline">Cumulative value delivered by Vertex IT Partners to Meridian Logistics</div>
+        <div class="vl-body">This QBR is a moment-in-time snapshot of the Value Ledger — the ongoing record of operational security value delivered and advisory actions that protect and grow the Meridian Logistics business. MSP role: strategic advisory partner, not reactive operator.</div>
+      </div>
+      <div class="vl-score">
+        <div class="vl-score-val">94<small style="font-size:16px">%</small></div>
+        <div class="vl-score-lbl">OVERALL POSTURE<span class="seed">SEED</span></div>
+      </div>
+    </div>
+
+    <!-- ① Executive Summary -->
+    <div class="section-heading">① EXECUTIVE SUMMARY</div>
+    <div class="card" style="margin-bottom:16px;border-left:3px solid var(--brand);">
+      <div class="card-header">
+        <div class="card-title"><span class="card-ic">◈</span>Q2 2026 · Meridian Logistics</div>
+        <span class="card-tag ai">AI-generated · MSP review pending</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div style="background:var(--bg-elevated);border-radius:var(--radius-md);padding:12px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:4px;">HEADLINE RESULT</div>
+          <div style="font-size:13px;font-weight:700;color:var(--low);">94% overall posture<span class="seed">SEED</span></div>
+          <div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">0 breaches · 99.97% uptime Q2</div>
+        </div>
+        <div style="background:var(--bg-elevated);border-radius:var(--radius-md);padding:12px;">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:4px;">BIGGEST WIN</div>
+          <div style="font-size:13px;font-weight:700;color:var(--brand);">127 incidents · 2.3h MTTR<span class="seed">SEED</span></div>
+          <div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">34% reduction in incident volume vs Q1</div>
+        </div>
+        <div style="background:var(--bg-elevated);border-radius:var(--radius-md);padding:12px;border:1px solid rgba(248,81,73,.2);">
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--critical);margin-bottom:4px;">ONE PRIORITY</div>
+          <div style="font-size:13px;font-weight:700;color:var(--critical);">Close 3 exec MFA gaps<span class="seed">SEED</span></div>
+          <div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">Critical exposure · 60% risk reduction if closed</div>
+        </div>
+      </div>
+      <p class="exec-text">Vertex IT Partners delivered strong security outcomes in Q2 2026. Detection coverage improved 7pp to 94%. Patch compliance rose 15pp to 86%, though the legacy server group remains below threshold. Backup resilience held at 99.1%. Three advisory actions recommended this quarter address identity gaps, patch automation, and DRaaS expansion.</p>
+    </div>
+
+    <!-- ② KPI Scorecard -->
+    <div class="section-heading">② KPI SCORECARD · RAG STATUS</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header">
+        <div class="card-title"><span class="card-ic">⊞</span>Performance Against Targets</div>
+        <span class="card-tag">N-able-native data only</span>
+      </div>
+      <table class="kpi-table">
+        <thead>
+          <tr>
+            <th style="width:32%">METRIC</th>
+            <th>TARGET</th>
+            <th>ACTUAL</th>
+            <th>Q1</th>
+            <th>DELTA</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="kpi-name">Detection Coverage</div><div class="kpi-src">Adlumin MDR · N-able</div></td>
+            <td class="kpi-num" style="color:var(--text-muted)">≥90%</td>
+            <td class="kpi-num" style="color:var(--low)">94%<span class="seed">SEED</span></td>
+            <td class="kpi-num" style="color:var(--text-muted)">87%</td>
+            <td class="kpi-delta" style="color:var(--low)">↑ +7pp</td>
+            <td style="text-align:center"><span class="kpi-rag rag-g">G</span></td>
+          </tr>
+          <tr>
+            <td><div class="kpi-name">Patch Compliance</div><div class="kpi-src">N-central RMM · N-able</div></td>
+            <td class="kpi-num" style="color:var(--text-muted)">≥95%</td>
+            <td class="kpi-num" style="color:var(--high)">86%<span class="seed">SEED</span></td>
+            <td class="kpi-num" style="color:var(--text-muted)">71%</td>
+            <td class="kpi-delta" style="color:var(--low)">↑ +15pp</td>
+            <td style="text-align:center"><span class="kpi-rag rag-a">A</span></td>
+          </tr>
+          <tr>
+            <td><div class="kpi-name">Backup Resilience</div><div class="kpi-src">Cove DRaaS · N-able</div></td>
+            <td class="kpi-num" style="color:var(--text-muted)">≥99%</td>
+            <td class="kpi-num" style="color:var(--low)">99.1%<span class="seed">SEED</span></td>
+            <td class="kpi-num" style="color:var(--text-muted)">99.0%</td>
+            <td class="kpi-delta" style="color:var(--text-muted)">→ flat</td>
+            <td style="text-align:center"><span class="kpi-rag rag-g">G</span></td>
+          </tr>
+          <tr>
+            <td><div class="kpi-name">MFA Coverage</div><div class="kpi-src">Identity Expert · N-able</div></td>
+            <td class="kpi-num" style="color:var(--text-muted)">100%</td>
+            <td class="kpi-num" style="color:var(--high)">94%<span class="seed">SEED</span></td>
+            <td class="kpi-num" style="color:var(--text-muted)">91%</td>
+            <td class="kpi-delta" style="color:var(--low)">↑ +3pp</td>
+            <td style="text-align:center"><span class="kpi-rag rag-a">A</span></td>
+          </tr>
+          <tr>
+            <td><div class="kpi-name">Mean Time to Respond</div><div class="kpi-src">Security/MDR Expert · N-able</div></td>
+            <td class="kpi-num" style="color:var(--text-muted)">≤3h</td>
+            <td class="kpi-num" style="color:var(--low)">2.3h<span class="seed">SEED</span></td>
+            <td class="kpi-num" style="color:var(--text-muted)">4.1h</td>
+            <td class="kpi-delta" style="color:var(--low)">↓ −1.8h</td>
+            <td style="text-align:center"><span class="kpi-rag rag-g">G</span></td>
+          </tr>
+          <tr>
+            <td><div class="kpi-name">Privileged Account Gaps</div><div class="kpi-src">Identity Expert · N-able</div></td>
+            <td class="kpi-num" style="color:var(--text-muted)">0</td>
+            <td class="kpi-num" style="color:var(--critical)">3<span class="seed">SEED</span></td>
+            <td class="kpi-num" style="color:var(--text-muted)">5</td>
+            <td class="kpi-delta" style="color:var(--low)">↓ −2</td>
+            <td style="text-align:center"><span class="kpi-rag rag-r">R</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ③ Wins & Challenges -->
+    <div class="section-heading">③ WINS &amp; CHALLENGES</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header">
+        <div class="card-title"><span class="card-ic">⇅</span>Q2 2026 Transparent Review</div>
+        <span class="card-tag">One sentence each · detail in appendix</span>
+      </div>
+      <div class="wc-grid">
+        <div class="wc-col">
+          <div class="wc-col-head wc-win-head">✓ WINS</div>
+          <div class="wc-item"><div class="wc-dot wc-dot-g"></div><span>MTTR dropped from 4.1h to 2.3h, cutting average incident dwell time by 44%.<span class="seed">SEED</span></span></div>
+          <div class="wc-item"><div class="wc-dot wc-dot-g"></div><span>Zero breaches and 99.97% uptime across the full quarter — clean board.</span></div>
+          <div class="wc-item"><div class="wc-dot wc-dot-g"></div><span>Patch compliance improved 15pp; the workstation fleet is now at 94%.<span class="seed">SEED</span></span></div>
+          <div class="wc-item"><div class="wc-dot wc-dot-g"></div><span>Backup resilience held at 99.1%; primary site and M365 fully protected.<span class="seed">SEED</span></span></div>
+        </div>
+        <div class="wc-col">
+          <div class="wc-col-head wc-chal-head">⚠ CHALLENGES</div>
+          <div class="wc-item"><div class="wc-dot wc-dot-a" style="background:var(--critical)"></div><span>3 executive accounts still lack MFA — highest-risk open gap entering Q3.<span class="seed">SEED</span></span></div>
+          <div class="wc-item"><div class="wc-dot wc-dot-a"></div><span>Legacy server group (SRV-LEG-*) at 61% patch compliance — below the 95% target by 34pp.<span class="seed">SEED</span></span></div>
+          <div class="wc-item"><div class="wc-dot wc-dot-a"></div><span>Secondary distribution site has only partial DRaaS coverage; RTO at 18–36h vs. 2.3h primary.<span class="seed">SEED</span></span></div>
+          <div class="wc-item"><div class="wc-dot wc-dot-a" style="background:var(--text-muted)"></div><span>Overall patch target (95%) not met despite strong improvement — gap remains structural.<span class="seed">SEED</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ Financial / Value Overview -->
+    <div class="section-heading">④ VALUE OVERVIEW · COST AVOIDANCE &amp; HOURS DELIVERED</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header">
+        <div class="card-title"><span class="card-ic">$</span>Value Ledger · Q2 2026 Financial View</div>
+        <span class="card-tag ai">Estimated · MSP review pending<span class="seed">SEED</span></span>
+      </div>
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th style="width:40%">VALUE CATEGORY</th>
+            <th>Q1 2026</th>
+            <th>Q2 2026</th>
+            <th>QoQ VARIANCE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="fin-label">Breach cost avoidance</div>
+              <div class="fin-sub">127 incidents resolved · 0 escalated to breach<span class="seed">SEED</span></div>
+            </td>
+            <td class="fin-num fin-neutral">$190k<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">$310k<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">↑ +$120k</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="fin-label">Automation hours saved</div>
+              <div class="fin-sub">214 patches automated · runbooks executed<span class="seed">SEED</span></div>
+            </td>
+            <td class="fin-num fin-neutral">68h<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">112h<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">↑ +44h</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="fin-label">Downtime prevented</div>
+              <div class="fin-sub">99.97% uptime · 312-device fleet<span class="seed">SEED</span></div>
+            </td>
+            <td class="fin-num fin-neutral">$42k<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">$58k<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">↑ +$16k</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="fin-label">Residual risk exposure</div>
+              <div class="fin-sub">3 open MFA gaps · secondary site partial<span class="seed">SEED</span></div>
+            </td>
+            <td class="fin-num" style="color:var(--high);text-align:right;">$280k<span class="seed">SEED</span></td>
+            <td class="fin-num" style="color:var(--critical);text-align:right;">$195k<span class="seed">SEED</span></td>
+            <td class="fin-num fin-positive">↓ −$85k</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>TOTAL VALUE DELIVERED (ESTIMATED)<span class="seed">SEED</span></td>
+            <td class="fin-num">$232k</td>
+            <td class="fin-num fin-positive">$368k</td>
+            <td class="fin-num fin-positive">↑ +$136k</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div style="margin-top:8px;font-size:9px;color:var(--text-muted);font-family:var(--font-mono);">All figures estimated · seed data only · MSP must review before delivery · methodology in appendix</div>
+    </div>
+
+    <!-- ⑤ Q3 Priorities & Action Items -->
+    <div class="section-heading">⑤ Q3 PRIORITIES &amp; ACTION ITEMS</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header">
+        <div class="card-title"><span class="card-ic">→</span>Next 90 Days · Measurable Objectives</div>
+        <span class="card-tag ai">MSP advisory output · Value Ledger entry</span>
+      </div>
+      <div class="priority-row p1">
+        <div class="priority-num">#1</div>
+        <div class="priority-body">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+            <div class="priority-title" style="margin-bottom:0">Close executive MFA gap — 3 accounts</div>
+            <span class="priority-chip chip-critical">CRITICAL</span>
+          </div>
+          <div class="priority-meta">
+            <span>👤 Owner: Jordan Park (Meridian IT lead)<span class="seed">SEED</span></span>
+            <span>📅 Deadline: Aug 15, 2026<span class="seed">SEED</span></span>
+            <span>✓ Success: 3/3 enrolled, Identity Expert confirms 100% exec coverage</span>
+          </div>
+          <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">If not done: credential compromise at exec level bypasses all detection layers. Estimated exposure: $120k+.<span class="seed">SEED</span></div>
+        </div>
+        <div style="flex-shrink:0;align-self:center;"><button class="btn btn-ghost" style="font-size:10px">Assign →</button></div>
+      </div>
+      <div class="priority-row p2">
+        <div class="priority-num">#2</div>
+        <div class="priority-body">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+            <div class="priority-title" style="margin-bottom:0">Enable automated patching — SRV-LEG-* group</div>
+            <span class="priority-chip chip-high">HIGH</span>
+          </div>
+          <div class="priority-meta">
+            <span>👤 Owner: Vertex IT Partners (Endpoint Expert)<span class="seed">SEED</span></span>
+            <span>📅 Deadline: Sep 1, 2026<span class="seed">SEED</span></span>
+            <span>✓ Success: SRV-LEG-* at ≥90% compliance; automated playbook running</span>
+          </div>
+          <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">Manual patching velocity will not close the 34pp gap by Q3 compliance review.<span class="seed">SEED</span></div>
+        </div>
+        <div style="flex-shrink:0;align-self:center;"><button class="btn btn-secondary" style="font-size:10px">Configure →</button></div>
+      </div>
+      <div class="priority-row p3">
+        <div class="priority-num">#3</div>
+        <div class="priority-body">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+            <div class="priority-title" style="margin-bottom:0">Extend Cove DRaaS to secondary distribution site</div>
+            <span class="priority-chip chip-medium">MEDIUM</span>
+          </div>
+          <div class="priority-meta">
+            <span>👤 Owner: Vertex IT Partners (Backup Expert)<span class="seed">SEED</span></span>
+            <span>📅 Deadline: Sep 30, 2026<span class="seed">SEED</span></span>
+            <span>✓ Success: Secondary site RTO ≤2.3h; Backup Expert confirms full coverage</span>
+          </div>
+          <div style="margin-top:6px;font-size:10px;color:var(--text-muted);">Current partial coverage results in 18–36h RTO at secondary site vs. 2.3h at primary.<span class="seed">SEED</span></div>
+        </div>
+        <div style="flex-shrink:0;align-self:center;"><button class="btn btn-primary" style="font-size:10px">Get pricing →</button></div>
+      </div>
+    </div>
+
+    <!-- Review gate -->
+    <div class="review-gate">
+      <div class="rg-icon">⏸</div>
+      <div class="rg-body">
+        <div class="rg-lbl">MSP REVIEW GATE</div>
+        <div class="rg-text">This QBR has not been sent to Meridian Logistics. Review and edit before delivery.</div>
+        <div class="rg-sub">⚠ P0 assumption [A ~35%]: "MSP can edit this QBR in 15 minutes" — not yet validated with operators.</div>
+      </div>
+      <div class="rg-actions">
+        <button class="btn btn-secondary" onclick="showEditAlert()">✎ Edit QBR</button>
+        <button class="btn btn-primary">→ Approve &amp; Send</button>
+      </div>
+    </div>
+
+  </main><!-- /main -->
+
+  <!-- ── Bradley Rail ─────────────────────────── -->
+  <aside class="bradley-rail">
+
+    <div class="rail-header">◈ BRADLEY RAIL · QBR NATIVE</div>
+
+    <!-- Readiness badge + score -->
+    <div>
+      <div class="rail-badge">TIER 1 · CONCEPT</div>
+      <div class="rail-stat-row" style="margin-top:10px;">
+        <div>
+          <div class="rail-score">24.5<span style="font-size:14px;color:rgba(167,139,250,.5)">/30</span></div>
+          <div class="rail-score-lbl">CRITIC SCORE (PASS 2)</div>
+        </div>
+        <div style="border-left:1px solid rgba(167,139,250,.2);padding-left:14px;">
+          <div class="rail-score" style="color:var(--high);">46<span style="font-size:14px;color:rgba(167,139,250,.5)">%</span></div>
+          <div class="rail-score-lbl">[A]+[?] WORLD-CLAIMS</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:9px;font-family:var(--font-mono);color:var(--high);">⚠ ABOVE 30% THRESHOLD — Tier 1 adequate · Tier 2 not ready</div>
+    </div>
+
+    <!-- What this prototype is testing -->
+    <div class="rail-section">
+      <div class="rail-section-head">TESTING</div>
+      <div style="font-size:10px;color:rgba(230,237,243,.75);line-height:1.6;">
+        Whether QBR Native is the proof surface that makes the Autonomous Control Plane worth adopting — distinct from the May 2026 question (would MSPs use the Control Plane as their only interface?).
+      </div>
+    </div>
+
+    <!-- What you nailed -->
+    <div class="rail-section">
+      <div class="rail-section-head">WHAT YOU NAILED</div>
+      <div class="rail-item"><div class="rail-dot rail-dot-g"></div><span>5-section QBR framework maps to the real practitioner workflow — Executive Summary to Priorities is the sequence MSPs already use.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-g"></div><span>RAG scorecard makes posture legible at a glance without requiring interpretation.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-g"></div><span>Value table frames security outcomes as financial evidence — cost avoidance, not jargon.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-g"></div><span>Priority rows with owner/deadline/success metric make action accountability visible.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-g"></div><span>SEED badges on all fictional data. Pete Hegseth test passes.</span></div>
+    </div>
+
+    <!-- What will hurt you -->
+    <div class="rail-section">
+      <div class="rail-section-head">WHAT WILL HURT YOU</div>
+      <div class="rail-warning">⚠ Facilitation protocol doesn't exist. The OKR requires "unprompted articulation." There is no script, named facilitator, timing, or method to distinguish unprompted from prompted.</div>
+      <div class="rail-item"><div class="rail-dot rail-dot-r"></div><span>Council roster is [A]. If the room is engineering-lens rather than governance/security-lens, the prototype calibration misfires.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-r"></div><span>EU AI Act enforcement: 2026-08-02 — 12 days out. Compliance owner is TBD. A governance-lens council member asks this in the first five minutes.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-a"></div><span>Council modal synthesis reads "[0% Claude — fill this in]." Decide: fill before the session or remove the button from the walkthrough flow.</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-a"></div><span>N-able-native QBR job never independently tested. Demand was measured for cross-vendor QBR — one operator session moves this from [A] to [R].</span></div>
+      <div class="rail-item"><div class="rail-dot rail-dot-a"></div><span>Secondhand Reineke claim is load-bearing. [CS: MEDIUM — one reported conversation via John Snyder.] A governance-lens member will ask for the primary source.</span></div>
+    </div>
+
+    <!-- Gap inventory -->
+    <div class="rail-section">
+      <div class="rail-section-head">GAP INVENTORY</div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">N-able-native QBR job never tested</span><span class="rail-gap-tag">[A][WOBBLY]</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">15-min edit assumption</span><span class="rail-gap-tag">[A] ~35%</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">Adlumin data access (Gate C)</span><span class="rail-gap-tag">[?]</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">Legal / DPA read</span><span class="rail-gap-tag">[?]</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">Pricing model</span><span class="rail-gap-tag">[?]</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">EU AI Act compliance owner</span><span class="rail-gap-tag">[?] 2026-08-02</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">Council roster confirmed</span><span class="rail-gap-tag">[A]</span></div>
+      <div class="rail-gap-row"><span style="color:rgba(230,237,243,.75)">Facilitation protocol written</span><span class="rail-gap-tag">[?]</span></div>
+    </div>
+
+    <!-- Routing cards -->
+    <div class="rail-section">
+      <div class="rail-section-head">ROUTING</div>
+
+      <div class="rail-route-card">
+        <div class="rail-route-head">PRODUCT</div>
+        <div class="rail-route-body">Decide: Tier 2 build or hold after AI Council session. The prototype has done what a Tier 1 can do. The next question requires operator evidence, not another prototype.</div>
+        <div class="rail-route-roi">ROI · Business: roadmap sequencing · User: QBR reflects managed data · Unknown: is N-able-native "good enough"?</div>
+      </div>
+
+      <div class="rail-route-card">
+        <div class="rail-route-head">DESIGN</div>
+        <div class="rail-route-body">Write the facilitation protocol — exact prompt wording, named facilitator, timing, method for distinguishing unprompted articulation. OKR is not measurable without it.</div>
+        <div class="rail-route-roi">ROI · Business: defensible go/no-go · User: structured session, not show-and-tell · Unknown: whether 3-of-5 is the right bar</div>
+      </div>
+
+      <div class="rail-route-card">
+        <div class="rail-route-head">RESEARCH</div>
+        <div class="rail-route-body">One operator session on the narrowed N-able-native QBR job. Question: does an operator value a QBR built entirely from N-able data, without cross-vendor normalization?</div>
+        <div class="rail-route-roi">ROI · Business: [A]+[?] below 30% unlocks Tier 2 · User: edit path is real, not assumed · Unknown: do operators distinguish N-able-native from "real QBR"?</div>
+      </div>
+
+      <div class="rail-route-card">
+        <div class="rail-route-head">ENG</div>
+        <div class="rail-route-body">Fix three design system issues: (1) localStorage persistence for theme, (2) topbar dark in both modes, (3) --radius-lg: 10px → 8px. Not blocking Tier 1. Blocking Tier 2 handoff.</div>
+        <div class="rail-route-roi">ROI · Business: clean design system compliance · User: theme preference persists on reload · Unknown: whether anyone toggles light mode during the council walkthrough</div>
+      </div>
+
+    </div>
+
+  </aside><!-- /bradley-rail -->
+
+</div><!-- /layout -->
+
+<script>
+(function(){
+  var saved = localStorage.getItem('apx-mode-pref') || 'dark';
+  applyTheme(saved);
+})();
+
+function setTheme(mode) {
+  applyTheme(mode);
+  localStorage.setItem('apx-mode-pref', mode);
+}
+
+function applyTheme(mode) {
+  var resolved = mode;
+  if (mode === 'system') {
+    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', resolved);
+  var btns = document.querySelectorAll('.mode-btn');
+  var map = {light:0, dark:1, system:2};
+  btns.forEach(function(b){ b.classList.remove('active'); });
+  if (btns[map[mode]]) btns[map[mode]].classList.add('active');
+}
+
+function showEditAlert() {
+  alert('Edit path: 15-min MSP edit — P0 assumption [A ~35%]. Not yet validated with operators. This is the assumption this prototype is testing.');
+}
+</script>
+</body>
+</html>

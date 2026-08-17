@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness — EBR Workbook · Holt Technology Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Apex 2.0 tokens — prototypes/harness-ebr-v2/design.md. Brand #8500cc [VERIFIED].
+   No monospace face: design.md says Apex 2.0 has none and not to borrow v1's. */
+:root{
+  --brand:#8500cc; --brand-soft:rgba(133,0,204,.10); --brand-deep:#6f00a8;
+  --bg-app:#fafafa; --bg-surface:#fff; --bg-deep:#f3f3f5; --bg-grid:#fcfcfd;
+  --border:#e2e2e6; --border-strong:#5c5c66;
+  --text-primary:#18191a; --text-secondary:#3a3b3f; --text-tertiary:#6b6c72; --text-muted:#9a9ba2;
+  --ok:#1a8c4c; --ok-soft:#e8f7ed;
+  --need:#b3261e; --need-soft:#fdecea;
+  --draft:#a8790a; --draft-soft:#fbf1de;
+  --none:#8a8b91; --none-soft:#f1f1f3;
+  --radius-sm:2px; --radius-md:4px; --radius-lg:8px; --radius-full:999px;
+  --font-ui:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-brand:'Manrope',-apple-system,sans-serif;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:20px; --sp-xl:32px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{font-family:var(--font-ui);background:var(--bg-app);color:var(--text-primary);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--font-brand);margin:0;font-weight:700;}
+p{margin:0;} button{font-family:inherit;cursor:pointer;}
+.num{font-variant-numeric:tabular-nums;}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+.topbar{background:linear-gradient(120deg,#160021,#26063d);border-bottom:2px solid var(--brand);color:#f4ecff;display:flex;align-items:center;gap:var(--sp-lg);padding:9px var(--sp-lg);}
+.topbar .mark{font-family:var(--font-brand);font-weight:800;font-size:17px;color:#fff;display:flex;align-items:center;gap:7px;}
+.topbar .mark .dot{width:8px;height:8px;border-radius:50%;background:#c046ff;box-shadow:0 0 0 4px rgba(192,70,255,.25);}
+.topbar .who{font-size:12px;color:#cfa6ef;padding-left:var(--sp-lg);border-left:1px solid rgba(255,255,255,.18);}
+.topbar .who b{color:#fff;font-weight:600;}
+.spacer{flex:1;}
+.topbar select{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-md);padding:5px 9px;font-family:inherit;font-size:12px;}
+
+.fidelity{background:repeating-linear-gradient(135deg,#fdecea,#fdecea 10px,#fdf3ef 10px,#fdf3ef 20px);border-bottom:1px solid #f0b8b3;color:#7a2a20;font-size:12px;padding:7px var(--sp-lg);display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
+.fidelity .tier{background:#b3261e;color:#fff;font-weight:700;font-size:10px;letter-spacing:.4px;padding:2px 7px;border-radius:var(--radius-sm);text-transform:uppercase;}
+
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-md);padding:7px 13px;font-size:12.5px;font-weight:600;border:1px solid var(--border-strong);background:#fff;color:var(--text-primary);}
+.btn:hover{background:var(--bg-app);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff;}
+.btn-primary:hover{background:var(--brand-deep);}
+.btn-ghost{border-color:transparent;background:none;color:var(--brand);}
+.btn-sm{padding:4px 9px;font-size:11.5px;}
+
+/* ═══ ONBOARD ═══ */
+.onboard-wrap{max-width:900px;margin:0 auto;padding:var(--sp-xl) var(--sp-lg) 60px;}
+.dropzone{border:2px dashed var(--border-strong);border-radius:12px;padding:52px 32px;text-align:center;background:#fff;cursor:pointer;transition:.15s;}
+.dropzone:hover,.dropzone.drag{border-color:var(--brand);background:var(--brand-soft);}
+.dropzone .ic{font-size:34px;display:block;margin-bottom:10px;}
+.spin{width:30px;height:30px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--brand);margin:0 auto;animation:sp .8s linear infinite;}
+.spin.sm{width:13px;height:13px;border-width:2px;margin:0;display:inline-block;vertical-align:-2px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+
+.learned{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--sp-lg);margin-bottom:var(--sp-md);}
+.learned h3{font-size:14px;margin-bottom:3px;}
+.learned .sub{font-size:11.5px;color:var(--text-tertiary);margin-bottom:var(--sp-sm);}
+.kv{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.kv:last-child{border-bottom:none;}
+.kv .k{flex:0 0 168px;color:var(--text-tertiary);}
+.kv .v{flex:1;font-weight:600;}
+.chip{display:inline-block;font-size:11px;font-weight:600;background:var(--brand-soft);color:var(--brand-deep);border:1px solid rgba(133,0,204,.28);border-radius:var(--radius-full);padding:2px 9px;margin:2px 3px 2px 0;}
+.mini{width:100%;border-collapse:collapse;font-size:12px;}
+.mini th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);border-bottom:1px solid var(--border);padding:6px 8px;}
+.mini td{padding:7px 8px;border-bottom:1px solid var(--border);}
+.tier{font-weight:700;font-size:10.5px;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+.tier.A{background:var(--ok);} .tier.B{background:var(--brand);} .tier.C{background:var(--draft);} .tier.D{background:var(--none);}
+
+/* ═══ WORKBOOK ═══ */
+.wb{display:flex;height:calc(100vh - 96px);}
+.wb-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.wb-bar{display:flex;align-items:center;gap:10px;padding:10px var(--sp-lg);background:#fff;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.wb-title{font-family:var(--font-brand);font-weight:700;font-size:14px;}
+.wb-file{font-size:11.5px;color:var(--text-tertiary);}
+.fill-meter{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-secondary);}
+.fill-track{width:110px;height:7px;border-radius:var(--radius-full);background:var(--bg-deep);overflow:hidden;}
+.fill-bar{height:100%;background:var(--ok);transition:width .4s;}
+
+/* the grid — reads as a spreadsheet, not as cards */
+.grid-scroll{flex:1;overflow:auto;background:var(--bg-grid);}
+table.sheet{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff;}
+table.sheet thead th{position:sticky;top:0;z-index:2;background:var(--bg-deep);border:1px solid var(--border);border-top:none;padding:7px 9px;text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-tertiary);font-weight:700;white-space:nowrap;}
+table.sheet td{border:1px solid var(--border);padding:7px 9px;vertical-align:top;}
+table.sheet tr:hover td{background:#fdfbff;}
+.c-row{width:38px;text-align:right;color:var(--text-muted);background:var(--bg-deep);font-variant-numeric:tabular-nums;font-size:11px;}
+.c-field{min-width:250px;font-weight:600;}
+.c-value{min-width:220px;}
+.c-source{min-width:180px;font-size:11.5px;color:var(--text-tertiary);}
+.c-status{width:150px;white-space:nowrap;}
+.val-empty{color:var(--text-muted);font-style:italic;}
+.val-filled{font-variant-numeric:tabular-nums;}
+.cell-flash{animation:flash .8s ease-out;}
+@keyframes flash{0%{background:var(--brand-soft);}100%{background:transparent;}}
+
+.st{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:2px 8px;border-radius:var(--radius-full);white-space:nowrap;}
+.st-filled{background:var(--ok-soft);color:var(--ok);border:1px solid var(--ok);}
+.st-need{background:var(--need-soft);color:var(--need);border:1.5px solid var(--need);}
+.st-draft{background:repeating-linear-gradient(135deg,var(--draft-soft),var(--draft-soft) 5px,#fff 5px,#fff 10px);color:#7a5806;border:2px dashed var(--draft);}
+.st-none{background:var(--none-soft);color:var(--none);border:1px dashed var(--none);}
+.st-pending{background:var(--bg-deep);color:var(--text-muted);border:1px solid var(--border);}
+/* the edge cases — each visually distinct, none of them mistakable for Filled */
+.st-issue {background:#fff4e5;color:#8a4b00;border:1.5px solid #c9740f;}
+.st-manual{background:#eef3ff;color:#20408a;border:1.5px solid #3a63c0;}
+.st-nomcp {background:var(--none-soft);color:#4a4b52;border:1.5px dashed #4a4b52;}
+.st-makeit{background:var(--brand-soft);color:var(--brand-deep);border:1.5px dashed var(--brand);}
+
+/* tab strip — bottom, like a real workbook */
+.tabstrip{display:flex;align-items:stretch;gap:2px;background:var(--bg-deep);border-top:1px solid var(--border);padding:0 var(--sp-lg);overflow-x:auto;}
+.tabstrip button{border:1px solid var(--border);border-bottom:none;background:var(--bg-app);color:var(--text-tertiary);font-size:12px;font-weight:600;padding:8px 13px;border-radius:var(--radius-md) var(--radius-md) 0 0;white-space:nowrap;display:flex;align-items:center;gap:6px;position:relative;top:1px;}
+.tabstrip button.active{background:#fff;color:var(--brand);border-color:var(--border);border-bottom:1px solid #fff;}
+.tabstrip .tdot{width:7px;height:7px;border-radius:50%;}
+.tdot.done{background:var(--ok);} .tdot.part{background:var(--draft);} .tdot.todo{background:var(--none);}
+
+/* ═══ RUNBOOK RAIL ═══ */
+.runbook{width:392px;flex-shrink:0;background:#f8f4fd;border-left:4px solid var(--brand);overflow-y:auto;padding:var(--sp-lg) var(--sp-md) 60px;}
+.runbook h3{font-size:14px;}
+.rb-eyebrow{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--brand);font-weight:700;}
+.rb-sub{font-size:11.5px;color:var(--text-tertiary);margin:4px 0 var(--sp-md);}
+.step{background:#fff;border:1px solid rgba(133,0,204,.18);border-radius:var(--radius-lg);padding:11px 13px;margin-bottom:9px;}
+.step.running{border-color:var(--brand);box-shadow:0 0 0 3px rgba(133,0,204,.12);}
+.step.done{border-color:rgba(26,140,76,.4);background:#fbfffc;}
+.step.blocked{border-color:var(--need);background:#fffbfb;}
+.step-top{display:flex;align-items:center;gap:8px;}
+.step-n{width:20px;height:20px;border-radius:50%;background:var(--bg-deep);color:var(--text-tertiary);font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step.done .step-n{background:var(--ok);color:#fff;}
+.step.running .step-n{background:var(--brand);color:#fff;}
+.step.blocked .step-n{background:var(--need);color:#fff;}
+.step-verb{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text-muted);}
+.step h5{font-size:12.5px;margin:3px 0 0;font-family:var(--font-ui);font-weight:600;}
+.step p{font-size:11.5px;color:var(--text-tertiary);margin-top:4px;}
+.step .ask{background:var(--need-soft);border:1px solid var(--need);border-radius:var(--radius-md);padding:9px;margin-top:8px;}
+.step .ask .q{font-size:12px;font-weight:600;color:var(--text-primary);}
+.step .ask input{width:100%;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:6px 8px;font-family:inherit;font-size:12px;margin-top:7px;}
+.deliverable{background:#fff;border:2px solid var(--brand);border-radius:var(--radius-lg);padding:var(--sp-md);margin-top:var(--sp-lg);}
+.deliverable h4{font-size:13px;margin-bottom:6px;}
+.deliverable p{font-size:11.5px;color:var(--text-tertiary);margin-bottom:10px;}
+.a-flag{font-size:9.5px;font-weight:700;color:#7a5806;background:var(--draft-soft);border-radius:var(--radius-sm);padding:1px 5px;letter-spacing:.3px;}
+.cs{font-size:10px;font-weight:600;background:#f1f1f3;color:var(--text-tertiary);border:1px dashed var(--border-strong);border-radius:var(--radius-sm);padding:1px 5px;}
+.note{background:var(--brand-soft);border:1px solid var(--brand);border-radius:var(--radius-md);padding:9px 11px;font-size:11.5px;color:#5c008f;margin-bottom:var(--sp-md);}
+@media (max-width:1200px){.runbook{display:none;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="mark"><span class="dot"></span>HARNESS</div>
+  <div class="who">MSP: <b id="tbCompany">—</b></div>
+  <div class="spacer"></div>
+  <div id="tbClientWrap" style="display:none;align-items:center;gap:7px;font-size:12px;color:#dcc3f2;">
+    Client: <select id="tbClient" aria-label="Client"></select>
+  </div>
+</header>
+
+<div class="fidelity">
+  <span class="tier">Tier 1 · Concept</span>
+  <span><b>Fidelity ≠ validation.</b> Fictional company, clients and figures. No file is actually parsed — the workbook below is seeded, and the fill is simulated. <span class="cs">CS: MEDIUM</span> n=1 primary source.</span>
+</div>
+
+<div id="app"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   THE PRODUCT, PLAINLY: an EBR workbook gets filled in.
+   Drop the MSP's own spreadsheet → Harness learns the company, its clients and
+   its tab structure → it writes a RUNBOOK per tab → the coworker runs the
+   runbook, kitting information into cells → the deliverable is the filled sheet.
+
+   The 7-stage service blueprint sits underneath this as the service design; it
+   is deliberately NOT the interface. A blueprint describes the service, not
+   the screen.
+
+   All names, clients and figures fictional (seed-data rule).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+const COMPANY = { name:"Holt Technology Solutions", owner:"Daniel Holt", practitioner:"Marcus Reeve", am:"Vanessa Okoro" };
+
+const CLIENTS = [
+  {id:"pemberton", name:"Pemberton & Associates", sector:"Professional Services", tier:"A", cycle:3, users:47, devices:247, mrr:"£3,200/mo", advocate:"Priya Nandagopal, Operations Director", lastEBR:"14 May 2026"},
+  {id:"ashgrove",  name:"Ashgrove Legal",          sector:"Professional Services", tier:"A", cycle:1, users:31, devices:96,  mrr:"£2,450/mo", advocate:"Tom Ferris, Managing Partner",       lastEBR:"— first cycle"},
+  {id:"brightwell",name:"Brightwell Retail Group", sector:"Retail",                tier:"B", cycle:5, users:88, devices:310, mrr:"£1,900/mo", advocate:"Nadia Osei, Ops Director",          lastEBR:"2 June 2026"},
+  {id:"corven",    name:"Corven Manufacturing",    sector:"Manufacturing",         tier:"C", cycle:2, users:64, devices:180, mrr:"£1,150/mo", advocate:"Grant Wallis, IT Lead",             lastEBR:"29 April 2026"},
+];
+
+const TABS = [
+  {id:"agenda",    n:1, name:"Agenda"},
+  {id:"climate",   n:2, name:"Current Climate"},
+  {id:"risk",      n:3, name:"Risk Review"},
+  {id:"employee",  n:4, name:"Employee Review"},
+  {id:"hardware",  n:5, name:"Hardware"},
+  {id:"roadmap",   n:6, name:"Technical Roadmap"},
+  {id:"forward",   n:null, name:"Forward Intelligence"},
+  {id:"referrals", n:7, name:"Referrals & Testimonials"},
+  {id:"close",     n:8, name:"Close & Compound"},
+];
+
+/* 28 rows — the KIT. `fill` is how a cell gets its value. A flag alone is useless;
+   every not-automatic case carries a ROUTE the coworker can actually offer:
+
+   auto   = a connector provides it. May still carry `issue` — connected, but the
+            data came back partial or untrustworthy. Named, with a way to act.
+   ask    = only a human knows. Pure judgement, no amount of tooling gets it.
+   draft  = carried forward from last cycle as a visible guess.
+   manual = the data exists but not through any API — a portal login, a phone call.
+            Coworker gives the exact steps and a place to put the answer.
+   nomcp  = no connector exists for this source. Coworker offers a template
+            pre-filled with what it DOES have, plus a logged connector request.
+   makeit = the artifact doesn't exist anywhere yet. Coworker offers to create it,
+            so that next cycle this row has a real source. This is the only
+            category that gets cheaper over time.                              */
+const ROWS = [
+ {id:1, tab:"climate", field:"Device count",                                  fill:"auto",  src:"N-central",                    val:"247"},
+ {id:2, tab:"climate", field:"Licensed user count",                           fill:"auto",  src:"Entra × assigned licences",     val:"47"},
+ {id:3, tab:"climate", field:"What's deployed, per tool, and how far",         fill:"auto",  src:"Per-vendor coverage endpoints",  val:"N-central 247/247 · Inforcer 47/47 · uSecure 44/47"},
+ {id:4, tab:"climate", field:"Contract lines — item, cadence, quantity",       fill:"auto",  src:"HaloPSA agreements",            val:"18 lines — 12 monthly, 6 annual",
+        issue:{kind:"partial", what:"6 of 18 lines have no cadence set in HaloPSA — they came back blank, not annual.",
+               fix:"Accept 12 confirmed and flag 6 as unknown", fixLabel:"Use the 12 confirmed, flag 6",
+               fixedVal:"12 lines confirmed monthly · 6 cadence unknown in HaloPSA"}},
+ {id:5, tab:"climate", field:"Licences and renewal dates",                     fill:"auto",  src:"M365 subscribed SKUs",          val:"M365 E3 ×47 — renews 30 Nov 2026"},
+
+ {id:6, tab:"risk", field:"Target level, and where they actually are",         fill:"auto",  src:"Inforcer golden tenant (1–9)",  val:"4 of 5 (target 5)"},
+ {id:7, tab:"risk", field:"Deviation list, minus already-accepted",            fill:"auto",  src:"Inforcer − standing acceptances",val:"3 open · 2 acceptances applied"},
+ {id:8, tab:"risk", field:"Temporary exclusions nobody put back",              fill:"ask",   src:"Entra conditional access + last cycle",
+        q:"Was the exclusion on svc-backup@pemberton.co meant to be permanent?", hint:"Marcus's answer becomes the source Harness checks next cycle."},
+ {id:9, tab:"risk", field:"DLP, retention, conditional access — present AND working", fill:"draft", src:"365 tenant direct (Inforcer can't see it)",
+        val:"DLP on · retention 7yr · CA 4 policies, 1 gap", carried:"Cycle 2"},
+ {id:10,tab:"risk", field:"MFA coverage",                                      fill:"auto",  src:"Entra registered methods",      val:"44 of 47 · 3 exceptions"},
+ {id:11,tab:"risk", field:"Training / phishing test results",                  fill:"auto",  src:"uSecure per user per course",   val:"94% complete · 2 phishing fails"},
+ {id:12,tab:"risk", field:"Devices below current minimum OS",                  fill:"auto",  src:"N-central OS version",          val:"6 below Win11 22H2"},
+ {id:13,tab:"risk", field:"End-of-support firmware, network kit, unmanaged offices", fill:"manual", src:"Manufacturer EOS portals — no API",
+        hint:"N-central found the kit. The end-of-support dates only exist on the vendors' own sites, and one of these is a phone call.",
+        route:{steps:[
+          "N-central found 4 network appliances at Pemberton — 2 Ubiquiti, 1 Cisco, 1 unmanaged switch at the Leeds office.",
+          "Ubiquiti EOS list: ui.com/support/eol — check both model numbers (UDM-Pro, USW-24).",
+          "Cisco Umbrella: the Leeds box isn't in N-central's inventory. Ring the site — is it still in the path at all?"],
+        capture:"Type what you found — model, EOS date, and whether the Leeds box is still live",
+        prefill:"Download the 4 appliances as a checklist", prefillName:"pemberton-network-kit-eos.csv",
+        prefillRows:[["Model","Site","Found by","EOS date (fill in)","Still in path? (Y/N)"],
+                     ["UDM-Pro","Head office","N-central",""," "],
+                     ["USW-24","Head office","N-central",""," "],
+                     ["Cisco Umbrella box","Leeds","Not in N-central",""," "],
+                     ["Unmanaged switch","Leeds","N-central (no model)",""," "]]}},
+ {id:14,tab:"risk", field:"Anything that went wrong this quarter, and why",    fill:"makeit", src:"No incident log exists yet",
+        hint:"Nothing in the stack holds this. Not a connector gap — the record itself has never been kept.",
+        route:{make:"Create a quarterly incident log",
+          desc:"Harness can start one now: a tagged view over HaloPSA tickets, so this row fills itself from next cycle. It won't back-fill this quarter — that part still comes from Marcus.",
+          madeLabel:"Incident log created — tagging incident-quarterly in HaloPSA",
+          capture:"For this cycle only, type what went wrong and why",
+          prefill:"Download this quarter's P1/P2 tickets to sort", prefillName:"pemberton-incidents-q2.csv",
+          prefillRows:[["Ticket","Opened","Priority","Summary","Root cause (fill in)","Client-visible? (Y/N)"],
+                       ["HALO-4471","12 May","P1","Mailflow delay, 3h",""," "],
+                       ["HALO-4502","28 May","P2","VPN drop, Leeds site",""," "],
+                       ["HALO-4610","19 Jun","P2","Backup job failed twice",""," "]]}},
+
+ {id:15,tab:"employee", field:"Name and email roster",                         fill:"auto",  src:"HaloPSA client contacts",       val:"47 contacts"},
+ {id:16,tab:"employee", field:"MFA status per person",                          fill:"auto",  src:"Cloud Capsule + Inforcer",      val:"44 enforced · 3 exempt"},
+ {id:17,tab:"employee", field:"Training completion and phishing results",       fill:"auto",  src:"uSecure",                       val:"44 of 47 complete"},
+
+ {id:18,tab:"hardware", field:"Device list — name, class, OS, last seen",       fill:"auto",  src:"N-central (3 reports reconciled)",val:"247 devices · 3 unseen 30d+",
+        issue:{kind:"trust", what:"3 devices haven't checked in for 30+ days. Decommissioned, loaned out, or a broken agent on a live machine — N-central can't tell you which.",
+               fix:"Exclude the 3 and say so on the sheet", fixLabel:"Exclude 3, note it",
+               fixedVal:"244 devices confirmed active · 3 excluded, status unknown"}},
+ {id:19,tab:"hardware", field:"Warranty status and manufacturer end-of-support",fill:"nomcp", src:"No connector exists for warranty data",
+        hint:"Not a misconfiguration — there is no warranty source in this stack to connect. Dell/Lenovo have APIs; nobody has wired one.",
+        route:{request:"Request a warranty-lookup connector", requested:"Connector requested — logged for the Harness team, 0 promised date",
+          prefill:"Download your 247 devices as a warranty register to complete", prefillName:"pemberton-warranty-register.csv",
+          prefillRows:[["Device","Class","OS","Purchased (fill in)","Warranty ends (fill in)","Manufacturer EOS (fill in)"],
+                       ["PEM-LT-014","Laptop","Win11 23H2","","",""],
+                       ["PEM-LT-021","Laptop","Win11 22H2","","",""],
+                       ["PEM-DT-003","Desktop","Win11 23H2","","",""],
+                       ["PEM-SRV-01","Server","WS2022","","",""],
+                       ["… 243 more rows","","","","",""]],
+          capture:"Or type the headline now — how many are out of warranty?"}},
+
+ {id:20,tab:"roadmap", field:"Gap list — current state to target level",        fill:"auto",  src:"Inforcer + M365 + NCSC mapping",val:"5 gaps to level 5"},
+ {id:21,tab:"roadmap", field:"Roadmap recommendations — gap, action, priority", fill:"auto",  src:"Composed from the gap list",    val:"5 items · 2 marked P1"},
+
+ {id:22,tab:"forward", field:"What this business is trying to achieve this quarter", fill:"manual", src:"Vanessa's relationship read — no tool",
+        hint:"This is the row that makes the EBR worth attending, and no connector will ever fill it.",
+        route:{steps:["Pemberton's site added a 'Careers — 4 open roles' page since April.",
+                      "Priya mentioned a second office in the Q1 call notes.",
+                      "Ask Priya directly: what's the plan for the next two quarters?"],
+          capture:"What is Pemberton actually trying to do this quarter?"}},
+ {id:23,tab:"forward", field:"Competitive and sector signals, next 12 months",  fill:"manual",  src:"Outside knowledge — no tool",
+        hint:"Sector reading. Harness can point at what changed, but which signals apply to this client is Vanessa's call.",
+        route:{steps:["SRA published new client-data guidance for law-adjacent practices in June.",
+                      "Two of your other professional-services clients asked about Cyber Essentials Plus this quarter."],
+          capture:"Which signals actually apply to Pemberton?"}},
+ {id:24,tab:"forward", field:"Staff changes since last EBR",                    fill:"draft", src:"M365 stale-account + ask the client",
+        val:"2 leavers (Mar, Apr) · 1 joiner — client half unconfirmed", carried:"last quarter's call"},
+
+ {id:25,tab:"agenda", field:"Meeting logistics — contact, date, cadence, advocate", fill:"auto", src:"HaloPSA contacts",          val:"Priya Nandagopal · 21 Aug 2026 · quarterly"},
+
+ {id:26,tab:"referrals", field:"Testimonial request and referral ask — timing, framing", fill:"manual", src:"Vanessa's judgement — no tool",
+        hint:"Timing is everything here and only Vanessa knows the temperature of the relationship.",
+        route:{steps:["Pemberton's last CSAT response was 9/10 (Halo, 11 June).",
+                      "No referral has been asked for in 3 cycles.",
+                      "Judgement call: is this the cycle, and what's the framing?"],
+          capture:"Is this the right moment — and what's the ask?"}},
+
+ {id:27,tab:"close", field:"Open commitments from last cycle",                  fill:"ask",   src:"Last cycle's filed workbook",
+        q:"Of last cycle's 4 commitments: which are done, open, part-done, or superseded?", hint:"Harness has the filed sheet — it can diff it once you confirm that's the source."},
+ {id:28,tab:"close", field:"New commitments to draft from this cycle's roadmap",fill:"auto",  src:"Composed from Technical Roadmap",val:"3 drafted — owners set in the room"},
+];
+
+// ── runtime state ─────────────────────────────────────────────────────────
+const S = {
+  screen:"onboard",        // 'onboard' | 'workbook'
+  client:"pemberton",
+  tab:"climate",
+  fileName:null,
+  analyzing:false,
+  learned:false,
+  filled:{},               // rowId -> true once the runbook reached it
+  answers:{},              // rowId -> what a human typed / captured
+  issueFixed:{},           // rowId -> true once a data-quality issue was resolved
+  made:{},                 // rowId -> true once a missing artifact was created
+  requested:{},            // rowId -> true once a connector was requested
+  runState:{},             // `${tab}:${stepIdx}` -> 'running'|'done'
+  flash:{},                // rowId -> true for one render
+  extraTools:[],           // tools the MSP named that Harness has no connector for
+};
+
+/* Tools the workbook referenced and whether Harness can actually reach them.
+   The MSP always has something we've never heard of — that's the normal case,
+   not an error, so there's a first-class way to name it. */
+const TOOLS = [
+  {name:"N-central",    status:"live"},
+  {name:"Inforcer",     status:"live"},
+  {name:"HaloPSA",      status:"live"},
+  {name:"uSecure",      status:"live"},
+  {name:"Cloud Capsule",status:"live"},
+  {name:"M365 / Entra", status:"live"},
+  {name:"Warranty / EOS lookup", status:"nomcp", note:"No connector exists. Row 19 routes around it."},
+];
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clientById = id => CLIENTS.find(c=>c.id===id);
+const rowsFor = tab => ROWS.filter(r=>r.tab===tab);
+
+/* A row's live status. Anything a human resolved reads as Filled — the route it
+   took is preserved in the source column and the export, so "filled by hand" is
+   never silently indistinguishable from "filled by a connector." */
+function rowStatus(r){
+  if(S.answers[r.id]) return "filled";
+  if(!S.filled[r.id]) return "pending";
+  if(r.fill==="auto"){
+    if(r.issue && !S.issueFixed[r.id]) return "issue";
+    return "filled";
+  }
+  if(r.fill==="draft")  return "draft";
+  if(r.fill==="ask")    return "need";
+  if(r.fill==="manual") return "manual";
+  if(r.fill==="nomcp")  return "nomcp";
+  if(r.fill==="makeit") return "makeit";
+  return "filled";
+}
+function rowValue(r){
+  const st = rowStatus(r);
+  if(st==="pending") return {text:"", cls:""};
+  if(S.answers[r.id]) return {text:S.answers[r.id], cls:"val-filled"};
+  if(st==="issue")  return {text:r.val + "  ⚠ check the data", cls:"val-filled"};
+  if(st==="need")   return {text:"awaiting a judgement call", cls:"val-empty"};
+  if(st==="manual") return {text:"needs a manual pull", cls:"val-empty"};
+  if(st==="nomcp")  return {text:"no connector for this", cls:"val-empty"};
+  if(st==="makeit") return {text:S.made[r.id] ? "log created — fills from next cycle" : "nothing records this yet", cls:"val-empty"};
+  if(r.issue && S.issueFixed[r.id]) return {text:r.issue.fixedVal, cls:"val-filled"};
+  return {text:r.val, cls:"val-filled"};
+}
+const STATUS_LABEL = {
+  filled:"Filled", draft:"Draft — carried", need:"Needs you", issue:"Data problem",
+  manual:"Manual pull", nomcp:"No connector", makeit:"Doesn't exist yet", pending:"Not run yet"
+};
+function statusChip(st){ return `<span class="st st-${st}">${STATUS_LABEL[st]}</span>`; }
+// A cell counts as done when it has a trustworthy value — an unresolved data
+// problem does NOT count, or the meter would lie about how ready the sheet is.
+function rowDone(r){ const st=rowStatus(r); return st==="filled"||st==="draft"; }
+function rowBlocked(r){ return ["need","manual","nomcp","makeit","issue"].includes(rowStatus(r)); }
+
+// ── the runbook: derived from the rows in a tab, not hand-written per tab ──
+function runbookFor(tab){
+  const rs = rowsFor(tab);
+  const steps = [];
+  const autoSrcs = [...new Set(rs.filter(r=>r.fill==="auto").map(r=>r.src))];
+  autoSrcs.forEach(src=>{
+    const ids = rs.filter(r=>r.fill==="auto" && r.src===src).map(r=>r.id);
+    steps.push({verb:"Pull", title:src, desc:`Fills ${ids.length} cell${ids.length>1?'s':''}: ${ids.map(i=>'row '+i).join(', ')}.`, rows:ids});
+  });
+  const drafts = rs.filter(r=>r.fill==="draft");
+  if(drafts.length) steps.push({verb:"Carry forward", title:"Re-use last cycle where there's no time to re-pull",
+    desc:`${drafts.length} cell${drafts.length>1?'s':''} marked Draft — a guess, visibly not a reading. Confirm or re-pull before the room.`, rows:drafts.map(r=>r.id)});
+
+  // Every edge case becomes its own step WITH a route. Order is deliberate:
+  // data problems first (they look filled and are the easiest to miss), then the
+  // things that need a person, then the things that don't exist yet.
+  rs.filter(r=>r.fill==="auto" && r.issue).forEach(r=>{
+    steps.push({verb:"Check", title:`Row ${r.id} — connected, but the data is off`, desc:r.issue.what, issueRow:r.id, rows:[r.id]});
+  });
+  rs.filter(r=>r.fill==="ask").forEach(r=>{
+    steps.push({verb:"Ask", title:`Row ${r.id} — only a human knows this`, desc:r.hint, askRow:r.id, rows:[r.id]});
+  });
+  rs.filter(r=>r.fill==="manual").forEach(r=>{
+    steps.push({verb:"Pull by hand", title:`Row ${r.id} — no API for this one`, desc:r.hint, routeRow:r.id, rows:[r.id]});
+  });
+  rs.filter(r=>r.fill==="nomcp").forEach(r=>{
+    steps.push({verb:"No connector", title:`Row ${r.id} — nothing to connect to`, desc:r.hint, routeRow:r.id, rows:[r.id]});
+  });
+  rs.filter(r=>r.fill==="makeit").forEach(r=>{
+    steps.push({verb:"Make it", title:`Row ${r.id} — this record doesn't exist`, desc:r.hint, routeRow:r.id, rows:[r.id]});
+  });
+
+  steps.push({verb:"Assemble", title:"Write the tab", desc:"Compose the filled cells into the sheet the client sees.", assemble:true, rows:[]});
+  return steps;
+}
+
+// ── fill maths ────────────────────────────────────────────────────────────
+/* Every row is fillable now — the question is by what route. Nothing is written off
+   as "no source," because that was the flag that let a gap sit there forever. */
+function tabProgress(tab){
+  const rs = rowsFor(tab);
+  const done = rs.filter(rowDone).length;
+  return {done, total:rs.length, blocked:rs.filter(rowBlocked).length};
+}
+function workbookProgress(){
+  const done = ROWS.filter(rowDone).length;
+  const by = st => ROWS.filter(r=>rowStatus(r)===st).length;
+  return {done, total:ROWS.length, blocked:ROWS.filter(rowBlocked).length,
+          need:by("need"), manual:by("manual"), nomcp:by("nomcp"), makeit:by("makeit"), issue:by("issue")};
+}
+</script>
+<script>
+/* ═══════════════ ONBOARD — drop the sheet, learn the business ═══════════ */
+function onboardHTML(){
+  if(S.analyzing) return `
+    <div class="onboard-wrap"><div class="learned" style="text-align:center;padding:48px;">
+      <div class="spin"></div>
+      <h3 style="margin-top:14px;">Reading ${esc(S.fileName)}…</h3>
+      <p class="sub" style="margin:6px 0 0;">Finding the tab structure, the client list, and who this MSP is.</p>
+    </div></div>`;
+
+  if(!S.learned) return `
+    <div class="onboard-wrap">
+      <h2 style="font-size:24px;">Drop last quarter's EBR workbook.</h2>
+      <p style="color:var(--text-secondary);margin:8px 0 var(--sp-lg);max-width:660px;">Harness reads it to learn three things: who you are, who your clients are, and how you already lay an EBR out. Nothing is connected yet — this runs on the file alone. <span class="cs">CS: HIGH</span> onboarding shape per FSN-82692.</p>
+      <div class="dropzone" id="dz" role="button" tabindex="0" onclick="browse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();browse();}">
+        <span class="ic">⫩</span>
+        <b>Drop an .xlsx here</b>
+        <p style="color:var(--text-tertiary);font-size:12.5px;margin-top:5px;">or click to choose — .xlsx, .xls, .csv</p>
+        <input id="fi" class="vh" type="file" accept=".xlsx,.xls,.csv" onchange="picked(event)">
+        <div style="margin-top:14px;"><button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();sample();">Use a sample workbook instead →</button></div>
+      </div>
+    </div>`;
+
+  const c = clientById("pemberton");
+  return `
+  <div class="onboard-wrap">
+    <div class="note"><b>Read ${esc(S.fileName)}</b> — 9 sheets, 4 client rows, 28 populated fields. Everything below was inferred from the file; correct anything that's wrong before continuing. <span class="a-flag">A</span> no real parser behind this.</div>
+
+    <div class="learned">
+      <h3>Your business</h3>
+      <p class="sub">From the workbook header and footer rows.</p>
+      <div class="kv"><span class="k">MSP</span><span class="v">${esc(COMPANY.name)}</span></div>
+      <div class="kv"><span class="k">Owner</span><span class="v">${esc(COMPANY.owner)}</span></div>
+      <div class="kv"><span class="k">Who prepares EBRs</span><span class="v">${esc(COMPANY.practitioner)} — technical practitioner</span></div>
+      <div class="kv"><span class="k">Who runs the room</span><span class="v">${esc(COMPANY.am)} — account manager</span></div>
+      <div class="kv"><span class="k">Tools referenced</span><span class="v"><span class="chip">N-central</span><span class="chip">Inforcer</span><span class="chip">HaloPSA</span><span class="chip">uSecure</span><span class="chip">Cloud Capsule</span><span class="chip">M365 / Entra</span></span></div>
+      <div class="kv"><span class="k">Framework language</span><span class="v">NCSC 10 Steps · Cyber Essentials</span></div>
+    </div>
+
+    <div class="learned">
+      <h3>Your clients</h3>
+      <p class="sub">Found as rows in the workbook's own client sheet — tier inferred from MRR, editable.</p>
+      <table class="mini">
+        <thead><tr><th>Client</th><th>Sector</th><th>MRR</th><th>Users</th><th>Tier</th><th>Last EBR</th></tr></thead>
+        <tbody>${CLIENTS.map(c=>`<tr>
+          <td><b>${esc(c.name)}</b></td><td>${esc(c.sector)}</td><td class="num">${esc(c.mrr)}</td>
+          <td class="num">${c.users}</td><td><span class="tier ${c.tier}">${c.tier}</span></td>
+          <td style="color:var(--text-tertiary);">${esc(c.lastEBR)}</td></tr>`).join("")}</tbody>
+      </table>
+    </div>
+
+    <div class="learned">
+      <h3>Your EBR layout</h3>
+      <p class="sub">Nine sheets, kept as they are — Harness doesn't reorganise the MSP's own structure.</p>
+      <div>${TABS.map(t=>`<span class="chip">${t.n?t.n+". ":""}${esc(t.name)}</span>`).join("")}</div>
+      <div class="kv" style="margin-top:10px;"><span class="k">Fields per cycle</span><span class="v">${ROWS.length} across 9 sheets</span></div>
+      <div class="kv"><span class="k">A connector can fill</span><span class="v" style="color:var(--ok);">${ROWS.filter(r=>r.fill==="auto").length} fields</span></div>
+      <div class="kv"><span class="k">Carried from last cycle</span><span class="v" style="color:var(--draft);">${ROWS.filter(r=>r.fill==="draft").length} fields</span></div>
+      <div class="kv"><span class="k">Only a human knows</span><span class="v" style="color:var(--need);">${ROWS.filter(r=>r.fill==="ask").length} fields</span></div>
+      <div class="kv"><span class="k">Manual pull — no API</span><span class="v" style="color:var(--need);">${ROWS.filter(r=>r.fill==="manual").length} fields</span></div>
+      <div class="kv"><span class="k">No connector exists</span><span class="v" style="color:var(--none);">${ROWS.filter(r=>r.fill==="nomcp").length} field</span></div>
+      <div class="kv"><span class="k">Record doesn't exist yet</span><span class="v" style="color:var(--none);">${ROWS.filter(r=>r.fill==="makeit").length} field</span></div>
+      <p class="sub" style="margin:10px 0 0;">Every one of those has a route — Harness doesn't hand back a list of things it couldn't do.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="openWorkbook()">Build this cycle's workbook for ${esc(c.name)} →</button>
+  </div>`;
+}
+function browse(){ const i=document.getElementById("fi"); if(i) i.click(); }
+function picked(e){ const f=e.target.files&&e.target.files[0]; e.target.value=""; if(f) analyze(f.name); }
+function sample(){ analyze("EBR-Workbook-Q2-2026.xlsx"); }
+function analyze(name){
+  S.fileName=name; S.analyzing=true; render();
+  setTimeout(()=>{ S.analyzing=false; S.learned=true; render(); }, 900+Math.floor(Math.random()*600));
+}
+function wireDrop(){
+  const dz=document.getElementById("dz"); if(!dz) return;
+  const on=(ev,fn)=>dz.addEventListener(ev,fn);
+  on("dragenter",e=>{e.preventDefault();dz.classList.add("drag");});
+  on("dragover", e=>{e.preventDefault();dz.classList.add("drag");});
+  on("dragleave",e=>{e.preventDefault();dz.classList.remove("drag");});
+  on("drop",     e=>{e.preventDefault();dz.classList.remove("drag");
+    const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f) analyze(f.name);});
+}
+function openWorkbook(){ S.screen="workbook"; render(); }
+</script>
+<script>
+/* ═══════════════ WORKBOOK — the sheet, filling in ═══════════════════════ */
+function workbookHTML(){
+  const c = clientById(S.client);
+  const p = workbookProgress();
+  const pct = p.total ? Math.round(p.done/p.total*100) : 0;
+  return `
+  <div class="wb">
+    <div class="wb-main">
+      <div class="wb-bar">
+        <span class="wb-title">${esc(c.name)} — Cycle ${c.cycle} EBR</span>
+        <span class="wb-file">${esc(S.fileName||"EBR-Workbook.xlsx")} · 9 sheets</span>
+        <div class="spacer"></div>
+        <div class="fill-meter">
+          <span class="num"><b>${p.done}</b> / ${p.total} filled</span>
+          <span class="fill-track"><span class="fill-bar" style="width:${pct}%"></span></span>
+          ${p.issue ?`<span class="st st-issue">${p.issue} data problem${p.issue>1?'s':''}</span>`:''}
+          ${p.need  ?`<span class="st st-need">${p.need} need you</span>`:''}
+          ${p.manual?`<span class="st st-manual">${p.manual} manual</span>`:''}
+          ${p.nomcp ?`<span class="st st-nomcp">${p.nomcp} no connector</span>`:''}
+          ${p.makeit?`<span class="st st-makeit">${p.makeit} to create</span>`:''}
+        </div>
+        <button class="btn btn-sm" onclick="runAll()">Run every sheet</button>
+        <button class="btn btn-sm btn-primary" onclick="exportSheet()">⬇ Export .csv</button>
+      </div>
+
+      <div class="grid-scroll">
+        <table class="sheet">
+          <thead><tr>
+            <th class="c-row">#</th><th class="c-field">Field</th><th class="c-value">Value</th>
+            <th class="c-source">Picked from</th><th class="c-status">Status</th>
+          </tr></thead>
+          <tbody id="sheetBody">${sheetRowsHTML()}</tbody>
+        </table>
+      </div>
+
+      <div class="tabstrip">${TABS.map(t=>{
+        const pr=tabProgress(t.id);
+        const cls = pr.done===0 ? "todo" : (pr.done<pr.total ? "part" : "done");
+        return `<button class="${t.id===S.tab?'active':''}" onclick="setTab('${t.id}')">
+          <span class="tdot ${cls}"></span>${t.n?t.n+". ":""}${esc(t.name)}
+        </button>`;}).join("")}</div>
+    </div>
+
+    <aside class="runbook" id="runbook">${runbookHTML()}</aside>
+  </div>`;
+}
+
+function sheetRowsHTML(){
+  return rowsFor(S.tab).map(r=>{
+    const st=rowStatus(r), v=rowValue(r);
+    const flash = S.flash[r.id] ? " cell-flash" : "";
+    return `<tr>
+      <td class="c-row">${r.id}</td>
+      <td class="c-field">${esc(r.field)}</td>
+      <td class="c-value${flash}"><span class="${v.cls}">${esc(v.text)}</span></td>
+      <td class="c-source">${esc(r.src)}</td>
+      <td class="c-status">${statusChip(st)}</td>
+    </tr>`;
+  }).join("");
+}
+function setTab(id){ S.tab=id; render(); }
+
+function runbookHTML(){
+  const tab = TABS.find(t=>t.id===S.tab);
+  const steps = runbookFor(S.tab);
+  const pr = tabProgress(S.tab);
+  // "nothing left to pull" means the automatic work is done — the edge cases stay
+  // open on purpose until a human takes one of their routes.
+  const allRun = steps.every((s,i)=>S.runState[`${S.tab}:${i}`]==="done" || s.askRow || s.routeRow || s.issueRow);
+  return `
+    <span class="rb-eyebrow">Runbook · sheet ${tab.n||"—"}</span>
+    <h3>${esc(tab.name)}</h3>
+    <p class="rb-sub">Harness wrote these steps from the fields in this sheet. Run them and the cells fill on the left. <span class="num">${pr.done}/${pr.total}</span> filled.</p>
+    <button class="btn btn-primary" style="width:100%;margin-bottom:var(--sp-md);" onclick="runTab()" ${allRun?'disabled':''}>
+      ${allRun?'Sheet run — nothing left to pull':'Run this sheet'}
+    </button>
+    ${steps.map((s,i)=>stepHTML(s,i)).join("")}
+    ${deliverableHTML()}`;
+}
+function stepHTML(s,i){
+  const key=`${S.tab}:${i}`;
+  const edgeRow = s.askRow || s.routeRow || s.issueRow;
+  let cls = S.runState[key]==="running" ? "running" : (S.runState[key]==="done" ? "done" : "");
+  if(edgeRow){
+    const r = ROWS.find(x=>x.id===edgeRow);
+    if(rowDone(r)) cls="done";
+    else if(S.filled[edgeRow]) cls="blocked";
+    else cls="";
+  }
+  const mark = cls==="done" ? "✓" : (cls==="running" ? "…" : (cls==="blocked" ? "!" : i+1));
+
+  let body="";
+  // 1. Judgement call — a question, nothing more. No route can help here.
+  if(s.askRow && !S.answers[s.askRow]){
+    const r=ROWS.find(x=>x.id===s.askRow);
+    body = `<div class="ask">
+      <div class="q">${esc(r.q)}</div>
+      <label class="vh" for="ans${r.id}">Answer</label>
+      <input id="ans${r.id}" type="text" placeholder="Type what you know, or name where it lives…">
+      <button class="btn btn-sm btn-primary" style="margin-top:7px;" onclick="answer(${r.id})">Record answer</button>
+    </div>`;
+  }
+  // 2. Connected but the data is wrong — name it, offer the honest reduction.
+  if(s.issueRow && !S.issueFixed[s.issueRow]){
+    const r=ROWS.find(x=>x.id===s.issueRow);
+    body = `<div class="ask">
+      <div class="q">${esc(r.issue.fix)}</div>
+      <p style="font-size:11px;color:var(--text-tertiary);margin-top:5px;">The cell reads as filled right now. It shouldn't count as done until this is settled.</p>
+      <div style="display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-primary" onclick="fixIssue(${r.id})">${esc(r.issue.fixLabel)}</button>
+        <button class="btn btn-sm" onclick="fixAtSource(${r.id})">Fix it at source instead</button>
+      </div>
+    </div>`;
+  }
+  // 3. Manual pull / no connector / doesn't exist — the routes.
+  if(s.routeRow && !S.answers[s.routeRow]){
+    const r=ROWS.find(x=>x.id===s.routeRow);
+    const rt=r.route||{};
+    const steps = rt.steps ? `<ol style="margin:7px 0 0;padding-left:17px;">${rt.steps.map(x=>`<li style="font-size:11.5px;color:var(--text-secondary);margin-bottom:4px;">${esc(x)}</li>`).join("")}</ol>` : "";
+    const made = rt.make ? (S.made[r.id]
+        ? `<div style="font-size:11.5px;color:var(--ok);font-weight:600;margin-top:7px;">✓ ${esc(rt.madeLabel)}</div>`
+        : `<div style="margin-top:7px;"><button class="btn btn-sm btn-primary" onclick="makeIt(${r.id})">${esc(rt.make)}</button>
+           <p style="font-size:11px;color:var(--text-tertiary);margin-top:5px;">${esc(rt.desc||"")}</p></div>`) : "";
+    const req = rt.request ? (S.requested[r.id]
+        ? `<div style="font-size:11.5px;color:var(--brand-deep);font-weight:600;margin-top:7px;">✓ ${esc(rt.requested)}</div>`
+        : `<div style="margin-top:7px;"><button class="btn btn-sm" onclick="requestConnector(${r.id})">${esc(rt.request)}</button></div>`) : "";
+    const dl = rt.prefill ? `<div style="margin-top:7px;"><button class="btn btn-sm" onclick="downloadTemplate(${r.id})">⬇ ${esc(rt.prefill)}</button>
+        <p style="font-size:11px;color:var(--text-tertiary);margin-top:5px;">Pre-filled with what Harness already holds, so nobody retypes what it knows.</p></div>` : "";
+    const cap = rt.capture ? `<label class="vh" for="ans${r.id}">Capture</label>
+        <input id="ans${r.id}" type="text" placeholder="${esc(rt.capture)}">
+        <button class="btn btn-sm btn-primary" style="margin-top:7px;" onclick="answer(${r.id})">Record it</button>` : "";
+    body = `<div class="ask">${steps}${made}${req}${dl}
+      ${cap?`<div style="margin-top:9px;padding-top:9px;border-top:1px dashed rgba(179,38,30,.35);">${cap}</div>`:""}
+    </div>`;
+  }
+  return `<div class="step ${cls}">
+    <div class="step-top"><span class="step-n">${mark}</span>
+      <div><span class="step-verb">${esc(s.verb)}</span><h5>${esc(s.title)}</h5></div>
+    </div>
+    <p>${esc(s.desc)}</p>${body}
+  </div>`;
+}
+
+/* ── the routes, for real ── */
+function csvDownload(name, rows){
+  const csv=rows.map(r=>r.map(f=>{const s=String(f??"");return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;}).join(",")).join("\r\n");
+  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));
+  const a=document.createElement("a"); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function downloadTemplate(rowId){
+  const r=ROWS.find(x=>x.id===rowId);
+  csvDownload(r.route.prefillName, r.route.prefillRows);
+}
+function requestConnector(rowId){ S.requested[rowId]=true; renderRunbook(); }
+function makeIt(rowId){ S.made[rowId]=true; render(); }
+function fixIssue(rowId){
+  S.issueFixed[rowId]=true; S.flash[rowId]=true; render();
+  setTimeout(()=>{delete S.flash[rowId];},850);
+}
+function fixAtSource(rowId){
+  const r=ROWS.find(x=>x.id===rowId);
+  S.answers[rowId] = "Corrected in " + (r.src.split(" ")[0]) + " — re-pull next cycle picks it up";
+  S.flash[rowId]=true; render();
+  setTimeout(()=>{delete S.flash[rowId];},850);
+}
+function deliverableHTML(){
+  const p=workbookProgress();
+  const ready = p.blocked===0;
+  return `<div class="deliverable">
+    <h4>The deliverable</h4>
+    <p>The filled workbook — the same file shape the MSP already used, with this cycle's values in it.</p>
+    <div class="kv"><span class="k">Filled</span><span class="v num">${p.done} of ${p.total}</span></div>
+    <div class="kv"><span class="k">Still blocked</span><span class="v num" style="color:${p.blocked?'var(--need)':'var(--ok)'}">${p.blocked}</span></div>
+    ${p.blocked?`<p style="margin-top:6px;">${[p.issue&&p.issue+" data problem",p.need&&p.need+" judgement call",p.manual&&p.manual+" manual pull",p.nomcp&&p.nomcp+" no connector",p.makeit&&p.makeit+" to create"].filter(Boolean).join(" · ")} — every one has a route in the runbook above.</p>`:''}
+    <button class="btn ${ready?'btn-primary':''}" style="width:100%;margin-top:11px;" onclick="exportSheet()">
+      ⬇ Export the filled workbook (.csv)
+    </button>
+    <p style="margin-top:7px;">${ready?'Every row has a trustworthy value.':`Exports now — the ${p.blocked} blocked row${p.blocked>1?'s':''} carry their reason into the file, so nothing looks filled that isn't.`}</p>
+    ${toolsPanelHTML()}
+  </div>`;
+}
+
+/* The MSP always runs something we've never heard of. Naming it is a first-class
+   action, not a support ticket — and it changes what the sheet claims. */
+function toolsPanelHTML(){
+  const missing = S.extraTools;
+  return `<div style="margin-top:var(--sp-md);padding-top:var(--sp-md);border-top:1px solid var(--border);">
+    <h4 style="font-size:12.5px;">Tools we couldn't reach</h4>
+    <p>Harness read your workbook and matched 6 tools. Anything it doesn't know about is a hole in the sheet it can't see.</p>
+    ${TOOLS.filter(t=>t.status==="nomcp").map(t=>`<div class="kv"><span class="k">${esc(t.name)}</span><span class="v" style="color:var(--none);font-weight:500;">no connector</span></div>`).join("")}
+    ${missing.map((t,i)=>`<div class="kv"><span class="k">${esc(t)}</span><span class="v" style="color:var(--need);font-weight:500;">you named it — no connector</span></div>`).join("")}
+    <label class="vh" for="newTool">Name a tool we missed</label>
+    <input id="newTool" type="text" placeholder="Something we missed? e.g. Cloudflare" style="width:100%;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:6px 8px;font-family:inherit;font-size:12px;margin-top:7px;">
+    <button class="btn btn-sm" style="margin-top:7px;" onclick="addTool()">Add it</button>
+    ${missing.length?`<div class="note" style="margin:10px 0 0;">Because ${esc(missing.join(", "))} ${missing.length>1?'are':'is'} in play and unreadable, this cycle's risk rows are <b>incomplete, not clean</b> — the sheet now says so rather than implying full coverage.</div>`:''}
+  </div>`;
+}
+function addTool(){
+  const el=document.getElementById("newTool");
+  const v=(el&&el.value.trim())||"";
+  if(!v) return;
+  if(!S.extraTools.includes(v)) S.extraTools.push(v);
+  render();
+}
+
+/* ── running the runbook: this is the thing to watch ── */
+function runTab(){
+  const steps = runbookFor(S.tab);
+  let delay = 0;
+  steps.forEach((s,i)=>{
+    const key=`${S.tab}:${i}`;
+    if(S.runState[key]==="done") return;
+    delay += 420 + Math.floor(Math.random()*380);
+    setTimeout(()=>{
+      S.runState[key]="running"; renderRunbook();
+      setTimeout(()=>{
+        S.runState[key]="done";
+        (s.rows||[]).forEach(id=>{ S.filled[id]=true; S.flash[id]=true; });
+        render();
+        setTimeout(()=>{ (s.rows||[]).forEach(id=>delete S.flash[id]); }, 850);
+      }, 340);
+    }, delay);
+  });
+}
+function runAll(){
+  const here = S.tab;
+  TABS.forEach((t,ti)=>setTimeout(()=>{ S.tab=t.id; runTab(); if(ti===TABS.length-1) setTimeout(()=>{S.tab=here;render();},1600); }, ti*250));
+}
+function answer(rowId){
+  const el=document.getElementById("ans"+rowId);
+  const v=(el&&el.value.trim())||"";
+  if(!v){ if(el){el.style.borderColor="var(--need)";el.placeholder="Nothing recorded — a blank stays blank, it doesn't get guessed.";} return; }
+  S.answers[rowId]=v; S.filled[rowId]=true; S.flash[rowId]=true;
+  render();
+  setTimeout(()=>{delete S.flash[rowId];},850);
+}
+
+function exportSheet(){
+  const c=clientById(S.client);
+  const out=[["Sheet","#","Field","Value","Picked from","Status","Why it's blocked"]];
+  TABS.forEach(t=>rowsFor(t.id).forEach(r=>{
+    const st=rowStatus(r);
+    // The reason travels with the file. A blank cell in Excel with no explanation is
+    // how a gap becomes invisible again the moment it leaves this screen.
+    const why = st==="issue"  ? r.issue.what
+              : st==="need"   ? "Judgement call — only a human knows this"
+              : st==="manual" ? "No API — needs a manual pull: " + r.src
+              : st==="nomcp"  ? "No connector exists for this source"
+              : st==="makeit" ? "No record of this exists yet" + (S.made[r.id]?" — log created, fills from next cycle":"")
+              : st==="draft"  ? "Carried forward from " + (r.carried||"last cycle") + " — not re-pulled"
+              : st==="pending"? "Runbook not run for this sheet"
+              : "";
+    out.push([t.n?`${t.n}. ${t.name}`:t.name, r.id, r.field, rowValue(r).text, r.src, STATUS_LABEL[st], why]);
+  }));
+  if(S.extraTools.length) out.push(["","","Tools named but unreadable","", S.extraTools.join(" · "), "No connector","Risk rows are incomplete, not clean"]);
+  const csv=out.map(row=>row.map(f=>{const s=String(f??"");return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;}).join(",")).join("\r\n");
+  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));
+  const a=document.createElement("a");
+  a.href=url; a.download=`${c.id}-cycle-${c.cycle}-ebr-workbook.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+
+function renderRunbook(){ const el=document.getElementById("runbook"); if(el) el.innerHTML=runbookHTML(); }
+function renderSheet(){ const el=document.getElementById("sheetBody"); if(el) el.innerHTML=sheetRowsHTML(); }
+</script>
+<script>
+function render(){
+  const app=document.getElementById("app");
+  app.innerHTML = S.screen==="onboard" ? onboardHTML() : workbookHTML();
+  document.getElementById("tbCompany").textContent = S.learned ? COMPANY.name : "—";
+  const cw=document.getElementById("tbClientWrap");
+  cw.style.display = S.screen==="workbook" ? "flex" : "none";
+  if(S.screen==="workbook"){
+    const sel=document.getElementById("tbClient");
+    sel.innerHTML=CLIENTS.map(c=>`<option value="${c.id}">${esc(c.name)} — Cycle ${c.cycle}</option>`).join("");
+    sel.value=S.client;
+    sel.onchange=e=>{S.client=e.target.value;render();};
+  }
+  if(S.screen==="onboard" && !S.learned && !S.analyzing) wireDrop();
+}
+document.addEventListener("DOMContentLoaded", render);
+</script>
+</body>
+</html>

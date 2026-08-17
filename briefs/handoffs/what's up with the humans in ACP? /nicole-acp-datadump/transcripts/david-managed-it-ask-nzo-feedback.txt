@@ -1,0 +1,176 @@
+﻿TRANSCRIPT: David @ Managed IT Experts - Ask N-zo Feedback Session
+Source: David@managedit.vtt
+============================================================
+
+David @ Managed IT Experts Feedback session : Recap: David @ Managed IT Experts - Ask N-zo Feedback Session Wednesday, March 4 | Meeting | Microsoft Teams 
+ 
+Michael Weaver  this should be good viewing for you & MCPs. 
+ 
+What David Liked About Ask N‑zo 
+1. Strong value for QBRs and customer‑facing reporting
+David consistently pointed to Quarterly Business Reviews and client summaries as the clearest win for N‑zo when the data is accurate.
+What he liked
+Fast creation of client‑ready narratives
+Clear summaries that would normally take significant manual effort
+Ability to frame insights as recommendations without being salesy
+Quotes
+“I was just giving scenarios like, OK, I’m preparing for quarterly business review and create report for me so that I can give it to client.”
+“I actually told it, you know, don’t be salesy but at the same time give constructive information that could be used as kind of almost natural recommendations… It actually did a good job.”
+“It would have taken me easily an hour, hour and a half to put something like this together, and I managed to do it in like 15–20 minutes.”
+Use case
+QBR narrative generation
+Client‑facing summaries with light upsell framing
+Business reviews prepared by non‑technical users
+2. Clear time savings, even in early form
+David emphasized that even with current limitations, N‑zo delivered meaningful time efficiency for certain workflows.
+Quotes
+“Definitely I saw a lot of value just in that.”
+“It would have taken me easily an hour, hour and a half… and I managed to do it in like 15–20 minutes.”
+Use case
+Rapid report drafting
+First‑pass analysis before refinement
+Reducing manual writing and formatting effort
+3. Easy to use and intuitive
+David rated N‑zo highly for usability and onboarding, separating experience quality from data limitations.
+Quotes
+“It was at least four, I would say… it was very intuitive.”
+“It didn’t take much time for me to kind of figure out how to make it useful.”
+Use case
+Fast adoption without training overhead
+Accessible for business users, not just engineers
+4. Clear fit for different user personas
+David explicitly distinguished between where Ask N‑zo works well today and where it does not yet.
+What he liked
+Recognized that Ask N‑zo has a strong role for business and reporting users
+Saw it as one tool in a broader toolbox, not a one‑size‑fits‑all solution
+Quotes
+“Enzo has its place… it just depends what you’re trying to achieve.”
+“There is a user set within your organization who would get value out of it, and then a user set… that would get more value out of MCP.”
+Use case
+Business reviews
+Executive summaries
+Non‑engineering operational insights
+5. Strong enthusiasm for MCP as the real game changer
+While this is technically adjacent to Ask N‑zo, David repeatedly connected his excitement about MCP to unlocking much greater value from N‑zo’s data.
+What he liked
+Ability to build custom solutions instead of waiting for out‑of‑box features
+Access to the same data N‑zo uses
+Faster experimentation for MSP‑specific workflows
+Quotes
+“What would be a game changer is MCP… we don’t want necessarily end products. We need a tool that lets us build our own things.”
+“With MCP we could experiment much faster in terms of what we can do.”
+Use case
+Custom MSP workflows
+Internal tooling built by solution architects
+Advanced analysis beyond chat output
+6. Willingness to adopt Ask N‑zo when GA
+Despite being candid about limitations, David was clear about adoption intent.
+Quote
+“Yeah, of course. Yeah, definitely have its place.” (when asked if they would adopt Ask N‑zo at GA)
+Summary Insight
+David sees Ask N‑zo as already valuable for business reviews, reporting, and narrative generation, with clear time savings and strong usability. He does not view it as a full technician or NOC solution yet, but he sees MCP as the bridge that could turn N‑zo from a helpful copilot into a platform that materially moves the needle for MSP operations.
+ 
+WHAT CAN BE IMPROVED
+ 
+1. Data accuracy and completeness (top priority)
+What needs improvement
+
+David’s biggest issue was not directionality, but trust. When the data is wrong or incomplete, it breaks the workflow because everything must be double‑checked.
+Quotes
+“It’s a trust thing… if it gives like wrong number… then they need to kind of double check and scrutinize everything.”
+“That becomes counterproductive because then it’s almost like it takes as much time to double check.”
+“It’s kind of this 90 percent plus good job, but then… yeah, not 100%.”
+Concrete example
+N‑zo reported all devices as Windows 10 and zero Windows 11 devices, which did not match their environment.
+“Which clearly does not match our current environment where Windows 11 is actually the majority.”
+Implication
+For customer‑facing use cases, accuracy needs to be high‑confidence, not “mostly right.”
+2. Full device coverage and ingestion gaps
+What needs improvement
+
+David called out that N‑zo was clearly not reading the full device set, which directly contributed to inaccurate results.
+Quotes
+“When we read in the device list, we clearly did not read in all 1300.”
+“That’s something… we’ll go investigate what happened there.”
+Implication
+Partial ingestion undermines analytics, summaries, and reports.
+MSPs need confidence that all managed devices are represented, not a subset.
+3. Structured outputs (CSV, Word, files)
+What needs improvement
+
+Chat‑only output limits real‑world use. David repeatedly emphasized the need for structured, exportable formats.
+Quotes
+“He wanted CSV file as an output and I believe that you cannot do that yet.”
+“Chat just chatting is not enough. Typically analysis needs to be more structured.”
+“If it gave you an output as a file, then that information is more easily actionable.”
+“Even like Word document for example… it doesn’t need to be fancy formatting.”
+Implication
+N‑zo should support:
+CSV for analysis
+Word or document output for QBRs
+Files that can drop directly into existing workflows
+4. Access to checks, alerts, and operational data
+What needs improvement
+
+N‑zo is currently limited for engineers because it cannot reason over checks, alerts, or operational signals.
+Quotes
+“It just doesn’t have access to checks and things like that.”
+“You cannot ask Enzo… what I need to do as a NOC engineer.”
+“It’s very limited to what it can help you with as an engineer.”
+Implication
+Without checks, alerts, patch, and backup context, N‑zo can’t support:
+NOC workflows
+Proactive maintenance
+Daily technician prioritization
+5. Actionable prioritization, not just information
+What needs improvement
+
+David doesn’t just want answers. He wants distilled insight and prioritization.
+Quotes
+“A lot of it is not really even fixing anything, it’s just going through different screens, menus, looking for false positives.”
+“If there was a way for it to distill it to insights… it gives you actually almost like an action list.”
+“Today, that’s a priority based on what’s going on with alerts.”
+Implication
+High value comes from:
+Noise reduction
+Ranked action lists
+Clear “what should I work on today” guidance
+6. Technician and NOC efficiency use cases
+What needs improvement
+
+David described a very specific time sink in NOC operations that N‑zo does not yet address.
+Quotes
+“We have a dedicated person that spends probably 20 hours a week… going through alerts.”
+“80–90% of that time is just checking this, checking that.”
+“That work is definitely automatable because it’s just cutting from the noise.”
+Implication
+This is a clear opportunity for:
+Proactive maintenance insights
+Cross‑client alert synthesis
+AI‑generated daily work plans
+7. ROI clarity and monetization readiness
+What needs improvement
+
+David was candid that today’s value is incremental, not yet transformational.
+Quotes
+“At the moment… it’s kind of just marginal improvements.”
+“There needs to be something where… I can quantify it.”
+“Not just a marginal difference… it needs to move the needle.”
+Implication
+To justify premium pricing or expansion:
+Clear efficiency gains
+Measurable time savings
+Technician capacity increases
+8. MCP is the path to solving many of these gaps
+What needs improvement (indirectly)
+
+David repeatedly framed MCP access as the unlock for addressing N‑zo’s current limitations.
+Quotes
+“We don’t want necessarily end products. We need a tool that lets us build our own things.”
+“With MCP… we could experiment much faster.”
+“That would be a game changer.”
+Implication
+Customers want:
+Control
+Extensibility
+The ability to solve MSP‑specific problems themselves

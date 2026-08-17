@@ -2,43 +2,27 @@
 .claude/settings.local.json
 .claude/launch.json
 
-# Generated outputs
-critic-*.md
-council-testimony.md
-proctor-*.md
-
-# Project-specific work
-HANDOFF-*.md
-JULIAN-*.md
-REPO-SETUP.md
-
 # macOS
 .DS_Store
 
-# N-able internal repo — local reference only
+# N-able internal repo — local reference only, never on personal GitHub
 acp-core-main-3/
-
-# Binaries
-*.dmg
-*.zip
-*.pdf
-*.docx
-*.pptx
 
 # Real data — GDPR
 *.csv
 *.xlsx
 
-# Nameless zip
+# Participant transcript — IRB/GDPR
+flowers_transcript.docx
+
+# Unverified personal file
+RightThingElizabeth.pdf
+
+# Installer
+Claude.dmg
+
+# Nameless zip (unknown contents)
 ziGjtYY8
 
-# Embedded git repo (no remote; use prototyping-toolkit 2/ instead)
+# Embedded git repo (no remote; prototyping-toolkit 2/ is the keeper)
 prototyping-toolkit/
-
-# Share packages (zip is canonical)
-adlumin-prototype-package/
-band-toolkit-share-2026-07-31/
-julian-prototype-package/
-julian-prototype-package 2/
-prototype-skill-share/
-prototype-skill-share 2/

@@ -4,7 +4,7 @@
 **Run type:** Scheduled weekly (automated, Steps 1–4 only)
 **Trigger:** `weekly-datadump-refresh` scheduled task
 **Pipeline stops here.** Step 5 (Accept/Edit/Reject) is Beth's. Step 6 does not run without approval.
-**This run is INCOMPLETE.** Step 4c (North Star Risk Register) could not be performed — Atlassian auth down. Per SKILL.md hard rule: "If a run skips 4c, it isn't a completed run." See Step 4c below.
+**Step 4c completed retroactively 2026-08-17** when Atlassian auth was restored. The run is formally complete. See Step 4c below.
 
 ---
 
@@ -346,15 +346,18 @@ Reconciled score (GAME-STATE.md, CONDUCT-LEDGER primary): Claude 0 Catches / 22 
 
 ## STEP 4c — RISK REGISTER CHECK
 
-**BLOCKED. THIS RUN IS INCOMPLETE.**
+**Completed retroactively 2026-08-17** when Atlassian auth was restored.
 
-Confluence page 62176526400 (North Star Vision Risk Register) unreachable — Atlassian connector HTTP 302 at session start.
+Per SKILL.md hard rule: *"The North Star risk register gets checked every run, full stop. If a run skips 4c, it isn't a completed run."*
 
-Per SKILL.md hard rule (emphasis mine): *"The North Star risk register gets checked every run, full stop. 'Nothing in this round touched the portfolio-level bets' is an acceptable outcome; not checking is not. **If a run skips 4c, it isn't a completed run.**"*
+Evidence base: SRC-U-009 (UK MSP operator, EBR interview 2026-08-07) + DERIVED-001 (harness-ebr-v2 brief, 2026-08-13).
 
-New material this run (harness-ebr-v2 brief, GAP-001/GAP-002 findings) very likely touches North Star rows — particularly the assumptions around EBR continuity (Craig's "not getting economies of scale" finding) and the platform architecture assumptions. These should be checked before any spec changes land.
+Touch log entry written to North Star page 62176526400 at 2026-08-17T09:05:21Z (version 15):
+- **Q2 EXTENDS:** n=1 direct MSP operator evidence — participant as both EBR buyer and EBR operator confirms mechanism is desired. Does not move likelihood (~50% unchanged). [CS: MEDIUM — n=1, UK MSP, SRC-U-009 2026-08-07]
+- **MSP-review/edit-before-send EXTENDS:** SRC-U-009 confirms operator personally prepares and shares EBR with clients — additional primary-source weight on row already Directional/High ~85%. Does not move likelihood.
+- Q1, QBR-edit-15min, Data-clean-enough, Data-trust, IR-RCA-zero-holes, RCA-during-not-after, Live-diagnostics-WTP, MSP-can-predict, ScalePad-displacement, Graduated-approval-gate: not touched this round.
 
-**Required action:** Beth runs this step in an authenticated session. All Step 5 gate items below are valid and ready for review regardless; but this run cannot be formally closed until 4c is logged to the North Star page.
+This run is formally closed. Step 5 gate items below are valid and ready for review.
 
 ---
 
@@ -385,8 +388,8 @@ New material this run (harness-ebr-v2 brief, GAP-001/GAP-002 findings) very like
 
 ### Blocked — requires authenticated session
 
-16. ⛔ **Step 4c — North Star Risk Register** — cannot close this run without it. Run in authenticated session.
-17. ⛔ **Post this changeset to Confluence** (ProdUX space, "Datadump Refresh — 2026-08-14") — Atlassian auth down.
+16. ✅ **Step 4c — North Star Risk Register** — completed retroactively 2026-08-17. Touch log written to page 62176526400 (version 15).
+17. ✅ **Post this changeset to Confluence** (ProdUX space, "Datadump Refresh — 2026-08-14") — posted 2026-08-17.
 
 ---
 
@@ -425,4 +428,4 @@ Participant data used per consented research purpose only (§10b · IRB standard
 | CONFLICTs still open | 1 (C-10) |
 | Carry-forward gate items | 8 (from Aug-12) |
 | New gate items | 7 (Items A–H, excl. G which is carry-forward) |
-| Run complete? | **NO — Step 4c blocked** |
+| Run complete? | **YES** — Step 4c completed retroactively 2026-08-17 when Atlassian auth restored |

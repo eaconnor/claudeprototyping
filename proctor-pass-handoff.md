@@ -1,0 +1,83 @@
+## Proctor Pass — Handoff — Alpha RACE — 2026-05-29
+
+| Check | Result | Note |
+|-------|--------|------|
+| **1. Required files exist** | ✗ BLOCK | MISSING: critic-pass-1.md, critic-pass-2.md, council-testimony.md. PRESENT: brief, math-recount, prototype HTML, scout sources (5 files). Pipeline incomplete — Steps 3, 5, 6 not executed. |
+| **2. 47% rule: every stat grep-verified** | ⚠ WARN | All stats in brief ARE present in source files (58%, 47→12, 42min→17min, 14/20, 21/30 verified). However, HTML readiness score (21/30) does not match brief idea score (14/20) — these measure different things but naming collision creates confusion. Math-recount shows variance explanation for 58% vs 65% discrepancy. |
+| **3. Synthesis slot blank in council** | ✗ BLOCK | council-testimony.md does NOT exist — cannot verify synthesis slot is blank. |
+| **4. Three named decisions with owners** | ✓ PASS | 4 decisions named (Decisions 1-4), each with "Who decides" field naming specific owner (Beth+Raj, Beth+Sales, Raj+Beth, Beth+Research). |
+| **5. Tensions named** | ⚠ WARN | 3 tensions named in brief (Tension 1-3: JOBS/SDT, SIGN/JRNY, PORT/POS). However, these are in the brief, NOT in council testimony cross-talk section (council-testimony.md missing). Brief tensions may be spec-generated, not council-sourced. |
+| **6. [A]+[?] ratio matches math-recount** | ✓ PASS | Brief states 58% [A]+[?]; math-recount confirms 58% as lead number (world-claims ratio). Variance from prototype's 65% claim is explained in math-recount lines 178-187. |
+| **7. Three-number breakdown present** | ✓ PASS | Math-recount declares three buckets: (1) World-claims 58%, (2) Test-plan 100%, (3) Inflated 76%. All three ratios calculated and explained. |
+
+**Verdict:** BLOCK (do not proceed)
+
+---
+
+## What must be resolved before proceeding
+
+### Critical (BLOCK conditions)
+1. **critic-pass-1.md missing** — Pre-build scorecard + punch list required. Step 3 of pipeline not executed.
+2. **critic-pass-2.md missing** — Post-build re-score + delta table required. Step 5 of pipeline not executed.
+3. **council-testimony.md missing** — 44-voice testimony + cross-talk required. Step 6 of pipeline not executed. Cannot verify synthesis slot is blank without this file.
+
+### Advisory (WARN conditions)
+4. **Readiness score naming collision** — HTML displays "21/30 NOT READY" (readiness score), brief displays "14/20" (idea score). These measure different dimensions but use similar X/Y notation. Clarify which is the handoff-gate number or rename to avoid confusion.
+5. **Tensions source unclear** — 3 tensions appear in brief under "Council tensions" heading, but council-testimony.md does not exist. If these are spec-generated (not council cross-talk output), they may not represent true framework clashes. Verify source after council pass runs.
+
+---
+
+## Stats verified (47% rule compliance)
+
+All stats mentioned in handoff materials were grep-verified:
+
+| Stat | Claimed in | Verified in | Status |
+|------|-----------|-------------|--------|
+| 58% [A]+[?] | Brief line 18 | math-recount line 101, 168, 193 | ✓ Match |
+| 47 → 12 consolidation | Brief line 51, 54, 109 | HTML line 834, 839 | ✓ Match |
+| 42min → 17min | Brief line 32, 37 | HTML line 967 | ✓ Match |
+| 14/20 idea score | Brief line 184, 196 | Not in HTML (internal brief metric) | ✓ Present |
+| 21/30 readiness | Not in brief | HTML line 992 | ⚠ Not cross-referenced |
+| 4 decisions | Brief lines 84-107 | All 4 present with owners | ✓ Complete |
+| 3 tensions | Brief lines 167-182 | All 3 named (but source unclear) | ⚠ See note 5 above |
+
+**Variance note:** Brief's 58% and prototype's 65% claim are both documented. Math-recount explains variance (lines 178-187): different sourcing rules. Proctor verified the explanation exists; cannot verify which is "correct" — that's a judgment call, not a compliance check.
+
+---
+
+## What proctor cannot see
+
+- **Whether [CS:] tags are accurate** — Proctor verified they are present (e.g., line 30: "[CS: VERIFIED]", line 32: "[CS: MEDIUM]"). Proctor cannot verify whether these confidence ratings are honest — presence only, not quality. Human must verify.
+- **Whether council testimony is analytically sound** — council-testimony.md does not exist, so structural check cannot run. When file is created, proctor can verify 44-voice structure but not whether analysis is insightful.
+- **Whether ROI estimates are honest** — HTML routing cards contain ROI blocks (lines 1049-1053, etc.). Proctor verified they are non-blank. Proctor cannot verify whether "Unknown — need success criteria" is a legitimate gap or a cop-out — honesty check is human judgment.
+- **Whether tensions are truly framework clashes** — 3 tensions appear in brief. Proctor cannot verify whether JOBS/SDT or SIGN/JRNY represent real contradictions or decorative framework name-dropping. Council cross-talk (when it exists) should show this.
+
+---
+
+## Honor check (stats I produced)
+
+**Stats generated by proctor:**
+- 3 files missing (critic-pass-1, critic-pass-2, council-testimony)
+- 5 scout files present (alpha-race-01 through alpha-race-05)
+- 7 stats verified via grep (see table above)
+- 4 decisions counted
+- 3 tensions counted
+- 0 synthesis slots checked (file missing)
+
+**Grep verification commands used:**
+```bash
+grep -n "58%" briefs/alpha-race.brief.md
+grep -n "58%" briefs/alpha-race-math-recount.md
+grep -n "47→12" briefs/alpha-race.brief.md
+grep -n "42 min" briefs/alpha-race.brief.md
+grep -n "14/20" briefs/alpha-race.brief.md
+grep -n "21/30" prototypes/alpha-race-lo-fi/index.html
+grep -n "Decision [1-4]:" briefs/alpha-race.brief.md
+grep -n "Tension [1-3]:" briefs/alpha-race.brief.md
+```
+
+All counts are grep-derived, not estimated.
+
+---
+
+**End of proctor report.**

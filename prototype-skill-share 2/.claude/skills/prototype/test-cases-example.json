@@ -1,0 +1,85 @@
+{
+  "_comment": "Illustrative, fully fictional example test cases. They show the shape of the test-case file the skill generates after your first run. Replace with your own product, sources, and recipients. All names and data here are invented (seed-data rule: nothing real in examples).",
+  "user": "[recipient name]",
+  "domain": "example: a fictional B2B SaaS product prototyped inside a host app via Apex Bridge",
+  "sources": [
+    "Confluence space <KEY> (product positioning, feature definitions)",
+    "Jira project <KEY> (epics and acceptance criteria)",
+    "local files in scout_input/"
+  ],
+  "test_cases": [
+    {
+      "test_name": "trust-score-tier2-with-council-contradiction",
+      "fidelity": "Tier 2 (Direction)",
+      "prompt": "Prototype a Trust Score panel that shows users how an automated confidence score is calculated. Pull from the positioning doc and the scoring-model definition. Show it as an Apex Bridge overlay inside the host application. Directional fidelity (Tier 2) — we're testing whether surfacing the math behind the score builds confidence or just creates cognitive load. Run council and watch for JTBD vs. Service Blueprint disagreeing on how much math to expose.",
+      "expected_outputs": [
+        "scout_input/ with 2-3 source docs",
+        "briefs/trust-score.brief.md with 40-60% [A]+[?] ratio (appropriate for Tier 2)",
+        "critic-pass-1.md with pre-build scores",
+        "prototypes/trust-score/index.html with the Apex Bridge overlay, Tier 2 fidelity banner, review rail",
+        "critic-pass-2.md with post-build scores + delta table",
+        "council-testimony.md with JTBD and Service Blueprint potentially contradicting on math visibility",
+        "briefs/handoffs/[recipient]-trust-score-[date]/ with complete packet"
+      ],
+      "success_criteria": [
+        "Pipeline completes all 7 steps",
+        "Apex Bridge overlay renders correctly (slide-in from right or modal)",
+        "review rail Product card shows attribution percentage with reasoning",
+        "Council explicitly names a transparency tension (if present)",
+        "[A]+[?] ratio is in the Tier 2 band",
+        "Handoff packet includes an attribution matrix for the Product card"
+      ],
+      "notes": "If the recipient authored the source docs, keep tone peer-to-peer and don't re-explain concepts they already own."
+    },
+    {
+      "test_name": "usage-ledger-tier1-council-emphasis",
+      "fidelity": "Tier 1 (Concept)",
+      "prompt": "Show me what a monthly Usage Ledger could look like when a customer reviews their usage and cost breakdown. Concept-level (Tier 1) — exploratory, so a high [A] ratio is expected. Run full council to see whether JTBD and Value Chain agree on whether to show the cost math or hide it.",
+      "expected_outputs": [
+        "scout_input/ with any provided context docs",
+        "briefs/usage-ledger.brief.md with 50-70% [A]+[?] ratio (appropriate for Tier 1)",
+        "critic-pass-1.md flagging the high [A] ratio but noting it's appropriate for Tier 1",
+        "prototypes/usage-ledger/index.html with an Apex Bridge overlay and a Tier 1 fidelity banner",
+        "critic-pass-2.md with post-build scores",
+        "council-testimony.md with voices potentially contradicting on transparency",
+        "briefs/handoffs/[recipient]-usage-ledger-[date]/ routing the visibility decision to the recipient"
+      ],
+      "success_criteria": [
+        "Pipeline completes all 7 steps",
+        "Spec explicitly flags the high [A]+[?] ratio but proceeds (appropriate for Tier 1)",
+        "Council runs the full voice set, not just the two expected",
+        "Any contradiction on visibility is routed as a decision to the recipient, not resolved by the tool",
+        "review rail includes 'Unknown: gap' in the ROI section where data is missing"
+      ],
+      "notes": "Tier 1 / Concept means exploration is the goal. High [A] ratio is expected and should not block. Here the expert council is the primary deliverable."
+    },
+    {
+      "test_name": "human-handoff-tier3-attribution-emphasis",
+      "fidelity": "Tier 3 (Spec-ready)",
+      "prompt": "Prototype the escalation screen where a customer hands off from the automated assistant to a human expert. Spec-ready (Tier 3), so [A] ratio should be under 30%. Show what context the human expert sees on receiving the handoff. Use an Apex Bridge overlay. Include ownership attribution on any AI-generated elements.",
+      "expected_outputs": [
+        "scout_input/ with the relevant source docs",
+        "briefs/human-handoff.brief.md with <30% [A]+[?] ratio (Tier 3 requirement)",
+        "critic-pass-1.md noting whether the spec meets the Tier 3 threshold",
+        "prototypes/human-handoff/index.html with context-transfer UI, the Apex Bridge overlay, Tier 3 banner, attribution on AI-generated elements",
+        "critic-pass-2.md validating that attribution display is present and correct",
+        "council-testimony.md with the Service Blueprint voice analyzing the frontstage/backstage handoff",
+        "briefs/handoffs/[recipient]-human-handoff-[date]/ with complete packet + attribution matrix"
+      ],
+      "success_criteria": [
+        "Pipeline completes all 7 steps",
+        "[A]+[?] ratio is <30% OR the spec flags a readiness issue and asks whether to proceed",
+        "Prototype shows the context transfer from AI to human clearly",
+        "Ownership attribution displays on any AI-generated content (e.g. '0% [recipient]' for a tool-generated summary)",
+        "Handoff packet includes an attribution matrix with calculations for multiple components"
+      ],
+      "notes": "Tier 3 means build-ready. If [A]+[?] exceeds 30%, the spec should flag and confirm before proceeding. Attribution is emphasized here — test that the skill applies and displays X% [recipient] throughout."
+    }
+  ],
+  "validation_notes": [
+    "Swap in your own sources, product, and recipient — everything above is fictional.",
+    "Test cases span Tier 1/2/3 to exercise the readiness-threshold logic at each gate.",
+    "All cases include the review rail and council by default.",
+    "Attribution emphasis varies by case — the Tier 3 case specifically validates the display."
+  ]
+}

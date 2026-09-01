@@ -675,8 +675,8 @@ function renderBuild(){
   else if(s===3){const rvDone=reviewedCount();h+=`<div class="panel"><h2>Here’s the register I’d build</h2><p class="lede">I drafted this ${T('register')} from your report — before it goes live, tell me what’s right, what’s wrong, and what should wait. This becomes the durable artifact: one living register per client, graded, tracked, evidence kept.</p>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap"><span class="chip mode">${rvDone} of ${FINDINGS.length} reviewed</span><span style="font-size:12px;color:var(--text-2)">Anything you don’t get to keeps the grade I drafted — review isn’t required to publish.</span></div>
     ${posture()}
-    <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
-    ${S.regView==='register'?regTable(true):S.regView==='system'?systemMap():overTime()}
+    <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button><button class="${S.regView==='translate'?'on':''}" onclick="setView('translate')">Translate</button></div>
+    ${S.regView==='register'?regTable(true):S.regView==='system'?systemMap():S.regView==='translate'?translateArc():overTime()}
     <div class="callout" style="margin-top:18px">Powered by <b>${S.ai==='nzo'?'N-zo':'Claude Code'}</b>${S.handhold?' + Advisor':''} · built from <b>${shape()?shape().name:'—'}</b>${S.extraFiles.length?` + ${S.extraFiles.length} context file${S.extraFiles.length>1?'s':''}`:''} · drafts <b>${countDoes()} of ${AREAS.length}</b> areas day one. Trigger: on-demand (not calendar-fired). Sign-off required before client-facing.</div>
     <div class="actions"><span class="lk" onclick="goStep(2)">← Back</span><button class="btn primary" onclick="goStep(4)">Publish →</button></div></div>`;}
 
@@ -856,8 +856,8 @@ function overview(){
     <div class="dcard span2"><h2>Fenwick Logistics — risk register</h2><div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials · git-tracked</div>
       <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
       <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key green"><span class="num">3</span><span class="lab"><b>Improving</b>vs last cycle</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
-      <div class="viewtabs"><button class="${S.regView==='delta'?'on':''}" onclick="setView('delta')">Delta</button><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
-      ${S.regView==='delta'?deltaView():S.regView==='register'?regTable():S.regView==='system'?systemMap():overTime()}</div>
+      <div class="viewtabs"><button class="${S.regView==='delta'?'on':''}" onclick="setView('delta')">Delta</button><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button><button class="${S.regView==='translate'?'on':''}" onclick="setView('translate')">Translate</button></div>
+      ${S.regView==='delta'?deltaView():S.regView==='register'?regTable():S.regView==='system'?systemMap():S.regView==='translate'?translateArc():overTime()}</div>
     <div class="dcard span2"><h2>Run cycle</h2><div class="sub">What happens on every review, collapsed by default. Two steps carry a visible ⟨VERIFY⟩ marker where David's practice isn't yet confirmed — read live off this register's own finding data, not placeholders.</div>${renderRunCycle()}</div>
     <div class="dcard"><h2>Value</h2><div class="sub">Written to the Value Ledger each run</div>
       <div class="stat"><span>Time saved this cycle</span><span class="v">~3.5 hrs</span></div><div class="stat"><span>Findings drafted</span><span class="v">${countDoesLabel()}</span></div><div class="stat"><span>Handed to a human</span><span class="v muted">1 (held)</span></div><div class="stat"><span>Runs to date</span><span class="v muted">${S.runs}</span></div></div>
@@ -884,7 +884,8 @@ function posture(){
    each row. Nothing here rewrites FINDINGS — see reviewRow()'s own comment. */
 function regTable(reviewMode){
   const order={red:0,amber:1,green:2,held:3};
-  return `<div class="reg">${[...FINDINGS].sort((x,y)=>order[x.grade]-order[y.grade]).map(f=>`
+  return `<div style="display:flex;justify-content:flex-end;margin-bottom:6px"><span class="lk" style="font-size:12.5px" onclick="goToTranslate()">See how this becomes the report →</span></div>
+  <div class="reg">${[...FINDINGS].sort((x,y)=>order[x.grade]-order[y.grade]).map(f=>`
     <div class="row ${f.grade}" onclick="toggleFinding('${f.id}')"><div></div>
       <div><div class="fnd">${f.finding}</div><div class="mt">${f.area}<span class="d">·</span>${f.owner}<span class="d">·</span>${f.status}</div></div>
       <div><span class="tier ${f.tier}">${f.tier}</span></div>
@@ -927,7 +928,56 @@ function setReviewAction(id,action){
 function setReviewGrade(id,grade){S.reviewChoice[id].grade=grade;render();}
 function reviewedCount(){return Object.keys(S.reviewChoice).length;}
 function spark(f){const pts=f.history.filter(v=>v!==null);if(pts.length<2)return `<span class="ev" style="font-style:normal">new</span>`;const w=84,h=26,min=Math.min(...pts),max=Math.max(...pts),rng=(max-min)||1,step=w/(pts.length-1),nm=v=>h-4-((v-min)/rng)*(h-8);const d=pts.map((v,i)=>`${i?'L':'M'}${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' ');const last=pts[pts.length-1],first=pts[0],better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber,g='g'+f.id;const area=`M0,${h} L`+pts.map((v,i)=>`${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' L')+` L${w},${h} Z`;return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="${g}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".2"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${((pts.length-1)*step).toFixed(1)}" cy="${nm(last).toFixed(1)}" r="2.6" fill="${col}"/></svg>`;}
-function systemMap(){const W=840,H=490,cx=W/2,cy=H/2;const areas=[...new Set(FINDINGS.map(f=>f.area))];FEEDS.forEach(fd=>{if(!areas.includes(fd.area))areas.push(fd.area);});const R=148,Rl=228,Rc=254,n=areas.length,ap={};areas.forEach((a,i)=>{const g=(-90+i*360/n)*Math.PI/180;ap[a]={x:cx+R*Math.cos(g),y:cy+R*Math.sin(g),g};});const cv=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;return `M${x1},${y1} Q${mx-dy*0.12},${my+dx*0.12} ${x2},${y2}`;};let links=areas.map(a=>`<path d="${cv(cx,cy,ap[a].x,ap[a].y)}" fill="none" stroke="#e2e2e8" stroke-width="1.2"/>`).join('');let leaves=FINDINGS.map((f,i)=>{const p=ap[f.area],g=p.g+0.3*((i%2)?1:-1),lx=cx+Rl*Math.cos(g),ly=cy+Rl*Math.sin(g),hd=f.grade==='held';return `<path d="${cv(p.x,p.y,lx,ly)}" stroke="${hd?'#c9c9d0':GC[f.grade]}" stroke-width="1.3" ${hd?'stroke-dasharray="3 3"':''} fill="none" opacity=".6"/><circle cx="${lx}" cy="${ly}" r="6.5" fill="${hd?'#fff':GC[f.grade]}" stroke="${hd?'#8a8a93':'#fff'}" stroke-width="${hd?2:1.2}"/><text x="${lx}" y="${ly+(Math.sin(g)>0?18:-11)}" text-anchor="middle" font-family="Inter" font-size="9" fill="#6b6c72">${f.finding.length>22?f.finding.slice(0,20)+'…':f.finding}</text>`;}).join('');let an=areas.map(a=>{const p=ap[a];return `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#fff" stroke="#8500cc" stroke-width="1.6"/><text x="${p.x}" y="${p.y-11}" text-anchor="middle" font-family="Manrope" font-size="10.5" font-weight="600" fill="#18171c">${a}</text>`;}).join('');let fd=FEEDS.map(f=>{const p=ap[f.area],g=p.g,fx=cx+Rc*Math.cos(g),fy=cy+Rc*Math.sin(g);return `<path d="${cv(fx,fy,p.x,p.y)}" stroke="#0a95c4" stroke-width="1.5" fill="none" opacity=".85" marker-end="url(#ar)"/><rect x="${fx-54}" y="${fy-11}" width="108" height="22" rx="11" fill="#e7f6fb" stroke="#0a95c4"/><text x="${fx}" y="${fy+4}" text-anchor="middle" font-family="Inter" font-size="9" font-weight="600" fill="#086a8c">${f.cw}</text>`;}).join('');return `<div class="svg-wrap" style="margin-top:6px"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#0a95c4"/></marker></defs>${links}${fd}${leaves}${an}<circle cx="${cx}" cy="${cy}" r="35" fill="#17131f"/><text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Manrope" font-size="12" font-weight="700" fill="#fff">Fenwick</text><text x="${cx}" y="${cy+12}" text-anchor="middle" font-family="Inter" font-size="9" fill="#c3bdd0">Customer</text></svg></div><div class="narr">Cyan arrows are other coworkers feeding a section. Build them and the register fills itself in.</div>`;}
+function systemMap(){const W=840,H=490,cx=W/2,cy=H/2;const areas=[...new Set(FINDINGS.map(f=>f.area))];FEEDS.forEach(fd=>{if(!areas.includes(fd.area))areas.push(fd.area);});const R=148,Rl=228,Rc=254,n=areas.length,ap={};areas.forEach((a,i)=>{const g=(-90+i*360/n)*Math.PI/180;ap[a]={x:cx+R*Math.cos(g),y:cy+R*Math.sin(g),g};});const cv=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;return `M${x1},${y1} Q${mx-dy*0.12},${my+dx*0.12} ${x2},${y2}`;};let links=areas.map(a=>`<path d="${cv(cx,cy,ap[a].x,ap[a].y)}" fill="none" stroke="#e2e2e8" stroke-width="1.2"/>`).join('');let leaves=FINDINGS.map((f,i)=>{const p=ap[f.area],g=p.g+0.3*((i%2)?1:-1),lx=cx+Rl*Math.cos(g),ly=cy+Rl*Math.sin(g),hd=f.grade==='held';const cg=Math.cos(g),anchor=cg>0.2?'start':cg<-0.2?'end':'middle',tx=lx+(cg>0.2?9:cg<-0.2?-9:0);return `<path d="${cv(p.x,p.y,lx,ly)}" stroke="${hd?'#c9c9d0':GC[f.grade]}" stroke-width="1.3" ${hd?'stroke-dasharray="3 3"':''} fill="none" opacity=".6"/><circle cx="${lx}" cy="${ly}" r="6.5" fill="${hd?'#fff':GC[f.grade]}" stroke="${hd?'#8a8a93':'#fff'}" stroke-width="${hd?2:1.2}"/><text x="${tx}" y="${ly+(Math.sin(g)>0?18:-11)}" text-anchor="${anchor}" font-family="Inter" font-size="9" fill="#6b6c72">${f.finding.length>22?f.finding.slice(0,20)+'…':f.finding}</text>`;}).join('');let an=areas.map(a=>{const p=ap[a];return `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#fff" stroke="#8500cc" stroke-width="1.6"/><text x="${p.x}" y="${p.y-11}" text-anchor="middle" font-family="Manrope" font-size="10.5" font-weight="600" fill="#18171c">${a}</text>`;}).join('');let fd=FEEDS.map(f=>{const p=ap[f.area],g=p.g,fx=cx+Rc*Math.cos(g),fy=cy+Rc*Math.sin(g);return `<path d="${cv(fx,fy,p.x,p.y)}" stroke="#0a95c4" stroke-width="1.5" fill="none" opacity=".85" marker-end="url(#ar)"/><rect x="${fx-54}" y="${fy-11}" width="108" height="22" rx="11" fill="#e7f6fb" stroke="#0a95c4"/><text x="${fx}" y="${fy+4}" text-anchor="middle" font-family="Inter" font-size="9" font-weight="600" fill="#086a8c">${f.cw}</text>`;}).join('');return `<div class="svg-wrap" style="margin-top:6px"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#0a95c4"/></marker></defs>${links}${fd}${leaves}${an}<circle cx="${cx}" cy="${cy}" r="35" fill="#17131f"/><text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Manrope" font-size="12" font-weight="700" fill="#fff">Fenwick</text><text x="${cx}" y="${cy+12}" text-anchor="middle" font-family="Inter" font-size="9" fill="#c3bdd0">Customer</text></svg></div><div class="narr">Cyan arrows are other coworkers feeding a section. Build them and the register fills itself in.</div>`;}
+/* ---- Translate arc diagram — Manuel Lima's arc-diagram technique (addendum 2026-09-01, third pass,
+   Register<->Report). Left set = Register (FINDINGS: grade dot + finding + tier), right set = Report
+   (the same finding's translate.cfo/translate.owner line, using S.chooserTone — the tone toggle that
+   already exists for the Chooser step, reused rather than a new one). Arcs use the exact same curve
+   math as systemMap()'s cv() helper: quadratic bezier, control point offset perpendicular to the
+   line by 12% of its own delta — not new curve math, per the brief's explicit instruction. Consequence
+   text is not dropped, it rides as a native SVG <title> tooltip on the right node — Lima's "beautiful
+   AND legible": no third rendered line, but the data is still one hover away. Wired to real FINDINGS
+   data — no new translation copy is invented here. */
+function wrapSvgText(text,maxChars){
+  const words=String(text).split(' ');const lines=[];let cur='';
+  words.forEach(w=>{const t=cur?cur+' '+w:w;if(t.length>maxChars&&cur){lines.push(cur);cur=w;}else cur=t;});
+  if(cur)lines.push(cur);
+  return lines;
+}
+function svgTspans(lines,x,lh){return lines.map((l,i)=>`<tspan x="${x}" dy="${i===0?0:lh}">${l}</tspan>`).join('');}
+function translateArc(){
+  const tone=S.chooserTone,W=900,xLdot=30,xLtxt=48,xRdot=470,xRtxt=490,leftChars=32,rightChars=54,lineH=16,minRow=64;
+  let y=22;
+  const rows=FINDINGS.map(f=>{
+    const nameLines=wrapSvgText(f.finding,leftChars);
+    const txtLines=wrapSvgText(f.translate?f.translate[tone]:f.why,rightChars);
+    const leftH=nameLines.length*lineH+22,rightH=txtLines.length*lineH+20;
+    const rowH=Math.max(leftH,rightH,minRow),top=y,cy=top+rowH/2;
+    y+=rowH+22;
+    return {f,nameLines,txtLines,top,cy,held:f.grade==='held'};
+  });
+  const H=y+6;
+  const cv=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;return `M${x1},${y1} Q${mx-dy*0.12},${my+dx*0.12} ${x2},${y2}`;};
+  const arcs=rows.map(r=>`<path d="${cv(xLdot,r.cy,xRdot,r.cy)}" fill="none" stroke="${r.held?'#c9c9d0':GC[r.f.grade]}" stroke-width="1.6" ${r.held?'stroke-dasharray="3 4"':''} opacity="${r.held?.55:.8}"/>`).join('');
+  const left=rows.map(r=>{
+    const f=r.f,nameY=r.top+lineH;
+    return `<circle cx="${xLdot}" cy="${r.cy}" r="6" fill="${r.held?'#fff':GC[f.grade]}" stroke="${r.held?GC.held:'#fff'}" stroke-width="${r.held?2:1.3}"/>
+      <text x="${xLtxt}" y="${nameY}" font-family="Manrope" font-weight="600" font-size="12.5" fill="#18171c">${svgTspans(r.nameLines,xLtxt,lineH)}</text>
+      <text x="${xLtxt}" y="${nameY+(r.nameLines.length-1)*lineH+16}" font-family="Inter" font-size="9.5" fill="#6b6c72" letter-spacing=".02em">${f.tier.toUpperCase()}</text>`;
+  }).join('');
+  const right=rows.map(r=>{
+    const f=r.f,label=r.held?'HELD — INTERNAL ONLY':(tone==='cfo'?'CFO READ':'OWNER READ'),labelCol=r.held?'#8a8a93':'#8500cc',labelY=r.top+lineH-3,txtY=labelY+lineH;
+    return `<circle cx="${xRdot}" cy="${r.cy}" r="4.5" fill="${r.held?'#fff':GC[f.grade]}" stroke="${r.held?GC.held:'#fff'}" stroke-width="1.2"/>
+      <text x="${xRtxt}" y="${labelY}" font-family="Inter" font-size="9.5" font-weight="700" fill="${labelCol}" letter-spacing=".03em">${label}</text>
+      <text x="${xRtxt}" y="${txtY}" font-family="Inter" font-size="12" fill="#45464a"><title>Consequence if unactioned: ${f.consequence}</title>${svgTspans(r.txtLines,xRtxt,lineH)}</text>`;
+  }).join('');
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin:2px 0 14px;flex-wrap:wrap;gap:8px">
+      <span style="font-size:12px;color:var(--text-2);max-width:56ch">Register → Report, live. Same finding, same colour, translated for the room. Hover a line for the consequence if unactioned.</span>
+      <span class="ch-tone">${['cfo','owner'].map(t=>`<span class="${tone===t?'sel':''}" onclick="setChooserTone('${t}')">${t==='cfo'?'CFO tone':'Owner tone'}</span>`).join('')}</span>
+    </div>
+    <div class="svg-wrap"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${arcs}${left}${right}</svg></div>
+    <div class="narr">Held findings arc through dashed and muted — logged in the register, never reaching the client-facing column. This is the literal translate step, wired live: change tone above and both the report preview and this diagram redraw from the same <code style="font-family:var(--font-m)">FINDINGS</code> data.</div>`;
+}
 function overTime(){const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px">${tr.map(f=>{const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=188,h=52,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber;return `<div style="border:1px solid var(--line);border-radius:var(--r);padding:14px 16px"><div style="font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--ink);margin-bottom:2px">${f.finding}</div><div style="font-family:var(--font-m);font-size:11px;color:${col};margin-bottom:8px">${first}→${last} · ${better?'↓ improving':(f.id==='f2'?'↑ slipped':'—')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg></div>`;}).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New findings carry no history, shown honestly as new.</div>`;}
 function runsTab(){return `<div class="dcard"><h2>Run history</h2><div class="sub">Each run writes to the Value Ledger and appends to the register</div>
   <div class="stat"><span><b style="color:var(--ink)">Q3 2026 cycle</b> · today 09:12</span><span class="v" style="color:var(--green)">Completed · 5 findings</span></div>
@@ -947,7 +997,7 @@ function renderReport(){
       <span class="lbl">Export:</span><button class="btn" onclick="exportCSV()">Excel</button><button class="btn" onclick="exportPptx()">PowerPoint</button><button class="btn" onclick="exportDoc()">Word</button><button class="btn" onclick="exportPDF()">PDF</button></div>
     <div class="rep-cover"><div class="ey">EXECUTIVE BUSINESS REVIEW · Q3 2026</div><h2>Fenwick Logistics</h2><div class="meta">Prepared by Bracken IT Group · presented by Vanessa · reviewed against NCSC 10 / Cyber Essentials</div></div>
     <div class="rep-sec"><h3>A note from Vanessa</h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
-    <div class="rep-sec"><h3>What we found</h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${plainNum(f.finding)}</div><div class="fm">${f.why}</div><div class="fr">Our recommendation — ${f.ask}</div></div></div>`).join('')}</div>
+    <div class="rep-sec"><h3>What we found <span class="lk" style="font-size:12px;font-weight:500;margin-left:8px" onclick="goToTranslate()">See where this came from ←</span></h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${plainNum(f.finding)}</div><div class="fm">${f.why}</div><div class="fr">Our recommendation — ${f.ask}</div></div></div>`).join('')}</div>
     <div class="rep-sec"><h3>What’s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five. The direction is right on every front — this is the story worth telling at renewal.</p></div>
     <div class="rep-sec"><h3>Decisions for you</h3>
       <div class="decision"><span>Fund MFA enforcement on the remaining admin accounts</span><span class="dv" style="color:var(--red)">Recommended now</span></div>
@@ -979,6 +1029,15 @@ function activate(){S.activated=true;S.capstoneSeen=false;render();window.scroll
 function goToDashboard(){S.capstoneSeen=true;S.tab='Overview';S.regView='delta';render();window.scrollTo(0,0);toast('Coworker activated — welcome to your live register');}
 function setTab(t){S.tab=t;S.openFinding=null;render();}
 function setView(v){S.regView=v;render();}
+/* Register<->Report cross-navigation (addendum 2026-09-01, third pass). Works from either an
+   activated dashboard or the pre-activation Review step — the only two places regTable()/renderReport()
+   render — and always lands on the same live translateArc() view, wired to the same FINDINGS data. */
+function goToTranslate(){
+  S.reportOpen=false;
+  if(S.activated){S.tab='Overview';S.regView='translate';}
+  else{S.step=3;S.regView='translate';}
+  render();window.scrollTo(0,0);
+}
 function toggleFinding(id){S.openFinding=S.openFinding===id?null:id;render();}
 function runCycle(){S.runs++;toast('EBR cycle complete — register updated, committed to git');render();}
 
@@ -1045,7 +1104,7 @@ function judgeBody(){
 }
 function translateBody(){
   return `<p style="font-size:12.5px;color:var(--text-2);margin:10px 0">Technical → business, Stefanie's formula: data → risk → what it means to you → consequence if unactioned. Two registers, no graphs or percentages client-facing.</p>
-  ${FINDINGS.map(f=>`<div style="border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;margin-bottom:8px"><div style="font-family:var(--font-h);font-weight:600;font-size:12.5px;color:var(--ink);margin-bottom:4px">${f.finding}</div><div style="font-size:12px;color:var(--text)"><b>CFO:</b> ${f.translate.cfo}</div><div style="font-size:12px;color:var(--text);margin-top:4px"><b>Owner:</b> ${f.translate.owner}</div><div style="font-size:11.5px;color:var(--text-2);margin-top:5px"><b>Consequence if unactioned:</b> ${f.consequence}</div></div>`).join('')}`;
+  ${translateArc()}`;
 }
 function gettingBizBody(){
   const cands=FINDINGS.filter(f=>f.grade==='red'||f.grade==='amber');

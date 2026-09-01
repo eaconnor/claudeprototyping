@@ -108,6 +108,18 @@ Splitting the rebuild into its two halves, which are differently exposed:
 - Nothing here reopens C-11 for a decision — it's explicitly Beth + Nicole's, and it's already correctly
   marked `BLOCKED`, not something evidence closes.
 
+## Resolution (Beth, 2026-09-01)
+
+**"We can just build good UX — can solve the Vertesia problem next week. But can borrow patterns, etc.
+Assume their capabilities as a product can be used by me, right now."** C-11 (which console) stays
+deferred and unblocked-on — not resolved, explicitly postponed. For this build pass, Vertesia's
+documented product capabilities (multi-model orchestration, durable/observable agent execution, native
+audit/process engine, content/document intelligence) are treated as real, usable design patterns
+regardless of which substrate ends up executing the EBR coworker — the same way `StepsRunWorkflow`/
+`run_audit` was already usable as a pattern reference from the acp-core-main-3 side. Build proceeds on
+that basis. The SOURCES.md flag recommended below still applies — building on borrowed patterns from two
+undecided substrates is exactly the situation that note exists to name.
+
 ## What to carry into the brief/handoff
 
 One addition, not a rebuild: a short note in `SOURCES.md` at handoff time, flagging that the MSP-facing

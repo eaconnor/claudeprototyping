@@ -32,9 +32,9 @@
   .top{display:flex;align-items:center;gap:14px;height:52px;padding:0 18px;background:var(--nav);color:#fff}
   .brand{display:flex;align-items:center;gap:11px;font-family:var(--font-h);font-weight:700;font-size:15px;letter-spacing:.22em}
   .brand .n{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(circle at 50% 38%,rgba(255,158,207,.22),rgba(185,139,255,.10) 55%,transparent 72%);
-    box-shadow:inset 0 0 0 1px rgba(255,214,168,.18)}
-  .brand .n svg{width:26px;height:26px;filter:drop-shadow(0 0 5px rgba(255,158,207,.45))}
+    background:radial-gradient(circle at 50% 38%,rgba(133,0,204,.22),rgba(10,149,196,.10) 55%,transparent 72%);
+    box-shadow:inset 0 0 0 1px rgba(133,0,204,.18)}
+  .brand .n svg{width:26px;height:26px;filter:drop-shadow(0 0 4px rgba(10,149,196,.35))}
   .top .spacer{flex:1}
   .top .ic{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--nav-fg)}
   .top .ic:hover{background:rgba(255,255,255,.08);color:#fff} .top .ic svg{width:18px;height:18px}
@@ -107,6 +107,12 @@
   .card{border:1.5px solid var(--line);border-radius:var(--r-lg);padding:17px;background:var(--surface);transition:.14s;position:relative} .card:hover,.card.picked{border-color:var(--apex);background:var(--apex-soft)}
   .card .rec{position:absolute;top:-10px;right:14px;background:var(--apex);color:#fff;font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
   .card .nm{font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--ink);margin-bottom:5px} .card .d{font-size:12.5px;color:var(--text-2);line-height:1.5}
+  .ftux{border:1px solid var(--line);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+  .ftux-ask{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 14px;background:var(--hover);font-size:12.5px}
+  .ftux-ask .who{font-family:var(--font-h);font-weight:700;color:var(--apex);font-size:12.5px}
+  .ftux-ask .lk{margin-left:auto;font-size:11.5px;color:var(--text-2);cursor:pointer} .ftux-ask .lk:hover{color:var(--apex)}
+  .btn-sm{font-size:11.5px;padding:5px 10px}
+  .ftux-body{padding:13px 14px;font-size:13px;color:var(--text);line-height:1.6;border-top:1px solid var(--line)} .ftux-body b{color:var(--ink)}
   .drop{border:2px dashed var(--line-2);border-radius:var(--r-lg);padding:28px;text-align:center;background:var(--hover);margin-bottom:14px} .drop .big{font-family:var(--font-h);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:4px} .drop .sm{font-size:12.5px;color:var(--text-2)}
   .shape-row{display:grid;grid-template-columns:repeat(3,1fr);gap:11px} @media(max-width:600px){.shape-row{grid-template-columns:1fr}}
   .shape{border:1.5px solid var(--line);border-radius:var(--r);padding:13px;background:var(--surface);transition:.14s} .shape:hover,.shape.picked{border-color:var(--apex);background:var(--apex-soft)} .shape .t{font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--ink);margin-bottom:3px} .shape .d{font-size:11px;color:var(--text-2);line-height:1.4}
@@ -268,6 +274,7 @@
     <circle cx="20.7" cy="14.3" r="1" fill="#8500cc"/>
     <path d="M23 3.4 L23.6 5 L25.2 5.6 L23.6 6.2 L23 7.8 L22.4 6.2 L20.8 5.6 L22.4 5 Z" fill="#0a95c4"/>
   </svg></span>HARNESS</div>
+  <a href="landing.html" style="font-family:var(--font-b);font-size:12.5px;color:var(--nav-fg);text-decoration:none;border:1px solid rgba(255,255,255,.14);padding:5px 11px;border-radius:var(--r-pill);margin-left:4px" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,.3)'" onmouseout="this.style.color='var(--nav-fg)';this.style.borderColor='rgba(255,255,255,.14)'">↗ Vision &amp; marketing page</a>
   <div class="spacer"></div>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg></div>
@@ -410,7 +417,7 @@ const SHAPES=[
   {id:'stefanie',name:"Stefanie's EBR framework",meta:'start from scratch · template',quality:'high',template:true,desc:"No report yet? Start from N-able's EBR framework — the manual boot-camp process, already structured, risk register built in.",tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Risk register','Carry-forward']},
 ];
 
-let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null,
+let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
   extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[], structTab:'read',
   interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
@@ -623,6 +630,7 @@ function renderBuild(){
 
   if(s===0){h+=`<div class="panel"><h2>Show me your report and I’ll build a thing</h2>
     <p class="lede">Bring the review you already make — the actual thing you sent a client last quarter. The messier it is, the more useful. Or start from a template. Anything you add becomes the first entries in the ${T('register')}.</p>
+    ${renderFtux()}
     <div class="drop" onclick="pick('workbook')"><div class="big">Drop your last EBR here</div><div class="sm">.xlsx · .pptx · .docx · .pdf — nothing leaves your tenant</div></div>
     <div class="or">or pick a shape to walk through</div>
     <div class="shape-row">${SHAPES.map(sh=>`<div class="shape ${sh.template?'tmpl':''} ${S.shape===sh.id?'picked':''}" onclick="pick('${sh.id}')"><div class="t">${sh.name}</div><div class="d">${sh.desc}</div><div style="font-family:var(--font-m);font-size:10px;color:${sh.template?'var(--cyan)':'var(--apex)'};margin-top:8px">${sh.meta}</div></div>`).join('')}</div>
@@ -684,6 +692,23 @@ function renderBuild(){
     <div class="actions"><span class="lk" onclick="goStep(5)">← Back</span></div></div>`;}
   el('stage').innerHTML=h;
   if(s===2 && !S.parsed) runParse();
+}
+/* FTUX guidance — first screen only, role-tailored. Marcus/Priya are role-play-simulator.html's
+   names for the same two archetypes this app calls "the technical practitioner" (Marcus) and
+   "the relationship/account lead" (Priya) — kept distinct from Fenwick's own named contacts
+   (David/Vanessa) so this isn't read as claiming who those two specific people are. */
+function renderFtux(){
+  if(S.ftuxRole===undefined)S.ftuxRole=null;
+  const copy={
+    marcus:{who:'Marcus — technical practitioner',
+      body:`Drop the real workbook, not a template — a parser can only find structure that's actually there, and you'll want to see it fail honestly on a messy tab before you trust it on a clean one. After this, spend your time in <b>Structure &amp; sources</b>: that's where you check what's actually wired up versus what still needs a connector, and where the coworker/runbook honesty badge tells you what's real today versus staged.`},
+    priya:{who:'Priya — relationship / account lead',
+      body:`You don't need a perfect file — the Stefanie template gets you a working register today, and the narrative is what you're actually accountable for. Your real work starts two screens on, in <b>Decide how much it does</b> and <b>Activate</b>: that's where sign-off lands, and where the Advisor (Premium) turns a raw finding into something you can say out loud to a client without translating it yourself first.`}};
+  const picked=S.ftuxRole?copy[S.ftuxRole]:null;
+  return `<div class="ftux">
+    <div class="ftux-ask">${picked?`<span class="who">${picked.who}</span><span class="lk" onclick="S.ftuxRole=null;render()">change</span>`:`<b>First time here?</b><span style="color:var(--text-2)">Tell me which seat you're in and I'll point you at what matters —</span><button class="btn btn-sm" onclick="S.ftuxRole='marcus';render()">I'm technical (Marcus)</button><button class="btn btn-sm" onclick="S.ftuxRole='priya';render()">I own the relationship (Priya)</button>`}</div>
+    ${picked?`<div class="ftux-body">${picked.body}</div>`:''}
+  </div>`;
 }
 function renderChips(){return S.extraFiles.map((f,i)=>`<span class="file-chip">${f.name} <span class="kind">${f.kind}</span> <span class="x" onclick="rmFile(${i})">×</span></span>`).join('')||'<span style="font-size:12px;color:var(--text-2)">None yet.</span>';}
 function guessKind(n){n=n.toLowerCase();if(/transcript|call|meeting|\.vtt/.test(n))return 'transcript';if(/risk|register/.test(n))return 'risk register';if(/note/.test(n))return 'notes';if(/\.xlsx|\.csv/.test(n))return 'spreadsheet';return 'context';}

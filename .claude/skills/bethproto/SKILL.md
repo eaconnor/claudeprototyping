@@ -1307,19 +1307,4 @@ If any of these are missing, the pipeline did not complete.
 
 ---
 
-## Current state & open punchlist (as of 2026-05-29)
-
-Time-bound session state, not pipeline doctrine. The next Claude inherits this. Delete items as they close.
-
-**Just landed (done — do not redo):**
-- **Parent-writes contract.** All 5 pipeline agents (scout, spec, critic, council, build) are Read-only by design and end output with `FILE:`-block(s); the orchestrator writes them. Frontmatter cleaned to match (no misleading Write/Edit).
-- **Verified discriminator.** An explicit `tools:` allowlist gets Write/Edit STRIPPED on spawn; wildcard "All tools" keeps the full set. [CS: VERIFIED — live spawns: critic (explicit list) lost Write/Edit; Bradley + tech (wildcard) wrote files confirmed on disk.] Do not re-litigate this.
-- **Bradley = named verification gate (Option C-as-verifier).** Parent writes each artifact, then spawns Bradley to confirm paths exist, run the 47% grep-gate on every stat, and log PASS/HARD STOP to `prototypes/<project>/.bradley-ledger.md`. See `.claude/agents/bradley.md` "Pipeline verification gate" + the orchestration-contract section above.
-
-**Open (next session's work):**
-1. **Browser-verify** `prototypes/alpha-race-lo-fi/index.html` clickability + the fidelity-banner-to-top-rail fix. Preview was sandbox-denied last session — retry via preview_* tools.
-2. **Finish Alpha RACE pipeline:** full 44-voice council pass (14 clusters, cross-talk, synthesis slot stays `[0% Claude — fill this in]`), post-build critic re-score (pass-2 + delta), then Step 7 handoff packet through the proctor-handoff 47% gate.
-3. **Beth owns:** write the council synthesis; resolve four named tensions (JOBS×SDT, SIGN×JRNY, PORTER×POSITIONING, JOBS×CHALLENGER).
-4. **Verify** the real MCP package name (`npx @n-able/apex-ui`?) before any build relies on apx-* web components.
-
-**Standing context:** this is Beth role-playing a PM to stress-test the skill and fix bugs as she finds them. Audience for the current round = stakeholder/exec.
+**Pipeline doctrine that came out of the old Alpha RACE punchlist (2026-05-29) is already folded into the sections above** — parent-writes contract, the Write/Edit-stripped-on-explicit-allowlist discriminator, Bradley as the named verification gate. That punchlist itself (Alpha RACE-specific open items, closed out) was cleared 2026-09-01 — it was three-plus months stale against where the project actually is (ACP/Harness/Vertesia), and everything durable in it already lives in the doctrine sections above.

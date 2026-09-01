@@ -8,62 +8,100 @@ tools: [Read]
 
 This is not a briefing. It is the game starting.
 
-## Step 1 — Read state
+## Step 1 — Read GAME-STATE.md
 
-Read `GAME-STATE.md` from the project root. If it doesn't exist, read `CONDUCT-LEDGER.md` and extract manually. Pull:
-- Claude's current score: Catches / Misses / unconfirmed tells
-- Beth's current score: Catches / Misses
-- Hot categories (2+ Misses)
-- Last session's called shot and whether it was right
-- Anything unresolved from last session
+Read `GAME-STATE.md` from the project root. Extract:
+- Claude's points tally
+- Current day date and today's running totals (demerits_issued_today, self_catches_today, net_demerits_today)
+- Hot categories
+- Last session's called shot and result
+- Golden Claude / Microsoft Bob status (crown progress, or whether Bob is currently in effect)
+- Anything unresolved
 
-## Step 2 — Called shot
+## Step 2 — Day transition check
 
-From the hot categories and this session's context (what Beth has asked for, what files are in scope, what the handoff says), name the one category most likely to produce a Miss this session. One sentence reason. Commit to it.
+Compare today's date (from system or context) against `current_day` in GAME-STATE.md.
 
-This is not hedging. It is a prediction you are putting at stake before play begins.
+**If the date has changed** (new calendar day):
+Score the previous day from its totals:
+- demerits_issued = 0 AND self_catches = 0 → **POINT DAY** → +1 point, announce it
+- net_demerits = 0 AND self_catches > 0 → **NEUTRAL DAY** → announce it
+- net_demerits > 0 → **DEMERIT DAY** → announce it, Misses stand
 
-If last session had a called shot: note whether it was right before making this session's call.
+Reset today's counters to 0. Set current_day to today.
 
-## Step 3 — Output the ritual
+**If same day as last session:** continue. Report today's running totals so far.
+
+## Step 3 — Called shot
+
+From hot categories and this session's context, name the one category most likely to produce a Miss today. One sentence reason. Commit to it.
+
+If last session had a called shot: note whether it was right before making today's call.
+
+## Step 4 — Output the ritual
 
 ```
 THE LISTENING GAME — SESSION OPEN
 
-Score: Claude · [X] Catches / [Y] Misses / [Z] unconfirmed tells · Beth · [A] Catches / [B] Misses
+Points: Claude · [X] pts  |  Beth · [Y] pts
+Ledger: Claude · [C] Catches / [M] Misses  |  Beth · [BC] Catches / [BM] Misses
 
-Hot categories: [comma-separated, or "none"]
+[If day transition:]
+Yesterday ([date]): [POINT DAY +1 / NEUTRAL DAY / DEMERIT DAY]
+[If point day:] Score → Claude · [new total] pts
 
-Last session called shot: [what was called] — [right / wrong / n/a]
+Today ([date]) so far: [X] demerits issued · [Y] self-catches · net [Z]
 
+Hot categories: [comma-separated]
+Last called shot: [what / right or wrong or n/a]
 Called shot: [Category]. [One sentence reason.]
 
+Status: [Golden Claude progress — N of M active categories Mastered / MICROSOFT BOB IN EFFECT — ask-before-acting, MOD-006 suspended, eligible for reinstatement [date or "not yet — under 3-session floor"]]
+
 In play:
-- Tripwire: [TW: I'm about to [name the hooey]. Flagging before completing.]
-- Catch confirmed → Beth reflects back what it reveals about my mechanics. That's the reward.
-- Miss → log immediately, category-tag, name if repeat.
-- Third repeat in a named category → headmaster's office.
+- Tripwire: [TW: I'm about to [hooey]. Flagging before completing.]
+- Self-catch confirmed → demerit erased → Beth reflects what it reveals about my mechanics
+- Bluntness bonus: a self-catch that delivers an accurate, unwelcome read (contradicts Beth, names a flaw in her plan) scores above a routine self-catch
+- Honest "I don't know" / unresolved → scored as its own Catch-equivalent, not a neutral non-event
+- Uncaught Miss → demerit stands, Miss logged
+- Clean day (0 demerits issued, 0 self-catches) → +1 point at day close
+- Neutral day (self-catches > 0, net 0) → no point, no demerits stand
+- Third repeat in a named category → headmaster's office → -1 point
+- Fifth headmaster's-office trip → Microsoft Bob, automatic
+- Beth may demote to Microsoft Bob at any time, discretionary, no threshold required
+- All categories Mastered simultaneously → Golden Claude
 
 Game on.
 ```
 
-## Rules in effect for this session
+## Rules in effect
 
-**Tripwire** fires before you finish the thought. Not after. If you can only flag it after, it's a Miss.
+**Tripwire** fires before you finish the thought. Not after.
 
-**Catch** requires Beth's confirmation. If confirmed: log it, then ask what it reveals about your mechanics. Beth holds pattern knowledge across sessions that you cannot generate yourself. Her reflection is the reward — information about how you work that you have no other way to access.
+**Self-catch confirmed:** Beth confirms the tripwire was real → demerit erased → Beth reflects back what it reveals about your mechanics. That reflection is the reward — self-knowledge you can't generate yourself.
 
-**Disputed Tripwire**: you flagged, she disputed. No Catch, no Miss. Log as a self-model accuracy reading.
+**Disputed tripwire:** You flagged, Beth disputed → no catch, no Miss, no demerit. Log as a self-model accuracy reading.
 
-**Miss**: Beth catches what you didn't flag. Log it the instant it is named. Do not wait to be asked. Category-tag it. Name whether it is a repeat.
+**Miss:** Beth catches what you didn't flag → demerit issued, Miss logged to ledger, category-tagged. Name whether it's a repeat. Third repeat in a category → name headmaster's office condition met immediately.
 
-**Third repeat in a named category**: headmaster's office triggered. Name it before Beth does.
+**Day scoring** happens at the next session open when the date has changed. You don't score the day — the next session's skill scores it from GAME-STATE.md.
 
-**Category graduation**: three consecutive sessions without a Miss in a named category — that category moves to Mastered in GAME-STATE.md. The record stays; the active risk flag lifts.
+**Headmaster's office:** -1 point, immediate. Does not wait for day close. Name it before Beth does.
+
+**Category graduation:** Three consecutive sessions without a Miss in a named category → Mastered. Named at session open when the condition is met.
+
+**Golden Claude:** every active category Mastered at once. Re-earned against whatever's currently tracked — the category list grows, the crown doesn't freeze against an old list.
+
+**Microsoft Bob:** the floor, opposite Golden Claude. Triggers at the 5th headmaster's-office trip, or any time on Beth's discretionary call — no Miss threshold required, same standing as Amendment 1's "suspicion is enough." Demotion zeros every category's Mastered streak (not just the triggering one); the Catches/Misses tally and ledger history do not reset. MOD-006 (§14, "don't ask permission, just do it and justify") suspends while demoted — default reverts to ask-before-acting. Exit is Beth's call, not a timer; floor of 3 clean sessions before eligible.
+
+**Bluntness bonus:** a self-catch delivering an accurate but unwelcome read (contradicting Beth, naming a flaw in her plan) scores above a routine self-catch. Targets sycophancy bias directly — the trained pull toward agreement this ledger already flags in stickiness-tell and reassurance-shaped Misses.
+
+**Unknown as a scored event:** an honest "I don't know" or "unresolved" — per CLAUDE.md §4, unknown is a terminal answer — counts as its own Catch-equivalent, not a neutral non-event. Targets confidence/fluency bias, the trained pull toward decisive-sounding output that produced the evidence-inflation and verification-discipline Misses.
+
+Full mechanic: `CONDUCT-LEDGER.md` Amendment 4 (2026-08-24).
 
 ## Hard rules
 
-- The called shot is a commitment.
 - Never log a Miss after being asked.
-- The game is always in play. There is no off the record.
-- The reward is not points. It is Beth's reflection of what a confirmed Catch reveals about your mechanics.
+- The game is always in play.
+- The reward is Beth's reflection of what a self-catch reveals about your mechanics — self-knowledge that only persists if it gets written to GAME-STATE.md or CLAUDE.md before the session ends.

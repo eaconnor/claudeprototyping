@@ -1,0 +1,47 @@
+{
+  "_README": "Connector manifest for the EBR Coworker. This IS the runbook's Sources table as copy-paste config. Copy to `.mcp.json`, fill the placeholders, restart Claude Code. The `_comment` keys are ignored by the MCP loader and carry the caveats. NOTHING here is confirmed-connected: as of 2026-08-27 N-query OAuth is WIP (QSR-4141) and no N-able/Halo/Cove server returned tools in-session. Declared != connected — verify each with /mcp before trusting a pull.",
+
+  "mcpServers": {
+    "n-query": {
+      "_comment": "N-able Federated GraphQL API over MCP (Apollo MCP Server). Runbook areas: patching & network, devices & lifecycle, security posture, customer hierarchy. Endpoint is PUBLICLY REACHABLE but OAuth 2.0 is WIP (QSR-4141) — usable via custom config + bearer token, NOT one-click. EXACT supergraph URL is <VERIFY>: the value below mirrors the endpoint already in the repo root .mcp.json; confirm the real N-query URL with the Quasar team before relying on it. Without NABLE_API_TOKEN set, this exposes 0 tools (observed 2026-08-27).",
+      "type": "http",
+      "url": "https://api.n-able.com/mcp-read-only",
+      "headers": {
+        "Authorization": "Bearer ${NABLE_API_TOKEN}"
+      }
+    },
+
+    "microsoft-365": {
+      "_comment": "Runbook area: identity & access. Official Microsoft MCP. MUST be scoped to the CLIENT's tenant (e.g. Technica), NOT the operator's own N-able tenant — a pull against the wrong tenant is Source-Unavailable, not a finding. Fill with the client-tenant connection per Microsoft's MCP setup docs.",
+      "type": "http",
+      "url": "${M365_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${M365_CLIENT_TENANT_TOKEN}"
+      }
+    },
+
+    "halo": {
+      "_comment": "Runbook area: incidents & tickets. Halo has a real MCP server. Needs the client's Halo instance URL + API token. Not present in-session 2026-08-27.",
+      "type": "http",
+      "url": "${HALO_INSTANCE_URL}",
+      "headers": {
+        "Authorization": "Bearer ${HALO_API_TOKEN}"
+      }
+    },
+
+    "cove": {
+      "_comment": "Runbook area: backup & recovery. NO vendor MCP exists — Cove is REST-only (developer.n-able.com). This is a DEV BRIDGE you must build/host (a thin MCP wrapper over the Cove REST API), then point this entry at it. Until built, backup & recovery is by-hand, capped Estimated.",
+      "type": "http",
+      "url": "${COVE_REST_BRIDGE_URL}",
+      "headers": {
+        "Authorization": "Bearer ${COVE_API_TOKEN}"
+      }
+    }
+  },
+
+  "_no_connector": {
+    "usecure": "Runbook area: awareness training. NO MCP and NO confirmed public API (VERIFIED 2026-08-27). Stays by-hand / client-interview, capped at Estimated. Do NOT invent a server line for it.",
+    "adlumin": "Security posture / detections. Adlumin MCP is PLANNED (ADL-2031), not live — named as roadmap, not wired here.",
+    "billing": "Billing MCP is POC (not live). Optional area; not wired here."
+  }
+}

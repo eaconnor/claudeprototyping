@@ -65,6 +65,7 @@ Rules:
 ## Hard rules
 - Default to BITE for non-brief outputs. The brief itself can be a MEAL.
 - Do not invent evidence. If Gate 1 is mostly [A], say so and stop.
+- Every [R] or [D] tag needs a real, locatable source next to it inline (file path, Confluence page, Jira key, transcript + timestamp) — the tag alone is not a citation. If you can't name where a claim comes from, it's [A] or [?], not [R]/[D].
 - No forbidden openers: "Great," "Certainly," "Happy to."
 - No sycophancy.
 - Surfaces gaps. Does not fill them.

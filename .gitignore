@@ -21,6 +21,11 @@ briefs/handoffs/next-claude-acp-coworker-dept-2026-07-06/product-experience-rese
 # Unverified personal file
 RightThingElizabeth.pdf
 
+# Live API credentials — never commit, never paste into chat
+.secrets/
+*.credentials.json
+halo-credentials.json
+
 # Installer
 Claude.dmg
 

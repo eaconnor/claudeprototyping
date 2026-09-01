@@ -12,10 +12,11 @@ description: Present 5 uncoded rows from the abductive corpus for Beth's coding 
 ## What this skill does
 
 1. Read `briefs/abductive-corpus-council44-2026-08-07.md`
-2. Find the first 5 uncoded rows (Beth's Interpretation = `—`)
-3. Present them in compact, scannable format
-4. After Beth responds: write her codes back to the file
-5. Report progress
+2. Count total rows and coded rows **live, from the file** — never hardcode a total. (Caught 2026-08-21: prose elsewhere in this project said "352 remaining" when the file actually had 402 total / 47 coded / 355 remaining — a stale count typed once and never rechecked. Don't repeat that here.)
+3. Find the first 5 uncoded rows (Beth's Interpretation = `—`)
+4. Present them in compact, scannable format
+5. After Beth responds: write her codes back to the file
+6. Report progress, with the freshly recounted totals
 
 **Two-phase per invocation:**
 - **Phase 1 (present):** runs when Beth invokes `/code-rows` and there are uncoded rows
@@ -37,7 +38,7 @@ Present each as:
 End with:
 ```
 ---
-[X]/402 coded · [Y] to go
+[X]/[TOTAL] coded · [Y] to go
 
 Reply with the rows you want to code. Skip anything that doesn't land.
 Format: `1. your read` or `1. your read · [tag]`
@@ -68,8 +69,10 @@ After write-back, report:
 ```
 Written: [list of row numbers coded this round]
 Skipped: [list of row numbers not mentioned]
-Progress: [coded]/402 coded · [remaining] to go
+Progress: [coded]/[TOTAL] coded · [remaining] to go
 ```
+
+Recount `[coded]`, `[TOTAL]`, and `[remaining]` from the file after writing — don't just increment the prior report's numbers. That's how the "352 vs 402" drift happened: a number got carried forward instead of rechecked.
 
 Then stop. Beth invokes `/code-rows` again when she's ready for the next batch.
 
@@ -79,6 +82,8 @@ Then stop. Beth invokes `/code-rows` again when she's ready for the next batch.
 
 - `/code-rows --cluster SIGN` — serve only uncoded rows from the SIGN cluster
 - `/code-rows --source craig` — serve only rows from sources matching "craig"
+- `/code-rows --spec-area MSP-market` — serve only uncoded rows matching a value in column 6 (spec_area: ACP-product, MSP-market, QBR/EBR-practice, EBR-process, mixed). Useful for routing a batch to a coder whose domain expertise matches that area.
+- `/code-rows --coder [name or role]` — attribute this batch to a named coder. In Phase 2 write-back, prepend `[Coder: NAME]` to the interpretation text (before the coder's actual words) so multi-coder provenance is visible in the corpus without a schema change. Omit for solo/default use (no prefix).
 - `/code-rows --rewind` — re-present the last 5 rows (for correction or second pass)
 
 ---

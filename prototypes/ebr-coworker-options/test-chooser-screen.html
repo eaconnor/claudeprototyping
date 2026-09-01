@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBR Coworker — commitment-led + judgment chooser (Apex 2.0)</title>
+<!-- Apex 2.0 tokens grounded in prototypes/harness-ebr-v2/design.md (Figma K9CTAzip5gwJmhOQpyfbvM,
+     Beth-confirmed 2026-08-13: purple #8500cc). [MY CHOICE, flagged] canvas grey, hairline border,
+     body tone, warning amber, dark mode omitted. Bradley rail uses Band violet (token contract) —
+     deliberately NOT Apex, it's the pipeline apparatus, not product UI. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#8500cc; --brand-hero:#a90aff; --brand-soft:rgba(133,0,204,.07);
+    --surface:#fff; --canvas:#f5f5f6; --hover:#fafafa;
+    --heading:#18191a; --text:#45464a; --text-2:#6b6c72;
+    --border:#e6e6ea; --border-strong:#d5d5da;
+    --success:#1a8c4c; --success-bg:#e8f7ed; --error:#d93333; --error-bg:#fbeaea;
+    --warn:#9a6a00; --warn-bg:#f6eeda;
+    --rail-bg:#f3eefb; --rail-border:#8b5cf6; /* Band violet — pipeline apparatus, not Apex */
+    --r-ctl:4px; --r-card:8px; --r-pill:999px;
+    --sh:0 1px 2px rgba(24,25,26,.06),0 2px 10px rgba(24,25,26,.04);
+    --fh:'Manrope',sans-serif; --fb:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--canvas);color:var(--text);font-family:var(--fb);font-size:14px;line-height:20px}
+  .fid{background:#18191a;color:#fff;font-size:12px;padding:7px 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fid b{color:var(--brand-hero);font-weight:600}
+  .topbar{background:var(--surface);border-bottom:2px solid var(--brand);padding:12px 20px;display:flex;align-items:center;gap:14px}
+  .logo{display:flex;align-items:center;gap:9px;font-family:var(--fh);font-weight:700;color:var(--heading);font-size:16px}
+  .logo .mk{width:22px;height:22px;border-radius:6px;background:var(--brand);display:inline-block}
+  .topbar .div{width:1px;height:20px;background:var(--border-strong)}
+  .topbar .ctx{font-weight:600;color:var(--heading)}
+  .topbar .who{margin-left:auto;font-size:13px;color:var(--text-2)}
+  .layout{display:flex;align-items:flex-start;gap:20px;padding:20px}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--sh)}
+  .card>.hd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+  .card>.hd h3{font-family:var(--fh);font-weight:600;font-size:15px;color:var(--heading)}
+  .card>.hd .k{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--brand);background:var(--brand-soft);padding:3px 9px;border-radius:var(--r-pill)}
+  .card>.hd .r{margin-left:auto;font-size:12px;color:var(--text-2)}
+  .bd{padding:16px 18px}
+  /* hero commitment read */
+  .hero{border-left:4px solid var(--error);background:var(--error-bg);border-radius:var(--r-card);padding:16px 18px;margin-bottom:14px}
+  .hero .st{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--error)}
+  .hero h2{font-family:var(--fh);font-weight:700;font-size:24px;color:var(--heading);margin:3px 0}
+  .hero p{font-size:13px;color:var(--text-2)}
+  .sig{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .sig .s{border:1px solid var(--border);border-radius:var(--r-ctl);padding:11px 12px;background:var(--surface)}
+  .sig .s .lb{font-size:11px;color:var(--text-2)}
+  .sig .s .vv{font-family:var(--fh);font-weight:600;font-size:15px;color:var(--heading);margin-top:3px}
+  .sig .s .vv.bad{color:var(--error)} .sig .s .vv.warn{color:var(--warn)}
+  .note{font-size:12px;color:var(--text-2);margin-top:12px}
+  .tier{font-size:10px;font-weight:600;letter-spacing:.04em;border:1px solid var(--border-strong);border-radius:var(--r-pill);padding:2px 8px;color:var(--text-2);white-space:nowrap}
+  /* chooser rows */
+  .row{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--border);border-radius:var(--r-ctl);padding:12px 14px;margin-bottom:8px}
+  .row:hover{background:var(--hover)}
+  .pick{width:22px;height:22px;flex:none;margin-top:1px;border-radius:var(--r-ctl);border:1.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--text-2)}
+  .pick.on{background:var(--brand);border-color:var(--brand);color:#fff}
+  .row .f{flex:1;min-width:0}
+  .row .t{color:var(--heading);font-weight:500}
+  .row .sm{font-size:12px;color:var(--text-2);margin-top:2px}
+  .row .biz{display:inline-block;font-size:11px;font-weight:600;color:var(--success);background:var(--success-bg);border-radius:var(--r-pill);padding:2px 9px;margin-top:6px}
+  .toggle{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--r-ctl);overflow:hidden;font-size:12px}
+  .toggle span{padding:4px 12px;color:var(--text-2)} .toggle .sel{background:var(--brand);color:#fff;font-weight:600}
+  /* forward */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .tile{border:1px solid var(--border);border-radius:var(--r-card);padding:14px}
+  .tile .st{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--brand)}
+  .tile .h{font-family:var(--fh);font-weight:600;color:var(--heading);margin:4px 0 2px}
+  .tile .m{font-size:13px;color:var(--text-2)}
+  /* continuity strip */
+  .delta{display:flex;gap:8px;flex-wrap:wrap}
+  .dchip{font-size:12px;border:1px solid var(--border);border-radius:var(--r-pill);padding:4px 11px;display:flex;align-items:center;gap:6px;background:var(--surface)}
+  .dot{width:8px;height:8px;border-radius:var(--r-pill)}
+  .dot.g{background:var(--success)}.dot.a{background:var(--warn)}.dot.r{background:var(--error)}
+  /* reason gap */
+  .gap{border:1.5px dashed var(--border-strong);border-radius:var(--r-card);padding:14px 18px;background:var(--hover)}
+  .gap .st{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-2)}
+  .gap .h{font-family:var(--fh);font-weight:600;color:var(--heading);margin:3px 0}
+  .gap .m{font-size:13px;color:var(--text-2)}
+  .gap .ph{display:inline-block;font-size:11px;font-weight:600;color:var(--brand);border:1px solid var(--brand);border-radius:var(--r-pill);padding:2px 9px;margin-top:8px}
+  /* bradley rail */
+  .rail{width:290px;flex:none;background:var(--rail-bg);border-left:4px solid var(--rail-border);border-radius:var(--r-card);padding:16px}
+  .rail .badge{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#5b21b6;background:#e9d5ff;border-radius:var(--r-pill);padding:4px 10px;display:inline-block}
+  .rail h4{font-family:var(--fh);font-weight:700;color:var(--heading);font-size:14px;margin:14px 0 4px}
+  .rail p{font-size:12.5px;color:#4a4560;line-height:18px}
+  .rail .li{font-size:12.5px;color:#4a4560;line-height:18px;padding-left:14px;position:relative;margin-top:5px}
+  .rail .li:before{content:"";position:absolute;left:2px;top:7px;width:5px;height:5px;border-radius:var(--r-pill);background:var(--rail-border)}
+  .rail .good:before{background:var(--success)} .rail .bad:before{background:var(--error)}
+  .rc{background:#fff;border:1px solid #e3d9f5;border-radius:var(--r-ctl);padding:9px 11px;margin-top:8px}
+  .rc .tm{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--brand)}
+  .rc .ac{font-size:12px;color:var(--heading);margin-top:2px}
+</style>
+</head>
+<body>
+  <div class="fid"><span>◐ Tier 1 · Concept — reactions, not validation · fictional seed data · <b>Apex 2.0</b></span><span>EBR Coworker · commitment-led + judgment chooser · 2026-08-20</span></div>
+  <div class="topbar">
+    <span class="logo"><span class="mk"></span>Harness</span>
+    <span class="div"></span>
+    <span class="ctx">EBR Coworker</span>
+    <span style="color:var(--text-2)">›</span>
+    <span>Ashcombe Print Group</span>
+    <span class="who">Meridian Managed IT · Dana R.</span>
+  </div>
+
+  <div class="layout">
+    <div class="main">
+
+      <!-- 1. COMMITMENT-LED OPENING -->
+      <div class="card">
+        <div class="hd"><span class="k">Commitment read</span><h3>Why this review fired</h3><span class="r">triggered by behaviour, not the calendar</span></div>
+        <div class="bd">
+          <div class="hero">
+            <div class="st">Ashcombe Print Group</div>
+            <h2>Going quiet — worth a real conversation</h2>
+            <p>Four behavioural signals moved against you this cycle. This isn't a quarter-end ritual; the account changed.</p>
+          </div>
+          <div class="sig">
+            <div class="s"><div class="lb">Exec attendance</div><div class="vv bad">Skipped last 2</div></div>
+            <div class="s"><div class="lb">Ticket reopens</div><div class="vv warn">1 reopened ×2</div></div>
+            <div class="s"><div class="lb">Champion</div><div class="vv warn">New IT lead, 3wk</div></div>
+            <div class="s"><div class="lb">Cadence</div><div class="vv warn">Last EBR +5wk late</div></div>
+          </div>
+          <div class="note">These are behavioural proxies pulled from PSA + attendance <span class="tier">Measured</span> — buildable today. The <i>why</i> behind the drift is not in the telemetry (see the gap below).</div>
+        </div>
+      </div>
+
+      <!-- 2. JUDGMENT-LED CHOOSER (core mechanic) -->
+      <div class="card">
+        <div class="hd"><span class="k">Your call</span><h3>What Dana takes to Ashcombe</h3><span class="r"><span class="toggle"><span class="sel">CFO tone</span><span>Owner tone</span></span></span></div>
+        <div class="bd">
+          <div class="row"><span class="pick on">✓</span><div class="f"><div class="t">Unpatched estate is 2 CVEs from a Cyber Essentials fail</div><div class="sm">consequence: cyber-insurance cover could lapse · priority: high</div><span class="biz">Renewal risk → protect £-recurring</span></div><span class="tier">Measured</span></div>
+          <div class="row"><span class="pick on">✓</span><div class="f"><div class="t">MFA rollout complete — usable proof of due care</div><div class="sm">consequence: strengthens the renewal case · priority: medium</div><span class="biz">Getting business → renewal leverage</span></div><span class="tier">Measured</span></div>
+          <div class="row"><span class="pick on">✓</span><div class="f"><div class="t">Backup gap on 3 devices — fixable this month</div><div class="sm">consequence: recoverability risk · priority: high</div><span class="biz">Getting business → services upsell</span></div><span class="tier">Measured</span></div>
+          <div class="row"><span class="pick">–</span><div class="f"><div class="t">Consider 24/7 SOC next FY</div><div class="sm">commercial recommendation · priority: operator call</div><span class="biz">Getting business → expansion</span></div><span class="tier">Estimated</span></div>
+          <div class="note">The coworker proposes; you choose. Nothing reaches Ashcombe you didn't include — the judgment (and the liability) stays yours. Dual-surface: excluded rows stay in your internal working notes.</div>
+        </div>
+      </div>
+
+      <!-- 3. FORWARD (getting-business) -->
+      <div class="card">
+        <div class="hd"><span class="k">Forward</span><h3>The state of the union</h3></div>
+        <div class="bd">
+          <div class="duo">
+            <div class="tile"><div class="st">Decision it needs</div><div class="h">Cyber Essentials — commit or lapse</div><div class="m">£4.2k/yr renewal + remediation. The one call this meeting exists to land.</div></div>
+            <div class="tile"><div class="st">Expansion on the table</div><div class="h">2 openings surfaced</div><div class="m">24/7 SOC · backup remediation. Both flagged from the signals above, not invented for the pitch.</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px">Since last EBR — continuity carries forward</div>
+            <div class="delta">
+              <span class="dchip"><span class="dot g"></span>MFA rollout — kept</span>
+              <span class="dchip"><span class="dot a"></span>Retire EOL servers — 1 of 2, slipped</span>
+              <span class="dchip"><span class="dot r"></span>Phishing click-rate — new risk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. THE HONEST GAP -->
+      <div class="gap">
+        <div class="st">The missing input</div>
+        <div class="h">Why does Ashcombe value Meridian? It's not in the telemetry.</div>
+        <div class="m">The signals tell you the account went quiet — they don't tell you why, or what Ashcombe is actually trying to do this year. Behaviour is a proxy for commitment, not a reason.</div>
+        <span class="ph">Phase 2 — one async question before the review</span>
+      </div>
+
+    </div>
+
+    <!-- BRADLEY RAIL -->
+    <aside class="rail">
+      <span class="badge">Tier 1 · Concept</span>
+      <h4>What this is testing</h4>
+      <p>Whether leading with the account's commitment signal (not a calendar deck) drives customer-driven engagement and surfaces getting-business openings the operator can act on.</p>
+      <h4>What you nailed</h4>
+      <p class="li good">Aligns with the north star (F8): the EBR is a getting-business tool, and the commitment read is the direct expression of it.</p>
+      <p class="li good">The commitment signal has a buildable-now core — behavioural proxies from PSA + attendance, no client-voice needed.</p>
+      <p class="li good">Judgment stays with the operator (chooser + dual-surface): protects the C2 moat and the liability line.</p>
+      <h4>What will hurt you</h4>
+      <p class="li bad">Reason-blind: the "why" needs a client-voice input that doesn't exist yet (Phase 2). Don't ship the signal as if it explains itself.</p>
+      <p class="li bad">Proxies need PSA + attendance data wired — zero connectors live today (RA-019).</p>
+      <p class="li bad">One customer's signal ≠ validated. This is a probe, not proof.</p>
+      <h4>Routed</h4>
+      <div class="rc"><div class="tm">Product</div><div class="ac">Decide the Phase-2 "one question" — the reason-capture mechanism.</div></div>
+      <div class="rc"><div class="tm">Research</div><div class="ac">Field the operator study (Q2) — is the commitment read what they'd act on?</div></div>
+      <div class="rc"><div class="tm">Eng</div><div class="ac">Which behavioural proxies are pullable from Halo/PSA today, at what rate limit.</div></div>
+      <div class="rc"><div class="tm">Design</div><div class="ac">The chooser gate must read as ownership, not rubber-stamp.</div></div>
+    </aside>
+  </div>
+</body>
+</html>

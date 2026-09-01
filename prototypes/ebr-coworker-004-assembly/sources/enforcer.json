@@ -1,0 +1,17 @@
+{
+  "_source": "Enforcer",
+  "_kind": "M365 policy governance / drift detection",
+  "_note": "FICTIONAL seed data. Tenant-level — NO device concept at all. Unix epoch timestamps.",
+  "tenant": "fenwicklogistics.onmicrosoft.com",
+  "generated": 1787894400,
+  "baseline": "Bracken Standard Baseline v4",
+  "policies": [
+    { "policyName": "Require MFA — all users", "state": "enforced", "driftDetected": false, "lastEvaluated": 1787894400, "scope": "standard users" },
+    { "policyName": "Require MFA — privileged roles", "state": "not-enforced", "driftDetected": true, "driftSince": 1785302400, "lastEvaluated": 1787894400, "scope": "Global Admin, Exchange Admin, SharePoint Admin", "severity": "critical" },
+    { "policyName": "Block legacy authentication", "state": "enforced", "driftDetected": false, "lastEvaluated": 1787894400, "scope": "tenant" },
+    { "policyName": "Conditional Access — trusted locations", "state": "enforced", "driftDetected": false, "lastEvaluated": 1787894400, "scope": "tenant" },
+    { "policyName": "Guest wifi network isolation", "state": "enforced", "driftDetected": false, "lastEvaluated": 1787462400, "scope": "site: HQ only" },
+    { "policyName": "Documented incident response procedure", "state": "not-tracked", "driftDetected": null, "lastEvaluated": null, "scope": "tenant", "_note": "Enforcer does not evaluate process controls — only technical policy state." }
+  ],
+  "baselineCoverage": "5 of 6 controls evaluable"
+}

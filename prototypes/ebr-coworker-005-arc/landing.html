@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Coworkers — N-able</title>
+<!-- Vision / marketing landing. N-able corporate shell (brand pulled live from n-able.com
+     2026-08-27: --primary #140628, signature cyan #38dbff, Manrope 800, CTA radius 6px).
+     Value prop grounded in FSN-83143 (22-partner research, DEC-006 coworker list) and the
+     Stefanie Hammond EBR interview (2026-07-30): manual-first pedagogy, retention/pipeline/CYA
+     drivers, prep-across-8-sources as the roadblock. Register: Apple/Lemonade/Huntress —
+     plain, benefit-led, one idea per section, no spec jargon (CLAUDE.md §1). Names fictional. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#140628; --ink-2:#2c1d43;
+    --cyan:#38dbff; --cyan-deep:#0bb8e0; --cyan-ink:#063947;
+    --purple:#C046FF; --deep-purple:#3E067F; --apex:#8500cc;
+    --green:#00d084; --blue:#2442E1;
+    --paper:#ffffff; --mist:#f4f5fb; --mist-2:#eaecf6;
+    --line:#e2e2ee; --text:#413a52; --text-2:#6c6780;
+    --r:6px; --r-lg:14px;
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif;
+    --font-m:'Inter',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--text);font-family:var(--font-b);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(20,6,40,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+  nav .wrap{display:flex;align-items:center;gap:28px;height:64px}
+  .logo{font-family:var(--font-h);font-weight:800;font-size:19px;color:#fff;display:flex;align-items:center;gap:9px;letter-spacing:-.02em}
+  .logo .mk{width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(56,219,255,.22)}
+  .logo .sub{font-weight:600;font-size:13px;color:var(--cyan);letter-spacing:.02em;padding-left:11px;margin-left:2px;border-left:1px solid rgba(255,255,255,.18)}
+  nav .links{display:flex;gap:26px;margin-left:12px;font-size:14px;font-weight:500;color:#c9c2da}
+  @media(max-width:820px){nav .links{display:none}}
+  nav .links a:hover{color:#fff}
+  nav .spacer{flex:1}
+  .btn{font-family:var(--font-h);font-weight:700;font-size:14px;border:none;border-radius:var(--r);
+    padding:11px 20px;cursor:pointer;text-decoration:none;display:inline-block;transition:.14s;white-space:nowrap}
+  .btn-cyan{background:var(--cyan);color:var(--ink)}
+  .btn-cyan:hover{background:#5fe4ff;transform:translateY(-1px)}
+  .btn-ghost-d{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
+  .btn-ghost-d:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+  .btn-ink{background:var(--ink);color:#fff}
+  .btn-ink:hover{background:#241041}
+  .btn-lg{padding:15px 28px;font-size:16px}
+
+  /* hero */
+  .hero{background:radial-gradient(1200px 620px at 72% -8%,rgba(192,70,255,.28),transparent 60%),
+      radial-gradient(900px 520px at 8% 12%,rgba(56,219,255,.18),transparent 58%),var(--ink);
+    color:#fff;padding:88px 0 100px;overflow:hidden;position:relative}
+  .hero .eyebrow{font-family:var(--font-m);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin-bottom:20px}
+  .hero h1{font-family:var(--font-h);font-weight:800;font-size:60px;line-height:1.03;letter-spacing:-.03em;color:#fff;max-width:16ch;margin-bottom:22px}
+  @media(max-width:820px){.hero h1{font-size:40px}}
+  .hero .lede{font-size:20px;line-height:1.5;color:#d3ccdf;max-width:56ch;margin-bottom:34px}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .hero .reassure{font-size:13.5px;color:#9a92ad;margin-top:18px;display:flex;align-items:center;gap:8px}
+  .hero .reassure .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+
+  /* logo strip */
+  .trust-strip{background:var(--ink);padding:0 0 60px}
+  .trust-strip .lab{font-family:var(--font-m);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7d7595;text-align:center;margin-bottom:18px}
+  .trust-strip .row{display:flex;gap:38px;justify-content:center;flex-wrap:wrap;opacity:.62}
+  .trust-strip .row span{font-family:var(--font-h);font-weight:700;font-size:17px;color:#cfc8dd;letter-spacing:-.01em}
+
+  /* section shells */
+  section{padding:86px 0}
+  .kicker{font-family:var(--font-m);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--apex);font-weight:600;margin-bottom:14px}
+  h2{font-family:var(--font-h);font-weight:800;font-size:38px;line-height:1.1;letter-spacing:-.02em;color:var(--ink);max-width:20ch;margin-bottom:16px}
+  @media(max-width:820px){h2{font-size:30px}}
+  .section-lede{font-size:18px;color:var(--text-2);max-width:60ch;margin-bottom:44px}
+
+  /* three pillars */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:860px){.pillars{grid-template-columns:1fr}}
+  .pillar{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px}
+  .pillar .n{font-family:var(--font-m);font-size:12px;font-weight:700;color:var(--apex);margin-bottom:14px}
+  .pillar h3{font-family:var(--font-h);font-weight:700;font-size:21px;color:var(--ink);margin-bottom:9px;letter-spacing:-.01em}
+  .pillar p{font-size:15px;color:var(--text-2);line-height:1.55}
+  .pillar .ic{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .pillar .ic svg{width:22px;height:22px;display:block;stroke:var(--apex)}
+
+  /* featured EBR band */
+  .feature{background:var(--mist)}
+  .feature .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  @media(max-width:900px){.feature .grid{grid-template-columns:1fr;gap:32px}}
+  .feature .tagpill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;
+    font-family:var(--font-m);font-size:11.5px;font-weight:600;color:var(--apex);padding:6px 13px;margin-bottom:18px}
+  .feature h2{margin-bottom:14px}
+  .feature p{font-size:17px;color:var(--text);line-height:1.6;margin-bottom:16px;max-width:52ch}
+  .feature ul{list-style:none;margin:20px 0 28px}
+  .feature li{display:flex;gap:11px;font-size:15.5px;color:var(--text);margin-bottom:12px;line-height:1.5}
+  .feature li .ck{color:var(--green);font-weight:800;flex:none;margin-top:1px}
+  /* the product mock card */
+  .mock{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 24px 60px -30px rgba(20,6,40,.4);overflow:hidden}
+  .mock .bar{background:var(--ink);height:44px;display:flex;align-items:center;gap:8px;padding:0 16px}
+  .mock .bar .d{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25)}
+  .mock .bar .t{font-family:var(--font-m);font-size:11.5px;color:#b7aecb;margin-left:8px}
+  .mock .body{padding:20px}
+  .mock .drop{border:2px dashed var(--mist-2);border-radius:10px;background:var(--mist);padding:22px;text-align:center;margin-bottom:14px}
+  .mock .drop .big{font-family:var(--font-h);font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px}
+  .mock .drop .sm{font-size:12px;color:var(--text-2)}
+  .mock .line{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;font-size:13px}
+  .mock .line .src{font-weight:600;color:var(--ink)}
+  .mock .badge{font-family:var(--font-m);font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:999px}
+  .mock .badge.ok{background:#e4f9ee;color:#0a7d43}
+  .mock .badge.hand{background:#fbf0d9;color:#946200}
+  .mock .badge.think{background:#f2e6fb;color:var(--apex)}
+
+  /* the family */
+  .family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.family-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:620px){.family-grid{grid-template-columns:1fr}}
+  .cw{border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;background:var(--paper);transition:.14s;position:relative}
+  .cw:hover{border-color:var(--apex);box-shadow:0 12px 30px -18px rgba(133,0,204,.35);transform:translateY(-2px)}
+  .cw .cat{font-family:var(--font-m);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px}
+  .cw h3{font-family:var(--font-h);font-weight:700;font-size:18px;color:var(--ink);margin-bottom:7px}
+  .cw p{font-size:13.5px;color:var(--text-2);line-height:1.5}
+  .cw.you{border-color:var(--apex);background:linear-gradient(180deg,#faf5ff,#fff)}
+  .cw .flag{position:absolute;top:-11px;left:20px;background:var(--apex);color:#fff;font-family:var(--font-m);font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:999px}
+
+  /* trust / confidence band */
+  .trust{background:var(--ink);color:#fff}
+  .trust h2{color:#fff}
+  .trust .section-lede{color:#c4bcd6}
+  .trust .kicker{color:var(--cyan)}
+  .conf-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  @media(max-width:860px){.conf-row{grid-template-columns:1fr 1fr}}
+  .conf{border:1px solid rgba(255,255,255,.14);border-radius:var(--r-lg);padding:22px;background:rgba(255,255,255,.03)}
+  .conf .tier{font-family:var(--font-m);font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:10px}
+  .conf.measured .tier{color:var(--green)} .conf.benchmarked .tier{color:var(--cyan)}
+  .conf.estimated .tier{color:#ffce6b} .conf.unverified .tier{color:#ff9a9a}
+  .conf p{font-size:13.5px;color:#c4bcd6;line-height:1.5}
+  .trust .pull{font-family:var(--font-h);font-weight:700;font-size:24px;color:#fff;max-width:30ch;margin:44px auto 0;text-align:center;line-height:1.35;letter-spacing:-.01em}
+  .trust .pull b{color:var(--cyan)}
+
+  /* final CTA */
+  .final{background:linear-gradient(135deg,var(--deep-purple),var(--apex));color:#fff;text-align:center}
+  .final h2{color:#fff;max-width:24ch;margin:0 auto 16px}
+  .final p{font-size:18px;color:#f0e4fb;max-width:50ch;margin:0 auto 32px}
+  .final .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  footer{background:var(--ink);color:#8b829f;padding:40px 0;font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer .logo{font-size:16px}
+  .proto-note{background:#fff5d6;border-bottom:1px solid #e9d9a0;color:#6b5300;font-size:12.5px;text-align:center;padding:8px 16px;font-family:var(--font-m)}
+</style>
+</head>
+<body>
+
+<div class="proto-note">Concept prototype · fictional data · Tier 1. What's fabricated: every grade, confidence number, and metric. The coworker list and product model are from N-able research (FSN-83143).</div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="mk"></span>N-able<span class="sub">AI Coworkers</span></div>
+    <div class="links">
+      <a href="#coworkers">Coworkers</a>
+      <a href="#how">How it works</a>
+      <a href="#trust">Trust</a>
+      <a href="#ebr">EBR Coworker</a>
+    </div>
+    <div class="spacer"></div>
+    <a href="ebr-app.html" class="btn btn-cyan">Start free trial</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">N-able · AI Coworkers</div>
+    <h1>Hire the coworker. Keep the judgment.</h1>
+    <p class="lede">AI Coworkers do the repeatable work your team never gets to — the prep, the pulls, the first draft. You make every call. They never act without you.</p>
+    <div class="cta-row">
+      <a href="ebr-app.html" class="btn btn-cyan btn-lg">Start a free trial →</a>
+      <a href="ebr-app.html" class="btn btn-ghost-d btn-lg">See it work</a>
+    </div>
+    <div class="reassure"><span class="dot"></span>No credit card. Your data never leaves your tenant. Nothing goes live until a human clicks activate.</div>
+  </div>
+</header>
+
+<div class="trust-strip">
+  <div class="wrap">
+    <div class="lab">Built on the stack MSPs already run</div>
+    <div class="row">
+      <span>N-central</span><span>N-sight</span><span>Cove</span><span>Halo PSA</span><span>M365</span><span>N-zo</span>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="kicker">How it works</div>
+    <h2>It learns your process. Not the other way around.</h2>
+    <p class="section-lede">Most tools make you rebuild your workflow to fit the software. A coworker starts from the runbook you already use — so day one feels like handing work to someone who already knows how you do it.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="ic" style="background:#f4edfb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div>
+        <div class="n">01</div>
+        <h3>You bring the runbook</h3>
+        <p>Show it last quarter's report, or start from a template. It reads the structure — your sections, your sources, your grading — and drafts a coworker shaped like your work.</p>
+      </div>
+      <div class="pillar">
+        <div class="ic" style="background:#f4edfb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4"/></svg></div>
+        <div class="n">02</div>
+        <h3>It does the legwork</h3>
+        <p>It pulls from your stack, reconciles the mismatches, and drafts the parts that are drafts. The tedious hours before the meeting — done before you sit down.</p>
+      </div>
+      <div class="pillar">
+        <div class="ic" style="background:#f4edfb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="n">03</div>
+        <h3>You stay in charge</h3>
+        <p>It proposes; you decide. It flags what it's guessing and holds back what it isn't sure of. Nothing reaches a client without a name on it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED: EBR COWORKER -->
+<section class="feature" id="ebr">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="tagpill">★ Most-requested coworker</div>
+        <h2>The business review that took a day. Now it takes the drive to the meeting.</h2>
+        <p>Your quarterly review is where retention, pipeline, and cyber-liability cover all live. It's also a manual slog across eight systems that most teams skip when they're busy.</p>
+        <p>The EBR Coworker does the prep the way your best analyst would — then hands you a draft you can stand behind, or correct in minutes.</p>
+        <ul>
+          <li><span class="ck">✓</span> Pulls identity, backup, patching, tickets and training from your stack automatically</li>
+          <li><span class="ck">✓</span> Computes the carry-forward as a real delta — not remembered from last time</li>
+          <li><span class="ck">✓</span> Drafts talking points in the language the business owner actually responds to</li>
+          <li><span class="ck">✓</span> Keeps a signed, dated record of what the client accepted or declined</li>
+        </ul>
+        <a href="ebr-app.html" class="btn btn-ink btn-lg">Build the EBR Coworker →</a>
+      </div>
+      <div>
+        <div class="mock">
+          <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="t">n-able · build the EBR coworker</span></div>
+          <div class="body">
+            <div class="drop"><div class="big">Show me your report and I'll build a thing</div><div class="sm">Drop last quarter's EBR — .xlsx · .pptx · .docx</div></div>
+            <div class="line"><span class="src">Identity &amp; access</span><span class="badge ok">Connected · M365</span></div>
+            <div class="line"><span class="src">Backup &amp; recovery</span><span class="badge ok">Connected · Cove</span></div>
+            <div class="line"><span class="src">Awareness training</span><span class="badge hand">By hand</span></div>
+            <div class="line"><span class="src">Risk &amp; vulnerabilities</span><span class="badge think">Fed by Security Tabletop</span></div>
+            <div class="line"><span class="src">Exec summary</span><span class="badge think">Your judgment</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE FAMILY -->
+<section id="coworkers">
+  <div class="wrap">
+    <div class="kicker">The coworker family</div>
+    <h2>Start with one. They work together.</h2>
+    <p class="section-lede">Five platform coworkers, each drawn from what 22 MSPs said they needed most. Build one and the others feed it — the EBR Coworker pulls straight from Security Tabletop, Incident Response, and Environment Health.</p>
+    <div class="family-grid">
+      <div class="cw you">
+        <div class="flag">YOU'RE BUILDING THIS</div>
+        <div class="cat">Business reporting</div>
+        <h3>EBR Coworker</h3>
+        <p>Turns your quarterly review runbook into a coworker that does the prep and drafts the story. You keep the judgment.</p>
+      </div>
+      <div class="cw">
+        <div class="cat">Security</div>
+        <h3>Security Tabletop</h3>
+        <p>Maps CVE exposure, plans remediation, triages vulnerabilities. Feeds the risk section of your EBR.</p>
+      </div>
+      <div class="cw">
+        <div class="cat">Service · diagnostics</div>
+        <h3>Incident Response Analyst</h3>
+        <p>Root-cause analysis on tickets and device events. Feeds the incidents section of your EBR.</p>
+      </div>
+      <div class="cw">
+        <div class="cat">Operations · lifecycle</div>
+        <h3>Environment Health Monitor</h3>
+        <p>Continuous endpoint health, lifecycle and refresh recommendations. Feeds the device section.</p>
+      </div>
+      <div class="cw">
+        <div class="cat">NOC · operations</div>
+        <h3>Alert Flood Suppressor</h3>
+        <p>Suppresses alert noise, correlates to root cause, produces a ranked daily work plan.</p>
+      </div>
+      <div class="cw">
+        <div class="cat">Business reporting</div>
+        <h3>QBR Advisor</h3>
+        <p>Generates client-ready review narratives and posture summaries. The EBR Coworker's sibling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust" id="trust">
+  <div class="wrap">
+    <div class="kicker">Why you can trust it</div>
+    <h2>It tells you what it knows — and what it's guessing.</h2>
+    <p class="section-lede">A coworker that sounds equally sure of everything is one you have to double-check on everything. N-able coworkers grade their own confidence, in words, and hold back what they can't stand behind.</p>
+    <div class="conf-row">
+      <div class="conf measured"><div class="tier">MEASURED</div><p>Pulled straight from a connected source. This is fact, and it says so.</p></div>
+      <div class="conf benchmarked"><div class="tier">BENCHMARKED</div><p>Compared against a standard or last quarter. Solid, with a stated basis.</p></div>
+      <div class="conf estimated"><div class="tier">ESTIMATED</div><p>Inferred — often because the data came in by hand. Flagged, never hidden.</p></div>
+      <div class="conf unverified"><div class="tier">UNVERIFIED</div><p>It won't guess. Held back from anything client-facing until a human vouches for it.</p></div>
+    </div>
+    <p class="pull">Start by letting it do <b>one section</b>. Watch it work. Hand it more when it earns it.</p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>Your best analyst, on every account, every quarter.</h2>
+    <p>Spin up the demo workspace and build your first coworker in about four minutes. Nothing goes live until you say so.</p>
+    <div class="cta-row">
+      <a href="ebr-app.html" class="btn btn-cyan btn-lg">Start a free trial →</a>
+      <a href="ebr-app.html" class="btn btn-ghost-d btn-lg">Build the EBR Coworker</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo"><span class="mk"></span>N-able<span class="sub">AI Coworkers</span></div>
+    <div>Concept prototype · seed data fictional throughout · grounded in FSN-83143 &amp; partner research · not a commitment to ship</div>
+  </div>
+</footer>
+
+</body>
+</html>

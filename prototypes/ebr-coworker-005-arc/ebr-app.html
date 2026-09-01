@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBR Coworker — HARNESS</title>
+<!-- THE unified, clickable EBR app inside HARNESS. One SPA, everything wired:
+     Coworkers list → build the EBR coworker through the steps → activate → its live risk-register
+     dashboard (Overview/Runs/etc.) → the coworker family that feeds it. Left nav, tabs, stepper,
+     toggles, findings, buttons all respond. Layperson-guided: jargon tooltips.
+     Chrome + IA grounded in real HARNESS (Beth's screenshot 2026-08-27). Light/restrained = eng reality;
+     the register is the extra-beautiful Apex-UI data viz within it. All data fictional (§9b). Supersedes
+     the scattered landing/console/build-ebr/ebr-product/ebr-dashboard files (kept as separate tracks). -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#f5f5f7; --surface:#fff; --hover:#f6f4f9;
+    --nav:#17131f; --nav-fg:#c3bdd0; --nav-fg-2:#7c7590; --nav-on-bg:#2a2140;
+    --ink:#18171c; --text:#45464a; --text-2:#6b6c72;
+    --line:#e7e7ec; --line-2:#d7d7de;
+    --apex:#8500cc; --apex-soft:rgba(133,0,204,.07); --purple:#a24dff; --cyan:#0a95c4; --cyan-soft:#e7f6fb;
+    --red:#c0392b; --red-soft:#fbecea; --amber:#a56a00; --amber-soft:#f8eeda; --green:#137a46; --green-soft:#e7f6ee; --held:#8a8a93;
+    --r:6px; --r-lg:10px; --r-pill:999px;
+    --sh:0 1px 2px rgba(20,10,40,.05),0 1px 3px rgba(20,10,40,.05); --sh-lg:0 6px 24px -8px rgba(20,10,40,.16);
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif; --font-m:'Inter',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--canvas);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit} button{font-family:inherit;cursor:pointer}
+
+  .top{display:flex;align-items:center;gap:14px;height:52px;padding:0 18px;background:var(--nav);color:#fff}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--font-h);font-weight:700;font-size:15px;letter-spacing:.22em}
+  .brand .n{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,rgba(255,158,207,.22),rgba(185,139,255,.10) 55%,transparent 72%);
+    box-shadow:inset 0 0 0 1px rgba(255,214,168,.18)}
+  .brand .n svg{width:26px;height:26px;filter:drop-shadow(0 0 5px rgba(255,158,207,.45))}
+  .top .spacer{flex:1}
+  .top .ic{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--nav-fg)}
+  .top .ic:hover{background:rgba(255,255,255,.08);color:#fff} .top .ic svg{width:18px;height:18px}
+
+  .shell{display:grid;grid-template-columns:216px 1fr;min-height:calc(100vh - 52px)}
+  .nav{background:var(--nav);padding:14px 12px;display:flex;flex-direction:column}
+  .nav .grp{font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;color:var(--nav-fg-2);padding:6px 10px 8px}
+  .nav a{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:var(--r);font-size:13.5px;color:var(--nav-fg);margin-bottom:1px}
+  .nav a .i{width:18px;height:18px;display:inline-flex;flex:none;opacity:.9} .nav a .i svg{width:18px;height:18px}
+  .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .nav a.on{background:var(--nav-on-bg);color:#fff}
+  .nav .user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-top:1px solid rgba(255,255,255,.08);color:var(--nav-fg);font-size:12.5px}
+  .nav .user .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--apex),var(--cyan));color:#fff;font-family:var(--font-h);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+
+  .main{overflow-y:auto}
+  .head{padding:20px 32px 0;background:var(--surface);border-bottom:1px solid var(--line)}
+  .crumb{font-size:12.5px;color:var(--text-2);margin-bottom:10px} .crumb .lk{cursor:pointer} .crumb .lk:hover{color:var(--apex)} .crumb .sep{opacity:.4;margin:0 6px}
+  .title-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .back{width:30px;height:30px;border:1px solid var(--line-2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--text-2)} .back:hover{background:var(--hover)}
+  h1{font-family:var(--font-h);font-weight:800;font-size:22px;color:var(--ink);letter-spacing:-.01em}
+  .page-sub{font-size:13.5px;color:var(--text-2);margin:-2px 0 16px;max-width:70ch}
+  .chips{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .chip{font-size:12px;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r-pill);border:1px solid var(--line-2);color:var(--text-2)}
+  .chip.active{background:var(--green-soft);border-color:transparent;color:var(--green)} .chip.active .d{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  .chip.draft{background:var(--amber-soft);border-color:transparent;color:var(--amber)}
+  .chip.mode{background:var(--apex-soft);border-color:transparent;color:var(--apex)}
+  .btns{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .btn{font-family:var(--font-h);font-weight:600;font-size:13px;border:1px solid var(--line-2);background:var(--surface);color:var(--text);border-radius:var(--r);padding:8px 14px}
+  .btn:hover{background:var(--hover)} .btn.primary{background:var(--apex);border-color:var(--apex);color:#fff} .btn.primary:hover{background:#6f00a8} .btn.primary:disabled{opacity:.4;cursor:not-allowed}
+  .btn.cyan{background:var(--cyan);border-color:var(--cyan);color:#fff} .btn.cyan:hover{background:#0982ab}
+  .tabs{display:flex;gap:2px;overflow-x:auto}
+  .tab{font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--text-2);padding:12px 14px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap} .tab.on{color:var(--apex);border-bottom-color:var(--apex)} .tab:hover{color:var(--ink)}
+  .body{padding:26px 32px 80px;max-width:1080px}
+
+  /* jargon tooltip */
+  .term{border-bottom:1px dotted var(--apex);cursor:help;position:relative;color:var(--ink);font-weight:500}
+  .term sup{color:var(--apex);font-size:.7em}
+  .term .tip{position:absolute;left:0;bottom:calc(100% + 8px);width:250px;background:var(--ink);color:#eee;border-radius:var(--r);padding:10px 12px;font-size:12px;font-weight:400;line-height:1.5;box-shadow:var(--sh-lg);opacity:0;visibility:hidden;transform:translateY(4px);transition:.15s;z-index:30;white-space:normal}
+  .term .tip b{color:#fff} .term:hover .tip{opacity:1;visibility:visible;transform:translateY(0)}
+  .term .tip::after{content:"";position:absolute;left:16px;top:100%;border:6px solid transparent;border-top-color:var(--ink)}
+
+  /* Coworker<->Runbook honesty badge — one reusable component, 2 of 3 sites this pass (3rd is Pass 2's Runbooks screen) */
+  .honesty-badge{display:inline-flex;align-items:center;gap:6px;border:1.5px dashed var(--amber);background:var(--amber-soft);color:var(--amber);font-family:var(--font-m);font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);cursor:help;position:relative;white-space:nowrap}
+  .honesty-badge .tip{position:absolute;right:0;bottom:calc(100% + 8px);width:270px;background:var(--ink);color:#eee;border-radius:var(--r);padding:10px 12px;font-size:11.5px;font-weight:400;line-height:1.5;box-shadow:var(--sh-lg);opacity:0;visibility:hidden;transform:translateY(4px);transition:.15s;z-index:30;white-space:normal;text-align:left}
+  .honesty-badge:hover .tip,.honesty-badge:focus .tip{opacity:1;visibility:visible;transform:translateY(0)}
+  .honesty-badge .tip::after{content:"";position:absolute;right:16px;top:100%;border:6px solid transparent;border-top-color:var(--ink)}
+
+  /* coworker family cards */
+  .cw-strip{background:linear-gradient(120deg,#221241,#3a1266);border-radius:var(--r-lg);padding:22px 24px;margin-bottom:26px;display:flex;align-items:center;gap:22px;color:#fff}
+  .cw-strip .ic{width:48px;height:48px;border-radius:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex:none} .cw-strip .ic svg{width:24px;height:24px}
+  .cw-strip .tx{flex:1} .cw-strip .db{display:inline-flex;align-items:center;gap:6px;background:var(--amber-soft);color:var(--amber);font-family:var(--font-m);font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);margin-bottom:8px}
+  .cw-strip h2{font-family:var(--font-h);font-weight:700;font-size:18px;color:#fff;margin-bottom:4px} .cw-strip p{font-size:13px;color:#e0d5ef;max-width:52ch}
+  .sec-h{font-family:var(--font-h);font-weight:700;font-size:13px;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} @media(max-width:900px){.grid{grid-template-columns:1fr 1fr}} @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  .cw{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;box-shadow:var(--sh);transition:.14s} .cw:hover{border-color:var(--apex);box-shadow:var(--sh-lg);transform:translateY(-2px)}
+  .cw .cat{font-family:var(--font-m);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-2);margin-bottom:9px}
+  .cw h3{font-family:var(--font-h);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:7px} .cw p{font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:14px;min-height:52px}
+  .cw .feed{font-size:11px;color:var(--apex);background:var(--apex-soft);border-radius:var(--r);padding:6px 9px;margin-bottom:13px;line-height:1.4}
+  .cw .st{display:flex;align-items:center;gap:8px} .cw .st .avail{font-family:var(--font-m);font-size:10.5px;color:var(--cyan);background:var(--cyan-soft);border-radius:var(--r-pill);padding:3px 9px}
+
+  /* build stepper */
+  .stepper{display:flex;gap:2px;margin-bottom:24px;overflow-x:auto}
+  .stp{flex:1;min-width:110px;padding:12px 6px;border-bottom:2px solid var(--line);text-align:center} .stp .n{font-family:var(--font-m);font-size:9px;color:var(--text-2);display:block;margin-bottom:3px} .stp .t{font-family:var(--font-h);font-weight:600;font-size:12.5px;color:var(--text-2)}
+  .stp.on{border-bottom-color:var(--apex)} .stp.on .t{color:var(--ink)} .stp.on .n{color:var(--apex)} .stp.done .n{color:var(--green)} .stp.done .t{color:var(--text)} .stp:hover .t{color:var(--ink)}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);padding:26px}
+  .panel h2{font-family:var(--font-h);font-weight:800;font-size:21px;color:var(--ink);letter-spacing:-.01em;margin-bottom:8px}
+  .lede{font-size:15px;color:var(--text-2);max-width:64ch;line-height:1.6;margin-bottom:22px}
+  .actions{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap} .actions .lk{font-size:13px;color:var(--text-2)} .actions .lk:hover{color:var(--apex);cursor:pointer}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:600px){.cards{grid-template-columns:1fr}}
+  .card{border:1.5px solid var(--line);border-radius:var(--r-lg);padding:17px;background:var(--surface);transition:.14s;position:relative} .card:hover,.card.picked{border-color:var(--apex);background:var(--apex-soft)}
+  .card .rec{position:absolute;top:-10px;right:14px;background:var(--apex);color:#fff;font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
+  .card .nm{font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--ink);margin-bottom:5px} .card .d{font-size:12.5px;color:var(--text-2);line-height:1.5}
+  .drop{border:2px dashed var(--line-2);border-radius:var(--r-lg);padding:28px;text-align:center;background:var(--hover);margin-bottom:14px} .drop .big{font-family:var(--font-h);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:4px} .drop .sm{font-size:12.5px;color:var(--text-2)}
+  .shape-row{display:grid;grid-template-columns:repeat(3,1fr);gap:11px} @media(max-width:600px){.shape-row{grid-template-columns:1fr}}
+  .shape{border:1.5px solid var(--line);border-radius:var(--r);padding:13px;background:var(--surface);transition:.14s} .shape:hover,.shape.picked{border-color:var(--apex);background:var(--apex-soft)} .shape .t{font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--ink);margin-bottom:3px} .shape .d{font-size:11px;color:var(--text-2);line-height:1.4}
+  .src{border:1px solid var(--line);border-radius:var(--r);margin-bottom:8px;overflow:hidden} .src .h{display:flex;align-items:center;gap:12px;padding:12px 14px} .src .h:hover{background:var(--hover)} .src .h .s{font-family:var(--font-h);font-weight:600;color:var(--ink);flex:none;width:170px} @media(max-width:600px){.src .h .s{width:auto;flex:1}} .src .h .p{flex:1;font-size:12px;color:var(--text-2)} @media(max-width:600px){.src .h .p{display:none}}
+  .pill{font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);white-space:nowrap} .pill.auto{background:var(--green-soft);color:var(--green)} .pill.cw{background:var(--apex-soft);color:var(--apex)} .pill.client{background:var(--cyan-soft);color:var(--cyan)} .pill.you{background:#f0f0f3;color:var(--text-2)}
+  .src .tech{max-height:0;overflow:hidden;transition:.18s;background:var(--hover)} .src .tech.open{max-height:100px;padding:12px 14px;border-top:1px solid var(--line)} .src .tech .kv{font-family:var(--font-m);font-size:10.5px;color:var(--text);line-height:1.7} .src .tech .kv b{color:var(--ink)}
+  .caret{font-family:var(--font-m);font-size:10px;color:var(--text-2)}
+  .gate-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-bottom:none;font-size:12.5px} .gate-row:first-child{border-radius:var(--r) var(--r) 0 0} .gate-row:last-child{border-bottom:1px solid var(--line);border-radius:0 0 var(--r) var(--r)}
+  .gate-row .s{flex:1;font-weight:600;color:var(--ink)} .gate-row .a{font-family:var(--font-m);font-size:10px;font-weight:700;width:110px;text-align:right} .gate-row.does .a{color:var(--green)} .gate-row.you .a{color:var(--amber)} .gate-row.you{background:var(--amber-soft)}
+  .tgl{width:36px;height:21px;border-radius:99px;background:var(--line-2);position:relative;flex:none;transition:.15s} .tgl.on{background:var(--apex)} .tgl .k{position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:.15s} .tgl.on .k{left:17px}
+  .callout{border-left:3px solid var(--apex);background:var(--apex-soft);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin:16px 0;font-size:13px;color:var(--text);line-height:1.55} .callout b{color:var(--ink)}
+  label.chk{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text);margin-bottom:11px;line-height:1.45;cursor:pointer} label.chk input{margin-top:2px;width:16px;height:16px;accent-color:var(--apex);flex:none}
+  .gate-box{border:2px solid var(--apex);background:var(--apex-soft);border-radius:var(--r-lg);padding:20px;margin:8px 0}
+  .gate-box h3{font-family:var(--font-h);font-size:15px;color:var(--ink);margin-bottom:10px}
+
+  /* dashboard */
+  .dash{display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:start} @media(max-width:900px){.dash{grid-template-columns:1fr}}
+  .dcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);padding:20px 22px} .dcard.span2{grid-column:1/-1}
+  .dcard h2{font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--ink);margin-bottom:3px} .dcard .sub{font-size:12px;color:var(--text-2);margin-bottom:16px}
+  .spectrum{display:flex;height:12px;border-radius:99px;overflow:hidden;gap:3px;margin:4px 0 16px} .spectrum .seg.red{background:linear-gradient(90deg,#d0402f,#e0685a)} .spectrum .seg.amber{background:linear-gradient(90deg,#c98a1e,#e2ad48)} .spectrum .seg.held{background:repeating-linear-gradient(45deg,#e3e3e8,#e3e3e8 5px,#d4d4dc 5px,#d4d4dc 10px)}
+  .keys{display:flex;gap:22px;flex-wrap:wrap} .key{display:flex;align-items:baseline;gap:8px} .key .num{font-family:var(--font-h);font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1} .key.red .num{color:var(--red)} .key.amber .num{color:var(--amber)} .key.green .num{color:var(--green)} .key.held .num{color:var(--text-2)} .key .lab{font-size:11.5px;color:var(--text-2)} .key .lab b{display:block;color:var(--ink);font-weight:600}
+  .viewtabs{display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;margin:18px 0 16px} .viewtabs button{font-family:var(--font-h);font-weight:600;font-size:12px;padding:7px 14px;background:var(--surface);border:none;border-right:1px solid var(--line);color:var(--text-2)} .viewtabs button:last-child{border-right:none} .viewtabs button.on{background:var(--ink);color:#fff}
+  .reg{display:flex;flex-direction:column} .row{display:grid;grid-template-columns:3px 1.7fr .6fr auto;gap:16px;align-items:center;padding:15px 4px 15px 16px;border-bottom:1px solid var(--line);position:relative} .row:last-child{border-bottom:none} .row::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:2px} .row.red::before{background:var(--red)} .row.amber::before{background:var(--amber)} .row.held::before{background:var(--held)} .row.held{opacity:.66} .row:hover{background:var(--hover)}
+  .fnd{font-family:var(--font-h);font-weight:600;font-size:14.5px;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em} .mt{font-size:12px;color:var(--text-2)} .mt .d{opacity:.4;margin:0 6px}
+  .tier{font-family:var(--font-m);font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap} .tier.measured{background:var(--green-soft);color:var(--green)} .tier.benchmarked{background:var(--cyan-soft);color:var(--cyan)} .tier.estimated{background:var(--amber-soft);color:var(--amber)} .tier.unverified{background:#f0f0f3;color:var(--held)}
+  .c3{display:flex;align-items:center;gap:14px;justify-content:flex-end} .ev{font-family:var(--font-m);font-size:10px;color:var(--text-2);text-align:right;max-width:150px;line-height:1.4}
+  .fdetail{grid-column:1/-1;background:var(--hover);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:4px 0 2px;font-size:12.5px;color:var(--text);line-height:1.6} .fdetail b{color:var(--ink)}
+  .stat{display:flex;align-items:baseline;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px} .stat:last-child{border-bottom:none} .stat .v{font-family:var(--font-h);font-weight:700;color:var(--ink)} .stat .v.muted{color:var(--text-2);font-weight:500}
+  .feed{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px} .feed:last-child{border-bottom:none} .feed:hover .nm{color:var(--apex)} .feed .dot{width:8px;height:8px;border-radius:50%;background:var(--purple);flex:none} .feed .nm{color:var(--ink);font-weight:600} .feed .to{color:var(--text-2);font-size:11.5px}
+  .signoff{background:var(--apex-soft);border:1px solid rgba(133,0,204,.2);border-radius:var(--r);padding:13px 15px;font-size:12.5px;color:var(--text);line-height:1.5} .signoff b{color:var(--ink)}
+  .held-foot{margin-top:16px;font-size:12px;color:var(--text-2);display:flex;gap:9px;align-items:flex-start;line-height:1.5} .held-foot .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--held);flex:none;margin-top:2px}
+  .narr{font-size:13.5px;line-height:1.6;color:var(--text-2);border-left:2px solid var(--apex);padding:2px 0 2px 16px;margin:18px 0 2px} .narr b{color:var(--ink);font-family:var(--font-h);font-weight:600}
+  .svg-wrap{overflow-x:auto;margin:0 -4px}
+  .empty{padding:44px;text-align:center;color:var(--text-2);font-size:13.5px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)} .empty b{color:var(--ink);font-family:var(--font-h)}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:var(--r-pill);font-size:13px;box-shadow:var(--sh-lg);opacity:0;transition:.2s;pointer-events:none;z-index:50} .toast.on{opacity:1}
+  /* rich build-flow bits */
+  .or{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--text-2);font-size:12px;font-family:var(--font-m)} .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .shape.tmpl{border-color:var(--cyan)} .shape.tmpl:hover,.shape.tmpl.picked{border-color:var(--cyan);background:var(--cyan-soft)}
+  .addfiles{margin-top:18px} .file-chip{display:inline-flex;align-items:center;gap:7px;background:var(--hover);border:1px solid var(--line);border-radius:var(--r-pill);padding:6px 12px;font-size:12px;margin:4px 6px 4px 0;color:var(--text)} .file-chip .kind{font-family:var(--font-m);font-size:9.5px;color:var(--text-2)} .file-chip .x{cursor:pointer;color:var(--text-2);font-weight:700}
+  .add-input{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap} .add-input input{flex:1;min-width:200px;border:1px solid var(--line-2);border-radius:var(--r);padding:9px 12px;font-family:var(--font-b);font-size:13px}
+  .console{background:#17131f;border-radius:var(--r-lg);padding:15px 17px;margin-bottom:14px;font-family:var(--font-m);font-size:11.5px;line-height:1.8;max-height:300px;overflow-y:auto} .console .cl{display:flex;gap:11px;color:#c3bdd0} .console .cl .ts{color:#7c7590;flex:none;font-variant-numeric:tabular-nums} .console .cl.ok{color:#5ad894}.console .cl.warn{color:#ffc251}.console .cl.err{color:#ff8f8f}.console .cl.dim{color:#8a80a0}.console .cl.cw{color:#4fe3ff}
+  .warncall{border-left:3px solid var(--amber);background:var(--amber-soft);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin:16px 0;font-size:13px;color:#6b4a00;line-height:1.55} .warncall b{color:var(--ink)}
+  .iv-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:12px} .iv-card .ivt{display:flex;align-items:center;gap:10px;margin-bottom:8px} .iv-card .ivt .s{font-family:var(--font-h);font-weight:700;font-size:14px;color:var(--ink);flex:1}
+  .iv-state{font-family:var(--font-m);font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)} .iv-state.draft{background:var(--amber-soft);color:var(--amber)} .iv-state.sent{background:var(--cyan-soft);color:var(--cyan)} .iv-state.back{background:var(--green-soft);color:var(--green)}
+  .iv-q{font-size:12.5px;color:var(--text);background:var(--hover);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;margin-bottom:6px;line-height:1.45} .iv-q .who{font-family:var(--font-m);font-size:9.5px;color:var(--text-2);display:block;margin-bottom:2px}
+  .handhold{border:1.5px solid var(--cyan);background:var(--cyan-soft);border-radius:var(--r-lg);padding:16px 18px;margin-top:16px;display:flex;gap:14px;align-items:flex-start} .handhold .ic{width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid #cfe8f3;display:flex;align-items:center;justify-content:center;flex:none} .handhold .ic svg{width:22px;height:22px;stroke:var(--cyan)} .handhold h4{font-family:var(--font-h);font-weight:700;font-size:14px;color:var(--ink);margin-bottom:4px} .handhold p{font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:10px} .handhold .prem{font-family:var(--font-m);font-size:9.5px;color:var(--cyan);background:#fff;border:1px solid #cfe8f3;border-radius:var(--r-pill);padding:2px 8px;margin-left:6px}
+  .tb-box{border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;margin-top:8px;background:var(--surface)} .tb-box .prop{font-size:13.5px;color:var(--ink);margin-bottom:12px;line-height:1.5} .tb-grades{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap} .tb-grade{border:1.5px solid var(--line-2);border-radius:var(--r);padding:8px 14px;font-family:var(--font-h);font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:7px} .tb-grade:hover{border-color:var(--apex)} .tb-grade.picked{border-color:var(--apex);background:var(--apex-soft)} .tb-grade .g{width:10px;height:10px;border-radius:50%} .tb-note{width:100%;border:1px solid var(--line-2);border-radius:var(--r);padding:9px 12px;font-family:var(--font-b);font-size:12.5px;margin-bottom:12px;resize:vertical;min-height:52px} .tb-saved{background:var(--green-soft);border:1px solid #cdeeda;border-radius:var(--r);padding:12px 15px;font-size:13px;color:var(--green);line-height:1.5} .tb-saved b{color:var(--green)}
+  /* client report */
+  .report{max-width:800px}
+  .exportbar{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;align-items:center} .exportbar .lbl{font-size:12px;color:var(--text-2);margin-right:2px;font-family:var(--font-m)}
+  .rep-cover{background:linear-gradient(135deg,#1e1136,#3a1266);color:#fff;border-radius:var(--r-lg);padding:32px 34px;margin-bottom:20px;position:relative;overflow:hidden}
+  .rep-cover::after{content:"";position:absolute;right:-50px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(79,227,255,.18),transparent 65%)}
+  .rep-cover .ey{font-family:var(--font-m);font-size:11px;letter-spacing:.2em;color:#c9b8ff;margin-bottom:12px;position:relative}
+  .rep-cover h2{font-family:var(--font-h);font-weight:800;font-size:32px;color:#fff;margin-bottom:8px;letter-spacing:-.02em;position:relative}
+  .rep-cover .meta{font-size:12.5px;color:#d5c9ef;position:relative}
+  .rep-sec{margin-bottom:28px} .rep-sec h3{font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--ink);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .rep-note{font-size:14px;color:var(--text);line-height:1.7;max-width:66ch}
+  .rep-find{display:grid;grid-template-columns:13px 1fr;gap:13px;padding:15px 0;border-bottom:1px solid var(--line)} .rep-find:last-child{border-bottom:none}
+  .rep-find .g{width:11px;height:11px;border-radius:50%;margin-top:4px} .rep-find .ft{font-family:var(--font-h);font-weight:700;font-size:14.5px;color:var(--ink);margin-bottom:5px} .rep-find .fm{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:6px} .rep-find .fr{font-size:13px;color:var(--apex);font-weight:500;line-height:1.5}
+  .decision{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13.5px} .decision:last-child{border-bottom:none} .decision .dv{font-family:var(--font-h);font-weight:600;font-size:12px;white-space:nowrap}
+  @media print{.top,.nav,.exportbar,.head .btns,.head .chips,.head .title-row .back,.tabs{display:none!important} .shell{grid-template-columns:1fr} .body{padding:0} .rep-cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="n"><svg viewBox="0 0 40 40" fill="none" aria-label="HARNESS">
+    <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6a8"/><stop offset=".5" stop-color="#ff9ecf"/><stop offset="1" stop-color="#b98bff"/></linearGradient></defs>
+    <g stroke="url(#hg)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 27 C7 22 8 16.5 11.5 13.5 C12.8 12.3 13.2 11 13.6 8.6"/>
+      <path d="M13.6 8.6 L14.8 4 L17.2 8.2"/>
+      <path d="M17.2 8.2 C19.2 8.8 20.2 10.4 20.6 12.4"/>
+      <path d="M11.5 13.5 C13.5 14.5 15.4 15.8 16.2 18 C16.7 20 15.6 22 13 22.6"/>
+      <path d="M13 22.6 C11.5 24.2 10 25.6 9 27"/>
+      <path d="M17.2 8.2 C22.5 11 27.5 17 31 30.5"/>
+      <path d="M19.5 10.5 C21.2 14 20.4 17 18.3 19"/>
+      <path d="M23.5 14 C25.4 17.6 24.6 20.6 22.4 22.6"/>
+      <path d="M27.5 20.5 C29.2 24 28.5 26.8 26.4 28.8"/>
+    </g>
+    <circle cx="12.6" cy="12.8" r="0.9" fill="url(#hg)"/>
+    <g fill="url(#hg)"><path d="M31 3 L31.9 5.6 L34.5 6.5 L31.9 7.4 L31 10 L30.1 7.4 L27.5 6.5 L30.1 5.6 Z"/><path d="M35.2 12 L35.7 13.4 L37.1 13.9 L35.7 14.4 L35.2 15.8 L34.7 14.4 L33.3 13.9 L34.7 13.4 Z" opacity=".75"/></g>
+  </svg></span>HARNESS</div>
+  <div class="spacer"></div>
+  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div>
+  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg></div>
+  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .3c0 1.7-2.5 2-2.5 3.7M12 17h.01"/></svg></div>
+</header>
+<div class="shell">
+  <aside class="nav" id="nav"></aside>
+  <main class="main"><div class="head" id="head"></div><div class="body"><div id="stage"></div></div></main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TIPS={
+  coworker:"An AI <b>coworker</b> is an agent with a job description, a runbook, and a risk policy. It does repeatable work and proposes results — a human always approves before anything ships.",
+  register:"A <b>risk register</b> is one living list of every finding for a client — owned, dated, graded, kept over time. The durable thing the review produces, not a report you rebuild each quarter.",
+  connector:"A <b>connector</b> (MCP) is a secure link to a system you already use — N-central, Microsoft 365 — so the coworker reads live data instead of you copy-pasting it.",
+  tier:"A <b>confidence tier</b>: Measured (from a connected source), Benchmarked (vs a standard), Estimated (inferred), or Unverified (a guess it won't make).",
+  held:"<b>Held</b> = Unverified. The coworker refuses to guess, so it keeps this off anything a client sees until a person vouches for it.",
+  assisted:"<b>Assisted</b> autonomy: it drafts and proposes, you approve every step. Promotable to Supervised or Autonomous once it earns trust."
+};
+const T=(k,l)=>`<span class="term" tabindex="0">${l||k}<sup>?</sup><span class="tip">${TIPS[k]}</span></span>`;
+
+/* ---- FINDINGS — reconciled shape, 2026-09-01 (ebr-coworker-rebuild brief §"File layout") ----
+   Union of ebr-app.html (this file, pre-rebuild) + build-ebr.html + role-play-simulator.html.
+   Base fields (id/finding/area/grade/tier/owner/status/ev/history/why) are unchanged — every
+   existing renderer in this file keeps working untouched. Added fields, by source:
+     evPlain, trend, dir            — build-ebr.html (plain-language evidence + trend arrow)
+     ask                            — build-ebr's/this file's old REC{} map, folded onto the
+                                       finding it belongs to instead of a separate lookup table
+     baseline, consequence,
+     since, cycles, lead, leadWhy,
+     liability, provenance          — role-play-simulator.html's richer per-finding shape
+     translate:{cfo,owner}          — role-play-simulator.html's two-register Stefanie-formula
+                                       copy (data → risk → what it means → consequence). This is
+                                       the field the brief explicitly said not to drop. Copy below
+                                       is written fresh against THIS file's actual finding facts —
+                                       role-play's source numbers describe a different fictional
+                                       MSP scenario (Roost/Enforcer/Cloud Capsule) and don't match
+                                       this file's Cove/M365/N-query world, so text is new, not
+                                       pasted, to avoid factual mismatch between tone and fact.
+   since/cycles/lead/leadWhy/liability are carried for Pass 2's Run-cycle stepper (Continuity/delta
+   + Liability & state-of-union steps) — present now so Pass 2 doesn't have to re-reconcile. */
+const FINDINGS=[
+  {id:'f1',finding:'3 admin accounts without MFA',area:'Identity & access',baseline:'NCSC 10 Steps — Identity and access management',grade:'red',tier:'measured',provenance:'connected',owner:'David',status:'open',ev:'M365 · list_admin_accounts',evPlain:'Verified from Microsoft 365',trend:'was 8 a year ago → 3 now',dir:'up',history:[8,7,5,4,3],
+   why:'Admin accounts without multi-factor auth are the single most common entry point for a breach. If one is phished, the attacker has the keys to the tenant.',
+   consequence:'If one admin password is phished, the attacker has full tenant access — mail, files, backups — with no second factor to stop them.',
+   ask:'Enforce MFA on the three admin accounts this month — the fastest, cheapest risk reduction available to you.',
+   since:'raised',cycles:5,lead:true,leadWhy:'Flagged every cycle for over a year. Improving (8→3) but still open — the oldest unresolved item in this register.',
+   liability:'Flagged every cycle for over a year; still open. Logged as a standing, declined-by-inaction risk until closed.',
+   translate:{cfo:'Three admin accounts can be reached with a password alone. If one is phished, the attacker has the keys to everything — mail, files, backups. Insurers increasingly treat this as a condition of cover, not a recommendation.',
+     owner:'Three of your senior people can log in with just a password. If someone guesses or steals one, they get everything. Fixing it takes an afternoon.'}},
+  {id:'f5',finding:'CVE-2026-4471 on 6 endpoints',area:'Risk & vulnerabilities',baseline:'NCSC 10 Steps — Vulnerability management',grade:'red',tier:'benchmarked',provenance:'connected',owner:'David',status:'open',ev:'Security Tabletop · cve_exposure',evPlain:'From the Security Tabletop coworker',trend:'new this cycle',dir:'bad',history:[null,null,null,null,6],
+   why:'A known, exploited vulnerability is live on 6 machines. Patching or isolating them closes a door attackers are actively using.',
+   consequence:'CVE-2026-4471 is a known, active exploit — leaving it live on six machines is an open door, not a theoretical one.',
+   ask:'Patch or isolate the six exposed machines now; we can action this under your current plan.',
+   since:'new',cycles:1,lead:false,
+   liability:'New this cycle. Logged as a dated, active-exploit warning — highest urgency.',
+   translate:{cfo:'A known, actively exploited vulnerability is live on six machines. This is not theoretical — patching or isolating them closes a door that is already being used elsewhere.',
+     owner:'Six of your machines have a security hole that is already being used by attackers elsewhere. We can patch or isolate them — your call on timing, not on whether.'}},
+  {id:'f6',finding:'No documented incident-response plan',area:'Risk & governance',baseline:'NCSC 10 Steps — Incident management',grade:'held',tier:'unverified',provenance:'inferred',owner:'Vanessa',status:'held',ev:'inferred — no source',evPlain:'Not yet verified — needs a human to confirm',trend:'not tracked over time — inferred, not measured',dir:'flat',history:[null,null,null,null,null],
+   why:'Inferred from a ticket where the client asked and nobody answered. No system tracks this, so the coworker will not assert it as fact — held until a human confirms.',
+   consequence:'If an incident happens tonight, the first hour is spent deciding who decides — the most expensive hour of any breach.',
+   ask:"Confirm whether an incident-response plan exists — if not, an hour with you and whoever's on call is enough to draft one.",
+   since:'held',cycles:null,lead:false,
+   liability:'Held. Inferred from an unanswered ticket, not confirmed by any connected source — logged as an open question, not a declined risk, until a human verifies it.',
+   translate:{cfo:"There is no written incident-response plan on file. In a breach, the first hour is spent deciding who decides — and that hour is the expensive one. This is inferred from an unanswered ticket, not confirmed, so it stays held until someone verifies it.",
+     owner:'If something goes wrong at 2am, nobody has a written plan for who does what first. We think this is true from a ticket that went unanswered — worth ten minutes to confirm.'}},
+  {id:'f2',finding:'Backup restore test overdue 41 days',area:'Backup & recovery',baseline:'NCSC 10 Steps — Data security',grade:'amber',tier:'measured',provenance:'connected',owner:'David',status:'open',ev:'Cove · get_restore_tests',evPlain:'Verified from Cove',trend:'not tracked until this cycle — now 41 days overdue',dir:'bad',history:[0,0,0,0,41],
+   why:'A backup you have not test-restored is an assumption, not a safety net. 41 days without a test is drift worth closing.',
+   consequence:'A ransomware event tomorrow would mean discovering, for the first time, whether the backup actually restores.',
+   ask:'Run a backup restore test this quarter so recovery is proven, not assumed.',
+   since:'new',cycles:1,lead:false,
+   liability:'New this cycle. Logged as a dated warning; no prior evidence this was tested.',
+   translate:{cfo:"Backups exist, but the restore has not been tested in 41 days. An untested backup is an assumption, not a safety net — the cost of finding out it does not work is measured in downtime, not licence fees.",
+     owner:"We have not proven the backup actually restores in over a month. It probably works. 'Probably' is not good enough for the one day it matters."}},
+  {id:'f3',finding:'Windows patch compliance at 82%',area:'Patching',baseline:'Cyber Essentials — Security update management',grade:'amber',tier:'measured',provenance:'connected',owner:'David',status:'open',ev:'N-query · patch_compliance',evPlain:'Verified from N-central via N-query',trend:'was 71% → 82%',dir:'up',history:[71,74,78,80,82],
+   why:'Most machines are current and the trend is up — but the unpatched fifth is where risk concentrates.',
+   consequence:'The unpatched fifth of the fleet is where a known exploit would land first.',
+   ask:'Close the remaining gap on the machines still behind on updates.',
+   since:'improving',cycles:5,lead:false,
+   liability:'Improving; logged as an open, trending-down risk. Not closed until compliance reaches policy threshold.',
+   translate:{cfo:'82% of machines are current, up from 71% — the trend is right. The remaining fifth is where an attacker has the easiest run, and that gap is closing quarter over quarter.',
+     owner:'Most machines are up to date and getting better each quarter. The ones that are not are the ones we would want to close first.'}},
+  {id:'f4',finding:'Phishing click-rate 22%',area:'Awareness training',baseline:'NCSC 10 Steps — Engagement and training',grade:'amber',tier:'estimated',provenance:'manual',owner:'Vanessa',status:'open',ev:'usecure export (by hand)',evPlain:'From a training export — provided by hand',trend:'was 34% → 22%',dir:'up',history:[34,31,28,25,22],
+   why:'Roughly one in five staff clicked a simulated phish. Trending down with training, but still the human attack surface.',
+   consequence:'One successful phish from the remaining fifth is the likeliest way an attacker gets a foothold here.',
+   ask:'Keep the awareness training running and enrol your new starters.',
+   since:'improving',cycles:5,lead:false,
+   liability:'Improving; logged as an open, trending-down risk pending full training rollout to new starters.',
+   translate:{cfo:'Roughly one in five staff clicked a simulated phishing email — down from a third a year ago. This is the human attack surface, and training is the only handled control for it.',
+     owner:'About one in five people clicked the fake phishing email we sent. It is improving with training, but it is still the easiest way in.'}},
+];
+const FEEDS=[{cw:'Security Tabletop',area:'Risk & vulnerabilities'},{cw:'Incident Response Analyst',area:'Incidents & tickets'},{cw:'Environment Health Monitor',area:'Devices & lifecycle'}];
+/* ---- AREAS — reconciled shape, 2026-09-01 ----
+   sec/avail/tier/plain unchanged (every existing renderer keeps working). Added: owner (from
+   build-ebr.html — who reads this area, David vs Vanessa). tech upgraded from a flat display
+   string to build-ebr.html's richer {src,how,tool,auth,grain} object — see techStr() below for
+   the composed string every renderer now calls instead of reading a.tech directly. Connector
+   names (M365, Cove, N-query, Security Tabletop, Halo PSA, usecure) match this file's own MCPS
+   array (line ~278) rather than build-ebr's/role-play's parallel fictional connector names
+   (Cloud Capsule, Roost, Enforcer) — one fictional MSP world per file, not three colliding ones. */
+const AREAS=[
+  {sec:'Identity & access',avail:'auto',tier:'measured',owner:'David',plain:'Who can get in, and whether accounts are protected.',
+   tech:{src:'Microsoft 365',how:'MCP · OAuth (official)',tool:'list_admin_accounts · get_config_snapshot',auth:'OAuth, delegated per tenant',grain:'tenant / user'}},
+  {sec:'Patching & network',avail:'auto',tier:'measured',owner:'David',plain:'Whether machines are current and the network is safe.',
+   tech:{src:'N-central via N-query',how:'N-able MCP server (GraphQL)',tool:'patch_compliance · network_policy',auth:'API key / OAuth (WIP)',grain:'device'}},
+  {sec:'Devices & lifecycle',avail:'auto',tier:'measured',owner:'David',plain:'Endpoint health and what needs replacing.',
+   tech:{src:'N-query + Environment Health Monitor coworker',how:'N-able MCP server (GraphQL)',tool:'device_fleet · lifecycle_status',auth:'API key',grain:'device'}},
+  {sec:'Risk & vulnerabilities',avail:'cw',tier:'benchmarked',owner:'David',coworker:'Security Tabletop',plain:'The security holes that matter, and the fix.',
+   tech:{src:'Security Tabletop coworker',how:'Produced by the tabletop after-action; no source of its own',tool:'cve_exposure · remediation_plan',auth:'—',grain:'finding'}},
+  {sec:'Incidents & tickets',avail:'cw',tier:'benchmarked',owner:'David',coworker:'Incident Response Analyst',plain:'What went wrong this quarter, and why.',
+   tech:{src:'Halo PSA + Incident Response Analyst',how:'Halo MCP for raw tickets; IR coworker adds root cause',tool:'search_tickets · get_ticket',auth:'OAuth',grain:'ticket'}},
+  {sec:'Backup & recovery',avail:'auto',tier:'measured',owner:'David',plain:'Whether backups exist and actually restore.',
+   tech:{src:'Cove',how:'REST bridge, curated into tools',tool:'list_jobs · get_restore_tests',auth:'Credential',grain:'backup job'}},
+  {sec:'Awareness training',avail:'client',tier:'estimated',owner:'Vanessa',plain:'Whether staff can spot a phishing email.',
+   tech:{src:'usecure',how:'No MCP server — hand-supplied or client-supplied each cycle',tool:'—',auth:'manual',grain:'user'}},
+  {sec:'Carry-forward',avail:'you',tier:'unverified',owner:'Vanessa',plain:'What you promised last time, and whether it got done.',
+   tech:{src:'Previous EBR (git)',how:'Delta against your own last register — your artifact is the input',tool:'—',auth:'—',grain:'finding'}},
+  {sec:'Exec summary',avail:'you',tier:'unverified',owner:'Vanessa',plain:'Your read of where the client stands. Your voice.',
+   tech:{src:'Your judgment',how:'Not inferable from any source',tool:'—',auth:'—',grain:'—'}},
+];
+function techStr(a){const t=a.tech;return `${t.src} · ${t.how} · tool: ${t.tool} · auth: ${t.auth} · grain: ${t.grain}`;}
+function honestyBadge(){return `<span class="honesty-badge" tabindex="0">◐ TARGET STATE — not yet wired<span class="tip">Today, a coworker's runbook is configured per-build. The backend doesn't yet persist which runbook a coworker runs — this connection is in-memory only.</span></span>`;}
+const FAMILY=[
+  {id:'tabletop',cat:'Security',name:'Security Tabletop',desc:'Maps CVE exposure, plans remediation, triages vulnerabilities.',feed:'Feeds Risk & vulnerabilities'},
+  {id:'ir',cat:'Service · diagnostics',name:'Incident Response Analyst',desc:'Root-cause analysis on tickets and device events.',feed:'Feeds Incidents & tickets'},
+  {id:'env',cat:'Operations · lifecycle',name:'Environment Health Monitor',desc:'Continuous endpoint health, lifecycle and refresh advice.',feed:'Feeds Devices & lifecycle'},
+  {id:'alert',cat:'NOC · operations',name:'Alert Flood Suppressor',desc:'Cuts alert noise, correlates to root cause, ranks the day.',feed:''},
+  {id:'qbr',cat:'Business reporting',name:'QBR Advisor',desc:'Client-ready review narratives — the EBR Coworker’s sibling.',feed:''},
+];
+const CYCLES=['Q3·25','Q4·25','Q1·26','Q2·26','Q3·26'];
+const GC={red:'#c0392b',amber:'#a56a00',green:'#137a46',held:'#8a8a93'};
+const NAVITEMS=[['runbooks','Runbooks'],['experts','Experts'],['mcp','MCP configs'],['coworkers','Coworkers'],['execution','Execution'],['ledger','Value Ledger']];
+const BUILD=['Your report','Connect AI','Structure & sources','Fill the gaps','How much','Review','Activate'];
+const DTABS=['Overview','Configuration','Versions','Runs','Audit','Promotion'];
+const SHAPES=[
+  {id:'workbook',name:'8-tab Excel workbook',meta:'the structured case',quality:'high',desc:'Tabs per control area, consistent columns, a grading column, a carry-forward tab.',tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Incidents & tickets','Carry-forward']},
+  {id:'deck',name:"Last quarter's slide deck",meta:'the common case',quality:'medium',desc:'12 slides, headings but no consistent structure, grades implied by RAG colour.',tabs:['Where we are','What changed','Risks','Recommendations','Next quarter']},
+  {id:'doc',name:'A Word doc and notes',meta:'the hard case',quality:'low',desc:'One long document, no repeating structure. It lives in your head.',tabs:['(no repeating structure detected)']},
+  {id:'stefanie',name:"Stefanie's EBR framework",meta:'start from scratch · template',quality:'high',template:true,desc:"No report yet? Start from N-able's EBR framework — the manual boot-camp process, already structured, risk register built in.",tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Risk register','Carry-forward']},
+];
+
+let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null,
+  extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[], structTab:'read',
+  interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
+  tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false};
+const el=id=>document.getElementById(id);
+const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
+
+function toast(m){const t=el('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1900);}
+
+function renderNav(){
+  el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>`<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}</a>`).join('')+`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
+}
+function setNav(k){S.nav=k;S.ebrOpen=false;render();}
+function openEbr(){S.nav='coworkers';S.ebrOpen=true;render();}
+function closeEbr(){S.ebrOpen=false;render();}
+function autoDoes(a){if(a.sec in S.overrides)return S.overrides[a.sec];return ({measured:3,benchmarked:2,estimated:1,unverified:0})[a.tier]>=(S.preset==='whole'?0:2);}
+function countDoes(){return AREAS.filter(autoDoes).length;}
+
+/* ---- other HARNESS sections (real, navigable — not placeholders) ---- */
+function spill(txt,c){return `<span style="font-family:var(--font-m);font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${c}22;color:${c}">${txt}</span>`;}
+const RUNBOOKS=[
+  {n:'EBR Review',d:'Pulls the stack, grades each area, drafts the risk register.',risk:'High',v:'v1',by:'EBR Coworker'},
+  {n:'QBR Narrative',d:'Client-ready quarterly review narrative + posture summary.',risk:'Medium',v:'v3',by:'QBR Advisor'},
+  {n:'CVE Exposure & Triage',d:'Map CVE exposure to the fleet; rank remediation.',risk:'Medium',v:'v2',by:'Security Tabletop'},
+  {n:'Ticket RCA',d:'Root-cause analysis on tickets and device events.',risk:'High',v:'v4',by:'Incident Response Analyst'},
+  {n:'Endpoint Health Sweep',d:'Continuous endpoint health + lifecycle recommendations.',risk:'Low',v:'v5',by:'Environment Health Monitor'},
+];
+const EXPERTS=[
+  {n:'N-zo',dom:'N-able platform',d:'Diagnostics, telemetry, patch reasoning across the stack. Advisory — no autonomous actions.',s:'GA'},
+  {n:'Security Posture Expert',dom:'Security',d:'CVE reasoning; NCSC 10 / Cyber Essentials grading.',s:'GA'},
+  {n:'Service Desk Expert',dom:'Service',d:'Ticket triage and root-cause reasoning.',s:'GA'},
+  {n:'Claude Code',dom:'Bring-your-own',d:'External agent; same runbook + approval model.',s:'Connect'},
+];
+const MCPS=[
+  {n:'N-query (GraphQL)',sc:'Device fleet · patch compliance · security posture · customer hierarchy',st:'Endpoint live · OAuth WIP',c:'#a56a00'},
+  {n:'N-central',sc:'Device fleet, asset inventory, telemetry, actions',st:'Live',c:'#137a46'},
+  {n:'N-sight',sc:'Operational data, actions',st:'Live',c:'#137a46'},
+  {n:'Microsoft 365',sc:'Identity, admin accounts, tenant config',st:'Live · official',c:'#137a46'},
+  {n:'Halo PSA',sc:'Tickets, notes',st:'Live',c:'#137a46'},
+  {n:'Cove',sc:'Backup jobs, restore tests',st:'REST bridge',c:'#0a95c4'},
+  {n:'Adlumin',sc:'Detections, alerts, investigations',st:'Planned',c:'#0a95c4'},
+  {n:'Billing',sc:'Invoices, usage, charge explanations',st:'POC',c:'#0a95c4'},
+  {n:'usecure',sc:'Awareness training',st:'No connector — by hand',c:'#8a8a93'},
+];
+const EXEC=[
+  {cw:'EBR Coworker — Fenwick',w:'today · 09:12',o:'5 findings drafted, 1 held',ok:1},
+  {cw:'Security Tabletop — Fenwick',w:'yesterday · 16:40',o:'CVE exposure: 6 endpoints',ok:1},
+  {cw:'Environment Health — estate',w:'2 days ago',o:'12 refresh candidates',ok:1},
+  {cw:'EBR Coworker — Fenwick (Q2)',w:'14 May',o:'4 findings drafted',ok:1},
+];
+function riskPill(r){return spill(r,r==='High'?'#c0392b':r==='Medium'?'#a56a00':'#137a46');}
+function renderRunbooks(){document.getElementById('secsub').textContent='Your SOPs, written down — a coworker follows one to work the way you already do.';
+  return `<div class="dcard">${RUNBOOKS.map(r=>`<div class="stat"><span><b style="color:var(--ink)">${r.n}</b> <span style="color:var(--text-2);font-size:12px">— ${r.d}</span></span><span style="display:flex;gap:10px;align-items:center;font-size:12px">${riskPill(r.risk)}<span class="v muted" style="font-weight:500">${r.v}</span><span style="color:var(--text-2)">${r.by}</span></span></div>`).join('')}</div>`;}
+function renderExperts(){document.getElementById('secsub').textContent='The AI reasoning a coworker pairs with a runbook. It advises and drafts; a human approves.';
+  return `<div class="grid">${EXPERTS.map(e=>`<div class="cw"><div class="cat">${e.dom}</div><h3>${e.n}</h3><p>${e.d}</p><div class="st"><span class="avail">${e.s}</span></div></div>`).join('')}</div>`;}
+function renderMcp(){document.getElementById('secsub').innerHTML='Secure links to the systems you already run. N-able is MCP-first, GraphQL underneath — most data routes through <b>N-query</b>.';
+  return `<div class="dcard">${MCPS.map(m=>`<div class="stat"><span><b style="color:var(--ink)">${m.n}</b> <span style="color:var(--text-2);font-size:12px">— ${m.sc}</span></span>${spill(m.st,m.c)}</div>`).join('')}</div>`;}
+function renderExecution(){document.getElementById('secsub').textContent='Every coworker run, across the workspace. Each run writes to the Value Ledger and appends to its register.';
+  return `<div class="dcard">${EXEC.map(r=>`<div class="stat"><span><b style="color:var(--ink)">${r.cw}</b> <span style="color:var(--text-2);font-size:12px">· ${r.w}</span></span><span style="color:var(--green);font-family:var(--font-h);font-weight:600;font-size:12.5px">✓ ${r.o}</span></div>`).join('')}</div>`;}
+function renderLedger(){document.getElementById('secsub').textContent='What the coworkers have given back — time and cost saved, written per run.';
+  return `<div class="dash"><div class="dcard span2"><h2>Value saved</h2><div class="sub">Rolled up across all coworkers · this quarter</div>
+    <div class="keys"><div class="key green"><span class="num">~14</span><span class="lab"><b>hours saved</b>this quarter</span></div><div class="key green"><span class="num">£1,120</span><span class="lab"><b>cost saved</b>at blended rate</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--ink)">9</span><span class="lab"><b>runs</b>across 4 coworkers</span></div></div></div>
+    <div class="dcard span2"><h2>By coworker</h2><div class="sub">Time saved · this quarter</div>
+    <div class="stat"><span>EBR Coworker</span><span class="v">~11 hrs · 3 runs</span></div>
+    <div class="stat"><span>Security Tabletop</span><span class="v muted">~2 hrs · 3 runs</span></div>
+    <div class="stat"><span>Environment Health Monitor</span><span class="v muted">~1 hr · 3 runs</span></div>
+    <div class="narr" style="margin-top:12px">Every figure traces to a run in Execution and a commit in the register's git history — the honest evidence, not a headline number.</div></div></div>`;}
+const SECTION={runbooks:renderRunbooks,experts:renderExperts,mcp:renderMcp,execution:renderExecution,ledger:renderLedger};
+
+function render(){
+  renderNav();
+  if(S.nav!=='coworkers'){ const nm=NAVITEMS.find(n=>n[0]===S.nav)[1];
+    el('head').innerHTML=`<div class="crumb">HARNESS<span class="sep">›</span>${nm}</div><div class="title-row"><h1>${nm}</h1></div><div class="page-sub" id="secsub"></div><div style="height:10px"></div>`;
+    el('stage').innerHTML=(SECTION[S.nav]||(()=>'' ))(); return; }
+  if(!S.ebrOpen){ renderList(); return; }
+  if(!S.activated){ renderBuild(); } else if(!S.capstoneSeen){ renderCapstone(); } else { renderDashboard(); }
+}
+
+/* ---- Coworkers list (family) ---- */
+function renderList(){
+  el('head').innerHTML=`<div class="crumb">HARNESS<span class="sep">›</span>Coworkers</div><div class="title-row"><h1>AI Coworkers</h1></div>
+    <div class="page-sub">A ${T('coworker')} is an agent with a job description, a runbook, and a risk policy. Build one from your own report, or start from a platform coworker. Nothing runs until you activate it.</div>`;
+  el('stage').innerHTML=`
+    <div class="cw-strip">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/><path d="M9 16.5l2 1.8 3.5-4"/></svg></div>
+      <div class="tx"><span class="db">${S.activated?'● ACTIVE':'◐ DRAFT · NOT ACTIVE'}</span><h2>EBR Coworker — Fenwick Logistics</h2><p>${S.activated?'Live. Its risk register is up to date as of the last run.':'You started building this from your quarterly review. Pick up where you left off.'}</p></div>
+      <button class="btn cyan" onclick="openEbr()">${S.activated?'Open dashboard →':'Continue building →'}</button>
+    </div>
+    <div class="sec-h">Platform coworkers · 5</div>
+    <div class="grid">${FAMILY.map(c=>`<div class="cw">
+      <div class="cat">${c.cat}</div><h3>${c.name}</h3><p>${c.desc}</p>
+      ${c.feed?`<div class="feed" style="color:var(--apex);background:var(--apex-soft)">→ ${c.feed} of your EBR</div>`:''}
+      <div class="st"><span class="avail">Available</span><span style="flex:1"></span>${honestyBadge()}</div>
+    </div>`).join('')}</div>`;
+}
+
+/* ---- Build flow ---- */
+function ebrHead(){
+  const chips=S.activated?`<span class="chip">Tenant</span><span class="chip active"><span class="d"></span>Active</span><span class="chip mode">${T('assisted','Assisted')}</span>`:`<span class="chip">Tenant</span><span class="chip draft">◐ Draft</span><span class="chip mode">${T('assisted','Assisted')}</span>`;
+  const actions=S.activated?`<button class="btn">Edit</button><button class="btn">Pause</button><button class="btn">Clone</button><button class="btn">Archive</button><button class="btn cyan" style="margin-left:auto" onclick="openReport()">View client report</button><button class="btn primary" onclick="runCycle()">Run EBR cycle</button>`:`<button class="btn" onclick="closeEbr()">Cancel</button>`;
+  el('head').innerHTML=`<div class="crumb"><span class="lk" onclick="setNav('coworkers')">Coworkers</span><span class="sep">›</span><span class="lk" onclick="closeEbr()">EBR Coworker</span><span class="sep">›</span>Fenwick Logistics</div>
+    <div class="title-row"><div class="back" onclick="closeEbr()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div><h1>EBR Coworker — Fenwick Logistics</h1></div>
+    <div class="chips">${chips}</div><div class="btns">${actions}</div>
+    ${S.activated?`<div class="tabs">${DTABS.map(t=>`<div class="tab ${t===S.tab?'on':''}" onclick="setTab('${t}')">${t}</div>`).join('')}</div>`:`<div style="height:8px"></div>`}`;
+}
+function shape(){return SHAPES.find(x=>x.id===S.shape);}
+function gapAreas(){return AREAS.filter(a=>a.avail==='client'||a.avail==='you');}
+function renderBuild(){
+  ebrHead();
+  const s=S.step;let h=`<div class="stepper">${BUILD.map((t,i)=>`<div class="stp ${i===s?'on':(i<s?'done':'')}" onclick="goStep(${i})"><span class="n">STEP ${i+1}</span><span class="t">${t}</span></div>`).join('')}</div>`;
+
+  if(s===0){h+=`<div class="panel"><h2>Show me your report and I’ll build a thing</h2>
+    <p class="lede">Bring the review you already make — the actual thing you sent a client last quarter. The messier it is, the more useful. Or start from a template. Anything you add becomes the first entries in the ${T('register')}.</p>
+    <div class="drop" onclick="pick('workbook')"><div class="big">Drop your last EBR here</div><div class="sm">.xlsx · .pptx · .docx · .pdf — nothing leaves your tenant</div></div>
+    <div class="or">or pick a shape to walk through</div>
+    <div class="shape-row">${SHAPES.map(sh=>`<div class="shape ${sh.template?'tmpl':''} ${S.shape===sh.id?'picked':''}" onclick="pick('${sh.id}')"><div class="t">${sh.name}</div><div class="d">${sh.desc}</div><div style="font-family:var(--font-m);font-size:10px;color:${sh.template?'var(--cyan)':'var(--apex)'};margin-top:8px">${sh.meta}</div></div>`).join('')}</div>
+    <div class="addfiles"><div style="font-family:var(--font-h);font-weight:700;font-size:13.5px;color:var(--ink);margin:0 0 6px">Anything else that helps? <span style="font-weight:500;color:var(--text-2)">(optional)</span></div>
+      <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Kickoff transcripts, account notes, a previous risk register — what you’d hand a new analyst. Context, not structure.</div>
+      <div>${renderChips()}</div>
+      <div class="add-input"><input id="addf" placeholder="e.g. Fenwick-risk-register-Q2.xlsx" value="${S.addDraft}" oninput="S.addDraft=this.value" onkeydown="if(event.key==='Enter')addFile()"><button class="btn" onclick="addFile()">+ Add file</button></div></div>
+    <div class="actions"><button class="btn primary" ${S.shape?'':'disabled'} onclick="goStep(1)">${shape()&&shape().template?'Use this template →':'Read it →'}</button></div></div>`;}
+
+  else if(s===1){h+=`<div class="panel"><h2>Connect your AI</h2><p class="lede">A coworker pairs an N-able AI expert with your ${T('runbook','runbook')}. The expert reasons; your runbook keeps it on your rails. It proposes; you decide.</p>
+    <div class="cards"><div class="card ${S.ai==='nzo'?'picked':''}" onclick="setAI('nzo')"><div class="rec">RECOMMENDED</div><div class="nm">N-zo</div><div class="d">N-able’s own assistant. Already knows your stack. Advises and drafts, never acts alone.</div></div>
+    <div class="card ${S.ai==='claude'?'picked':''}" onclick="setAI('claude')"><div class="nm">Claude Code</div><div class="d">Bring your own agent. Same build, same approval model.</div></div></div>
+    <div class="callout">Whichever you pick, the rule holds: nothing reaches a client without a named human ${T('activate','sign-off')}.</div>
+    <div style="display:flex;align-items:center;gap:10px;margin:14px 0"><span style="font-size:12px;color:var(--text-2)">Which runbook will this coworker run?</span>${honestyBadge()}</div>
+    <div class="actions"><span class="lk" onclick="goStep(0)">← Back</span><button class="btn primary" ${S.ai?'':'disabled'} onclick="goStep(2)">Continue →</button></div></div>`;}
+
+  else if(s===2){const sh=shape();
+    const structTabs=`<div class="tabs" style="border-bottom:1px solid var(--line);margin-bottom:20px"><div class="tab ${S.structTab==='read'?'on':''}" onclick="setStructTab('read')">Read it</div><div class="tab ${S.structTab==='sources'?'on':''}" onclick="setStructTab('sources')">Sources</div></div>`;
+    const readBody=`<p class="lede">Structure only — what sections exist, what repeats, where the grades live. Each becomes a stream of findings in the register.${S.extraFiles.length?` Plus ${S.extraFiles.length} extra file${S.extraFiles.length>1?'s':''} for context.`:''}</p>
+    <div class="console" id="pc">${S.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('')}</div>
+    ${S.parsed?`${sh.template?`<div class="callout"><b>Started from Stefanie’s framework.</b> The structure is the template, risk register built in — every finding a clean slate you fill over cycles.</div>`:sh.quality==='low'?`<div class="warncall"><b>This one barely parsed.</b> Nothing repeats between quarters. Honest answer: start from the template instead, or have a conversation first.</div>`:sh.quality==='medium'?`<div class="warncall"><b>Partial parse.</b> Headings found, grades implied by slide colour. The register will guess the grading scale and need correcting on cycle one.</div>`:`<div class="callout"><b>Clean parse.</b> Consistent tabs, a grading column, and a carry-forward tab — proof this is a series, not a one-off.</div>`}`:'<div style="font-size:12.5px;color:var(--text-2)">Reading…</div>'}`;
+    const sourcesBody=`<p class="lede">Plain on top — enough to read to a client. Open any row for the ${T('connector')} setup your engineer needs. Availability is scouted, not assumed.</p>
+    ${AREAS.map(a=>`<div class="src"><div class="h" onclick="tech('${a.sec.replace(/'/g,"\\'")}')"><span class="s">${a.sec}</span><span class="p">${a.plain}</span><span class="pill ${a.avail}">${({auto:'Connected',cw:'From a coworker',client:'Ask the client',you:'Your judgment'})[a.avail]}</span><span class="caret">${S.openTech[a.sec]?'▲':'▼'}</span></div><div class="tech ${S.openTech[a.sec]?'open':''}"><div class="kv"><b>Setup:</b> ${techStr(a)} · <b>Ceiling:</b> ${({measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'})[a.tier]} · <b>Owner:</b> ${a.owner}</div></div></div>`).join('')}
+    <div class="callout"><b>Two areas are fed by other coworkers</b> (risk, incidents) — build those and this fills in on its own. <b>Two have no connector at all</b> — the next step is how you fill those without chasing the client yourself.</div>`;
+    h+=`<div class="panel"><h2>Structure & sources</h2>${structTabs}${S.structTab==='sources'?sourcesBody:readBody}
+    <div class="actions"><span class="lk" onclick="goStep(1)">← Back</span>${S.parsed?`<button class="btn primary" onclick="goStep(3)">Fill the gaps →</button>`:''}</div></div>`;}
+
+  else if(s===3){const gaps=gapAreas();h+=`<div class="panel"><h2>Fill what no system can tell you</h2><p class="lede">Some answers only the client has — the soft-skill questions that get skipped. Instead of chasing them, the coworker drafts an interview, you approve it, and a secure link goes to the client. Answers flow straight into the register.</p>
+    ${gaps.map(a=>{const st=S.interview[a.sec]||'none';return `<div class="iv-card"><div class="ivt"><span class="s">${a.sec}</span>${st==='none'?'':`<span class="iv-state ${st}">${st==='draft'?'Draft ready':st==='sent'?'Sent to client':'Answers received'}</span>`}</div>
+      <div style="font-size:12.5px;color:var(--text-2);margin-bottom:${st==='none'?'12':'10'}px">${a.plain}</div>
+      ${st!=='none'?`<div class="iv-q"><span class="who">Coworker asks the client</span>${a.sec==='Awareness training'?'When did staff last complete phishing-awareness training, and roughly what share finished it?':'Of the risks we flagged last quarter, which have you decided to fund, defer, or accept — and who signed off?'}</div>${st==='back'?`<div class="iv-q" style="background:var(--green-soft);border-color:#cdeeda"><span class="who">Client replied</span>${a.sec==='Awareness training'?'Training ran in June, about 80% completed. New starters not yet enrolled.':'Funding the MFA rollout; deferring the IR plan to next quarter — signed by the ops director.'}</div>`:''}`:''}
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">${st==='none'?`<button class="btn" onclick="iv('${a.sec.replace(/'/g,"\\'")}','draft')">Draft an interview</button>`:''}${st==='draft'?`<button class="btn primary" onclick="iv('${a.sec.replace(/'/g,"\\'")}','sent')">Approve &amp; send secure link</button> <span class="lk" onclick="iv('${a.sec.replace(/'/g,"\\'")}','none')">edit</span>`:''}${st==='sent'?`<button class="btn" onclick="iv('${a.sec.replace(/'/g,"\\'")}','back')">Simulate client reply</button>`:''}${st==='back'?`<span style="font-size:12px;color:var(--green)">✓ Folded into the register as an Estimated finding — a human still vouches before it goes client-facing.</span>`:''}</div></div>`;}).join('')}
+    <div style="font-size:12px;color:var(--text-2);margin-top:6px">You never have to send an interview — you can fill these yourself. The point is the coworker does the chasing, not you.</div>
+    <div class="actions"><span class="lk" onclick="goStep(2)">← Back</span><button class="btn primary" onclick="goStep(4)">Decide how much it does →</button></div></div>`;}
+
+  else if(s===4){const does=countDoes(),back=AREAS.length-does;h+=`<div class="panel"><h2>How much should it do on day one?</h2><p class="lede">You don’t hand over the whole register to trust it. It drafts only what it can stand behind and hands you the rest, graded by ${T('tier','confidence')}. Start small; give it more as it earns it.</p>
+    <div class="cards" style="margin-bottom:16px"><div class="card ${S.preset==='sure'?'picked':''}" onclick="setPreset('sure')"><div class="rec">START HERE</div><div class="nm">Only what it’s sure of</div><div class="d">Drafts measured/benchmarked; hands you the guesses.</div></div><div class="card ${S.preset==='whole'?'picked':''}" onclick="setPreset('whole')"><div class="nm">Draft the whole register</div><div class="d">Attempts everything; flags low-confidence for you.</div></div></div>
+    ${AREAS.map(a=>{const d=autoDoes(a);return `<div class="gate-row ${d?'does':'you'}"><div class="tgl ${d?'on':''}" onclick="flip('${a.sec.replace(/'/g,"\\'")}')"><span class="k"></span></div><span class="tier ${a.tier}">${({measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'})[a.tier]}</span><span class="s">${a.sec}</span><span class="a">${d?'Coworker drafts':'You do this'}</span></div>`;}).join('')}
+    <div class="callout">Day one: it drafts <b>${does} of ${AREAS.length}</b> and hands you <b>${AREAS.length-does}</b>. ${T('held','Unverified')} never reaches a client until a human vouches.</div>
+    <div class="handhold"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M4 20v-1a5 5 0 015-5"/><path d="M15 11l2 2 4-4"/><path d="M14 20v-1a4 4 0 013-3.9"/></svg></div>
+      <div><h4>Add the Advisor for what it hands back <span class="prem">Premium</span></h4><p>The findings it hands you are the judgment calls. The Advisor turns a raw finding into plain talking points and a recommended next step — so the person presenting doesn’t have to be the person who understands the vulnerability. Built for the account lead, not just the engineer.</p>
+      <label class="chk" style="margin-bottom:0"><input type="checkbox" ${S.handhold?'checked':''} onchange="S.handhold=this.checked;render()"><span>Include the Advisor to walk me through the handed-back findings${back?` (${back} this cycle)`:''}.</span></label></div></div>
+    <div class="actions"><span class="lk" onclick="goStep(3)">← Back</span><button class="btn primary" onclick="goStep(5)">See the register →</button></div></div>`;}
+
+  else if(s===5){h+=`<div class="panel"><h2>Here’s the register I’d build</h2><p class="lede">A draft ${T('register')}. Immutable once you activate it, so read it now. This is the durable artifact — one living register per client, graded, tracked, evidence kept.</p>
+    ${posture()}
+    <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
+    ${S.regView==='register'?regTable():S.regView==='system'?systemMap():overTime()}
+    <div class="callout" style="margin-top:18px">Powered by <b>${S.ai==='nzo'?'N-zo':'Claude Code'}</b>${S.handhold?' + Advisor':''} · built from <b>${shape()?shape().name:'—'}</b>${S.extraFiles.length?` + ${S.extraFiles.length} context file${S.extraFiles.length>1?'s':''}`:''} · drafts <b>${countDoes()} of ${AREAS.length}</b> areas day one. Trigger: on-demand (not calendar-fired). Sign-off required before client-facing.</div>
+    <div class="actions"><span class="lk" onclick="goStep(4)">← Back</span><button class="btn primary" onclick="goStep(6)">Review and activate →</button></div></div>`;}
+
+  else if(s===6){const a=S.ack,all=a.read&&a.judgment&&a.record;h+=`<div class="panel"><h2>You activate it, not me</h2><p class="lede">A coworker that switches itself on is one nobody agreed to. Three confirmations — none a formality.</p>
+    <div class="gate-box"><h3>Before this goes live</h3>
+    <label class="chk"><input type="checkbox" ${a.read?'checked':''} onchange="ack('read',this.checked)"><span>I’ve read the draft register and it matches how we run an EBR.</span></label>
+    <label class="chk"><input type="checkbox" ${a.judgment?'checked':''} onchange="ack('judgment',this.checked)"><span>I understand it learned our <b>structure</b>, not our <b>judgment</b> — I’ll correct grades, especially early.</span></label>
+    <label class="chk"><input type="checkbox" ${a.record?'checked':''} onchange="ack('record',this.checked)"><span>This becomes our <b>system of record</b>; a <b>named person</b> signs off before anything reaches a client.</span></label>
+    <button class="btn primary" ${all?'':'disabled'} onclick="activate()">Activate this coworker</button></div>
+    <div class="warncall"><b>Still unresolved:</b> whether the sign-off owner is the technical practitioner (David) or the account lead (Vanessa). This screen asks you to name someone; the product doesn’t yet enforce who.</div>
+    <div class="actions"><span class="lk" onclick="goStep(5)">← Back</span></div></div>`;}
+  el('stage').innerHTML=h;
+  if(s===2 && !S.parsed) runParse();
+}
+function renderChips(){return S.extraFiles.map((f,i)=>`<span class="file-chip">${f.name} <span class="kind">${f.kind}</span> <span class="x" onclick="rmFile(${i})">×</span></span>`).join('')||'<span style="font-size:12px;color:var(--text-2)">None yet.</span>';}
+function guessKind(n){n=n.toLowerCase();if(/transcript|call|meeting|\.vtt/.test(n))return 'transcript';if(/risk|register/.test(n))return 'risk register';if(/note/.test(n))return 'notes';if(/\.xlsx|\.csv/.test(n))return 'spreadsheet';return 'context';}
+function addFile(){const v=(S.addDraft||'').trim();if(!v)return;S.extraFiles.push({name:v,kind:guessKind(v)});S.addDraft='';render();}
+function rmFile(i){S.extraFiles.splice(i,1);render();}
+function iv(sec,st){S.interview[sec]=st;render();}
+async function runParse(){const sh=shape();S.parseLog=[];const w=ms=>new Promise(r=>setTimeout(r,ms));const plog=(cls,text)=>{S.parseLog.push({cls,text,t:String(S.parseLog.length).padStart(2,'0')});const c=el('pc');if(c){c.innerHTML=S.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('');c.scrollTop=c.scrollHeight;}};
+  if(sh.template){plog('dim','loading Stefanie EBR framework…');await w(500);plog('cw',`powered by ${S.ai==='nzo'?'N-zo':'Claude Code'}`);await w(300);for(const t of sh.tabs){plog('ok','  '+t);await w(120);}await w(250);plog('ok','risk register — built into the framework');await w(300);plog('dim','— template loaded. every finding is yours to fill. —');S.parsed=true;render();return;}
+  plog('dim',`opening ${sh.name.toLowerCase()}…`);await w(500);plog('cw',`powered by ${S.ai==='nzo'?'N-zo':'Claude Code'}`);await w(300);plog('',`detected ${sh.tabs.length} section(s)`);await w(350);for(const t of sh.tabs){plog(sh.quality==='low'?'err':'ok','  '+t);await w(140);}
+  if(S.extraFiles.length){await w(300);for(const f of S.extraFiles){plog('cw',`  + ${f.name} (${f.kind}) — read for context`);await w(150);}}
+  await w(300);if(sh.quality==='high'){plog('ok','grading column found — RAG scale, consistent');await w(260);plog('ok','carry-forward tab found — becomes the register history');await w(260);plog('warn','no rationale column — grades recorded, reasons are not');}else if(sh.quality==='medium'){plog('warn','no grading column — grades implied by slide colour');await w(260);plog('warn','no carry-forward — cannot tell what was open last quarter');}else{plog('err','no repeating structure between quarters');await w(260);plog('err','cannot draft a register from this without guessing');}
+  await w(350);plog('dim','— structure read. judgment not read, and not readable. —');S.parsed=true;render();}
+
+/* ---- Capstone diff screen — restored from build-ebr.html's final step (2026-09-01 rebuild) ----
+   Sits between Activate (3-checkbox gate) and the Dashboard, per the rebuild brief's Section A
+   step 7. Two columns, field-level mapping traced to what the reconciled Setup screens actually
+   produce (not invented): shape()/S.extraFiles from "Your report", gapAreas()/S.interview from
+   "Fill the gaps", countDoes()/AREAS.length/S.handhold from "How much it does", S.ack from
+   "Activate". Teach-back ("correct one grade") already lives on the Dashboard's Overview tab in
+   this file — not duplicated here, per the brief's "don't expand Teach-back" instruction. */
+function renderCapstone(){
+  const sh=shape(), does=countDoes(), total=AREAS.length, back=total-does;
+  const gapsClosed=Object.values(S.interview).filter(v=>v==='back').length;
+  const brought=[
+    `${sh?sh.name:'A report'} rebuilt from scratch each cycle${S.extraFiles.length?`, plus ${S.extraFiles.length} file${S.extraFiles.length>1?'s':''} you gathered by hand`:''}`,
+    sh&&sh.quality==='low'?'No repeating structure between quarters — it lived in your head':'Grades kept from memory and spot-checks, not a dated record',
+    `${gapAreas().length} area${gapAreas().length===1?'':'s'} with no connector at all — chased by hand or guessed`,
+    'No record of what a client declined, and no evidence trail if anyone asks "prove it"',
+  ];
+  const now=[
+    `A living ${T('register')} — findings owned, dated, tracked across cycles`,
+    `<b>${does} of ${total}</b> areas drafted automatically — only what it can stand behind`,
+    `<b>${back}</b> handed to you${S.handhold?', with the Advisor to translate them':''}`,
+    `${gapsClosed} gap${gapsClosed===1?'':'s'} closed by asking the client directly — a secure link, not you chasing them`,
+    'Every finding traces to kept evidence — signed off by a named human before anything reaches a client',
+  ];
+  el('head').innerHTML=`<div class="crumb"><span class="lk" onclick="setNav('coworkers')">Coworkers</span><span class="sep">›</span>EBR Coworker<span class="sep">›</span>Fenwick Logistics</div>
+    <div class="title-row"><h1>EBR Coworker — Fenwick Logistics</h1></div>
+    <div class="chips"><span class="chip active"><span class="d"></span>Active</span><span class="chip mode">${T('assisted','Assisted')}</span></div>
+    <div style="height:8px"></div>`;
+  el('stage').innerHTML=`<div class="panel">
+    <div class="chip active" style="display:inline-flex;margin-bottom:16px"><span class="d"></span>ACTIVE · version 1 · immutable</div>
+    <h2>Built. Now teach it your judgment.</h2>
+    <p class="lede">Left: the report you brought. Right: your living register. It got the structure right — teach it a grade on the dashboard and next cycle it proposes yours, not its own.</p>
+    <div class="cards">
+      <div class="card"><div class="nm">What you brought</div><ul style="margin:8px 0 0 18px;padding:0;font-size:12.5px;color:var(--text-2);line-height:1.7">${brought.map(b=>`<li>${b}</li>`).join('')}</ul></div>
+      <div class="card picked"><div class="nm">What you have now</div><ul style="margin:8px 0 0 18px;padding:0;font-size:12.5px;color:var(--ink);line-height:1.7">${now.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div>
+    <div class="actions"><button class="btn primary" onclick="goToDashboard()">Go to your dashboard →</button></div>
+  </div>`;
+}
+
+/* ---- Dashboard ---- */
+function renderDashboard(){
+  ebrHead();
+  if(S.reportOpen){ el('stage').innerHTML=renderReport(); return; }
+  if(S.tab==='Overview') el('stage').innerHTML=overview();
+  else if(S.tab==='Runs') el('stage').innerHTML=runsTab();
+  else if(S.tab==='Audit') el('stage').innerHTML=`<div class="dcard"><h2>Audit trail</h2><div class="sub">Every change is a git commit — the dated evidence chain</div><div class="stat"><span>Q3 2026 register committed · today 09:12</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="stat"><span>Grade corrected: phishing kept Amber</span><span class="v muted">David · teach-back</span></div><div class="stat"><span>Q2 2026 cycle committed · 14 May</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="narr" style="margin-top:14px">"Prove it to opposing counsel" — the register’s git history is the attestation trail. Nothing is deleted; declined risks stay on record.</div></div>`;
+  else el('stage').innerHTML=`<div class="empty"><b>${S.tab}</b><br>Real HARNESS tab, in the shell for fidelity. The EBR dashboard lives on <span style="color:var(--apex);cursor:pointer" onclick="setTab('Overview')">Overview</span>.</div>`;
+}
+function overview(){
+  const r=FINDINGS.filter(f=>f.grade==='red').length,a=FINDINGS.filter(f=>f.grade==='amber').length,held=FINDINGS.filter(f=>f.grade==='held').length;
+  const seg=(c,n)=>n?`<div class="seg ${c}" style="flex:${n}"></div>`:'';
+  return `<div class="dash">
+    <div class="dcard span2"><h2>Fenwick Logistics — risk register</h2><div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials · git-tracked</div>
+      <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
+      <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key green"><span class="num">3</span><span class="lab"><b>Improving</b>vs last cycle</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
+      <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
+      ${S.regView==='register'?regTable():S.regView==='system'?systemMap():overTime()}</div>
+    <div class="dcard"><h2>Value</h2><div class="sub">Written to the Value Ledger each run</div>
+      <div class="stat"><span>Time saved this cycle</span><span class="v">~3.5 hrs</span></div><div class="stat"><span>Findings drafted</span><span class="v">${countDoesLabel()}</span></div><div class="stat"><span>Handed to a human</span><span class="v muted">1 (held)</span></div><div class="stat"><span>Runs to date</span><span class="v muted">${S.runs}</span></div></div>
+    <div class="dcard"><h2>Fed by coworkers</h2><div class="sub">Build these and the register gets richer</div>${FEEDS.map(f=>`<div class="feed" onclick="setNav('coworkers')" style="cursor:pointer"><span class="dot"></span><span><span class="nm">${f.cw}</span><br><span class="to">→ ${f.area}</span></span></div>`).join('')}</div>
+    <div class="dcard span2"><div class="signoff"><b>Sign-off required before client send.</b> One red finding is included, so this cycle needs a named human — Vanessa (account lead) is on record for Fenwick. ${T('held','Unverified')} findings are hard-blocked regardless. <b>Nothing has been sent.</b></div></div>
+    <div class="dcard span2"><h2>Teach it your judgment</h2><div class="sub">Correct a grade and the coworker keeps your reasoning — next cycle it proposes yours, not the default. This is how it gets better at the thing that matters.</div>
+      <div class="tb-box"><div class="prop">It graded <b>“Phishing click-rate 22%”</b> <span class="g" style="background:var(--amber);display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle"></span> <b>Amber</b> (above the 15% benchmark). Your call — this client just onboarded 40 new starters.</div>
+        <div class="tb-grades"><div class="tb-grade ${S.tbGrade==='red'?'picked':''}" onclick="setTb('red')"><span class="g" style="background:var(--red)"></span>Red</div><div class="tb-grade ${S.tbGrade==='amber'?'picked':''}" onclick="setTb('amber')"><span class="g" style="background:var(--amber)"></span>Amber (keep)</div><div class="tb-grade ${S.tbGrade==='green'?'picked':''}" onclick="setTb('green')"><span class="g" style="background:var(--green)"></span>Green</div></div>
+        <textarea class="tb-note" placeholder="Why? e.g. 'New-starter cohort skews this — trending down, on track.' The coworker keeps your reasoning, not just the grade." oninput="S.tbNote=this.value">${S.tbNote}</textarea>
+        ${S.tbSaved?`<div class="tb-saved"><b>Saved to your judgment.</b> Next cycle the coworker proposes <b>${S.tbGrade?S.tbGrade[0].toUpperCase()+S.tbGrade.slice(1):'your grade'}</b> for this pattern and shows your reasoning alongside it — written to learned-judgment, committed to git.</div>`:`<button class="btn primary" ${S.tbGrade?'':'disabled'} onclick="saveTb()">Save this correction</button>`}
+      </div></div>
+  </div>`;
+}
+function countDoesLabel(){return '5 of 6';}
+function regTable(){
+  const order={red:0,amber:1,green:2,held:3};
+  return `<div class="reg">${[...FINDINGS].sort((x,y)=>order[x.grade]-order[y.grade]).map(f=>`
+    <div class="row ${f.grade}" onclick="toggleFinding('${f.id}')"><div></div>
+      <div><div class="fnd">${f.finding}</div><div class="mt">${f.area}<span class="d">·</span>${f.owner}<span class="d">·</span>${f.status}</div></div>
+      <div><span class="tier ${f.tier}">${f.tier}</span></div>
+      <div class="c3">${spark(f)}<div class="ev">${f.ev}</div></div>
+    </div>${S.openFinding===f.id?`<div class="fdetail"><b>What it means:</b> ${f.why}<br><b>Owner:</b> ${f.owner} · <b>Confidence:</b> ${f.tier} · <b>Evidence:</b> ${f.ev}${f.grade==='held'?' — <b style="color:var(--held)">held from client view until vouched</b>':''}</div>`:''}`).join('')}</div>
+    <div class="held-foot"><span class="dot"></span><span><b style="color:var(--held)">Held.</b> The IR-plan gap is inferred, not measured — kept internally (absence is a finding) but hard-blocked from the client view. Click any row for detail.</span></div>`;
+}
+function spark(f){const pts=f.history.filter(v=>v!==null);if(pts.length<2)return `<span class="ev" style="font-style:normal">new</span>`;const w=84,h=26,min=Math.min(...pts),max=Math.max(...pts),rng=(max-min)||1,step=w/(pts.length-1),nm=v=>h-4-((v-min)/rng)*(h-8);const d=pts.map((v,i)=>`${i?'L':'M'}${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' ');const last=pts[pts.length-1],first=pts[0],better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber,g='g'+f.id;const area=`M0,${h} L`+pts.map((v,i)=>`${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' L')+` L${w},${h} Z`;return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="${g}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".2"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${((pts.length-1)*step).toFixed(1)}" cy="${nm(last).toFixed(1)}" r="2.6" fill="${col}"/></svg>`;}
+function systemMap(){const W=840,H=490,cx=W/2,cy=H/2;const areas=[...new Set(FINDINGS.map(f=>f.area))];FEEDS.forEach(fd=>{if(!areas.includes(fd.area))areas.push(fd.area);});const R=148,Rl=228,Rc=254,n=areas.length,ap={};areas.forEach((a,i)=>{const g=(-90+i*360/n)*Math.PI/180;ap[a]={x:cx+R*Math.cos(g),y:cy+R*Math.sin(g),g};});const cv=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;return `M${x1},${y1} Q${mx-dy*0.12},${my+dx*0.12} ${x2},${y2}`;};let links=areas.map(a=>`<path d="${cv(cx,cy,ap[a].x,ap[a].y)}" fill="none" stroke="#e2e2e8" stroke-width="1.2"/>`).join('');let leaves=FINDINGS.map((f,i)=>{const p=ap[f.area],g=p.g+0.3*((i%2)?1:-1),lx=cx+Rl*Math.cos(g),ly=cy+Rl*Math.sin(g),hd=f.grade==='held';return `<path d="${cv(p.x,p.y,lx,ly)}" stroke="${hd?'#c9c9d0':GC[f.grade]}" stroke-width="1.3" ${hd?'stroke-dasharray="3 3"':''} fill="none" opacity=".6"/><circle cx="${lx}" cy="${ly}" r="6.5" fill="${hd?'#fff':GC[f.grade]}" stroke="${hd?'#8a8a93':'#fff'}" stroke-width="${hd?2:1.2}"/><text x="${lx}" y="${ly+(Math.sin(g)>0?18:-11)}" text-anchor="middle" font-family="Inter" font-size="9" fill="#6b6c72">${f.finding.length>22?f.finding.slice(0,20)+'…':f.finding}</text>`;}).join('');let an=areas.map(a=>{const p=ap[a];return `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#fff" stroke="#8500cc" stroke-width="1.6"/><text x="${p.x}" y="${p.y-11}" text-anchor="middle" font-family="Manrope" font-size="10.5" font-weight="600" fill="#18171c">${a}</text>`;}).join('');let fd=FEEDS.map(f=>{const p=ap[f.area],g=p.g,fx=cx+Rc*Math.cos(g),fy=cy+Rc*Math.sin(g);return `<path d="${cv(fx,fy,p.x,p.y)}" stroke="#0a95c4" stroke-width="1.5" fill="none" opacity=".85" marker-end="url(#ar)"/><rect x="${fx-54}" y="${fy-11}" width="108" height="22" rx="11" fill="#e7f6fb" stroke="#0a95c4"/><text x="${fx}" y="${fy+4}" text-anchor="middle" font-family="Inter" font-size="9" font-weight="600" fill="#086a8c">${f.cw}</text>`;}).join('');return `<div class="svg-wrap" style="margin-top:6px"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#0a95c4"/></marker></defs>${links}${fd}${leaves}${an}<circle cx="${cx}" cy="${cy}" r="35" fill="#17131f"/><text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Manrope" font-size="12" font-weight="700" fill="#fff">Fenwick</text><text x="${cx}" y="${cy+12}" text-anchor="middle" font-family="Inter" font-size="9" fill="#c3bdd0">Customer</text></svg></div><div class="narr">Cyan arrows are other coworkers feeding a section. Build them and the register fills itself in.</div>`;}
+function overTime(){const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px">${tr.map(f=>{const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=188,h=52,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber;return `<div style="border:1px solid var(--line);border-radius:var(--r);padding:14px 16px"><div style="font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--ink);margin-bottom:2px">${f.finding}</div><div style="font-family:var(--font-m);font-size:11px;color:${col};margin-bottom:8px">${first}→${last} · ${better?'↓ improving':(f.id==='f2'?'↑ slipped':'—')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg></div>`;}).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New findings carry no history, shown honestly as new.</div>`;}
+function runsTab(){return `<div class="dcard"><h2>Run history</h2><div class="sub">Each run writes to the Value Ledger and appends to the register</div>
+  <div class="stat"><span><b style="color:var(--ink)">Q3 2026 cycle</b> · today 09:12</span><span class="v" style="color:var(--green)">Completed · 5 findings</span></div>
+  <div class="stat"><span>Q2 2026 cycle · 14 May</span><span class="v muted">Completed · 4 findings</span></div>
+  <div class="stat"><span>Q1 2026 cycle · 10 Feb</span><span class="v muted">Completed · 4 findings</span></div>
+  <div class="narr" style="margin-top:14px">Value → <b>Time saved: ~11 hrs across 3 cycles</b>. Every run is a commit; git history is the audit trail.</div>
+  <div class="actions"><button class="btn primary" onclick="runCycle()">Run EBR cycle now</button></div></div>`;}
+
+/* interactions */
+/* ---- client report + exports ---- */
+/* REC{} map retired 2026-09-01 — its copy now lives as .ask on each FINDINGS entry (data reconciliation, see AREAS/FINDINGS comment above). */
+function clientFindings(){return FINDINGS.filter(f=>f.grade!=='held');}
+function plainNum(s){return s.replace('22%','around one in five').replace('82%','most machines').replace('41 days','over a month').replace('6 endpoints','six machines').replace('3 admin accounts','several admin accounts');}
+function renderReport(){
+  return `<div class="report">
+    <div class="exportbar"><span class="lk" style="margin-right:auto;color:var(--text-2)" onclick="closeReport()">← Back to dashboard</span>
+      <span class="lbl">Export:</span><button class="btn" onclick="exportCSV()">Excel</button><button class="btn" onclick="exportPptx()">PowerPoint</button><button class="btn" onclick="exportDoc()">Word</button><button class="btn" onclick="exportPDF()">PDF</button></div>
+    <div class="rep-cover"><div class="ey">EXECUTIVE BUSINESS REVIEW · Q3 2026</div><h2>Fenwick Logistics</h2><div class="meta">Prepared by Bracken IT Group · presented by Vanessa · reviewed against NCSC 10 / Cyber Essentials</div></div>
+    <div class="rep-sec"><h3>A note from Vanessa</h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
+    <div class="rep-sec"><h3>What we found</h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${plainNum(f.finding)}</div><div class="fm">${f.why}</div><div class="fr">Our recommendation — ${f.ask}</div></div></div>`).join('')}</div>
+    <div class="rep-sec"><h3>What’s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five. The direction is right on every front — this is the story worth telling at renewal.</p></div>
+    <div class="rep-sec"><h3>Decisions for you</h3>
+      <div class="decision"><span>Fund MFA enforcement on the remaining admin accounts</span><span class="dv" style="color:var(--red)">Recommended now</span></div>
+      <div class="decision"><span>Approve remediation of the exposed machines</span><span class="dv" style="color:var(--red)">Recommended now</span></div>
+      <div class="decision"><span>Put a documented incident-response plan in place</span><span class="dv" style="color:var(--amber)">For discussion</span></div>
+    </div>
+    <div class="rep-sec"><h3>Next 12 months</h3><p class="rep-note" style="color:var(--text-2)">[ To be completed with you at the review — where you are, where we’ll take you, and what it costs. This section is Vanessa’s to own. ]</p></div>
+    <div style="font-family:var(--font-m);font-size:10.5px;color:var(--text-2);border-top:1px solid var(--line);padding-top:12px;line-height:1.6">Seed data — fictional. Held / unverified findings are excluded from this client view (the full internal register is on file). Numbers are stated in plain language here; the raw figures live in the register. Exports write back to your own workbook or deck — your columns and order preserved.</div>
+  </div>`;
+}
+function csvEsc(s){return '"'+String(s).replace(/"/g,'""')+'"';}
+function download(name,mime,content){const b=new Blob([content],{type:mime});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}
+function exportCSV(){const rows=[['Grade','Finding','What it means for the business','Our recommendation','Owner','Confidence']].concat(clientFindings().map(f=>[f.grade,f.finding,f.why,f.ask,f.owner,f.tier]));download('Fenwick-EBR-Q3-2026.csv','text/csv',rows.map(r=>r.map(csvEsc).join(',')).join('\n'));toast('Exported to Excel — written back to your workbook, columns preserved');}
+function exportDoc(){const html='<html><head><meta charset="utf-8"><title>Fenwick EBR</title></head><body style="font-family:Calibri,Arial,sans-serif;max-width:640px"><h1>Fenwick Logistics — Executive Business Review, Q3 2026</h1><p><i>Prepared by Bracken IT Group · presented by Vanessa</i></p><h2>What we found</h2>'+clientFindings().map(f=>`<h3>${plainNum(f.finding)}</h3><p>${f.why}</p><p><b>Our recommendation:</b> ${f.ask}</p>`).join('')+'</body></html>';download('Fenwick-EBR-Q3-2026.doc','application/msword',html);toast('Exported to Word');}
+function exportPDF(){toast('Opening print — choose “Save as PDF”');setTimeout(()=>window.print(),350);}
+function exportPptx(){toast('PowerPoint export is a mock here — the real build writes a branded deck to your template');}
+function openReport(){S.reportOpen=true;render();window.scrollTo(0,0);}
+function closeReport(){S.reportOpen=false;render();}
+function pick(id){S.shape=id;S.parsed=false;S.parseLog=[];render();}
+function setTb(g){S.tbGrade=g;render();}
+function saveTb(){S.tbSaved=true;render();}
+function setAI(a){S.ai=a;render();}
+function setStructTab(t){S.structTab=t;render();}
+function setPreset(p){S.preset=p;S.overrides={};render();}
+function flip(sec){const cur=autoDoes(AREAS.find(x=>x.sec===sec));S.overrides[sec]=!cur;render();}
+function tech(sec){S.openTech[sec]=!S.openTech[sec];render();}
+function ack(k,v){S.ack[k]=v;render();}
+function goStep(n){S.step=n;render();window.scrollTo(0,0);}
+function activate(){S.activated=true;S.capstoneSeen=false;render();window.scrollTo(0,0);}
+function goToDashboard(){S.capstoneSeen=true;S.tab='Overview';render();window.scrollTo(0,0);toast('Coworker activated — welcome to your live register');}
+function setTab(t){S.tab=t;S.openFinding=null;render();}
+function setView(v){S.regView=v;render();}
+function toggleFinding(id){S.openFinding=S.openFinding===id?null:id;render();}
+function runCycle(){S.runs++;toast('EBR cycle complete — register updated, committed to git');render();}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "_source": "Cloud Capsule",
+  "_kind": "M365 configuration capture",
+  "_note": "FICTIONAL seed data. DELIBERATELY STALE — capturedAt is 41 days old. This is the staleness demo.",
+  "tenantId": "fenwicklogistics.onmicrosoft.com",
+  "capturedAt": "2026-07-14T22:00:00Z",
+  "captureStatus": "stale",
+  "mfaEnforcement": {
+    "allUsers": true,
+    "privilegedRoles": false,
+    "_capturedNote": "As of capture date only"
+  },
+  "adminAccounts": [
+    { "upn": "a.whitfield@fenwicklogistics.co.uk", "roles": ["Global Administrator"], "mfaRegistered": true, "mfaRequired": false },
+    { "upn": "d.oyelaran@fenwicklogistics.co.uk", "roles": ["Exchange Administrator", "SharePoint Administrator"], "mfaRegistered": true, "mfaRequired": false },
+    { "upn": "svc-backup@fenwicklogistics.co.uk", "roles": ["Global Administrator"], "mfaRegistered": false, "mfaRequired": false, "_flag": "service account with Global Admin" }
+  ],
+  "conditionalAccess": { "policiesActive": 4, "gapsDetected": 0 },
+  "incidentResponsePlanDocument": null,
+  "_gap": "Cloud Capsule has no field for process/procedural controls. Absence here is not evidence of absence."
+}

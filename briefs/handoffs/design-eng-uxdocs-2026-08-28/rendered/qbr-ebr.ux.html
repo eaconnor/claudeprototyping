@@ -1,0 +1,984 @@
+<!doctype html><html><head><meta charset='utf-8'><title>QBR/EBR (context)</title><style>body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:880px;margin:0 auto;padding:1.5rem;color:#1a1612;background:#fbf9f4}.nav{background:#efe7d6;border:1px solid #cbb;padding:.5rem 1rem;margin:-1.5rem -1.5rem 1.5rem;font-size:.88rem}.nav a{margin-right:.8rem;color:#1F3C96;text-decoration:none}h1{border-bottom:3px solid #1a1612;padding-bottom:.3rem}h2{margin-top:2.2rem;border-bottom:1px solid #ccc;padding-bottom:.2rem}h3{margin-top:1.6rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}th,td{border:1px solid #cbb;padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:#efe7d6}code{background:#efe7d6;padding:.1rem .3rem;border-radius:3px;font-size:.85em}blockquote{border-left:4px solid #C99A2E;margin:.8rem 0;padding:.3rem 1rem;background:#f7f0df;color:#4a4238}hr{border:none;border-top:1px solid #ccc;margin:2rem 0}a{color:#1F3C96}sup{font-size:.7em}</style></head><body><div class="nav"><a href="index.html"><b>▸ index</b></a> <a href="qbr-ebr.ux.html">QBR/EBR (context)</a> · <a href="acp-ux.html">Harness (context)</a> · <a href="TEMPLATE.ux.html">TEMPLATE context.md</a> · <a href="TEMPLATE.design.html">TEMPLATE design.md</a> · <a href="GUIDE.html">GUIDE</a> · <a href="qbr-ebr.README.html">mini README</a> · <a href="acp-ux.README.html">main README</a> · <a href="CONTRIBUTE.html">CONTRIBUTE</a></div><hr />
+<p>artifact: ux.md
+template_version: 1.0
+kind: mini
+work_type: new-product          # a mini that earned the full spine — carries offering-specific §2–4 rather than inheriting. kind (parent link) and work_type (depth) are orthogonal.
+parent: briefs/context/acp-ux.md
+project: QBR/EBR offering (Harness, formerly ACP)
+owner: Beth Connor
+research_posture: researcher-backed
+canonical_spec: acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md (QBR Advisor · specs/004-ai-coworker-registry)
+stress_test_method: Idea Chess (run 2×) / Council (5-voice, 2026-07-30)
+design_system: Apex
+design_lint: static-tokens
+skills:                          # inherits acp-ux.md registry (Band suite); offering-specific:
+  gate3_build: bethproto         # prototypes/qbr-draft-flow/qbr-hifi.html + v2
+status: DRAFT-updated            # SKELETON | DRAFT | LIVE
+drift: FRESH                     # reconciled 2026-08-21 (refresh Step 6). Sources registered; §1/§4/§6 synthesis still Beth's.
+open_conflicts:                  # registered 2026-08-21, NOT resolved — see the refresh changeset
+  - C-11  # Vertesia partner-substrate. Beth 2026-08-21: treat as a given. C2 portability now the load-bearing question. Owner: Beth + Nicole + Meaghan.
+  - C-12  # RESOLVED Beth 2026-08-21: Nov 2 replaces the Phase-4 monetization gate.
+  - C-13  # "$300+/user/mo ScalePad" — killed 2026-07-28, circulating again in 62302388241. Needs removing/re-sourcing at source.
+  - C-14  # runtime "004 = 0/40" verified against a STATIC snapshot; live repo has moved. Re-verify before any Phase-1 call.
+confidence_score: SEE §7
+built_from:
+  - briefs/qbr-ebr-experience-map-2026-07-28.md
+  - briefs/ebr-process-map-2026-07-28.md   # council corrections are edits within this file, not a separate doc
+  - scout_input/stefanie-hammond-ebr-sources-2026-07-28.md
+  - scout_input/qbr-independent-sources-2026-07-28.md
+  - scout_input/qbr-competitor-products-2026-07-28.md
+  - scout_input/qbr-operator-voices-2026-07-28.md
+  - scout_input/qbr-adjacent-and-legal-2026-07-28.md
+  - scout_input/SECONDARY-SOURCES-REGISTER-qbr-ebr-2026-07-28.md
+  - datadump-manual-human-steps.md
+  - briefs/concept-sketches-qbr-2026-07-20.md
+  - briefs/idea-chess-fleet-synthesis-2026-07-14.md
+  - briefs/acp-word-sketches-four-complete-2026-07-15.md
+  - "Executive Business Review Template 1.xlsx" (Stef H.'s own template, supplied by Beth)
+  - briefs/acp-offerings-2026-07-14.md
+  - scout_input/acp-qbr-analyst/vcio-vciso-industry-practice.md
+  - Confluence "ACP Secondary Research — MSP QBR/EBR Practice" (AI space, 62226858351)
+  - briefs/ebr-service-blueprint-2026-07-29.md
+  - scout_input/stefanie-hammond-ebr-followup-transcript-2026-07-30.md   # DIRECT interview — first non-vendor-relayed Stef H. evidence
+  - briefs/datadump-axial-coding-2026-07-31.md + .csv                    # whole-datadump axial pass, 141 coded rows
+  - briefs/idea-chess-qbr-rerun-2026-07-31.md                            # board re-played vs July evidence, 6 concepts
+  - briefs/concept-sketches-qbr-round2-2026-07-31.md                     # 3 new one-pagers + V1-V4/R1-R9 research agenda
+  - briefs/story-qbr-chapter-draft-2026-07-31.md                         # human/story layer (Chapter 2) — the door; this file is the truth
+  # --- registered 2026-08-21, datadump refresh Step 6 (Beth: bulk-accept) ---
+  # All four below are [DOMAIN: SaaS/CS, NOT MSP] — carry the acronym-collision caveat (rows 266/267)
+  - scout_input/reddit-cs-stopped-qbrs-renewals-up-2026-08-20.md         # SRC-M-004 · QBR/EBR split from a 4th independent voice; renewal ≠ QBR quality
+  - scout_input/perspective-ai-qbr-software-2026-comparison-2026-08-20.md # SRC-M-005 · "telemetry has no reason"; new entrants Perspective AI/Matik/Topo.io
+  - scout_input/alex-raymond-qbr-as-test-2026-08-20.md                   # SRC-M-006 · QBR-as-commitment-test lens. 95% GRR/120% NRR = [CS: LOW], do not quote
+  - scout_input/mural-qbr-guide-sales-managers-2026-08-20.md             # SRC-M-007 · co-creation over one-way. [CS: LOW], adds no new evidence
+  - scout_input/14-qbr-replacement-ritual-scan.md                        # SRC-M-012 · no stabilized replacement ritual exists; negative finding, [WOBBLY] whole thread
+  - scout_input/01-gradient-msp.md                                      # SRC-M-008 · CORRECTION: "normalization" = billing reconciliation only
+  - scout_input/02-liongard.md                                          # SRC-M-009 · CORRECTION: Liongard ACQUIRED DarkLight; repositioned to ASM
+  - scout_input/03-vciotoolbox.md                                       # SRC-M-010 · TAP partner, N-central only
+  - scout_input/04-cloudradial.md                                       # SRC-M-011 · negative finding: N-able-side partnership unevidenced
+  - Confluence "Harness — Vertesia to Market: Nov 1 Execution Plan" (AI space, 62302388241)  # the Nov 2 commitment + 5 use cases + R-02 zero-PSA-connectors
+last_updated: 2026-08-21 (refresh Step 6: SRC-M-004…012 registered · Vertesia execution plan registered · see §Divergence Log for C-11/C-12/C-13)
+reconciled_at: 2026-08-21
+confidence_regime: PROCEED-FLAGGED
+proceed_because: artifact value to team exceeds cost of withholding during research gap — n=1-2 operator evidence is thin but the service blueprint and context are more useful now than after a full study
+machine_behavior: build · surface [CS:] tags visibly · fidelity = Tier 1 Concept · do not claim validation · Package 3 proceeds; Package 5 gates on Q1 legal</p>
+<hr />
+<h1>QBR/EBR — ux.md (mini)</h1>
+<p><strong>What this file is, in one breath:</strong> everything we know about building an AI helper for the quarterly business review meeting that MSPs (the IT companies who are our customers) run with <em>their</em> customers — who said it, how much we trust it, what's still unknown, and what's already been decided. It's written to be read by both people and AI tools. <strong>Every unusual term is defined in the <a href="#glossary--every-term-in-this-file-defined">Glossary</a> at the bottom.</strong> If a claim has a bracket tag after it, the tag tells you how much to trust it — the tags are defined in the parent <a href="acp-ux.html">acp-ux.md</a>.</p>
+<p><strong>Scorecard</strong> (per Constitution Principle VII, <code>acp-core-main-3</code>) — a three-question health check: do we understand the problem? are we building the right thing? are we building it right?</p>
+<p>🟢 <strong>Gate 1</strong> (problem framed) — cast enriched with 4A's (the delivery lead, the MSP owner, Stef H.); named sources throughout. <strong>07-31: Stef H. upgraded from vendor-relayed to direct interview; the MSP owner corroborated.</strong>
+🟢 <strong>Gate 2</strong> (right thing) — Idea Chess re-run 2026-07-31 against July evidence (6 concepts; Package 3 leads ~2.9%, up ~3.2×) + 5-voice Council (07-30). 2 council divergences tracked — informational, not blocking. <strong>Q3 (liability paradox) now named as a third portfolio gate: it sits under 4 of 6 concepts.</strong>
+🟡 <strong>Gate 3</strong> (built right) — <code>confidence_regime: PROCEED-FLAGGED</code>, n=1–2 operator evidence. Divergence Log: 2 open (🔴) + 1 resolving (🟡) + 1 resolved (🟢) — DIV-004 closed 2026-08-27 (ISO 9241-11 framing, Beth + Nicole). Q2 (operator study) narrowed by the direct interview, not closed. <strong>Usability standard adopted: ISO 9241-11 (effectiveness / efficiency / satisfaction + context of use) — see <code>_ux-template/GUIDE.md</code> § Gate rubric.</strong></p>
+<p>Child of <a href="acp-ux.html">acp-ux.md</a>.</p>
+<p><em>(The 2026-07-31 session delta — Stef H.'s direct interview, the Idea Chess re-run, Q3 named, the translation-layer principle, the encryption assumption — is recorded in the CHANGELOG at the bottom. Its content lives in the body: §1 / §5 / §6.)</em></p>
+<p><strong>Where this research comes from:</strong> Most of it traces to one source — Stef H.'s EBR training content, and the delivery lead, an MSP delivery lead who went through Stef H.'s program. We searched for independent corroboration and folded in what we found. Where the evidence is still one voice, the doc says so.</p>
+<blockquote>
+<p><strong>Reading guide, role guides (designer / engineer), and "if Beth's not around"</strong> now live in <a href="qbr-ebr.README.html"><code>qbr-ebr.README.md</code></a>. Marketing, Head Nerds, and other insight folk: see <a href="CONTRIBUTE.html"><code>CONTRIBUTE.md</code></a> — how to add what you're seeing without touching this file.</p>
+</blockquote>
+<p><strong>Tags and gates: inherited from parent <a href="acp-ux.html">acp-ux.md</a></strong> — not re-printed here. One addition this file uses: <code>[THIN]</code> (an honest claim we want true but can't yet support — now also in the parent legend). <code>PROPOSED</code> in a heading = an interpretive call needing human eyes even where the quote is solid. <em>(The old bracket-word section labels — <code>[WORLD_MODEL]</code> etc. — were removed 2026-08-28; every section now carries only its plain Gate tag.)</em></p>
+<hr />
+<h2>1. The problem, and for whom — <code>Gate 1</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> MSPs spend 3–7h per quarter hand-assembling client-facing reviews. The people who do it well are scarce. All the evidence for this comes from one company.</p>
+</blockquote>
+<p>MSPs are expected to run regular business-value conversations with clients — quarterly or semi-annual reviews that prove strategic value and justify the relationship. Prep costs <strong>3–7h/quarter</strong> <code>[CS: HIGH]</code><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, <strong>~4–5h per session</strong> <code>[CS: LOW — see note]</code><sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> of senior delivery-lead time, assembled by hand each time.</p>
+<blockquote>
+<p><strong>On that prep-time figure:</strong> Stef H. (EBR trainer) and the delivery lead (one of her clients) both report 3–5h of prep work. That looks like two independent sources agreeing — but it isn't. the delivery lead adopted the whole EBR framework <em>from</em> Stef H.'s training. They're measuring the same transmitted process, not two operators who arrived at the same number independently. Treat as one directional data point. <code>[CS: LOW — echo, not triangulation]</code><sup id="fnref:2b"><a class="footnote-ref" href="#fn:2b">16</a></sup></p>
+</blockquote>
+<hr />
+<p><strong>The characters — who this is actually about:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Role in this story</th>
+<th>Evidence quality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>the delivery lead</strong> — Head of Client Delivery, a UK MSP (UK)</td>
+<td>The primary person we designed <em>for</em>. Non-technical delivery lead — marketing/languages background, deliberately not an engineer. She runs the EBRs from start to finish.</td>
+<td><code>[CS: VERIFIED]</code><sup id="fnref:3"><a class="footnote-ref" href="#fn:3">23</a></sup> — identity confirmed, in-depth interview</td>
+</tr>
+<tr>
+<td><strong>the MSP owner</strong> — the delivery lead's business partner / MSP owner</td>
+<td>Bought into Stef H.'s EBR framework and brought it back to the company. The <em>buyer</em> of the process, not the daily user of it. Maps to USER-001 / the parent acp-ux.md alpha persona.</td>
+<td>Not verified — composite from corpus <code>[?]</code></td>
+</tr>
+<tr>
+<td><strong>Stef H.</strong> — N-able Head Nerd (~20 years at N-able, ~16 in account management, Head Nerd ~4 years)</td>
+<td>Author/trainer of the EBR framework itself — the source the delivery lead's whole practice was transmitted from. Not an MSP operator; an N-able enablement role. Named throughout the footnotes but not previously seated in this cast table.</td>
+<td><code>[CS: VERIFIED]</code><sup id="fnref:24"><a class="footnote-ref" href="#fn:24">24</a></sup> — identity and role confirmed</td>
+</tr>
+<tr>
+<td><strong>The client exec</strong> — finance director or business owner across the table</td>
+<td>"Isn't really interested in the back end." Appears in the delivery lead's account only — no client was ever interviewed directly.</td>
+<td><code>[A]</code><sup id="fnref:4"><a class="footnote-ref" href="#fn:4">25</a></sup> — single-operator description of a third party</td>
+</tr>
+<tr>
+<td><strong>Who else probably pulls these reports</strong> (from the 26-role persona library in <a href="../../scout_input/lewis-persona-library-cast-2026-07.md"><code>lewis-persona-library-cast-2026-07.md</code></a> — DIV-002's "map the full cast," first pass; all <code>[CS: MEDIUM]</code> unless noted):</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>am</code></strong> (account manager / vCIO) — "leads the QBR aligning spend to business goals": the clearest match for the vCIO/TAM gap, from the account side rather than the delivery-lead side.</li>
+<li><strong><code>sdm</code></strong> (service delivery manager) — owns the service-desk capacity the risk review is built from; feels an EBR cadence that overloads it (Must 7).</li>
+<li><strong><code>owner</code></strong> (small-MSP owner-operator) — the category the MSP owner instantiates: "the buyer, escalation point, salesperson, and often still a technician."</li>
+<li><strong><code>intaud</code>/<code>extaud</code></strong> (auditor-GRC) — ties to Must 8 and the compliance themes in the SME interview; human counterpart to FSN-83143 USER-005.</li>
+<li><strong><code>vciso</code></strong> (fractional CISO) — plausible co-author of the risk-register narrative for security-mature clients. <code>[?]</code> hypothesis only.</li>
+</ul>
+<p><strong>Adjacent named sources</strong> (not cast members): Joe L. and Lewis P. (<a href="../../scout_input/joe-lewis-julian-interview-2026-07.md">SME interview</a>) — their discussion of insurance-documentation-as-claim-prerequisite and MSP liability informs Must 8's "no overclaiming."</p>
+<p><strong>Bias flag:</strong> all operator evidence (the delivery lead / the MSP owner) is n=1, from a vendor-selected reference customer — directional only <code>[WOBBLY]</code><sup id="fnref:5"><a class="footnote-ref" href="#fn:5">3</a></sup>. The persona-library additions are a different kind of evidence — a well-constructed library, <code>[CS: MEDIUM]</code> until its sourcing is confirmed.</p>
+<p><strong>4A's treatment — Ambitions / Attitudes / Actions / Anxieties</strong> (basic pass, 2026-07-30; <code>[?]</code> where unsourced rather than invented):</p>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Ambitions</th>
+<th>Attitudes</th>
+<th>Actions</th>
+<th>Anxieties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>the delivery lead</strong></td>
+<td>Run EBRs confidently, solo, and turn them into pipeline — her first EBR produced a referral and a new client <code>[CS: HIGH — n=1]</code><sup id="fnref:12"><a class="footnote-ref" href="#fn:12">26</a></sup>.</td>
+<td>Deliberately non-technical; prefers business-value framing over technical metrics/graphs <code>[CS: HIGH]</code><sup id="fnref:9"><a class="footnote-ref" href="#fn:9">27</a></sup>. Believes in asking for referrals without hesitation <code>[CS: HIGH]</code><sup id="fnref2:35"><a class="footnote-ref" href="#fn:35">6</a></sup>.</td>
+<td>Builds the risk review from service-desk capacity, schedules into the PSA queue, converts action items to tickets, keeps internal notes separate from the client-facing document <code>[CS: HIGH]</code><sup id="fnref:7"><a class="footnote-ref" href="#fn:7">28</a></sup><sup id="fnref:32"><a class="footnote-ref" href="#fn:32">29</a></sup>.</td>
+<td><code>[THIN]</code> — the "needs confidence to run the room solo" read comes from a hired coach's third-party diagnosis (Raybould, "curse of the expert"), not the delivery lead's own first-person admission. No source has her naming what she personally worries about going wrong in an EBR.</td>
+</tr>
+</tbody>
+</table>
+<p><em>(4A's for the MSP owner and Stef H. omitted — the owner's is largely unsourced <code>[?]</code>; Stef H. is a source/trainer, not a design target. The delivery lead is who we design for.)</em></p>
+<h2>1a. Problem framing — the friction, the design question, why this solution — <code>Gate 1/2</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> Two candidate branches (N-able-native vs. cross-vendor). The differentiation claim in the positioning copy is also an architectural fork in the data model.</p>
+</blockquote>
+<p>Three fields anchor the offering's identity: what problem-pressure exists (the friction), what question guides the design, and why this solution over alternatives. Carried verbatim from the 2026-07-20 Idea Chess pass — they were already written. (Underlying frameworks, if you want them: Jon Kolko on wicked problem framing; Geoffrey Moore's positioning template. You don't need to know either to read this section.)</p>
+<p><strong>Package 3 — Client-Facing Proof, N-able Native:</strong>
+- <strong>The friction:</strong> MSPs on consolidated N-able stacks are trying to get quarterly proof of
+  protection in front of clients, but the cross-N-able product integration (N-central + Cove +
+  Adlumin have different data models) is unscoped, and demand for the N-able-<em>native</em> job was
+  never independently measured — the research asked about cross-vendor.<sup id="fnref:63"><a class="footnote-ref" href="#fn:63">4</a></sup>
+- <strong>The design question:</strong> How might we deliver a client-ready QBR for consolidated N-able-stack MSPs in
+  one engineering cycle — no normalization acquisition — as the foundation for eventually
+  expanding to cross-vendor scope?<sup id="fnref2:63"><a class="footnote-ref" href="#fn:63">4</a></sup>
+- <strong>Why this solution:</strong> For N-able-stack MSPs who want to stop assembling QBRs by hand,
+  Client-Facing Proof (Native) produces a client-ready, defensibility-tagged quarterly review from
+  first-party telemetry in under 20 minutes. Unlike the cross-vendor branch, it needs no
+  normalization and carries a legally cleaner data position — but is limited to clients on an
+  N-able stack.<sup id="fnref3:63"><a class="footnote-ref" href="#fn:63">4</a></sup>
+- <strong>N-able superpower:</strong> First-party Adlumin + Cove + UEM telemetry — here the telemetry <em>is</em> the
+  product, not a prerequisite to it. "Measured" is defensible on day one with no external data
+  dependency. Real but narrow.<sup id="fnref4:63"><a class="footnote-ref" href="#fn:63">4</a></sup>
+- <strong>The bet:</strong> <code>[0% Claude — fill this in]</code></p>
+<p><strong>Package 5 — Client-Facing Proof, Cross-Vendor:</strong>
+- <strong>The friction:</strong> MSPs are trying to prove strategic value every quarter, but the evidence is
+  scattered across vendor tools that don't speak to each other — and the most defensible
+  cross-vendor comparison is legally unavailable through competitors' data policies.<sup id="fnref:64"><a class="footnote-ref" href="#fn:64">5</a></sup>
+- <strong>The design question:</strong> How might we let an MSP walk in and prove, in numbers the client trusts, that
+  the invisible work kept them safe across their <em>whole</em> stack — without spending a day
+  hand-building it, and without needing data we have no right to?<sup id="fnref2:64"><a class="footnote-ref" href="#fn:64">5</a></sup>
+- <strong>Why this solution:</strong> For security-focused MSPs assembling quarterly reviews by hand,
+  Client-Facing Proof (Cross-Vendor) generates a client-ready, evidence-tagged narrative across
+  the full vendor stack in under 20 minutes. Unlike manual assembly or single-vendor dashboards, it
+  delivers cross-vendor normalized evidence with built-in defensibility tiering.<sup id="fnref3:64"><a class="footnote-ref" href="#fn:64">5</a></sup>
+- <strong>N-able superpower:</strong> First-party full-stack telemetry (Adlumin + Cove + UEM) is the only
+  normalized source N-able controls — "Measured" is defensible from day one for N-able-native
+  clients <em>without</em> any acquisition. The acquisition/partnership extends that moat across
+  competitors' data. The superpower is the telemetry stack, not the AI on top.<sup id="fnref4:64"><a class="footnote-ref" href="#fn:64">5</a></sup>
+- <strong>The bet:</strong> <code>[0% Claude — fill this in]</code></p>
+<p><strong>Why this matters for design/eng specifically:</strong> the "Unlike..." clause in each Value prop is the
+differentiation claim eng's data model has to actually support (first-party-only vs. normalized
+cross-vendor) — it's not just positioning copy, it's an architectural fork between the two
+packages. Neither <strong>bet</strong> line is filled — that's Beth's, not this file's.</p>
+<h2>2. Journey / orienting map — <code>Gate 1</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> The full EBR spans 26 service moments across 7 stages. Almost none are built yet: 0 built, 1 specced, 17 absent. The primary source is Stef H.'s actual 15-tab EBR template — a real artifact, not a description of one.</p>
+</blockquote>
+<ul>
+<li>Frontstage: <a href="../qbr-ebr-experience-map-2026-07-28.md">qbr-ebr-experience-map-2026-07-28.md</a> —
+  six-phase, two-actor-lane experience map (client exec / MSP operator).</li>
+<li>Backstage: <a href="../ebr-process-map-2026-07-28.md">ebr-process-map-2026-07-28.md</a> — corrected per
+  council pass 2026-07-28 (false-independence claims fixed, liability section downgraded to <code>[?]</code>).</li>
+<li><strong>Reconciled 2026-07-29</strong> against canonical service-blueprint terminology (Customer Actions /
+  Line of Interaction / Frontstage-Backstage Staff Actions / Line of Visibility / Support
+  Processes, per "A Guide to Service Blueprinting," Flowers/Miller) — see
+  <a href="../ebr-service-blueprint-2026-07-29.md"><code>ebr-service-blueprint-2026-07-29.md</code></a>. 26 service moments across 7 stages (Entice ·
+  Enter · Schedule · Prep-Assemble × 8 data pulls · Prep-Judge · Live Meeting × 12 moments ·
+  Follow-up · Extend). Build coverage check: <strong>0 built, 1 specced, 8 adjacent, 17 absent</strong>.</li>
+<li><strong>The actual artifact spec, in hand as of 2026-07-28:</strong> Stef H.'s own EBR template
+  (<code>Executive Business Review Template 1.xlsx</code>, supplied by Beth — closes the B1 gap flagged since
+  the first sweep). 15 tabs: Agenda · Meeting Kick Off · Current Climate · Risk &amp; Security Review
+  (with a structured risk register: Threat/Risk, ID Date, Risk Level, Existing Controls, Treatment
+  Plan, Progress Status, Residual Risk, Risk Owner) · Compliancy Review · Business Priorities &amp;
+  Goals Review · Hardware &amp; Software Asset Review · Employee Review · Technology Roadmap ·
+  Technology Budget · Additional Items · Referrals &amp; Testimonials · Post-Meeting Action Items
+  (explicit instruction: "turn every action item into a ticket") · Next Meeting Planning · KPIs
+  (Territory Retention %, # Referrals, # Testimonials, # New Sales Opps, EBRs Delivered vs.
+  Planned/Quarter, Average NPS). <code>[CS: VERIFIED — primary source, not a secondhand description]</code>.
+  This is the real spec §6's Tasks should be checked against, not just the delivery lead/Stef H.'s spoken
+  account — see §6's Operating Principles for how its 15 tabs sort by job-shop vs. brains-work.</li>
+</ul>
+<h2>3. Four-angle view — see Appendix A</h2>
+<p>The full POEMS / Five Human Factors / Value Webs synthesis is in <strong>Appendix A</strong> (frameworks). Build-relevant conclusions already live where they're used: <strong>risk review is the heaviest EBR section</strong>, and <strong>business-value framing runs throughout</strong> (§6 Musts 1 &amp; 5).</p>
+<h2>4. Sustaining / disruptive &amp; market — see Appendix A</h2>
+<p>Full sustaining-vs-disruptive analysis, competitive scan, and Idea Chess branch scoring are in <strong>Appendix A</strong>. Build-relevant residue lives in the spine: the <strong>two branches</strong> (Package 3 N-able-native / Package 5 cross-vendor) are in §1a; the <strong>build substrate</strong> (Runbook Engine + Value Ledger, renders $0) is in §6; the <strong>gates Q1/Q2/Q3</strong> are in §5.</p>
+<h2>5. Open items — assumptions · decisions · questions — <code>Gate 1 / Gate 2</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> everything uncertain in one register — assumptions (what we're betting on), decisions (what we haven't chosen), questions (what we don't know). Two gates — <strong>Q1</strong> (legal, cross-vendor data) and <strong>Q2</strong> (operator study) — gate almost everything downstream. <strong>Riskiest first.</strong> Also the datadump intake: 🔴 rows feed <code>/refresh-datadump</code> and receive field insight via <a href="CONTRIBUTE.html"><code>CONTRIBUTE.md</code></a>. Closes 🟢 only when the answer folds into the body <em>and</em> the tag upgrades. Carried from Part C of the manual-steps register<sup id="fnref:21"><a class="footnote-ref" href="#fn:21">17</a></sup> + §4 / §1a.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Type</th>
+<th>Status</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Q1 — legal to pull non-N-able vendor data</strong> into a client-facing artifact? Gates Package 5 entirely (§4). A legal/DPA read, not a build.</td>
+<td>assumption (evidence) → legal</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Q2 — does the <em>operator</em> want AI drafts</strong>, or just the finished report? Never directly studied — all demand signal is buyer intent (§4).</td>
+<td>assumption (evidence) → operator study</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Q3 — liability paradox as a portfolio gate</strong> (sits under 4 of 6 concepts). Does an AI-drafted-but-declined row, held in the internal surface, constitute notice? One shared counsel review beats four separate stalls.</td>
+<td>decision → counsel</td>
+<td>🔴</td>
+<td>a product call → counsel</td>
+</tr>
+<tr>
+<td><strong>Positioning fork</strong> — delivery lead (user) vs owner (buyer)? The relationship-trust-vs-impact-trust distinction (§4) is the clearest lens found; doesn't resolve it.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>MVP spine</strong> — Env Health assembly vs. severing the service-desk dependency.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Confidence scope</strong> — differentiator vs. enablement problem vs. research-first.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Goal unit unnamed</strong> — more EBRs delivered, or more projects closed? Unfalsifiable until asked.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Sustaining vs. disruptive</strong> (§4).</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Ledger billing-dependency conflict</strong> — vision wants the Value Ledger to "justify the platform fee"; the Intent Spec's NONGOAL bars any billing dependency; resolved in-code as read-only consumer, but that's a decision, not a settled fact.<sup id="fnref:55"><a class="footnote-ref" href="#fn:55">30</a></sup></td>
+<td>decision → product</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Compliance ownership unassigned</strong> — the ledger schema is only accidentally EU-AI-Act-shaped; not compliant until a named owner verifies.<sup id="fnref:56"><a class="footnote-ref" href="#fn:56">31</a></sup></td>
+<td>decision (ownership)</td>
+<td>🔴</td>
+<td><code>&lt;TBD&gt;</code></td>
+</tr>
+<tr>
+<td><strong>"Encryption resolves the data-legality concerns"</strong> — engineering assertion; category error (a security control for a rights/knowledge question). Does not retire Q1 or Q3.</td>
+<td>assumption (evidence) → counsel</td>
+<td>🔴</td>
+<td>eng → counsel</td>
+</tr>
+<tr>
+<td><strong>15-minute operator edit-and-send flow</strong> actually fits in 15 minutes. [P≈0.35]<sup id="fnref:54"><a class="footnote-ref" href="#fn:54">32</a></sup></td>
+<td>assumption (evidence)</td>
+<td>🔴</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Data clean enough to normalize</strong> across sources at 75–80%. [P≈0.30]<sup id="fnref2:54"><a class="footnote-ref" href="#fn:54">32</a></sup></td>
+<td>assumption (evidence)</td>
+<td>🔴</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Buy-vs-build</strong> — mid-size MSPs buy, small self-build, large already have something; segment-dependent, unresolved.<sup id="fnref3:54"><a class="footnote-ref" href="#fn:54">32</a></sup></td>
+<td>assumption (evidence)</td>
+<td>🔴</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>WTP anchor contradicts itself</strong> — Kenneth's "$300+/user" (Guidepoint)<sup id="fnref:57"><a class="footnote-ref" href="#fn:57">33</a></sup> vs. ScalePad's actual per-client pricing, entry $250/mo.<sup id="fnref:58"><a class="footnote-ref" href="#fn:58">34</a></sup>. <strong>Do not quote "$300+/user" without resolving.</strong> ☠</td>
+<td>assumption (evidence)</td>
+<td>🔴</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>The two <code>[0% Claude — fill this in]</code> bet lines</strong> (§1a Package 3 / Package 5).</td>
+<td>decision (judgment · human-only)</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td>Alpha persona = mature operator (dedicated delivery lead, EOS, PSA queue).</td>
+<td>assumption</td>
+<td>🟢 confirmed 2026-07-28</td>
+<td>Beth</td>
+</tr>
+</tbody>
+</table>
+<p>Type preserves the §9b split — assumption/question = evidence-gap (→ research); decision = a human's call. <strong>🔴 Divergence rows (DIV-001, DIV-002) are open items too — they live in §5a and list here by reference, not duplicated.</strong></p>
+<h2>5a. Divergence Log — vs. FSN-83143 (canonical) — <code>[SPEC DIVERGENCE]</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> Four places this file's research diverges from or isn't addressed by the canonical
+Intent Spec. Logged per acp-ux.md AGENT GATE rule 10. 🔴 = genuinely open, routes through
+Beth → Meaghan → Nicole. 🟡 = known and in motion, not a standoff. Status is grep-checkable —
+don't self-report it, count the emoji.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Divergence</th>
+<th>vs. spec</th>
+<th>Status</th>
+<th>Owner</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DIV-001</td>
+<td>This file treats Package 3 (N-able Native) vs. Package 5 (Cross-Vendor) as a live, ungated fork</td>
+<td>FSN-83143 DEC-006 already ships one Coworker, "QBR Advisor" (priority 2.90), without specifying which branch</td>
+<td>🔴 open</td>
+<td>Beth → Nicole</td>
+<td>Which branch did DEC-006 assume — or is that itself still open? Needs Nicole directly.</td>
+</tr>
+<tr>
+<td>DIV-002</td>
+<td>Primary persona (the delivery lead — non-technical delivery lead who runs the EBR) doesn't map to either FSN-83143 §3 actor; she's the person doing the job the Coworker's output serves, a role the actor model has no slot for. the MSP owner (owner/buyer) does map to USER-001, per the 2026-07-30 alpha-persona lock. Per acp-ux.md rule 10, a sub-spec carrying its own persona is fine — the gap is that the <em>full cast</em> isn't mapped yet</td>
+<td>FSN-83143 §3: USER-001 (Admin, configures/creates), USER-002 (Technician, runs/approves) — neither fits the delivery lead</td>
+<td>🔴 open</td>
+<td>Beth</td>
+<td>Map full cast (the delivery lead, the MSP owner, client exec, + check USER-005 Audit/Compliance overlap with the client exec's own compliance reviewer) against FSN-83143's table in one place. Revisit as §1's cast list fills in.</td>
+</tr>
+<tr>
+<td>DIV-003</td>
+<td>QBR Value Ledger producer isn't wired yet — renders $0 (§4, §6)</td>
+<td>FSN-83143 INV-PROD-005: every completed run must write a Value Ledger entry — "a run that produces no value entry is a system error"</td>
+<td>🟡 resolving-with-Product</td>
+<td>Beth (tracking)</td>
+<td>Build-sequencing item, expected to close before QBR Advisor ships — producer wiring gates activation. Not a standoff, just needs to land before ship.</td>
+</tr>
+<tr>
+<td>DIV-004</td>
+<td>Must 1 bans time-saved/percentage/graph framing inside the QBR's own client-facing content — a value-prop-shaping finding, not just a risk flag</td>
+<td>FSN-83143 §5 sets "time saved / reduced headcount" as the Coworker-wide UX north star, visible on every Coworker card</td>
+<td>🟢 resolved</td>
+<td>Beth + Nicole</td>
+<td><strong>2026-08-27, Beth + Nicole:</strong> resolved via ISO 9241-11 framing — no contradiction. Time-saved is an <em>efficiency</em> measure kept operator-side (admin / Coworker-card surface); the client-facing QBR is graded on <em>effectiveness + satisfaction</em>. Different ISO measures in different contexts of use. The <em>why</em> now attached: client-facing effectiveness/satisfaction serve the MSP's <strong>business growth</strong> (referrals / new projects / retention — §6 Goal 3). The Coworker-card time-saved pattern does <strong>not</strong> propagate into client-facing output.</td>
+</tr>
+</tbody>
+</table>
+<h2>6. Problem → Goals → Tasks → Function — <code>Gate 3</code> (+ Gate 1/2 for steps 1–2)</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> 8 Musts defined (behaviors that cause failure when absent). 3/8 auto-classifiable as "procedure work" (automatable). 5/8 require human judgment. Only 2 of 8 are testable at current prototype fidelity.</p>
+</blockquote>
+<p><strong>Problem — <code>Gate 1</code>:</strong> link to §1.</p>
+<p><strong>Goals — <code>Gate 1/2</code> — <code>PROPOSED, confirm</code>:</strong>
+1. Cut prep time without losing the business-value framing that makes EBRs land.
+2. Let a non-technical delivery lead run the room solo, without a technician present.
+3. Turn the EBR into a repeatable pipeline motion (referrals/projects), not just a checkpoint.</p>
+<p><strong>Tasks — <code>Gate 3</code> — Top Tasks candidates, <code>PROPOSED, confirm</code>:</strong>
+1. Build/update the risk register.
+2. Build/update the tech roadmap.
+3. Schedule the EBR into a prep queue.
+4. Draft business-language talking points (explicitly not graphs/percentages).
+5. Log post-meeting action items as PSA tickets.
+6. Update the pipeline/scorecard (opportunities raised / opportunities closed).</p>
+<p><strong>Musts — the build must satisfy every one — <code>Gate 3</code>:</strong> behaviors the corpus ties to failure when absent. Each carries a built-in test that runs against a real or AI-assisted EBR.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Must</th>
+<th>Fails when absent</th>
+<th>Built-in test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Business-value framing, not technical/graphs/% <sup id="fnref:26"><a class="footnote-ref" href="#fn:26">35</a></sup></td>
+<td>operators fall back to technical framing <sup id="fnref:27"><a class="footnote-ref" href="#fn:27">36</a></sup></td>
+<td>content ratio: business-outcome vs. technical sentences (grep, don't self-report)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Real prep, not last-minute <sup id="fnref:28"><a class="footnote-ref" href="#fn:28">37</a></sup></td>
+<td>stale/templated review</td>
+<td>artifact-freshness: register/roadmap updated in a pre-meeting window</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Follow-up — action items → tickets, relationship pushed <sup id="fnref:29"><a class="footnote-ref" href="#fn:29">38</a></sup></td>
+<td>left to lapse = ineffective</td>
+<td>ticket-conversion within N days (machine-checkable via PSA API)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cadence tuned to the client, not fixed-quarterly <sup id="fnref:30"><a class="footnote-ref" href="#fn:30">39</a></sup></td>
+<td>over- or under-serving</td>
+<td>time-since-last-EBR vs. that client's set cadence <em>(the old "3 lawsuits" justification didn't hold — see Must 8)</em></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Both core artifacts — risk register + tech roadmap <sup id="fnref:31"><a class="footnote-ref" href="#fn:31">40</a></sup></td>
+<td>incomplete review</td>
+<td>presence check: both on file</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Dual-surface — two real artifacts, never a hide/show toggle</strong> <sup id="fnref2:32"><a class="footnote-ref" href="#fn:32">29</a></sup></td>
+<td>one doc + a toggle → an accidental un-toggle is a client-visible incident (the Tier-1 proto made exactly this mistake)</td>
+<td>structural: internal draft contains content absent from the client export</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Sustainable backstage load <sup id="fnref:33"><a class="footnote-ref" href="#fn:33">41</a></sup></td>
+<td>overloading the shared technical role is a named failure point</td>
+<td>capacity: EBR load/week vs. the corpus ceiling</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>No overclaiming legal/liability protection</strong> <sup id="fnref:34"><a class="footnote-ref" href="#fn:34">42</a></sup></td>
+<td>no case law or underwriter supports documentation-as-shield; a machine that surfaces <em>every</em> gap expands the record of what the MSP "knew" — so <strong>auto-draft, human-clears</strong> is the only defensible pattern <code>[CS: HIGH — not yet counsel-reviewed]</code></td>
+<td>language check: flag/fail any legal-protection claim in client-facing content</td>
+</tr>
+</tbody>
+</table>
+<p><em>Shoulds</em> (valuable, but the corpus shows real variation): ask for referrals <sup id="fnref:35"><a class="footnote-ref" href="#fn:35">6</a></sup> · <strong>cadence tuned per client</strong> — the one Should with real triangulation, three independent consultancies <sup id="fnref:36"><a class="footnote-ref" href="#fn:36">7</a></sup><sup id="fnref:39"><a class="footnote-ref" href="#fn:39">8</a></sup><sup id="fnref:40"><a class="footnote-ref" href="#fn:40">9</a></sup><sup id="fnref:41"><a class="footnote-ref" href="#fn:41">10</a></sup> · high-touch/in-person where feasible <sup id="fnref:37"><a class="footnote-ref" href="#fn:37">11</a></sup> · log to a pipeline/scorecard <sup id="fnref:38"><a class="footnote-ref" href="#fn:38">12</a></sup>.</p>
+<p><strong>Operating principles — the build must follow these — <code>Gate 3</code>:</strong> rules for <em>how</em> it's built, not just what it contains.</p>
+<p><strong>1. Job shop vs. production line — classify every template task, don't guess.</strong> Proceduralize procedure work; protect senior judgment (Maister's leverage-ratio principle<sup id="fnref:53"><a class="footnote-ref" href="#fn:53">13</a></sup>). Against the 15-tab template (§2):</p>
+<table>
+<thead>
+<tr>
+<th>Template section</th>
+<th>Classification</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agenda, Current Climate, Hardware/Software Asset Review, Employee Review (data pull), Post-Meeting Action Items, Next Meeting Planning, KPIs</td>
+<td><strong>Production line</strong> — automatable</td>
+<td>Directly pullable from PSA/RMM, or (Post-Meeting Action Items) already an explicit instruction to mechanize: "turn every action item into a ticket." <strong>The clearest automation candidate in the whole template.</strong></td>
+</tr>
+<tr>
+<td>Risk &amp; Security Review, Compliancy Review, Technology Roadmap</td>
+<td><strong>Hybrid</strong></td>
+<td>Register entries and gap-detection are pullable/draftable; the narrative synthesis ("any concerns," overall risk rating, priority/timeline calls) is judgment</td>
+</tr>
+<tr>
+<td>Business Priorities &amp; Goals Review, Referrals &amp; Testimonials, Technology Budget</td>
+<td><strong>Brains work — protect this</strong></td>
+<td>A live conversation about the client's specific business; the template itself has no fields here that aren't a live question</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The point:</strong> automating the production-line rows buys back the delivery lead's time for the brains-work rows — the mechanism behind Goals 1 &amp; 2. <strong>Automating a row does not relax the Musts</strong> — an auto-drafted register still passes Must 1 and Must 8 before it reaches the client.</p>
+<p><strong>2. The human acts in the client's best interest — reuse the existing mechanism.</strong> The Defensibility tier (Measured / Benchmarked / Estimated / Unverified) sits over the Value Ledger's existing <code>baseline_source</code> field.<sup id="fnref:59"><a class="footnote-ref" href="#fn:59">14</a></sup> <em>(Correction 2026-07-31: the tier is proposed grammar, not built — a grep of <code>acp-core-main-3</code> finds only <code>baseline_source</code>, not the tier vocabulary. <code>[CS: VERIFIED — grep]</code>)</em> Two reusable rules for Must 8: <strong>headline off Measured only</strong> (never blend the AI's self-reported minutes into a client-facing number), and <strong>hard-gate the Unverified tier, not a passive warning</strong> (warning-fatigue research: a no-action warning reads as permission). The same gate applies to N-able's own commercial interest — an upsell a draft surfaces is flagged as commercial, not laundered as neutral risk analysis.</p>
+<p><strong>3. The translation layer — we hold the general, the MSP holds the particular.</strong> N-able's side is what's true <em>across</em> clients: telemetry in the consequence grammar (data → risk → meaning → consequence-if-ignored), industry trends, and base-wide comparison — expertise no single MSP can self-build. The MSP's side is the particular: this client, this room. So the draft is <strong>chooser-shaped, not prose-shaped</strong> — ranked include/exclude register rows (choosing what to raise is a Must 8 liability judgment), two-register talking points (CFO/ROI vs owner/strategy), five trends to pick three from, commercial recs flagged and never default-accepted. Corollary — the liability architecture, not just trust design: <strong>what the system sees ≠ what the MSP documents.</strong> The tools see everything; the new legal object is only the client-adjacent record, and nothing enters it without a human electing it. <code>[CS: HIGH — derived; the drafted-but-declined notice question is Q3's, for counsel]</code></p>
+<p><strong>Function/feature structure — <code>Gate 3</code>:</strong> not fully <code>[PENDING]</code> — real substrate exists. Per the
+2026-07-20 Idea Chess pass: the Runbook Engine (49/49 built) and a Value Ledger producer (55/55
+built — corrected 2026-07-31 from "52/52" by grep-count of <code>specs/003-value-ledger/tasks.md</code>;
+currently renders $0) already exist; a QBR runbook is wiring onto existing plumbing, not a
+build from zero. What's actually pending: the QBR-specific runbook spec, the producer wiring, and
+resolving Q1/Q2 (§4) before locking scope.</p>
+<p><strong>Quality bar + self-serve usability methods — <code>Gate 3</code>:</strong> per parent <a href="acp-ux.html">acp-ux.md</a> §6 — Nielsen floor · ISO 9241-11 · accessibility · Apex <code>design_lint</code> · SUS ship-gate · trust-in-AI-output eval · and the cognitive-walkthrough / 5-second-test / content-audit methods for teams without a researcher. <strong>QBR-specific:</strong> run Must 1's content-audit on a sample draft (business-outcome vs. technical-metric sentences; &lt;60/40 business = the prompt isn't working). At Tier 1 Concept, all three self-serve methods run against a static prototype before any production code.</p>
+<h2>7. Confidence score</h2>
+<p><code>[PENDING computation — see parent §7 method]</code>. After the full-datadump pass (2026-07-28): several
+items moved from <code>[A]</code>/n=1 to independently-corroborated <code>[CS: MEDIUM/HIGH]</code> (cadence, UK cultural
+register, the risk-register's centrality via HaloPSA). One item moved the other way — Must 4's
+cadence justification was resting on an unverified causal claim (lawsuits ← irregular meetings)
+that didn't survive the legal scout and had to be corrected. Net read: still <strong>fine as evidence of
+what's happening, thinner than it looked on what to build</strong> — the competitive scan (§4) is the
+newest and most load-bearing gap: no shipping direct competitor with real PSA writeback exists,
+which cuts both ways (opportunity, or a category that failed once already at Zomentum). Don't
+quote a percentage here without grepping it first — 47% rule.</p>
+<p><strong>Service blueprint pass (2026-07-29):</strong> Three items changed confidence this pass.
+- <code>[CS: HIGH — n=1]</code> on 4–5h/EBR <strong>downgraded</strong> to <code>[CS: LOW — echo]</code> — the corroboration is
+  a transmission echo, not independent validation (Finding 2).
+- Must 6 dual-surface: was <code>[CS: HIGH]</code>; now <code>[CS: VERIFIED — structural]</code> — service blueprint
+  confirms two real artifacts exist and must be preserved, not inferred from the narrative.
+- Risk Register legal shield: moved from <code>[?]</code> → explicitly <code>[CS: HIGH — unvalidated, must not
+  reach client-facing surface before counsel]</code> (Finding 1).</p>
+<p>Build coverage from service blueprint (26 service moments): <strong>0 built · 1 specced · 8 adjacent ·
+17 absent</strong>. The one specced item is QBR Advisor in <code>specs/004-ai-coworker-registry</code> — 0 of 40
+tasks done as of 2026-07-29. The gap is subject matter (the 8 data pulls, the judgment layer, the
+dual-surface artifact structure), not mechanism — Value Ledger + Runbook Engine are already built.</p>
+<h2>8. Sources</h2>
+<ul>
+<li><a href="../qbr-ebr-experience-map-2026-07-28.md"><code>qbr-ebr-experience-map-2026-07-28.md</code></a></li>
+<li><a href="../ebr-process-map-2026-07-28.md"><code>ebr-process-map-2026-07-28.md</code></a> (council corrections are edits within this file, not a separate doc)</li>
+<li><a href="../../scout_input/stefanie-hammond-ebr-sources-2026-07-28.md"><code>stefanie-hammond-ebr-sources-2026-07-28.md</code></a></li>
+<li><a href="../../scout_input/qbr-independent-sources-2026-07-28.md"><code>qbr-independent-sources-2026-07-28.md</code></a> — benchmark/industry data, KAM academic
+  literature, Maister</li>
+<li><a href="../../scout_input/qbr-competitor-products-2026-07-28.md"><code>qbr-competitor-products-2026-07-28.md</code></a> — the competitive scan (§3, §4)</li>
+<li><a href="../../scout_input/qbr-operator-voices-2026-07-28.md"><code>qbr-operator-voices-2026-07-28.md</code></a> — unfiltered operator sentiment (§4), UK texture
+  (§3)</li>
+<li><a href="../../scout_input/qbr-adjacent-and-legal-2026-07-28.md"><code>qbr-adjacent-and-legal-2026-07-28.md</code></a> — the legal/insurance investigation (Must 8)</li>
+<li><a href="../../scout_input/SECONDARY-SOURCES-REGISTER-qbr-ebr-2026-07-28.md"><code>SECONDARY-SOURCES-REGISTER-qbr-ebr-2026-07-28.md</code></a></li>
+<li><a href="../../datadump-manual-human-steps.md"><code>datadump-manual-human-steps.md</code></a></li>
+<li><a href="../concept-sketches-qbr-2026-07-20.md"><code>concept-sketches-qbr-2026-07-20.md</code></a> — the Idea Chess pass on this offering (§4, §6)</li>
+<li><a href="../idea-chess-fleet-synthesis-2026-07-14.md"><code>idea-chess-fleet-synthesis-2026-07-14.md</code></a> — death patterns, survival methodology</li>
+<li><a href="../acp-word-sketches-four-complete-2026-07-15.md"><code>acp-word-sketches-four-complete-2026-07-15.md</code></a> — Defensibility Layer, Branch A/B split</li>
+<li><code>Executive Business Review Template 1.xlsx</code> — Stef H.'s own template (§2, §6 Operating
+  Principles)</li>
+<li><a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a> — the original vision doc for this offering (Offering A);
+  quantified riskiest assumptions, WTP anchors, TAM, the two routed human-call items (§5)</li>
+<li><a href="../../scout_input/acp-qbr-analyst/vcio-vciso-industry-practice.md"><code>vcio-vciso-industry-practice.md</code></a> — category framing, QBR-as-core-
+  vCIO-deliverable (§4)</li>
+<li>Confluence: <a href="https://n-able.atlassian.net/wiki/spaces/AI/pages/62226858351">ACP Secondary Research — MSP QBR/EBR Practice</a></li>
+<li>Confluence (this file, registered): <a href="https://n-able.atlassian.net/wiki/spaces/AI/pages/62227775577">ux.md — ACP synthesis spine (2026-07-28)</a> — Synthesis-briefs shelf</li>
+<li><a href="../ebr-service-blueprint-2026-07-29.md"><code>ebr-service-blueprint-2026-07-29.md</code></a> — 26-step service blueprint, Flowers/Miller
+  canon, three critical findings (legal shield, echo problem, dual-surface structural)</li>
+</ul>
+<h2>9. Mini-docs</h2>
+<p>This file has no children. Parent: <a href="acp-ux.html">acp-ux.md</a>.</p>
+<hr />
+<h2>Appendix A — Framework analysis</h2>
+<blockquote>
+<p><strong>Moved here 2026-08-28.</strong> Frameworks are valuable, but appendix material — this is <em>how</em> the build conclusions were reached, not the build spec itself. It overlaps the source briefs/scout corpus (the raw evidence is there); kept here so the synthesis isn't lost. The build-relevant conclusions already live in §1 / §5 / §6.</p>
+</blockquote>
+<h3>A1 · Four-angle view (POEMS · Five Human Factors · Value Webs) — <code>PROPOSED, confirm</code></h3>
+<p>We looked at the QBR/EBR space from four angles: what people <em>do</em> (Activities), what's in the environment (POEMS — People, Objects, Environment, Messages, Systems/Services), what people <em>need</em> (Five Human Factors), and who gets value from whom (Value Webs). Framework credit: Whitney Quesenbery's Four Lenses. Each row <code>PROPOSED</code> means the mapping is an interpretive call, not a direct quote.</p>
+<table>
+<thead>
+<tr>
+<th>Lens</th>
+<th>Content</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Activities — client side</strong></td>
+<td>Review risk register + tech roadmap; decide referrals/projects; update leadership on IT posture</td>
+<td><code>[CS: MEDIUM]</code><sup id="fnref:6"><a class="footnote-ref" href="#fn:6">43</a></sup></td>
+</tr>
+<tr>
+<td><strong>Activities — MSP side</strong></td>
+<td>Build risk review from service-desk capacity; schedule into PSA prep queue; convert action items to PSA tickets; update EOS scorecard</td>
+<td><code>[CS: HIGH]</code><sup id="fnref2:7"><a class="footnote-ref" href="#fn:7">28</a></sup></td>
+</tr>
+<tr>
+<td><strong>POEMS — People</strong></td>
+<td>Delivery lead, technician (backstage), client exec, MSP owner</td>
+<td><code>[CS: HIGH]</code></td>
+</tr>
+<tr>
+<td><strong>POEMS — Objects</strong></td>
+<td>Risk register, tech roadmap, PSA ticket queue, EOS scorecard</td>
+<td><code>[CS: HIGH]</code></td>
+</tr>
+<tr>
+<td><strong>POEMS — Environment</strong></td>
+<td>In-person, 3h+ meetings observed; one ran through lunch</td>
+<td><code>[CS: HIGH — n=1]</code><sup id="fnref:8"><a class="footnote-ref" href="#fn:8">44</a></sup></td>
+</tr>
+<tr>
+<td><strong>POEMS — Message</strong></td>
+<td>Business-value framing — explicitly <em>not</em> graphs/pie-charts/percentages</td>
+<td><code>[CS: HIGH]</code><sup id="fnref2:9"><a class="footnote-ref" href="#fn:9">27</a></sup></td>
+</tr>
+<tr>
+<td><strong>POEMS — Systems/Services</strong></td>
+<td>PSA (Halo); roadmap tooling <code>[CS: MEDIUM]</code><sup id="fnref:10"><a class="footnote-ref" href="#fn:10">45</a></sup>; Copilot used once for transcription <code>[CS: HIGH — n=1]</code><sup id="fnref:11"><a class="footnote-ref" href="#fn:11">46</a></sup>. Wider market: HaloPSA's own agenda gives risk review the single longest block<sup id="fnref:49"><a class="footnote-ref" href="#fn:49">47</a></sup>; competitors ship QBR-adjacent reporting but <strong>only vCIOToolbox does PSA ticket writeback</strong> — everyone else stops at report generation<sup id="fnref:50"><a class="footnote-ref" href="#fn:50">48</a></sup>.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Five Human Factors — Physical</strong></td>
+<td>In-person, multi-hour</td>
+<td><code>[CS: HIGH — n=1]</code><sup id="fnref2:8"><a class="footnote-ref" href="#fn:8">44</a></sup></td>
+</tr>
+<tr>
+<td><strong>Five Human Factors — Social</strong></td>
+<td>Relationship/trust-building; first EBR produced a referral</td>
+<td><code>[CS: HIGH — n=1]</code><sup id="fnref2:12"><a class="footnote-ref" href="#fn:12">26</a></sup></td>
+</tr>
+<tr>
+<td><strong>Five Human Factors — Emotional</strong></td>
+<td>Client arrives "guarded" if MSP's gone quiet; documented-warning-then-incident removes blame/emotion</td>
+<td><code>[CS: HIGH — n=1 each]</code><sup id="fnref:13"><a class="footnote-ref" href="#fn:13">49</a></sup></td>
+</tr>
+<tr>
+<td><strong>Five Human Factors — Cultural</strong></td>
+<td>"A conversation with a side serving of structure" — informal register preferred. <strong>Corroborated:</strong> a UK operator-coach names British reserve — "very un-British to blow your own trumpet." Both primary sources are UK; nothing comparable from any US source. <code>[CS: HIGH]</code><sup id="fnref:14"><a class="footnote-ref" href="#fn:14">50</a></sup> <sup id="fnref:51"><a class="footnote-ref" href="#fn:51">51</a></sup></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Five Human Factors — Cognitive</strong></td>
+<td>Non-technical lead needs confidence to run the room solo; client "not interested in the back end" <code>[CS: HIGH]</code><sup id="fnref:15"><a class="footnote-ref" href="#fn:15">52</a></sup>. A coach names "the curse of the expert" <code>[THIN]</code><sup id="fnref:52"><a class="footnote-ref" href="#fn:52">53</a></sup> — but no operator admits this in the first person. Antecedent: Maister's leverage-ratio theory (brains work vs. procedure work) <code>[CS: MEDIUM — secondary]</code><sup id="fnref2:53"><a class="footnote-ref" href="#fn:53">13</a></sup>.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Value Webs — client gets</strong></td>
+<td>Business-relevant risk visibility, roadmap alignment, a forum to raise needs</td>
+<td><code>[A]</code><sup id="fnref:16"><a class="footnote-ref" href="#fn:16">54</a></sup></td>
+</tr>
+<tr>
+<td><strong>Value Webs — MSP gets</strong></td>
+<td>Referrals, new projects</td>
+<td><code>[CS: HIGH — n=1]</code><sup id="fnref:17"><a class="footnote-ref" href="#fn:17">55</a></sup></td>
+</tr>
+<tr>
+<td><strong>Value Webs — exchange</strong></td>
+<td>MSP invests 3–7h prep for pipeline + relationship equity</td>
+<td><code>[CS: MEDIUM]</code><sup id="fnref:18"><a class="footnote-ref" href="#fn:18">56</a></sup></td>
+</tr>
+<tr>
+<td><strong>Value Webs — N-able gives</strong></td>
+<td>EBR framework + templates, boot camp training, Head Nerd enablement</td>
+<td><code>[CS: MEDIUM]</code><sup id="fnref:22"><a class="footnote-ref" href="#fn:22">57</a></sup></td>
+</tr>
+<tr>
+<td><strong>Value Webs — N-able gets</strong></td>
+<td>Partner attach/loyalty, product upsell surfaced via EBR recs, reduced churn</td>
+<td><code>[A]</code><sup id="fnref:23"><a class="footnote-ref" href="#fn:23">58</a></sup></td>
+</tr>
+<tr>
+<td><strong>Value Webs — Head Nerds give / get</strong></td>
+<td>Framework design + boot camp delivery + case-study elevation <code>[CS: MEDIUM]</code><sup id="fnref2:24"><a class="footnote-ref" href="#fn:24">24</a></sup> / proof points, success stories, community standing <code>[A]</code><sup id="fnref:25"><a class="footnote-ref" href="#fn:25">59</a></sup></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not carried into Value Webs:</strong> the "documented risk-acceptance shields the MSP" claim. Council downgraded this to <code>[?]</code><sup id="fnref:19"><a class="footnote-ref" href="#fn:19">15</a></sup> — stays out of any value statement until counsel resolves it.</p>
+<h3>A2 · Sustaining / disruptive &amp; market — <code>PROPOSED</code></h3>
+<p>Whether this is a <em>better tool for MSPs who already run EBRs</em> or a <em>way to reach the majority who run none</em> is still open <code>[?]</code> — and it changes what you build. What the research actually settled, in plain terms:</p>
+<ul>
+<li><strong>No one ships this yet.</strong> No generally-available, MSP-specific AI QBR tool does real PSA ticket writeback; the closest (vCIOToolbox) has AI on roadmap only, and one vendor (Zomentum) built and then <em>killed</em> the exact feature in 2024.<sup id="fnref:42"><a class="footnote-ref" href="#fn:42">18</a></sup><sup id="fnref:43"><a class="footnote-ref" href="#fn:43">19</a></sup><sup id="fnref:44"><a class="footnote-ref" href="#fn:44">20</a></sup> Cuts both ways — an open lane, or a category that already failed once.</li>
+<li><strong>Some MSPs run zero QBRs and thrive</strong> — a $4.5M, 1,000+-client shop did.<sup id="fnref:45"><a class="footnote-ref" href="#fn:45">21</a></sup> So "everyone needs a QBR" isn't a safe premise.</li>
+<li><strong>The distinction worth carrying into positioning (§5):</strong> <em>relationship trust</em> (what most QBRs build) vs. <em>impact trust</em> (what clients actually need to see).<sup id="fnref:48"><a class="footnote-ref" href="#fn:48">22</a></sup></li>
+<li><strong>Two branches</strong> — Package 3 (N-able-only; near-term lead) and Package 5 (cross-vendor; the prize, gated on the Q1 legal read). Both run on existing substrate (Runbook Engine + Value Ledger, §6). Gates → §5.</li>
+</ul>
+<p><em>(The mechanics — Idea Chess survival scores, the 5-voice council divergences, sentiment counts, and the category-frame taxonomy — live in the source briefs: <a href="../concept-sketches-qbr-2026-07-20.md"><code>concept-sketches-qbr-2026-07-20.md</code></a> and <a href="../qbr-ebr-council-testimony-2026-07-30.md"><code>qbr-ebr-council-testimony-2026-07-30.md</code></a>. Not repeated here.)</em></p>
+<hr />
+<h2>CHANGELOG</h2>
+<p><em>(Newest first. Never silently delete a wrong number — mark it ☠ with a note.)</em></p>
+<ul>
+<li><strong>2026-08-28</strong> — Trimmed to the build doc: §3 (four-angle) + §4 (sustaining/disruptive &amp; market) demoted to <strong>Appendix A</strong>, and the disruptive section de-jargoned (Idea Chess math / council divergences / sentiment counts pushed to the source briefs). Thin 4A's rows (MSP owner, Stef H.) cut. Participants anonymized (delivery lead / MSP owner / Stef H. / Joe L. / Lewis P.); team + Julian out of the cast; Will→design. Read-path is now §1 → §2 → §5 → §6.</li>
+<li><strong>2026-08-28</strong> — Merged §5 (Riskiest assumptions) + §7 (Open decisions) + the loop into one <strong>§5 Open items</strong> register with a Type column (assumption / decision / question) preserving the §9b split; added explicit Q1/Q2 rows and the §1a bet lines that had only lived in the loop. Renumbered §8→§7, §9→§8, §10→§9. Divergence Log (§5a) stays standalone; its 🔴 rows list into §5 by reference. No findings changed — structure only.</li>
+<li><strong>2026-08-27</strong> — Refactored onto ux.md template v1.0: template frontmatter (registry, <code>design_lint</code>, <code>work_type</code>); tags/gates now inherit from parent instead of re-printing; human narrative → <a href="qbr-ebr.README.html"><code>qbr-ebr.README.md</code></a>; contributor front door → <a href="CONTRIBUTE.html"><code>CONTRIBUTE.md</code></a>; added this CHANGELOG and the loop section. Footnotes and glossary kept in place (provenance / plain-language reference). DIV-004 closed (ISO 9241-11 framing). No findings changed — packaging only.</li>
+<li><strong>2026-08-21</strong> — refresh Step 6: SRC-M-004…012 registered; Vertesia execution plan (Confluence 62302388241) registered; C-11/C-12/C-13 logged (see <code>open_conflicts</code> frontmatter). drift → FRESH.</li>
+<li><strong>2026-07-31</strong> — session delta (was pinned at top): Stef H. direct interview (07-30, 57m) — confidence-transfer named a candidate primary job, three-coworker family proposed, manual-first pedagogy, MRR×risk cadence. Idea Chess re-run — Package 3 (native) leads ~2.9%, Package 5 fell to ~0.36% (N-able becomes holder of competitors' risk data). Q3 (liability paradox) named as a third portfolio gate. Translation-layer principle added (§6 Operating Principle 3). "Encryption resolves data-legality" logged as a category-error assumption (§5). Axial coding sheet + CSV, concept round 2, Chapter 2 story draft filed.</li>
+<li><strong>2026-07-29</strong> — service blueprint pass: 4–5h/EBR downgraded <code>[CS: HIGH]</code>→<code>[CS: LOW — echo]</code>; Must 6 dual-surface upgraded to <code>[CS: VERIFIED — structural]</code>; risk-register legal shield moved <code>[?]</code>→<code>[CS: HIGH — unvalidated, must not reach client]</code>. Build coverage: 0 built · 1 specced · 8 adjacent · 17 absent.</li>
+</ul>
+<hr />
+<h2>Glossary — every term in this file, defined</h2>
+<p><strong>The world:</strong>
+<strong>MSP</strong> — managed service provider; the IT company that runs technology for small/mid businesses. Our customer. · <strong>Client / SME</strong> — the MSP's customer (a dental practice, a law firm). · <strong>QBR / EBR</strong> — quarterly/executive business review; the recurring meeting where the MSP proves its value to the client's leadership. Stef H. teaches "EBR" (not tied to a calendar quarter); the industry mostly says "QBR." Same meeting. · <strong>PSA</strong> — professional services automation; the MSP's ticketing/billing system (e.g. HaloPSA). · <strong>RMM</strong> — remote monitoring &amp; management; the tool that watches client devices (N-central is ours). · <strong>MDR</strong> — managed detection &amp; response; security monitoring (Adlumin is ours). · <strong>Cove</strong> — our backup product. · <strong>N-sight</strong> — our other RMM. · <strong>vCIO / vCISO</strong> — "virtual" chief information (security) officer; the advisory service MSPs sell upmarket; the QBR is its core recurring deliverable. · <strong>Risk register</strong> — the structured table of a client's known risks; the heart of the EBR; the client signs it each meeting. · <strong>Tech roadmap / budget</strong> — the client's planned technology work and its cost; the register's two companion documents. · <strong>EOS</strong> — a small-business operating framework (weekly scorecards); how the delivery lead's company runs itself.</p>
+<p><strong>The people:</strong>
+<strong>Stef H.</strong> — N-able "Head Nerd" (partner-education expert); author of the EBR training this research started from; directly interviewed 07-30. · <strong>the delivery lead</strong> — delivery lead at an MSP that runs Stef H.'s method; our richest operator account. · <strong>the MSP owner</strong> — the delivery lead's business partner; the <em>buyer</em> of the practice, not its daily runner. · <strong>Head Nerd</strong> — N-able's partner-education role. · <strong>Alpha persona / USER-001</strong> — the primary user the build spec targets: the MSP owner-operator who is also still a technician. · <strong>The operator</strong> — whoever actually runs the EBR (the delivery lead's seat). Note: the spec currently has no slot for this person — that's divergence DIV-002.</p>
+<p><strong>The research apparatus:</strong>
+<strong>Datadump</strong> — the living index of every research source; on Confluence; rule: <em>if it's not linked, it's not a source</em>. · <strong>scout file</strong> — a raw source saved into <code>scout_input/</code> with provenance. · <strong>ux.md</strong> — this kind of file: the machine-and-human-readable research spine for one offering. · <strong>Idea Chess</strong> — adversarial concept testing: walk a concept through the stages where it could die; name the first death; "naive survival" multiplies stage probabilities (all guesses, tagged <code>[A]</code>) — useful for <em>comparing</em> concepts, useless as forecasts. · <strong>Council</strong> — five analytical frameworks read the same brief and give testimony <em>without</em> agreeing; contradictions are kept, not resolved. · <strong>4A's</strong> — a persona summary: Ambitions, Attitudes, Actions, Anxieties. · <strong>POEMS / Five Human Factors / Value Webs</strong> — observation checklists (what's in the environment / what people need / who gets value from whom). · <strong>Echo (not triangulation)</strong> — two sources agreeing because one taught the other; counts once. · <strong>47% rule</strong> — check every statistic against its source before quoting; named for the day the self-report said 47% and the count said 80%. · <strong>Confidence regime</strong> (in the file header) — instructions to AI tools for how boldly to act on this file: <code>PROCEED-FLAGGED</code> = build, show doubt visibly, claim no validation. · <strong>The bet / <code>[0% Claude — fill this in]</code></strong> — judgment slots reserved for a human; never AI-filled. · <strong>Frankenprototype</strong> — a deliberately ugly first working version, built with fictional data, used to ask questions. · <strong>Tier 1 Concept</strong> — lowest prototype fidelity: for reactions, not validation.</p>
+<p><strong>The bets and gates:</strong>
+<strong>Package 3</strong> — build the QBR helper for MSPs using N-able's own products only (no permission problems; current board leader). · <strong>Package 5</strong> — the cross-vendor version (pulls competitors' data; legally gated). · <strong>Q1</strong> — may we legally pull other vendors' data into a client-facing document? · <strong>Q2</strong> — does the <em>operator</em> actually want AI drafting (vs. just the finished report)? Never directly studied. · <strong>Q3</strong> — the liability paradox: an AI-drafted risk register expands the record of what the MSP "knew" — the most-requested feature and the biggest legal risk are the same feature; one counsel session gates four of six concepts. · <strong>DIV log</strong> — where this file openly disagrees with the official build spec (FSN-83143); each entry routed to a decision-maker. · <strong>DEC-006</strong> — the build-spec decision that ships a "QBR Advisor"; hasn't picked Package 3 vs 5. · <strong>Musts / Shoulds</strong> — behaviors whose absence causes failure / behaviors that help but vary. · <strong>Job shop vs production line</strong> — our sorting rule: which meeting-prep work is repetitive (automate it) vs. judgment-and-relationship work (support it, never template it). Our fusion of an operations idea with Maister's professional-services theory — cited secondhand; verify before leaning on it (V1). · <strong>Dual-surface</strong> — the internal candid notes and the client-facing document are two separate artifacts, never one document with a hide/show switch. · <strong>Defensibility tiers</strong> — every machine-made claim is labeled Measured / Benchmarked / Estimated / Unverified; only Measured gets headlined; Unverified is hard-blocked from clients. · <strong>Chooser-shaped</strong> — the draft arrives as ranked options the operator picks from (include/exclude rows, pick-3 trends, two tones), because the choosing is where their judgment and liability live. · <strong>Drag-rank</strong> — survey method: rank by dragging; "tops drag-rank" = most-wanted. · <strong>WTP / TAM</strong> — willingness to pay / total addressable market. · <strong>DPA / ToS</strong> — data processing agreement / terms of service; the contracts Q1 turns on.</p>
+<hr />
+<h3>Footnotes</h3>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Stef H., N-able Head Nerd boot camp, 0:38:51. Vendor-relayed.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>the delivery lead, operator self-report, 20:23. n=1.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>Per the source doc's own flag: n=1, vendor-selected reference-customer content — see
+  <a href="../../scout_input/stefanie-hammond-ebr-sources-2026-07-28.md"><code>stefanie-hammond-ebr-sources-2026-07-28.md</code></a>.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:63">
+<p><a href="../concept-sketches-qbr-2026-07-20.md"><code>concept-sketches-qbr-2026-07-20.md</code></a>, Package 3 — Client-Facing Proof, N-able Native
+  (Branch B), fields 2–4 and 9. Idea Chess pass, ~0.9% naive survival.&#160;<a class="footnote-backref" href="#fnref:63" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:63" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:63" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:63" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:64">
+<p><a href="../concept-sketches-qbr-2026-07-20.md"><code>concept-sketches-qbr-2026-07-20.md</code></a>, Package 5 — Client-Facing Proof, Cross-Vendor
+  (Branch A), fields 2–4 and 9. Idea Chess pass, ~0.43–0.64% naive survival.&#160;<a class="footnote-backref" href="#fnref:64" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:64" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:64" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:64" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:35">
+<p>the delivery lead, 13:28 — "you don't be afraid to ask."&#160;<a class="footnote-backref" href="#fnref:35" title="Jump back to footnote 6 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:35" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:36">
+<p>the delivery lead, 23:22 — one client moved from 6-monthly to quarterly after seeing value;
+  another moved from 6-weekly to quarterly to protect resource; some refuse EBRs entirely.&#160;<a class="footnote-backref" href="#fnref:36" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:39">
+<p>Start Grow Manage (Jeff Loehr &amp; Joe Rojas, independent consultancy, sells coaching not a
+  QBR tool): "Sometimes it's every six months. Sometimes it's weekly. Sometimes it's monthly" —
+  cadence set by client need, not calendar. <a href="../../scout_input/qbr-independent-sources-2026-07-28.md"><code>qbr-independent-sources-2026-07-28.md</code></a>.&#160;<a class="footnote-backref" href="#fnref:39" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:40">
+<p>Call To Action LLC (Dori Spade): tiered cadence — quarterly for large/complex, biannual for
+  smaller, annual for stable long-term clients.&#160;<a class="footnote-backref" href="#fnref:40" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:41">
+<p>Paul Green, MSP Marketing Edge podcast ep. 82 (UK), with guest Ernest Murray — recommends
+  twice-yearly/annual, explicitly not quarterly; "overkill" for typical smaller clients.&#160;<a class="footnote-backref" href="#fnref:41" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:37">
+<p>Stef H. boot camp, 0:39:52–0:44:06 — UK partner anecdote, £70,000 project closed.
+  n=1, same as footnote 17.&#160;<a class="footnote-backref" href="#fnref:37" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+<li id="fn:38">
+<p>the delivery lead, 15:29 / 15:45 — EOS weekly L10 meeting and scorecard; EBRs "instrumental
+  in… putting the stats into the scorecard."&#160;<a class="footnote-backref" href="#fnref:38" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+</li>
+<li id="fn:53">
+<p>Maister, <em>Managing the Professional Service Firm</em> (Free Press, 1993), via secondary
+  summaries — not the primary text, verify before quoting as load-bearing. "Brains" work requires
+  high senior involvement; "procedure" work permits junior leverage. Separately: "people do not
+  join professional firms for jobs, but for careers" — a staff-development ceiling distinct from
+  the client-facing confidence ceiling.&#160;<a class="footnote-backref" href="#fnref:53" title="Jump back to footnote 13 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:53" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+</li>
+<li id="fn:59">
+<p><a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a>, "Value Ledger — dig findings" — defensibility tier
+  over the existing <code>baseline_source</code> field. <strong>The original "confirmed against <code>acp-core-main-3</code>"
+  claim was wrong</strong>: grep 2026-07-31 finds no tier vocabulary anywhere in that repo; only
+  <code>baseline_source</code> exists in code. Corrected during the qbr-prep-sim pipeline.&#160;<a class="footnote-backref" href="#fnref:59" title="Jump back to footnote 14 in the text">&#8617;</a></p>
+</li>
+<li id="fn:19">
+<p>Council pass, 2026-07-28 (edits within <a href="../ebr-process-map-2026-07-28.md"><code>ebr-process-map-2026-07-28.md</code></a>) — no case law, no
+  carrier practice found; see <a href="../../scout_input/qbr-adjacent-and-legal-2026-07-28.md"><code>qbr-adjacent-and-legal-2026-07-28.md</code></a>.&#160;<a class="footnote-backref" href="#fnref:19" title="Jump back to footnote 15 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2b">
+<p>Service blueprint Finding 2 (2026-07-29): the delivery lead adopted this framework after the MSP owner
+  brought it home from Stef H.'s training. Both the delivery lead's and Stef H.'s figures measure the
+  same transmitted process, not independently arrived-at estimates. Echo, not triangulation.&#160;<a class="footnote-backref" href="#fnref:2b" title="Jump back to footnote 16 in the text">&#8617;</a></p>
+</li>
+<li id="fn:21">
+<p><a href="../../datadump-manual-human-steps.md"><code>datadump-manual-human-steps.md</code></a>, Part C, 2026-07-28.&#160;<a class="footnote-backref" href="#fnref:21" title="Jump back to footnote 17 in the text">&#8617;</a></p>
+</li>
+<li id="fn:42">
+<p><a href="../../scout_input/qbr-competitor-products-2026-07-28.md"><code>qbr-competitor-products-2026-07-28.md</code></a> — full market sweep, no generally
+  available MSP-specific AI QBR generator with real PSA writeback found; noted as possibly a
+  search blind spot, not a certainty.&#160;<a class="footnote-backref" href="#fnref:42" title="Jump back to footnote 18 in the text">&#8617;</a></p>
+</li>
+<li id="fn:43">
+<p>vCIOToolbox — 2-way ticket/opportunity sync to Autotask (the only real PSA writeback found
+  in the sweep); AI features stated in future tense ("AI to suggest review topics...") and not
+  shipping; pricing page returns 403, opaque.&#160;<a class="footnote-backref" href="#fnref:43" title="Jump back to footnote 19 in the text">&#8617;</a></p>
+</li>
+<li id="fn:44">
+<p>Zomentum's own release notes, 1 July 2024: "Sunset Assessments and QBRs: We have
+  discontinued the Assessments and QBRs feature," stated reason "focus on enhancing other core
+  functionalities." Marketing site still advertises the discontinued feature.&#160;<a class="footnote-backref" href="#fnref:44" title="Jump back to footnote 20 in the text">&#8617;</a></p>
+</li>
+<li id="fn:45">
+<p>Andy Cormier, "How Do MSPs Prove Their Worth? It Ain't QBRs," Syncro blog, 11 Oct 2022 —
+  "I never ran a single customer through a QBR—ever. Twelve employees, $4.5 million in annual
+  revenue, over a thousand clients." Now Syncro's MSP Channel Chief (as of Nov 2024); operator
+  history predates the role and is independently corroborated (authored <em>So You Want To Be An
+  MSP</em>).&#160;<a class="footnote-backref" href="#fnref:45" title="Jump back to footnote 21 in the text">&#8617;</a></p>
+</li>
+<li id="fn:48">
+<p>Luis Giraldo, Chief Evangelist, ScalePad, via MSP Growth Hacks, 2 Oct 2025 — "MSPs have
+  been taught to become trusted advisors, but that usually builds relationship trust, not impact
+  trust." Flagged in source as vendor-evangelist, not operator voice.&#160;<a class="footnote-backref" href="#fnref:48" title="Jump back to footnote 22 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>the delivery lead, Head of Client Delivery, a UK MSP. Identity verified 2026-07-28 —
+  see <a href="../../scout_input/stefanie-hammond-ebr-sources-2026-07-28.md"><code>stefanie-hammond-ebr-sources-2026-07-28.md</code></a>.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 23 in the text">&#8617;</a></p>
+</li>
+<li id="fn:24">
+<p>Stef H., N-able Head Nerd (sales/marketing), ~20 years at N-able, ~16 in account
+  management, Head Nerd ~4 years — role and delivery per
+  <a href="../../scout_input/stefanie-hammond-ebr-sources-2026-07-28.md"><code>stefanie-hammond-ebr-sources-2026-07-28.md</code></a>.&#160;<a class="footnote-backref" href="#fnref:24" title="Jump back to footnote 24 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:24" title="Jump back to footnote 24 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>the delivery lead, 10:16.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 25 in the text">&#8617;</a></p>
+</li>
+<li id="fn:12">
+<p>the delivery lead, 13:28 — first EBR she ran produced a referral and a new client.&#160;<a class="footnote-backref" href="#fnref:12" title="Jump back to footnote 26 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:12" title="Jump back to footnote 26 in the text">&#8617;</a></p>
+</li>
+<li id="fn:9">
+<p>Stef H. boot camp, 0:36:36.&#160;<a class="footnote-backref" href="#fnref:9" title="Jump back to footnote 27 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:9" title="Jump back to footnote 27 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p>Risk review built from service-desk capacity, the delivery lead 25:25; scheduled into Halo PSA
+  queue, 26:36; action items converted to PSA tickets, Stef H. 1:26:02; EOS scorecard,
+  the delivery lead 15:29.&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 28 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:7" title="Jump back to footnote 28 in the text">&#8617;</a></p>
+</li>
+<li id="fn:32">
+<p>the delivery lead, 29:38 — clients "don't get access to the whole EBR document… there's some
+  internal notes on there that I need to keep."&#160;<a class="footnote-backref" href="#fnref:32" title="Jump back to footnote 29 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:32" title="Jump back to footnote 29 in the text">&#8617;</a></p>
+</li>
+<li id="fn:55">
+<p><a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a>, "Two things that need a human call," item 1.&#160;<a class="footnote-backref" href="#fnref:55" title="Jump back to footnote 30 in the text">&#8617;</a></p>
+</li>
+<li id="fn:56">
+<p><a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a>, "Two things that need a human call," item 2. EU AI
+  Act enforceable 2026-08-02.&#160;<a class="footnote-backref" href="#fnref:56" title="Jump back to footnote 31 in the text">&#8617;</a></p>
+</li>
+<li id="fn:54">
+<p><a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a> — Offering A (Client-Facing Proof / QBR + Value
+  Ledger), riskiest assumptions, read directly 2026-07-28 (previously only cited secondhand via
+  the Idea Chess pass).&#160;<a class="footnote-backref" href="#fnref:54" title="Jump back to footnote 32 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:54" title="Jump back to footnote 32 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:54" title="Jump back to footnote 32 in the text">&#8617;</a></p>
+</li>
+<li id="fn:57">
+<p>Kenneth, via Guidepoint, cited in <a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a> — "$300 per user…
+  per MSP user," calls it "nuts." <code>[CS: MEDIUM — single-source]</code> in the original document.&#160;<a class="footnote-backref" href="#fnref:57" title="Jump back to footnote 33 in the text">&#8617;</a></p>
+</li>
+<li id="fn:58">
+<p><a href="../../scout_input/qbr-competitor-products-2026-07-28.md"><code>qbr-competitor-products-2026-07-28.md</code></a> — ScalePad Lifecycle Manager (Pro)
+  entry tier $250/mo per-client (blocks of 5); highest verified tier Cognition360 $449/mo (25 PSA
+  users). No flat per-user pricing found on any fetched ScalePad page.&#160;<a class="footnote-backref" href="#fnref:58" title="Jump back to footnote 34 in the text">&#8617;</a></p>
+</li>
+<li id="fn:26">
+<p>Stef H. boot camp, 0:36:36. Same source as POEMS — Message, footnote 9.&#160;<a class="footnote-backref" href="#fnref:26" title="Jump back to footnote 35 in the text">&#8617;</a></p>
+</li>
+<li id="fn:27">
+<p>Stef H. boot camp, 0:34:29 — confidence-lacking MSPs "fall back on what they are
+  comfortable with… technology and products and usage stats," making the EBR "tactical… rather
+  than strategy and business focused."&#160;<a class="footnote-backref" href="#fnref:27" title="Jump back to footnote 36 in the text">&#8617;</a></p>
+</li>
+<li id="fn:28">
+<p>the delivery lead, 19:08 — "You can't go to these meetings and prepare 20 minutes before you
+  walk in."&#160;<a class="footnote-backref" href="#fnref:28" title="Jump back to footnote 37 in the text">&#8617;</a></p>
+</li>
+<li id="fn:29">
+<p>the delivery lead, 14:14 — "if you don't push and continue them and follow up, they won't be
+  that effective." Ticket conversion per Stef H. boot camp, 1:26:02 (footnote 7).&#160;<a class="footnote-backref" href="#fnref:29" title="Jump back to footnote 38 in the text">&#8617;</a></p>
+</li>
+<li id="fn:30">
+<p>Stef H. boot camp, 1:00:44 — three named MSP lawsuits; the MSPs "were not having
+  regular meetings with their clients."&#160;<a class="footnote-backref" href="#fnref:30" title="Jump back to footnote 39 in the text">&#8617;</a></p>
+</li>
+<li id="fn:31">
+<p>Stef H. boot camp, 1:15:34 — "having your risk register, having your tech
+  roadmap, have at least these two pieces."&#160;<a class="footnote-backref" href="#fnref:31" title="Jump back to footnote 40 in the text">&#8617;</a></p>
+</li>
+<li id="fn:33">
+<p>the delivery lead, 25:25–26:29 — the head of technical overview builds the risk review from
+  service-desk capacity; "having four EBRs a week was actually not sustainable."&#160;<a class="footnote-backref" href="#fnref:33" title="Jump back to footnote 41 in the text">&#8617;</a></p>
+</li>
+<li id="fn:34">
+<p>Council pass, 2026-07-28 — same finding as footnote 19 (no case law, no carrier practice
+  found).&#160;<a class="footnote-backref" href="#fnref:34" title="Jump back to footnote 42 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>Synthesized from the delivery lead's account — not a direct quote.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 43 in the text">&#8617;</a></p>
+</li>
+<li id="fn:8">
+<p>Stef H.'s UK-partner anecdote (boot camp), n=1: 3-hour EBR that ran through lunch.&#160;<a class="footnote-backref" href="#fnref:8" title="Jump back to footnote 44 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:8" title="Jump back to footnote 44 in the text">&#8617;</a></p>
+</li>
+<li id="fn:10">
+<p>ScalePad / Lifecycle Insights named by Stef H. as existing roadmap toolkits — not
+  independently confirmed as in-use by a UK MSP specifically.&#160;<a class="footnote-backref" href="#fnref:10" title="Jump back to footnote 45 in the text">&#8617;</a></p>
+</li>
+<li id="fn:11">
+<p>the delivery lead, 27:15 — Microsoft Copilot used once for transcription/summary, one trial.&#160;<a class="footnote-backref" href="#fnref:11" title="Jump back to footnote 46 in the text">&#8617;</a></p>
+</li>
+<li id="fn:49">
+<p>HaloPSA's published Strategic Business Review agenda: Check-in (5min) · Action Items (5) ·
+  Project Status (5) · Client Updates (15) · <strong>Review of Exposure and Risk (45)</strong> · Issues List
+  (30) · Wrap-up (5). HaloPSA does not claim native QBR automation — explicitly recommends a
+  third-party tool (lifecycleinsights.io) instead.&#160;<a class="footnote-backref" href="#fnref:49" title="Jump back to footnote 47 in the text">&#8617;</a></p>
+</li>
+<li id="fn:50">
+<p><a href="../../scout_input/qbr-competitor-products-2026-07-28.md"><code>qbr-competitor-products-2026-07-28.md</code></a> — full product-by-product breakdown:
+  ScalePad/Cognition360, myITprocess, Datto Strategy Overview, CloudRadial, BrightGauge/
+  ConnectWise, MSPbots. None confirmed to write actions back into a PSA as tickets except
+  vCIOToolbox's roadmap (unshipped) claim.&#160;<a class="footnote-backref" href="#fnref:50" title="Jump back to footnote 48 in the text">&#8617;</a></p>
+</li>
+<li id="fn:13">
+<p>"John," super-elite partner FL, Stef H. boot camp 0:28:05–0:32:36 — documented
+  warning removed blame after an incident. n=1 each anecdote.&#160;<a class="footnote-backref" href="#fnref:13" title="Jump back to footnote 49 in the text">&#8617;</a></p>
+</li>
+<li id="fn:14">
+<p>Stef H. boot camp, 1:32:22 — attributed to "John."&#160;<a class="footnote-backref" href="#fnref:14" title="Jump back to footnote 50 in the text">&#8617;</a></p>
+</li>
+<li id="fn:51">
+<p>Richard Tubb, former UK MSP owner, now industry coach — "very un-British to 'blow your own
+  trumpet.'" Tubblog has since closed; background independently verified.&#160;<a class="footnote-backref" href="#fnref:51" title="Jump back to footnote 51 in the text">&#8617;</a></p>
+</li>
+<li id="fn:15">
+<p>the delivery lead, 09:56 and 10:16.&#160;<a class="footnote-backref" href="#fnref:15" title="Jump back to footnote 52 in the text">&#8617;</a></p>
+</li>
+<li id="fn:52">
+<p>Dr Simon Raybould, presentations coach, TubbTalk #68 (29 Mar 2020, UK) — MSPs "suffer from
+  the curse of the expert"; decision-maker audiences "don't care what's in it, only how it
+  works." A hired coach's diagnosis of the industry, not a first-person operator admission.&#160;<a class="footnote-backref" href="#fnref:52" title="Jump back to footnote 53 in the text">&#8617;</a></p>
+</li>
+<li id="fn:16">
+<p>Inferred from the corpus as a whole — not a direct claim by any single source.&#160;<a class="footnote-backref" href="#fnref:16" title="Jump back to footnote 54 in the text">&#8617;</a></p>
+</li>
+<li id="fn:17">
+<p>Stef H. boot camp, 0:39:52–0:44:06 — UK partner anecdote, £70,000 project closed
+  off the back of one EBR. n=1.&#160;<a class="footnote-backref" href="#fnref:17" title="Jump back to footnote 55 in the text">&#8617;</a></p>
+</li>
+<li id="fn:18">
+<p>Synthesized — prep-time cost weighed against pipeline/relationship-equity value; not a
+  stated exchange in any source.&#160;<a class="footnote-backref" href="#fnref:18" title="Jump back to footnote 56 in the text">&#8617;</a></p>
+</li>
+<li id="fn:22">
+<p>Inferred from N-able's enablement role (boot camp, handouts) — not a stated value-web claim
+  by any source.&#160;<a class="footnote-backref" href="#fnref:22" title="Jump back to footnote 57 in the text">&#8617;</a></p>
+</li>
+<li id="fn:23">
+<p>The "John" anecdote (Cove migration closed after a documented risk-register warning,
+  Stef H. boot camp 0:28:05–0:32:36) is the one concrete instance of vendor-product
+  attach via the EBR motion in the corpus. Broader partner-attach/loyalty/churn framing is
+  inferred, not stated.&#160;<a class="footnote-backref" href="#fnref:23" title="Jump back to footnote 58 in the text">&#8617;</a></p>
+</li>
+<li id="fn:25">
+<p>Inferred — the boot camp and partner interview function as enablement content built from
+  partner case studies; not a stated motivation by Stef H. herself.&#160;<a class="footnote-backref" href="#fnref:25" title="Jump back to footnote 59 in the text">&#8617;</a></p>
+</li>
+<li id="fn:20">
+<p>Andy Cormier, named operator — $4.5M MSP running zero QBRs. Single named counter-example,
+  not a market statistic.&#160;<a class="footnote-backref" href="#fnref:20" title="Jump back to footnote 60 in the text">&#8617;</a></p>
+</li>
+<li id="fn:46">
+<p>TruMethods blog — "only 20% of MSPs have a structured QBR process." No survey name, no n,
+  no year cited; TruMethods sells the myITprocess QBR tool.&#160;<a class="footnote-backref" href="#fnref:46" title="Jump back to footnote 61 in the text">&#8617;</a></p>
+</li>
+<li id="fn:47">
+<p><a href="../../scout_input/qbr-operator-voices-2026-07-28.md"><code>qbr-operator-voices-2026-07-28.md</code></a> — balance counted across 9 substantive
+  independent/peer-group sources.&#160;<a class="footnote-backref" href="#fnref:47" title="Jump back to footnote 62 in the text">&#8617;</a></p>
+</li>
+<li id="fn:60">
+<p><a href="../../scout_input/acp-qbr-analyst/vcio-vciso-industry-practice.md"><code>vcio-vciso-industry-practice.md</code></a>, §1, §3.&#160;<a class="footnote-backref" href="#fnref:60" title="Jump back to footnote 63 in the text">&#8617;</a></p>
+</li>
+<li id="fn:61">
+<p>Same source, §6 — frame test result: "lifecycle management" reads as ScalePad-specific,
+  not the dominant industry-wide frame.&#160;<a class="footnote-backref" href="#fnref:61" title="Jump back to footnote 64 in the text">&#8617;</a></p>
+</li>
+<li id="fn:62">
+<p>HaloPSA agenda finding: footnote 49. Survey finding: <a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a>,
+  Offering A, "Partner / partner-type" — HaloPSA named specifically in the n=119 survey as
+  must-integrate.&#160;<a class="footnote-backref" href="#fnref:62" title="Jump back to footnote 65 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></body></html>

@@ -1,0 +1,521 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Harness (context)</title><style>body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:880px;margin:0 auto;padding:1.5rem;color:#1a1612;background:#fbf9f4}.nav{background:#efe7d6;border:1px solid #cbb;padding:.5rem 1rem;margin:-1.5rem -1.5rem 1.5rem;font-size:.88rem}.nav a{margin-right:.8rem;color:#1F3C96;text-decoration:none}h1{border-bottom:3px solid #1a1612;padding-bottom:.3rem}h2{margin-top:2.2rem;border-bottom:1px solid #ccc;padding-bottom:.2rem}h3{margin-top:1.6rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}th,td{border:1px solid #cbb;padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:#efe7d6}code{background:#efe7d6;padding:.1rem .3rem;border-radius:3px;font-size:.85em}blockquote{border-left:4px solid #C99A2E;margin:.8rem 0;padding:.3rem 1rem;background:#f7f0df;color:#4a4238}hr{border:none;border-top:1px solid #ccc;margin:2rem 0}a{color:#1F3C96}sup{font-size:.7em}</style></head><body><div class="nav"><a href="index.html"><b>▸ index</b></a> <a href="qbr-ebr.ux.html">QBR/EBR (context)</a> · <a href="acp-ux.html">Harness (context)</a> · <a href="TEMPLATE.ux.html">TEMPLATE context.md</a> · <a href="TEMPLATE.design.html">TEMPLATE design.md</a> · <a href="GUIDE.html">GUIDE</a> · <a href="qbr-ebr.README.html">mini README</a> · <a href="acp-ux.README.html">main README</a> · <a href="CONTRIBUTE.html">CONTRIBUTE</a></div><hr />
+<p>artifact: ux.md
+template_version: 1.0
+kind: main
+project: Harness (formerly ACP — Agent Control Plane)
+owner: Beth Connor
+work_type: new-product
+research_posture: researcher-backed
+status: DRAFT
+drift: STALE                     # flipped 2026-08-21. STALE because: (a) acp-core-main-3 is a STATIC download, live repo has moved (see loop C-14); (b) Vertesia execution plan (Confluence 62302388241) changes the delivery surface, not reflected here; (c) Gate 2 still 🔴 at ACP level. Re-scoping is Beth's, not the refresh's.
+confidence_regime: PROCEED-FLAGGED
+proceed_because: content landed 2026-07-30 from real sources (FSN-83143, vision synthesis, systems maps) — more useful in draft now than withheld until every section is scored
+machine_behavior: surface [CS:] tags visibly · do not claim validation · treat §7 as unscored until a real grep pass runs
+canonical_spec: acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md
+stress_test_method: Idea Chess / Council (44-method matrix available; queued, not run at ACP level)
+design_system: Apex
+design_lint: static-tokens
+skills:
+  gate1_evidence: /scout          # read-only; orchestrator persists output (GATE 15)
+  journey: /journey-map
+  coding: /abductive-tag · /code-rows
+  stress_test: idea-chess (via council)
+  gate3_build: bethproto
+  loop: /refresh-datadump
+  handoff: /handoff
+  design_lint: apex-check (static-tokens)
+confidence_score: UNSCORED        # see §7 — computed by grep, not asserted; do this last, once content settles
+mini_docs:
+  - briefs/context/qbr-ebr.ux.md  # QBR/EBR offering — DRAFT, 2026-07-28
+built_from:
+  - briefs/qbr-ebr-experience-map-2026-07-28.md
+  - scout_input/SECONDARY-SOURCES-REGISTER-qbr-ebr-2026-07-28.md
+  - datadump-manual-human-steps.md
+  - Confluence "ACP Research Datadump (living)" (AI space, 62175674556)
+  - acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md (canonical build spec)
+  - acp-core-main-3/Intent Specs/ACP-Management-Plane-AI-Operator-Model.md
+  - briefs/vision-synthesis-2026-07-27.md
+  - briefs/systems-maps-2026-07-27.md
+  - scout_input/lewis-persona-library-cast-2026-07.md
+  - scout_input/01-control-plane.md
+last_updated: 2026-08-27</p>
+<hr />
+<h1>Harness — ux.md (main spine)</h1>
+<p><strong>One breath:</strong> the machine-and-human-readable research spine for Harness (N-able's Agent Control Plane) — what we know about the problem, who it's for, and what "right" and "built right" mean, cited and confidence-tagged, so design and acp-core eng can open one file and trust it's current. Human orientation (who reads what, how the file is used) lives in <a href="acp-ux.README.html"><code>acp-ux.README.md</code></a>. <em>(Naming: product-facing name is Harness; spec/repo citations keep "ACP"/<code>acp-core-main-3</code> — that's the real source name.)</em></p>
+<hr />
+<h2>[AGENT GATE] — read before generating</h2>
+<blockquote>
+<p>This file is Beth Connor's (Manager, User Experience) research judgment made legible. When an AI reads it, the researcher is present. These rules override default generation behavior.</p>
+</blockquote>
+<ol>
+<li><strong>Confirm read</strong> before generating. If you haven't read this file in full, stop and read it.</li>
+<li><strong>Check <code>confidence_regime</code>.</strong> <code>PROCEED-FLAGGED</code> → mark outputs provisional, surface <code>[CS:]</code> tags. <code>BLOCKED</code> → stop and name the blocker.</li>
+<li><strong>Flag <code>[A]</code>/<code>[?]</code> you build on.</strong> <code>[FLAG: output treats ‹claim› as settled — still [A]/[?] in §n. Confirm before spec freezes.]</code></li>
+<li><strong>Name conflicts with <code>[CS: VERIFIED]</code>/<code>[CS: HIGH]</code>.</strong> <code>[CONFLICT: ‹your claim› contradicts §n — "‹quoted claim›".]</code> Surface, don't resolve.</li>
+<li><strong>Do not promote <code>PROPOSED</code>.</strong> It's an interpretive call, not settled evidence.</li>
+<li><strong>Do not resolve open decisions or any <code>[?]</code> (they live in §5).</strong> Surface as named gaps. Resolution routes Beth → Meaghan → Nicole (CLAUDE.md §18). An AI cannot close what the researcher left open.</li>
+<li><strong>Gate on &gt;30% <code>[A]</code>/<code>[?]</code>.</strong> <code>[GATE: §n is &gt;30% [A]/[?]. Output provisional until confirmed.]</code></li>
+<li><strong>Mini-doc is required reading.</strong> If an offering has a <code>mini_docs</code> entry, read it before generating — deriving acceptance criteria from scratch when a verified mini exists is the failure mode this apparatus prevents.</li>
+<li><strong>Verify any ratio or count before quoting it (47% rule).</strong> Grep the source. Fluency does not know its own math.</li>
+<li><strong>Note divergence from <code>canonical_spec</code> — log, don't resolve.</strong> UX pushing on the spec to deliver value is healthy tension. Log every one in the Divergence Log; an AI does not pick a side. Offerings may carry alternate/additional personas — that's expected; map the full cast and log where it extends the spec.</li>
+<li><strong><code>self-serve</code> posture bites harder</strong> — n/a here (this file is <code>researcher-backed</code>), but if a child mini is self-serve, an unfilled slot is <code>[?]</code>, never draft-license.</li>
+<li><strong>Surface unknowns into §5.</strong> Every <code>[?]</code>/<code>[A]</code>/open-decision goes into §5 (the Open-items register), not left inline only. Its 🔴 rows are the datadump intake.</li>
+<li><strong>Invoke the registered skill.</strong> Before generating a section fresh, check the <code>skills:</code> registry and invoke the registered skill/agent instead of re-deriving.</li>
+<li><strong>Offer the coach on a gap.</strong> When a gate criterion is missing, offer the route (registered skill, else the built-in method guide). The coach does mechanics; it never fills a judgment slot.</li>
+<li><strong>Persist read-only agent output in the same turn.</strong> <code>/scout</code> is read-only — write its dossiers to disk immediately or they die with the context window (learned 2026-07-28).</li>
+</ol>
+<hr />
+<h2>Legends — canonical here · mini-docs inherit, do not re-print</h2>
+<p><strong>Confidence tags:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[CS: VERIFIED]</code></td>
+<td>We have the document, or confirmed the person/fact ourselves</td>
+</tr>
+<tr>
+<td><code>[CS: HIGH]</code></td>
+<td>Well-sourced; not personally verified</td>
+</tr>
+<tr>
+<td><code>[CS: MEDIUM]</code> / <code>[CS: LOW]</code></td>
+<td>Partially sourced / thin — treat with care</td>
+</tr>
+<tr>
+<td><code>[R]</code> / <code>[D]</code></td>
+<td>Backed by research / data</td>
+</tr>
+<tr>
+<td><code>[A]</code></td>
+<td>Assumed — reasonable guess, not sourced. Fine to use, never to bet on</td>
+</tr>
+<tr>
+<td><code>[?]</code></td>
+<td>Unknown; needs research</td>
+</tr>
+<tr>
+<td><code>[WOBBLY]</code></td>
+<td>Single source or narrow tradition — not consensus</td>
+</tr>
+<tr>
+<td><code>[THIN]</code></td>
+<td>The honest version of a claim we <em>want</em> to be true but can't yet support</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate labels:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Question</th>
+<th>Who owns it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gate 1</strong></td>
+<td>Do we understand the problem and the people?</td>
+<td>Design's live judgment — expect it to move</td>
+</tr>
+<tr>
+<td><strong>Gate 2</strong></td>
+<td>Are we building the <em>right</em> thing?</td>
+<td>Design-led; eng weighs feasibility</td>
+</tr>
+<tr>
+<td><strong>Gate 3</strong></td>
+<td>Are we building the thing <em>right</em>?</td>
+<td>Eng's stable layer — build against it</td>
+</tr>
+</tbody>
+</table>
+<p>Gate ≠ confidence. A Gate 1 section can be <code>[CS: VERIFIED]</code>; a Gate 3 section can be <code>[PENDING]</code>. Gate = how much is still design's to change. Confidence = how well-evidenced now.</p>
+<hr />
+<p><strong>Work-type: <code>new-product</code></strong> — full spine, every section required.</p>
+<p><strong>Scorecard</strong> — colors are <em>earned</em>, not asserted (rubric: <code>_ux-template/GUIDE.md</code> § Gate rubric). Cite met/missing:</p>
+<p>🟡 <strong>Gate 1</strong> (understand the problem) — met: FSN-83143 problem statement + alpha=USER-001 lock; cast mapped from the persona library. Missing: Map 1/4 not rendered as diagrams, Chris Dunlop architecture map not found.
+🔴 <strong>Gate 2</strong> (right thing / UX acceptance criteria) — met: nothing at the ACP-wide level yet. Missing: no ACP-level Idea Chess/Council pass (only QBR/EBR sub-offering has one). Outcome variable: named at QBR level (business growth, per mini DIV-004) but <strong>not settled ACP-wide</strong>.
+🟡 <strong>Gate 3</strong> (thing right / usability standards) — met: §6 acceptance criteria populated from FSN-83143 REQ-001–024 + SUS ship-gate + trust eval. Missing: §7 not computed; <code>design_lint</code> not run; a11y not assessed.</p>
+<hr />
+<h2>1. The problem, and for whom — <code>Gate 1</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> Named persona(s), sourced not invented. The call about which problem to prioritize stays live design judgment until Gate 1 is settled — this section moves.</p>
+</blockquote>
+<p><strong>Problem statement — canonical, FSN-83143 §2, verbatim:</strong> "MSPs spend an enormous fraction of their operational time on repeatable, high-volume IT tasks: patching, alert triage, endpoint health checks, ticket resolution, compliance audits, and QBRs. Evidence from 22 partner interviews confirms these tasks are scriptable but are rarely fully automated because scripts are risky without governance, expertise is unequally distributed across technician teams, and MSPs have no trusted mechanism to encode their SOPs into agents." <code>[CS: VERIFIED — canonical_source: true]</code></p>
+<p><strong>Core value proposition, same source:</strong> "take labor and turn it into software." The outcome for the MSP is reducing the number of technicians needed to deliver contracted services. <code>[CS: VERIFIED — FSN-83143 §2]</code></p>
+<p><strong>Locked 2026-07-30 (Beth's call — do not re-open):</strong> Alpha persona (the owner/growth-squeezed operator, per the vision-synthesis corpus) <strong>and USER-001 (MSP Admin, FSN-83143 §3) are the same person, not two personas.</strong> In the target small-shop MSP, the owner wears the Admin/configurator hat too — the <em>persona library</em> (a 26-role catalogue of MSP jobs we draw the fuller cast from; see Glossary) says it plainly in its <code>owner</code> entry: "in a small shop, the buyer, escalation point, salesperson, and often still a technician." <code>[CS: VERIFIED — Beth]</code></p>
+<p><strong>Cast list — who this is actually about:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Role in this story</th>
+<th>Evidence quality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alpha persona = USER-001 (MSP Admin)</strong> — owner/growth-squeezed operator</td>
+<td>Primary creator/configurator of Coworkers <em>and</em> the business owner in a small shop — one person, two functions</td>
+<td><code>[CS: VERIFIED — Beth, 2026-07-30]</code></td>
+</tr>
+<tr>
+<td><strong>Buyer/decision-maker at scale</strong> — the persona library's <code>owner</code> card's "Owner-operator (PE-backed contrast)"</td>
+<td>At larger/PE-backed MSPs, Admin and owner split: owner becomes a PE-backed CEO/CFO wanting "portfolio roll-ups, board-ready exports, unit economics — running to a thesis and a clock," while a distinct <code>tenadmin</code> absorbs the USER-001 configurator work. Split point is <em>scale-driven</em>, named in the library's card, not invented.</td>
+<td><code>[CS: MEDIUM]</code> — <a href="../../scout_input/lewis-persona-library-cast-2026-07.md"><code>lewis-persona-library-cast-2026-07.md</code></a>, not independently verified vs. Nicole's model</td>
+</tr>
+<tr>
+<td><strong>Adjacent roles</strong> — 26-persona library</td>
+<td><code>tenadmin</code> (likely large-shop USER-001 split-off) · <code>sdm</code> (service delivery manager — oversees fleet adoption) · <code>am</code> (account manager/vCIO — presents Coworker value in QBRs; see <code>qbr-ebr.ux.md</code> §1) · <code>intaud</code>/<code>extaud</code> (human counterpart to FSN-83143 USER-005) · <code>autoeng</code> (centralized-services/automation engineer — the labor the value prop most directly targets; nobody currently interviews this persona)</td>
+<td><code>[CS: MEDIUM]</code> — same source; named gaps become named hypotheses, not yet fielded</td>
+</tr>
+</tbody>
+</table>
+<p><strong>4A's</strong> (basic pass, 2026-07-30; <code>[?]</code> where unsourced, not invented):</p>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Ambitions</th>
+<th>Attitudes</th>
+<th>Actions</th>
+<th>Anxieties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alpha (USER-001 / owner-operator, small shop)</strong></td>
+<td>Grow without proportionally growing headcount — "take labor and turn it into software" is written for this person <code>[CS: VERIFIED — FSN-83143 §2]</code>. the library's <code>owner</code> card: "grows recurring revenue and margin, keeps clients and staff, tries not to get blindsided." <code>[CS: MEDIUM]</code></td>
+<td>Wants "a trustworthy signal that things are under control — not to live in the platform" <code>[CS: MEDIUM — persona library]</code>. Likely risk-averse about ceding judgment to AI (Map 3 fishbone: no certification, unresolved liability) — <code>[A]</code>, not this persona's own words.</td>
+<td>"The buyer, escalation point, salesperson, and often still a technician" in a small shop <code>[CS: MEDIUM]</code>; configures/creates/activates Coworkers per USER-001 <code>[CS: VERIFIED]</code>.</td>
+<td><code>[?]</code> — no first-person evidence of what this persona fears. Plausible from Map 3's liability spine, but inferred.</td>
+</tr>
+<tr>
+<td><strong>Buyer at scale (PE-backed CEO/CFO)</strong></td>
+<td>"Running to a thesis and a clock" — portfolio growth, exit multiple <code>[CS: MEDIUM — persona library]</code>.</td>
+<td>Numbers-first, board-facing; roll-ups and unit economics, not console time. <code>[CS: MEDIUM]</code></td>
+<td>Consumes portfolio dashboards/board exports; delegates config to <code>tenadmin</code>. <code>[CS: MEDIUM]</code></td>
+<td><code>[?]</code> — unsourced. Plausibly acquisition/integration risk, not evidenced.</td>
+</tr>
+</tbody>
+</table>
+<p>Full 4A's on the adjacent-roles row not attempted — five roles bundled in one cast row would need to split out first. Flagged, not done.</p>
+<h2>2. Journey / orienting map — <code>Gate 1</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> Two ACP-wide process maps exist, ready to render — the Head-Nerd advisory flow (bottleneck marked) and the fleet dependency/gate map. QBR/EBR has its own offering-level experience map.</p>
+</blockquote>
+<ul>
+<li><strong>ACP-wide:</strong> <a href="../systems-maps-2026-07-27.md"><code>systems-maps-2026-07-27.md</code></a> — five text maps, grounded in the Joe L. / Lewis P. / Stef H. interviews, flagged ready to render as diagrams: <strong>Map 1</strong> — the expert-advisory flow (Diagnose → Kit → Fit → Certify → Deliver), with the bottleneck marked at the three steps that need scarce expert judgment; <strong>Map 4</strong> — which offerings can't ship until an open gate (Q1, Q2, or "Gate C") is answered. <code>[CS: HIGH — grounded in interview transcripts; the strategic overlays are tagged [A] in the source]</code></li>
+<li><strong>Offering-level (QBR/EBR only, so far):</strong> six-phase experience map + canonical service blueprint — see <code>qbr-ebr.ux.md</code> §2.</li>
+<li><strong>Not yet found:</strong> an engineering-side architecture diagram (Chris Dunlop, eng owner on the Intent Specs) to ground the systems/technical half. Checked locally — none in this repo. <code>[?]</code> — likely in Confluence or only in Chris's head; ask him directly.</li>
+<li>5Es, PICNIC worksheet remain <code>[PENDING]</code>.</li>
+<li><strong>Rendering status:</strong> Map 1 and Map 4 are mechanical next steps (SVG/FigJam via <code>/journey-map</code>), not new research. <code>[PENDING — render on next pass]</code></li>
+</ul>
+<h2>3. Four-angle view — see Appendix A</h2>
+<p>Full POEMS / Five Human Factors / Value Webs synthesis is in <strong>Appendix A</strong>. The build-relevant pieces already live in the spine: the <strong>production-line vs. job-shop split</strong> (what to automate vs. protect), the Coworker <strong>objects</strong> (§1), and the <strong>value/pricing items</strong> (§5).</p>
+<h2>4. Sustaining or disruptive — see Appendix A</h2>
+<p>Full analysis in <strong>Appendix A</strong>. In brief: classification is open per-offering <code>[?]</code>. QBR/EBR's cross-vendor branch may reach a <em>new</em> market (disruptive) while its native branch is incremental (sustaining); the other four agents skew "better tooling," because N-central already automates much of their territory — an internal-cannibalization risk that now has evidence.</p>
+<h2>5. Open items — assumptions · decisions · questions — <code>Gate 1 / Gate 2</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> everything uncertain in one register — what we're betting on (assumption), what we haven't chosen (decision), what we don't know (question). Two cheap gates (Q1, Q2) unlock most of the fleet and neither has run. <strong>Riskiest first.</strong> Also the datadump intake: 🔴 rows are the next agenda (feeds <code>/refresh-datadump</code>). An item closes 🟢 only when its answer folds into the body <em>and</em> its tag upgrades. Pulled from the reconciled vision synthesis, not invented.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Type</th>
+<th>Status</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Q1 — data-egress/DPA.</strong> Can N-able legally pull non-N-able vendor data into a client-facing artifact? ~40% viable. Gates Offerings A (Cross-Vendor), C, E. A legal read + one competitor ToS check, not a build.</td>
+<td>assumption (evidence) → legal</td>
+<td>🔴</td>
+<td>Beth (to commission)</td>
+</tr>
+<tr>
+<td><strong>Q2 — does the operator want the (kitted) mechanism</strong>, or just the destination? ~93% adoption assumed, never tested — all demand signal so far is buyer intent, not operator pull. Needs operator ethnography + one solution-fit session.</td>
+<td>assumption (evidence)</td>
+<td>🔴</td>
+<td>Beth (to commission)</td>
+</tr>
+<tr>
+<td><strong>Env Health divergence</strong> — drag-rank puts QBR #1; n=119 survey puts Env Health highest per-agent (3.59). Which leads the fleet?</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Day-1 coworker sequencing</strong> — build ships Ticket Triage (ranked lower); vision leads with QBR (#1).</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth/Nicole</td>
+</tr>
+<tr>
+<td><strong>Positioning fork</strong> — delivery-lead (user) vs owner (buyer): who does the offering speak to?</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>MVP spine</strong> — Env Health assembly vs. severing the service-desk dependency.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Confidence scope</strong> — differentiator vs. enablement problem vs. research-first.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Autonomy model</strong> backed into risk-tier defaults, not ratified against tested alternatives; QBR/IR-RCA/normalization have no spec yet.</td>
+<td>decision</td>
+<td>🔴</td>
+<td>Beth/Nicole</td>
+</tr>
+<tr>
+<td><strong>ACP-wide wicked-problem + goal-decomposition</strong> (§6 steps 1–2) — candidate framings named, not chosen.</td>
+<td>decision (judgment)</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Value Ledger renders $0 at launch</strong> — built, no wired producer. FIX FIRST — the enterprise-value story is empty until one runbook emits a real entry.</td>
+<td>assumption (build-seq)</td>
+<td>🟡 resolving</td>
+<td>Eng</td>
+</tr>
+<tr>
+<td><strong>Normalization ≥75% on real mixed-vendor data, and the 15-min operator edit-and-send flow fits in 15 min</strong> — both load-bearing for Offering A/Package 5, neither tested.</td>
+<td>assumption (evidence)</td>
+<td>🔴</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Chris Dunlop engineering architecture map</strong> — does one exist? (would ground the systems half of §2)</td>
+<td>question → ask Chris</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>Cultural human factor at ACP-wide level</strong> — only QBR has a UK finding; does it generalize?</td>
+<td>question (evidence)</td>
+<td>🔴</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>102 empty <code>[0% Claude — fill this in]</code> bet sentences</strong> across 27 files (grep-confirmed) — nobody has written a synthesis sentence yet.</td>
+<td>decision (judgment · human-only)</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+<tr>
+<td><strong>44-method Council pass</strong> — queued, not run (fuller stress-test than the 5-voice default; see <a href="../../CHORES.md"><code>CHORES.md</code></a>).</td>
+<td>question / action</td>
+<td>🔴</td>
+<td>Beth</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Spec divergences</strong> are logged separately (Divergence Log below): offering-specific ones live in each mini (QBR/EBR's is <code>qbr-ebr.ux.md</code> §5a); no ACP-wide divergence identified yet — its 🔴 rows, when they exist, list here by reference.</p>
+<p>Type preserves the §9b split — assumption/question = evidence-gap (→ research); decision = a human's call (→ Beth → Meaghan → Nicole). Source: <a href="../vision-synthesis-2026-07-27.md"><code>vision-synthesis-2026-07-27.md</code></a>, <a href="../systems-maps-2026-07-27.md"><code>systems-maps-2026-07-27.md</code></a> (Map 4, Map 5).<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">1</a></sup></p>
+<h2>6. Problem → Goals → Tasks → Function — <code>Gate 3</code> (+ Gate 1/2 for steps 1–2)</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> The acceptance-criteria spine. Steps 1–2 are design's live judgment. Steps 3–4 are where eng builds. Quality bar applies to <em>how well</em> a task executes — not which tasks are right (Top Tasks' job).</p>
+</blockquote>
+<p><strong>Steps 1–2 — <code>Gate 1 / Gate 2</code> (design's live judgment; eng: context, not spec):</strong></p>
+<ol>
+<li><strong>Wicked problem</strong> — from §1. <code>[PENDING — Beth's call]</code>. Candidate framing (not a decision): Map 3 fishbone names five root causes in two spines — <strong>capability</strong> (generic/untested runbooks built with no time) and <strong>accountability</strong> (no certification/sign-off, owner-vs-technician confusion, unresolved liability). Raw material, not the statement.</li>
+<li><strong>Sub-problems / goals</strong> — <code>[PENDING — Beth's call]</code>. Candidate: the vision synthesis's "dominant strategy" (answer Q1/Q2 first; lead with A; frame A as vCIO/vCISO packaging; reprice B; buy/partner past the data-egress wall) reads as a candidate goal-decomposition, not confirmed.</li>
+</ol>
+<p><strong>Steps 3–4 — <code>Gate 3</code> (eng mostly lives here; stable, build against it):</strong></p>
+<ol start="3">
+<li><strong>Tasks</strong> — Top Tasks (Gerry McGovern), not an exhaustive feature list. FSN-83143's three primary journeys are the creation-layer candidate: <strong>(a)</strong> Admin creating a Coworker from scratch (assemble Identity/Experts/Scripts/Runbook/Guardrails/Trigger → review Draft → activate); <strong>(b)</strong> cloning a platform default; <strong>(c)</strong> AI-assisted creation (N-zo/Claude Code proposes a changeset → admin reviews/activates). <code>[CS: VERIFIED — FSN-83143 §3]</code>. Creation-layer only — what a specific Coworker's runbook does once running is each mini's job.</li>
+<li><strong>Function/feature structure</strong> — FSN-83143 §6 enumerates REQ-001–024 (assemble, clone, Draft→Active→Paused→Archived, three trigger types, guardrail/risk-tier enforcement, Value Ledger writes, execution-history, autonomy promotion, AI-operator drafting via MCP). <code>[CS: VERIFIED — FSN-83143 §6]</code>. On first pass REQ-001–024 map cleanly onto (a)/(b)/(c); no orphaned function or unserved task found yet — not checked function-by-function in a dedicated pass.</li>
+</ol>
+<p><strong>Quality bar — <code>Gate 3</code>, at the task/interaction level. Default floor (until product-specific usability research overrides):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Why it applies to Harness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nielsen #6 — Recognition over recall</td>
+<td>Users task-switch under pressure. <code>[CS: HIGH]</code></td>
+</tr>
+<tr>
+<td>Nielsen #1 — Visibility of system status</td>
+<td>Agent runs are async/durable (Temporal); status must be unambiguous. <code>[CS: HIGH]</code></td>
+</tr>
+<tr>
+<td>Nielsen #5 — Error prevention</td>
+<td>AI-generated content must make errors hard to ship, not easy to approve. <code>[CS: HIGH]</code></td>
+</tr>
+<tr>
+<td>Nielsen #4 — Consistency</td>
+<td>Confirm-gates, defensibility tiers, approval signals render the same everywhere. <code>[CS: HIGH]</code></td>
+</tr>
+<tr>
+<td>Accessibility — WCAG AA · keyboard · contrast · screen-reader</td>
+<td>Baseline for any shipping surface. <code>[?]</code> — not assessed here yet.</td>
+</tr>
+<tr>
+<td>ISO 9241-11 (effectiveness / efficiency / satisfaction + context of use)</td>
+<td>Usability definition adopted UEM-wide — see <code>_ux-template/GUIDE.md</code> § Gate rubric. <code>[CS: HIGH — ISO 9241-11:2018]</code></td>
+</tr>
+<tr>
+<td>N-able Tenets &amp; Traps (Medlock &amp; Herbst)</td>
+<td>9 Tenets / 26 Traps — shared vocabulary across UX/eng/product/business. <code>[CS: HIGH]</code><sup id="fnref:4"><a class="footnote-ref" href="#fn:4">3</a></sup></td>
+</tr>
+<tr>
+<td>N-able Apex design system</td>
+<td><code>design_lint: static-tokens</code> — linted against the static Apex snapshot, coverage-declared. See GUIDE § Design-system lint. <code>[?]</code> — lint not run here yet.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Placeholder usability methods — self-serve fallback</strong> (if working without a researcher): cognitive walkthrough (walk each §6 task as the primary persona, ~2h) · 5-second test on any confirm-gate/approval UI (3 people: "what does this mean? what next?") · content audit on AI-generated output (grep the ratio, don't eyeball).</p>
+<p><strong>Usability ship gate (Beth, 2026-07-30):</strong> ≥6 SUS to ship; ≥8 SUS on the top five key tasks. Applies to any Harness offering unless a mini names a different bar.</p>
+<p><strong>Trust-in-AI-output eval (Beth, 2026-08-04) — <code>[A]</code>, custom instrument, unvalidated:</strong> applies alongside SUS to any AI Coworker/Expert output. Built from construct themes in Jian, Bisantz &amp; Drury (2000) Trust in Automation scale — <strong>not</strong> that scale's item text (gated pending author permission). <code>[CS: LOW — construct themes only; do not attribute exact wording to Jian et al.]</code> 5-point Likert, no reverse-scoring:</p>
+<ol>
+<li>I understand why this output turned out the way it did.</li>
+<li>This output would hold up if I checked it myself.</li>
+<li>I trust this enough to act on without independently re-verifying.</li>
+<li>This tool has not misrepresented what it actually did or found.</li>
+<li>I feel confident, not wary, using this.</li>
+<li>I'm familiar enough with how this works to know its limits.</li>
+</ol>
+<p>Score = mean of 6. No ship-gate threshold yet — first administrations establish a baseline before any number becomes a bar. Administer per-offering, same cadence as the placeholder methods.</p>
+<p><strong>Ruled out:</strong> a separate "IIT principles" canon — no discrete numbered-principles list exists distinct from Whitney's methodology (§3). <code>[CS: LOW — no canon found]</code>
+<strong>Future merge point:</strong> joins Beth Nam's heuristics/usability work once located (owner + location <code>[?]</code>).</p>
+<h2>7. Confidence score — <code>cross-cutting</code></h2>
+<blockquote>
+<p><strong>TL;DR:</strong> If [A]+[?] &gt; 30%, this file isn't ready to hand to eng as acceptance criteria. Computed by grep — don't self-report it. Not yet computed this pass.</p>
+</blockquote>
+<p><em>(The &gt;30% [A]/[?] rule as a literal rollup: <code>% [R]/[D]</code> vs <code>% [A]/[?]</code>, grep across this file — same discipline as the 47% rule. In practice tracks how settled Gates 1–2 are; §6 steps 3–4 hold a high [R]/[D] ratio even while §1/§5 are open.)</em></p>
+<p><code>[NOT YET SCORED — run the grep pass on the next reconcile, not in the same edit that added content]</code></p>
+<h2>8. Sources</h2>
+<p><em>(Link index. If it's not linked, it's not a source.)</em></p>
+<p><strong>Canonical specs:</strong>
+- <a href="../../acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md"><code>FSN-83143_AI_Coworkers_in_ACP.md</code></a> — canonical build spec. <code>canonical_source: true</code>.
+- <a href="../../acp-core-main-3/Intent Specs/ACP-Management-Plane-AI-Operator-Model.md"><code>ACP-Management-Plane-AI-Operator-Model.md</code></a> — AI-operator permissions, proposed-changes flow.
+- <a href="../acp-problem-statement-2026-07-28.md"><code>acp-problem-statement-2026-07-28.md</code></a> — three ACP-level problem-statement candidates.</p>
+<p><strong>Vision / concepting corpus:</strong>
+- <a href="../vision-synthesis-2026-07-27.md"><code>vision-synthesis-2026-07-27.md</code></a> · <a href="../systems-maps-2026-07-27.md"><code>systems-maps-2026-07-27.md</code></a> · <a href="../tier0-sketches-reconciled-2026-07-27.md"><code>tier0-sketches-reconciled-2026-07-27.md</code></a> · <a href="../persona-scorecard-acp-concepts-2026-07-24.md"><code>persona-scorecard-acp-concepts-2026-07-24.md</code></a>
+- <a href="../acp-offerings-2026-07-14.md"><code>acp-offerings-2026-07-14.md</code></a>, <a href="../acp-word-sketches-2026-07-14.md"><code>acp-word-sketches-2026-07-14.md</code></a>, <a href="../acp-word-sketches-four-complete-2026-07-15.md"><code>acp-word-sketches-four-complete-2026-07-15.md</code></a>, <a href="../acp-vision-synthesis-2026-07-14.md"><code>acp-vision-synthesis-2026-07-14.md</code></a>, <a href="../acp-why-nable-build-map-2026-07-14.md"><code>acp-why-nable-build-map-2026-07-14.md</code></a></p>
+<p><strong>Idea Chess:</strong>
+- <a href="../idea-chess-fleet-synthesis-2026-07-14.md"><code>idea-chess-fleet-synthesis-2026-07-14.md</code></a>, <a href="../idea-chess-five-to-build-2026-07-15.md"><code>idea-chess-five-to-build-2026-07-15.md</code></a>, <a href="../idea-chess-build.md"><code>idea-chess-build.md</code></a>, <a href="../idea-chess-offering-a.md"><code>idea-chess-offering-a.md</code></a> through <code>-e.md</code>
+- <a href="../acp-idea-chess-play-to-win-2026-07-20.md"><code>acp-idea-chess-play-to-win-2026-07-20.md</code></a>, <a href="../acp-vendor-deep-dives-and-idea-chess-2026-07-20.md"><code>acp-vendor-deep-dives-and-idea-chess-2026-07-20.md</code></a>, <a href="../concept-sketches-qbr-2026-07-20.md"><code>concept-sketches-qbr-2026-07-20.md</code></a>, <a href="../acp-concept-brief-2026-07-20.md"><code>acp-concept-brief-2026-07-20.md</code></a></p>
+<p><strong>Council testimony:</strong>
+- <a href="../qbr-ebr-council-testimony-2026-07-30.md"><code>qbr-ebr-council-testimony-2026-07-30.md</code></a> — QBR/EBR, 5-voice, fresh.
+- <code>council-mini-{alert-flood,ir-rca,env-health,tabletop}.md</code> (2026-07-06) + their <code>-erratum-2026-07-30.md</code> companions.
+- <a href="../council-testimony-department-reframe.md"><code>council-testimony-department-reframe.md</code></a> — erratum-layer precedent. · <a href="../acp-trust-level-council-44.md"><code>acp-trust-level-council-44.md</code></a> — 44-method format worked example, queued per §5.</p>
+<p><strong>Persona / interview:</strong>
+- <a href="../../scout_input/lewis-persona-library-cast-2026-07.md"><code>lewis-persona-library-cast-2026-07.md</code></a> — 26-persona library. · <a href="../../scout_input/joe-lewis-julian-interview-2026-07.md"><code>joe-lewis-julian-interview-2026-07.md</code></a> — SME interview. · <a href="../../scout_input/adlumin-proto-personas-pptx-2026-07.md"><code>adlumin-proto-personas-pptx-2026-07.md</code></a> — pointer only, image-locked.</p>
+<p><strong>Architecture / platform:</strong>
+- <a href="../../scout_input/01-control-plane.md"><code>01-control-plane.md</code></a>, <a href="../../scout_input/02-ai-coworker.md"><code>02-ai-coworker.md</code></a>, <a href="../../scout_input/03-runbook.md"><code>03-runbook.md</code></a> — trust-level, Value Ledger, 5-layer stack, script/risk model, Runbook Engine.
+- Confluence (this file, registered): <a href="https://n-able.atlassian.net/wiki/spaces/AI/pages/62227775577">ux.md — ACP synthesis spine (2026-07-28)</a> — Synthesis-briefs shelf.</p>
+<h2>9. Mini-docs</h2>
+<p><em>(Each mini is required reading before any agent specs or builds the offering it covers.)</em></p>
+<ul>
+<li><a href="qbr-ebr.ux.html"><code>qbr-ebr.ux.md</code></a> — QBR/EBR offering · status: DRAFT · 2026-07-28</li>
+</ul>
+<p><strong>Confirmed 2026-07-30 (Beth): the other four default Coworkers need their own mini-docs eventually</strong> — Alert Flood Suppressor, Incident Response Analyst, Environment Health Monitor, Security Tabletop have Council testimony but no full mini (no persona cast, no four-angle, no Top-Tasks spine). A named, deferred gap. Build when there's a real reason (a spec/build request), not speculatively.</p>
+<hr />
+<h2>Divergence Log — vs. FSN-83143 (canonical) — <code>[SPEC DIVERGENCE]</code></h2>
+<blockquote>
+<p>ACP-wide divergences from the canonical spec. Status is grep-checkable — count the emoji. Resolved rows stay.</p>
+</blockquote>
+<p><em>No ACP-wide (this-file-level) divergence against FSN-83143 has been identified yet.</em> The four divergences found so far are all QBR/EBR-specific and live in <a href="qbr-ebr.ux.html"><code>qbr-ebr.ux.md</code></a> §5a. Re-check once minis exist for the other four offerings.</p>
+<hr />
+<h2>Appendix A — Framework analysis</h2>
+<blockquote>
+<p><strong>Moved here 2026-08-28.</strong> Frameworks — valuable, but appendix material: <em>how</em> the conclusions were reached, not the build spec. Build-relevant conclusions live in §1 / §5 / §6.</p>
+</blockquote>
+<h3>A1 · Four-angle view (POEMS · Five Human Factors · Value Webs) — Whitney Quesenbery's Four Lenses<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></h3>
+<table>
+<thead>
+<tr>
+<th>Lens</th>
+<th>Prompt</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activities (Porter)</td>
+<td>How do they do it?</td>
+<td>Two task families (<a href="../systems-maps-2026-07-27.md"><code>systems-maps-2026-07-27.md</code></a> Map 2): <strong>production-line</strong> (triage, patching, alert suppression — low-variety, ~zero marginal cost, "ride it," Offering D) and <strong>job-shop</strong> (runbook design, EBR, tabletop, coaching — high-variety, needs the craftsman, the moat, "own it," Offering A/vCISO). Advisory flow (Map 1): Diagnose → Kit (~75% skeleton) → Fit-to-asset (~25% human) → Certify → Deliver, feedback loop via Value Ledger. <code>[CS: HIGH — transcript-grounded; strategic framing [A]]</code></td>
+</tr>
+<tr>
+<td>POEMS</td>
+<td>What is it?</td>
+<td><strong>People:</strong> §1 cast. <strong>Objects:</strong> per FSN-83143 §3 a complete Coworker requires Identity, AI Experts, Scripts (risk-tiered), Runbook, Guardrails, Trigger. <strong>Environment:</strong> the production-line/job-shop split <em>is</em> the environment split. <strong>Message:</strong> "Value is the north star" (FSN-83143 §5); business-value-not-technical-metrics at client-facing level (see qbr-ebr.ux.md Must 1). <strong>Systems/Services:</strong> MCP gateway, Runbook Engine, Value Ledger, Script Repository, Temporal, plus the MSP's own N-central, Adlumin, PSA (Halo/ConnectWise/Autotask). <code>[CS: VERIFIED for FSN-83143 items; CS: HIGH for architecture]</code></td>
+</tr>
+<tr>
+<td>Five Human Factors</td>
+<td>Who is it for?</td>
+<td><strong>Physical:</strong> people juggling several tasks under pressure (Nielsen #6). <strong>Social:</strong> the accountability chain from Map 3's root-cause diagram (a "fishbone") — who's answerable, no certification, an unresolved liability gap. <code>[R internal — Joe L. 11:12–17:41]</code>. <strong>Emotional:</strong> an SDT question (competence and control) — does the tool build the operator's confidence or erode it? Unresolved. <strong>Cultural:</strong> <code>[?]</code> platform-wide; the mini has a UK-specific finding. <strong>Cognitive:</strong> the "curse of the expert" recurs at the QBR level — <code>[THIN]</code>.</td>
+</tr>
+<tr>
+<td>Value Webs (Porter)</td>
+<td>How create value?</td>
+<td>Platform 5-layer monetization stack: <strong>Platform Access · Workflow Execution · Expert Licensing</strong> ("trust-level becomes monetizable") <strong>· Vendor Ecosystem · MCP &amp; Tool Transactions</strong>. <code>[CS: VERIFIED — scout_input/01-control-plane.md]</code>. Layered over: vCISO/vCIO as a <strong>packaging</strong> exchange — "Survival = a PRICING decision, not a build." <code>[CS: HIGH]</code>. What N-able gets (attach, upsell, churn reduction) is <code>[A]</code> — no revenue figure in the corpus.</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Footnote <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup> for the source worksheet.)</em></p>
+<h3>A2 · Sustaining / disruptive</h3>
+<p>Classification open per-offering; real testimony now exists for five offerings:
+- <strong>QBR/EBR</strong> — five analytical lenses (2026-07-30). N-able-only version = incremental (<em>sustaining</em>); cross-vendor version could reach MSPs who run <em>no</em> reviews (<em>disruptive</em>) — some successful MSPs skip reviews entirely, so that market is real. Two lenses disagree on what the cross-vendor version <em>is</em> (market-timing bet vs. chokepoint control). Named, not resolved.
+- <strong>The other four agents</strong> (Alert Flood, Incident Response, Environment Health, Security Tabletop): a seven-lens review (2026-07-06) + 2026-07-30 corrections skew them toward "better tooling" — N-central already automates much of their territory, so the internal-cannibalization risk now has evidence.
+- Ten Types of Innovation (Doblin/Keeley) confirmed 2026-07-28. Classification is a synthesis move to stress-test, not a <code>[CS:]</code> data point. Credits: Christensen (Disruptive Innovation), Keeley/Doblin (Ten Types).</p>
+<hr />
+<h2>CHANGELOG</h2>
+<p><em>(Newest first. Never silently delete a wrong number — mark it ☠ with a note.)</em></p>
+<ul>
+<li><strong>2026-08-28</strong> — Step 2 (all-files pass): SME sources anonymized (Joe L. / Lewis P. / Stef H.); persona-library de-personalized in prose (file-path citation kept); §3 (four-angle) + §4 (sustaining/disruptive) demoted to <strong>Appendix A</strong>. Internal team kept as decision-owners in routing. Read-path: §1 → §2 → §5 → §6.</li>
+<li><strong>2026-08-28</strong> — Merged §5 (Riskiest assumptions) + §7 (Open decisions) + the loop (Open questions → datadump) into one <strong>§5 Open items</strong> register with a Type column (assumption / decision / question) preserving the §9b evidence-vs-decision split. Renumbered §8→§7, §9→§8, §10→§9. Divergence Log stays standalone; its 🔴 rows list into §5 by reference. AGENT GATE rules 6 &amp; 12 repointed to §5. No findings changed — structure only.</li>
+<li><strong>2026-08-27</strong> — Refactored onto ux.md template v1.0: frontmatter schema, 15-rule AGENT GATE, work-type/registry/design_lint, Gate rubric scorecard, the loop, Divergence Log, this changelog. Human narrative moved to <code>acp-ux.README.md</code>. Project name updated to Harness (spec citations keep ACP). No findings changed — packaging only.</li>
+<li><strong>2026-08-21</strong> — drift flipped to STALE (refresh Step 6): static-download drift, Vertesia execution plan unreflected, Gate 2 still 🔴.</li>
+<li><strong>2026-07-30</strong> — Moved skeleton → draft: §1/§2/§3/§5/§6 populated from FSN-83143, vision synthesis, systems maps. Alpha=USER-001 locked. 4A's basic pass. Four Council errata folded into §3/§4.</li>
+</ul>
+<hr />
+<h2>Glossary — terms used in this file</h2>
+<p><em>Plain-language definitions so this file reads without inside knowledge. Trust tags (<code>[CS:]</code>, <code>[R]</code>, <code>[D]</code>, <code>[A]</code>, <code>[?]</code>, <code>[WOBBLY]</code>) are defined in the Legends near the top.</em></p>
+<p><strong>The world:</strong> <strong>MSP</strong> — managed service provider; the IT company that runs technology for smaller businesses. N-able's customer. · <strong>Harness / ACP</strong> — N-able's Agent Control Plane, the platform this file is about; "Harness" is the product name, "ACP" / <code>acp-core-main-3</code> the internal spec name. · <strong>Coworker</strong> — a configurable AI agent an MSP builds on the platform (e.g. the QBR Advisor). · <strong>QBR / EBR</strong> — quarterly / executive business review; the recurring meeting where an MSP proves its value to a client. · <strong>vCIO / vCISO</strong> — "virtual" chief information (security) officer; the advisory service MSPs sell upmarket. · <strong>N-central / Adlumin / Cove / PSA</strong> — N-able's monitoring / security / backup products, and the MSP's ticketing system (Halo, ConnectWise, Autotask).</p>
+<p><strong>The people:</strong> <strong>USER-001 / alpha persona</strong> — the primary user the build spec targets: the small-shop MSP owner who is also the admin and often still a technician. · <strong>persona library</strong> — a 26-role catalogue of MSP jobs (owner · <code>tenadmin</code> platform admin · <code>sdm</code> service-delivery manager · <code>am</code> account manager · auditors · automation engineer…) used here to name the fuller cast; filed at <a href="../../scout_input/lewis-persona-library-cast-2026-07.md"><code>lewis-persona-library-cast-2026-07.md</code></a>, <code>[CS: MEDIUM]</code> until its sourcing is confirmed. · <strong>Head Nerd</strong> — N-able's partner-education role.</p>
+<p><strong>The method:</strong> <strong>4A's</strong> — a persona summary: Ambitions, Attitudes, Actions, Anxieties. · <strong>Four Lenses (Activities · POEMS · Five Human Factors · Value Webs)</strong> — Whitney Quesenbery's observation checklists: what people do / what's in the environment / what people need / who exchanges value with whom. · <strong>Production-line vs job-shop work</strong> — repetitive, automatable tasks (triage, patching) vs. high-judgment per-client work (runbook design, EBRs); the split that decides what to automate vs. protect. · <strong>Idea Chess</strong> — an adversarial concept test: walk a concept through the stages where it could fail and name the first death. · <strong>Council</strong> — several analytical frameworks read the same brief and give testimony <em>without</em> agreeing; contradictions are kept, not resolved. · <strong>Sustaining vs disruptive</strong> — Christensen's terms: a better tool for people already doing the thing vs. reaching people who do none (a new market). · <strong>Ten Types of Innovation</strong> — Doblin/Keeley's catalogue of ten places innovation can happen.</p>
+<p><strong>The bets &amp; machinery:</strong> <strong>Q1 / Q2</strong> — the two cheap tests that gate most of the fleet: <strong>Q1</strong> = may we legally use other vendors' data in a client-facing artifact? <strong>Q2</strong> = does the operator actually want the mechanism, or just the finished result? · <strong>Value Ledger</strong> — the platform's record of the value each Coworker run produced; renders $0 today because nothing writes to it yet. · <strong>Runbook / Guardrails / Trigger / Script Repository</strong> — the parts of a Coworker: what it does, its safety limits, what starts it, and its risk-tiered scripts. · <strong>MCP gateway / Temporal</strong> — the platform's tool-access layer and its durable task-execution engine. · <strong>Map 1 / Map 3 / Map 4</strong> — the systems maps (advisory-flow bottleneck / root-cause fishbone / fleet dependency map) in <a href="../systems-maps-2026-07-27.md"><code>systems-maps-2026-07-27.md</code></a>. · <strong><code>[0% Claude — fill this in]</code></strong> — a judgment slot reserved for a human; never AI-filled.</p>
+<p><strong>A few more:</strong> <strong>the moat</strong> — a durable advantage a competitor can't easily copy. · <strong>Offerings A–E</strong> — the five candidate products in the fleet (A = Client-Facing Proof / QBR; D = production-line automation; etc.), named in the vision synthesis. · <strong>SDT (Self-Determination Theory)</strong> — a psychology framework on what makes people feel competent and in control. · <strong>Fishbone</strong> — a root-cause diagram that traces a problem back to its causes. · <strong>"Curse of the expert"</strong> — being so deep in a subject you can't see what a non-expert needs. · <strong>SUS</strong> — System Usability Scale, a standard usability score; here the ship-gate is ≥6 overall, ≥8 on the top five tasks. · <strong>Defensibility tiers (Measured / Benchmarked / Estimated / Unverified)</strong> — how well-backed a machine-made claim is; only "Measured" gets headlined to a client, "Unverified" is blocked.</p>
+<hr />
+<h3>Footnotes</h3>
+<hr />
+<p><em>Built from the Vault Q1 Shareout precedent (Beth's own past work, Capital One/Adaptive Path, 2018) — same Research/Design-track split, same Orienting-Tools naming. Not invented from scratch.</em></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:3">
+<p><a href="../vision-synthesis-2026-07-27.md"><code>vision-synthesis-2026-07-27.md</code></a> — supersedes the original North Star Confluence citation (62176526400); the vision synthesis reconciles against that North Star rather than duplicating it.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p><code>Four Lenses -- Clean Master.pdf</code> (Beth's own file — Whitney/IIT Institute of Design context-brief canvas). Whitney's published writing not yet pulled as a separate cited source.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>Medlock &amp; Herbst, Microsoft. <a href="https://uitraps.com/about/">uitraps.com</a> · <a href="https://measuringu.com/frameworks-for-classifying-ui-problems/">MeasuringU overview</a>&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></body></html>

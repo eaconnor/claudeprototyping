@@ -1,0 +1,432 @@
+<!doctype html><html><head><meta charset='utf-8'><title>TEMPLATE context.md</title><style>body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:880px;margin:0 auto;padding:1.5rem;color:#1a1612;background:#fbf9f4}.nav{background:#efe7d6;border:1px solid #cbb;padding:.5rem 1rem;margin:-1.5rem -1.5rem 1.5rem;font-size:.88rem}.nav a{margin-right:.8rem;color:#1F3C96;text-decoration:none}h1{border-bottom:3px solid #1a1612;padding-bottom:.3rem}h2{margin-top:2.2rem;border-bottom:1px solid #ccc;padding-bottom:.2rem}h3{margin-top:1.6rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}th,td{border:1px solid #cbb;padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:#efe7d6}code{background:#efe7d6;padding:.1rem .3rem;border-radius:3px;font-size:.85em}blockquote{border-left:4px solid #C99A2E;margin:.8rem 0;padding:.3rem 1rem;background:#f7f0df;color:#4a4238}hr{border:none;border-top:1px solid #ccc;margin:2rem 0}a{color:#1F3C96}sup{font-size:.7em}</style></head><body><div class="nav"><a href="index.html"><b>▸ index</b></a> <a href="qbr-ebr.ux.html">QBR/EBR (context)</a> · <a href="acp-ux.html">Harness (context)</a> · <a href="TEMPLATE.ux.html">TEMPLATE context.md</a> · <a href="TEMPLATE.design.html">TEMPLATE design.md</a> · <a href="GUIDE.html">GUIDE</a> · <a href="qbr-ebr.README.html">mini README</a> · <a href="acp-ux.README.html">main README</a> · <a href="CONTRIBUTE.html">CONTRIBUTE</a></div><hr />
+<p>artifact: ux.md
+template_version: 1.0
+kind:                       # main | mini   — main = product spine; mini = one feature/offering hanging off a parent
+parent:                     # REQUIRED if kind: mini — path to the parent ux.md. Omit for main.
+project:                    # ‹name›
+owner:                      # ‹person who owns THIS file — not the template steward›
+work_type:                  # new-product | new-feature | bug-fix | rebuild-section  (decides which sections apply — see matrix below)
+research_posture:           # researcher-backed | self-serve  (decides gate strictness + how much fill-guidance)
+status:                     # SKELETON | DRAFT | LIVE
+drift:                      # FRESH | STALE   — if STALE, say why in one line
+confidence_regime:          # PROCEED | PROCEED-FLAGGED | PROCEED-PARTIAL | BLOCKED
+proceed_because:            # ‹one sentence — why the file's value exceeds the cost of withholding it›
+machine_behavior:           # ‹comma-separated directives — e.g. build · surface [CS:] tags visibly · do not claim validation›
+canonical_spec:             # ‹your team's build-spec ID or path — the slot the Band Protocol fills with "FSN-83143". Write "none" if there isn't one yet.›
+stress_test_method:         # ‹your team's concept-validation method — the slot the Band Protocol fills with "Idea Chess / Council". Write "none" if you don't run one.›
+design_system:              # ‹your design system — UEM default: Apex. "none" if not applicable.›
+design_lint:                # off | static-tokens | +components | live-figma   — Apex check fidelity; pick the rung your access supports (see GUIDE § Design-system lint)
+skills:                     # registry — which skill/agent serves each section/gate. Leave empty for a bare team (the coach falls back to its built-in method guide). See GUIDE § Skill registry.
+  # gate1_evidence:         # /scout        — gather sources for [?] / unsourced claims (read-only; orchestrator persists output, GATE rule 15)
+  # journey:                # /journey-map
+  # coding:                 # /abductive-tag · /code-rows
+  # stress_test:            # idea-chess    — §4 / Gate 2 (= stress_test_method)
+  # gate3_build:            # bethproto     — produce the Tier-1 artifact to measure
+  # design_lint:            # apex-check    — Gate 3 design-system compliance
+  # loop:                   # /refresh-datadump
+  # handoff:                # /handoff
+confidence_score:           # UNSCORED | SEE §8
+mini_docs:                  # children (if kind: main) — list of paths
+built_from:                 # sources this file was assembled from — list of paths/links
+last_updated:               # ‹date›</p>
+<hr />
+<!-- ============================================================
+     ux.md TEMPLATE v1.0  ·  steward: Beth Connor
+     HOW TO USE: read GUIDE.md in this folder first. Copy this file,
+     delete every <!-- comment -->
+<p>and ‹placeholder› as you fill it,
+     and delete any section the work-type matrix marks "skip".
+     The machine layer (frontmatter · AGENT GATE · tags · tables) stays
+     dense — that's what an agent acts on. Keep human narrative OUT of
+     this file; it lives in a sibling README.md.
+     ============================================================ --&gt;</p>
+<h1>‹project› — ux.md</h1>
+<p><strong>One breath:</strong> ‹what this file is, plain language, one sentence — a person or an agent should know what they're holding.›</p>
+<hr />
+<h2>[AGENT GATE] — read before generating</h2>
+<blockquote>
+<p>This file is a researcher's judgment made legible. When an AI reads it, the researcher is present. These rules override default generation behavior. They are non-negotiable.</p>
+</blockquote>
+<ol>
+<li><strong>Confirm read.</strong> State you've read this file in full before generating. If you haven't, stop and read it.</li>
+<li><strong>Check <code>confidence_regime</code>.</strong> <code>PROCEED-FLAGGED</code> → mark outputs provisional, surface <code>[CS:]</code> tags. <code>BLOCKED</code> → stop and name the blocker.</li>
+<li><strong>Flag <code>[A]</code>/<code>[?]</code> you build on.</strong> <code>[FLAG: output treats ‹claim› as settled — still [A]/[?] in §n. Confirm before spec freezes.]</code></li>
+<li><strong>Name conflicts with <code>[CS: VERIFIED]</code>/<code>[CS: HIGH]</code>.</strong> <code>[CONFLICT: ‹your claim› contradicts §n — "‹quoted claim›".]</code> Surface it; do not resolve it.</li>
+<li><strong>Do not promote <code>PROPOSED</code>.</strong> It's an interpretive call, not settled evidence.</li>
+<li><strong>Do not resolve open decisions or any <code>[?]</code>.</strong> They live in §5 (Open items). Surface them as named gaps — resolution routes through the owner named in the row; an agent cannot close what the researcher left open.</li>
+<li><strong>Gate on &gt;30% <code>[A]</code>/<code>[?]</code>.</strong> If the section you're building against is over the line, say so first: <code>[GATE: §n is &gt;30% [A]/[?]. Output provisional until confirmed.]</code></li>
+<li><strong>Read the related file first.</strong> If <code>kind: mini</code>, read the <code>parent</code>. If <code>kind: main</code>, read any <code>mini_docs</code> covering the area you touch. Re-deriving what's already synthesized is the failure mode this file exists to prevent.</li>
+<li><strong>Verify any ratio or count before quoting it (47% rule).</strong> Grep the source. Fluency does not know its own math.</li>
+<li><strong>Note divergence from <code>canonical_spec</code> — log, don't resolve.</strong> UX pushing on the spec to make sure it delivers value is healthy tension, not friction to erase. Log every one in the Divergence Log (shape below); an agent does not get to pick a side.</li>
+<li><strong><code>research_posture: self-serve</code> bites harder, not softer.</strong> With no researcher on the team, an unfilled slot is <code>[?]</code>, never a license to draft. Judgment slots (<code>‹0% AI — human fills this›</code>) stay human or stay empty. This is the load-bearing rule for teams without evidence.</li>
+<li><strong>Surface unknowns into §5.</strong> Any <code>[?]</code>/<code>[A]</code>/open-decision you generate goes into §5 (the Open-items register — assumptions · decisions · questions), not left inline only. Its 🔴 rows are the datadump intake; unknowns are the next agenda, not dead ends.</li>
+<li><strong>Invoke the registered skill.</strong> Before generating a section fresh, check the <code>skills:</code> registry — if a skill/agent is registered for it, invoke that instead of generating from scratch. Re-deriving what a tuned skill already does is waste.</li>
+<li><strong>Offer the coach on a gap — don't just flag it.</strong> When the eval finds a gate criterion missing (e.g. no Top Tasks), offer the coach: route to the registered skill if one exists, else run the built-in method guide. <strong>The coach does mechanics; it never fills a judgment slot.</strong> It scaffolds the method — the human supplies the call.</li>
+<li><strong>Persist read-only agent output in the same turn.</strong> If you invoke a read-only gatherer (e.g. <code>/scout</code>), write its output to disk immediately — a dossier left in the transcript dies with the context window.</li>
+</ol>
+<hr />
+<h2>Legends — defined here once · minis inherit, do not re-print</h2>
+<!-- MINI-DOC RULE: if kind: mini, DELETE the two tables below and replace with:
+     "Tags and gates per parent: ‹parent path›." Re-printing them is the #1 cause of bloat. -->
+
+<p><strong>Confidence tags</strong> (every factual claim carries one):</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[CS: VERIFIED]</code></td>
+<td>We have the document, or confirmed the person/fact ourselves</td>
+</tr>
+<tr>
+<td><code>[CS: HIGH]</code></td>
+<td>Well-sourced; not personally verified</td>
+</tr>
+<tr>
+<td><code>[CS: MEDIUM]</code> / <code>[CS: LOW]</code></td>
+<td>Partially sourced / thin — treat with care</td>
+</tr>
+<tr>
+<td><code>[R]</code> / <code>[D]</code></td>
+<td>Backed by research (interviews, studies) / data (surveys, telemetry)</td>
+</tr>
+<tr>
+<td><code>[A]</code></td>
+<td>Assumed — a reasonable guess, not sourced. Fine to use, never to bet on</td>
+</tr>
+<tr>
+<td><code>[?]</code></td>
+<td>Unknown; needs research before anyone relies on it</td>
+</tr>
+<tr>
+<td><code>[WOBBLY]</code></td>
+<td>Single source or narrow tradition — not consensus</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate labels</strong> (sort each section by what it answers):</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Question</th>
+<th>Who owns it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Gate 1</code></td>
+<td>Do we understand the problem and the people?</td>
+<td>Design's live judgment — expect it to move</td>
+</tr>
+<tr>
+<td><code>Gate 2</code></td>
+<td>Are we building the <em>right</em> thing?</td>
+<td>Design-led; eng weighs feasibility</td>
+</tr>
+<tr>
+<td><code>Gate 3</code></td>
+<td>Are we building the thing <em>right</em>?</td>
+<td>Eng's stable layer — build against it</td>
+</tr>
+</tbody>
+</table>
+<p>Gate ≠ confidence. A Gate 1 section can be <code>[CS: VERIFIED]</code>; a Gate 3 section can be <code>[PENDING]</code>. Gate = how much is still design's to change. Confidence = how well-evidenced it is now.</p>
+<hr />
+<h2>Section applicability by work-type</h2>
+<!-- Keep only the column for THIS file's work_type. Delete any section marked "skip".
+     "inherit" = don't restate; link the parent/product ux.md and note deltas only. -->
+
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>new-product</th>
+<th>new-feature</th>
+<th>bug-fix</th>
+<th>rebuild-section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 Problem &amp; who</td>
+<td>required</td>
+<td>feature-scoped</td>
+<td>one-liner</td>
+<td>required</td>
+</tr>
+<tr>
+<td>2 Journey · 3 Four-angle · 4 Innovation</td>
+<td>required</td>
+<td>inherit</td>
+<td>skip</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>5 Open items (assumptions · decisions · questions)</td>
+<td>required</td>
+<td>required</td>
+<td>optional</td>
+<td>required</td>
+</tr>
+<tr>
+<td>6 Tasks → Function + tests</td>
+<td>required</td>
+<td>required</td>
+<td>required (the fix + its test)</td>
+<td>required</td>
+</tr>
+<tr>
+<td>7 Confidence score</td>
+<td>required</td>
+<td>recommended</td>
+<td>skip</td>
+<td>recommended</td>
+</tr>
+<tr>
+<td>Divergence Log</td>
+<td>required</td>
+<td>required</td>
+<td>pointer only</td>
+<td>required</td>
+</tr>
+<tr>
+<td>CHANGELOG</td>
+<td>required</td>
+<td>required</td>
+<td>required</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Scorecard</strong> — colors are <em>earned</em>, not asserted. What earns each: GUIDE.md § Gate rubric. Per gate, cite what's met / missing — do not re-print the rubric.</p>
+<p>🟡 <strong>Gate 1</strong> (understand the problem) — ‹met: … · missing: …›
+🔴 <strong>Gate 2</strong> (right thing / UX acceptance criteria) — ‹met: … · missing: … · outcome variable: named? →›
+🟡 <strong>Gate 3</strong> (thing right / usability standards) — ‹met: … · missing: … · tested how/by whom›</p>
+<hr />
+<h2>1. The problem, and for whom — <code>Gate 1</code>  «new-product: required · new-feature: feature-scoped · bug-fix: one-liner · rebuild: required»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> ‹one line›</p>
+</blockquote>
+<p><strong>Problem statement</strong> — ‹sourced, not invented. Quote the canonical_spec verbatim if one exists.› <code>[CS: ‹tag›]</code></p>
+<p><strong>Cast — who this is actually about:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Role in this story</th>
+<th>Evidence quality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹persona›</td>
+<td>‹what they do here›</td>
+<td><code>[CS: ‹tag›]</code></td>
+</tr>
+</tbody>
+</table>
+<!-- Map the FULL cast, not just the primary persona. Name gaps where a role likely exists but has no evidence. -->
+
+<p><strong>4A's</strong> (Ambitions / Attitudes / Actions / Anxieties — <code>[?]</code> where unsourced, never invented):</p>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Ambitions</th>
+<th>Attitudes</th>
+<th>Actions</th>
+<th>Anxieties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹persona›</td>
+<td>‹…›</td>
+<td>‹…›</td>
+<td>‹…›</td>
+<td>‹…›</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Journey / orienting map — <code>Gate 1</code>  «new-product: required · new-feature: inherit · bug-fix: skip · rebuild: optional»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> ‹one line›</p>
+</blockquote>
+<ul>
+<li>‹Link the real experience map / service blueprint. Name what's built vs. described. If nothing exists, say so.›</li>
+<li><strong>Build coverage:</strong> ‹0 built · n specced · n absent — the honest count.›</li>
+</ul>
+<h2>3. Four-angle view of the space — <code>Gate 1 / Gate 2</code>  «new-product: required · new-feature: inherit · bug-fix: skip · rebuild: optional»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> ‹one line›</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Lens</th>
+<th>Prompt</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activities</td>
+<td>What do they do?</td>
+<td>‹…› <code>[CS: ‹tag›]</code></td>
+</tr>
+<tr>
+<td>POEMS</td>
+<td>What's in the surround?</td>
+<td>People / Objects / Environment / Messages / Systems ‹…›</td>
+</tr>
+<tr>
+<td>Five Human Factors</td>
+<td>What do they need?</td>
+<td>Physical / Social / Emotional / Cultural / Cognitive ‹…›</td>
+</tr>
+<tr>
+<td>Value Webs</td>
+<td>Who gives/gets value?</td>
+<td>‹…›</td>
+</tr>
+</tbody>
+</table>
+<h2>4. Sustaining or disruptive — <code>Gate 2</code>  «new-product: required · new-feature: inherit · bug-fix: skip · rebuild: optional»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> ‹one line — is this better tooling for people who already do the thing, or targeting the majority who do none?›</p>
+</blockquote>
+<ul>
+<li><strong>Sustaining read:</strong> ‹…›</li>
+<li><strong>Disruptive read:</strong> ‹…›</li>
+<li>Classification is analytic, not a factual claim — a synthesis move to stress-test, not a data point to <code>[CS:]</code>-tag.</li>
+</ul>
+<h2>5. Open items — assumptions · decisions · questions — <code>Gate 1 / Gate 2</code>  «required for all except bug-fix (optional)»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> everything uncertain in one register — what we're betting on (assumption), what we haven't chosen (decision), what we don't know (question). Also the datadump intake: 🔴 rows are the next research/decision agenda. <strong>Riskiest first.</strong> An item closes 🟢 only when its answer folds into the body <em>and</em> its tag upgrades — not by restating it as settled.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Type</th>
+<th>Status</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹…›</td>
+<td>assumption (evidence) / decision / ROI-unknown / question</td>
+<td>🔴 open · 🟡 resolving · 🟢 resolved</td>
+<td>‹person›</td>
+</tr>
+</tbody>
+</table>
+<!-- Type preserves the §9b distinction: an assumption/question is an evidence-gap (→ research / datadump);
+     a decision is a choice (→ a named human). Do not conflate them.
+     Pull assumptions from an existing risk register; don't invent a second one.
+     Judgment slots stay human: `‹0% AI — human fills this›`.
+     🔴 Divergence-Log rows are listed here by reference, not duplicated. -->
+
+<h2>6. Problem → Goals → Tasks → Function — <code>Gate 3</code> (+ Gate 1/2 for steps 1–2)  «required for ALL work-types»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> the acceptance-criteria spine. Steps 1–2 are design's live judgment; steps 3–4 are where eng builds.</p>
+</blockquote>
+<ol>
+<li><strong>Problem / wicked problem</strong> — <code>Gate 1</code> — ‹from §1› <code>[PENDING — human's call]</code></li>
+<li><strong>Goals / sub-problems</strong> — <code>Gate 1/2</code> — ‹…›</li>
+<li><strong>Tasks</strong> — <code>Gate 3</code> — Top Tasks (the few users care about, not a feature list). ‹…› <code>[CS: ‹tag›]</code></li>
+<li><strong>Function/feature structure</strong> — <code>Gate 3</code> — mapped 1:1 to tasks. A function with no task is scope creep; a task with no function is a gap. ‹…›</li>
+</ol>
+<p><strong>Quality bar — default floor (until product-specific usability research overrides it):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Why it applies here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹e.g. Nielsen heuristic / your design system›</td>
+<td>‹…› <code>[CS: ‹tag›]</code></td>
+</tr>
+</tbody>
+</table>
+<!-- research_posture: self-serve — RUN THESE, they're your evidence when there's no researcher:
+     1. Cognitive walkthrough — walk each task in §6 as the primary persona; flag every "can't tell what to do / if I did it right." (~2h)
+     2. 5-second test on any confirm/approval UI — show 3 people; "what does this mean? what next?" If they can't say, it's a warning, not a gate.
+     3. Content audit on any AI-generated output — count outcome-language vs. filler; grep it, don't eyeball it. -->
+
+<p><strong>Built-in tests</strong> (each Must gets a check that could run against a real build, not just a description):</p>
+<table>
+<thead>
+<tr>
+<th>Must</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹behavior that causes failure when absent›</td>
+<td>‹machine-checkable check where possible›</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Confidence score — <code>cross-cutting</code>  «new-product: required · else recommended/skip»</h2>
+<blockquote>
+<p><strong>TL;DR:</strong> if <code>[A]</code>+<code>[?]</code> &gt; 30%, this file isn't ready as acceptance criteria. Computed by grep — don't self-report it.</p>
+</blockquote>
+<p><code>[NOT YET SCORED]</code> — ‹run the grep pass once content settles: % <code>[R]</code>/<code>[D]</code> vs % <code>[A]</code>/<code>[?]</code> across the file.›</p>
+<h2>8. Sources</h2>
+<!-- If it's not linked, it's not a source. Footnotes stay IN this file (they self-maintain next to their claims).
+     A compiled SOURCES.md — ⭐start-here / trust-ladder / question-map — is assembled at HANDOFF, not here. -->
+
+<ul>
+<li>‹link› — ‹what it is›</li>
+</ul>
+<h2>9. Mini-docs (if kind: main)</h2>
+<ul>
+<li>‹path› — ‹offering› · status · date</li>
+</ul>
+<hr />
+<h2>Divergence Log — vs. <code>canonical_spec</code>  «pointer-only for bug-fix»</h2>
+<blockquote>
+<p>Where this file's research diverges from the canonical spec. 🔴 open / 🟡 resolving-with-product / 🟢 resolved. Status is grep-checkable — count the emoji, don't self-report it. Resolved rows stay (don't delete the record).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Divergence</th>
+<th>vs. spec</th>
+<th>Status</th>
+<th>Owner</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DIV-001</td>
+<td>‹what this file assumes/proposes›</td>
+<td><code>‹spec ID §n›</code></td>
+<td>🔴</td>
+<td>‹person›</td>
+<td>‹date + decision, once 🟢›</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>CHANGELOG</h2>
+<!-- Dated notes go here, newest first — NOT pinned at the top of the file. Never silently delete a
+     number that turned out wrong; mark it ☠ with a note so nobody re-derives the mistake. -->
+
+<ul>
+<li>‹YYYY-MM-DD› — ‹what changed and why›</li>
+</ul></body></html>

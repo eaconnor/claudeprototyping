@@ -1,0 +1,141 @@
+<!doctype html><html><head><meta charset='utf-8'><title>TEMPLATE design.md</title><style>body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:880px;margin:0 auto;padding:1.5rem;color:#1a1612;background:#fbf9f4}.nav{background:#efe7d6;border:1px solid #cbb;padding:.5rem 1rem;margin:-1.5rem -1.5rem 1.5rem;font-size:.88rem}.nav a{margin-right:.8rem;color:#1F3C96;text-decoration:none}h1{border-bottom:3px solid #1a1612;padding-bottom:.3rem}h2{margin-top:2.2rem;border-bottom:1px solid #ccc;padding-bottom:.2rem}h3{margin-top:1.6rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}th,td{border:1px solid #cbb;padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:#efe7d6}code{background:#efe7d6;padding:.1rem .3rem;border-radius:3px;font-size:.85em}blockquote{border-left:4px solid #C99A2E;margin:.8rem 0;padding:.3rem 1rem;background:#f7f0df;color:#4a4238}hr{border:none;border-top:1px solid #ccc;margin:2rem 0}a{color:#1F3C96}sup{font-size:.7em}</style></head><body><div class="nav"><a href="index.html"><b>▸ index</b></a> <a href="qbr-ebr.ux.html">QBR/EBR (context)</a> · <a href="acp-ux.html">Harness (context)</a> · <a href="TEMPLATE.ux.html">TEMPLATE context.md</a> · <a href="TEMPLATE.design.html">TEMPLATE design.md</a> · <a href="GUIDE.html">GUIDE</a> · <a href="qbr-ebr.README.html">mini README</a> · <a href="acp-ux.README.html">main README</a> · <a href="CONTRIBUTE.html">CONTRIBUTE</a></div><hr />
+<p>artifact: design.md
+template_version: 1.0
+context:                    # REQUIRED — path to the context.md (=ux.md) this design answers to. Design has no standing without it.
+project:                    # ‹name›
+owner:                      # ‹design owner of THIS doc›
+status:                     # DRAFT | IN-REVIEW | APPROVED
+reviewers:                  # who signs off — design lead · eng lead · PM (Google: a design doc is reviewed, then it's a record)
+work_type:                  # new-product | new-feature | bug-fix | rebuild-section  (inherit from context.md)
+research_posture:           # researcher-backed | self-serve
+design_system:              # ‹your design system — UEM default: Apex›
+design_lint:                # off | static-tokens | +components | live-figma
+fidelity:                   # Tier 0 sketch | Tier 1 concept | Tier 2 direction | Tier 3 spec-ready
+prototype:                  # link to the working prototype/HTML, if one exists
+last_updated:               # ‹date›</p>
+<hr />
+<!-- ============================================================
+     design.md TEMPLATE v1.0 — a Google-style design doc, wired to context.md.
+     context.md says WHAT MUST BE TRUE (research → gates → success criteria).
+     design.md says HERE'S THE THING THAT MAKES IT TRUE, and proves it against context's Musts.
+     Written for REVIEW and DECISION, not just description. Prose-first, TL;DR up top,
+     alternatives on the record. Copy this, delete comments/‹placeholders›, fill.
+     ============================================================ -->
+
+<h1>‹project› — design.md</h1>
+<p><strong>Status:</strong> ‹DRAFT / IN-REVIEW / APPROVED› · <strong>Answers to:</strong> <a href="‹path›">context.md</a> · <strong>Fidelity:</strong> ‹tier›</p>
+<hr />
+<h2>[AGENT GATE] — read before generating</h2>
+<blockquote>
+<p>design.md has no standing on its own — it answers to its <code>context.md</code>. These rules override default generation.</p>
+</blockquote>
+<ol>
+<li><strong>Read the linked <code>context.md</code> first.</strong> If you haven't, stop and read it. Design that doesn't trace to context is decoration.</li>
+<li><strong>Don't invent what context doesn't support.</strong> Inherit context's <code>[CS:]</code> tags; any <em>new</em> claim the design rests on is <code>[A]</code> until sourced.</li>
+<li><strong>Alternatives must be real</strong> — actually-considered options with honest trade-offs, not strawmen propping up the choice.</li>
+<li><strong>Answer every Must.</strong> Each Must in context.md §6 gets a row in §6 below. An unanswered Must is a gap — name it, don't paper over it.</li>
+<li><strong>Don't resolve context's open decisions or <code>[?]</code>.</strong> Surface them; route per context's owners. A blocked context decision blocks the design that depends on it — say so.</li>
+<li><strong>Design-system compliance</strong> per <code>design_lint</code> — coverage-declared, not eyeballed (see context GUIDE § Design-system lint).</li>
+<li><strong>Judgment slots stay human</strong> — <code>‹0% AI — human fills this›</code> is never AI-filled.</li>
+</ol>
+<hr />
+<h2>1. TL;DR</h2>
+<p>‹One paragraph: what we're designing, the single key decision, and the current status. A reviewer should get the gist here and decide whether to read on.›</p>
+<h2>2. Context &amp; scope</h2>
+<ul>
+<li><strong>The problem + who</strong> — see <a href="‹path›">context.md</a> §1. <em>(Link, don't restate.)</em></li>
+<li><strong>The gates this must clear</strong> — context.md §5 (open items) and §6 (Musts). Which are settled, which still <code>[?]</code>?</li>
+<li><strong>In scope for this doc:</strong> ‹…›  <strong>Out of scope / later:</strong> ‹…› <em>(more in Non-Goals below)</em></li>
+</ul>
+<h2>3. Goals / Non-Goals</h2>
+<p><strong>Goals</strong> (map to context.md's Goals):
+- ‹…›</p>
+<p><strong>Non-Goals</strong> — <em>what this design deliberately does NOT do, so scope doesn't creep:</em>
+- ‹…›</p>
+<h2>4. The design</h2>
+<blockquote>
+<p>The meat. Show the designed solution, not a description of the space.</p>
+</blockquote>
+<p><strong>Primary flow(s):</strong> ‹step-by-step, or link the prototype [see <code>prototype:</code> frontmatter]›</p>
+<p><strong>Screen states</strong> (name all — missing states are where builds break):
+| Surface | Empty | Loading | Error | Success |
+|---|---|---|---|---|
+| ‹screen› | ‹…› | ‹…› | ‹…› | ‹…› |</p>
+<p><strong>Interaction patterns</strong> (the ones context.md names as Musts — show how they're realized):
+- ‹e.g. chooser-shaped draft · dual-surface · confirm-gate — how each looks/behaves›</p>
+<p><strong>Design-system:</strong> ‹Apex components used — <code>apx-*</code>; tokens; modes›. Lint: <code>design_lint: ‹rung›</code>, coverage-declared.</p>
+<p><strong>Key copy:</strong> ‹the words that carry a Must — e.g. business-value framing, the confirm-gate language›</p>
+<h2>5. Alternatives considered</h2>
+<blockquote>
+<p>The Google hallmark — document the options and why this one, so it isn't re-litigated later.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Why it's tempting</th>
+<th>Why not (trade-off)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹A (chosen)›</td>
+<td>—</td>
+<td><em>chosen</em></td>
+</tr>
+<tr>
+<td>‹B›</td>
+<td>‹…›</td>
+<td>‹…›</td>
+</tr>
+</tbody>
+</table>
+<h2>6. How it satisfies the Musts — <code>Gate 3</code></h2>
+<blockquote>
+<p>Design's acceptance criteria <strong>are</strong> context.md's success criteria. One row per Must; an unanswered row is a gap.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>context Must</th>
+<th>How this design satisfies it</th>
+<th>Proven by (built-in test)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‹Must 1 …›</td>
+<td>‹design decision›</td>
+<td>‹the test from context §6›</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Cross-cutting concerns</h2>
+<blockquote>
+<p>The <strong>gates</strong> — WCAG AA, the SUS ship-gate, ISO 9241-11 — are success criteria and live in <strong>context.md §6</strong>. Don't restate them here; this section shows how <em>this design</em> meets them.</p>
+</blockquote>
+<ul>
+<li><strong>Accessibility</strong> — realizes context.md's WCAG AA bar: keyboard order · focus + contrast · screen-reader labels · ‹…›</li>
+<li><strong>Usability</strong> — tested against context.md's ship-gate (SUS ≥6 / ≥8 on top-five tasks) and ISO 9241-11 (effectiveness · efficiency · satisfaction). Plan / results: ‹…›</li>
+<li><strong>Privacy / GDPR</strong> — ‹what personal/client data the surface touches; consent; minimization (§10b)›</li>
+<li><strong>Error / empty / loading</strong> — covered in §4 states? ‹…›</li>
+<li><strong>Content / i18n</strong> — ‹…›</li>
+<li><strong>Telemetry</strong> — ‹what we measure to know it works — ties to context's Gate 3 outcome variable›</li>
+</ul>
+<h2>8. Trade-offs &amp; open questions</h2>
+<ul>
+<li><strong>Trade-offs made:</strong> ‹what we gave up, on purpose›</li>
+<li><strong>Open questions:</strong> ‹<code>[?]</code> — these feed context.md's §5 Open-items loop; list them there too, don't strand them here›</li>
+</ul>
+<h2>9. Rollout / fidelity</h2>
+<ul>
+<li><strong>This doc's fidelity:</strong> ‹Tier 0/1/2/3›. <strong>Ships first:</strong> ‹…›. <strong>Later:</strong> ‹…›</li>
+<li>‹dependencies / sequencing — what must land before this can build›</li>
+</ul>
+<hr />
+<h2>CHANGELOG</h2>
+<!-- Newest first. Never silently delete a wrong decision — mark it and say what replaced it. -->
+
+<ul>
+<li>‹YYYY-MM-DD› — ‹what changed and why›</li>
+</ul></body></html>

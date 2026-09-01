@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBR Coworker — N-able</title>
+<!-- The whole EBR concept as ONE guided product (not a franken-storyboard): onboarding → connect →
+     sources → trust → the living risk register → the coworker family. Self-guiding for a layperson:
+     a first-run coach tour + plain-language tooltips on every jargon term.
+     Visual system: dark luminous, Apex-ish (Manrope/Inter, no serif, no emoji, functional RAG).
+     Themed via CSS variables — flip --theme tokens for a light-Apex re-skin without touching structure.
+     Grounded: FSN-83143 (coworker family DEC-006, draft→activate DEC-007), Apex Sentient Design
+     (primitives × surfaces, confidence-and-switch), Stefanie/Lewis transcripts, N-query MCP map.
+     All data fictional (CLAUDE.md §9b). -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0416; --bg-2:#140628; --panel:#170b28; --panel-2:#1e1136; --panel-3:#241543;
+    --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.15);
+    --fg:#f1ecf7; --fg-2:#b9b0cc; --fg-3:#7c7492;
+    --cyan:#4fe3ff; --purple:#c98bff; --apex:#a24dff; --apex-2:#8500cc;
+    --red:#ff6f6f; --amber:#ffc251; --green:#5ad894; --held:#8a8299;
+    --red-dim:rgba(255,111,111,.14); --amber-dim:rgba(255,194,81,.14); --green-dim:rgba(90,216,148,.14); --cyan-dim:rgba(79,227,255,.14);
+    --r:8px; --r-lg:12px; --r-pill:999px;
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif; --font-m:'Inter',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg-2);font-family:var(--font-b);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 520px at 84% -8%,rgba(162,77,255,.15),transparent 60%),radial-gradient(760px 480px at 0% 2%,rgba(79,227,255,.09),transparent 58%);background-attachment:fixed}
+  a{text-decoration:none;color:inherit} button{font-family:inherit}
+
+  /* chrome */
+  .topbar{display:flex;align-items:center;gap:16px;height:54px;padding:0 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,4,22,.86);backdrop-filter:blur(10px);z-index:40}
+  .logo{font-family:var(--font-h);font-weight:800;font-size:15px;color:#fff;display:flex;align-items:center;gap:8px;letter-spacing:-.02em}
+  .logo .mk{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .logo .sub{font-weight:500;font-size:11.5px;color:var(--cyan);padding-left:10px;margin-left:2px;border-left:1px solid var(--line-2)}
+  .topbar .ws{font-size:12px;color:var(--fg-2);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:var(--r);padding:5px 11px}
+  .topbar .ws b{color:#fff}
+  .topbar .spacer{flex:1}
+  .btn{font-family:var(--font-h);font-weight:700;font-size:13px;border:none;border-radius:var(--r);padding:9px 16px;cursor:pointer;transition:.14s;color:var(--bg-2);background:var(--cyan)}
+  .btn:hover{background:#7aebff}
+  .btn.ghost{background:transparent;border:1px solid var(--line-2);color:var(--fg)}
+  .btn.ghost:hover{background:rgba(255,255,255,.06)}
+  .btn.apex{background:var(--apex);color:#fff} .btn.apex:hover{background:#b56bff}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.sm{padding:7px 13px;font-size:12px}
+  .tour-btn{font-family:var(--font-m);font-size:11.5px;color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(79,227,255,.3);border-radius:var(--r-pill);padding:6px 13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+
+  /* stepper */
+  .stepper{display:flex;gap:2px;padding:14px 24px 0;overflow-x:auto;max-width:1080px;margin:0 auto;width:100%}
+  .stp{flex:1;min-width:120px;cursor:pointer;padding:12px 6px 14px;border-bottom:2px solid var(--line);text-align:center;transition:.15s;position:relative}
+  .stp .n{font-family:var(--font-m);font-size:9px;letter-spacing:.08em;color:var(--fg-3);display:block;margin-bottom:4px}
+  .stp .t{font-family:var(--font-h);font-weight:600;font-size:12.5px;color:var(--fg-3)}
+  .stp.on{border-bottom-color:var(--cyan)} .stp.on .t{color:var(--fg)} .stp.on .n{color:var(--cyan)}
+  .stp.done .t{color:var(--fg-2)} .stp.done .n{color:var(--green)}
+  .stp:hover .t{color:var(--fg)}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 24px 90px}
+  .panel{background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px}
+  .eyebrow{font-family:var(--font-m);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+  h1{font-family:var(--font-h);font-weight:800;font-size:34px;line-height:1.05;letter-spacing:-.03em;color:#fff;margin-bottom:12px}
+  h2{font-family:var(--font-h);font-weight:800;font-size:26px;letter-spacing:-.02em;color:#fff;margin-bottom:10px}
+  .lede{font-size:16px;color:var(--fg-2);max-width:64ch;line-height:1.6;margin-bottom:26px}
+  .actions{margin-top:28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .actions .back{font-size:13px;color:var(--fg-3);cursor:pointer} .actions .back:hover{color:var(--cyan)}
+
+  /* jargon tooltip */
+  .term{border-bottom:1px dotted var(--cyan);cursor:help;position:relative;color:var(--fg);white-space:nowrap}
+  .term sup{font-size:.7em;color:var(--cyan);margin-left:1px}
+  .term .tip{position:absolute;left:0;bottom:calc(100% + 10px);width:260px;background:var(--panel-3);border:1px solid var(--line-2);border-radius:var(--r);padding:11px 13px;font-size:12px;line-height:1.5;color:var(--fg-2);
+    box-shadow:0 12px 30px rgba(0,0,0,.5);opacity:0;visibility:hidden;transform:translateY(4px);transition:.15s;z-index:30;white-space:normal;font-weight:400}
+  .term .tip b{color:#fff}
+  .term .tip::after{content:"";position:absolute;left:16px;top:100%;border:6px solid transparent;border-top-color:var(--panel-3)}
+  .term:hover .tip{opacity:1;visibility:visible;transform:translateY(0)}
+
+  /* choice cards */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:6px 0}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
+  .card{border:1.5px solid var(--line);border-radius:var(--r-lg);padding:18px;cursor:pointer;transition:.14s;background:rgba(255,255,255,.02);position:relative}
+  .card:hover,.card.picked{border-color:var(--apex);background:rgba(162,77,255,.08)}
+  .card .rec{position:absolute;top:-10px;right:14px;background:var(--apex);color:#fff;font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
+  .card .nm{font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--fg);margin-bottom:5px;display:flex;align-items:center;gap:8px}
+  .card .nm .dot{width:8px;height:8px;border-radius:50%;background:var(--apex);box-shadow:0 0 8px var(--apex)}
+  .card .d{font-size:12.5px;color:var(--fg-3);line-height:1.5}
+
+  .dropzone{border:2px dashed var(--line-2);border-radius:var(--r-lg);padding:30px;text-align:center;background:rgba(255,255,255,.02);margin-bottom:14px}
+  .dropzone .big{font-family:var(--font-h);font-weight:700;font-size:17px;color:var(--fg);margin-bottom:5px}
+  .dropzone .sm{font-size:12.5px;color:var(--fg-3)}
+  .shape-row{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  @media(max-width:640px){.shape-row{grid-template-columns:1fr}}
+  .shape{border:1.5px solid var(--line);border-radius:var(--r);padding:13px;cursor:pointer;transition:.14s;background:rgba(255,255,255,.02)}
+  .shape:hover,.shape.picked{border-color:var(--apex);background:rgba(162,77,255,.08)}
+  .shape .t{font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--fg);margin-bottom:3px}
+  .shape .d{font-size:11px;color:var(--fg-3);line-height:1.4}
+
+  /* sources dual-register */
+  .src{border:1px solid var(--line);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
+  .src .h{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}
+  .src .h:hover{background:rgba(255,255,255,.03)}
+  .src .h .s{font-family:var(--font-h);font-weight:600;color:var(--fg);flex:none;width:170px}
+  @media(max-width:640px){.src .h .s{width:auto;flex:1}}
+  .src .h .p{flex:1;font-size:12px;color:var(--fg-3)} @media(max-width:640px){.src .h .p{display:none}}
+  .pill{font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);white-space:nowrap}
+  .pill.auto{background:var(--green-dim);color:var(--green)} .pill.cw{background:rgba(162,77,255,.16);color:var(--purple)} .pill.client{background:var(--cyan-dim);color:var(--cyan)} .pill.you{background:rgba(255,255,255,.06);color:var(--fg-3)}
+  .src .tech{max-height:0;overflow:hidden;transition:.18s;background:rgba(0,0,0,.2)}
+  .src .tech.open{max-height:120px;padding:12px 14px;border-top:1px solid var(--line)}
+  .src .tech .kv{font-family:var(--font-m);font-size:10.5px;color:var(--fg-2);line-height:1.7} .src .tech .kv b{color:var(--fg)}
+  .caret{font-family:var(--font-m);font-size:10px;color:var(--fg-3)}
+
+  /* trust presets */
+  .presets{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 16px}
+  @media(max-width:640px){.presets{grid-template-columns:1fr}}
+  .gate-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-bottom:none;font-size:12.5px}
+  .gate-row:first-child{border-radius:var(--r) var(--r) 0 0} .gate-row:last-child{border-bottom:1px solid var(--line);border-radius:0 0 var(--r) var(--r)}
+  .gate-row .s{flex:1;font-weight:600;color:var(--fg)} .gate-row .a{font-family:var(--font-m);font-size:10px;font-weight:700;width:110px;text-align:right}
+  .gate-row.does .a{color:var(--green)} .gate-row.you .a{color:var(--amber)} .gate-row.you{background:rgba(255,194,81,.05)}
+  .tgl{width:36px;height:21px;border-radius:99px;background:var(--line-2);cursor:pointer;position:relative;flex:none;transition:.15s}
+  .tgl.on{background:var(--apex)} .tgl .k{position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:.15s} .tgl.on .k{left:17px}
+  .tier{font-family:var(--font-m);font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px}
+  .tier.measured{background:var(--green-dim);color:var(--green)} .tier.benchmarked{background:var(--cyan-dim);color:var(--cyan)} .tier.estimated{background:var(--amber-dim);color:var(--amber)} .tier.unverified{background:rgba(255,255,255,.06);color:var(--held)}
+
+  /* register (the beautiful one, embedded) */
+  .spectrum{display:flex;height:13px;border-radius:99px;overflow:hidden;gap:3px;margin:20px 0 14px}
+  .spectrum .seg.red{background:linear-gradient(90deg,#ff5b5b,#ff8080);box-shadow:0 0 16px rgba(255,111,111,.5)}
+  .spectrum .seg.amber{background:linear-gradient(90deg,#f5b13c,#ffce6b);box-shadow:0 0 16px rgba(255,194,81,.4)}
+  .spectrum .seg.held{background:repeating-linear-gradient(45deg,#3a3348,#3a3348 5px,#2b2538 5px,#2b2538 10px)}
+  .keys{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+  .key{display:flex;align-items:baseline;gap:8px} .key .num{font-family:var(--font-h);font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1}
+  .key.red .num{color:var(--red)} .key.amber .num{color:var(--amber)} .key.green .num{color:var(--green)} .key.held .num{color:var(--fg-2)}
+  .key .lab{font-size:11.5px;color:var(--fg-3)} .key .lab b{display:block;color:var(--fg-2);font-weight:600}
+  .reg{display:flex;flex-direction:column}
+  .row{display:grid;grid-template-columns:3px 1.6fr .7fr auto;gap:18px;align-items:center;padding:17px 4px 17px 18px;border-bottom:1px solid var(--line);position:relative}
+  .row::before{content:"";position:absolute;left:0;top:13px;bottom:13px;width:3px;border-radius:2px}
+  .row.red::before{background:var(--red);box-shadow:0 0 12px rgba(255,111,111,.6)} .row.amber::before{background:var(--amber);box-shadow:0 0 12px rgba(255,194,81,.5)} .row.held::before{background:var(--held)}
+  .row.held{opacity:.72}
+  .row .fnd{font-family:var(--font-h);font-weight:600;font-size:15px;color:var(--fg);letter-spacing:-.01em;margin-bottom:5px}
+  .row .mt{font-size:12px;color:var(--fg-3)} .row .mt .d{opacity:.4;margin:0 7px}
+  .row .c3{display:flex;align-items:center;gap:14px;justify-content:flex-end}
+  .ev{font-family:var(--font-m);font-size:10px;color:var(--fg-3);text-align:right;max-width:150px;line-height:1.4}
+  .viewtabs{display:inline-flex;gap:4px;padding:4px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:99px;margin-bottom:18px}
+  .viewtabs button{font-family:var(--font-h);font-weight:600;font-size:12px;padding:7px 15px;background:transparent;border:none;cursor:pointer;color:var(--fg-3);border-radius:99px}
+  .viewtabs button.on{background:var(--fg);color:var(--bg-2)}
+  .svg-wrap{overflow-x:auto;margin:0 -4px}
+
+  /* coworker family */
+  .fam{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:820px){.fam{grid-template-columns:1fr 1fr}} @media(max-width:560px){.fam{grid-template-columns:1fr}}
+  .cw{border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;background:rgba(255,255,255,.02);transition:.14s;position:relative}
+  .cw:hover{border-color:var(--line-2)}
+  .cw.you{border-color:var(--apex);background:rgba(162,77,255,.08)}
+  .cw .flag{position:absolute;top:-10px;left:16px;background:var(--apex);color:#fff;font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:99px}
+  .cw .cat{font-family:var(--font-m);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-3);margin-bottom:9px}
+  .cw h3{font-family:var(--font-h);font-weight:700;font-size:16px;color:var(--fg);margin-bottom:7px}
+  .cw p{font-size:12.5px;color:var(--fg-3);line-height:1.5;margin-bottom:12px}
+  .cw .feed{font-size:11px;color:var(--purple);background:rgba(162,77,255,.1);border:1px solid rgba(162,77,255,.25);border-radius:var(--r);padding:7px 10px;line-height:1.4}
+
+  .narr{font-size:14px;line-height:1.65;color:var(--fg-2);max-width:64ch;border-left:2px solid var(--cyan);padding:2px 0 2px 18px;margin:24px 0}
+  .narr b{color:#fff;font-weight:600;font-family:var(--font-h)}
+  .callout{border-left:3px solid var(--apex);background:rgba(162,77,255,.07);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin:16px 0;font-size:13px;color:var(--fg-2);line-height:1.55} .callout b{color:var(--fg)}
+
+  /* coach tour */
+  .scrim{position:fixed;inset:0;background:rgba(6,2,14,.72);backdrop-filter:blur(2px);z-index:60;display:none;align-items:center;justify-content:center}
+  .scrim.on{display:flex}
+  .coach{background:var(--panel-2);border:1px solid var(--line-2);border-radius:var(--r-lg);max-width:440px;width:calc(100% - 40px);padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .coach .step{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--cyan);margin-bottom:12px}
+  .coach h3{font-family:var(--font-h);font-weight:800;font-size:20px;color:#fff;letter-spacing:-.02em;margin-bottom:10px}
+  .coach p{font-size:14px;color:var(--fg-2);line-height:1.6;margin-bottom:20px}
+  .coach .row{display:flex;align-items:center;gap:12px}
+  .coach .dots{display:flex;gap:6px;flex:1}
+  .coach .dots i{width:6px;height:6px;border-radius:50%;background:var(--line-2)} .coach .dots i.on{background:var(--cyan)}
+  .foot-help{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--fg-3)}
+  .foot-help b{color:var(--fg-2)}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="mk"></span>N-able<span class="sub">AI Coworkers</span></div>
+  <div class="ws">Workspace: <b>Bracken IT Group</b></div>
+  <div class="spacer"></div>
+  <button class="tour-btn" onclick="startTour()">◔ Take the tour</button>
+</header>
+
+<div class="stepper" id="stepper"></div>
+<div class="wrap"><div id="stage"></div></div>
+
+<div class="scrim" id="scrim"><div class="coach" id="coach"></div></div>
+
+<script>
+/* ---------- plain-language tooltips (layperson guidance) ---------- */
+const TIPS={
+  coworker:"An AI <b>coworker</b> is an agent with a job description, a runbook, and a risk policy. It does repeatable work and proposes results — a human always approves before anything acts or ships.",
+  runbook:"A <b>runbook</b> is your step-by-step process written down — the coworker follows it, so it works the way you already do.",
+  connector:"A <b>connector</b> (MCP) is a secure link to a system you already use — like N-central or Microsoft 365 — so the coworker can read live data instead of you copy-pasting it.",
+  register:"A <b>risk register</b> is one living list of every finding for a client — owned, dated, graded, and kept over time. It's the durable thing the review produces, not a report you rebuild each quarter.",
+  tier:"A <b>confidence tier</b> says how sure the coworker is: <b>Measured</b> (from a connected source), <b>Benchmarked</b> (compared to a standard), <b>Estimated</b> (inferred), or <b>Unverified</b> (a guess it won't make).",
+  held:"<b>Held</b> means Unverified — the coworker refuses to guess, so it keeps this off anything a client sees until a person vouches for it.",
+  ncsc:"<b>NCSC 10 / Cyber Essentials</b> are UK security baselines. The coworker grades each area against them.",
+  activate:"<b>Activate</b> is the human go/no-go. A coworker never switches itself on — you do, deliberately.",
+};
+function T(term,label){const t=TIPS[term]||'';return `<span class="term" tabindex="0">${label||term}<sup>?</sup><span class="tip">${t}</span></span>`;}
+
+/* ---------- data (fictional, grounded in the register + FSN-83143 family) ---------- */
+const FINDINGS=[
+  {id:'f1',finding:'3 admin accounts without MFA',area:'Identity & access',grade:'red',tier:'measured',owner:'David',status:'open',ev:'M365 · list_admin_accounts',history:[8,7,5,4,3]},
+  {id:'f5',finding:'CVE-2026-4471 on 6 endpoints',area:'Risk & vulnerabilities',grade:'red',tier:'benchmarked',owner:'David',status:'open',ev:'Security Tabletop · cve_exposure',history:[null,null,null,null,6]},
+  {id:'f6',finding:'No documented incident-response plan',area:'Risk & governance',grade:'held',tier:'unverified',owner:'Vanessa',status:'held',ev:'inferred — no source',history:[null,null,null,null,null]},
+  {id:'f2',finding:'Backup restore test overdue 41 days',area:'Backup & recovery',grade:'amber',tier:'measured',owner:'David',status:'open',ev:'Cove · get_restore_tests',history:[0,0,0,0,41]},
+  {id:'f3',finding:'Windows patch compliance at 82%',area:'Patching',grade:'amber',tier:'measured',owner:'David',status:'open',ev:'N-query · patch_compliance',history:[71,74,78,80,82]},
+  {id:'f4',finding:'Phishing click-rate 22%',area:'Awareness training',grade:'amber',tier:'estimated',owner:'Vanessa',status:'open',ev:'usecure export (by hand)',history:[34,31,28,25,22]},
+];
+const AREAS=[
+  {sec:'Identity & access',avail:'auto',tier:'measured',plain:'Who can get in, and whether their accounts are protected.',tech:'M365 + Enforcer · MCP · OAuth · tenant/user'},
+  {sec:'Patching & network',avail:'auto',tier:'measured',plain:'Whether machines are up to date and the network is safe.',tech:'N-central via N-query (GraphQL/MCP) · API key · device'},
+  {sec:'Devices & lifecycle',avail:'auto',tier:'measured',plain:'Endpoint health and what needs replacing.',tech:'N-central/N-sight via N-query · Env Health coworker rollup'},
+  {sec:'Risk & vulnerabilities',avail:'cw',tier:'benchmarked',plain:'The security holes that matter, and what it takes to close them.',tech:'Security Tabletop coworker · cve_exposure'},
+  {sec:'Incidents & tickets',avail:'cw',tier:'benchmarked',plain:'What went wrong this quarter, and why.',tech:'Halo MCP + Incident Response Analyst coworker'},
+  {sec:'Backup & recovery',avail:'auto',tier:'measured',plain:'Whether backups exist and actually restore.',tech:'Cove API (REST bridge) · backup job'},
+  {sec:'Awareness training',avail:'client',tier:'estimated',plain:'Whether staff can spot a phishing email.',tech:'usecure — no connector; hand-supplied or client interview'},
+  {sec:'Carry-forward',avail:'you',tier:'unverified',plain:'What you promised last time, and whether it got done.',tech:'previous register (git) — your artifact'},
+  {sec:'Exec summary',avail:'you',tier:'unverified',plain:'Your read of where the client stands. Your voice.',tech:'not inferable — your judgment'},
+];
+const FEEDS=[{cw:'Security Tabletop',area:'Risk & vulnerabilities'},{cw:'Incident Response Analyst',area:'Incidents & tickets'},{cw:'Environment Health Monitor',area:'Devices & lifecycle'}];
+const CYCLES=['Q3·25','Q4·25','Q1·26','Q2·26','Q3·26'];
+const GC={red:'#ff6f6f',amber:'#ffc251',green:'#5ad894',held:'#8a8299'};
+const AVAIL={auto:'Connected automatically',cw:'From another coworker',client:'Ask the client',you:'Your judgment'};
+const TIERLBL={measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'};
+const TRANK={measured:3,benchmarked:2,estimated:1,unverified:0};
+
+const STEPS=['Welcome','Connect','Sources','Trust','Risk register','Coworkers'];
+let S={step:0,ai:null,shape:null,preset:'sure',overrides:{},openTech:{},regView:'register'};
+const el=id=>document.getElementById(id);
+
+function renderStepper(){
+  el('stepper').innerHTML=STEPS.map((s,i)=>`<div class="stp ${i===S.step?'on':(i<S.step?'done':'')}" onclick="go(${i})"><span class="n">STEP ${i+1}</span><span class="t">${s}</span></div>`).join('');
+}
+function go(n){S.step=Math.max(0,Math.min(STEPS.length-1,n));render();window.scrollTo(0,0);}
+function autoDoes(a){if(a.sec in S.overrides)return S.overrides[a.sec];return TRANK[a.tier]>=(S.preset==='whole'?0:2);}
+function countDoes(){return AREAS.filter(autoDoes).length;}
+
+function render(){
+  renderStepper();
+  const s=S.step;let h='';
+  if(s===0){
+    h=`<div class="panel">
+      <div class="eyebrow">Executive Business Review · AI Coworker</div>
+      <h1>Turn the review you already do<br>into a coworker that does the prep.</h1>
+      <p class="lede">An AI ${T('coworker')} does the tedious hours before a client's business review — the data pulls, the first draft, the running record — and hands you a ${T('register')} you can stand behind. You make every call; it never acts on its own.</p>
+      <div class="dropzone"><div class="big">Show me your report and I'll build a thing</div><div class="sm">Drop last quarter's EBR — .xlsx · .pptx · .docx — or pick a starting point below</div></div>
+      <div class="shape-row">
+        <div class="shape ${S.shape==='workbook'?'picked':''}" onclick="pick('workbook')"><div class="t">8-tab workbook</div><div class="d">The structured case — consistent tabs and grades.</div></div>
+        <div class="shape ${S.shape==='deck'?'picked':''}" onclick="pick('deck')"><div class="t">Last quarter's deck</div><div class="d">The common case — headings, no fixed structure.</div></div>
+        <div class="shape ${S.shape==='stefanie'?'picked':''}" onclick="pick('stefanie')"><div class="t">Start from the template</div><div class="d">No report yet? Use N-able's EBR framework.</div></div>
+      </div>
+      <div class="actions"><button class="btn apex" ${S.shape?'':'disabled'} onclick="go(1)">Start building →</button><span class="back" onclick="startTour()">New here? Take the 6-step tour</span></div>
+    </div>`;
+  }
+  else if(s===1){
+    h=`<div class="panel">
+      <div class="eyebrow">Step 1 · Connect your AI</div>
+      <h2>Who does the thinking</h2>
+      <p class="lede">A coworker pairs an N-able AI expert with your ${T('runbook')}. The expert reasons; your runbook keeps it on your rails. You can change this later.</p>
+      <div class="cards">
+        <div class="card ${S.ai==='nzo'?'picked':''}" onclick="setAI('nzo')"><div class="rec">RECOMMENDED</div><div class="nm"><span class="dot"></span>N-zo</div><div class="d">N-able's own assistant. Already knows your stack. Advises and drafts — never acts on its own.</div></div>
+        <div class="card ${S.ai==='claude'?'picked':''}" onclick="setAI('claude')"><div class="nm">Claude Code</div><div class="d">Bring your own agent. Same build, same approval model.</div></div>
+      </div>
+      <div class="callout">Whichever you pick, the rule holds: it proposes, you decide. Nothing reaches a client without a named human ${T('activate','sign-off')}.</div>
+      <div class="actions"><span class="back" onclick="go(0)">← Back</span><button class="btn apex" ${S.ai?'':'disabled'} onclick="go(2)">Continue →</button></div>
+    </div>`;
+  }
+  else if(s===2){
+    h=`<div class="panel">
+      <div class="eyebrow">Step 2 · Sources</div>
+      <h2>Where each finding's evidence comes from</h2>
+      <p class="lede">Plain enough to read to a client on top; open any row for the ${T('connector')} setup your engineer needs. Availability is real, not assumed.</p>
+      ${AREAS.map(a=>`<div class="src">
+        <div class="h" onclick="tech('${a.sec.replace(/'/g,"\\'")}')"><span class="s">${a.sec}</span><span class="p">${a.plain}</span><span class="pill ${a.avail}">${AVAIL[a.avail]}</span><span class="caret">${S.openTech[a.sec]?'▲':'▼'}</span></div>
+        <div class="tech ${S.openTech[a.sec]?'open':''}"><div class="kv"><b>Setup:</b> ${a.tech} &nbsp;·&nbsp; <b>Confidence ceiling:</b> ${TIERLBL[a.tier]}</div></div>
+      </div>`).join('')}
+      <div class="callout"><b>Two areas are fed by other coworkers</b> (risk, incidents) — build those and this fills in on its own. <b>Two are yours alone</b> — the exec summary and carry-forward, where your judgment lives. No connector produces those.</div>
+      <div class="actions"><span class="back" onclick="go(1)">← Back</span><button class="btn apex" onclick="go(3)">Decide how much it does →</button></div>
+    </div>`;
+  }
+  else if(s===3){
+    const does=countDoes(),total=AREAS.length;
+    h=`<div class="panel">
+      <div class="eyebrow">Step 3 · Trust</div>
+      <h2>How much should it do on day one?</h2>
+      <p class="lede">You don't hand over the whole ${T('register')} to trust it. The coworker drafts only what it can stand behind and hands you the rest — graded by ${T('tier','confidence')}. Start small; give it more as it earns it.</p>
+      <div class="presets">
+        <div class="card ${S.preset==='sure'?'picked':''}" onclick="setPreset('sure')"><div class="rec">START HERE</div><div class="nm">Only what it's sure of</div><div class="d">Drafts what it can measure or benchmark; hands you the guesses.</div></div>
+        <div class="card ${S.preset==='whole'?'picked':''}" onclick="setPreset('whole')"><div class="nm">Draft the whole register</div><div class="d">Attempts everything; flags the low-confidence ones for you.</div></div>
+      </div>
+      <div>${AREAS.map(a=>{const d=autoDoes(a);return `<div class="gate-row ${d?'does':'you'}"><div class="tgl ${d?'on':''}" onclick="flip('${a.sec.replace(/'/g,"\\'")}')"><span class="k"></span></div><span class="tier ${a.tier}">${TIERLBL[a.tier]}</span><span class="s">${a.sec}</span><span class="a">${d?'Coworker drafts':'You do this'}</span></div>`;}).join('')}</div>
+      <div class="callout">Day one: the coworker drafts <b>${does} of ${total}</b> areas and hands you <b>${total-does}</b>. ${T('held','Unverified')} findings never reach a client until a human vouches — regardless of this choice.</div>
+      <div class="actions"><span class="back" onclick="go(2)">← Back</span><button class="btn apex" onclick="go(4)">See the register →</button></div>
+    </div>`;
+  }
+  else if(s===4){
+    h=`<div class="panel">
+      <div class="eyebrow">Step 4 · The deliverable</div>
+      <h2>Fenwick Logistics — risk register</h2>
+      <p class="lede">This is the durable artifact — one living ${T('register')} per client, graded against ${T('ncsc','NCSC 10 / Cyber Essentials')}, tracked over time, evidence kept. Two views of the same data.</p>
+      ${posture()}
+      <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
+      <div id="regbody">${regBody()}</div>
+      <div class="actions"><span class="back" onclick="go(3)">← Back</span><button class="btn apex" onclick="go(5)">Meet the coworker family →</button></div>
+    </div>`;
+  }
+  else if(s===5){
+    h=`<div class="panel">
+      <div class="eyebrow">Step 5 · The family</div>
+      <h2>Build one. They work together.</h2>
+      <p class="lede">Five platform coworkers, drawn from what 22 MSPs said they needed most. Build the EBR Coworker and the others feed it — the risk section comes straight from Security Tabletop, incidents from Incident Response, devices from Environment Health.</p>
+      <div class="fam">
+        <div class="cw you"><div class="flag">YOU'RE BUILDING THIS</div><div class="cat">Business reporting</div><h3>EBR Coworker</h3><p>Turns your review into a living risk register. You keep the judgment.</p></div>
+        <div class="cw"><div class="cat">Security</div><h3>Security Tabletop</h3><p>Maps CVE exposure, plans remediation, triages vulnerabilities.</p><div class="feed">→ Feeds Risk &amp; vulnerabilities</div></div>
+        <div class="cw"><div class="cat">Service · diagnostics</div><h3>Incident Response Analyst</h3><p>Root-cause analysis on tickets and device events.</p><div class="feed">→ Feeds Incidents &amp; tickets</div></div>
+        <div class="cw"><div class="cat">Operations · lifecycle</div><h3>Environment Health Monitor</h3><p>Continuous endpoint health, lifecycle and refresh advice.</p><div class="feed">→ Feeds Devices &amp; lifecycle</div></div>
+        <div class="cw"><div class="cat">NOC · operations</div><h3>Alert Flood Suppressor</h3><p>Cuts alert noise, correlates to root cause, ranks the day's work.</p></div>
+        <div class="cw"><div class="cat">Business reporting</div><h3>QBR Advisor</h3><p>Client-ready review narratives — the EBR Coworker's sibling.</p></div>
+      </div>
+      <div class="narr">Because every coworker writes to the same shared record, the EBR isn't a dead end — it's where the others land. Run the tabletop a month before the review and its findings are already in the register when you sit down with the client.</div>
+      <div class="actions"><span class="back" onclick="go(4)">← Back</span><button class="btn" onclick="go(0)">↺ Walk it again</button></div>
+    </div>`;
+  }
+  el('stage').innerHTML=h;
+}
+
+/* ---------- register view internals ---------- */
+function posture(){
+  const r=FINDINGS.filter(f=>f.grade==='red').length,a=FINDINGS.filter(f=>f.grade==='amber').length,held=FINDINGS.filter(f=>f.grade==='held').length;
+  const seg=(c,n)=>n?`<div class="seg ${c}" style="flex:${n}"></div>`:'';
+  return `<div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
+    <div class="keys">
+      <div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div>
+      <div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div>
+      <div class="key green"><span class="num">3</span><span class="lab"><b>Improving</b>vs last cycle</span></div>
+      <div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div>
+    </div>`;
+}
+function regBody(){ if(S.regView==='system')return systemMap(); if(S.regView==='time')return overTime(); return regTable(); }
+function regTable(){
+  const order={red:0,amber:1,green:2,held:3};
+  const rows=[...FINDINGS].sort((x,y)=>order[x.grade]-order[y.grade]).map(f=>`
+    <div class="row ${f.grade}"><div></div>
+      <div><div class="fnd">${f.finding}</div><div class="mt">${f.area}<span class="d">·</span>${f.owner}<span class="d">·</span>${f.status==='held'?T('held','held'):f.status}</div></div>
+      <div><span class="tier ${f.tier}">${f.tier}</span></div>
+      <div class="c3">${spark(f)}<div class="ev">${f.ev}</div></div>
+    </div>`).join('');
+  return `<div class="reg">${rows}</div><div class="narr">A register, not a report — one living object per client, carried forward and re-graded each cycle. The git history behind it is the dated evidence trail an insurer or auditor can read.</div>`;
+}
+function spark(f){
+  const pts=f.history.filter(v=>v!==null); if(pts.length<2)return `<span class="ev" style="font-style:normal">new this cycle</span>`;
+  const w=88,h=28,min=Math.min(...pts),max=Math.max(...pts),rng=(max-min)||1,step=w/(pts.length-1),nm=v=>h-4-((v-min)/rng)*(h-8);
+  const d=pts.map((v,i)=>`${i?'L':'M'}${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' ');
+  const last=pts[pts.length-1],first=pts[0],better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber,g='g'+f.id;
+  const area=`M0,${h} L`+pts.map((v,i)=>`${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' L')+` L${w},${h} Z`;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="${g}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${((pts.length-1)*step).toFixed(1)}" cy="${nm(last).toFixed(1)}" r="3" fill="${col}"/></svg>`;
+}
+function systemMap(){
+  const W=900,H=540,cx=W/2,cy=H/2;const areas=[...new Set(FINDINGS.map(f=>f.area))];FEEDS.forEach(fd=>{if(!areas.includes(fd.area))areas.push(fd.area);});
+  const R=160,Rl=246,Rc=272,n=areas.length,ap={};areas.forEach((a,i)=>{const g=(-90+i*360/n)*Math.PI/180;ap[a]={x:cx+R*Math.cos(g),y:cy+R*Math.sin(g),g};});
+  const cv=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;return `M${x1},${y1} Q${mx-dy*0.12},${my+dx*0.12} ${x2},${y2}`;};
+  let links=areas.map(a=>`<path d="${cv(cx,cy,ap[a].x,ap[a].y)}" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1.2"/>`).join('');
+  let leaves=FINDINGS.map((f,i)=>{const p=ap[f.area],g=p.g+0.3*((i%2)?1:-1),lx=cx+Rl*Math.cos(g),ly=cy+Rl*Math.sin(g),hd=f.grade==='held';
+    return `<path d="${cv(p.x,p.y,lx,ly)}" stroke="${hd?'rgba(138,130,153,.5)':GC[f.grade]}" stroke-width="1.3" ${hd?'stroke-dasharray="3 3"':''} fill="none" opacity=".55"/><circle cx="${lx}" cy="${ly}" r="6.5" fill="${hd?'none':GC[f.grade]}" stroke="${hd?'var(--held)':'none'}" stroke-width="${hd?2:0}" style="filter:${hd?'none':`drop-shadow(0 0 6px ${GC[f.grade]})`}"/><text x="${lx}" y="${ly+(Math.sin(g)>0?18:-11)}" text-anchor="middle" font-family="Inter" font-size="9" fill="#b9b0cc">${f.finding.length>22?f.finding.slice(0,20)+'…':f.finding}</text>`;}).join('');
+  let an=areas.map(a=>{const p=ap[a];return `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#170b28" stroke="#c98bff" stroke-width="1.6"/><text x="${p.x}" y="${p.y-11}" text-anchor="middle" font-family="Manrope" font-size="10.5" font-weight="600" fill="#f1ecf7">${a}</text>`;}).join('');
+  let fd=FEEDS.map(f=>{const p=ap[f.area],g=p.g,fx=cx+Rc*Math.cos(g),fy=cy+Rc*Math.sin(g);return `<path d="${cv(fx,fy,p.x,p.y)}" stroke="#4fe3ff" stroke-width="1.5" fill="none" opacity=".8" marker-end="url(#ar)"/><rect x="${fx-58}" y="${fy-11}" width="116" height="22" rx="11" fill="rgba(79,227,255,.10)" stroke="rgba(79,227,255,.5)"/><text x="${fx}" y="${fy+4}" text-anchor="middle" font-family="Inter" font-size="9" font-weight="600" fill="#9fe9ff">${f.cw}</text>`;}).join('');
+  return `<div class="svg-wrap"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4fe3ff"/></marker></defs>${links}${fd}${leaves}${an}<circle cx="${cx}" cy="${cy}" r="38" fill="#1e1136" stroke="rgba(201,139,255,.4)"/><text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Manrope" font-size="12" font-weight="700" fill="#fff">Fenwick</text><text x="${cx}" y="${cy+12}" text-anchor="middle" font-family="Inter" font-size="9" fill="#b9b0cc">Customer</text></svg></div>
+  <div class="narr">Cyan arrows are other coworkers feeding a section. Build them and the map — and the register — fill themselves in.</div>`;
+}
+function overTime(){
+  const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);
+  return `<div class="fam" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">${tr.map(f=>{
+    const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=190,h=54,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);
+    const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber;
+    return `<div class="cw"><h3 style="font-size:13.5px">${f.finding}</h3><div style="font-family:var(--font-m);font-size:11px;color:${col};margin-bottom:8px">${first}→${last} · ${better?'↓ improving':(f.id==='f2'?'↑ slipped':'—')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg><div style="font-family:var(--font-m);font-size:9px;color:var(--fg-3);display:flex;justify-content:space-between"><span>${CYCLES[0]}</span><span>${CYCLES[4]}</span></div></div>`;
+  }).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New-this-cycle findings carry no history and are shown honestly as new.</div>`;
+}
+
+/* ---------- interactions ---------- */
+function pick(id){S.shape=id;render();}
+function setAI(a){S.ai=a;render();}
+function setPreset(p){S.preset=p;S.overrides={};render();}
+function flip(sec){const cur=autoDoes(AREAS.find(x=>x.sec===sec));S.overrides[sec]=!cur;render();}
+function tech(sec){S.openTech[sec]=!S.openTech[sec];render();}
+function setView(v){S.regView=v;el('regbody').innerHTML=regBody();[...document.querySelectorAll('.viewtabs button')].forEach((b,i)=>b.classList.toggle('on',['register','system','time'][i]===v));}
+
+/* ---------- coach tour ---------- */
+const TOUR=[
+  {t:'Welcome — this is your EBR Coworker',p:'It takes the client business review you already run and does the heavy lifting: the data pulls, the first draft, and a living record. You approve everything. This tour is 6 quick stops — about a minute.',go:0},
+  {t:'1 · Show it your work',p:'You don\'t configure a coworker from scratch. You bring last quarter\'s report (or a template) and it reads how you already work.',go:0},
+  {t:'2 · Connect the AI, then the sources',p:'Pick the AI expert, then see where each finding\'s data comes from — plain on top for the client, technical detail underneath for your engineer.',go:2},
+  {t:'3 · Decide how much it does',p:'Trust is a dial, not a leap. It drafts only what it\'s confident in and hands you the rest. Give it more as it earns it.',go:3},
+  {t:'4 · The risk register',p:'The thing it produces: one living, graded, evidence-backed list per client — with a system map and an over-time view. This is the spine.',go:4},
+  {t:'5 · The coworker family',p:'The EBR Coworker doesn\'t work alone — other coworkers feed its findings in. Build one, and the rest make it richer.',go:5},
+];
+let tourI=0;
+function startTour(){tourI=0;renderCoach();el('scrim').classList.add('on');}
+function renderCoach(){
+  const c=TOUR[tourI];go(c.go);
+  el('coach').innerHTML=`<div class="step">GUIDED TOUR · ${tourI+1} of ${TOUR.length}</div><h3>${c.t}</h3><p>${c.p}</p>
+    <div class="row"><div class="dots">${TOUR.map((_,i)=>`<i class="${i===tourI?'on':''}"></i>`).join('')}</div>
+    <button class="btn ghost sm" onclick="endTour()">Skip</button>
+    <button class="btn sm" onclick="nextCoach()">${tourI<TOUR.length-1?'Next →':'Start'}</button></div>`;
+}
+function nextCoach(){ if(tourI<TOUR.length-1){tourI++;renderCoach();} else endTour(); }
+function endTour(){el('scrim').classList.remove('on');go(0);}
+el('scrim').addEventListener('click',e=>{if(e.target===el('scrim'))endTour();});
+
+render();
+</script>
+</body>
+</html>

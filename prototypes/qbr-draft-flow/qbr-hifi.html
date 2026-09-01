@@ -825,6 +825,170 @@ table { font-family: var(--br-font-family-sans); }
 
 /* ── ALWAYS CURRENT — risk reason ──────────────────────── */
 .risk-reason { font-size: 11px; color: var(--br-color-ink-muted); display: block; margin-top: 2px; max-width: 220px; }
+
+/* ══ REBASED FROM qbr-hifi-v2.html — coworker-stuck layer. Reuses v1 tokens, no new palette. ══ */
+.cw-panel h3{display:flex;align-items:center;gap:8px;}
+.cw-route{border:1px solid var(--br-color-border-default);border-radius:6px;padding:12px 14px;margin-top:10px;background:var(--br-color-surface-app);}
+.cw-route.wall-wrongdata{border-left:4px solid var(--br-color-state-warning);}
+.cw-route.wall-manual{border-left:4px solid var(--br-color-state-info);}
+.cw-route.wall-nomcp{border-left:4px solid var(--br-color-ink-muted);}
+.cw-route.wall-makeit{border-left:4px solid var(--br-color-brand-primary);}
+.cw-route.resolved{border-left:4px solid var(--br-color-state-success);background:var(--br-color-state-success-tint);}
+.cw-route-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.cw-wall{font-family:var(--br-font-family-mono);font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:99px;white-space:nowrap;}
+.cw-wall.wrongdata{background:var(--br-color-state-warning-tint);color:#8a4b00;border:1px solid var(--br-color-state-warning);}
+.cw-wall.manual{background:var(--br-color-state-info-tint);color:#20408a;border:1px solid var(--br-color-state-info);}
+.cw-wall.nomcp{background:var(--br-color-surface-sunken);color:var(--br-color-ink-secondary);border:1px dashed var(--br-color-ink-muted);}
+.cw-wall.makeit{background:var(--br-color-brand-primary-tint);color:var(--br-color-brand-primary);border:1px dashed var(--br-color-brand-primary);}
+.cw-wall.done{background:var(--br-color-state-success-tint);color:var(--br-color-state-success);border:1px solid var(--br-color-state-success);}
+.cw-field{font-weight:700;font-size:13px;}
+.cw-src{font-family:var(--br-font-family-mono);font-size:11px;color:var(--br-color-ink-muted);margin-top:5px;}
+.cw-what{font-size:13px;color:var(--br-color-ink-secondary);margin-top:6px;}
+.cw-steps{margin:8px 0 0;padding-left:20px;}
+.cw-steps li{font-size:12.5px;color:var(--br-color-ink-secondary);margin-bottom:4px;}
+.cw-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.cw-note{font-size:11.5px;color:var(--br-color-ink-muted);margin-top:6px;}
+.cw-made{font-size:12.5px;font-weight:600;color:var(--br-color-state-success);margin-top:9px;}
+.cw-capture{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.cw-capture input{flex:1;min-width:220px;border:1px solid var(--br-color-border-strong);border-radius:4px;padding:7px 9px;font-family:inherit;font-size:12.5px;}
+
+/* ══ DELTA REVIEW — cycle-2 mode. The 2x lever: review what changed, not 549 cells. No new palette. ══ */
+.cycle-toggle { display:flex; gap:0; border:1px solid var(--br-color-border-default); border-radius:var(--br-radius-md); overflow:hidden; width:fit-content; }
+.cycle-btn { font-family:var(--br-font-family-sans); font-size:12px; font-weight:700; padding:7px 14px; background:var(--br-color-surface-panel); color:var(--br-color-ink-muted); border:none; border-right:1px solid var(--br-color-border-subtle); display:flex; flex-direction:column; gap:1px; text-align:left; }
+.cycle-btn:last-child { border-right:none; }
+.cycle-btn.active { background:var(--br-color-brand-primary); color:#fff; }
+.cycle-btn .cb-sub { font-size:10px; font-weight:400; opacity:.8; }
+
+.delta-queue { background:var(--br-color-surface-panel); border:1px solid var(--br-color-border-subtle); border-radius:var(--br-radius-lg); box-shadow:var(--br-shadow-sm); padding:20px 22px; display:flex; flex-direction:column; gap:16px; }
+.dq-head { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; }
+.dq-head h2 { font-family:var(--br-font-family-brand); font-size:18px; font-weight:800; }
+.dq-head .dq-sub { font-size:12.5px; color:var(--br-color-ink-secondary); margin-top:2px; }
+.dq-prep { display:flex; gap:20px; flex-wrap:wrap; align-items:center; background:linear-gradient(135deg,var(--br-color-brand-primary-tint),var(--br-color-surface-panel)); border:1px solid rgba(0,102,204,.22); border-radius:var(--br-radius-md); padding:14px 18px; }
+.dq-prep .dqp-stat { display:flex; flex-direction:column; gap:1px; }
+.dq-prep .dqp-num { font-family:var(--br-font-family-mono); font-size:26px; font-weight:800; color:var(--br-color-brand-primary); }
+.dq-prep .dqp-num.strike { color:var(--br-color-ink-muted); text-decoration:line-through; font-size:20px; }
+.dq-prep .dqp-lbl { font-size:11px; color:var(--br-color-ink-secondary); max-width:180px; }
+.dq-prep .dqp-arrow { font-family:var(--br-font-family-mono); font-size:20px; color:var(--br-color-ink-muted); }
+.dq-reach { flex:1; min-width:200px; font-size:12px; color:var(--br-color-ink-secondary); border-left:1px dashed var(--br-color-border-default); padding-left:16px; line-height:1.5; }
+.dq-reach strong { color:var(--br-color-brand-primary); }
+
+.dq-group { border:1px solid var(--br-color-border-subtle); border-radius:var(--br-radius-md); overflow:hidden; }
+.dq-group-head { display:flex; align-items:center; gap:8px; padding:10px 14px; font-family:var(--br-font-family-mono); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+.dq-group.auto .dq-group-head { background:var(--br-color-state-success-tint); color:var(--br-color-state-success); }
+.dq-group.judgment .dq-group-head { background:var(--br-color-state-warning-tint); color:var(--br-color-state-warning); }
+.delta-row { display:grid; grid-template-columns:150px 1fr auto; gap:12px; align-items:center; padding:11px 14px; border-top:1px solid var(--br-color-border-subtle); font-size:12.5px; }
+.delta-row:first-child { border-top:none; }
+.delta-row.judgment { cursor:pointer; background:var(--br-color-surface-panel); }
+.delta-row.judgment:hover { background:var(--br-color-surface-hover); }
+.delta-field { font-weight:700; color:var(--br-color-ink-primary); }
+.delta-field .df-sheet { display:block; font-family:var(--br-font-family-mono); font-size:9.5px; font-weight:400; color:var(--br-color-ink-muted); text-transform:uppercase; letter-spacing:.04em; }
+.delta-change { color:var(--br-color-ink-secondary); }
+.delta-change .dc-was { color:var(--br-color-ink-muted); text-decoration:line-through; }
+.delta-change .dc-now { color:var(--br-color-ink-primary); font-weight:600; }
+.delta-src { display:inline-flex; align-items:center; gap:5px; justify-self:end; }
+.src-badge { font-family:var(--br-font-family-mono); font-size:9.5px; font-weight:700; padding:2px 8px; border-radius:99px; border:1px solid; white-space:nowrap; }
+.src-badge.system { background:var(--br-color-surface-elevated); color:var(--br-color-ink-secondary); border-color:var(--br-color-border-default); }
+.src-badge.expert { background:rgba(109,40,217,.08); color:var(--br-color-brand-accent); border-color:rgba(109,40,217,.35); }
+.src-badge.standing { background:var(--br-color-state-info-tint); color:var(--br-color-state-info); border-color:rgba(2,132,199,.35); }
+.delta-clear { font-family:var(--br-font-family-mono); font-size:9.5px; color:var(--br-color-state-success); white-space:nowrap; }
+.delta-call { font-family:var(--br-font-family-mono); font-size:10px; font-weight:700; color:var(--br-color-state-warning); white-space:nowrap; }
+.dq-standing { display:flex; flex-direction:column; gap:6px; background:var(--br-color-surface-sunken); border:1px dashed var(--br-color-border-default); border-radius:var(--br-radius-md); padding:12px 14px; }
+.dq-standing .dqs-head { font-family:var(--br-font-family-mono); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--br-color-state-info); }
+.dq-standing .dqs-row { font-size:12px; color:var(--br-color-ink-secondary); display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.dq-standing .dqs-when { font-family:var(--br-font-family-mono); font-size:10.5px; color:var(--br-color-ink-muted); }
+
+/* per-sheet delta lane (cycle 2, top of the 3 high-volume sheets) */
+.delta-lane { background:var(--br-color-surface-elevated); border:1px solid var(--br-color-border-subtle); border-left:3px solid var(--br-color-brand-primary); border-radius:var(--br-radius-md); padding:12px 16px; margin-bottom:14px; display:flex; flex-direction:column; gap:8px; }
+.delta-lane .dl-head { font-family:var(--br-font-family-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--br-color-brand-primary); }
+.delta-lane .dl-row { display:flex; gap:10px; align-items:baseline; font-size:12.5px; flex-wrap:wrap; }
+.delta-lane .dl-row .dl-dot { width:6px; height:6px; border-radius:99px; flex-shrink:0; align-self:center; }
+.delta-lane .dl-row .dl-dot.auto { background:var(--br-color-state-success); }
+.delta-lane .dl-row .dl-dot.judgment { background:var(--br-color-state-warning); }
+.delta-lane .dl-txt { flex:1; color:var(--br-color-ink-secondary); }
+.delta-lane .dl-txt b { color:var(--br-color-ink-primary); }
+
+/* ══ CONNECT SOURCES — FTUX "what do I connect", on Will's MCP config→instance→tools→auth flow ══ */
+.src-list { display:flex; flex-direction:column; gap:10px; }
+.src-row { display:grid; grid-template-columns:1fr auto; gap:14px; align-items:start; border:1px solid var(--br-color-border-subtle); border-radius:var(--br-radius-md); padding:13px 15px; background:var(--br-color-surface-panel); }
+.src-row.connected { border-left:3px solid var(--br-color-state-success); }
+.src-row.connect   { border-left:3px solid var(--br-color-brand-primary); }
+.src-row.reauth    { border-left:3px solid var(--br-color-state-warning); }
+.src-row.missing   { border-left:3px solid var(--br-color-ink-muted); }
+.sr-name { font-weight:700; font-size:13.5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.sr-cat { font-family:var(--br-font-family-mono); font-size:9.5px; color:var(--br-color-ink-muted); text-transform:uppercase; letter-spacing:.04em; border:1px solid var(--br-color-border-default); border-radius:99px; padding:1px 7px; }
+.sr-fills { font-size:12px; color:var(--br-color-ink-secondary); margin-top:5px; }
+.sr-fills b { color:var(--br-color-ink-primary); }
+.sr-tools { font-family:var(--br-font-family-mono); font-size:10.5px; color:var(--br-color-ink-muted); margin-top:4px; }
+.sr-note { font-size:11.5px; color:var(--br-color-ink-muted); margin-top:6px; line-height:1.5; }
+.sr-conn { display:flex; flex-direction:column; gap:7px; align-items:flex-end; white-space:nowrap; }
+.conn-badge { font-family:var(--br-font-family-mono); font-size:9.5px; font-weight:700; padding:3px 9px; border-radius:99px; border:1px solid; text-transform:uppercase; letter-spacing:.03em; }
+.conn-badge.connected { background:var(--br-color-state-success-tint); color:var(--br-color-state-success); border-color:rgba(22,163,74,.4); }
+.conn-badge.connect   { background:var(--br-color-brand-primary-tint); color:var(--br-color-brand-primary); border-color:rgba(0,102,204,.4); }
+.conn-badge.reauth    { background:var(--br-color-state-warning-tint); color:var(--br-color-state-warning); border-color:rgba(217,119,6,.4); }
+.conn-badge.missing   { background:var(--br-color-surface-elevated); color:var(--br-color-ink-muted); border-color:var(--br-color-border-default); }
+.model-guard { display:flex; gap:10px; align-items:baseline; background:var(--br-color-state-info-tint); border:1px solid rgba(2,132,199,.3); border-radius:var(--br-radius-md); padding:11px 15px; font-size:12.5px; color:var(--br-color-ink-primary); line-height:1.5; }
+.model-guard b { color:var(--br-color-state-info); font-family:var(--br-font-family-mono); font-size:11px; }
+
+/* ══ TEMPLATE → MAP → CONNECT — the delightful FTUX: Priya drops her template, the coworker reads it
+   back as a map of where each number comes from (solid/fuzzy/ask, like Beth's own black-gray-red),
+   THEN sets up the connectors the map needs. Warm, spacious, human — not a technical grid. ══ */
+.tpl-drop { border:2px dashed var(--br-color-border-strong); border-radius:var(--br-radius-lg); padding:40px 28px; text-align:center; background:linear-gradient(160deg,var(--br-color-surface-panel),var(--br-color-brand-primary-tint)); display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:border-color .2s, transform .2s; }
+.tpl-drop:hover { border-color:var(--br-color-brand-primary); transform:translateY(-1px); }
+.tpl-drop .td-icon { font-size:34px; }
+.tpl-drop .td-title { font-family:var(--br-font-family-brand); font-size:18px; font-weight:800; color:var(--br-color-ink-primary); }
+.tpl-drop .td-sub { font-size:13.5px; color:var(--br-color-ink-secondary); max-width:440px; line-height:1.55; }
+.tpl-drop .td-hint { font-family:var(--br-font-family-mono); font-size:11px; color:var(--br-color-ink-muted); }
+
+.map-intro { display:flex; align-items:flex-start; gap:12px; background:var(--br-color-surface-panel); border:1px solid var(--br-color-border-subtle); border-radius:var(--br-radius-lg); padding:18px 20px; box-shadow:var(--br-shadow-sm); }
+.map-intro .mi-avatar { flex-shrink:0; width:34px; height:34px; border-radius:99px; background:var(--br-color-brand-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--br-font-family-brand); font-weight:800; font-size:14px; }
+.map-intro .mi-body { font-size:14px; color:var(--br-color-ink-primary); line-height:1.6; }
+.map-intro .mi-body strong { color:var(--br-color-brand-primary); }
+
+.map-legend { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--br-color-ink-secondary); padding:2px 2px 4px; }
+.map-legend span { display:inline-flex; align-items:center; gap:6px; }
+.map-dot { width:9px; height:9px; border-radius:99px; flex-shrink:0; }
+.map-dot.solid { background:var(--br-color-state-success); }
+.map-dot.fuzzy { background:var(--br-color-state-warning); }
+.map-dot.ask   { background:var(--br-color-brand-accent); }
+
+.map-sheet { background:var(--br-color-surface-panel); border:1px solid var(--br-color-border-subtle); border-radius:var(--br-radius-lg); box-shadow:var(--br-shadow-sm); overflow:hidden; }
+.map-sheet-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 18px; background:var(--br-color-surface-elevated); border-bottom:1px solid var(--br-color-border-subtle); }
+.map-sheet-name { font-family:var(--br-font-family-brand); font-size:14px; font-weight:800; }
+.map-sheet-count { font-size:11.5px; color:var(--br-color-ink-muted); }
+.map-row { display:grid; grid-template-columns:1fr 24px 1.1fr; align-items:center; gap:14px; padding:13px 18px; border-top:1px solid var(--br-color-border-subtle); }
+.map-row:first-child { border-top:none; }
+.map-field { display:flex; align-items:center; gap:9px; font-size:13.5px; font-weight:600; color:var(--br-color-ink-primary); }
+.map-arrow { text-align:center; color:var(--br-color-border-strong); font-size:15px; }
+.map-source { display:flex; flex-direction:column; gap:2px; }
+.map-source .ms-name { font-size:13px; font-weight:600; color:var(--br-color-ink-primary); }
+.map-source .ms-conf { font-size:11.5px; color:var(--br-color-ink-secondary); line-height:1.45; }
+.map-source .ms-conf.ask { color:var(--br-color-brand-accent); font-weight:600; }
+
+.conn-group { margin-top:6px; }
+.conn-group-head { font-family:var(--br-font-family-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--br-color-ink-muted); margin:14px 2px 8px; }
+.conn-tile { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; border:1px solid var(--br-color-border-subtle); border-radius:var(--br-radius-md); background:var(--br-color-surface-panel); margin-bottom:8px; }
+.conn-tile.ready   { border-left:3px solid var(--br-color-state-success); }
+.conn-tile.connect { border-left:3px solid var(--br-color-brand-primary); }
+.conn-tile.reauth  { border-left:3px solid var(--br-color-state-warning); }
+.conn-tile.bring   { border-left:3px solid var(--br-color-brand-accent); }
+.conn-tile .ct-main { min-width:0; }
+.conn-tile .ct-name { font-size:14px; font-weight:700; color:var(--br-color-ink-primary); }
+.conn-tile .ct-fills { font-size:12.5px; color:var(--br-color-ink-secondary); margin-top:2px; line-height:1.45; }
+.conn-tile .ct-right { display:flex; align-items:center; gap:10px; white-space:nowrap; }
+
+/* ══ DATA TRACE — FTUX "how do I know you translated it right"; receipt, not a dashboard ══ */
+.trace-intro { font-size:13px; color:var(--br-color-ink-secondary); line-height:1.6; }
+.trace-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+.trace-table th { text-align:left; font-family:var(--br-font-family-mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--br-color-ink-muted); padding:8px 10px; border-bottom:1px solid var(--br-color-border-default); }
+.trace-table td { padding:10px 10px; border-bottom:1px solid var(--br-color-border-subtle); vertical-align:top; }
+.trace-table tr:last-child td { border-bottom:none; }
+.trace-field { font-weight:700; color:var(--br-color-ink-primary); }
+.trace-field .tf-sheet { display:block; font-family:var(--br-font-family-mono); font-size:9px; color:var(--br-color-ink-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:400; }
+.trace-val { font-family:var(--br-font-family-mono); font-weight:700; color:var(--br-color-ink-primary); }
+.trace-raw { font-family:var(--br-font-family-mono); font-size:10.5px; color:var(--br-color-ink-secondary); background:var(--br-color-surface-sunken); border-radius:4px; padding:3px 7px; display:inline-block; }
+.trace-note { display:block; font-size:10.5px; color:var(--br-color-state-warning); margin-top:4px; }
+.trace-recheck { font-family:var(--br-font-family-mono); font-size:10.5px; color:var(--br-color-brand-primary); background:none; border:none; padding:0; cursor:pointer; white-space:nowrap; }
+.trace-recheck:hover { text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -912,7 +1076,7 @@ const views = {};
    ══════════════════════════════════════════════════════════ */
 
 let obStep = 1;
-const OB_STEP_LABELS = ['Choose Coworker', 'Configure', 'Import history', 'Value Ledger baseline', 'First computation', 'Schedule'];
+const OB_STEP_LABELS = ['Choose Coworker', 'Connect & configure', 'Import history', 'Value Ledger baseline', 'First computation', 'Schedule'];
 let obTemplateChoice = null;   // 'template' | 'import'
 let obBaselineHours = '';
 let obComputed = false;
@@ -924,7 +1088,7 @@ let obHistoryExtracted = false;
 let obHistoryNotes = '';
 
 const EBR_HISTORY = {
-  lastCycle: 'Q2 2026 EBR — Ridgemont Financial Services',
+  lastCycle: 'Q1 2026 EBR — Ridgemont Financial Services',
   takeaways: [
     'Onboarded 2 new office locations mid-quarter; RMM coverage lagged the move by roughly 3 weeks before both sites were fully enrolled.',
     'Board asked, informally, whether backup coverage would hold up under a GLBA audit — no formal answer was recorded either way.',
@@ -980,6 +1144,196 @@ const OB_INDUSTRY_ROWS = [
   { name: 'Maple & Co. Bookkeeping', industry: 'Professional Services', flag: '— none flagged' }
 ];
 
+/* ── CONNECT SOURCES (FTUX "what do I connect") — real sources, Will's config→instance→tools→auth flow,
+   sorted by the automate · kit · judge spine. N-able MCPs authed by default; no-connector sources kit an upload. ── */
+const CONNECT_SOURCES = [
+  { name:'N-central', cat:'RMM · N-able', status:'connected', lane:'automate', auth:'OAuth (SSO)', transport:'HTTPS-streamable',
+    fills:'Device count &amp; inventory · patch status · <b>warranty expiry</b> (asset export) · OS version',
+    tools:'list_devices · device_count (tool) · patch_status · asset_export',
+    note:'N-able MCP — authed by default. Device count is a <b>tool</b>, not a model guess (LLMs can’t count).' },
+  { name:'ConnectWise Manage', cat:'PSA', status:'connect', lane:'automate', auth:'API key', transport:'HTTPS-streamable',
+    fills:'<b>Client list &amp; tiers</b> · contracts &amp; billing · tickets · contacts',
+    tools:'list_clients · list_contracts · list_tickets',
+    note:'Provided MCP. Connect once and the book of 142 clients loads from here.' },
+  { name:'Microsoft Entra ID / M365', cat:'Identity', status:'connect', lane:'automate', auth:'OAuth', transport:'HTTPS-streamable',
+    fills:'Active users · MFA registration · conditional access · licenses',
+    tools:'list_users · mfa_status · conditional_access',
+    note:'DLP/retention isn’t exposed by Graph — that slice comes in as a kit (upload), not a pull.' },
+  { name:'Cove', cat:'Backup/DR · N-able', status:'connected', lane:'automate', auth:'OAuth (SSO)', transport:'HTTPS-streamable',
+    fills:'Backup enrolment &amp; job status', tools:'backup_status', note:'N-able MCP — authed by default.' },
+  { name:'Adlumin', cat:'MDR · N-able', status:'reauth', lane:'automate', auth:'OAuth (SSO)', transport:'SSE',
+    fills:'Detections · compromise events', tools:'list_detections',
+    note:'Token expired — <b>reauth needed</b>. Until then, detection findings surface as Unverified, not silently dropped.' },
+  { name:'endoflife.date', cat:'OS/software EOL · free', status:'connect', lane:'automate', auth:'None (public)', transport:'HTTPS-streamable',
+    fills:'What “end-of-life” <em>means</em> per OS — the yardstick behind the EOL finding', tools:'os_eol_lookup',
+    note:'Free public MCP. Defines the minimum-supported line so “old” is measured, not guessed.' },
+  { name:'Inforcer', cat:'Golden-client baseline', status:'missing', lane:'kit', auth:'—', transport:'—',
+    fills:'<b>Golden-client baseline</b> · M365 alignment score — where the client stands vs your ideal',
+    tools:'—',
+    note:'No official MCP or API. Bring the baseline in by upload, or request a connector — this is the checkup’s yardstick, so it’s worth kitting well.' },
+  { name:'KnowBe4', cat:'Security awareness', status:'missing', lane:'kit', auth:'API only', transport:'—',
+    fills:'Training completion per user', tools:'—',
+    note:'No MCP yet (API exists). Kit: download a completion register to fill, or request a connector.' }
+];
+const CONN_BADGE = { connected:'✓ Connected', connect:'Connect', reauth:'⚠ Reauth', missing:'No connector' };
+let connectState = {};                 // name -> overridden status
+function connSt(s){ return connectState[s.name] || s.status; }
+function connSet(name, st){ connectState[name] = st; renderOnboarding(); }
+function connAction(name){
+  const s = CONNECT_SOURCES.find(x=>x.name===name); const st = connSt(s);
+  if(st==='connect') connSet(name,'connected');
+  else if(st==='reauth') connSet(name,'connected');
+}
+function connUpload(name){ showToast(name + ' — kit ready: download the register to fill, or upload an export. It lands tagged human-supplied (Unverified) with the reason in the trace.'); connSet(name,'connected'); }
+function connRequest(name){ showToast(name + ' — connector requested. Logged for the platform/Solutions Engineers team; no promised date.'); }
+
+/* The delightful setup: Priya drops her template → the coworker reads it back as a map of where each
+   number comes from → then sets up connectors → gathers & tiers the client book → suggests frameworks.
+   Voice throughout: I propose, you confirm. automate · kit · judge. */
+let obTemplateLoaded = false;
+let obGeo = 'US';   // Ridgemont is US/GLBA in v1; geography drives which frameworks get suggested
+function obLoadTemplate(){ obTemplateLoaded = true; renderOnboarding(); }
+function obSetGeo(g){ obGeo = g; renderOnboarding(); }
+
+// The map — every template field → its likely source, coloured like Beth's own black/gray/red:
+// solid = pull & prove · fuzzy = draft & check · ask = needs the human (connect it or judge it).
+const TEMPLATE_MAP = [
+  { sheet:'Current Climate', rows:[
+    { field:'Device count', source:'N-central', conf:'solid', why:'RMM — a tool counts it, exactly' },
+    { field:'Licensed users', source:'Microsoft Entra ID', conf:'solid', why:'Active, licensed accounts' },
+    { field:'Contracts & licenses', source:'ConnectWise', conf:'solid', why:'PSA — your agreements live here' },
+    { field:'Overall coverage state', source:'Everything connected, related', conf:'fuzzy', why:'Aggregated across sources — I draft, you sanity-check' } ]},
+  { sheet:'Risk Review', rows:[
+    { field:'MFA coverage', source:'Microsoft Entra ID', conf:'solid', why:'Registration report' },
+    { field:'Patch compliance', source:'Patch Management Expert', conf:'solid', why:'Another Coworker already ran it' },
+    { field:'Backup enrolment', source:'Cove', conf:'solid', why:'Backup job status' },
+    { field:'Where you stand vs golden', source:'Inforcer baseline', conf:'ask', why:'No connector — upload it, or tell me your golden client' },
+    { field:'DLP / retention', source:'Microsoft Purview', conf:'ask', why:'Graph doesn’t expose it — you’ll bring this in' } ]},
+  { sheet:'Employee Review', rows:[
+    { field:'Active users & emails', source:'Entra + ConnectWise contacts', conf:'fuzzy', why:'Cross-checked — confirm leavers/new hires' },
+    { field:'Training completion', source:'KnowBe4', conf:'ask', why:'No connector yet — upload the export' } ]},
+  { sheet:'Hardware', rows:[
+    { field:'Device list & OS', source:'N-central', conf:'solid', why:'RMM inventory' },
+    { field:'Warranty expiry', source:'N-central asset export', conf:'solid', why:'Already a column in the export' },
+    { field:'What counts as end-of-life', source:'endoflife.date', conf:'solid', why:'Free source — defines the line' } ]},
+  { sheet:'Technical Roadmap', rows:[
+    { field:'Gaps vs golden', source:'Inforcer baseline', conf:'ask', why:'The checkup’s yardstick — needs your golden client' },
+    { field:'What the client’s trying to achieve', source:'Priya’s relationship read', conf:'ask', why:'No tool fills this — it’s yours' } ]}
+];
+
+const FRAMEWORK_SUGGEST = {
+  'Financial Services': { US:['GLBA','FFIEC CAT','NIST CSF'], UK:['NCSC Cyber Essentials','UK GDPR','FCA guidance'] }
+};
+const CLIENT_TIER_REASON = {
+  'Meridian Trust Credit Union':'High MRR + GLBA exposure',
+  'Ridgemont Financial Services':'Mid MRR + open High findings',
+  'Cascade Dental Partners':'Mid MRR, HIPAA-adjacent',
+  'Briarwood Outfitters':'Lower MRR, low exposure',
+  'Maple & Co. Bookkeeping':'Small, annual-only'
+};
+
+function renderMapSheet(s){
+  return `<div class="map-sheet">
+    <div class="map-sheet-head"><span class="map-sheet-name">${s.sheet}</span><span class="map-sheet-count">${s.rows.length} fields</span></div>
+    ${s.rows.map(r=>`
+      <div class="map-row">
+        <div class="map-field"><span class="map-dot ${r.conf}"></span>${r.field}</div>
+        <div class="map-arrow">→</div>
+        <div class="map-source"><span class="ms-name">${r.source}</span><span class="ms-conf ${r.conf==='ask'?'ask':''}">${r.why}</span></div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderConnectorGroups(){
+  const lanes = { ready:[], reauth:[], connect:[], bring:[] };
+  CONNECT_SOURCES.forEach(s=>{ const st=connSt(s); lanes[st==='connected'?'ready':st==='reauth'?'reauth':st==='connect'?'connect':'bring'].push(s); });
+  const tile = (s, cls) => {
+    const st = connSt(s);
+    let action;
+    if(st==='connect') action = `<button class="btn edit" onclick="connAction('${s.name}')">Connect</button>`;
+    else if(st==='reauth') action = `<button class="btn" style="border-color:rgba(217,119,6,.5);color:var(--br-color-state-warning);" onclick="connAction('${s.name}')">Reauth</button>`;
+    else if(st==='missing') action = `<button class="btn primary" onclick="connUpload('${s.name}')">Bring it in</button><button class="btn ghost" style="font-size:11px;" onclick="connRequest('${s.name}')">Request</button>`;
+    else action = `<span class="conn-badge connected">✓ Ready</span>`;
+    return `<div class="conn-tile ${cls}"><div class="ct-main"><div class="ct-name">${s.name}</div><div class="ct-fills">${s.fills}</div></div><div class="ct-right">${action}</div></div>`;
+  };
+  let h = '';
+  if(lanes.ready.length)   h += `<div class="conn-group-head">✓ Authed by default — nothing to do</div>${lanes.ready.map(s=>tile(s,'ready')).join('')}`;
+  if(lanes.reauth.length)  h += `<div class="conn-group-head">⚠ Needs reauth — findings show Unverified until fixed</div>${lanes.reauth.map(s=>tile(s,'reauth')).join('')}`;
+  if(lanes.connect.length) h += `<div class="conn-group-head">Connect these — one click each</div>${lanes.connect.map(s=>tile(s,'connect')).join('')}`;
+  if(lanes.bring.length)   h += `<div class="conn-group-head">No connector — you’ll bring these in (kit)</div>${lanes.bring.map(s=>tile(s,'bring')).join('')}`;
+  return `<div class="onboard-card">
+    <h3>The connections your template needs</h3>
+    <p class="oc-lede">Only the sources your sheets actually use — read straight off the map. N-able MCPs are already authed; the rest is a click or an upload. <span class="cs-inline">[CS: HIGH — Will’s config→instance→tools→auth flow + acp-core MCPInstance]</span></p>
+    ${h}
+    <div class="model-guard" style="margin-top:10px;"><b>MODEL</b><span>Tested on <strong>Sonnet</strong>. Cheap steps can run Haiku; judgment steps shouldn’t drop below it — set a weaker model and the draft flags “may be degraded.” <span class="cs-inline">[CS: HIGH — workshop BYOM guard]</span></span></div>
+  </div>`;
+}
+
+function renderClientTiers(){
+  return `<div class="onboard-card">
+    <h3>Your client book — gathered &amp; tiered</h3>
+    <p class="oc-lede">Pulled <strong>142 clients</strong> from ConnectWise. I proposed a risk tier for each — <strong>MRR × risk signal</strong> (open Highs, compliance exposure). Tier sets cadence and how much of this you do per client. <strong>Adjust any</strong> — the tier is my proposal, the call is yours.</p>
+    <table class="mini-table">
+      <thead><tr><th>Client</th><th>MRR</th><th>Why this tier</th><th>Tier</th></tr></thead>
+      <tbody>
+        ${OB_PREVIEW_CLIENTS.map(c=>`<tr>
+          <td>${c.name}</td><td>${c.mrr}</td>
+          <td style="font-size:11.5px;color:var(--br-color-ink-muted);">${CLIENT_TIER_REASON[c.name]||'MRR × risk'}</td>
+          <td><select class="field-select"><option>${c.tierLabel} — proposed</option><option>A</option><option>B</option><option>C</option><option>D</option></select></td>
+        </tr>`).join('')}
+        <tr class="more-row"><td colspan="4">+ 137 more — all tiered; skim and override any before the first run</td></tr>
+      </tbody>
+    </table>
+    <span class="cs-tag">[A — illustrative; tiering = MRR × risk, human-adjustable. Gather (automate) → propose tiers (kit) → you decide (judge).]</span>
+  </div>`;
+}
+
+function renderIndustryFrameworks(){
+  const ex = FRAMEWORK_SUGGEST['Financial Services'][obGeo];
+  return `<div class="onboard-card">
+    <h3>Industry &amp; frameworks — suggested, then confirmed</h3>
+    <p class="oc-lede">A client’s <strong>industry × geography</strong> suggests the compliance frameworks that shape their draft. You may already follow your own — so I suggest, then ask what you actually use. What you confirm becomes the client’s golden-client floor.</p>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+      <span class="section-title" style="margin:0;">Geography</span>
+      <button class="ac-filter-chip ${obGeo==='US'?'active':''}" onclick="obSetGeo('US')">United States</button>
+      <button class="ac-filter-chip ${obGeo==='UK'?'active':''}" onclick="obSetGeo('UK')">United Kingdom</button>
+    </div>
+    <p class="oc-lede" style="margin-top:0;">For a <strong>Financial Services</strong> client in the <strong>${obGeo==='US'?'US':'UK'}</strong>, I’d suggest these — tap the ones you already work to:</p>
+    <div class="rehearse-chips">
+      ${ex.map((f,i)=>`<button class="rehearse-chip ${i<2?'selected':''}" onclick="this.classList.toggle('selected')">${f}</button>`).join('')}
+      <button class="rehearse-chip" onclick="this.classList.toggle('selected')">+ Something else we follow</button>
+    </div>
+    <span class="cs-tag">[A — framework suggestion by industry × geo (standards skill: NCSC/ISO/HIPAA/GLBA); MSP confirms what they use. Suggest → ask, not assume.]</span>
+  </div>`;
+}
+
+function renderSetupFlow(){
+  if(!obTemplateLoaded){
+    return `
+      <div class="tpl-drop" onclick="obLoadTemplate()">
+        <div class="td-icon">📄</div>
+        <div class="td-title">Drop in the EBR template you already use</div>
+        <div class="td-sub">The workbook you take to every review. I’ll read it back, show you where each number would come from, and set up the connections — you confirm, I do the fetching.</div>
+        <div class="td-hint">.xlsx · or click to start from Stefanie’s 15-tab template</div>
+      </div>`;
+  }
+  return `
+    <div class="map-intro">
+      <div class="mi-avatar">Q</div>
+      <div class="mi-body">Read your <strong>Q1 2026 EBR</strong> — 8 sheets, ${TEMPLATE_MAP.reduce((n,s)=>n+s.rows.length,0)} fields. Here’s where each number comes from. <strong style="color:var(--br-color-state-success);">Green</strong> I pull &amp; prove, <strong style="color:var(--br-color-state-warning);">amber</strong> I draft and you check, <strong style="color:var(--br-color-brand-accent);">violet</strong> I need you.</div>
+    </div>
+    <div class="map-legend">
+      <span><span class="map-dot solid"></span> I pull &amp; prove</span>
+      <span><span class="map-dot fuzzy"></span> I draft, you check</span>
+      <span><span class="map-dot ask"></span> Needs you — connect or judge</span>
+    </div>
+    ${TEMPLATE_MAP.map(renderMapSheet).join('')}
+    ${renderConnectorGroups()}
+    ${renderClientTiers()}
+    ${renderIndustryFrameworks()}
+  `;
+}
+
 function stepperHtml() {
   return `
     <div class="stepper">
@@ -999,7 +1353,7 @@ function renderOnboardingPane() {
     return `
       <div class="wizard-pane">
         <h2>Choose your Coworker</h2>
-        <p class="pane-sub">Priya's account already runs ACP for Ticket Triage & Dispatch, connected during that Coworker's own onboarding — your PSA, RMM, and MDR connections already exist. This step is just picking which Coworker to activate next. <span class="cs-inline">[CS: HIGH — FSN-82692 §3 Step 3 pattern]</span></p>
+        <p class="pane-sub">Laissez Faire Fellows already runs Harness for Ticket Triage & Dispatch, connected during that Coworker's own onboarding — so your PSA, RMM, and MDR connections already exist. This step is just picking which Coworker to activate next. <span class="cs-inline">[CS: HIGH — FSN-82692 §3 Step 3 pattern]</span></p>
         <div class="coworker-grid">
           <div class="coworker-card done">
             <div class="cc-name">Ticket Triage &amp; Dispatch</div>
@@ -1023,54 +1377,9 @@ function renderOnboardingPane() {
   if (obStep === 2) {
     return `
       <div class="wizard-pane">
-        <h2>Configure QBR Analyst</h2>
-        <p class="pane-sub">Because HaloPSA is already connected (Ticket Triage's onboarding), the client list and each client's MRR are already in hand — QBR Analyst only needs three more inputs. <span class="cs-inline">[CS: HIGH — blueprint §14, "answered for her"]</span></p>
-
-        <div class="onboard-card">
-          <h3>(a) Client list &amp; tiers</h3>
-          <p class="oc-lede">142 clients found in HaloPSA, tiered by MRR × RiskScore — review before continuing.</p>
-          <table class="mini-table">
-            <thead><tr><th>Client</th><th>MRR</th><th>Tier</th></tr></thead>
-            <tbody>
-              ${OB_PREVIEW_CLIENTS.map(c => `<tr><td>${c.name}</td><td>${c.mrr}</td><td><span class="tierbadge ${c.tier}">${c.tierLabel}</span></td></tr>`).join('')}
-              <tr class="more-row"><td colspan="3">+ 137 more — full list reviewable after setup</td></tr>
-            </tbody>
-          </table>
-          <span class="cs-tag">[A — illustrative subset; fictional data, no real HaloPSA pull behind this]</span>
-        </div>
-
-        <div class="onboard-card">
-          <h3>(b) Industry — drives compliance framework flags</h3>
-          <p class="oc-lede">Each client's industry decides which framework(s) show up in their draft, and whether a countersign is required.</p>
-          <table class="mini-table">
-            <thead><tr><th>Client</th><th>Industry</th><th>Frameworks flagged</th></tr></thead>
-            <tbody>
-              ${OB_INDUSTRY_ROWS.map(r => `
-                <tr><td>${r.name}</td>
-                <td><select class="field-select"><option ${r.industry==='Financial Services'?'selected':''}>Financial Services</option><option ${r.industry==='Retail'?'selected':''}>Retail</option><option ${r.industry==='Healthcare'?'selected':''}>Healthcare</option><option ${r.industry==='Manufacturing'?'selected':''}>Manufacturing</option><option ${r.industry==='Professional Services'?'selected':''}>Professional Services</option></select></td>
-                <td style="font-family:var(--br-font-family-mono); font-size:11px; color:var(--br-color-ink-secondary);">${r.flag}</td></tr>
-              `).join('')}
-            </tbody>
-          </table>
-          <span class="cs-tag">[A — illustrative subset of 142; industry field per blueprint §14]</span>
-        </div>
-
-        <div class="onboard-card">
-          <h3>(c) Starting point — template or import?</h3>
-          <p class="oc-lede">Per blueprint §11's Stage 0 finding — cover both branches, no forced default.</p>
-          <div class="branch-grid">
-            <button class="branch-option ${obTemplateChoice === 'template' ? 'selected' : ''}" onclick="obSelectBranch('template')">
-              <span class="bo-title">📋 Start from Stefanie's 15-tab EBR template</span>
-              <span class="bo-desc">A new-start scaffold — no existing EBR process to migrate. QBR Analyst pre-fills the template structure and starts populating it from live data.</span>
-              <span class="bo-cs">[R — Stefanie Hammond template, cited in blueprint §11]</span>
-            </button>
-            <button class="branch-option ${obTemplateChoice === 'import' ? 'selected' : ''}" onclick="obSelectBranch('import')">
-              <span class="bo-title">📂 Import our existing deck / notes / client list / calendar</span>
-              <span class="bo-desc">Laissez Faire Fellows already has a process. QBR Analyst maps your own sections instead of the default template — the same import capability applies later when your process changes.</span>
-              <span class="bo-cs">[A — mechanism named, not built]</span>
-            </button>
-          </div>
-        </div>
+        <h2>Let's set up QBR Analyst — together</h2>
+        <p class="pane-sub">Start with the template you already use. I read it back, show you where each number comes from, and set up the connections. You confirm; I fetch. Same spreadsheet, same workflow — just faster. <span class="cs-inline">[CS: HIGH — Will's MCP config flow + acp-core]</span></p>
+        ${renderSetupFlow()}
       </div>
     `;
   }
@@ -1178,12 +1487,12 @@ function renderOnboardingPane() {
           <table class="mini-table">
             <thead><tr><th>Source</th><th>Scope requested</th><th>Visible to</th></tr></thead>
             <tbody>
-              <tr><td>HaloPSA</td><td>read: Ridgemont's contracts &amp; tickets only</td><td>msp_admin, technician</td></tr>
+              <tr><td>ConnectWise</td><td>read: Ridgemont's contracts &amp; tickets only</td><td>msp_admin, technician</td></tr>
               <tr><td>N-central</td><td>read: Ridgemont's device inventory &amp; patch status only</td><td>msp_admin, technician</td></tr>
               <tr><td>Cove</td><td>read: Ridgemont's backup job status only</td><td>msp_admin, technician</td></tr>
               <tr><td>Adlumin</td><td>read: Ridgemont's detection &amp; compromise events only</td><td>msp_admin, technician</td></tr>
               <tr><td>Microsoft Entra ID</td><td>read: Ridgemont's sign-in logs, MFA registration, conditional access only</td><td>msp_admin, technician</td></tr>
-              <tr><td>uSecure</td><td>read: Ridgemont's training completion only</td><td>msp_admin, technician</td></tr>
+              <tr><td>KnowBe4</td><td>read: Ridgemont's training completion only</td><td>msp_admin, technician</td></tr>
               <tr><td>Inforcer</td><td>read: Ridgemont's M365 alignment score only</td><td>msp_admin, technician</td></tr>
             </tbody>
           </table>
@@ -1206,7 +1515,7 @@ function renderOnboardingPane() {
         ${obComputed ? `
           <div class="magic-panel">
             <div class="magic-grid">
-              <div class="magic-stat"><span class="ms-num">142</span><span class="ms-label">clients found across your HaloPSA book</span></div>
+              <div class="magic-stat"><span class="ms-num">142</span><span class="ms-label">clients found across your ConnectWise book</span></div>
               <div class="magic-stat overdue"><span class="ms-num">6</span><span class="ms-label">overdue for their tier's cadence</span></div>
               <div class="magic-stat risk"><span class="ms-num">3</span><span class="ms-label">carrying flagged risk nobody has raised yet</span></div>
             </div>
@@ -1219,12 +1528,12 @@ function renderOnboardingPane() {
               <div class="evidence-trail" style="width:100%; text-align:left;">
                 <div class="et-label"><span>Raw field-level pulls — not narrative, not synthesized</span><span>Sample of 142</span></div>
                 <div class="et-rows">
-                  <div class="et-row"><span class="et-source">HaloPSA<span class="et-src-type">clients.list</span></span><span class="et-reading"><code>total_active_clients: 142</code></span><span class="et-flag match">Raw count</span></div>
-                  <div class="et-row"><span class="et-source">HaloPSA<span class="et-src-type">clients.abcd_tier</span></span><span class="et-reading"><code>{A:14, B:41, C:58, D:29}</code> — tier field, unmodified</span><span class="et-flag match">Raw count</span></div>
-                  <div class="et-row"><span class="et-source">HaloPSA<span class="et-src-type">ebr.last_completed</span></span><span class="et-reading"><code>6 clients where (today − last_ebr_date) &gt; tier_cadence_days</code></span><span class="et-flag match">Derived, formula shown</span></div>
+                  <div class="et-row"><span class="et-source">ConnectWise<span class="et-src-type">clients.list</span></span><span class="et-reading"><code>total_active_clients: 142</code></span><span class="et-flag match">Raw count</span></div>
+                  <div class="et-row"><span class="et-source">ConnectWise<span class="et-src-type">clients.abcd_tier</span></span><span class="et-reading"><code>{A:14, B:41, C:58, D:29}</code> — tier field, unmodified</span><span class="et-flag match">Raw count</span></div>
+                  <div class="et-row"><span class="et-source">ConnectWise<span class="et-src-type">ebr.last_completed</span></span><span class="et-reading"><code>6 clients where (today − last_ebr_date) &gt; tier_cadence_days</code></span><span class="et-flag match">Derived, formula shown</span></div>
                   <div class="et-row"><span class="et-source">Cross-source join<span class="et-src-type">risk.unresolved_high</span></span><span class="et-reading"><code>3 clients with ≥1 finding at riskLevel:'high' AND status:'pending'</code></span><span class="et-flag match">Derived, formula shown</span></div>
                 </div>
-                <div class="et-reconciliation">Every number above traces to a named field and, where it's not a raw count, the exact formula used to derive it. Nothing here is prose the model wrote — it's a table anyone on the team can re-run against the source system and get the same answer. <span class="et-cs">[CS: LOW — illustrative field names; no real HaloPSA/N-central schema behind this yet]</span></div>
+                <div class="et-reconciliation">Every number above traces to a named field and, where it's not a raw count, the exact formula used to derive it. Nothing here is prose the model wrote — it's a table anyone on the team can re-run against the source system and get the same answer. <span class="et-cs">[CS: LOW — illustrative field names; no real ConnectWise/N-central schema behind this yet]</span></div>
               </div>
             ` : ''}
             <button class="btn ghost" onclick="setView('alwaysCurrent')" style="border-color:var(--br-color-brand-primary); color:var(--br-color-brand-primary); font-weight:700;">Peek at Always Current now →</button>
@@ -1253,6 +1562,25 @@ function renderOnboardingPane() {
         </tbody>
       </table>
       <div class="cadence-note">A risk-triggered nudge always pulls a client forward, regardless of tier — this is config + interrupt, not a fixed schedule. <span class="cs-inline">[CS: HIGH — blueprint §7 fork resolution]</span></div>
+
+      <div class="onboard-card">
+        <h3>What every cycle after this first one looks like</h3>
+        <p class="oc-lede">The first EBR builds the whole workbook. From cycle 2 on, QBR Analyst re-pulls all 8 sheets and shows you only what <strong>changed</strong> since the last locked draft — a handful of deltas, not 500+ cells to re-audit.</p>
+        <div class="hist-section">
+          <h4>Deltas, not volume</h4>
+          <ul class="hist-list">
+            <li>Machine-sourced changes (new devices, leavers, patch %, warranty from N-central) clear themselves — flagged, no review.</li>
+            <li>Output from your other Coworkers — Patch Management, Incident Triage, Log Analysis, Ticket Response — arrives already handled, not re-derived here. <span class="cs-inline">[CS: VERIFIED — seed_experts.py]</span></li>
+            <li>Only judgment calls open for your attention.</li>
+          </ul>
+        </div>
+        <div class="hist-section">
+          <h4>Standing decisions — answered once</h4>
+          <p class="oc-lede">Deviations you accept (exempt shared mailboxes, a known service-account MFA exception) carry forward. You are not asked the same question every quarter — they show as "carried," not re-raised.</p>
+        </div>
+        <div class="cadence-note" style="background:var(--br-color-brand-primary-tint); border-color:rgba(0,102,204,.3);">This is what lets a C/D-tier client — normally skipped because 1.5h of prep isn't worth it — get a review too. The meeting still happens; the setup is what shrinks. <span class="cs-inline">[CS: LOW — design target, untested]</span></div>
+        <span class="cs-tag">[A — describes the cycle-2 Draft Review mode built in this prototype; illustrative]</span>
+      </div>
     </div>
   `;
 }
@@ -1303,16 +1631,16 @@ views.onboarding = () => `
   <div class="page">
     <div class="page-title-block">
       <div>
-        <h1>Set up QBR Analyst — Laissez Faire Fellows</h1>
-        <p class="sub">Priya Shah is activating QBR Analyst for the first time. PSA, RMM, and MDR connections already exist from Ticket Triage's own onboarding — this flow starts at Coworker choice, not credentials.</p>
+        <h1>First run — let's get you set up</h1>
+        <p class="sub">David (your technician) is setting up QBR Analyst for the first time. Same spreadsheet you already make, same workflow — the coworker just fetches the data and shows its working, so you can do it faster and at more clients. Priya reviews the finished draft.</p>
       </div>
       <div class="meta-pills">
-        <span class="pill">Net-new Coworker activation</span>
+        <span class="pill">First-time setup</span>
         <span class="pill">Denver, CO</span>
       </div>
     </div>
 
-    <div class="a-tag-note">[A — designed target, untested] This onboarding shape adapts FSN-82692 (MSP Onboarding — Signup to First Coworker Run), a spec written for <strong>Ticket Triage &amp; Dispatch</strong>, not QBR Analyst. FSN-82692 itself names QBR Analyst onboarding as future work (FUT-006). Only the general shape — choose Coworker → configure → seed value baseline → first run → schedule — is inherited. The QBR-specific content (industry field, template/import branch, portfolio computation) is new, per blueprint §14.</div>
+    <div class="cs-tag" style="margin-bottom:2px;">Setup shape adapted from the MSP onboarding spec (FSN-82692); QBR-specific steps are new. <span style="opacity:.7;">[A — designed target, untested]</span></div>
 
     <div class="wizard-wrap" id="ob-wizard"></div>
   </div>
@@ -1320,6 +1648,8 @@ views.onboarding = () => `
 
 function initOnboarding() {
   obStep = 1;
+  obTemplateLoaded = false;
+  connectState = {};
   renderOnboarding();
 }
 
@@ -1405,7 +1735,7 @@ views.alwaysCurrent = () => `
     </div>
 
     <div class="ac-summary">
-      <div class="ac-summary-stat"><span class="val">142</span><span class="lbl">clients found in HaloPSA</span></div>
+      <div class="ac-summary-stat"><span class="val">142</span><span class="lbl">clients found in ConnectWise</span></div>
       <div class="ac-summary-stat"><span class="val">6</span><span class="lbl">overdue for their tier's cadence</span></div>
       <div class="ac-summary-stat"><span class="val">3</span><span class="lbl">carrying flagged risk nobody has raised yet</span></div>
       <span class="ac-summary-note">142 clients · showing a representative subset of 18 below</span>
@@ -1473,7 +1803,7 @@ const findings = [
       rows: [
         { source: 'N-central', type: 'RMM · native', reading: "3 servers tagged \u201cCove Cloud+ migration.\u201d 1 shows the updated backup-agent profile; 2 still show the legacy profile.", flag: 'match' },
         { source: 'Cove', type: 'Backup/DR · native', reading: '1 of 3 servers now reporting into the Cove Cloud+ tier. 2 remain on the prior Cove tier.', flag: 'match' },
-        { source: 'HaloPSA', type: 'PSA · cross-vendor', reading: "Project ticket \u201cServer backup migration \u2014 Ridgemont\u201d shows 1 of 3 tasks closed, 2 open.", flag: 'match' }
+        { source: 'ConnectWise', type: 'PSA · cross-vendor', reading: "Project ticket \u201cServer backup migration \u2014 Ridgemont\u201d shows 1 of 3 tasks closed, 2 open.", flag: 'match' }
       ],
       reconciliation: "All three independent sources agree on <strong>1 of 3 complete</strong> \u2014 RMM, backup platform, and PSA ticket status all cross-verify the same count. No disagreement to resolve here, which is exactly why this tier reads Measured.",
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
@@ -1497,7 +1827,7 @@ const findings = [
     evidence: {
       rows: [
         { source: 'N-central', type: 'RMM · native', reading: 'Reports 50 managed devices under contract for Ridgemont Financial Services.', flag: 'match' },
-        { source: 'HaloPSA', type: 'PSA · cross-vendor', reading: 'Reports 50 contracted / billed endpoints for the same client — agrees with N-central.', flag: 'match' },
+        { source: 'ConnectWise', type: 'PSA · cross-vendor', reading: 'Reports 50 contracted / billed endpoints for the same client — agrees with N-central.', flag: 'match' },
         { source: 'Cove', type: 'Backup/DR · native', reading: 'Reports 47 devices enrolled in an active backup job. 3-device shortfall against the other two sources.', flag: 'mismatch' }
       ],
       reconciliation: "Two independent sources (RMM + PSA) agree on <strong>50</strong>. The backup platform shows <strong>47</strong>. That 3-device delta is real and cross-verified as a count mismatch \u2014 but no source can say <em>why</em>. That unresolved \u201cwhy\u201d is what keeps this Estimated instead of Measured, and it's exactly what the Known/Unknown decision below is for.",
@@ -1524,7 +1854,7 @@ const findings = [
       rows: [
         { source: 'Inforcer', type: 'M365 posture score · cross-vendor', reading: 'Alignment score 6/9 this cycle, up from 5/9 \u2014 scored against a base-wide benchmark, not an absolute pass/fail.', flag: 'match' },
         { source: 'Microsoft Entra ID', type: 'Identity/MFA · cross-vendor', reading: 'Conditional-access policy scope expanded to cover one additional user group since last cycle \u2014 consistent with the score movement.', flag: 'match' },
-        { source: 'uSecure', type: 'Security awareness · cross-vendor', reading: 'Not pulled for this finding \u2014 awareness training completion doesn\u2019t bear on the 365 config baseline.', flag: 'single' }
+        { source: 'KnowBe4', type: 'Security awareness · cross-vendor', reading: 'Not pulled for this finding \u2014 awareness training completion doesn\u2019t bear on the 365 config baseline.', flag: 'single' }
       ],
       reconciliation: "Inforcer's score is the primary signal here, and Entra ID's policy-scope change corroborates the direction \u2014 but nothing independently <em>recomputes</em> Inforcer's own score. That's the difference between Benchmarked (compared against base-wide data, directionally corroborated) and Measured (independently re-derived).",
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
@@ -1548,7 +1878,7 @@ const findings = [
     evidence: {
       rows: [
         { source: 'N-central', type: 'RMM · native', reading: 'Network discovery scan flagged one VPN appliance running end-of-life (2024) firmware. Device is outside the managed-agent fleet.', flag: 'single' },
-        { source: 'HaloPSA', type: 'PSA · cross-vendor', reading: 'No open or historical ticket references this appliance \u2014 no contracted record of it either way.', flag: 'single' },
+        { source: 'ConnectWise', type: 'PSA · cross-vendor', reading: 'No open or historical ticket references this appliance \u2014 no contracted record of it either way.', flag: 'single' },
         { source: 'Adlumin', type: 'MDR · native', reading: 'No detection events tied to this appliance\u2019s IP in the lookback window \u2014 absence of alarm, not proof it\u2019s offline.', flag: 'single' }
       ],
       reconciliation: "Only one source surfaces this device at all, and the other two can neither confirm nor rule it out. No second source to reconcile against \u2014 that single-source, unconfirmed status is exactly what Unverified means.",
@@ -1572,7 +1902,7 @@ const findings = [
     status: 'pending',
     evidence: {
       rows: [
-        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No document or ticket on file referencing an IT risk management policy for this client.', flag: 'single' }
+        { source: 'ConnectWise', type: 'PSA \u00b7 cross-vendor', reading: 'No document or ticket on file referencing an IT risk management policy for this client.', flag: 'single' }
       ],
       reconciliation: "Only one source was checked, and it can only confirm absence-of-record, not absence-of-policy. This is a consultative question for the room, not a system finding \u2014 which is why it stays Unverified regardless of how the conversation goes.",
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
@@ -1595,7 +1925,7 @@ const findings = [
     status: 'pending',
     evidence: {
       rows: [
-        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No incident response plan document referenced in any ticket or client file.', flag: 'single' }
+        { source: 'ConnectWise', type: 'PSA \u00b7 cross-vendor', reading: 'No incident response plan document referenced in any ticket or client file.', flag: 'single' }
       ],
       reconciliation: 'Single source, absence-of-record only. Flagged Unverified and routed to the consultative-questions list rather than presented as a confirmed gap.',
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
@@ -1618,7 +1948,7 @@ const findings = [
     status: 'pending',
     evidence: {
       rows: [
-        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No vendor security questionnaire or requirement document on file.', flag: 'single' }
+        { source: 'ConnectWise', type: 'PSA \u00b7 cross-vendor', reading: 'No vendor security questionnaire or requirement document on file.', flag: 'single' }
       ],
       reconciliation: "Single source, no corroboration either way. Kept at Low risk this cycle specifically because there's no signal of active exposure \u2014 not because the question is answered.",
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
@@ -1633,7 +1963,7 @@ const findings = [
     tier: 'measured',
     tierLabel: '\u2713 Measured',
     riskLevel: 'high',
-    data: "18 of 22 licensed users completed this quarter's uSecure training. 4 users are at 0% completion.",
+    data: "18 of 22 licensed users completed this quarter's KnowBe4 training. 4 users are at 0% completion.",
     risk: "Four untrained users are four people who haven't seen this quarter's phishing patterns \u2014 the training exists specifically to close that gap.",
     meaning: "This isn't a tooling problem \u2014 the licenses are assigned and the content is live. This is a completion problem, which is a people problem.",
     consequence: "One successful phish from an untrained user costs more than the four hours of training would have. Worth naming by name in the internal draft, not the client-facing one.",
@@ -1641,10 +1971,10 @@ const findings = [
     status: 'pending',
     evidence: {
       rows: [
-        { source: 'uSecure', type: 'Security awareness \u00b7 cross-vendor', reading: 'Reports 18 of 22 licensed users completed the Q3 module; 4 users at 0%.', flag: 'match' },
+        { source: 'KnowBe4', type: 'Security awareness \u00b7 cross-vendor', reading: 'Reports 18 of 22 licensed users completed the Q3 module; 4 users at 0%.', flag: 'match' },
         { source: 'Microsoft Entra ID', type: 'Identity/MFA \u00b7 cross-vendor', reading: 'All 4 incomplete users are active, licensed accounts \u2014 not stale/departed identities.', flag: 'match' }
       ],
-      reconciliation: "uSecure's completion report and Entra's active-user list agree: these are 4 real, current employees who simply haven't completed training, not a data artifact. Two independent sources agreeing on an unambiguous count is exactly what Measured means \u2014 the tier is confident, the finding itself is still bad news.",
+      reconciliation: "KnowBe4's completion report and Entra's active-user list agree: these are 4 real, current employees who simply haven't completed training, not a data artifact. Two independent sources agreeing on an unambiguous count is exactly what Measured means \u2014 the tier is confident, the finding itself is still bad news.",
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
     }
   },
@@ -1666,7 +1996,7 @@ const findings = [
     evidence: {
       rows: [
         { source: 'N-central', type: 'RMM \u00b7 native', reading: 'Inventory shows 2 of 50 managed devices on Windows 10 (build reached end-of-life Oct 2025); 48 on Windows 11.', flag: 'match' },
-        { source: 'HaloPSA', type: 'PSA \u00b7 cross-vendor', reading: 'No replacement or upgrade ticket open for either device.', flag: 'single' }
+        { source: 'ConnectWise', type: 'PSA \u00b7 cross-vendor', reading: 'No replacement or upgrade ticket open for either device.', flag: 'single' }
       ],
       reconciliation: "N-central's inventory is first-party, independently verifiable telemetry \u2014 the OS-version count itself is Measured. The absence of a replacement ticket is a separate, softer signal (no plan yet), not part of the tier determination.",
       csTag: '[CS: LOW \u2014 illustrative reconciliation; fictional data, no real integration behind this]'
@@ -1784,7 +2114,7 @@ function renderScorePanel() {
     </div>
     <div class="score-body">
       <div class="sb-label">Harness Security Score \u2014 Ridgemont Financial Services</div>
-      <div class="sb-sources">Composite rollup across N-central, Adlumin, Cove, Inforcer, Entra ID &amp; uSecure. Recalculates live as findings below are resolved in Stage 4. ${resolvedCount}/${findings.length} findings resolved so far.</div>
+      <div class="sb-sources">Composite rollup across N-central, Adlumin, Cove, Inforcer, Entra ID &amp; KnowBe4. Recalculates live as findings below are resolved in Stage 4. ${resolvedCount}/${findings.length} findings resolved so far.</div>
     </div>
     <div class="score-tally">
       <div class="st-item"><span class="st-num high">${tally.high}</span><span class="st-lbl">High \u2014 open</span></div>
@@ -1828,13 +2158,15 @@ const DR_TABS = [
   { key: 'hardware',  label: '5. Hardware',                 color: 'blue'  },
   { key: 'roadmap',   label: '6. Technical Roadmap',        color: 'gold'  },
   { key: 'referrals', label: '7. Referrals & Testimonials', color: 'gold'  },
-  { key: 'followup',  label: 'Follow Up Summary',           color: 'gold'  }
+  { key: 'followup',  label: 'Follow Up Summary',           color: 'gold'  },
+  { key: 'trace',     label: '⌕ Data trace',                color: 'blue', native: true } // Harness-native trust layer, not an EBR sheet — excluded from finalize
 ];
+function drSheets(){ return DR_TABS.filter(t => !t.native); }
 
 let drTab = 'agenda';
 let drFinalized = { agenda: false, climate: false, risk: false, employee: false, hardware: false, roadmap: false, referrals: false, followup: false };
 
-function drAllFinalized() { return DR_TABS.every(t => drFinalized[t.key]); }
+function drAllFinalized() { return drSheets().every(t => drFinalized[t.key]); }
 
 function drSetTab(key) {
   drTab = key;
@@ -1862,8 +2194,8 @@ const DR_USERS = [
   { name: 'Marcus Whitlow', email: 'mwhitlow@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'MFA not registered' },
   { name: 'Dana Ostrowski', email: 'dostrowski@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2' },
   { name: 'Kevin Nakamura', email: 'knakamura@ridgemontfinancial.example', licenses: 'Exchange Online (Plan 1)', flag: 'MFA not registered' },
-  { name: 'Renee Castellano', email: 'rcastellano@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'uSecure: 0% complete' },
-  { name: 'Tyler Bosch', email: 'tbosch@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'uSecure: 0% complete' }
+  { name: 'Renee Castellano', email: 'rcastellano@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'KnowBe4: 0% complete' },
+  { name: 'Tyler Bosch', email: 'tbosch@ridgemontfinancial.example', licenses: 'Microsoft 365 Business Premium, Entra ID P2', flag: 'KnowBe4: 0% complete' }
 ];
 
 const DR_DEVICES = [
@@ -2032,7 +2364,14 @@ function renderCanvas() {
     }
   }
 
+  const d2 = (drCycle === 2) ? DELTAS.find(x => x.findingId === f.id) : null;
+  const deltaBanner = d2 ? `
+    <div class="gap-banner" style="background:var(--br-color-brand-primary-tint); border-color:rgba(0,102,204,.3); cursor:default;">
+      <span class="gb-icon">Δ</span>
+      <span class="gb-text"><strong>Changed since ${DR_LAST_CYCLE}:</strong> ${d2.field} — ${d2.was!=='—'?`was ${d2.was}, `:''}now <strong>${d2.now}</strong>. ${d2.note}<br><span class="cs-inline">Below is last cycle's locked finding — the baseline you're re-reviewing against this change.</span></span>
+    </div>` : '';
   canvas.innerHTML = `
+    ${deltaBanner}
     <div class="fd-header">
       <div class="fd-header-top">
         <span class="tierbadge ${f.tier}">${f.tierLabel}</span>
@@ -2139,12 +2478,13 @@ function resolveAskClient(id, path) {
 function updateDraftStatus() {
   const pill = document.getElementById('draft-status-pill');
   if (!pill) return;
-  const doneCount = DR_TABS.filter(t => drFinalized[t.key]).length;
+  const sheets = drSheets();
+  const doneCount = sheets.filter(t => drFinalized[t.key]).length;
   if (drAllFinalized()) {
     pill.textContent = 'Draft status: Ready for the meeting';
     pill.classList.add('ready');
   } else {
-    pill.textContent = `Draft status: In review — ${doneCount}/${DR_TABS.length} sections finalized`;
+    pill.textContent = `Draft status: In review — ${doneCount}/${sheets.length} sections finalized`;
     pill.classList.remove('ready');
   }
 }
@@ -2175,6 +2515,16 @@ views.draftReview = () => `
 
     <div class="cs-tag" style="margin-bottom:2px;">[A — structure adapted from Technica Solutions' real 8-tab EBR template (Executive Business Review - Redacted.xlsx); Ridgemont content is fictional]</div>
 
+    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <div class="cycle-toggle" id="dr-cycle-toggle">
+        <button class="cycle-btn" onclick="drSetCycle(1)"><span>Cycle 1</span><span class="cb-sub">First full draft</span></button>
+        <button class="cycle-btn active" onclick="drSetCycle(2)"><span>Cycle 2</span><span class="cb-sub">Delta review</span></button>
+      </div>
+      <span class="cs-tag" id="dr-cycle-note" style="margin:0;"></span>
+    </div>
+
+    <div id="dr-delta-queue"></div>
+
     <div class="dr-tabstrip" role="tablist" aria-label="Draft Review sections">
       ${DR_TABS.map(t => `
         <button class="dr-tab ${t.color} ${drTab === t.key ? 'active' : ''} ${drFinalized[t.key] ? 'finalized' : ''}"
@@ -2192,23 +2542,23 @@ views.draftReview = () => `
         <span class="rail-title">Bradley · Draft-to-Send Flow Assessment</span>
         <span class="rail-badge">Tier 1 · Concept</span>
       </div>
-      <p class="rail-blurb">Testing: does the translation layer + confirm gate read as a real human judgment moment, or as another approval checkbox? That's the one thing that matters here. <span class="cs-inline">[CS: MEDIUM — design hypothesis, not measured]</span></p>
+      <p class="rail-blurb">Testing two things now. Cycle 2 (default): does reviewing ~12 <strong>deltas</strong> instead of 549 cells feel like enough to walk into the room on — the reach bet, more clients reviewed, not less time per client? Cycle 1: does the translation layer + confirm gate read as a real judgment moment, not an approval checkbox? <span class="cs-inline">[CS: MEDIUM — design hypotheses, not measured]</span></p>
 
       <div class="rail-dual">
         <div class="rail-block nailed">
           <div class="rail-block-label">What you nailed</div>
           <ul>
-            <li>Scope is tight and sourced from the deck's own stated prototype. <span class="cs-inline">[CS: HIGH]</span></li>
-            <li>Cycle memory and the 4-part translation come from primary research — the scenario is real enough to test. <span class="cs-inline">[CS: HIGH — Stefanie Hammond interview, verbatim formula]</span></li>
-            <li>Beth's "sharpie deck" register is the right tone target for Stage 4. <span class="cs-inline">[CS: UNKNOWN — Beth's own call]</span></li>
+            <li>Delta review reuses the tier vocabulary and register already built — it's a mode of Draft Review, not a fork. <span class="cs-inline">[CS: HIGH]</span></li>
+            <li>Auto-cleared deltas name a real source or a real seeded Expert (Patch/Incident/Log/Ticket) — the "not a lone Analyst" claim is on screen, not asserted. <span class="cs-inline">[CS: VERIFIED — seed_experts.py]</span></li>
+            <li>Standing decisions carry forward — the "answered once" mechanic is visible, not just described. <span class="cs-inline">[CS: HIGH]</span></li>
           </ul>
         </div>
         <div class="rail-block hurt">
           <div class="rail-block-label">What will hurt you</div>
           <ul>
-            <li>Stage 4's consultative-question gate is the whole thesis ("ownership, not rubber-stamp") and the mechanism was undesigned going in. <span class="cs-inline">[CS: MEDIUM]</span></li>
-            <li>If the UI reads as a form to fill out, the finding will be "it feels like extra work" regardless of whether the concept is sound. <span class="cs-inline">[CS: MEDIUM]</span></li>
-            <li>The gate needs to feel like a natural pause, not a checkpoint — not yet tested with a real delivery lead. <span class="cs-inline">[CS: LOW — untested]</span></li>
+            <li>The 2x is a target, not a measurement — 12 deltas / 549 cells and the ~45min / 15min numbers are illustrative until timed with a real delivery lead. <span class="cs-inline">[CS: LOW — untested]</span></li>
+            <li>Delta review only works if last-cycle state actually persists — the whole lever depends on storage that this fake-wired demo doesn't prove. <span class="cs-inline">[CS: MEDIUM — routed to Eng]</span></li>
+            <li>If the auto-cleared group reads as "trust me," a cautious lead re-checks all 549 cells anyway and the 2x evaporates. The glance has to earn the skip. <span class="cs-inline">[CS: MEDIUM]</span></li>
           </ul>
         </div>
       </div>
@@ -2237,10 +2587,10 @@ views.draftReview = () => `
         </div>
         <div class="route-card">
           <div class="rc-team">Eng</div>
-          <div class="rc-action">Note that notification_recipients needs an SMS type before Stage 2 (Nudge) ships for C/D tier — confirmed direction, zero existing schema (data-model.md:129-132)</div>
-          <div class="rc-why">Why now: not a prototype blocker, but it's the only Stage 2 mechanism that doesn't exist in the current schema.</div>
-          <div class="rc-risk">If you ship without it: C/D tier gets email nudge only, not the sachet channel that was confirmed as the direction.</div>
-          <div class="rc-roi"><b>ROI</b> — Business: C/D tier revenue base currently unserviced (~$992K/yr on Laissez Faire Fellows comparable) <span class="cs-inline">[CS: UNKNOWN — fictional persona illustration, not real revenue]</span>. User: Unknown — gap.</div>
+          <div class="rc-action">Persist each locked draft as the baseline the next cycle diffs against — the delta review is a computed diff over stored per-client cycle state, and nothing in this fake-wired demo proves that store exists</div>
+          <div class="rc-why">Why now: deltas are the entire 2x lever. Without durable last-cycle state there is nothing to diff, and cycle 2 silently degrades back to a full re-review. <span class="cs-inline">[CS: HIGH — the mechanism the whole thesis rests on]</span></div>
+          <div class="rc-risk">If you ship without it: "review only what changed" has no baseline to change from — the feature demos but can't run.</div>
+          <div class="rc-roi"><b>ROI</b> — Business: C/D-tier reviews become economical at 15-min setup, opening upsell conversations currently skipped. User: reviewer audits ~12 deltas, not 549 cells. <span class="cs-inline">[CS: LOW — target, unmeasured]</span></div>
         </div>
       </div>
     </div>
@@ -2320,9 +2670,9 @@ function drRenderClimate() {
         <div class="env-row"><span class="er-name">N-central</span><span class="er-detail">RMM · native · full deployment</span></div>
         <div class="env-row"><span class="er-name">Adlumin</span><span class="er-detail">MDR · native · full deployment</span></div>
         <div class="env-row"><span class="er-name">Cove</span><span class="er-detail">Backup/DR · native · 47/50 enrolled</span></div>
-        <div class="env-row"><span class="er-name">HaloPSA</span><span class="er-detail">PSA · cross-vendor</span></div>
+        <div class="env-row"><span class="er-name">ConnectWise</span><span class="er-detail">PSA · cross-vendor</span></div>
         <div class="env-row"><span class="er-name">Microsoft Entra ID</span><span class="er-detail">Identity/MFA · cross-vendor</span></div>
-        <div class="env-row"><span class="er-name">uSecure</span><span class="er-detail">Security awareness · cross-vendor · 18/22 trained</span></div>
+        <div class="env-row"><span class="er-name">KnowBe4</span><span class="er-detail">Security awareness · cross-vendor · 18/22 trained</span></div>
         <div class="env-row"><span class="er-name">Inforcer</span><span class="er-detail">M365 posture scoring · cross-vendor</span></div>
       </div>
       <span class="cs-tag">[A — illustrative snapshot; mirrors the "2. Current Climate" tab of Technica's real EBR template]</span>
@@ -2350,6 +2700,7 @@ function drRenderClimate() {
       <span class="cs-tag">[A — illustrative; grounded in the real template's Current Contracts / Licenses columns]</span>
     </div>
 
+    ${drCoworkerPanel('climate')}
     ${drFinalizeBar('climate')}
   `;
 }
@@ -2357,6 +2708,7 @@ function drRenderClimate() {
 function drRenderRisk() {
   const tally = RISK_TALLY();
   return `
+    ${deltaLane('risk')}
     <div class="content-card">
       <h3>Risk &amp; security review</h3>
       <div class="score-tally" style="justify-content:flex-start; gap:24px;">
@@ -2435,12 +2787,14 @@ function drRenderRisk() {
       </form>
     </div>
 
+    ${drCoworkerPanel('risk')}
     ${drFinalizeBar('risk')}
   `;
 }
 
 function drRenderEmployee() {
   return `
+    ${deltaLane('employee')}
     <div class="onboard-card">
       <h3>Employee review — users &amp; licenses</h3>
       <p class="oc-lede">Illustrative subset of Ridgemont's 22 licensed users.</p>
@@ -2451,7 +2805,7 @@ function drRenderEmployee() {
           <tr class="more-row"><td colspan="4">+ 16 more — full list reviewable after setup</td></tr>
         </tbody>
       </table>
-      <span class="cs-tag">[A — illustrative; fictional names, no real HaloPSA/Entra pull behind this]</span>
+      <span class="cs-tag">[A — illustrative; fictional names, no real ConnectWise/Entra pull behind this]</span>
     </div>
 
     <div class="content-card">
@@ -2465,6 +2819,7 @@ function drRenderEmployee() {
 
 function drRenderHardware() {
   return `
+    ${deltaLane('hardware')}
     <div class="onboard-card">
       <h3>Hardware &amp; asset review</h3>
       <p class="oc-lede">Illustrative subset of Ridgemont's 50 managed devices.</p>
@@ -2483,6 +2838,7 @@ function drRenderHardware() {
       <p><a href="#" onclick="drSetTab('risk'); selectFinding('f9'); return false;">End-of-Life Operating Systems</a> (2 devices above still on Windows 10) and <a href="#" onclick="drSetTab('risk'); selectFinding('f4'); return false;">Legacy Remote Access Appliance</a> (RGM-FW-01 above, EOL since 2021) both tie directly to this inventory — see Technical Roadmap for the replacement plan.</p>
     </div>
 
+    ${drCoworkerPanel('hardware')}
     ${drFinalizeBar('hardware')}
   `;
 }
@@ -2490,9 +2846,20 @@ function drRenderHardware() {
 function drRenderRoadmap() {
   const prLabel = { high: 'High', medium: 'Medium', low: 'Low' };
   return `
+    <div class="content-card" style="border-left:3px solid var(--br-color-brand-accent);">
+      <h3>The checkup — where Ridgemont stands vs your golden client</h3>
+      <p class="oc-lede">This is the doctor's read. The <strong>golden client</strong> is your own service catalog as a target state — what you can <em>and will</em> deliver for a B-tier financial-services shop. Where Ridgemont falls short of golden is the gap; each gap prescribes a package <strong>you actually sell</strong>, with cost. <span class="cs-inline">[CS: HIGH — workshop: golden tenant → "we recommend X, Y, Z to bump the score"; baseline defines what the MSP will do]</span></p>
+      <div class="env-grid">
+        <div class="env-stat"><span class="es-num">6<span style="font-size:14px;color:var(--br-color-ink-muted);">/9</span></span><span class="es-lbl">posture vs golden (M365 alignment, Inforcer baseline — uploaded)</span></div>
+        <div class="env-stat"><span class="es-num" style="color:var(--br-color-state-warning);">3</span><span class="es-lbl">gaps worth raising this cycle — not all of them</span></div>
+        <div class="env-stat"><span class="es-num" style="color:var(--br-color-green-earth,#5E7A3F);">→7</span><span class="es-lbl">realistic target this cycle (3→4-style move, not 6→9 in one go)</span></div>
+      </div>
+      <div class="cadence-note" style="margin-top:10px; background:var(--br-color-brand-primary-tint); border-color:rgba(0,102,204,.3);"><strong>Judgment, not a dump.</strong> The coworker can list all 80 things. The human picks the few that fit this client's <strong>appetite</strong> and what was <strong>discussed last cycle</strong> — you move a client 6→7, not 6→9. Kitting readies the options; the delivery lead decides which to actually recommend. <span class="cs-inline">[CS: HIGH — workshop: "I can tell you all the things, but what's the one I'll do now?"; Inforcer 3→8 is really 3→4]</span></div>
+    </div>
+
     <div class="onboard-card">
-      <h3>Technical roadmap — gaps &amp; recommendations</h3>
-      <p class="oc-lede">Where this deck earns its keep: naming what Ridgemont isn't using yet, not just what's broken. Trust us to be latest and greatest.</p>
+      <h3>Prescriptions — gaps mapped to what you sell</h3>
+      <p class="oc-lede">Each row is a deviation from golden, matched to a package from your catalog (activation, not a cold pitch). This is where the EBR earns its keep — and where the new business comes from.</p>
       <table class="mini-table">
         <thead><tr><th>Gap</th><th>Recommendation</th><th>Priority</th><th>Timeline</th><th>Cost</th></tr></thead>
         <tbody>
@@ -2518,6 +2885,7 @@ function drRenderRoadmap() {
       <span class="cs-tag">[D — deck p11 scenario]</span>
     </div>
 
+    ${drCoworkerPanel('roadmap')}
     ${drFinalizeBar('roadmap')}
   `;
 }
@@ -2540,6 +2908,7 @@ function drRenderReferrals() {
       <p>See <a href="#" onclick="drSetTab('agenda'); return false;">Agenda</a> for the two scheduled EBR dates already on the books.</p>
     </div>
 
+    ${drCoworkerPanel('referrals')}
     ${drFinalizeBar('referrals')}
   `;
 }
@@ -2563,14 +2932,66 @@ function drRenderFollowup() {
       <textarea id="dr-followup-notes" placeholder="Paste the post-meeting summary email here…" oninput="drFollowupNotes=this.value;">${drFollowupNotes}</textarea>
     </div>
 
+    ${cwToolsPanel()}
     ${drFinalizeBar('followup')}
+  `;
+}
+
+/* ── DATA TRACE (FTUX "how do I know you translated it right") — every number → source → tool → raw pull
+   → tier → recheck-at-source. A receipt, not a dashboard. The numbers have to be dead-right or the MSP
+   looks stupid — so the human can verify any of them without opening another system. ── */
+const TRACE = [
+  { sheet:'Current Climate', field:'Managed devices', value:'50', source:'N-central', tool:'device_count (tool)', raw:'devices.count → 50', tier:'measured', recheck:'N-central › Devices' },
+  { sheet:'Current Climate', field:'Licensed users', value:'22', source:'Microsoft Entra ID', tool:'list_users', raw:'users.filter(assignedLicenses>0).length → 22', tier:'measured', recheck:'Entra › Users' },
+  { sheet:'Hardware', field:'Warranty expiry', value:'RGM-LT-021 · Jul 2026', source:'N-central asset export', tool:'asset_export', raw:'assets[].warranty_expiry', tier:'measured', recheck:'N-central › Assets' },
+  { sheet:'Hardware', field:'End-of-life OS', value:'3 on Windows 10', source:'N-central + endoflife.date', tool:'device_count + os_eol_lookup', raw:'devices where os_build < eol_line(windows-10)', tier:'measured', recheck:'N-central › Devices; endoflife.date' },
+  { sheet:'Risk', field:'MFA coverage', value:'20 / 22', source:'Microsoft Entra ID', tool:'mfa_status', raw:'users.mfaRegistered → 20 of 22', tier:'measured', recheck:'Entra › MFA registration' },
+  { sheet:'Risk', field:'Patch compliance', value:'96%', source:'Patch Management Expert', tool:'(consumed)', raw:'patched_count / total → 96%', tier:'benchmarked', recheck:'Patch Mgmt Expert run' },
+  { sheet:'Risk', field:'Backup enrolled', value:'48 / 50', source:'Cove', tool:'backup_status', raw:'jobs.active → 48 of 50', tier:'estimated', recheck:'Cove › Backup jobs', note:'Cross-source mismatch vs N-central’s 50 — the “why” is unresolved, so this stays Estimated, not Measured.' },
+  { sheet:'Employee', field:'Training completion', value:'86% (19/22)', source:'KnowBe4', tool:'(manual upload — kit)', raw:'uploaded CSV → 19 of 22', tier:'unverified', recheck:'uploaded file', note:'No connector — human-supplied via the kit. Stays Unverified until a real connector exists.' },
+  { sheet:'Risk', field:'M365 alignment (vs golden)', value:'6 / 9', source:'Inforcer', tool:'(manual upload — kit)', raw:'uploaded baseline → 6 of 9', tier:'unverified', recheck:'uploaded file', note:'No connector — golden-baseline supplied by upload. The checkup’s yardstick, honestly flagged as not-yet-pulled.' }
+];
+function traceRecheck(where){ showToast('Would open ' + where + ' in a new tab so you can confirm the number at source (fake-wired). The point: you never have to leave the draft to trust it.'); }
+function traceDownload(){
+  const rows = [['Sheet','Field','Value','Source','Tool','Raw pull','Defensibility','Note']];
+  TRACE.forEach(t=>rows.push([t.sheet,t.field,t.value,t.source,t.tool,t.raw,TIER_LABEL[t.tier],t.note||'']));
+  cwCsv('ridgemont-q3-2026-data-trace.csv', rows);
+}
+function drRenderTrace(){
+  return `
+    <div class="content-card">
+      <h3>Data trace — every number, where it came from</h3>
+      <p class="trace-intro">The speed only counts if the numbers are <strong>dead-right</strong> — one wrong figure in front of the client and the MSP looks stupid. So nothing here is prose the model wrote: each value traces to a named source, the exact tool or formula, and a defensibility tier. Anything you don't trust, <strong>recheck at source</strong> in one click — you never have to leave the draft to verify it. <span class="cs-inline">[CS: HIGH — workshop: source attribution "so David/Vanessa don't go into any other system to know the number is right"]</span></p>
+      <div style="overflow-x:auto;">
+      <table class="trace-table">
+        <thead><tr><th>Field</th><th>Value</th><th>Source → tool</th><th>Raw pull</th><th>Defensibility</th><th>Verify</th></tr></thead>
+        <tbody>
+          ${TRACE.map(t=>`
+            <tr>
+              <td class="trace-field">${t.field}<span class="tf-sheet">${t.sheet}</span></td>
+              <td class="trace-val">${t.value}</td>
+              <td>${t.source}<br><span class="sr-tools" style="margin:0;">${t.tool}</span></td>
+              <td><span class="trace-raw">${t.raw}</span>${t.note?`<span class="trace-note">${t.note}</span>`:''}</td>
+              <td><span class="tierbadge ${t.tier}">${TIER_LABEL[t.tier]}</span></td>
+              <td><button class="trace-recheck" onclick="traceRecheck('${t.recheck.replace(/'/g,"\\'")}')">recheck →</button></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      </div>
+      <div class="cw-actions" style="margin-top:12px;"><button class="btn ghost" onclick="traceDownload()">⬇ Download the full trace (.csv)</button></div>
+      <span class="cs-tag">[A — illustrative field-level trace; fictional data. Measured = re-derivable from a named tool; Benchmarked = compared, not re-derived; Estimated = cross-source mismatch, "why" open; Unverified = human-supplied via a kit, no connector. Two rows (KnowBe4, Inforcer) are honestly Unverified because those have no MCP.]</span>
+    </div>
+    <div class="content-card">
+      <h3>What this is <em>not</em></h3>
+      <p>It's not a claim that everything is right — it's a claim that everything is <strong>checkable</strong>. The two Unverified rows are the honest edge: human-supplied, no connector, flagged so they never get read as measured. That's the difference between fast and reckless.</p>
+    </div>
   `;
 }
 
 const DR_RENDERERS = {
   agenda: drRenderAgenda, climate: drRenderClimate, risk: drRenderRisk,
   employee: drRenderEmployee, hardware: drRenderHardware, roadmap: drRenderRoadmap,
-  referrals: drRenderReferrals, followup: drRenderFollowup
+  referrals: drRenderReferrals, followup: drRenderFollowup, trace: drRenderTrace
 };
 
 function drWireAgendaTab() {
@@ -2609,10 +3030,13 @@ function renderDraftReview() {
   if (drTab === 'agenda') drWireAgendaTab();
   if (drTab === 'climate') renderScorePanel();
   if (drTab === 'risk') { renderSidebar(); renderCanvas(); renderQuestions(); drWireRiskTab(); }
+  renderDeltaQueue();
+  renderCycleToggle();
   updateDraftStatus();
 }
 
 function initDraftReview() {
+  drCycle = 2;
   selectedId = null;
   findings.forEach(f => { if (f.id === 'f2') { f.tier = 'estimated'; f.tierLabel = '~ Estimated'; } f.status = 'pending'; });
   questions = [
@@ -2623,6 +3047,305 @@ function initDraftReview() {
   drFinalized = { agenda: false, climate: false, risk: false, employee: false, hardware: false, roadmap: false, referrals: false, followup: false };
   drFollowupNotes = '';
   renderDraftReview();
+}
+
+/* ══════════════════════════════════════════════════════════
+   COWORKER-STUCK LAYER — rebased from qbr-hifi-v2.html onto this v1.
+   Shown in Cycle 1 (first full draft) only — filling-from-scratch is a
+   cycle-1 activity. Warranty wall removed: warranty is now a solved N-central
+   asset-export pull (see DELTAS hw-a2), per Beth's call + service-blueprint L47.
+   Vendor vocabulary follows the service blueprint (ConnectWise Manage, KnowBe4),
+   per Beth "believe the blueprint" 2026-08-17 — whole file renamed from v1's
+   HaloPSA/uSecure so provenance matches the authoritative data-source layer.
+   ══════════════════════════════════════════════════════════ */
+const CW_ROUTES = {
+  climate: [
+    { id:'cl1', wall:'wrongdata', field:'Contract lines — item, cadence, quantity', src:'ConnectWise agreements',
+      what:'18 lines came back; 6 have no billing cadence set. They read as blank, not as annual — so any total built on them is wrong, not just incomplete.',
+      reduce:'Use the 12 confirmed, mark 6 cadence-unknown',
+      reduced:'12 lines confirmed monthly · 6 cadence unknown in ConnectWise',
+      atSource:'Fix the 6 records in ConnectWise' }
+  ],
+  risk: [
+    { id:'rk1', wall:'manual', field:'Legacy appliance — is it still in the path?', src:'Vendor firmware EOL, no API',
+      what:'N-central found RGM-FW-01, firmware EOL 2021. Whether it is still carrying traffic is not a query — somebody has to ring the site.',
+      steps:['RGM-FW-01 appears in N-central inventory, last seen 4 days ago.',
+             'Vendor EOL notice confirms firmware unsupported since 2021.',
+             'Ring Ridgemont ops — is this appliance still in the remote-access path, or has it been bypassed?'],
+      dl:{ label:'Download the 4 network devices as a checklist', name:'ridgemont-network-kit-eol.csv',
+           rows:[['Device','Class','Firmware','EOL','Still in path? (Y/N)','Confirmed by'],
+                 ['RGM-FW-01','Firewall/VPN','Vendor firmware','2021','',''],
+                 ['RGM-SW-01','Switch','—','unknown','',''],
+                 ['RGM-AP-02','Access point','—','unknown','',''],
+                 ['RGM-AP-03','Access point','—','unknown','','']] },
+      capture:'What did the site say — still in the path?' },
+    { id:'rk2', wall:'makeit', field:'What went wrong this quarter, and why',
+      src:'No incident record has ever been kept',
+      what:'Not a connector gap. Ridgemont has had incidents this quarter, and nothing in the stack holds a record of what they were or why they happened.',
+      make:'Create a quarterly incident log',
+      makeDesc:'A tagged view over ConnectWise tickets, so this section fills itself from next cycle onward. It will not back-fill this quarter — that part still has to come from Jordan.',
+      made:'Incident log created — tagging incident-quarterly in ConnectWise',
+      dl:{ label:"Download this quarter's P1/P2 tickets to sort", name:'ridgemont-incidents-q3.csv',
+           rows:[['Ticket','Opened','Priority','Summary','Root cause (fill in)','Client-visible? (Y/N)'],
+                 ['CW-8841','2 Jul','P1','Mailflow delay, 3h','',''],
+                 ['CW-8902','19 Jul','P2','VPN drop, remote users','',''],
+                 ['CW-9014','06 Aug','P2','Backup job failed twice','','']] },
+      capture:'For this cycle only — what went wrong, and why?' }
+  ],
+  hardware: [
+    { id:'hw2', wall:'wrongdata', field:'Device list — last seen', src:'N-central',
+      what:'3 devices have not checked in for 30+ days. Decommissioned, loaned out, or a broken agent on a live machine — N-central cannot tell you which, and each answer changes the risk read.',
+      reduce:'Exclude the 3 and say so on the sheet',
+      reduced:'Devices confirmed active · 3 excluded, status unknown',
+      atSource:'Chase the 3 agents in N-central' }
+  ],
+  roadmap: [
+    { id:'rd1', wall:'manual', field:"What Ridgemont is trying to achieve this quarter", src:"Priya's relationship read — no tool",
+      what:'The row that makes the QBR worth attending, and no connector will ever fill it.',
+      steps:["Ridgemont's site added a careers page with 4 open roles since April.",
+             'Import History flagged a second-location question from the Q1 call.',
+             'Ask the client directly — what is the plan for the next two quarters?'],
+      capture:'What is Ridgemont actually trying to do this quarter?' }
+  ],
+  referrals: [
+    { id:'rf1', wall:'manual', field:'Testimonial / referral ask — timing and framing', src:"Priya's judgement — no tool",
+      what:'Timing is the whole thing here, and only Priya knows the temperature of the relationship.',
+      steps:['Last CSAT response was 9/10 (ConnectWise survey, 11 June).',
+             'No referral has been asked for in 3 cycles.',
+             'Judgement call — is this the cycle, and what is the framing?'],
+      capture:'Is this the right moment, and what is the ask?' }
+  ]
+};
+
+const CW_TOOLS_MISSING = [];   // warranty was here; now a solved N-central pull. Panel still lets you name a tool onboarding never heard of.
+let cwExtraTools = [];
+let cwResolved = {};
+let cwRequested = {};
+let cwMade = {};
+
+const CW_WALL_LABEL = { wrongdata:'Data problem', manual:'Manual pull', nomcp:'No connector', makeit:"Doesn't exist yet" };
+
+function cwRoutesFor(key){ return CW_ROUTES[key] || []; }
+function cwIsOpen(r){ return !cwResolved[r.id]; }
+function cwOpenCount(key){ return cwRoutesFor(key).filter(cwIsOpen).length; }
+function cwOpenTotal(){ return DR_TABS.reduce((n,t)=>n+cwOpenCount(t.key),0); }
+
+function cwCsv(name, rows){
+  const csv = rows.map(r=>r.map(f=>{const s=String(f==null?'':f);return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;}).join(',')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  const a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+}
+function cwFindRoute(id){ for (const k in CW_ROUTES){ const hit = CW_ROUTES[k].find(r=>r.id===id); if(hit) return hit; } return null; }
+function cwDownload(id){ const r=cwFindRoute(id); if(r&&r.dl) cwCsv(r.dl.name, r.dl.rows); }
+function cwRequest(id){ cwRequested[id]=true; drSetTab(drTab); }
+function cwMake(id){ cwMade[id]=true; drSetTab(drTab); }
+function cwReduce(id){ cwResolved[id]='reduced'; drSetTab(drTab); }
+function cwAtSource(id){ cwResolved[id]='atsource'; drSetTab(drTab); }
+function cwCapture(id){
+  const el=document.getElementById('cw-cap-'+id);
+  const v=(el&&el.value.trim())||'';
+  if(!v){ if(el){ el.style.borderColor='var(--br-color-state-danger)'; el.placeholder='Nothing recorded — a blank stays blank rather than being guessed.'; } return; }
+  cwResolved[id]=v; drSetTab(drTab);
+}
+function cwAddTool(){ const el=document.getElementById('cw-newtool'); const v=(el&&el.value.trim())||''; if(!v) return; if(!cwExtraTools.includes(v)) cwExtraTools.push(v); drSetTab(drTab); }
+
+function cwRouteHtml(r){
+  const resolved = cwResolved[r.id];
+  const label = CW_WALL_LABEL[r.wall];
+  if (resolved){
+    const txt = resolved==='reduced' ? r.reduced : resolved==='atsource' ? (r.atSource + ' — re-pull next cycle picks it up') : resolved;
+    return `<div class="cw-route resolved"><div class="cw-route-head"><span class="cw-wall done">✓ ${label} — settled</span><span class="cw-field">${r.field}</span></div><p class="cw-what"><strong>Recorded:</strong> ${txt}</p></div>`;
+  }
+  const steps = r.steps ? `<ol class="cw-steps">${r.steps.map(s=>`<li>${s}</li>`).join('')}</ol>` : '';
+  const made = r.make ? (cwMade[r.id]
+      ? `<p class="cw-made">✓ ${r.made}</p><p class="cw-note"><strong>Still open for this cycle:</strong> ${r.makeDesc}</p>`
+      : `<div class="cw-actions"><button class="btn primary" onclick="cwMake('${r.id}')">${r.make}</button></div><p class="cw-note">${r.makeDesc}</p>`) : '';
+  const req = r.request ? (cwRequested[r.id]
+      ? `<p class="cw-made" style="color:var(--br-color-brand-primary);">✓ ${r.requested}</p>`
+      : `<div class="cw-actions"><button class="btn ghost" onclick="cwRequest('${r.id}')">${r.request}</button></div>`) : '';
+  const dl = r.dl ? `<div class="cw-actions"><button class="btn ghost" onclick="cwDownload('${r.id}')">⬇ ${r.dl.label}</button></div><p class="cw-note">Pre-filled with what we already hold, so nobody retypes what the system knows.</p>` : '';
+  const reduce = r.reduce ? `<div class="cw-actions"><button class="btn primary" onclick="cwReduce('${r.id}')">${r.reduce}</button><button class="btn ghost" onclick="cwAtSource('${r.id}')">${r.atSource}</button></div><p class="cw-note">The number reads as filled right now. It should not count as finalized until this is settled.</p>` : '';
+  const cap = r.capture ? `<div class="cw-capture"><label class="visually-hidden" for="cw-cap-${r.id}">Record</label><input type="text" id="cw-cap-${r.id}" placeholder="${r.capture}" /><button class="btn primary" onclick="cwCapture('${r.id}')">Record it</button></div>` : '';
+  return `<div class="cw-route wall-${r.wall}"><div class="cw-route-head"><span class="cw-wall ${r.wall}">${label}</span><span class="cw-field">${r.field}</span></div><p class="cw-src">Source: ${r.src}</p><p class="cw-what">${r.what}</p>${steps}${reduce}${made}${req}${dl}${cap}</div>`;
+}
+
+function drCoworkerPanel(key){
+  if (drCycle !== 1) return '';          // cycle-1 only — cycle 2 works the delta queue instead
+  const routes = cwRoutesFor(key);
+  if(!routes.length) return '';
+  const open = cwOpenCount(key);
+  return `<div class="content-card cw-panel" style="margin-top:12px;"><h3>Where the coworker got stuck${open?` — ${open} open`:' — all settled'}</h3><p class="oc-lede">Not a list of failures. Each of these is a wall the coworker hit while filling this section, with the way through it. Nothing here is left as "couldn't do it."</p>${routes.map(cwRouteHtml).join('')}<span class="cs-tag">[A — v2 addition; the four wall types are a design proposal, not observed behaviour in any shipped coworker]</span></div>`;
+}
+
+function cwExportWorkbook(){
+  const out=[['Sheet','Field','Value / status','Source','Wall','Why it is not settled']];
+  DR_TABS.forEach(t=>{
+    out.push([t.label,'— section —', drFinalized[t.key]?'Finalized':'Not finalized','','','']);
+    cwRoutesFor(t.key).forEach(r=>{
+      const res=cwResolved[r.id];
+      const val = res==='reduced' ? r.reduced : res==='atsource' ? r.atSource+' — re-pull next cycle' : res ? res : 'OPEN — not settled';
+      out.push([t.label, r.field, val, r.src, CW_WALL_LABEL[r.wall], res ? '' : r.what]);
+    });
+  });
+  if(cwExtraTools.length) out.push(['','Tools named but unreadable', cwExtraTools.join(' · '), '', 'No connector','Risk sections are incomplete, not clean — coverage cannot be claimed for these']);
+  cwCsv('ridgemont-q3-2026-qbr-workbook.csv', out);
+}
+
+function cwToolsPanel(){
+  if (drCycle !== 1) return '';
+  return `<div class="content-card cw-panel" style="margin-top:12px;"><h3>Tools we couldn't reach</h3><p class="oc-lede">Onboarding matched the tools it recognised. Anything it has never heard of is a hole in the deck it cannot see — so naming it changes what this draft is allowed to claim.</p>${CW_TOOLS_MISSING.map(t=>`<p class="cw-what"><strong>${t}</strong> — no connector exists.</p>`).join('')}${cwExtraTools.map(t=>`<p class="cw-what" style="color:var(--br-color-state-danger);"><strong>${t}</strong> — you named it, no connector exists.</p>`).join('')}${(!CW_TOOLS_MISSING.length && !cwExtraTools.length)?`<p class="cw-what">Everything onboarding recognised is reachable this cycle. Warranty/EOS is now a solved N-central asset-export field, not a gap.</p>`:''}<div class="cw-capture"><label class="visually-hidden" for="cw-newtool">Name a tool we missed</label><input type="text" id="cw-newtool" placeholder="Something we missed? e.g. Cloudflare" /><button class="btn ghost" onclick="cwAddTool()">Add it</button></div>${cwExtraTools.length?`<div class="gap-banner" style="margin-top:10px;"><span class="gb-icon">⚠</span><span class="gb-text"><strong>${cwExtraTools.join(', ')} in play and unreadable</strong> · this cycle's risk read is incomplete, not clean</span></div>`:''}<div class="cw-actions" style="margin-top:12px;"><button class="btn primary" onclick="cwExportWorkbook()">⬇ Export the filled workbook (.csv)</button></div><p class="cw-note">${cwOpenTotal()?`${cwOpenTotal()} unsettled item${cwOpenTotal()>1?'s':''} export with their reason attached, not as blanks.`:'Every wall settled — the workbook exports clean.'}</p></div>`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DELTA REVIEW — cycle-2 mode. The 2x lever, per handoff:
+   review ~12 deltas, not 549 cells; one queue, not 8 sheets;
+   machine-sourced + upstream-Expert-cleared deltas auto-clear;
+   standing decisions persist; only judgment calls open the register.
+   Meeting still happens (Beth) — this shrinks SETUP, not the room.
+   ══════════════════════════════════════════════════════════ */
+let drCycle = 2;                          // 1 = first full draft (v1 behaviour) · 2 = delta review (cycle 2+)
+const DR_LAST_CYCLE = 'Q1 2026';
+const DR_BASELINE_HOURS = 1.5;            // Technica's own manual EBR prep baseline (conservative end)
+
+// srcKind: system (first-party field pull) · expert (consumed from another Harness Coworker) · standing (decision carried)
+// kind: auto (no review needed) · judgment (needs Priya's call → opens the register)
+const DELTAS = [
+  // ── Hardware ──
+  { id:'hw-a1', sheet:'hardware', field:'Devices managed', was:'47', now:'50', srcKind:'system', source:'N-central', kind:'auto',
+    note:'3 new enrolments (RGM-LT-022/023/024) — Windows 11, already in policy.' },
+  { id:'hw-a2', sheet:'hardware', field:'Warranty', was:'none expired in-window', now:'RGM-LT-021 expired Jul 2026', srcKind:'system', source:'N-central asset export', kind:'auto',
+    note:'Read from the warranty-expiry column of the same N-central asset export that already fills this sheet — a solved pull, not a connector to build.' },
+  { id:'hw-a3', sheet:'hardware', field:'Patch compliance', was:'94%', now:'96%', srcKind:'expert', source:'Patch Management Expert', kind:'auto',
+    note:'Patch Management Expert ran this cycle (patched_count / failed_count) — the QBR Coworker consumes its result, it does not re-check patches.' },
+  { id:'hw-j1', sheet:'hardware', field:'End-of-life OS', was:'2 on Windows 10', now:'3 on Windows 10', srcKind:'system', source:'N-central', kind:'judgment', findingId:'f9',
+    note:'RGM-LT-019 fell out of support since last cycle — one more device to name as a budget line.' },
+  // ── Employee Review ──
+  { id:'em-a1', sheet:'employee', field:'Active licensed users', was:'22', now:'20', srcKind:'system', source:'Microsoft Entra ID', kind:'auto',
+    note:'2 leavers disabled in Entra; licences reclaimed. Offboarding is a mechanical delta.' },
+  { id:'em-a2', sheet:'employee', field:'Training completion', was:'82%', now:'86%', srcKind:'system', source:'KnowBe4', kind:'auto',
+    note:'KnowBe4 sync — +4 points since last cycle.' },
+  { id:'em-a3', sheet:'employee', field:'Shared-mailbox MFA exemption', was:'—', now:'carried', srcKind:'standing', source:'Standing decision', kind:'auto',
+    note:'2 shared mailboxes marked exempt last cycle. Carried forward — answered once, not re-asked.' },
+  { id:'em-j1', sheet:'employee', field:'MFA — new hire', was:'known service acct only', now:'+1 named user unregistered', srcKind:'system', source:'Microsoft Entra ID', kind:'judgment', findingId:'f12',
+    note:'New account (started 4 Aug) with no MFA method. Onboarding grace, or a miss? Your call.' },
+  // ── Risk Review ──
+  { id:'rk-a1', sheet:'risk', field:'New detection (High)', was:'—', now:'auto-contained', srcKind:'expert', source:'Incident Triage Expert', kind:'auto',
+    note:'A new High-severity signal appeared this cycle — Incident Triage Expert classified it P2 and it was auto-contained. No client-facing action; surfaced so it is not invisible.' },
+  { id:'rk-a2', sheet:'risk', field:'Quarterly incident log', was:'—', now:'3 P2 tickets, root-caused', srcKind:'expert', source:'Ticket Response + Incident Triage + Log Analysis Experts', kind:'auto',
+    note:'Ticket Response pulled and classified the tickets, Incident Triage set severity, Log Analysis wrote the summary. Three Coworkers, consumed as one pre-cleared delta.' },
+  { id:'rk-j1', sheet:'risk', field:'Backup enrolment gap', was:'47/50', now:'48/50', srcKind:'system', source:'Cove', kind:'judgment', findingId:'f2',
+    note:'Improved by one device. The "why" the sources could not answer is still open — carries forward as a judgment call.' },
+  { id:'rk-j2', sheet:'risk', field:'Legacy remote-access appliance', was:'flagged — monitor', now:'still Unverified', srcKind:'system', source:'N-central', kind:'judgment', findingId:'f4',
+    note:'No new evidence this cycle. Still single-source, unconfirmed — needs eyes before it goes in the room.' }
+];
+
+const STANDING_DECISIONS = [
+  { id:'sd1', text:'2 shared mailboxes exempt from the MFA requirement', when:DR_LAST_CYCLE },
+  { id:'sd2', text:'Service account (scanner) MFA exception — accepted', when:'Q3 2025' },
+  { id:'sd3', text:'RGM-FW-01 legacy appliance — monitor, no remediation committed', when:DR_LAST_CYCLE }
+];
+
+const DELTA_SHEETS = ['hardware','employee','risk'];   // Beth's scope: the 3 high-volume machine-export sheets
+function deltasFor(sheet){ return DELTAS.filter(d=>d.sheet===sheet); }
+function deltaAuto(){ return DELTAS.filter(d=>d.kind==='auto'); }
+function deltaJudgment(){ return DELTAS.filter(d=>d.kind==='judgment'); }
+
+function srcBadge(d){
+  const cls = d.srcKind==='expert' ? 'expert' : d.srcKind==='standing' ? 'standing' : 'system';
+  return `<span class="src-badge ${cls}">${d.source}</span>`;
+}
+
+// Lever 2 — tier the review. Judgment deltas inherit their linked finding's defensibility tier;
+// auto deltas carry a tier that says how hard the source was to trust. Standing deltas carry none.
+const TIER_LABEL = { measured:'Measured', benchmarked:'Benchmarked', estimated:'Estimated', unverified:'Unverified' };
+const DELTA_TIER = { 'hw-a1':'measured','hw-a2':'measured','hw-a3':'benchmarked','em-a1':'measured','em-a2':'benchmarked','rk-a1':'measured','rk-a2':'measured' };
+function deltaTier(d){
+  if(d.findingId){ const f=findings.find(x=>x.id===d.findingId); if(f) return f.tier; }
+  return DELTA_TIER[d.id] || null;
+}
+function deltaTierBadge(d){ const t=deltaTier(d); return t ? `<span class="tierbadge ${t}">${TIER_LABEL[t]}</span>` : ''; }
+
+function drSetCycle(n){ if(drCycle===n) return; drCycle=n; renderDraftReview(); window.scrollTo({top:0,behavior:'instant' in window?'instant':'auto'}); }
+
+function deltaGoto(id){
+  const d = DELTAS.find(x=>x.id===id); if(!d) return;
+  if(d.findingId){ drTab='risk'; renderDraftReview(); selectFinding(d.findingId); }
+  else { drTab=d.sheet; renderDraftReview(); }
+  window.scrollTo({top:0,behavior:'instant' in window?'instant':'auto'});
+}
+
+// Compact lane at the top of each of the 3 scoped sheets (cycle 2 only)
+function deltaLane(sheet){
+  if(drCycle!==2) return '';
+  const ds = deltasFor(sheet);
+  if(!ds.length) return '';
+  const open = ds.filter(d=>d.kind==='judgment').length;
+  return `
+    <div class="delta-lane">
+      <div class="dl-head">Changed since ${DR_LAST_CYCLE} — ${ds.length} delta${ds.length>1?'s':''}${open?`, ${open} need${open>1?'':'s'} your call`:', all cleared'}</div>
+      ${ds.map(d=>`
+        <div class="dl-row" ${d.kind==='judgment'?`onclick="deltaGoto('${d.id}')" role="button" tabindex="0" style="cursor:pointer;"`:''}>
+          <span class="dl-dot ${d.kind}"></span>
+          <span class="dl-txt"><b>${d.field}:</b> ${d.was!=='—'?`<span class="dc-was" style="text-decoration:line-through;opacity:.7;">${d.was}</span> → `:''}<b>${d.now}</b> ${deltaTierBadge(d)}${d.kind==='auto'?` <span class="delta-clear">✓ ${d.srcKind==='expert'?'Expert-cleared':d.srcKind==='standing'?'carried':'no review'}</span>`:` <span class="delta-call">needs your call →</span>`}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderDeltaQueue(){
+  const mount = document.getElementById('dr-delta-queue');
+  if(!mount) return;
+  if(drCycle!==2){ mount.innerHTML=''; return; }
+  const autos = deltaAuto(), judg = deltaJudgment();
+  const total = DELTAS.length;
+  const row = d => `
+    <div class="delta-row ${d.kind}" ${d.kind==='judgment'?`onclick="deltaGoto('${d.id}')" role="button" tabindex="0"`:''}>
+      <span class="delta-field">${d.field}<span class="df-sheet">${d.sheet}</span></span>
+      <span class="delta-change">${d.was!=='—'?`<span class="dc-was">${d.was}</span> → `:''}<span class="dc-now">${d.now}</span> — <span style="color:var(--br-color-ink-muted);">${d.note}</span></span>
+      <span class="delta-src">${deltaTierBadge(d)}${srcBadge(d)}${d.kind==='auto'?'<span class="delta-clear">no review</span>':'<span class="delta-call">open →</span>'}</span>
+    </div>`;
+  mount.innerHTML = `
+    <div class="delta-queue">
+      <div class="dq-head">
+        <div>
+          <h2>Cycle 2 · Delta review — ${total} changes since ${DR_LAST_CYCLE}</h2>
+          <p class="dq-sub">Ridgemont's last locked draft is the baseline. The Coworker re-pulled all 8 sheets; only what <em>moved</em> is here. ${judg.length} of ${total} need a human call — the rest cleared themselves.</p>
+        </div>
+      </div>
+
+      <div class="dq-prep">
+        <div class="dqp-stat"><span class="dqp-num strike">549</span><span class="dqp-lbl">cells in the workbook, most machine-filled</span></div>
+        <span class="dqp-arrow">→</span>
+        <div class="dqp-stat"><span class="dqp-num">${judg.length}</span><span class="dqp-lbl">judgment calls you actually review this cycle</span></div>
+        <div class="dq-reach">Reviewing ${judg.length} deltas instead of auditing 549 cells is what lets you run EBRs for <strong>more clients</strong> — a C/D client, normally skipped because the prep isn't worth it, gets reviewed too. Setup drops from the current <strong>~3h</strong> toward the <strong>~1.5h</strong> that makes it worthwhile, and a D-tier client toward <strong>~15 min</strong>. The meeting still happens; the <em>setup</em> is what shrank. <span class="cs-inline">[CS: LOW — illustrative target, untested; 3h→1.5h→15min per the 2026-08-14 workshop]</span></div>
+      </div>
+
+      <div class="dq-group judgment">
+        <div class="dq-group-head">⚠ Needs your call — ${judg.length}</div>
+        ${judg.map(row).join('')}
+      </div>
+
+      <div class="dq-group auto">
+        <div class="dq-group-head">✓ Cleared automatically — ${autos.length}</div>
+        ${autos.map(row).join('')}
+      </div>
+
+      <div class="dq-standing">
+        <div class="dqs-head">Standing decisions carried — ${STANDING_DECISIONS.length}, answered once</div>
+        ${STANDING_DECISIONS.map(s=>`<div class="dqs-row"><span>${s.text}</span><span class="dqs-when">set ${s.when} · not re-asked</span></div>`).join('')}
+      </div>
+
+      <span class="cs-tag">[A — cycle-2 delta set is illustrative fictional data; the ~12-delta / 549-cell ratio and 2x prep target are design hypotheses, not measured. Expert-cleared deltas map to the real seeded Experts in seed_experts.py.]</span>
+    </div>`;
+}
+
+function renderCycleToggle(){
+  document.querySelectorAll('#dr-cycle-toggle .cycle-btn').forEach((b,i)=>b.classList.toggle('active', (i===0&&drCycle===1)||(i===1&&drCycle===2)));
+  const note = document.getElementById('dr-cycle-note');
+  if(note) note.textContent = drCycle===2
+    ? `Delta review — reviewing what changed since ${DR_LAST_CYCLE}. Switch to Cycle 1 to see the full first-draft flow.`
+    : `First full draft — every finding built from scratch. Switch to Cycle 2 for the delta review that makes re-runs fast.`;
 }
 
 /* ══════════════════════════════════════════════════════════

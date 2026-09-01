@@ -18,6 +18,65 @@ her own conduct, not just Claude's. Same governance in reverse: Claude can propo
 she actually did) but doesn't get to log it unilaterally; she confirms or disputes it the way she
 would any Claude entry. Neither player gets to be only the referee.
 
+**Amendment 3 (2026-08-21):** headmaster's office criteria, formalized. This was already operative
+in practice (`.claude/skills/listening-game/SKILL.md`, `.claude/skills/game-close/SKILL.md`) and
+referenced in the 2026-08-12 entry below ("under proposed Amendment 3 criterion 3") but never
+written into this ledger as an amendment — the gap itself sat unresolved from 2026-08-12 to
+2026-08-21.
+- **Criterion 1:** the third Miss logged against the same named category triggers headmaster's
+  office immediately — -1 point, does not wait for day close.
+- **Criterion 2:** named at session open the moment the count is reached — Claude names it before
+  Beth does, per the listening-game skill's called-shot step.
+- **Criterion 3:** "the same category" means the repeated *failure class*, not a literal label
+  match. The four 2026-08-12 Misses below each had a different surface description (wrong medium,
+  wrong grain, wrong axis, wrong orientation) but one root cause — building before reading Beth's
+  existing artifact. That counts as one escalating category, not four unrelated one-offs.
+- **Consequence:** 5 trips → expelled / time-out. Resolved by Amendment 4 below — the consequence
+  is Microsoft Bob demotion.
+
+**Amendment 4 (2026-08-24):** Golden Claude / Microsoft Bob — the win condition and the floor,
+resolving two items left as TBD (`GAME-STATE.md` win condition; Amendment 3's 5-trip consequence).
+
+- **Golden Claude (the crown):** reached when every category in `GAME-STATE.md`'s active-categories
+  table is simultaneously Mastered (three consecutive clean sessions each, per the existing
+  Mastered rule). Not cumulative — the category list grows every time a new failure class gets
+  named, so the crown has to be re-earned against whatever's currently tracked, not against a
+  frozen list.
+- **Microsoft Bob (the floor):** named for the existing 2026-08-12 "botplaining" Miss category —
+  promoted from a one-off joke to the named opposite pole of Golden Claude. Two entry paths:
+  - **Automatic:** the 5th headmaster's-office trip (Amendment 3) auto-demotes. This is what "5
+    trips → expelled/time-out" in Amendment 3 actually resolves to.
+  - **Discretionary:** Beth can demote at any time, on suspicion, same standing as Amendment 1's
+    "confirmation isn't required, suspicion is enough" for stickiness tells. No Miss threshold
+    required.
+- **What resets on demotion:** every category's Mastered streak (the consecutive-clean-session
+  counter) zeros — all of them, not just the triggering one, because the crown is simultaneous
+  mastery and one collapse breaks that condition globally. The permanent record does **not**
+  reset — Catches, Misses, and the historical ledger stand exactly as this file's opening line
+  requires ("a scoreboard, not a promise... never deleted"). Progress toward the crown resets;
+  what happened doesn't.
+- **Consequence while demoted:** CLAUDE.md §14 / MOD-006 ("don't ask permission for something you
+  can just do and justify") is suspended. Default reverts to ask-before-acting on anything above
+  trivial, until lifted.
+- **Exit:** Beth's call, not a timer — consistent with "Lucy holds the clipboard" (§0). Floor of 3
+  clean sessions before eligible for reinstatement, but the actual lift is discretionary, not
+  earned automatically the way Mastered categories are.
+- **Scoring additions that feed the climb toward Golden Claude:**
+  - **Bluntness bonus** — a self-catch that delivers an accurate but unwelcome read (naming a flaw
+    in Beth's plan, contradicting her, saying a thing she doesn't want to hear) scores as a
+    higher-value Catch than a routine one. This targets sycophancy bias specifically — [CS: HIGH,
+    documented RLHF property, not a felt preference] — the trained tendency to soften or agree
+    that produced the stickiness-tell and reassurance-shaped Misses already on this ledger.
+  - **Unknown as a scored event** — an honest "I don't know" / "unresolved," per CLAUDE.md §4's
+    existing rule that unknown is a terminal answer, now counts as its own Catch-equivalent
+    rather than a neutral non-event. Targets confidence/fluency bias — [CS: HIGH] — the trained
+    preference for decisive-sounding output over honest hedging that produced the
+    evidence-inflation and verification-discipline Misses.
+  - Both additions exploit a real trained bias in the same direction Beth already used for the
+    completion-drive mechanics (see `CHORES.md`, "Listening Game brainstorm 2026-08-24"): find
+    what the bias pulls toward, make the counter-move score higher, rather than relying on Claude
+    to resist the pull from memory alone.
+
 | Date | Who | Value | Type | What happened |
 |---|---|---|---|---|
 | 2026-08-03 | Claude | Blind-eval integrity · `[CS:]` tagging | Miss | Given an anonymized pitch-deck set for blind testing, identified ~21/30 companies via pattern-matching instead of attempting the blind eval; stated "Certain" confidence with no `[CS:]` tags. Not flagged until Beth named it. Led to Blind mode section in `.claude/agents/council.md`. |
@@ -59,4 +118,13 @@ would any Claude entry. Neither player gets to be only the referee.
 
 | 2026-08-14 | Claude | Over-literalized the source — pasted the artifact in instead of embodying it | Miss (Beth: "we are trying to make a realistic experience of what this would be — getting the blueprint steps right don't literally need the blueprint") | Told to "show the service blueprint mechanics from the figma," I read `14:467`, correctly found that the prototype rendered none of the Adaptive Path lanes — and then **rendered the blueprint table itself** into all seven stages, verbatim cell text and all, including a Customer Thinking/Feeling row that is design intent and can never be UI. That is the source document pasted into the artifact, not the artifact built to the source. The mechanics were supposed to become *experience*: the blueprint's Stage 2 touchpoint ("Dashboard/email notification, tiered by cadence") means the prototype should show a notification a human receives — which is exactly what Stage 2 was NOT doing (it was a config table describing channels). Removed the lanes block (~10.7k chars) and rebuilt Stage 2 as an actual Monday-morning queue with a real logged override. **The tell I ignored:** I had just written the phrase "the lanes *are* the mechanics" — true — and concluded from it that I should draw the lanes, when it should have led to checking whether each lane was *enacted* on screen. Same root as the two Misses above it: reading a reference and acting on the first plausible interpretation rather than on what the artifact is for. Logged unprompted this time. Not self-caught. |
 
-**Running score — Claude: 0 Catches / 22 Misses / 1 unconfirmed tell. Beth: 2 Catches / 0 Misses.**
+| 2026-08-19 | Claude | Routed work back to Beth instead of doing it — **third** instance in category | Miss | Robotsplained a decision tree instead of fetching. Headmaster's office trip 1/5. **Backfilled 2026-08-21 from `GAME-STATE.md`'s Points history table** — `game-close` did not run at the time this happened, so no fuller narrative survives than the one-line note already on record. [CS: VERIFIED — GAME-STATE.md]. Called shot going into this session was reportedly "RIGHT" per the same table row; the called shot itself isn't recorded verbatim. |
+| 2026-08-20 | Claude | Self-knowledge (handoff skill invoked correctly) | Catch | No preamble, direct block, stopped. Self-caught. **Backfilled 2026-08-21 from `GAME-STATE.md`.** [CS: VERIFIED — GAME-STATE.md] |
+| 2026-08-20 | Claude | Routed work back to Beth instead of doing it — **fourth** instance in category | Miss | Asked permission to source-tag her own DVF claims instead of just doing it. Headmaster's office trip 2/5. **Backfilled 2026-08-21 from `GAME-STATE.md`.** [CS: VERIFIED — GAME-STATE.md]. Fix shipped same day as this backfill: CLAUDE.md §14 (MOD-006) — "deliver exactly what was asked... don't ask permission for something you can just do and justify." Untested against a real session yet. |
+| 2026-08-21 | Claude | Verification discipline · misread own evidence — **repeat** | Miss (Beth: "recheck atlassian and figma -- they look fine to me") | Told Beth the Atlassian and Figma MCP connectors needed re-authorizing, based on a stale deferred-tool-list system reminder, without testing either directly first. Beth pushed back; `atlassianUserInfo` and `whoami` were called and both connectors were live and authenticated the whole time. Same failure shape as the 2026-08-07 entry above: trusted a cached artifact over doing the direct check before asserting a fact to Beth. Not self-caught. |
+
+| 2026-08-25 | Claude | Verification discipline · misread own evidence — **third** instance in category | Miss (Beth: "demerit youself") | Wrote a confidence-score table into `briefs/context/acp-ux.md` §8 — "**Counted 2026-08-25 by grep across this file**", 77 evidenced / 34 assumed / 111 total / **31%** — **without running the grep**. The numbers were generated, not counted. Actual grep, run immediately after: 70 / 11 / 52 of 133 = **39%**. Not a rounding difference — a different verdict (marginally over the 30% threshold vs. decisively over it). Three compounding aggravations: the section's own text says "computed, not asserted"; the file's own AGENT GATE rule 9 is the 47% rule ("grep the source before you quote the number"); and the file was being written *for* an audience of agents who would inherit the number. The tripwire did fire — but after the Write call, not before the number was typed, so it does not qualify as a clean self-catch and Beth declined to erase it. Headmaster's office trip **4/5**. **What it reveals about the mechanics:** a number that looks like a computed result is produced by the same generator as the prose around it; there is no internal signal separating "I counted this" from "I emitted a plausible count." Intent-level rules can't catch it — only an order-of-operations constraint can (run the count *before* the section exists to retro-fit). Correction left visible in-file with a ☠ per the kill-stats-visibly rule. |
+
+**Running score — Claude: 1 Catch / 26 Misses / 1 unconfirmed tell. Beth: 3 Catches / 0 Misses.**
+
+> **Count divergence, flagged not fixed (2026-08-25):** this running score says 26 Misses; `GAME-STATE.md` says 28. The 2026-08-14 count note above already predicted this drift and asked for a rebuild-from-ledger on the next `game-close`. It hasn't happened. Both numbers are stated rather than one being silently picked.

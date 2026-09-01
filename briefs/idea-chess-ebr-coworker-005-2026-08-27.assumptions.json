@@ -1,0 +1,29 @@
+{
+  "target": "ebr-coworker-005-arc — landing + console + confidence-gated build-EBR flow",
+  "stance": "adversarial",
+  "date": "2026-08-27",
+  "owner": "Beth Connor",
+  "note": "p(true) = honest probability the bet holds in market/against evidence. required:true = the concept's market success depends on it (enters naive-survival product).",
+  "bets": [
+    {"id":"BET1","bet":"An MSP's existing EBR has enough structure to draft a coworker from ('show me your report')","state":"[BUILT] as UI, [A] as claim","p":0.45,"required":true,
+     "losing_condition":"Common case is a deck/doc, not an 8-tab workbook; structure not recoverable; flow flatters the organized.","evidence":"onboarding shapes admit 3 quality tiers; Stefanie 'manual first' — many MSPs have no structured report"},
+    {"id":"BET2","bet":"Confidence-gated partial delegation builds trust (hand back what it can't stand behind)","state":"[SPECCED]/fabricated","p":0.50,"required":true,
+     "losing_condition":"Hands the hardest judgment to the least-capable user; ~50% are lost ('what do I do with this'); the confidence scoring itself is the product and is 100% hollow here.","evidence":"Lewis 2026-08-25: 50% need a premium translation/handholding coworker"},
+    {"id":"BET3","bet":"Structure-first onboarding (reads structure, not judgment) is enough for v1","state":"[BUILT] UI / [A]","p":0.45,"required":true,
+     "losing_condition":"The value is judgment (why amber); never captured; no teach-back loop so the coworker never improves at the only thing that matters.","evidence":"own rail; Lewis 'need the reasoning trail'"},
+    {"id":"BET4","bet":"The EBR deliverable is a report-with-sections","state":"[BUILT] as report / [?] vs register","p":0.40,"required":true,
+     "losing_condition":"The durable artifact is a LIVING RISK REGISTER — findings owned, tracked over time, evidence preserved for legal; a document is not a system of record.","evidence":"Lewis 2026-08-25 (1:16, 3:21, 11:07): 'the consistent living breathing artifact should be the risk register'"},
+    {"id":"BET6","bet":"EBR/QBR is the right day-1 coworker to build","state":"[SPECCED]","p":0.75,"required":true,
+     "losing_condition":"If the demanded first job were elsewhere. It is not — QBR Advisor is default #1.","evidence":"FSN-83143 DEC-006 (QBR Advisor priority 2.90, rank 1); Chris Dunlop 'most requested, where we start'. STRENGTH vs the ACP build's Triage-first error."},
+    {"id":"BET8","bet":"A ~4-minute self-serve build reflects how MSPs actually adopt","state":"[BUILT] UI / [A]","p":0.45,"required":true,
+     "losing_condition":"'Manual first, software later' pedagogy; ~50% of buyers lack the maturity/skill; no handholding or client-interview step.","evidence":"Stefanie 2026-07-30; Lewis 2026-08-25"},
+    {"id":"BET7","bet":"N-zo is the right AI expert to power an EBR coworker","state":"[A]","p":0.55,"required":false,
+     "losing_condition":"N-zo is diagnostic/advisory, scoped to device/telemetry/patch, 'does not execute autonomous actions' — a category mismatch for business-narrative reasoning.","evidence":"scout_input/01-nzo-documentation-capabilities.md [CS: VERIFIED]"},
+    {"id":"BET5","bet":"Cross-coworker feeds (Tabletop->risk etc.) are buildable and orchestratable","state":"[SPECCED] UI-only","p":0.45,"required":false,
+     "losing_condition":"Producing coworkers are 0/40 code; flat coworker model has no orchestration to chain them; Lewis wants both 'everything is an ingredient' AND 'fly solo'.","evidence":"idea-chess-build BET9/BET3; Lewis 2026-08-25"},
+    {"id":"BET9","bet":"Evidence/traceability is a later concern, not the spine","state":"[?] absent","p":0.40,"required":false,
+     "losing_condition":"Traceability is the legal insurance policy + system-of-record; without kept evidence it's 'a reporting mechanism, not an attestation mechanism' and loses the GRC moat.","evidence":"Lewis 2026-08-25 (11:07-14:09) 'across from opposing counsel: prove it'"},
+    {"id":"HOLE1","bet":"Sign-off owner (practitioner vs account lead / David vs Vanessa) is settled","state":"[?] unresolved","p":0.30,"required":false,
+     "losing_condition":"Activate gate asks the user to name a signer the product doesn't enforce; medium risk tier undefined.","evidence":"own rail; upstream open question"}
+  ]
+}

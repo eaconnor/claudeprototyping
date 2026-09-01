@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBR Coworker — 004 Assembly</title>
+<!-- This file used to be a second configuration artifact, separate from onboarding.
+     They were the same thing described twice, so they were merged: onboarding.html is now
+     the coworker configuration AND the first-run flow. Its four config panels — primitives,
+     dual-surface split, intent-signal map, output surfaces — live at step 4 of that flow,
+     presented as inferences from the operator's own report rather than a form to fill.
+     Nothing was dropped; the rail's four routed items were merged into onboarding's rail.
+     This file is now a router. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#8500cc; --brand-hero:#a90aff; --brand-soft:rgba(133,0,204,.07);
+    --surface:#fff; --canvas:#f5f5f6; --hover:#fafafa;
+    --heading:#18191a; --text:#45464a; --text-2:#6b6c72;
+    --border:#e6e6ea; --border-strong:#d5d5da;
+    --success:#1a8c4c; --success-bg:#e8f7ed; --warn:#9a6a00; --warn-bg:#f6eeda;
+    --topbar-bg:#160021;
+    --r-ctl:4px; --r-card:8px; --r-pill:999px;
+    --sh:0 1px 2px rgba(24,25,26,.06),0 2px 10px rgba(24,25,26,.04);
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif;
+    --font-m:'Inter',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--canvas);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:20px}
+  .topbar{display:flex;align-items:center;gap:16px;padding:0 28px;height:52px;
+    background:linear-gradient(120deg,var(--topbar-bg) 0%,#26063d 100%);border-bottom:2px solid var(--brand)}
+  .topbar .brand-mark{font-family:var(--font-h);font-weight:800;font-size:15px;color:#fff;display:flex;align-items:center;gap:8px}
+  .topbar .brand-mark .dot{width:8px;height:8px;border-radius:50%;background:var(--brand-hero);box-shadow:0 0 0 4px rgba(192,70,255,.25)}
+  .topbar .msp-name{font-size:12px;color:#cfa6ef;padding-left:16px;border-left:1px solid rgba(255,255,255,.18)}
+  .wrap{max-width:940px;margin:0 auto;padding:34px 28px 70px}
+  h1{font-family:var(--font-h);font-weight:700;font-size:28px;color:var(--heading);letter-spacing:-.01em;margin-bottom:6px}
+  .sub{font-size:14px;color:var(--text-2);max-width:74ch;margin-bottom:26px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  a.card{display:block;text-decoration:none;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--r-card);box-shadow:var(--sh);padding:22px;transition:.14s}
+  a.card:hover{border-color:var(--brand);box-shadow:0 3px 16px rgba(133,0,204,.14);transform:translateY(-1px)}
+  a.card .step{font-family:var(--font-m);font-size:10px;font-weight:700;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--brand);margin-bottom:7px}
+  a.card h2{font-family:var(--font-h);font-weight:600;font-size:19px;color:var(--heading);margin-bottom:7px}
+  a.card p{font-size:13px;color:var(--text-2);line-height:1.55;margin-bottom:11px}
+  a.card .meta{font-family:var(--font-m);font-size:10.5px;color:var(--text-2);border-top:1px solid var(--border);padding-top:9px}
+  .note{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--brand);
+    border-radius:0 var(--r-card) var(--r-card) 0;padding:16px 18px;margin-bottom:16px;font-size:13px;line-height:1.6}
+  .note b{color:var(--heading)}
+  .warn{background:var(--warn-bg);border-left:3px solid var(--warn);border-radius:0 var(--r-card) var(--r-card) 0;
+    padding:16px 18px;font-size:13px;line-height:1.6;color:#6b4a00;margin-bottom:16px}
+  .warn b{color:var(--heading)}
+  .files{font-family:var(--font-m);font-size:11.5px;color:var(--text-2);line-height:1.9}
+  .files a{color:var(--brand);text-decoration:none}
+  .files a:hover{text-decoration:underline}
+  h3{font-family:var(--font-h);font-weight:600;font-size:14px;color:var(--heading);margin:22px 0 8px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand-mark"><span class="dot"></span>Apex — Coworker Console</div>
+  <span class="msp-name">EBR Coworker · 004 Assembly</span>
+</header>
+
+<div class="wrap">
+  <h1>EBR Coworker — 004 Assembly</h1>
+  <p class="sub">Two surfaces. One sets the coworker up from the report an MSP already makes; the other walks a full review cycle as either of the two people who'd run it. Everything named here is fictional — real MSP and practitioner names stay in the source docs.</p>
+
+  <div class="cards">
+    <a class="card" href="onboarding.html">
+      <div class="step">First run · once</div>
+      <h2>Onboarding &amp; configuration</h2>
+      <p>"Show me your report and I'll build you a thing." Reads the structure of an existing EBR, works out which sources feed which section, and drafts a coworker. A human activates it — never the machine.</p>
+      <div class="meta">6 steps · primitives · dual-surface · intent-signal map · draft → activate</div>
+    </a>
+    <a class="card" href="role-play-simulator.html">
+      <div class="step">Every cycle · repeats</div>
+      <h2>Role-play simulator</h2>
+      <p>One full EBR cycle as Marcus or Priya, in the runbook's own eight steps. Real HTTP pulls against six mismatched fixtures, live entity resolution, gates that actually gate.</p>
+      <div class="meta">8 steps · Ingest → Continuity → Judge → Translate → Getting-business → Chooser → Deliver → Liability</div>
+    </a>
+  </div>
+
+  <div class="note">
+    <b>Onboarding and configuration used to be two artifacts.</b> They described the same thing twice, so they were merged. The configuration — primitives, the dual-surface split, the intent-signal map, and the two output surfaces — now lives at <b>step 4 of onboarding</b>, presented as inferences drawn from the operator's own report rather than a form to fill in. This page used to hold that content; it's a router now.
+  </div>
+
+  <div class="warn">
+    <b>What is fabricated, in both surfaces:</b> every grade and every confidence tier. No model runs anywhere in here — the interpretation layer is the actual product and it is the one thing these prototypes hollow out. The pulls, the schema mismatches, the entity-resolution failures, the gates and the state machine are all real.
+  </div>
+
+  <h3>Open, and load-bearing</h3>
+  <div class="files">
+    · The <b>EBR Review primitive</b> is scaffolded, not confirmed — every surface depends on it structurally.<br>
+    · The <b>"8"</b> is unreconciled: at least four non-equivalent 8s live in the corpus (tabs, connectors, sources, integrations). These artifacts say "8 tabs" throughout.<br>
+    · The practitioner's <b>real tabs, opening move, and gap-logic</b> are ⟨VERIFY⟩ in the runbook and encoded here as if settled.<br>
+    · <b>Risk tier</b> (high vs medium) is unconfirmed, so the sign-off gate runs on an assumption nobody ratified.<br>
+    · <b>usecure</b> has no MCP server and no confirmed public API — it arrives by hand, and the report covers it anyway.
+  </div>
+
+  <h3>Files</h3>
+  <div class="files">
+    <a href="onboarding.html">onboarding.html</a> — first-run flow + coworker configuration<br>
+    <a href="role-play-simulator.html">role-play-simulator.html</a> — one full cycle, two roles<br>
+    sources/ — six fixture files with genuinely mismatched schemas<br>
+    ../../scripts/halo-connect.py — probe/pull against a live HaloPSA trial tenant
+  </div>
+</div>
+</body>
+</html>

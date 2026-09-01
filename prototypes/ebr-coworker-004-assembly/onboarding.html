@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBR Coworker — Onboarding (show me your report)</title>
+<!-- FTUX / first-run onboarding. Sibling of role-play-simulator.html — same Apex 2.0 system.
+     Premise: don't ask an MSP to configure a coworker. Ask for the report they already make,
+     read its structure, and draft the coworker from it. A human activates — never the machine.
+     That is acp-core specs/004-ai-coworker-registry User Story 4 verbatim, and the draft/activate
+     split plus draft-locks are real tables in that spec (coworker_families, coworker_versions,
+     coworker_draft_locks, coworker_audit_entries).
+     Connector reality from scout_input/15-21. Names fictional per CLAUDE.md §9b. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#8500cc; --brand-hero:#a90aff; --brand-soft:rgba(133,0,204,.07);
+    --surface:#ffffff; --canvas:#f5f5f6; --hover:#fafafa;
+    --heading:#18191a; --text:#45464a; --text-2:#6b6c72;
+    --border:#e6e6ea; --border-strong:#d5d5da;
+    --success:#1a8c4c; --success-bg:#e8f7ed; --error:#d93333; --error-bg:#fbeaea;
+    --warn:#9a6a00; --warn-bg:#f6eeda; /* amber not in Apex 2.0 source — [OBSERVED]/flagged */
+    --topbar-bg:#160021; --topbar-border:var(--brand);
+    --r-ctl:4px; --r-card:8px; --r-pill:999px;
+    --sh:0 1px 2px rgba(24,25,26,.06),0 2px 10px rgba(24,25,26,.04);
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif;
+    --font-m:'Inter',ui-monospace,monospace;
+    --violet:#5B3A7E; --rail-bg:#f7f3fb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--canvas);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:20px}
+  .shell{display:grid;grid-template-columns:1fr 340px;align-items:start}
+  @media(max-width:1080px){.shell{grid-template-columns:1fr}}
+  .topbar{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding:0 28px;height:52px;
+    background:linear-gradient(120deg,var(--topbar-bg) 0%, #26063d 100%);border-bottom:2px solid var(--topbar-border)}
+  .topbar .brand-mark{font-family:var(--font-h);font-weight:800;font-size:15px;color:#fff;display:flex;align-items:center;gap:8px}
+  .topbar .brand-mark .dot{width:8px;height:8px;border-radius:50%;background:var(--brand-hero);box-shadow:0 0 0 4px rgba(192,70,255,.25)}
+  .topbar .msp-name{font-size:12px;color:#cfa6ef;padding-left:16px;border-left:1px solid rgba(255,255,255,.18)}
+  .topbar .msp-name b{color:#fff;font-weight:600}
+  .topbar-spacer{flex:1}
+  .topbar .persona-pill{font-size:11px;color:#dcc3f2;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:var(--r-pill);padding:3px 11px}
+  .main{padding:24px 32px 60px}
+
+  .banner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--sh);
+    padding:12px 16px;margin-bottom:18px;font-size:12px;color:var(--text-2)}
+  .banner b{color:var(--brand);font-weight:600}
+  h1{font-family:var(--font-h);font-weight:700;font-size:26px;color:var(--heading);letter-spacing:-.01em;margin-bottom:4px}
+  .sub{font-size:13.5px;color:var(--text-2);max-width:78ch;margin-bottom:20px}
+
+  .steps{display:flex;gap:4px;margin-bottom:22px;overflow-x:auto;padding-bottom:4px}
+  .step-chip{flex:1;min-width:112px;border:1px solid var(--border);background:var(--surface);border-radius:var(--r-ctl);
+    padding:8px 10px;font-size:11px;color:var(--text-2);text-align:center}
+  .step-chip .n{font-family:var(--font-h);font-weight:700;font-size:10px;color:var(--brand)}
+  .step-chip.current{border-color:var(--brand);background:var(--brand-soft);color:var(--heading);font-weight:600}
+  .step-chip.done{background:var(--success-bg);border-color:var(--success);color:var(--success)}
+
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--sh);
+    padding:24px;margin-bottom:16px}
+  .panel h2{font-family:var(--font-h);font-weight:600;font-size:20px;color:var(--heading);margin-bottom:6px}
+  .panel .thesis{font-size:13px;color:var(--text-2);margin-bottom:18px;max-width:72ch}
+
+  .btn{font-family:var(--font-h);font-weight:600;font-size:13px;border:none;border-radius:var(--r-ctl);
+    padding:10px 18px;cursor:pointer;transition:.12s}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:#6f00a8}
+  .btn-primary:disabled{background:var(--border-strong);cursor:not-allowed}
+  .btn-ghost{background:var(--surface);border:1px solid var(--border-strong);color:var(--text)}
+  .btn-ghost:hover{background:var(--hover)}
+  .btn-sm{padding:6px 12px;font-size:12px}
+
+  /* Step 1 — drop your report */
+  .dropzone{border:2px dashed var(--border-strong);border-radius:var(--r-card);padding:26px;text-align:center;
+    background:var(--hover);margin-bottom:16px}
+  .dropzone .big{font-family:var(--font-h);font-size:15px;color:var(--heading);margin-bottom:4px}
+  .dropzone .small{font-size:12px;color:var(--text-2)}
+  .shape-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  .shape-card{border:1.5px solid var(--border);border-radius:var(--r-card);padding:14px;cursor:pointer;
+    background:var(--surface);transition:.12s;text-align:left}
+  .shape-card:hover{border-color:var(--brand);background:var(--brand-soft)}
+  .shape-card.picked{border-color:var(--brand);background:var(--brand-soft)}
+  .shape-card .t{font-family:var(--font-h);font-weight:600;font-size:13.5px;color:var(--heading);margin-bottom:4px}
+  .shape-card .d{font-size:11.5px;color:var(--text-2);line-height:1.45}
+  .shape-card .m{font-family:var(--font-m);font-size:10.5px;color:var(--brand);margin-top:8px;letter-spacing:.02em}
+
+  /* Step 2 — parse */
+  .parse-console{background:#160021;border-radius:var(--r-card);padding:14px 16px;margin-bottom:14px;
+    font-family:var(--font-m);font-size:11.5px;line-height:1.75;max-height:300px;overflow-y:auto}
+  .parse-console .cl{display:flex;gap:10px;color:#cfa6ef}
+  .parse-console .cl .ts{color:#7a5a92;flex:none;font-variant-numeric:tabular-nums}
+  .parse-console .cl.ok{color:#7ee0a4}.parse-console .cl.warn{color:#ffcf6b}
+  .parse-console .cl.err{color:#ff8f8f}.parse-console .cl.dim{color:#8a72a0}
+
+  .sect-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:8px}
+  .sect-table th{text-align:left;font-family:var(--font-h);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--text-2);padding:8px 10px;border-bottom:2px solid var(--border-strong)}
+  .sect-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+  .pill{display:inline-block;font-family:var(--font-m);font-size:9.5px;font-weight:600;padding:2px 7px;
+    border-radius:var(--r-pill);white-space:nowrap}
+  .pill.mcp{background:var(--success-bg);color:var(--success)}
+  .pill.manual{background:var(--warn-bg);color:var(--warn)}
+  .pill.none{background:var(--error-bg);color:var(--error)}
+  .pill.judgment{background:var(--brand-soft);color:var(--brand)}
+
+  .callout{border-left:3px solid var(--brand);background:var(--brand-soft);border-radius:0 var(--r-ctl) var(--r-ctl) 0;
+    padding:14px 16px;margin:14px 0;font-size:13px;color:var(--text)}
+  .callout b{color:var(--heading)}
+  .warncall{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 var(--r-ctl) var(--r-ctl) 0;
+    padding:14px 16px;margin:14px 0;font-size:13px;color:#6b4a00}
+  .warncall b{color:var(--heading)}
+
+  /* Step 4 — draft config */
+  .cfg{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;margin-bottom:14px}
+  .cfg-head{background:var(--hover);padding:10px 14px;font-family:var(--font-m);font-size:11px;
+    color:var(--text-2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+  .cfg-row{display:flex;gap:14px;padding:12px 14px;border-bottom:1px solid var(--border);align-items:flex-start}
+  .cfg-row:last-child{border-bottom:none}
+  .cfg-row .k{font-family:var(--font-m);font-size:11px;color:var(--brand);flex:none;width:132px;padding-top:2px}
+  .cfg-row .v{flex:1;font-size:12.5px;color:var(--heading)}
+  .cfg-row .v .why{font-size:11.5px;color:var(--text-2);margin-top:3px;line-height:1.45}
+  .cfg-row select,.cfg-row input{border:1px solid var(--border-strong);border-radius:var(--r-ctl);padding:5px 8px;
+    font-size:12.5px;font-family:var(--font-b);background:var(--surface)}
+
+  /* Folded-in configuration surface — onboarding and config are one thing, not two artifacts.
+     Everything below is presented as an inference FROM their report, not a form to fill. */
+  .cfg-h{font-family:var(--font-h);font-weight:600;font-size:14px;color:var(--heading);margin:22px 0 4px}
+  .cfg-sub{font-size:12px;color:var(--text-2);margin-bottom:11px;max-width:70ch}
+  .prim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin-bottom:6px}
+  .prim{border:1px solid var(--border);border-radius:var(--r-card);padding:12px 13px;background:var(--surface)}
+  .prim.gap{border-color:var(--brand);background:var(--brand-soft)}
+  .prim .pn{font-family:var(--font-h);font-weight:600;font-size:13px;color:var(--heading);margin-bottom:4px;
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .prim .pd{font-size:11.5px;color:var(--text-2);line-height:1.45}
+  .mini-tag{font-family:var(--font-m);font-size:9px;font-weight:700;padding:1px 6px;border-radius:var(--r-pill);
+    background:var(--warn-bg);color:var(--warn);letter-spacing:.03em}
+  .mini-tag.ok{background:var(--success-bg);color:var(--success)}
+  .dual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+  @media(max-width:760px){.dual{grid-template-columns:1fr}}
+  .dual-col{border-radius:var(--r-card);padding:13px 15px;border:1px solid var(--border)}
+  .dual-col.int{background:#f4f4f6;border-left:3px solid var(--text-2)}
+  .dual-col.cli{background:var(--brand-soft);border-left:3px solid var(--brand)}
+  .dual-col .dk{font-family:var(--font-h);font-weight:600;font-size:12.5px;color:var(--heading);margin-bottom:5px}
+  .dual-col p{font-size:11.5px;color:var(--text-2);line-height:1.5}
+  .surf{font-family:var(--font-m);font-size:10px;background:var(--hover);border:1px solid var(--border);
+    padding:2px 7px;border-radius:var(--r-pill);color:var(--text)}
+
+  .draft-badge{display:inline-flex;align-items:center;gap:6px;background:var(--warn-bg);color:var(--warn);
+    font-family:var(--font-m);font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);
+    letter-spacing:.04em;margin-bottom:12px}
+  .active-badge{display:inline-flex;align-items:center;gap:6px;background:var(--success-bg);color:var(--success);
+    font-family:var(--font-m);font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);
+    letter-spacing:.04em;margin-bottom:12px}
+
+  .gate-box{border:2px solid var(--brand);background:var(--brand-soft);border-radius:var(--r-card);padding:18px;margin:14px 0}
+  .gate-box h3{font-family:var(--font-h);font-size:15px;margin-bottom:6px;color:var(--heading)}
+  .gate-box p{font-size:12.5px;color:var(--text);margin-bottom:12px;max-width:66ch}
+  label.chk{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text);cursor:pointer;margin-bottom:9px}
+  label.chk input{margin-top:2px;flex:none}
+
+  .diff{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:820px){.diff{grid-template-columns:1fr}}
+  .diff-col{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden}
+  .diff-col .h{padding:9px 13px;font-family:var(--font-h);font-size:12px;font-weight:600;border-bottom:1px solid var(--border)}
+  .diff-col.theirs .h{background:var(--hover);color:var(--text-2)}
+  .diff-col.ours .h{background:var(--topbar-bg);color:#fff}
+  .diff-col ul{padding:12px 14px 12px 30px;font-size:12.5px}
+  .diff-col li{margin-bottom:6px;line-height:1.45}
+  .diff-col li.new{color:var(--success);font-weight:500}
+  .diff-col li.gap{color:var(--warn)}
+
+  /* Bradley rail */
+  .rail{background:var(--rail-bg);border-left:4px solid var(--violet);box-shadow:inset 6px 0 14px -10px rgba(91,58,126,.35);padding:24px 20px;font-size:13px}
+  .rail .badge{display:inline-flex;align-items:center;gap:6px;background:var(--violet);color:#fff;font-family:var(--font-m);font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:4px 10px;border-radius:var(--r-pill);margin-bottom:14px}
+  .rail h3{font-family:var(--font-h);color:var(--violet);font-size:14px;margin:20px 0 8px}
+  .rail h3:first-of-type{margin-top:0}
+  .rail p{color:#3a2e4d;line-height:1.55;margin-bottom:8px}
+  .rail ul{padding-left:18px;margin-bottom:4px}
+  .rail li{color:#3a2e4d;line-height:1.5;margin-bottom:6px}
+  .rail .card{background:#fff;border:1px solid #e2d9ee;border-radius:var(--r-ctl);padding:12px;margin-bottom:10px}
+  .rail .card .team{font-family:var(--font-m);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--violet);margin-bottom:5px}
+  .rail .card .does{font-size:12.5px;color:var(--heading);font-weight:500;margin-bottom:5px;line-height:1.4}
+  .rail .card .why,.rail .card .ship{font-size:11.5px;color:var(--text-2);line-height:1.4;margin-bottom:3px}
+  .rail footer{margin-top:18px;padding-top:12px;border-top:1px solid #e2d9ee;font-family:var(--font-m);font-size:10px;color:#7a6d8c;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand-mark"><span class="dot"></span>Apex — Coworker Console</div>
+    <span class="msp-name"><b>Bracken IT Group</b> · first run</span>
+    <div class="topbar-spacer"></div>
+    <span class="persona-pill">Onboarding · fictional seed data</span>
+  </header>
+
+  <div class="main">
+    <div class="banner">
+      <b>Don't configure a coworker. Show it the report you already make.</b> This is the first-run flow: you bring last quarter's EBR, it reads the structure, works out which sources feed which section, and drafts a coworker. <b>It never activates itself</b> — that's acp-core <code>004-ai-coworker-registry</code> User Story 4, and the draft/activate split is a real table in that spec. What's fabricated here: the parse quality and every confidence number.
+    </div>
+
+    <h1>Show me your report and I'll build you a thing</h1>
+    <p class="sub">Six steps, about four minutes. The last one is a human clicking activate — deliberately, because a coworker that switches itself on is a coworker nobody agreed to.</p>
+
+    <div class="steps" id="steps"></div>
+    <div id="stage"></div>
+  </div>
+
+  <div class="rail">
+    <div class="badge">◐ TIER 1 · CONCEPT</div>
+    <p>Tests one bet: that an MSP's existing EBR contains enough structure to draft a coworker from, so onboarding is "show us what you do" rather than "fill in this config."</p>
+
+    <h3>What's real</h3>
+    <ul>
+      <li>The draft→activate split, draft locks, and immutable versions are real tables in acp-core <code>004-ai-coworker-registry</code> (42/46 done) — not invented for this mock.</li>
+      <li>Guardrails and Triggers are real JSONB shapes with Pydantic models upstream (<code>GuardrailConfig</code>, <code>TriggerConfig</code> discriminated union).</li>
+      <li>The connector availability per source is scouted and sourced, not assumed.</li>
+    </ul>
+
+    <h3>What's fabricated</h3>
+    <ul>
+      <li>The parse itself. Reading structure out of a real 8-tab spreadsheet is the hard part and none of it happens here.</li>
+      <li>Every confidence number on the inference table.</li>
+    </ul>
+
+    <h3>What will hurt you</h3>
+    <ul>
+      <li>Structure is inferable. <b>Judgment isn't.</b> The report says a finding was amber; it never says why. That gap doesn't close at onboarding — it closes over cycles, or never.</li>
+      <li>An MSP whose EBR is a slide deck with no consistent structure gets a much worse draft than one with an 8-tab workbook. This flow flatters the organised.</li>
+      <li>The <b>EBR Review primitive is scaffolded, not confirmed</b>. If it lands structurally different, every surface built against it needs rework, not relabeling.</li>
+      <li>The <b>"8" is still unreconciled</b> — at least four non-equivalent 8s live in the corpus (8 tabs, 8 connectors, 8 sources, 8 integrations). This artifact says "8 tabs" throughout and may be counting the wrong thing.</li>
+      <li>Nobody has decided what happens when the draft is wrong in a way the MSP doesn't notice until cycle three.</li>
+    </ul>
+
+    <h3>Routed</h3>
+    <div class="card">
+      <div class="team">Research</div>
+      <div class="does">Verify the practitioner's real 8 tabs, opening move, and gap-logic against actual practice — then get two more MSP EBRs to test whether structure is recoverable at all.</div>
+      <div class="why">Why now: this whole flow now encodes the runbook's ⟨VERIFY⟩ slots as if settled. Gate 3 cites them [D] while Gate 1 tags the same fact [?] — the clearest internal inconsistency in the corpus. Sample size so far: zero. [?]</div>
+      <div class="ship">If shipped without it: the coworker's judgment pass runs on documented practice nobody confirmed, and onboarding works in the demo but fails on the second real customer.</div>
+      <div class="why"><b>[ROI]</b><br>Business: Unknown — gap.<br>User: Decides whether the practitioner trusts the output enough to sign off.<br>Unknown: whether any of the 8 tabs differ enough to change the grading logic.</div>
+    </div>
+    <div class="card">
+      <div class="team">Design</div>
+      <div class="does">Confirm or replace the scaffolded EBR Review primitive, then design the teach-back loop — how a practitioner corrects a grade and the coworker retains it.</div>
+      <div class="why">Why now: every surface here depends structurally on that primitive. And this flow reads structure but not judgment — the correction path is where judgment would actually get encoded. Neither is designed. [?]</div>
+      <div class="ship">If shipped without it: build invents a placeholder primitive under time pressure, and the coworker never gets better at the only thing that matters.</div>
+      <div class="why"><b>[ROI]</b><br>Business: Unknown — gap.<br>User: Turns a static template into something that learns their read.<br>Unknown: whether Vertesia's content model can even host this primitive shape.</div>
+    </div>
+    <div class="card">
+      <div class="team">Product</div>
+      <div class="does">Confirm risk tier (high vs medium), define what a medium guardrail would do, and decide what a wrong draft costs to correct mid-flight.</div>
+      <div class="why">Why now: "don't silently resolve this" is unenforceable — there's no medium behaviour specified to resolve to. And versions are immutable upstream, so "fix the coworker" means a new version plus reactivation. [?]</div>
+      <div class="ship">If shipped without it: build ships the high-tier gate because it's the only behaviour ever specified, and MSPs live with a bad draft because correcting it looks like starting over.</div>
+      <div class="why"><b>[ROI]</b><br>Business: A lighter medium tier could speed adoption if liability genuinely doesn't require full sign-off — untested.<br>User: Fewer sign-off clicks if medium is real.<br>Unknown: whether "medium" applies to this runbook at all.</div>
+    </div>
+    <div class="card">
+      <div class="team">Eng</div>
+      <div class="does">Reconcile the "8" count before Phase 3 connector build, and wire this draft to the real <code>coworker_versions</code> POST with a draft lock.</div>
+      <div class="why">Why now: four non-equivalent 8s are live right now, cheapest to untangle before code depends on one. The registry API and pessimistic edit lock already exist [D — acp-core @ 2b76d55].</div>
+      <div class="ship">If shipped without it: a connector build ships against the wrong count and someone finds out mid-sprint; two admins onboard simultaneously and overwrite each other.</div>
+      <div class="why"><b>[ROI]</b><br>Business: Unknown — no cost model for the mismatch exists.<br>User: Prevents a silent lost-update on first run.<br>Unknown: which "8" the Nov 2 commitment is counting against.</div>
+    </div>
+
+    <footer>
+      grounded in: acp-core <code>004-ai-coworker-registry</code> + <code>004-mcp-configs</code> @ 2b76d55 · technica-ebr-runbook-draft-2026-08-21.md · apex-sentient-design-deck-ref-2026-08-20.md · critic-pass-1.md / critic-pass-2.md · FigJam 74ru22mcRfrJKFoyvsnNh0 · scout_input/15–21<br>
+      <b>This file is now both the onboarding flow and the coworker configuration</b> — they were two artifacts and are one. index.html routes here.<br>
+      sibling: role-play-simulator.html — the per-cycle flow this hands off to<br>
+      seed data fictional throughout · 0% Claude on the strategic bet, or on whether "show us your report" is the right onboarding premise — Beth's and Nicole's, named and not re-argued here
+    </footer>
+  </div>
+</div>
+
+<script>
+const STEPS = ['Bring your report','Read the structure','Work out the sources','Draft the coworker','You activate it','First run'];
+
+/* Three realistic EBR shapes. The point of offering more than one: the flow's quality depends
+   entirely on how structured the input is, and that variance should be visible, not hidden. */
+const SHAPES = [
+  { id:'workbook', name:'8-tab Excel workbook', meta:'the structured case',
+    desc:'Tabs per control area, consistent columns, a grading column, a carry-forward tab. What a practitioner who has done this 40 times ends up with.',
+    quality:'high', tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Incidents & tickets','Carry-forward'] },
+  { id:'deck', name:'Last quarter\'s slide deck', meta:'the common case',
+    desc:'12 slides, headings but no consistent structure, findings written as prose, grades implied by RAG colour rather than stated.',
+    quality:'medium', tabs:['Where we are','What changed','Risks','Recommendations','Next quarter'] },
+  { id:'doc', name:'A Word doc and some notes', meta:'the hard case',
+    desc:'One long document, no headings that repeat between quarters, everything in paragraphs. Structure exists only in the practitioner\'s head.',
+    quality:'low', tabs:['(no repeating structure detected)'] },
+];
+
+/* Section → source inference. Availability is SCOUTED, not assumed — see scout_input/17,19. */
+const INFERENCE = [
+  { section:'Identity & access', source:'Cloud Capsule (M365)', avail:'mcp',
+    note:'Microsoft ships an official MCP server. Delegated permissions only — a human authorises per tenant.' },
+  { section:'Identity & access', source:'Enforcer (Inforcer)', avail:'mcp',
+    note:'Community MCP server exists, read-only, containerised, 9 releases since June.' },
+  { section:'Backup & recovery', source:'Roost (Cove)', avail:'bridge',
+    note:'No vendor MCP. Has an OpenAPI spec — bridgeable, then curated into intent-shaped tools.' },
+  { section:'Patching', source:'N-Central', avail:'mcp',
+    note:'N-able ships its own MCP server, GA. api.n-able.com/mcp-read-only.' },
+  { section:'Awareness training', source:'Usecure', avail:'manual',
+    note:'No MCP server exists — registry returns zero, and whether a public API exists at all is unresolved. Hand-supplied each cycle.' },
+  { section:'Network', source:'N-Central', avail:'mcp', note:'Same connector as patching — network policy lives on the same source.' },
+  { section:'Incidents & tickets', source:'Halo', avail:'mcp',
+    note:'Halo ships its own MCP endpoint, plus two community families. Pick carefully.' },
+  { section:'Carry-forward', source:'— previous EBR —', avail:'judgment',
+    note:'No external source. This is the delta against what you shipped last time. Your own artifact is the input.' },
+  { section:'Exec summary', source:'— your judgment —', avail:'judgment',
+    note:'Not inferable from any source. This is the part you write, or correct, every cycle.' },
+];
+
+let state = { step:0, shape:null, parsed:false, parseLog:[], sourcesDone:false,
+  cfg:{ name:'EBR Coworker — Bracken', autonomy:'assisted', trigger:'on-demand', risk:'high' },
+  ack:{read:false, judgment:false, owner:false}, activated:false };
+
+function el(id){ return document.getElementById(id); }
+
+function renderSteps(){
+  el('steps').innerHTML = STEPS.map((s,i)=>{
+    let c='step-chip'; if(i===state.step)c+=' current'; else if(i<state.step)c+=' done';
+    return `<div class="${c}"><div class="n">STEP ${i+1}</div>${s}</div>`;
+  }).join('');
+}
+
+function plog(cls,text){
+  state.parseLog.push({cls,text,t:String(state.parseLog.length).padStart(2,'0')});
+  const c=el('pc'); if(!c)return;
+  c.innerHTML = state.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('');
+  c.scrollTop = c.scrollHeight;
+}
+
+function shape(){ return SHAPES.find(s=>s.id===state.shape); }
+
+function renderStage(){
+  const s = state.step;
+  let h = '';
+
+  if(s===0){
+    h = `<div class="panel">
+      <h2>Bring the report you already make</h2>
+      <div class="thesis">Not a template, not a sample — the actual thing you sent a client last quarter. The messier it is, the more useful, because that's what onboarding has to survive.</div>
+      <div class="dropzone">
+        <div class="big">Drop your last EBR here</div>
+        <div class="small">.xlsx · .pptx · .docx · .pdf — nothing leaves your tenant</div>
+      </div>
+      <p style="font-size:12px;color:var(--text-2);margin-bottom:12px">Or pick a shape to walk through — each one produces a genuinely different draft:</p>
+      <div class="shape-grid">${SHAPES.map(sh=>`
+        <div class="shape-card ${state.shape===sh.id?'picked':''}" onclick="pick('${sh.id}')">
+          <div class="t">${sh.name}</div>
+          <div class="d">${sh.desc}</div>
+          <div class="m">${sh.meta}</div>
+        </div>`).join('')}</div>
+      <div style="margin-top:18px"><button class="btn btn-primary" ${state.shape?'':'disabled'} onclick="go(1)">Read it →</button></div>
+    </div>`;
+  }
+
+  else if(s===1){
+    const sh=shape();
+    h = `<div class="panel">
+      <h2>Reading the structure</h2>
+      <div class="thesis">Structure only. What sections exist, what repeats between quarters, where the grades live.</div>
+      <div class="parse-console" id="pc">${state.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('')}</div>
+      ${state.parsed?`
+        ${sh.quality==='low'?`<div class="warncall"><b>This one barely parsed.</b> No structure repeats between quarters, so there's almost nothing to build from. A draft from this input would be mostly guesswork — and guessing here means encoding someone's judgment wrong and calling it their runbook. Honest answer: this MSP needs a conversation, not an upload.</div>`:''}
+        ${sh.quality==='medium'?`<div class="warncall"><b>Partial parse.</b> Headings found, but grades are implied by slide colour rather than written down. The draft will guess at the grading scale and will need correcting on the first cycle.</div>`:''}
+        ${sh.quality==='high'?`<div class="callout"><b>Clean parse.</b> Consistent tabs, a grading column, and a carry-forward tab — which is the one that matters most, because it's the only evidence the report is a series rather than a one-off.</div>`:''}
+        <table class="sect-table"><thead><tr><th>Section found</th><th>Repeats between quarters?</th></tr></thead><tbody>
+        ${sh.tabs.map((t,i)=>`<tr><td><b>${t}</b></td><td style="color:var(--text-2)">${sh.quality==='low'?'no':(i<2||sh.quality==='high'?'yes':'probably')}</td></tr>`).join('')}
+        </tbody></table>
+        <div style="margin-top:16px"><button class="btn btn-primary" onclick="go(2)">Work out the sources →</button></div>
+      `:''}
+    </div>`;
+  }
+
+  else if(s===2){
+    h = `<div class="panel">
+      <h2>Which sources feed which section</h2>
+      <div class="thesis">Each section needs data from somewhere. Here's where, and whether it can be connected — availability below is scouted against the real MCP registry, not assumed.</div>
+      <table class="sect-table"><thead><tr><th>Section</th><th>Needs</th><th>Can we connect it?</th><th></th></tr></thead><tbody>
+      ${INFERENCE.map(r=>`<tr>
+        <td><b>${r.section}</b></td>
+        <td>${r.source}</td>
+        <td><span class="pill ${r.avail==='bridge'?'manual':r.avail}">${
+          r.avail==='mcp'?'MCP server exists':r.avail==='bridge'?'bridge from OpenAPI':
+          r.avail==='manual'?'hand-supplied':'your judgment'}</span></td>
+        <td style="font-size:11.5px;color:var(--text-2);max-width:34ch">${r.note}</td>
+      </tr>`).join('')}
+      </tbody></table>
+      <div class="callout"><b>Seven of nine sections connect. One arrives by hand. Two are yours.</b>
+      The hand-supplied one still gets interpreted and still appears in the report — a report with a hole in it isn't a report. What changes is the confidence, not whether the finding gets made.</div>
+      <div class="warncall"><b>The two marked "your judgment" are the honest limit of this whole flow.</b> The exec summary and the carry-forward are where a practitioner's read lives, and no connector produces them. This onboarding can tell you <em>what</em> you report on. It cannot tell you why you called something amber. That gap closes over cycles of correction, or it doesn't close.</div>
+      <div style="margin-top:16px"><button class="btn btn-primary" onclick="go(3)">Draft the coworker →</button></div>
+    </div>`;
+  }
+
+  else if(s===3){
+    const c=state.cfg;
+    h = `<div class="panel">
+      <div class="draft-badge">◐ DRAFT — NOT ACTIVE</div>
+      <h2>Here's what I'd build</h2>
+      <div class="thesis">A draft <code>coworker_version</code>. Immutable once activated, so read it now. Everything here is editable and every line says where it came from.</div>
+      <div class="cfg">
+        <div class="cfg-head"><span>coworker_families / coworker_versions · status: draft</span><span>acp-core 004-ai-coworker-registry</span></div>
+        <div class="cfg-row"><div class="k">name</div><div class="v">
+          <input value="${c.name}" onchange="setCfg('name',this.value)" style="width:280px">
+          <div class="why">From the report's own title block.</div></div></div>
+        <div class="cfg-row"><div class="k">autonomy</div><div class="v">
+          <select onchange="setCfg('autonomy',this.value)">
+            <option value="assisted" ${c.autonomy==='assisted'?'selected':''}>Assisted — drafts, waits for a human</option>
+            <option value="supervised" ${c.autonomy==='supervised'?'selected':''}>Supervised — acts, human can intervene</option>
+            <option value="autonomous" ${c.autonomy==='autonomous'?'selected':''}>Autonomous — acts alone</option>
+          </select>
+          <div class="why">Defaulted to Assisted. Nothing about your report suggests you'd hand this over unsupervised on day one, and autonomy is promotable later.</div></div></div>
+        <div class="cfg-row"><div class="k">trigger</div><div class="v">
+          <select onchange="setCfg('trigger',this.value)">
+            <option value="on-demand" ${c.trigger==='on-demand'?'selected':''}>On demand — you start it</option>
+            <option value="file-drop" ${c.trigger==='file-drop'?'selected':''}>File drop — starts when data arrives</option>
+            <option value="signal" ${c.trigger==='signal'?'selected':''}>Signal-fired — starts on a condition</option>
+          </select>
+          <div class="why">Deliberately <b>not</b> calendar-fired. Your carry-forward tab shows reviews slipping past quarter end anyway — a calendar trigger would just make the tool lie about its own cadence.</div></div></div>
+        <div class="cfg-row"><div class="k">guardrails</div><div class="v">
+          Named sign-off required before anything renders client-facing.
+          <div class="why">Inferred from the report being client-facing and carrying liability language. <b>Risk tier is unconfirmed</b> — flagged <code>⟨VERIFY⟩</code> upstream, and it stays flagged here rather than being quietly defaulted.</div></div></div>
+        <div class="cfg-row"><div class="k">confidence floor</div><div class="v">
+          0.80 — below that, expose a verify switch. Unverified never renders client-facing.
+          <div class="why">Not inferred from your report — this is a platform rule, and it's the reason the hand-supplied section needs a human to vouch for it each cycle.</div></div></div>
+        <div class="cfg-row"><div class="k">mcp_requirements</div><div class="v">
+          6 declared · 0 bound
+          <div class="why">The coworker declares what it needs; you bind your own credentialed instances at setup. Nothing here holds a credential.</div></div></div>
+      </div>
+
+      <h3 class="cfg-h">What I'll operate over</h3>
+      <p class="cfg-sub">Primitives — the objects the coworker touches. Four already exist in Apex; the fifth is a gap I've scaffolded rather than invented.</p>
+      <div class="prim-grid">
+        <div class="prim"><div class="pn">Customer</div><div class="pd">Your end-client. Existing Apex primitive.</div></div>
+        <div class="prim"><div class="pn">Device</div><div class="pd">Endpoint inventory feeding the gap-grading pass. Existing.</div></div>
+        <div class="prim"><div class="pn">Policy</div><div class="pd">Config baseline compared against NCSC 10 / Cyber Essentials. Existing.</div></div>
+        <div class="prim"><div class="pn">Audit Log</div><div class="pd">Append-only. Carries the liability log unconditionally.</div></div>
+        <div class="prim gap"><div class="pn">EBR Review <span class="mini-tag">[A] scaffolded</span></div>
+          <div class="pd">No primitive existed for the review itself — critic's sharpest build-blocking gap. Scaffolded as a specialised Audit Log entry (append-only, dated, linked to Customer) plus a rollup over Device/Policy gaps. Not a fifth exotic object. <b>Whether that holds is not mine to decide.</b></div></div>
+      </div>
+
+      <h3 class="cfg-h">Two artifacts, never one with a toggle</h3>
+      <p class="cfg-sub">The internal/client split is structural. A redaction switch on a single document is how candid notes end up in a client's inbox.</p>
+      <div class="dual">
+        <div class="dual-col int"><div class="dk">Internal working notes</div>
+          <p>Every finding, candid, room-only. No sign-off gate. Where you work before anything is chosen.</p></div>
+        <div class="dual-col cli"><div class="dk">Client-facing</div>
+          <p>Only what you picked, at the tier you picked it. Sign-off required when a red finding is in. Unverified is hard-blocked here regardless of sign-off.</p></div>
+      </div>
+
+      <h3 class="cfg-h">What I'll do when you ask</h3>
+      <p class="cfg-sub">Intent → surface → confidence tier. Draft structure — no trial has run, so nothing below is measured.</p>
+      <table class="sect-table"><thead><tr><th>When you ask</th><th>You get</th><th>Expected tier</th><th>If it lands lower</th></tr></thead><tbody>
+        <tr><td>"what changed since last EBR"</td><td><span class="surf">Card</span></td><td>Measured</td><td>—</td></tr>
+        <tr><td>"open this finding"</td><td><span class="surf">Canvas</span></td><td>Measured</td><td>—</td></tr>
+        <tr><td>"compare to last quarter"</td><td><span class="surf">Table</span></td><td>Benchmarked</td><td>expose a verify switch</td></tr>
+        <tr><td>"what should I flag to the client"</td><td><span class="surf">Ranked chooser</span></td><td>Benchmarked</td><td>expose a verify switch</td></tr>
+        <tr><td>"generate the client view"</td><td><span class="surf">Sign-off dialog</span></td><td>gated regardless</td><td>—</td></tr>
+        <tr><td>"what was declined last time"</td><td><span class="surf">Liability log</span></td><td>Measured</td><td>—</td></tr>
+      </tbody></table>
+
+      <h3 class="cfg-h">How I'll hand it back</h3>
+      <div class="prim-grid">
+        <div class="prim"><div class="pn">Dashboard for the room <span class="mini-tag ok">near-term</span></div>
+          <div class="pd">Apex/Vertesia render. The runbook calls this "straightforward" — which is an inference from that word, not a decision anyone stated.</div></div>
+        <div class="prim"><div class="pn">Your workbook, filled <span class="mini-tag">phase-dependent</span></div>
+          <div class="pd">Write-back into your own Excel. Blocked on the M365-write gap (RA-018) — heavier, and not the v1 bet. Your columns and tab order are preserved; the coworker fills cells, it does not restructure your sheet.</div></div>
+      </div>
+
+      <div style="margin-top:18px"><button class="btn btn-primary" onclick="go(4)">Review and activate →</button></div>
+    </div>`;
+  }
+
+  else if(s===4){
+    const a=state.ack, all=a.read&&a.judgment&&a.owner;
+    h = `<div class="panel">
+      <div class="draft-badge">◐ DRAFT — NOT ACTIVE</div>
+      <h2>You activate it, not me</h2>
+      <div class="thesis">A coworker that switches itself on is a coworker nobody agreed to. Three things to confirm — none of them are a formality.</div>
+      <div class="gate-box">
+        <h3>Before this goes live</h3>
+        <label class="chk"><input type="checkbox" ${a.read?'checked':''} onchange="ack('read',this.checked)">
+          <span>I've read the draft config and it matches how we actually run an EBR.</span></label>
+        <label class="chk"><input type="checkbox" ${a.judgment?'checked':''} onchange="ack('judgment',this.checked)">
+          <span>I understand it learned our <b>structure</b>, not our <b>judgment</b> — the grades it proposes are starting points I'll be correcting, especially early.</span></label>
+        <label class="chk"><input type="checkbox" ${a.owner?'checked':''} onchange="ack('owner',this.checked)">
+          <span>I know who signs off before anything reaches a client. <b>That person is named, and it isn't "whoever's logged in."</b></span></label>
+        <button class="btn btn-primary" ${all?'':'disabled'} onclick="activate()">Activate this coworker</button>
+        ${!all?`<div style="font-size:11.5px;color:var(--text-2);margin-top:9px">All three, deliberately. This is the last point where a wrong assumption is cheap to fix.</div>`:''}
+      </div>
+      <div class="warncall"><b>The third box is the weakest link in this whole flow.</b> Upstream, nobody has decided whether the sign-off owner is the technical practitioner or the account lead. This screen asks you to name someone; the product doesn't yet enforce who. Named gap, not a solved one.</div>
+    </div>`;
+  }
+
+  else if(s===5){
+    h = `<div class="panel">
+      <div class="active-badge">● ACTIVE · version 1 · immutable</div>
+      <h2>Built. Here's what changed.</h2>
+      <div class="thesis">Left: the report you brought. Right: what the coworker produces. The differences are the point — and one of them is a subtraction.</div>
+      <div class="diff">
+        <div class="diff-col theirs"><div class="h">What you brought</div><ul>
+          <li>8 tabs, filled by hand each quarter</li>
+          <li>Grades assigned from memory and spot-checks</li>
+          <li>Carry-forward re-derived manually, when there's time</li>
+          <li>Sources opened one at a time, six logins</li>
+          <li>No record of what a client declined</li>
+        </ul></div>
+        <div class="diff-col ours"><div class="h">What it produces now</div><ul>
+          <li class="new">7 of 9 sections populated from connected sources</li>
+          <li class="gap">1 section still hand-supplied — usecure has no connector</li>
+          <li class="new">Carry-forward computed as a delta, not remembered</li>
+          <li class="new">Declined findings logged, append-only</li>
+          <li class="new">Anything under 0.80 held back until a human vouches for it</li>
+          <li class="gap">Grades proposed, not decided — yours to correct</li>
+        </ul></div>
+      </div>
+      <div class="callout"><b>The honest scoreboard:</b> the assembly, the delta, and the liability log are genuinely automated. The judgment isn't, and this flow never claimed it would be. If the grades come back wrong on cycle one, that's the expected outcome — the question is whether correcting them is faster than writing them from scratch. <b>Nobody has measured that yet.</b></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="role-play-simulator.html"><button class="btn btn-primary">Run your first cycle →</button></a>
+        <button class="btn btn-ghost" onclick="reset()">↺ Start onboarding again</button>
+      </div>
+    </div>`;
+  }
+
+  el('stage').innerHTML = h;
+  if(s===1 && !state.parsed) runParse();
+}
+
+function pick(id){ state.shape=id; render(); }
+function setCfg(k,v){ state.cfg[k]=v; }
+function ack(k,v){ state.ack[k]=v; render(); }
+function go(n){ state.step=n; render(); }
+function reset(){ state={ step:0, shape:null, parsed:false, parseLog:[], sourcesDone:false,
+  cfg:{ name:'EBR Coworker — Bracken', autonomy:'assisted', trigger:'on-demand', risk:'high' },
+  ack:{read:false,judgment:false,owner:false}, activated:false }; render(); }
+
+function activate(){
+  state.activated=true;
+  try{
+    localStorage.setItem('ebrCoworkerHandoff', JSON.stringify({
+      name: state.cfg.name,
+      autonomy: state.cfg.autonomy,
+      trigger: state.cfg.trigger,
+      risk: state.cfg.risk,
+      shape: state.shape,
+      shapeName: shape() ? shape().name : null,
+    }));
+  }catch(e){ /* localStorage unavailable — simulator falls back to standalone defaults */ }
+  go(5);
+}
+
+async function runParse(){
+  const sh=shape();
+  state.parseLog=[];
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  plog('dim',`opening ${sh.name.toLowerCase()}…`);
+  await wait(500);
+  plog('',`detected ${sh.tabs.length} section(s)`);
+  await wait(400);
+  for(const t of sh.tabs){ plog(sh.quality==='low'?'err':'ok',`  ${t}`); await wait(160); }
+  await wait(300);
+  if(sh.quality==='high'){
+    plog('ok','grading column found — RAG scale, consistent across tabs');
+    await wait(300);
+    plog('ok','carry-forward tab found — this report is a series, not a one-off');
+    await wait(300);
+    plog('warn','no rationale column anywhere — grades are recorded, reasons are not');
+  } else if(sh.quality==='medium'){
+    plog('warn','no grading column — grades appear to be implied by slide colour');
+    await wait(300);
+    plog('warn','no carry-forward section — cannot tell what was open last quarter');
+    await wait(300);
+    plog('warn','findings are prose; structure will be partly guessed');
+  } else {
+    plog('err','no repeating structure between quarters');
+    await wait(300);
+    plog('err','no grading scheme detected');
+    await wait(300);
+    plog('err','cannot draft a runbook from this without guessing');
+  }
+  await wait(350);
+  plog('dim','— structure read. judgment not read, and not readable. —');
+  state.parsed=true;
+  render();
+}
+
+function render(){ renderSteps(); renderStage(); }
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build the EBR Coworker — N-able</title>
+<!-- Polished FTUX build flow, v2 — reworked after idea-chess (briefs/idea-chess-ebr-coworker-005-2026-08-27.md).
+     Four fixes applied:
+       FIX1 register-first spine — the deliverable is a LIVING RISK REGISTER, not a report with sections
+            (Lewis Pope transcript 2026-08-25: every finding owned, tracked over time, evidence kept).
+       FIX2 handholding path — the confidence-gate hands findings back; a paired Advisor translates them
+            (Lewis: ~50% of users are lost / need a premium translation coworker; Vanessa persona).
+       FIX3 client-interview step — for data no connector holds, the coworker drafts an interview, the
+            MSP approves, a secure link goes to the client, answers flow back (Lewis: don't leave the MSP to gather it).
+       FIX4 teach-back — the practitioner corrects a proposed grade and the coworker retains it (cycle 2 > cycle 1).
+     Plus dual-register sources: plain what/why for Vanessa (non-technical delivery lead) on top,
+     connector/tool specifics for David (technical) underneath. Draft->human-activate invariant (DEC-007).
+     N-able shell, Apex design system inside. Fictional: all findings, grades, confidence numbers, evidence traces. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#140628; --topbar:#160021; --rail:#1b0a2e;
+    --cyan:#38dbff; --cyan-deep:#0bb8e0;
+    --apex:#8500cc; --apex-hero:#a90aff; --apex-soft:rgba(133,0,204,.07);
+    --surface:#fff; --canvas:#f5f5f7; --hover:#fafafa;
+    --heading:#18191a; --text:#45464a; --text-2:#6b6c72;
+    --border:#e6e6ea; --border-strong:#d5d5da;
+    --measured:#0a7d43; --measured-bg:#e8f7ed;
+    --bench:#0b7fa0; --bench-bg:#e6f5fa;
+    --est:#946200; --est-bg:#f8efd8;
+    --unver:#c0392b; --unver-bg:#fbe9e7;
+    --red:#c0392b; --red-bg:#fbe9e7; --amber:#946200; --amber-bg:#f8efd8; --green:#0a7d43; --green-bg:#e8f7ed;
+    --r:6px; --r-card:10px; --r-pill:999px;
+    --sh:0 1px 2px rgba(24,25,26,.06),0 2px 12px rgba(24,25,26,.05);
+    --violet:#5B3A7E; --rail-bg:#f7f3fb;
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif;
+    --font-m:'Inter',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--canvas);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:1.5}
+  a{text-decoration:none;color:inherit}
+
+  .topbar{display:flex;align-items:center;gap:16px;height:56px;padding:0 22px;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.08)}
+  .topbar .logo{font-family:var(--font-h);font-weight:800;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px;letter-spacing:-.02em}
+  .topbar .logo .mk{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(56,219,255,.22)}
+  .topbar .logo .sub{font-weight:600;font-size:12px;color:var(--cyan);padding-left:10px;margin-left:2px;border-left:1px solid rgba(255,255,255,.18)}
+  .topbar .crumb{font-size:12.5px;color:#c9c2da}
+  .topbar .crumb a:hover{color:#fff}
+  .topbar .spacer{flex:1}
+  .topbar .save{font-family:var(--font-m);font-size:11.5px;color:#8b829f}
+  .topbar .ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--apex),var(--cyan-deep));color:#fff;font-family:var(--font-h);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+
+  .shell{display:grid;grid-template-columns:1fr 336px;align-items:start}
+  @media(max-width:1080px){.shell{grid-template-columns:1fr}}
+  .main{padding:26px 34px 70px;max-width:840px;margin:0 auto;width:100%}
+
+  .steps{display:flex;gap:3px;margin-bottom:26px;overflow-x:auto;padding-bottom:4px}
+  .chip{flex:1;min-width:84px;border:1px solid var(--border);background:var(--surface);border-radius:var(--r);padding:8px 7px;font-size:10px;color:var(--text-2);text-align:center;transition:.14s}
+  .chip .n{font-family:var(--font-h);font-weight:700;font-size:8.5px;color:var(--apex);display:block;margin-bottom:2px}
+  .chip.current{border-color:var(--apex);background:var(--apex-soft);color:var(--heading);font-weight:600}
+  .chip.done{background:var(--measured-bg);border-color:#bfe6cd;color:var(--measured)}
+
+  h1{font-family:var(--font-h);font-weight:800;font-size:28px;color:var(--heading);letter-spacing:-.02em;margin-bottom:7px;line-height:1.15}
+  .lede{font-size:15.5px;color:var(--text-2);max-width:66ch;margin-bottom:24px;line-height:1.55}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--sh);padding:26px;margin-bottom:16px}
+
+  .btn{font-family:var(--font-h);font-weight:700;font-size:14px;border:none;border-radius:var(--r);padding:12px 22px;cursor:pointer;transition:.14s;display:inline-block}
+  .btn-primary{background:var(--apex);color:#fff}
+  .btn-primary:hover{background:#6f00a8}
+  .btn-primary:disabled{background:var(--border-strong);cursor:not-allowed}
+  .btn-cyan{background:var(--cyan);color:var(--ink)}
+  .btn-cyan:hover{background:#5fe4ff}
+  .btn-ghost{background:var(--surface);border:1px solid var(--border-strong);color:var(--text)}
+  .btn-ghost:hover{background:var(--hover)}
+  .btn-sm{padding:8px 15px;font-size:12.5px}
+  .actions{margin-top:22px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .actions .back{font-size:13px;color:var(--text-2);cursor:pointer}
+  .actions .back:hover{color:var(--apex)}
+
+  .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:6px 0 4px}
+  @media(max-width:620px){.ai-grid{grid-template-columns:1fr}}
+  .ai-card{border:1.5px solid var(--border);border-radius:var(--r-card);padding:18px;cursor:pointer;transition:.12s;position:relative}
+  .ai-card:hover,.ai-card.picked{border-color:var(--apex);background:var(--apex-soft)}
+  .ai-card .rec{position:absolute;top:-10px;right:14px;background:var(--apex);color:#fff;font-family:var(--font-m);font-size:9px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:var(--r-pill)}
+  .ai-card .nm{font-family:var(--font-h);font-weight:700;font-size:16px;color:var(--heading);margin-bottom:5px;display:flex;align-items:center;gap:8px}
+  .ai-card .nm .dot{width:8px;height:8px;border-radius:50%;background:var(--apex-hero);box-shadow:0 0 7px var(--apex-hero)}
+  .ai-card .d{font-size:12.5px;color:var(--text-2);line-height:1.5}
+  .ai-card .tag{font-family:var(--font-m);font-size:9.5px;color:var(--text-2);margin-top:9px}
+
+  .dropzone{border:2px dashed var(--border-strong);border-radius:var(--r-card);padding:26px;text-align:center;background:var(--hover);margin-bottom:16px;cursor:pointer;transition:.12s}
+  .dropzone:hover{border-color:var(--apex);background:var(--apex-soft)}
+  .dropzone .big{font-family:var(--font-h);font-weight:700;font-size:16px;color:var(--heading);margin-bottom:4px}
+  .dropzone .small{font-size:12.5px;color:var(--text-2)}
+  .or{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--text-2);font-size:12px;font-family:var(--font-m)}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--border)}
+  .shape-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+  .shape{border:1.5px solid var(--border);border-radius:var(--r-card);padding:15px;cursor:pointer;background:var(--surface);transition:.12s;text-align:left}
+  .shape:hover,.shape.picked{border-color:var(--apex);background:var(--apex-soft)}
+  .shape .t{font-family:var(--font-h);font-weight:700;font-size:13.5px;color:var(--heading);margin-bottom:4px}
+  .shape .d{font-size:11.5px;color:var(--text-2);line-height:1.45}
+  .shape .m{font-family:var(--font-m);font-size:10px;color:var(--apex);margin-top:8px}
+  .shape.tmpl{border-color:var(--cyan-deep);background:#f0fafd}
+  .shape.tmpl:hover,.shape.tmpl.picked{border-color:var(--cyan-deep);background:#e3f5fb}
+  .shape.tmpl .m{color:var(--bench)}
+
+  .addfiles{margin-top:14px}
+  .file-chip{display:inline-flex;align-items:center;gap:7px;background:var(--hover);border:1px solid var(--border);border-radius:var(--r-pill);padding:6px 12px;font-size:12px;margin:4px 6px 4px 0;color:var(--text)}
+  .file-chip .x{cursor:pointer;color:var(--text-2);font-weight:700}
+  .file-chip .kind{font-family:var(--font-m);font-size:9.5px;color:var(--text-2)}
+  .add-input{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .add-input input{flex:1;min-width:200px;border:1px solid var(--border-strong);border-radius:var(--r);padding:9px 12px;font-family:var(--font-b);font-size:13px}
+  .add-hint{font-size:12px;color:var(--text-2);margin-top:9px;line-height:1.5}
+
+  .console{background:#160021;border-radius:var(--r-card);padding:15px 17px;margin-bottom:14px;font-family:var(--font-m);font-size:11.5px;line-height:1.8;max-height:320px;overflow-y:auto}
+  .console .cl{display:flex;gap:11px;color:#cfa6ef}
+  .console .cl .ts{color:#7a5a92;flex:none;font-variant-numeric:tabular-nums}
+  .console .cl.ok{color:#7ee0a4}.console .cl.warn{color:#ffcf6b}.console .cl.err{color:#ff8f8f}.console .cl.dim{color:#8a72a0}.console .cl.cw{color:#7fd3ff}
+
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:8px}
+  .tbl th{text-align:left;font-family:var(--font-h);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-2);padding:9px 10px;border-bottom:2px solid var(--border-strong)}
+  .tbl td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+  .pill{display:inline-block;font-family:var(--font-m);font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:var(--r-pill);white-space:nowrap}
+  .pill.auto{background:var(--measured-bg);color:var(--measured)}
+  .pill.cw{background:var(--apex-soft);color:var(--apex)}
+  .pill.client{background:var(--bench-bg);color:var(--bench)}
+  .pill.you{background:#eef0f4;color:var(--text-2)}
+  .tier-pill{display:inline-block;font-family:var(--font-m);font-size:9.5px;font-weight:700;padding:2px 9px;border-radius:var(--r-pill)}
+  .tier-pill.measured{background:var(--measured-bg);color:var(--measured)}
+  .tier-pill.benchmarked{background:var(--bench-bg);color:var(--bench)}
+  .tier-pill.estimated{background:var(--est-bg);color:var(--est)}
+  .tier-pill.unverified{background:var(--unver-bg);color:var(--unver)}
+
+  /* dual-register source rows */
+  .src-row{border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
+  .src-head{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;background:var(--surface)}
+  .src-head:hover{background:var(--hover)}
+  .src-head .sec{font-weight:700;color:var(--heading);flex:none;width:180px}
+  @media(max-width:620px){.src-head .sec{width:auto;flex:1}}
+  .src-head .plain{flex:1;font-size:12.5px;color:var(--text-2)}
+  @media(max-width:620px){.src-head .plain{display:none}}
+  .src-head .caret{color:var(--text-2);font-size:11px;font-family:var(--font-m)}
+  .src-tech{padding:0 14px;max-height:0;overflow:hidden;transition:.18s;background:#fbfaff;border-top:0 solid var(--border)}
+  .src-tech.open{padding:12px 14px;max-height:200px;border-top:1px solid var(--border)}
+  .src-tech .lab{font-family:var(--font-m);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--apex);margin-bottom:6px}
+  .src-tech .kv{font-family:var(--font-m);font-size:11px;color:var(--text);line-height:1.7}
+  .src-tech .kv b{color:var(--heading)}
+
+  .callout{border-left:3px solid var(--apex);background:var(--apex-soft);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin:14px 0;font-size:13px;color:var(--text);line-height:1.55}
+  .callout b{color:var(--heading)}
+  .cw-call{border-left:3px solid var(--apex);background:linear-gradient(90deg,#faf5ff,#fff);border-radius:0 var(--r) var(--r) 0;padding:15px 17px;margin:14px 0;font-size:13px;line-height:1.55}
+  .cw-call b{color:var(--apex)}
+  .warncall{border-left:3px solid var(--est);background:var(--est-bg);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin:14px 0;font-size:13px;color:#6b4a00;line-height:1.55}
+  .warncall b{color:var(--heading)}
+
+  /* interview cards (FIX3) */
+  .iv-card{border:1px solid var(--border);border-radius:var(--r-card);padding:16px 18px;margin-bottom:12px}
+  .iv-card .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .iv-card .top .sec{font-family:var(--font-h);font-weight:700;font-size:14px;color:var(--heading);flex:1}
+  .iv-state{font-family:var(--font-m);font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
+  .iv-state.draft{background:var(--est-bg);color:var(--est)}
+  .iv-state.sent{background:var(--bench-bg);color:var(--bench)}
+  .iv-state.back{background:var(--measured-bg);color:var(--measured)}
+  .iv-q{font-size:12.5px;color:var(--text);background:var(--hover);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;margin-bottom:6px;line-height:1.45}
+  .iv-q .who{font-family:var(--font-m);font-size:9.5px;color:var(--text-2);display:block;margin-bottom:2px}
+
+  /* confidence gating (FIX2 handholding added) */
+  .presets{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:6px 0 18px}
+  @media(max-width:620px){.presets{grid-template-columns:1fr}}
+  .preset{border:1.5px solid var(--border);border-radius:var(--r-card);padding:17px;cursor:pointer;transition:.12s;position:relative}
+  .preset:hover{border-color:var(--apex)}
+  .preset.picked{border-color:var(--apex);background:var(--apex-soft)}
+  .preset .rec{position:absolute;top:-10px;right:14px;background:var(--measured);color:#fff;font-family:var(--font-m);font-size:9px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
+  .preset h3{font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--heading);margin-bottom:6px}
+  .preset p{font-size:12.5px;color:var(--text-2);line-height:1.5}
+  .gate-row{display:flex;align-items:center;gap:12px;padding:11px 13px;border:1px solid var(--border);border-bottom:none;font-size:12.5px}
+  .gate-row:first-child{border-radius:var(--r) var(--r) 0 0}
+  .gate-row:last-child{border-bottom:1px solid var(--border);border-radius:0 0 var(--r) var(--r)}
+  .gate-row .sec{flex:1;font-weight:600;color:var(--heading)}
+  .gate-row .assign{font-family:var(--font-m);font-size:10.5px;font-weight:700;flex:none;width:120px;text-align:right}
+  .gate-row.does .assign{color:var(--measured)} .gate-row.you .assign{color:var(--est)} .gate-row.you{background:#fdfaf2}
+  .toggle{position:relative;width:38px;height:22px;border-radius:var(--r-pill);background:var(--border-strong);cursor:pointer;transition:.15s;flex:none}
+  .toggle.on{background:var(--apex)}
+  .toggle .k{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .toggle.on .k{left:18px}
+  .gate-summary{background:var(--hover);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;font-size:13px;color:var(--text);margin-top:14px;line-height:1.55}
+  .gate-summary b{color:var(--heading)}
+  .handhold{border:1.5px solid var(--cyan-deep);background:#f0fafd;border-radius:var(--r-card);padding:16px 18px;margin-top:16px;display:flex;gap:14px;align-items:flex-start}
+  .handhold .ic{width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid #cfe8f3;display:flex;align-items:center;justify-content:center;flex:none}
+  .handhold .ic svg{width:22px;height:22px;display:block;stroke:var(--bench)}
+  .handhold .body{flex:1}
+  .handhold h4{font-family:var(--font-h);font-weight:700;font-size:14px;color:var(--heading);margin-bottom:4px}
+  .handhold p{font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:10px}
+  .handhold .prem{font-family:var(--font-m);font-size:9.5px;color:var(--bench);background:var(--bench-bg);border-radius:var(--r-pill);padding:2px 8px;margin-left:6px}
+
+  /* risk register (FIX1) */
+  .view-tabs{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+  .view-tabs button{font-family:var(--font-h);font-weight:600;font-size:12.5px;padding:8px 15px;background:var(--surface);border:none;cursor:pointer;color:var(--text-2)}
+  .view-tabs button.on{background:var(--apex);color:#fff}
+  .reg{width:100%;border-collapse:collapse;font-size:12px}
+  .reg th{text-align:left;font-family:var(--font-h);font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-2);padding:8px 9px;border-bottom:2px solid var(--border-strong)}
+  .reg td{padding:9px;border-bottom:1px solid var(--border);vertical-align:top}
+  .reg .finding{font-weight:600;color:var(--heading)}
+  .grade{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .grade.red{background:var(--red)} .grade.amber{background:#d69100} .grade.green{background:var(--green)}
+  .owner-pill{font-family:var(--font-m);font-size:10px;padding:2px 8px;border-radius:var(--r-pill);background:var(--hover);border:1px solid var(--border)}
+  .status-pill{font-family:var(--font-m);font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:var(--r-pill)}
+  .status-pill.open{background:var(--red-bg);color:var(--red)} .status-pill.deferred{background:var(--est-bg);color:var(--est)} .status-pill.accepted{background:var(--bench-bg);color:var(--bench)} .status-pill.remediated{background:var(--green-bg);color:var(--green)}
+  .evidence{font-family:var(--font-m);font-size:10px;color:var(--text-2)}
+  .trend-cell{font-family:var(--font-m);font-size:11px}
+  .trend-up{color:var(--measured)} .trend-flat{color:var(--text-2)} .trend-bad{color:var(--red)}
+  .reg-note{background:#f0fafd;border:1px solid #cfe8f3;border-left:3px solid var(--cyan-deep);border-radius:0 var(--r) var(--r) 0;padding:13px 15px;font-size:12.5px;color:#0b4c5e;margin-top:14px;line-height:1.55}
+  .reg-note b{color:var(--ink)}
+
+  .cfg{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;margin:16px 0}
+  .cfg-head{background:var(--hover);padding:10px 14px;font-family:var(--font-m);font-size:11px;color:var(--text-2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+  .cfg-row{display:flex;gap:14px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:flex-start}
+  .cfg-row:last-child{border-bottom:none}
+  .cfg-row .k{font-family:var(--font-m);font-size:11px;color:var(--apex);flex:none;width:120px;padding-top:2px}
+  .cfg-row .v{flex:1;font-size:12.5px;color:var(--heading)}
+
+  .draft-badge{display:inline-flex;align-items:center;gap:6px;background:var(--est-bg);color:var(--est);font-family:var(--font-m);font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);letter-spacing:.04em;margin-bottom:12px}
+  .active-badge{display:inline-flex;align-items:center;gap:6px;background:var(--measured-bg);color:var(--measured);font-family:var(--font-m);font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);letter-spacing:.04em;margin-bottom:12px}
+  .gate-box{border:2px solid var(--apex);background:var(--apex-soft);border-radius:var(--r-card);padding:20px;margin:14px 0}
+  .gate-box h3{font-family:var(--font-h);font-size:16px;margin-bottom:10px;color:var(--heading)}
+  label.chk{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text);cursor:pointer;margin-bottom:11px;line-height:1.45}
+  label.chk input{margin-top:2px;flex:none;width:16px;height:16px;accent-color:var(--apex)}
+
+  /* teach-back (FIX4) */
+  .tb-box{border:1px solid var(--border);border-radius:var(--r-card);padding:18px;margin:14px 0;background:var(--surface)}
+  .tb-box .prop{font-size:13.5px;color:var(--heading);margin-bottom:12px;line-height:1.5}
+  .tb-box .prop b{color:var(--heading)}
+  .tb-grades{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .tb-grade{border:1.5px solid var(--border);border-radius:var(--r);padding:8px 14px;cursor:pointer;font-family:var(--font-h);font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:7px}
+  .tb-grade:hover{border-color:var(--apex)}
+  .tb-grade.picked{border-color:var(--apex);background:var(--apex-soft)}
+  .tb-note{width:100%;border:1px solid var(--border-strong);border-radius:var(--r);padding:9px 12px;font-family:var(--font-b);font-size:12.5px;margin-bottom:12px;resize:vertical;min-height:52px}
+  .tb-saved{background:var(--measured-bg);border:1px solid #bfe6cd;border-radius:var(--r);padding:12px 15px;font-size:13px;color:var(--measured);line-height:1.5}
+  .tb-saved b{color:var(--measured)}
+
+  .diff{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:700px){.diff{grid-template-columns:1fr}}
+  .diff-col{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden}
+  .diff-col .h{padding:10px 14px;font-family:var(--font-h);font-size:12.5px;font-weight:600;border-bottom:1px solid var(--border)}
+  .diff-col.theirs .h{background:var(--hover);color:var(--text-2)}
+  .diff-col.ours .h{background:var(--ink);color:#fff}
+  .diff-col ul{padding:12px 15px 12px 30px;font-size:12.5px}
+  .diff-col li{margin-bottom:7px;line-height:1.45}
+  .diff-col li.new{color:var(--measured);font-weight:500}
+  .diff-col li.gap{color:var(--est)}
+
+  .railpanel{background:var(--rail-bg);border-left:4px solid var(--violet);box-shadow:inset 6px 0 14px -10px rgba(91,58,126,.35);padding:24px 20px;font-size:13px;min-height:100vh}
+  .railpanel .badge{display:inline-flex;align-items:center;gap:6px;background:var(--violet);color:#fff;font-family:var(--font-m);font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:4px 10px;border-radius:var(--r-pill);margin-bottom:14px}
+  .railpanel h3{font-family:var(--font-h);color:var(--violet);font-size:14px;margin:20px 0 8px}
+  .railpanel h3:first-of-type{margin-top:0}
+  .railpanel p{color:#3a2e4d;line-height:1.55;margin-bottom:8px}
+  .railpanel ul{padding-left:18px;margin-bottom:4px}
+  .railpanel li{color:#3a2e4d;line-height:1.5;margin-bottom:6px}
+  .railpanel .card{background:#fff;border:1px solid #e2d9ee;border-radius:var(--r);padding:12px;margin-bottom:10px}
+  .railpanel .card .team{font-family:var(--font-m);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--violet);margin-bottom:5px}
+  .railpanel .card .does{font-size:12.5px;color:var(--heading);font-weight:500;margin-bottom:5px;line-height:1.4}
+  .railpanel .card .why{font-size:11.5px;color:var(--text-2);line-height:1.4;margin-bottom:3px}
+  .railpanel footer{margin-top:18px;padding-top:12px;border-top:1px solid #e2d9ee;font-family:var(--font-m);font-size:10px;color:#7a6d8c;line-height:1.6}
+  @media(max-width:1080px){.railpanel{min-height:auto}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo"><span class="mk"></span>N-able<span class="sub">AI Coworkers</span></div>
+  <div class="crumb"><a href="console.html">AI Coworkers</a> / Build the EBR Coworker</div>
+  <div class="spacer"></div>
+  <div class="save">◐ Draft saved</div>
+  <div class="ava">BC</div>
+</header>
+
+<div class="shell">
+  <div class="main">
+    <div class="steps" id="steps"></div>
+    <div id="stage"></div>
+  </div>
+
+  <aside class="railpanel">
+    <div class="badge">◐ TIER 1 · CONCEPT</div>
+    <p>Tests the bet that an MSP's existing review contains enough structure to draft a coworker from — and that the durable artifact is a <b>living risk register</b>, not a one-off report.</p>
+    <h3>Reworked after Idea Chess</h3>
+    <ul>
+      <li><b>Register-first:</b> the deliverable is now a living risk register — every finding owned, tracked over cycles, evidence kept. (was: a report with sections)</li>
+      <li><b>Handholding path:</b> the confidence-gate now pairs with an Advisor that translates handed-back findings — so it doesn't dump judgment on the non-technical lead (Vanessa).</li>
+      <li><b>Client interview:</b> for data no connector holds, the coworker drafts an interview the client fills — the MSP doesn't chase it.</li>
+      <li><b>Teach-back:</b> correct a grade and the coworker retains it, so cycle two beats cycle one.</li>
+    </ul>
+    <h3>Still fabricated</h3>
+    <ul>
+      <li>Every finding, grade, confidence tier and evidence trace. No model runs; the scoring is the real product and it's hollow here.</li>
+      <li>Teach-back is UX only — nothing actually learns. The supplier coworkers (Security Tabletop etc.) aren't built.</li>
+    </ul>
+    <h3>Still open</h3>
+    <div class="card"><div class="team">Product</div><div class="does">Sign-off owner (David vs Vanessa) + medium risk tier still unspecified.</div><div class="why">The activate gate names a signer the product doesn't enforce. [?]</div></div>
+    <div class="card"><div class="team">Eng</div><div class="does">Register as system-of-record: retention, evidence store, attestation export.</div><div class="why">"Prove it to opposing counsel" needs kept evidence, not just a tier. (Lewis 2026-08-25) [?]</div></div>
+    <footer>
+      grounded: FSN-83143 (DEC-006/007) · acp-core 004-ai-coworker-registry · stefanie-hammond 2026-07-30 · lewis-pope-ebr-details 2026-08-25 · idea-chess-ebr-coworker-005-2026-08-27 · scout_input/01,15–21<br>
+      seed data fictional · sibling: role-play-simulator.html
+    </footer>
+  </aside>
+</div>
+
+<script>
+const STEPS = ['Connect your AI','Bring your report','Read it','Where findings come from','Fill the gaps','How much it does','Your risk register','You activate','First run'];
+
+const SHAPES = [
+  { id:'workbook', name:'8-tab Excel workbook', meta:'the structured case', quality:'high',
+    desc:'Tabs per control area, consistent columns, a grading column, a carry-forward tab.',
+    tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Incidents & tickets','Carry-forward'] },
+  { id:'deck', name:"Last quarter's slide deck", meta:'the common case', quality:'medium',
+    desc:'12 slides, headings but no consistent structure, grades implied by RAG colour.',
+    tabs:['Where we are','What changed','Risks','Recommendations','Next quarter'] },
+  { id:'doc', name:'A Word doc and some notes', meta:'the hard case', quality:'low',
+    desc:'One long document, no repeating structure. It lives in your head.',
+    tabs:['(no repeating structure detected)'] },
+  { id:'stefanie', name:"Stefanie's EBR framework", meta:'start from scratch · template', quality:'high', template:true,
+    desc:"No report yet? Start from the N-able EBR framework — the manual boot-camp process, already structured, risk register built in.",
+    tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Risk register','Carry-forward'] },
+];
+
+/* Each area produces findings for the register. avail drives how the evidence arrives;
+   plain = Vanessa-readable; tech = David-readable (connector/tool/auth/grain). */
+const AREAS = [
+  { sec:'Identity & access', avail:'auto', tier:'measured', owner:'David',
+    plain:'Who can get in, and whether their accounts are protected.',
+    tech:{src:'Cloud Capsule (M365) + Enforcer', how:'MCP server (official + community)', tool:'list_admin_accounts · get_config_snapshot', auth:'OAuth, delegated per tenant', grain:'tenant / user'} },
+  { sec:'Backup & recovery', avail:'auto', tier:'measured', owner:'David',
+    plain:'Whether their data is backed up and the backups actually restore.',
+    tech:{src:'Cove', how:'Bridged from OpenAPI, curated into tools', tool:'list_jobs · get_restore_tests', auth:'Credential', grain:'backup job'} },
+  { sec:'Patching & network', avail:'auto', tier:'measured', owner:'David',
+    plain:'Whether machines are up to date and the network is configured safely.',
+    tech:{src:'N-central', how:'N-able MCP server (GA)', tool:'get_patch_status · get_network_policy', auth:'API key', grain:'device'} },
+  { sec:'Incidents & tickets', avail:'cw', tier:'benchmarked', owner:'David', coworker:'Incident Response Analyst',
+    plain:"What went wrong this quarter, and why — the story behind the tickets.",
+    tech:{src:'Halo + Incident Response Analyst', how:'Halo MCP for raw tickets; IR coworker adds root cause', tool:'search_tickets · get_ticket', auth:'OAuth', grain:'ticket'} },
+  { sec:'Risk & vulnerabilities', avail:'cw', tier:'benchmarked', owner:'David', coworker:'Security Tabletop',
+    plain:'The security holes that matter, and what it would take to close them.',
+    tech:{src:'Security Tabletop coworker', how:'Produced by the tabletop after-action; no source of its own', tool:'cve_exposure · remediation_plan', auth:'—', grain:'finding'} },
+  { sec:'Awareness training', avail:'client', tier:'estimated', owner:'Vanessa',
+    plain:'Whether staff can spot a phishing email — and whether training is happening.',
+    tech:{src:'usecure', how:'No MCP server, no confirmed public API — hand-supplied or client-supplied each cycle', tool:'—', auth:'manual', grain:'user'} },
+  { sec:'Carry-forward', avail:'you', tier:'unverified', owner:'Vanessa',
+    plain:'What you promised last time, and whether it got done.',
+    tech:{src:'Previous EBR', how:'The delta against your own last register — your artifact is the input', tool:'—', auth:'—', grain:'finding'} },
+  { sec:'Exec summary', avail:'you', tier:'unverified', owner:'Vanessa',
+    plain:"Your read of where the client stands and where to take them. This is your voice.",
+    tech:{src:'Your judgment', how:'Not inferable from any source', tool:'—', auth:'—', grain:'—'} },
+];
+
+const TIER_LABEL = {measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'};
+const TIER_RANK = {measured:3,benchmarked:2,estimated:1,unverified:0};
+const AVAIL_LABEL = {auto:'Connected automatically', cw:'From another coworker', client:'Ask the client', you:'Your judgment'};
+
+/* fictional register findings (Fenwick Logistics) — the deliverable (FIX1) */
+const FINDINGS = [
+  { id:'f1', finding:'3 admin accounts without MFA', area:'Identity & access', grade:'red', tier:'measured', owner:'David', status:'open', ev:'M365 · list_admin_accounts · 20 Aug', evPlain:'Verified from Microsoft 365', trend:'was 8 last year', dir:'up' },
+  { id:'f2', finding:'Backup restore test overdue 41 days', area:'Backup & recovery', grade:'amber', tier:'measured', owner:'David', status:'open', ev:'Cove · get_restore_tests · 20 Aug', evPlain:'Verified from Cove', trend:'first flagged this cycle', dir:'flat' },
+  { id:'f3', finding:'Windows patch compliance at 82%', area:'Patching', grade:'amber', tier:'measured', owner:'David', status:'open', ev:'N-central · get_patch_status · 20 Aug', evPlain:'Verified from N-central', trend:'was 74% → 82%', dir:'up' },
+  { id:'f4', finding:'Phishing simulation click-rate 22%', area:'Awareness training', grade:'amber', tier:'estimated', owner:'Vanessa', status:'open', ev:'usecure export (by hand) · 18 Aug', evPlain:'From training export — provided by hand', trend:'was 31% → 22%', dir:'up' },
+  { id:'f5', finding:'CVE-2026-4471 exposure on 6 endpoints', area:'Risk & vulnerabilities', grade:'red', tier:'benchmarked', owner:'David', status:'open', ev:'Security Tabletop · cve_exposure · 12 Aug', evPlain:'From the Security Tabletop exercise', trend:'new this cycle', dir:'bad' },
+  { id:'f6', finding:'No documented incident-response plan', area:'Risk & governance', grade:'red', tier:'unverified', owner:'Vanessa', status:'deferred', ev:'inferred — no source tracks this', evPlain:'Not yet verified — needs your confirmation', trend:'deferred 2 cycles running', dir:'bad' },
+];
+
+let state = {
+  step:0, ai:null, shape:null, parsed:false, parseLog:[],
+  extraFiles:[ {name:'Kickoff-call-transcript.docx', kind:'transcript'} ],
+  addDraft:'', openTech:{},
+  interview:{},              // sec -> 'draft'|'sent'|'back'
+  preset:'sure', overrides:{},
+  handhold:true,             // FIX2: Advisor paired on by default
+  regView:'gaps',           // 'gaps' | 'trend'
+  cfg:{ name:'EBR Coworker — Bracken', trigger:'on-demand', risk:'high' },
+  ack:{read:false,judgment:false,record:false}, activated:false,
+  tbGrade:null, tbNote:'', tbSaved:false,
+};
+
+function el(id){ return document.getElementById(id); }
+function shape(){ return SHAPES.find(s=>s.id===state.shape); }
+function gapAreas(){ return AREAS.filter(a=>a.avail==='client'||a.avail==='you'); }
+function floorRank(){ return state.preset==='whole' ? TIER_RANK.unverified : TIER_RANK.benchmarked; }
+function autoDoes(a){ if(a.sec in state.overrides) return state.overrides[a.sec]; return TIER_RANK[a.tier] >= floorRank(); }
+function countDoes(){ return AREAS.filter(autoDoes).length; }
+function handedBack(){ return AREAS.filter(a=>!autoDoes(a)); }
+
+function renderSteps(){
+  el('steps').innerHTML = STEPS.map((s,i)=>{
+    let c='chip'; if(i===state.step)c+=' current'; else if(i<state.step)c+=' done';
+    return `<div class="${c}"><span class="n">STEP ${i+1}</span>${s}</div>`;
+  }).join('');
+}
+
+function plog(cls,text){
+  state.parseLog.push({cls,text,t:String(state.parseLog.length).padStart(2,'0')});
+  const c=el('pc'); if(!c)return;
+  c.innerHTML = state.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('');
+  c.scrollTop=c.scrollHeight;
+}
+
+function renderStage(){
+  const s=state.step; let h='';
+
+  if(s===0){
+    h=`<h1>Let's build your EBR Coworker.</h1>
+    <p class="lede">First, who's doing the thinking. A coworker pairs an N-able AI expert with your runbook, and produces one durable thing: a <b>living risk register</b> for each client — every finding owned, tracked over time, with the evidence kept. You can change the expert later.</p>
+    <div class="panel">
+      <div class="ai-grid">
+        <div class="ai-card ${state.ai==='nzo'?'picked':''}" onclick="setAI('nzo')">
+          <div class="rec">RECOMMENDED</div>
+          <div class="nm"><span class="dot"></span>N-zo</div>
+          <div class="d">N-able's own assistant. Already knows your stack — N-central, devices, patch logs. Advises and drafts; never acts on its own.</div>
+          <div class="tag">Included · no setup</div>
+        </div>
+        <div class="ai-card ${state.ai==='claude'?'picked':''}" onclick="setAI('claude')">
+          <div class="nm">Claude Code</div>
+          <div class="d">Bring your own agent. Assembled the same way, same approval model.</div>
+          <div class="tag">Connect via API key</div>
+        </div>
+      </div>
+      <div class="add-hint" style="margin-top:14px">Whichever you pick: it proposes, you decide. Nothing reaches a client until a named human signs off.</div>
+      <div class="actions"><button class="btn btn-primary" ${state.ai?'':'disabled'} onclick="go(1)">Continue →</button></div>
+    </div>`;
+  }
+
+  else if(s===1){
+    h=`<h1>Show me your report and I'll build a thing.</h1>
+    <p class="lede">Bring the review you already make — last quarter's actual client deliverable. The messier it is, the more useful. Or start from a template. Anything you add becomes the first entries in the risk register.</p>
+    <div class="panel">
+      <div class="dropzone" onclick="pick('workbook')"><div class="big">Drop your last EBR here</div><div class="small">.xlsx · .pptx · .docx · .pdf — nothing leaves your tenant</div></div>
+      <div class="or">or pick a shape to walk through</div>
+      <div class="shape-grid">${SHAPES.map(sh=>`
+        <div class="shape ${sh.template?'tmpl':''} ${state.shape===sh.id?'picked':''}" onclick="pick('${sh.id}')">
+          <div class="t">${sh.name}</div><div class="d">${sh.desc}</div><div class="m">${sh.meta}</div>
+        </div>`).join('')}</div>
+      <div class="addfiles">
+        <div style="font-family:var(--font-h);font-weight:700;font-size:13.5px;color:var(--heading);margin:20px 0 6px">Anything else that helps? <span style="font-weight:500;color:var(--text-2)">(optional)</span></div>
+        <div class="add-hint" style="margin-top:0;margin-bottom:10px">Kickoff transcripts, account notes, a previous risk register — what you'd hand a new analyst. Context, not structure.</div>
+        <div id="filechips">${renderFileChips()}</div>
+        <div class="add-input"><input id="addfield" placeholder="e.g. Fenwick-risk-register-Q2.xlsx" value="${state.addDraft}" oninput="state.addDraft=this.value" onkeydown="if(event.key==='Enter')addFile()"><button class="btn btn-ghost btn-sm" onclick="addFile()">+ Add file</button></div>
+      </div>
+      <div class="actions"><span class="back" onclick="go(0)">← Back</span><button class="btn btn-primary" ${state.shape?'':'disabled'} onclick="go(2)">${shape()&&shape().template?'Use this template →':'Read it →'}</button></div>
+    </div>`;
+  }
+
+  else if(s===2){
+    const sh=shape();
+    h=`<h1>Reading the structure.</h1>
+    <p class="lede">Structure only — what sections exist, what repeats, where the grades live. Each becomes a stream of findings in the register. ${state.extraFiles.length?`Plus ${state.extraFiles.length} extra file${state.extraFiles.length>1?'s':''} for context.`:''}</p>
+    <div class="panel">
+      <div class="console" id="pc">${state.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('')}</div>
+      ${state.parsed?`
+        ${sh.template?`<div class="callout"><b>Started from Stefanie's framework.</b> The structure is the template, risk register built in — every finding a clean slate you fill over cycles.</div>`:''}
+        ${!sh.template&&sh.quality==='low'?`<div class="warncall"><b>This one barely parsed.</b> Nothing repeats between quarters. Honest answer: start from the template instead, or have a conversation first.</div>`:''}
+        ${!sh.template&&sh.quality==='medium'?`<div class="warncall"><b>Partial parse.</b> Headings found, grades implied by slide colour. The register will guess the grading scale and need correcting on cycle one.</div>`:''}
+        ${!sh.template&&sh.quality==='high'?`<div class="callout"><b>Clean parse.</b> Consistent tabs, a grading column, and a carry-forward tab — proof this is a series, not a one-off. That carry-forward becomes the register's history.</div>`:''}
+        <div class="actions"><span class="back" onclick="go(1)">← Back</span><button class="btn btn-primary" onclick="go(3)">Where the findings come from →</button></div>
+      `:''}
+    </div>`;
+  }
+
+  else if(s===3){
+    h=`<h1>Where each finding's evidence comes from.</h1>
+    <p class="lede">Plain-language on top — enough to read to a client. Open any row for the technical setup your engineer needs. Availability is scouted against the real connector registry, not assumed.</p>
+    <div class="panel">
+      ${AREAS.map((a,i)=>`
+        <div class="src-row">
+          <div class="src-head" onclick="toggleTech('${a.sec.replace(/'/g,"\\'")}')">
+            <span class="sec">${a.sec}</span>
+            <span class="plain">${a.plain}</span>
+            <span class="pill ${a.avail}">${AVAIL_LABEL[a.avail]}</span>
+            <span class="caret">${state.openTech[a.sec]?'▲ setup':'▼ setup'}</span>
+          </div>
+          <div class="src-tech ${state.openTech[a.sec]?'open':''}">
+            <div class="lab">For the technical setup — ${a.owner==='David'?'David':'your engineer'}</div>
+            <div class="kv"><b>Source:</b> ${a.tech.src} &nbsp;·&nbsp; <b>How:</b> ${a.tech.how}<br>
+            <b>Tools:</b> ${a.tech.tool} &nbsp;·&nbsp; <b>Auth:</b> ${a.tech.auth} &nbsp;·&nbsp; <b>Grain:</b> ${a.tech.grain} &nbsp;·&nbsp; <b>Confidence:</b> ${TIER_LABEL[a.tier]}</div>
+          </div>
+        </div>`).join('')}
+      <div class="cw-call"><b>Two areas are fed by other coworkers.</b> Risk from <b>Security Tabletop</b>, incidents from <b>Incident Response Analyst</b>. Build those and the register gets richer on its own — and Tabletop is meant to run about a month before the review, so its findings are ready when you are.</div>
+      <div class="warncall"><b>Two areas have no connector at all</b> — awareness training and your own judgment calls. The next step is how you fill those without chasing the client yourself.</div>
+      <div class="actions"><span class="back" onclick="go(2)">← Back</span><button class="btn btn-primary" onclick="go(4)">Fill the gaps →</button></div>
+    </div>`;
+  }
+
+  else if(s===4){
+    const gaps=gapAreas();
+    h=`<h1>Fill what no system can tell you.</h1>
+    <p class="lede">Some answers only the client has — and they're exactly the soft-skill questions that get skipped. Instead of chasing them, the coworker drafts an interview, you approve it, and a secure link goes to the client. Answers flow straight into the register.</p>
+    <div class="panel">
+      ${gaps.map(a=>{
+        const st=state.interview[a.sec]||'none';
+        return `<div class="iv-card">
+          <div class="top">
+            <span class="sec">${a.sec}</span>
+            ${st==='none'?'':`<span class="iv-state ${st}">${st==='draft'?'Draft ready':st==='sent'?'Sent to client':'Answers received'}</span>`}
+          </div>
+          <div style="font-size:12.5px;color:var(--text-2);margin-bottom:${st==='none'?'12':'10'}px">${a.plain}</div>
+          ${st!=='none'?`
+            <div class="iv-q"><span class="who">Coworker asks the client</span>${a.sec==='Awareness training'?'When did staff last complete phishing-awareness training, and roughly what share finished it?':'Of the risks we flagged last quarter, which have you decided to fund, defer, or accept — and who signed off?'}</div>
+            ${st==='back'?`<div class="iv-q" style="background:var(--measured-bg);border-color:#bfe6cd"><span class="who">Client replied</span>${a.sec==='Awareness training'?'Training ran in June, about 80% completed. New starters not yet enrolled.':'Funding the MFA rollout; deferring the IR plan to next quarter — signed by the ops director.'}</div>`:''}
+          `:''}
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+            ${st==='none'?`<button class="btn btn-ghost btn-sm" onclick="ivDraft('${a.sec.replace(/'/g,"\\'")}')">Draft an interview</button>`:''}
+            ${st==='draft'?`<button class="btn btn-primary btn-sm" onclick="ivSend('${a.sec.replace(/'/g,"\\'")}')">Approve &amp; send secure link</button> <span class="back" onclick="ivReset('${a.sec.replace(/'/g,"\\'")}')" style="align-self:center">edit</span>`:''}
+            ${st==='sent'?`<button class="btn btn-ghost btn-sm" onclick="ivBack('${a.sec.replace(/'/g,"\\'")}')">Simulate client reply</button>`:''}
+            ${st==='back'?`<span style="font-size:12px;color:var(--measured)">✓ Folded into the register as an Estimated finding — a human still vouches before it goes client-facing.</span>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="add-hint">You never have to send an interview — you can always fill these yourself. But the point is the coworker does the chasing, not you.</div>
+      <div class="actions"><span class="back" onclick="go(3)">← Back</span><button class="btn btn-primary" onclick="go(5)">Decide how much it does →</button></div>
+    </div>`;
+  }
+
+  else if(s===5){
+    const does=countDoes(), total=AREAS.length, back=handedBack();
+    h=`<h1>How much should it do on day one?</h1>
+    <p class="lede">You don't hand over the whole register to trust it. The coworker drafts only the findings it can stand behind, and hands you the rest. Start small — give it more as it earns it.</p>
+    <div class="panel">
+      <div class="presets">
+        <div class="preset ${state.preset==='sure'?'picked':''}" onclick="setPreset('sure')">
+          <div class="rec">START HERE</div><h3>Only what it's sure of</h3>
+          <p>It drafts the findings it can measure or benchmark, and hands you what it would be guessing at. The fastest way to see if you can trust it.</p>
+        </div>
+        <div class="preset ${state.preset==='whole'?'picked':''}" onclick="setPreset('whole')">
+          <h3>Draft the whole register</h3>
+          <p>It attempts every finding and flags the low-confidence ones for you to fix. More to review, nothing from a blank page.</p>
+        </div>
+      </div>
+      <div style="font-family:var(--font-h);font-weight:700;font-size:13px;color:var(--heading);margin:6px 0 8px">Area by area <span style="font-weight:500;color:var(--text-2)">— flip any switch to override</span></div>
+      <div>
+        ${AREAS.map(a=>{const d=autoDoes(a);return `
+          <div class="gate-row ${d?'does':'you'}">
+            <div class="toggle ${d?'on':''}" onclick="flip('${a.sec.replace(/'/g,"\\'")}')"><span class="k"></span></div>
+            <span class="tier-pill ${a.tier}">${TIER_LABEL[a.tier]}</span>
+            <span class="sec">${a.sec}</span>
+            <span class="assign">${d?'Coworker drafts':'You do this'}</span>
+          </div>`;}).join('')}
+      </div>
+      <div class="gate-summary">On day one the coworker drafts <b>${does} of ${total} areas</b> and hands you <b>${total-does}</b>. <b>Unverified never reaches a client</b> until a human vouches — that holds regardless of this choice.</div>
+
+      <div class="handhold">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M4 20v-1a5 5 0 015-5"/><path d="M15 11l2 2 4-4"/><path d="M14 20v-1a4 4 0 013-3.9"/></svg></div>
+        <div class="body">
+          <h4>Add the Advisor for what it hands back <span class="prem">Premium</span></h4>
+          <p>The findings it hands you are the judgment calls. The Advisor is a deep-reasoning coworker that turns a raw finding into plain talking points and a recommended next step — so the person presenting doesn't have to be the person who understands the vulnerability. Built for the account lead, not just the engineer.</p>
+          <label class="chk" style="margin-bottom:0"><input type="checkbox" ${state.handhold?'checked':''} onchange="state.handhold=this.checked;render()"><span>Include the Advisor to walk me through the handed-back findings${back.length?` (${back.length} this cycle)`:''}.</span></label>
+        </div>
+      </div>
+      <div class="actions"><span class="back" onclick="go(4)">← Back</span><button class="btn btn-primary" onclick="go(6)">See the register →</button></div>
+    </div>`;
+  }
+
+  else if(s===6){
+    h=`<h1>Your risk register.</h1>
+    <p class="lede">This is the durable artifact — one living register per client, not a report you rebuild each quarter. Every finding is owned, dated, and tracked across cycles, and the evidence is kept. Two views of the same data.</p>
+    <div class="panel">
+      <div class="draft-badge">◐ DRAFT — NOT ACTIVE</div>
+      <div class="view-tabs">
+        <button class="${state.regView==='gaps'?'on':''}" onclick="state.regView='gaps';render()">Unpaid gaps</button>
+        <button class="${state.regView==='trend'?'on':''}" onclick="state.regView='trend';render()">Improvement over time</button>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="reg"><thead><tr>
+        <th>Finding</th><th>Area</th><th>Owner</th><th>Status</th>
+        ${state.regView==='gaps'?'<th>Evidence</th>':'<th>Trend</th>'}
+      </tr></thead><tbody>
+        ${FINDINGS.map(f=>`<tr>
+          <td class="finding"><span class="grade ${f.grade}"></span>${f.finding}<div style="font-family:var(--font-m);font-size:9.5px;color:var(--text-2);margin-top:3px">${TIER_LABEL[f.tier]}</div></td>
+          <td>${f.area}</td>
+          <td><span class="owner-pill">${f.owner}</span></td>
+          <td><span class="status-pill ${f.status}">${f.status}</span></td>
+          ${state.regView==='gaps'
+            ? `<td class="evidence" title="${f.ev}">${f.evPlain}</td>`
+            : `<td class="trend-cell ${f.dir==='up'?'trend-up':f.dir==='bad'?'trend-bad':'trend-flat'}">${f.dir==='up'?'↑ ':f.dir==='bad'?'↑ ':'– '}${f.trend}</td>`}
+        </tr>`).join('')}
+      </tbody></table>
+      </div>
+      <div class="reg-note">${state.regView==='gaps'
+        ? `<b>The unpaid-gaps view is your sign-off list.</b> These are the risks the client hasn't funded — the record that, if something happens, "we told you, here's the date, you deferred it." Every row traces to its evidence; hover to see the exact source and pull time.`
+        : `<b>The improvement view is your renewal story.</b> Same findings, shown as progress: MFA gaps 8→3, patch 74%→82%, phishing 31%→22%. This is what a client three years in wants to see — and what an insurer or auditor asks you to prove.`}</div>
+
+      <div class="cfg">
+        <div class="cfg-head"><span>coworker_versions · status: draft</span><span>acp-core 004-ai-coworker-registry</span></div>
+        <div class="cfg-row"><div class="k">name</div><div class="v"><input value="${state.cfg.name}" onchange="state.cfg.name=this.value" style="border:1px solid var(--border-strong);border-radius:var(--r);padding:6px 9px;font-size:13px;width:260px;font-family:var(--font-b)"></div></div>
+        <div class="cfg-row"><div class="k">powered by</div><div class="v">${state.ai==='nzo'?'N-zo':'Claude Code'}${state.handhold?' + Advisor (premium)':''}</div></div>
+        <div class="cfg-row"><div class="k">deliverable</div><div class="v">Living risk register — retained, dated, evidence kept for attestation</div></div>
+        <div class="cfg-row"><div class="k">does day one</div><div class="v">${countDoes()} of ${AREAS.length} areas${state.preset==='sure'?' — only what it can stand behind':' — whole register, low-confidence flagged'}</div></div>
+        <div class="cfg-row"><div class="k">guardrails</div><div class="v">Named sign-off before client-facing. Unverified hard-blocked regardless.</div></div>
+      </div>
+      <div class="actions"><span class="back" onclick="go(5)">← Back</span><button class="btn btn-primary" onclick="go(7)">Review and activate →</button></div>
+    </div>`;
+  }
+
+  else if(s===7){
+    const a=state.ack, all=a.read&&a.judgment&&a.record;
+    h=`<h1>You activate it, not me.</h1>
+    <p class="lede">A coworker that switches itself on is a coworker nobody agreed to. Three things to confirm — none a formality.</p>
+    <div class="panel">
+      <div class="draft-badge">◐ DRAFT — NOT ACTIVE</div>
+      <div class="gate-box">
+        <h3>Before this goes live</h3>
+        <label class="chk"><input type="checkbox" ${a.read?'checked':''} onchange="ack('read',this.checked)"><span>I've read the draft register and it matches how we actually run an EBR.</span></label>
+        <label class="chk"><input type="checkbox" ${a.judgment?'checked':''} onchange="ack('judgment',this.checked)"><span>I understand it learned our <b>structure</b>, not our <b>judgment</b> — the grades are starting points I'll correct, especially early.</span></label>
+        <label class="chk"><input type="checkbox" ${a.record?'checked':''} onchange="ack('record',this.checked)"><span>I understand this register becomes our <b>system of record</b> — findings and evidence are kept and dated, and a <b>named person</b> signs off before anything reaches a client.</span></label>
+        <button class="btn btn-primary" ${all?'':'disabled'} onclick="activate()" style="margin-top:6px">Activate this coworker</button>
+        ${!all?`<div style="font-size:11.5px;color:var(--text-2);margin-top:9px">All three, deliberately. Last point where a wrong assumption is cheap to fix.</div>`:''}
+      </div>
+      <div class="warncall"><b>Still unresolved:</b> whether the sign-off owner is the technical practitioner (David) or the account lead (Vanessa). This screen asks you to name someone; the product doesn't yet enforce who. Named gap, not a solved one.</div>
+      <div class="actions"><span class="back" onclick="go(6)">← Back</span></div>
+    </div>`;
+  }
+
+  else if(s===8){
+    h=`<h1>Built. Now teach it your judgment.</h1>
+    <p class="lede">Left: the report you brought. Right: your living register. It got the structure right and the grades roughly right — the last step is correcting one, so next cycle it proposes yours, not its own.</p>
+    <div class="panel">
+      <div class="active-badge">● ACTIVE · version 1 · immutable</div>
+      <div class="diff">
+        <div class="diff-col theirs"><div class="h">What you brought</div><ul>
+          <li>A report rebuilt from scratch each quarter</li>
+          <li>Grades from memory and spot-checks</li>
+          <li>No record of what a client declined</li>
+          <li>No evidence trail if anyone asks "prove it"</li>
+        </ul></div>
+        <div class="diff-col ours"><div class="h">What you have now</div><ul>
+          <li class="new">A living register — findings owned, dated, tracked across cycles</li>
+          <li class="new">${countDoes()} of ${AREAS.length} areas drafted — only what it stands behind</li>
+          <li class="gap">${AREAS.length-countDoes()} handed to you${state.handhold?', with the Advisor to translate them':''}</li>
+          <li class="new">Every finding traces to kept evidence — your attestation trail</li>
+        </ul></div>
+      </div>
+
+      <h3 style="font-family:var(--font-h);font-weight:700;font-size:15px;color:var(--heading);margin:6px 0 8px">Teach-back — correct one grade</h3>
+      <div class="tb-box">
+        <div class="prop">The coworker graded <b>“Phishing simulation click-rate 22%”</b> as <span class="grade amber"></span><b>Amber</b>, because 22% is above the 15% benchmark. Your call — you know this client just onboarded 40 new starters.</div>
+        <div class="tb-grades">
+          <div class="tb-grade ${state.tbGrade==='red'?'picked':''}" onclick="setTb('red')"><span class="grade red"></span>Red</div>
+          <div class="tb-grade ${state.tbGrade==='amber'?'picked':''}" onclick="setTb('amber')"><span class="grade amber"></span>Amber (keep)</div>
+          <div class="tb-grade ${state.tbGrade==='green'?'picked':''}" onclick="setTb('green')"><span class="grade green"></span>Green</div>
+        </div>
+        <textarea class="tb-note" placeholder="Why? e.g. 'New-starter cohort skews this — trending down, on track.' The coworker keeps your reasoning, not just the grade." oninput="state.tbNote=this.value">${state.tbNote}</textarea>
+        ${state.tbSaved?`<div class="tb-saved"><b>Saved to your judgment.</b> Next cycle the coworker proposes <b>${state.tbGrade?state.tbGrade[0].toUpperCase()+state.tbGrade.slice(1):'your grade'}</b> for this pattern and shows your reasoning alongside it. This is the only way it gets better at the thing that matters — and it's why the register, not the report, is the point.</div>`
+          : `<button class="btn btn-primary btn-sm" ${state.tbGrade?'':'disabled'} onclick="saveTb()">Save this correction</button>`}
+      </div>
+
+      <div class="actions">
+        <a href="role-play-simulator.html"><button class="btn btn-cyan">Run your first full cycle →</button></a>
+        <a href="console.html"><button class="btn btn-ghost">Back to coworkers</button></a>
+        <span class="back" onclick="reset()">↺ Start over</span>
+      </div>
+    </div>`;
+  }
+
+  el('stage').innerHTML=h;
+  if(s===2 && !state.parsed) runParse();
+}
+
+function renderFileChips(){
+  return state.extraFiles.map((f,i)=>`<span class="file-chip">${f.name} <span class="kind">${f.kind}</span> <span class="x" onclick="rmFile(${i})">×</span></span>`).join('') || '<span style="font-size:12px;color:var(--text-2)">None yet.</span>';
+}
+function guessKind(n){ n=n.toLowerCase(); if(/transcript|call|meeting|\.vtt/.test(n))return 'transcript'; if(/risk|register/.test(n))return 'risk register'; if(/note/.test(n))return 'notes'; if(/\.xlsx|\.csv/.test(n))return 'spreadsheet'; return 'context'; }
+function addFile(){ const v=(state.addDraft||'').trim(); if(!v)return; state.extraFiles.push({name:v,kind:guessKind(v)}); state.addDraft=''; render(); }
+function rmFile(i){ state.extraFiles.splice(i,1); render(); }
+
+function setAI(a){ state.ai=a; render(); }
+function pick(id){ state.shape=id; render(); }
+function toggleTech(sec){ state.openTech[sec]=!state.openTech[sec]; render(); }
+function ivDraft(sec){ state.interview[sec]='draft'; render(); }
+function ivSend(sec){ state.interview[sec]='sent'; render(); }
+function ivBack(sec){ state.interview[sec]='back'; render(); }
+function ivReset(sec){ state.interview[sec]='none'; render(); }
+function setPreset(p){ state.preset=p; state.overrides={}; render(); }
+function flip(sec){ const cur=autoDoes(AREAS.find(x=>x.sec===sec)); state.overrides[sec]=!cur; render(); }
+function ack(k,v){ state.ack[k]=v; render(); }
+function setTb(g){ state.tbGrade=g; render(); }
+function saveTb(){ state.tbSaved=true; render(); }
+function go(n){ state.step=n; render(); window.scrollTo(0,0); }
+function activate(){ state.activated=true; go(8); }
+function reset(){ location.reload(); }
+
+async function runParse(){
+  const sh=shape(); state.parseLog=[];
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  if(sh.template){
+    plog('dim','loading Stefanie EBR framework…'); await wait(500);
+    plog('cw',`powered by ${state.ai==='nzo'?'N-zo':'Claude Code'}`); await wait(300);
+    for(const t of sh.tabs){ plog('ok',`  ${t}`); await wait(120); }
+    await wait(250); plog('ok','risk register — built into the framework');
+    await wait(300); plog('dim','— template loaded. every finding is yours to fill. —');
+    state.parsed=true; render(); return;
+  }
+  plog('dim',`opening ${sh.name.toLowerCase()}…`); await wait(500);
+  plog('cw',`powered by ${state.ai==='nzo'?'N-zo':'Claude Code'}`); await wait(300);
+  plog('',`detected ${sh.tabs.length} section(s)`); await wait(350);
+  for(const t of sh.tabs){ plog(sh.quality==='low'?'err':'ok',`  ${t}`); await wait(140); }
+  if(state.extraFiles.length){ await wait(300); for(const f of state.extraFiles){ plog('cw',`  + ${f.name} (${f.kind}) — read for context`); await wait(150);} }
+  await wait(300);
+  if(sh.quality==='high'){ plog('ok','grading column found — RAG scale, consistent'); await wait(260); plog('ok','carry-forward tab found — becomes the register history'); await wait(260); plog('warn','no rationale column — grades recorded, reasons are not'); }
+  else if(sh.quality==='medium'){ plog('warn','no grading column — grades implied by slide colour'); await wait(260); plog('warn','no carry-forward — cannot tell what was open last quarter'); }
+  else { plog('err','no repeating structure between quarters'); await wait(260); plog('err','cannot draft a register from this without guessing'); }
+  await wait(350); plog('dim','— structure read. judgment not read, and not readable. —');
+  state.parsed=true; render();
+}
+
+function render(){ renderSteps(); renderStage(); }
+render();
+</script>
+</body>
+</html>

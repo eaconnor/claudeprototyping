@@ -1,0 +1,16 @@
+{
+  "_source": "Usecure",
+  "_kind": "Security awareness training",
+  "_note": "FICTIONAL seed data. User-centric — no device or policy concept. UK date format DD/MM/YYYY.",
+  "client": "Fenwick Logistics",
+  "reportRun": "24/08/2026",
+  "users": [
+    { "email": "a.whitfield@fenwicklogistics.co.uk", "displayName": "A. Whitfield", "role": "Operations Director", "courseCompletion": 100, "phishFailRate": 0, "lastActivity": "11/08/2026", "privilegedAccount": true },
+    { "email": "d.oyelaran@fenwicklogistics.co.uk", "displayName": "D. Oyelaran", "role": "IT Coordinator", "courseCompletion": 100, "phishFailRate": 0, "lastActivity": "19/08/2026", "privilegedAccount": true },
+    { "email": "s.kaur@fenwicklogistics.co.uk", "displayName": "S. Kaur", "role": "Finance", "courseCompletion": 80, "phishFailRate": 12, "lastActivity": "02/08/2026", "privilegedAccount": false },
+    { "email": "m.brennan@fenwicklogistics.co.uk", "displayName": "M. Brennan", "role": "Warehouse Lead", "courseCompletion": 40, "phishFailRate": 33, "lastActivity": "14/06/2026", "privilegedAccount": false },
+    { "email": "t.adeyemi@fenwicklogistics.co.uk", "displayName": "T. Adeyemi", "role": "Logistics", "courseCompletion": 100, "phishFailRate": 0, "lastActivity": "20/08/2026", "privilegedAccount": false }
+  ],
+  "orgCompletionRate": 84,
+  "incidentResponseTrainingModule": "not assigned"
+}

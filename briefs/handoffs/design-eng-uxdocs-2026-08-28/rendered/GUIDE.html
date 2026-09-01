@@ -1,0 +1,205 @@
+<!doctype html><html><head><meta charset='utf-8'><title>GUIDE</title><style>body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:880px;margin:0 auto;padding:1.5rem;color:#1a1612;background:#fbf9f4}.nav{background:#efe7d6;border:1px solid #cbb;padding:.5rem 1rem;margin:-1.5rem -1.5rem 1.5rem;font-size:.88rem}.nav a{margin-right:.8rem;color:#1F3C96;text-decoration:none}h1{border-bottom:3px solid #1a1612;padding-bottom:.3rem}h2{margin-top:2.2rem;border-bottom:1px solid #ccc;padding-bottom:.2rem}h3{margin-top:1.6rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}th,td{border:1px solid #cbb;padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:#efe7d6}code{background:#efe7d6;padding:.1rem .3rem;border-radius:3px;font-size:.85em}blockquote{border-left:4px solid #C99A2E;margin:.8rem 0;padding:.3rem 1rem;background:#f7f0df;color:#4a4238}hr{border:none;border-top:1px solid #ccc;margin:2rem 0}a{color:#1F3C96}sup{font-size:.7em}</style></head><body><div class="nav"><a href="index.html"><b>▸ index</b></a> <a href="qbr-ebr.ux.html">QBR/EBR (context)</a> · <a href="acp-ux.html">Harness (context)</a> · <a href="TEMPLATE.ux.html">TEMPLATE context.md</a> · <a href="TEMPLATE.design.html">TEMPLATE design.md</a> · <a href="GUIDE.html">GUIDE</a> · <a href="qbr-ebr.README.html">mini README</a> · <a href="acp-ux.README.html">main README</a> · <a href="CONTRIBUTE.html">CONTRIBUTE</a></div><h1>ux.md — GUIDE</h1>
+<p><strong>What a ux.md is:</strong> one file both design and eng can open and trust as current — machine-readable frontmatter + tags on top, human-readable synthesis below, §6 doubling as literal UX acceptance criteria. Written to be read by people <em>and</em> AI agents. It sits between the brain-dump (raw research) and the spec/build: research flows in, unknowns flow back out (the loop — §5, Open items).</p>
+<p><strong>Steward:</strong> Beth Connor owns this template — the schema, the folder structure, and any change to them. Each individual ux.md has its own <code>owner:</code> (the person who keeps that file true). If you want a new frontmatter key or a new section, that's a template change — route it to the steward, don't fork the template.</p>
+<p><strong>Template version:</strong> every file declares <code>template_version:</code>. This is v1.0.</p>
+<hr />
+<h2>Step 1 — pick your work-type</h2>
+<p>It decides which sections you fill. You don't delete the skeleton by hand; the applicability matrix in <code>TEMPLATE.ux.md</code> tells you what to keep.</p>
+<table>
+<thead>
+<tr>
+<th>Work-type</th>
+<th>You're…</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new-product</code></td>
+<td>Standing up a new product/offering from scratch</td>
+<td>Full spine — every section</td>
+</tr>
+<tr>
+<td><code>new-feature</code></td>
+<td>Adding a feature to an existing product</td>
+<td>A mini: <code>parent:</code> the product's ux.md, inherit §2–4, fill §1/5/6/7 for the feature</td>
+</tr>
+<tr>
+<td><code>bug-fix</code></td>
+<td>Fixing something broken</td>
+<td>Lightest: §6 (the fix + its acceptance test), a one-line §1, pointer to parent</td>
+</tr>
+<tr>
+<td><code>rebuild-section</code></td>
+<td>Reworking an existing surface</td>
+<td>Current-state + §5 (assumptions you're revisiting) + §6 + a required Divergence/CHANGELOG entry on <em>why</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Step 2 — pick your research-posture</h2>
+<p>Orthogonal to work-type. It decides gate strictness, not which sections apply.</p>
+<ul>
+<li><strong><code>researcher-backed</code></strong> — a researcher can distinguish <code>[R]</code> from <code>[A]</code> and run studies. Normal discipline.</li>
+<li><strong><code>self-serve</code></strong> — no researcher on the team. The AGENT GATE bites <em>harder</em> (rule 11): an unfilled slot is <code>[?]</code>, never a license for an AI to draft; judgment slots stay human or empty. The DIY methods in §6 (cognitive walkthrough, 5-second test, content audit) are your evidence — run them. You're the team most at risk of shipping a fluent guess as a finding, so the file protects you by refusing to let unknowns look settled.</li>
+</ul>
+<h2>Step 3 — main or mini</h2>
+<ul>
+<li><strong><code>main</code></strong> — the product spine. Defines the tags, the gates, the AGENT GATE. Lists its <code>mini_docs</code>.</li>
+<li><strong><code>mini</code></strong> — hangs off a <code>parent</code>. <strong>Inherits the legends — does not re-print them</strong> (delete the two legend tables, link the parent instead). This is the rule that keeps minis from ballooning past their parent. A mini restates almost nothing; it adds only what's specific to its offering.</li>
+</ul>
+<hr />
+<h2>The three named slots (what makes this portable beyond one team)</h2>
+<p>The template hardcodes no team's methods. Fill these in frontmatter:</p>
+<ul>
+<li><strong><code>canonical_spec:</code></strong> — your build spec's ID/path (the Band Protocol fills this with <code>FSN-83143</code>). The Divergence Log tracks where your research pushes on it. Write <code>none</code> if there's no spec yet.</li>
+<li><strong><code>stress_test_method:</code></strong> — your concept-validation method (Band Protocol: <code>Idea Chess / Council</code>). §4 references it generically. Write <code>none</code> if you don't run one.</li>
+<li><strong>quality-bar standards</strong> in §6 — swap in your own design system / heuristics.</li>
+</ul>
+<p>A team with none of the Band Protocol machinery still gets the full skeleton, the gates, and the tag discipline.</p>
+<hr />
+<h2>The loop — unknowns go back to research</h2>
+<p>The file generates its own next agenda. Every <code>[?]</code>, <code>[A]</code>, 🔴 Divergence row, and unknown-ROI is a research question. They collect in <strong>§5 (Open items — assumptions · decisions · questions)</strong>, which doubles as the intake for the next brain-dump/<code>refresh-datadump</code> pass. An item closes only when its answer is folded back into the body <em>and</em> its tag is upgraded (<code>[A]</code>/<code>[?]</code> → <code>[R]</code>/<code>[D]</code>/<code>[CS:]</code>). That correspondence is what keeps the file honest: a 🟢 means a real claim moved.</p>
+<hr />
+<h2>Two kinds of length — cut the first, keep the second</h2>
+<ul>
+<li><strong>Read-path length</strong> (frontmatter + sections you traverse top-to-bottom) — keep it lean. This is what readers feel.</li>
+<li><strong>Reference length</strong> (footnotes at the bottom, entered only on demand) — keep it. It's the provenance, and footnotes self-maintain <em>only</em> while they live in the same file as their claims. Don't extract them.</li>
+</ul>
+<p>Human narrative (role guides, orientation, "if the owner's away") goes in a sibling <code>README.md</code>, not in the ux.md. The ux.md stays a machine-first spine.</p>
+<hr />
+<h2>Gate rubric — what earns each scorecard color</h2>
+<p>Every ux.md carries the 🟡/🔴/🟢 Gate 1/2/3 scorecard. This rubric is <strong>what earns each color</strong> — the eval is "prove the color, don't assert it." Defined here once; an instance cites <em>met / missing</em> per gate and points here, it does <strong>not</strong> re-print the rubric.</p>
+<p><strong>Green never means "complete."</strong> A thin file whose gaps are named and routed can be green at Gate 1. Green = honest + criteria met <em>at this stage</em>.</p>
+<h3>Gate 1 — Understand the problem</h3>
+<p><em>The understanding is real, and we can show how we know.</em>
+- Problem statement <strong>sourced</strong>, not assumed
+- Primary persona(s) named and evidence-tagged — <strong>not invented</strong>
+- Full cast mapped; role-gaps named, not skipped
+- Riskiest assumptions surfaced, each with an owner
+- If <code>[A]</code>+<code>[?]</code> &gt; 30%, it's flagged, not buried</p>
+<p>🟢 = a stranger could tell <em>whose</em> problem this is and <em>how we know it's real</em>. Mostly machine-checkable; "is this persona real" is human/critic judgment.</p>
+<h3>Gate 2 — Right thing (UX acceptance criteria)</h3>
+<p><em>We've defined what the right thing IS.</em>
+- Goals decompose the problem (design's judgment, named)
+- Tasks = <strong>Top Tasks</strong>, tied to goals — not a feature list
+- Function/feature structure maps <strong>1:1</strong> to tasks (orphan function = scope creep; unserved task = gap)
+- Each <strong>Must</strong> is a behavior tied to failure-when-absent — not decorative
+- Divergences from <code>canonical_spec</code> <strong>logged, not resolved</strong>
+- <strong>The outcome variable is named</strong> — what success means for this product</p>
+<p>🟢 = the functional structure resolves the user's problem, traced task→function, <em>and</em> the outcome we optimize is named. <strong>Legitimately stays 🟡 while a human decision is open</strong> — a blocked judgment call is honest yellow, not failure. Heavily judgment.</p>
+<h3>Gate 3 — Thing right (usability standards)</h3>
+<p><em>Built well, and measured — not asserted. Usability per </em><em>ISO 9241-11</em><em>: the extent to which specified users achieve specified goals with </em><em>effectiveness, efficiency, and satisfaction</em><em> in a specified </em><em>context of use</em><em>. <code>[CS: HIGH — ISO 9241-11:2018]</code> There is no universal usability — name the context of use or the measures mean nothing.</em></p>
+<ul>
+<li><strong>Context of use</strong> named first — users · tasks · environment. Without it, the three measures below are ungrounded.</li>
+<li><strong>Effectiveness</strong> — users accomplish the goal correctly and completely (task success · accuracy · completeness)</li>
+<li><strong>Efficiency</strong> — reasonable effort to the goal (time · clicks · cognitive load). <em>Operator-side "time saved" is an efficiency measure and lives here — see the outcome-variable note.</em></li>
+<li><strong>Satisfaction</strong> — subjective: intuitiveness, clarity, <strong>trustworthiness</strong>. Instruments: SUS (<strong>≥6 to ship / ≥8 on top-five tasks</strong>) · the 6-item trust-in-AI-output eval where output is user-facing.</li>
+<li><strong>Accessibility</strong>: WCAG AA · keyboard · contrast · screen-reader</li>
+<li><strong>Design-inspection floor</strong> (feeds effectiveness/efficiency): Nielsen — recognition-over-recall · visibility of status · error prevention · consistency</li>
+<li>Each Must's <strong>built-in test passes</strong></li>
+<li><strong>Design-system compliance</strong> — linted per <code>design_lint:</code> (see § Design-system lint), coverage-declared, not eyeballed</li>
+<li>Tested <strong>how / by whom / against what</strong> — named</li>
+</ul>
+<p>🟢 = the three ISO measures are met against named thresholds, in a named context of use, with real users where it matters. Correctly <em>cannot</em> be green pre-build or pre-test. This is eng's stable layer.</p>
+<h3>The outcome-variable split — and how ISO 9241-11 dissolves the "pick one" fight</h3>
+<p>Not its own gate — it spans two:
+- <strong>Gate 2 names it</strong> — as targets under ISO's three measures + the context of use, <strong>not a single metric</strong>
+- <strong>Gate 3 measures it</strong> — did those move</p>
+<p>Adopting ISO 9241-11 resolves the time-saved-vs-confidence tension (QBR <strong>DIV-004</strong>): time-saved is <em>efficiency</em>, measured operator-side (the admin / Coworker-card surface); the client-facing artifact is graded on <em>effectiveness + satisfaction</em> (did the review land, did it build trust). No contradiction — different ISO measures in different contexts of use. Don't force one variable.</p>
+<h3>How the rubric flexes</h3>
+<ul>
+<li><strong>work_type</strong> — <code>bug-fix</code> collapses Gate 1/2 to a one-liner + a pointer; its bar is Gate 3 (does the fix pass its test). <code>new-product</code> must clear all three.</li>
+<li><strong>research_posture</strong> — <code>self-serve</code> teams satisfy Gate 3's usability bar via the DIY methods (cognitive walkthrough · 5-second test · content audit), not a formal study. The bar is the same; the instrument is lighter.</li>
+</ul>
+<h3>The Must ↔ test split across gates</h3>
+<p>A <strong>Must</strong> ("dual-surface, not a toggle") is a Gate 2 <em>definition of right</em>. Its <strong>built-in test</strong> ("does the internal draft contain content absent from the export?") is a Gate 3 <em>verification</em>. §6 already separates Musts from the built-in-tests table — this rubric just labels which gate each half serves.</p>
+<hr />
+<h2>Skill registry — binding tooling to the constitution</h2>
+<p>The <code>skills:</code> frontmatter block names which skill or agent serves each section/gate. A markdown file can't <em>execute</em> a skill — it <strong>declares</strong>, and the AGENT GATE (rules 13–14) tells the reading agent to <strong>invoke</strong>. The registry does double duty:
+- <strong>Eval</strong> reads it to know which skill fires per section.
+- <strong>Coach</strong> reads it to know where to route a gap: a registered skill if one exists, else the coach's own built-in method guide.</p>
+<p>Leave it empty and everything still works — the coach falls back to its built-in guides. A bare team ships nothing; a team with tuned skills wires them in. On this project the registry points at the Band suite: <code>/scout</code> (Gate 1 evidence + loop), <code>/journey-map</code> (§2), <code>/abductive-tag</code> + <code>/code-rows</code> (coding), <code>idea-chess</code> (§4 stress-test), <code>bethproto</code> (Gate 3 build), <code>/refresh-datadump</code> (loop), <code>/handoff</code> (export).</p>
+<p><strong>Guardrails that ride with the registry:</strong> each tool does its lane only — <code>/scout</code> gathers, doesn't synthesize (and is read-only: the orchestrator persists its output, GATE rule 15); <code>idea-chess</code> stress-tests, doesn't decide; <code>bethproto</code> builds mechanics. Judgment stays human at every route. And these tuned skills stay a <em>per-project</em> fill — the template's <code>skills:</code> slot ships <strong>empty</strong>, because baking them in would re-import a whole protocol a borrowing team doesn't have.</p>
+<hr />
+<h2>Design-system lint (<code>design_lint:</code>)</h2>
+<p>Gate 3's design-system-compliance criterion, run as a graded check rather than eyeballed. Set <code>design_lint:</code> to the rung your access supports. <code>design_system:</code> names the system (UEM default: <strong>Apex</strong>). A lint is only as good as the source it checks against — so <strong>every rung declares its own coverage</strong>: a green check states <em>what it verified and what it did not</em>, never bare "compliant."</p>
+<table>
+<thead>
+<tr>
+<th>Rung</th>
+<th>Checks</th>
+<th>Needs</th>
+<th>Ships with the skill</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>off</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>static-tokens</code></td>
+<td>Apex token names (<code>--br-*</code>) not hardcoded hex · Inter + JetBrains Mono · <code>--radius-*</code> corners not arbitrary · three named surfaces present</td>
+<td>a shipped static token snapshot</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>+components</code></td>
+<td>above, plus correct <code>apx-*</code> component usage · 3-way mode toggle persisting to <code>apx-mode-pref</code> · keyboard reachability</td>
+<td>a maintained component catalog</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>live-figma</code></td>
+<td>above, plus real tokens/variables pulled live · dark-mode / high-contrast values · current + newly-added components</td>
+<td>Figma auth (dark-mode needs the desktop app)</td>
+<td>❌ BYO-access</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Default: <code>static-tokens</code>.</strong> It catches the violations that actually recur — hardcoded hex, wrong fonts, arbitrary radii, missing surfaces — needs no access, and travels with the skill. <code>live-figma</code> earns its cost only at production fidelity.</p>
+<p><strong>Coverage declaration (required, per rung):</strong>
+- <code>static-tokens</code> → "Checked against the static Apex snapshot as of ‹date›. <strong>Not verified:</strong> dark-mode / high-contrast, current-Figma drift, component correctness."
+- <code>+components</code> → adds component + mode-toggle + keyboard coverage; still "<strong>Not verified:</strong> live-Figma drift, dark-mode values."
+- <code>live-figma</code> → full, as of the fetch timestamp.</p>
+<p>A green lint is never "Apex-compliant" — it's "matches ‹this source› as of ‹this date›." Same discipline as <code>[CS:]</code>: the check tags its own confidence. The Rung-1/2 rule set is the <code>critic.md</code> Apex checklist (canonical <code>:root</code> token block · Inter + JetBrains Mono · <code>--radius-*</code> · three surfaces · <code>apx-mode-pref</code> toggle · keyboard reach) — this is where it lives now, so build and critic check the same list. Do <strong>not</strong> wire against <code>@n-able/apex-ui</code> / an <code>apex-agent</code> MCP until that package is confirmed real — it's currently <code>[CS: UNKNOWN — placeholder]</code>; the static snapshot in <code>.claude/agents/build.md</code> is the source of truth until then.</p>
+<hr />
+<h2>The two artifacts: context.md and design.md</h2>
+<p><strong>context.md</strong> (= ux.md — same file, two names) and <strong>design.md</strong> are a pair. They divide cleanly:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>context.md</th>
+<th>design.md</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Answers</td>
+<td><em>What must be true?</em> (problem · who · gates · success criteria)</td>
+<td><em>Here's the thing that makes it true</em></td>
+</tr>
+<tr>
+<td>Voice</td>
+<td>Band-native — evidence tags, gates, AGENT GATE</td>
+<td><strong>Google design doc</strong> — Goals/Non-Goals, Alternatives Considered, cross-cutting concerns</td>
+</tr>
+<tr>
+<td>For</td>
+<td>design + eng build <em>from</em> it</td>
+<td>eng builds <em>it</em>; it's checked <em>against</em> context</td>
+</tr>
+<tr>
+<td>Template</td>
+<td><code>TEMPLATE.ux.md</code></td>
+<td><code>TEMPLATE.design.md</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The pipeline:</strong> <code>scout → context.md (research → what must be true) → design.md (the designed solution) → build (code)</code>.</p>
+<p><strong>The wiring that keeps them honest:</strong> design.md §6 has one row per context Must — <em>design's acceptance criteria are context's success criteria.</em> An unanswered Must is a visible gap. design.md may not invent claims context doesn't support (it inherits context's <code>[CS:]</code> tags), and it may not resolve context's open decisions — a blocked context decision blocks the design that rests on it.</p>
+<p><strong>Why Google-style for design.md:</strong> a design doc is written for <em>review and decision</em>, not description. The two hallmarks earn their place — <strong>Non-Goals</strong> stop scope creep, and <strong>Alternatives Considered</strong> stops the choice being re-litigated six weeks later. It stays prose-first with a TL;DR up top; the rigor is in the honesty apparatus, not in length.</p>
+<p><strong>When to write a design.md:</strong> once context.md's Gate 1/2 are settled enough that you're designing a solution (not still framing the problem). A <code>bug-fix</code> may skip it; a <code>new-product</code> always needs one. It carries a <code>fidelity:</code> tier so a reviewer knows whether they're looking at a sketch or a spec-ready design.</p></body></html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Coworkers — N-able</title>
+<!-- The harness / console. Signed-into-the-product feel. N-able shell chrome (dark #140628
+     topbar, cyan #38dbff accents) with Apex product workspace inside. Lists the coworker
+     registry you build from: 5 platform defaults (FSN-83143 DEC-006, verbatim names + categories
+     + priority scores) plus the EBR Coworker you're building. "Build the EBR Coworker" is the
+     active path -> build-ebr.html. N-zo assistant present per FSN-83143 L178. Fictional workspace. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#140628; --ink-2:#241041; --topbar:#160021;
+    --cyan:#38dbff; --cyan-deep:#0bb8e0;
+    --apex:#8500cc; --apex-hero:#a90aff; --apex-soft:rgba(133,0,204,.07);
+    --green:#00d084; --green-ink:#0a7d43; --amber:#946200; --amber-bg:#fbf0d9;
+    --paper:#fff; --canvas:#f5f5f7; --hover:#fafafa; --rail:#1b0a2e;
+    --heading:#18191a; --text:#45464a; --text-2:#6b6c72;
+    --border:#e6e6ea; --border-strong:#d5d5da;
+    --r:6px; --r-card:10px; --r-pill:999px;
+    --sh:0 1px 2px rgba(24,25,26,.06),0 2px 12px rgba(24,25,26,.05);
+    --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif;
+    --font-m:'Inter',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--canvas);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:1.5}
+  a{text-decoration:none;color:inherit}
+
+  /* n-able topbar */
+  .topbar{display:flex;align-items:center;gap:18px;height:56px;padding:0 22px;
+    background:var(--ink);border-bottom:1px solid rgba(255,255,255,.08)}
+  .topbar .logo{font-family:var(--font-h);font-weight:800;font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;letter-spacing:-.02em}
+  .topbar .logo .mk{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(56,219,255,.22)}
+  .topbar .logo .sub{font-weight:600;font-size:12px;color:var(--cyan);padding-left:10px;margin-left:2px;border-left:1px solid rgba(255,255,255,.18)}
+  .topbar .ws{font-size:12.5px;color:#c9c2da;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:6px 12px;display:flex;align-items:center;gap:8px;cursor:pointer}
+  .topbar .ws b{color:#fff;font-weight:600}
+  .topbar .ws .chev{color:#8b829f;font-size:10px}
+  .topbar .spacer{flex:1}
+  .topbar .nzo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#dcc3f2;background:rgba(192,70,255,.14);border:1px solid rgba(192,70,255,.3);border-radius:var(--r-pill);padding:6px 13px;cursor:pointer}
+  .topbar .nzo .dot{width:7px;height:7px;border-radius:50%;background:var(--apex-hero);box-shadow:0 0 8px var(--apex-hero)}
+  .topbar .ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--apex),var(--cyan-deep));color:#fff;font-family:var(--font-h);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+
+  .shell{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 56px)}
+  /* Apex left rail */
+  .rail{background:var(--rail);padding:18px 12px;display:flex;flex-direction:column;gap:2px}
+  .rail .grp{font-family:var(--font-m);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6d5f85;padding:14px 12px 6px}
+  .rail a{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:var(--r);font-size:13.5px;color:#c4bcd6;font-weight:500}
+  .rail a .i{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;opacity:.85;flex:none}
+  .rail a .i svg{width:18px;height:18px;display:block}
+  .rail a:hover{background:rgba(255,255,255,.05);color:#fff}
+  .rail a.on{background:var(--apex);color:#fff}
+  .rail .foot{margin-top:auto;padding:12px;font-family:var(--font-m);font-size:10.5px;color:#6d5f85;line-height:1.6;border-top:1px solid rgba(255,255,255,.07)}
+
+  .main{padding:30px 38px 70px;max-width:1100px}
+  .crumb{font-family:var(--font-m);font-size:11.5px;color:var(--text-2);margin-bottom:8px}
+  h1{font-family:var(--font-h);font-weight:800;font-size:27px;color:var(--heading);letter-spacing:-.02em;margin-bottom:5px}
+  .h-sub{font-size:14.5px;color:var(--text-2);max-width:74ch;margin-bottom:26px}
+
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:24px}
+  .tab{font-family:var(--font-h);font-weight:600;font-size:13.5px;color:var(--text-2);padding:11px 15px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.on{color:var(--apex);border-bottom-color:var(--apex)}
+  .tab .ct{font-family:var(--font-m);font-size:11px;color:var(--text-2);margin-left:6px;background:var(--canvas);border-radius:var(--r-pill);padding:1px 7px}
+
+  /* your coworkers — the EBR build strip */
+  .build-strip{background:linear-gradient(120deg,#1b0a2e,#3E067F);border-radius:var(--r-card);padding:26px 28px;margin-bottom:30px;
+    display:flex;align-items:center;gap:26px;color:#fff;box-shadow:var(--sh);position:relative;overflow:hidden}
+  .build-strip::after{content:"";position:absolute;right:-60px;top:-40px;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(56,219,255,.22),transparent 65%)}
+  .build-strip .icon{width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .build-strip .icon svg{width:26px;height:26px;display:block}
+  .build-strip .txt{flex:1;position:relative;z-index:1}
+  .build-strip .draftbadge{display:inline-flex;align-items:center;gap:6px;background:var(--amber-bg);color:var(--amber);
+    font-family:var(--font-m);font-size:10px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);letter-spacing:.04em;margin-bottom:9px}
+  .build-strip h2{font-family:var(--font-h);font-weight:700;font-size:20px;color:#fff;margin-bottom:5px;letter-spacing:-.01em}
+  .build-strip p{font-size:13.5px;color:#e0d5ef;max-width:56ch;line-height:1.5}
+  .build-strip .cta{position:relative;z-index:1;flex:none}
+  .btn{font-family:var(--font-h);font-weight:700;font-size:14px;border:none;border-radius:var(--r);padding:12px 22px;cursor:pointer;transition:.14s;white-space:nowrap;display:inline-block}
+  .btn-cyan{background:var(--cyan);color:var(--ink)}
+  .btn-cyan:hover{background:#5fe4ff}
+  .btn-apex{background:var(--apex);color:#fff}
+  .btn-apex:hover{background:#6f00a8}
+  .btn-ghost{background:var(--paper);border:1px solid var(--border-strong);color:var(--text)}
+  .btn-ghost:hover{background:var(--hover)}
+  .btn-sm{padding:8px 15px;font-size:12.5px}
+
+  /* platform coworker grid */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-card);padding:20px;box-shadow:var(--sh);display:flex;flex-direction:column;transition:.14s}
+  .card:hover{border-color:var(--border-strong)}
+  .card .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+  .card .cat{font-family:var(--font-m);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-2)}
+  .card .demand{font-family:var(--font-m);font-size:10.5px;color:var(--apex);background:var(--apex-soft);border-radius:var(--r-pill);padding:3px 9px}
+  .card h3{font-family:var(--font-h);font-weight:700;font-size:17px;color:var(--heading);margin-bottom:7px}
+  .card p{font-size:13px;color:var(--text-2);line-height:1.5;margin-bottom:16px;flex:1}
+  .card .feeds{font-size:11.5px;color:var(--green-ink);background:#eafaf1;border:1px solid #cdeeda;border-radius:var(--r);padding:7px 10px;margin-bottom:14px;line-height:1.4}
+  .card .feeds b{color:var(--green-ink)}
+  .card .row{display:flex;gap:8px;align-items:center}
+  .status{font-family:var(--font-m);font-size:11px;font-weight:600;padding:4px 10px;border-radius:var(--r-pill)}
+  .status.avail{background:#eef4ff;color:#2442E1}
+  .status.building{background:var(--amber-bg);color:var(--amber)}
+  .card .row .spacer{flex:1}
+
+  .note{background:#eef7fb;border:1px solid #cfe8f3;border-left:3px solid var(--cyan-deep);border-radius:0 var(--r) var(--r) 0;
+    padding:13px 16px;margin-top:28px;font-size:12.5px;color:#0b4c5e;line-height:1.55}
+  .note b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo"><span class="mk"></span>N-able<span class="sub">AI Coworkers</span></div>
+  <div class="ws">Workspace: <b>Bracken IT Group</b> <span class="chev">▼</span></div>
+  <div class="spacer"></div>
+  <div class="nzo"><span class="dot"></span>Ask N-zo</div>
+  <div class="ava">BC</div>
+</header>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="grp">Automate</div>
+    <a class="on" href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7"/><path d="M9 13v1M15 13v1"/></svg></span> AI Coworkers</a>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span> Runbooks</a>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4"/></svg></span> Scripts</a>
+    <div class="grp">Operate</div>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="10" rx="1.5"/><path d="M9 19h6M12 15v4"/></svg></span> Devices</a>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="10" rx="2"/><path d="M9 7v10" stroke-dasharray="2 2"/></svg></span> Tickets</a>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/></svg></span> Security</a>
+    <div class="grp">Account</div>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V12M10 19V6M15 19v-4M20 19V9"/></svg></span> Value Ledger</a>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/></svg></span> Integrations</a>
+    <a href="#"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4"/></svg></span> Settings</a>
+    <div class="foot">N-able · demo workspace<br>Concept prototype · fictional data</div>
+  </aside>
+
+  <main class="main">
+    <div class="crumb">Automate / AI Coworkers</div>
+    <h1>AI Coworkers</h1>
+    <p class="h-sub">A coworker is an agent with a job description, a runbook, a risk policy, and an accountability trail. Start from a platform coworker, or build one from your own report. Nothing runs until you activate it.</p>
+
+    <!-- YOUR COWORKER IN PROGRESS -->
+    <div class="build-strip">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/><path d="M9 16.5l2 1.8 3.5-4"/></svg></div>
+      <div class="txt">
+        <div class="draftbadge">◐ IN PROGRESS · NOT ACTIVE</div>
+        <h2>EBR Coworker — Bracken</h2>
+        <p>You started building this from your quarterly review. Pick up where you left off — show it your report, connect your sources, and decide how much it does on day one.</p>
+      </div>
+      <div class="cta"><a href="build-ebr.html" class="btn btn-cyan">Continue building →</a></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab on">Platform coworkers <span class="ct">5</span></div>
+      <div class="tab">Your coworkers <span class="ct">1</span></div>
+      <div class="tab">Runbook library</div>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="top"><span class="cat">Security</span><span class="demand">Top requested</span></div>
+        <h3>Security Tabletop</h3>
+        <p>Maps CVE exposure, plans remediation, and triages vulnerabilities against your device fleet.</p>
+        <div class="feeds">→ Feeds the <b>Risk &amp; vulnerabilities</b> section of your EBR Coworker</div>
+        <div class="row"><span class="status avail">Available</span><span class="spacer"></span><a href="#" class="btn btn-ghost btn-sm">Clone &amp; build</a></div>
+      </div>
+
+      <div class="card">
+        <div class="top"><span class="cat">Service · diagnostics</span></div>
+        <h3>Incident Response Analyst</h3>
+        <p>Root-cause analysis on tickets and device events — diagnoses, and proposes remediation with an audit trail.</p>
+        <div class="feeds">→ Feeds the <b>Incidents &amp; tickets</b> section of your EBR Coworker</div>
+        <div class="row"><span class="status avail">Available</span><span class="spacer"></span><a href="#" class="btn btn-ghost btn-sm">Clone &amp; build</a></div>
+      </div>
+
+      <div class="card">
+        <div class="top"><span class="cat">Operations · lifecycle</span></div>
+        <h3>Environment Health Monitor</h3>
+        <p>Continuous endpoint health checks, plus lifecycle and refresh recommendations.</p>
+        <div class="feeds">→ Feeds the <b>Devices &amp; patching</b> section of your EBR Coworker</div>
+        <div class="row"><span class="status avail">Available</span><span class="spacer"></span><a href="#" class="btn btn-ghost btn-sm">Clone &amp; build</a></div>
+      </div>
+
+      <div class="card">
+        <div class="top"><span class="cat">NOC · operations</span></div>
+        <h3>Alert Flood Suppressor</h3>
+        <p>Suppresses alert noise, correlates to root cause, and produces a ranked daily work plan.</p>
+        <div class="row"><span class="status avail">Available</span><span class="spacer"></span><a href="#" class="btn btn-ghost btn-sm">Clone &amp; build</a></div>
+      </div>
+
+      <div class="card">
+        <div class="top"><span class="cat">Business reporting</span></div>
+        <h3>QBR Advisor</h3>
+        <p>Generates client-ready quarterly review narratives and security posture summaries — the EBR Coworker's sibling.</p>
+        <div class="row"><span class="status avail">Available</span><span class="spacer"></span><a href="#" class="btn btn-ghost btn-sm">Clone &amp; build</a></div>
+      </div>
+
+      <div class="card" style="border:1.5px dashed var(--border-strong);background:var(--hover);align-items:flex-start;justify-content:center">
+        <div class="top" style="width:100%"><span class="cat">From scratch</span></div>
+        <h3>Build your own coworker</h3>
+        <p>Start from a blank runbook or one of your own reports. The builder walks you through it in about four minutes.</p>
+        <div class="row"><a href="build-ebr.html" class="btn btn-apex btn-sm">Start building →</a></div>
+      </div>
+
+    </div>
+
+    <div class="note"><b>How trust works here:</b> every coworker starts conservative — it drafts, you approve. You can let a proven coworker do more over time, but a coworker never activates itself and never sends anything client-facing without a named human signing off. <span style="opacity:.75">(FSN-83143 trust model · DEC-007)</span></div>
+
+  </main>
+</div>
+
+</body>
+</html>

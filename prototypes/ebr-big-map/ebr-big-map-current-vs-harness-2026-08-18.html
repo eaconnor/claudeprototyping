@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBR Big Map · Current State → Harness · 2026-08-18</title>
+<style>
+  :root{
+    --vermillion:#D8472B; --ultramarine:#1F3C96; --ochre:#C99A2E;
+    --violet:#5B3A7E; --green-earth:#5E7A3F; --cadmium:#E8B93A;
+    --ink:#1a1612; --paper:#efe7d6; --card:#f7f0df;
+    --grid:rgba(26,22,18,.055); --line:#1a1612;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);
+    font-family:"Space Mono",ui-monospace,Menlo,monospace;}
+  body{
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;
+    padding:32px 28px 80px;
+  }
+  h1{font-size:30px;letter-spacing:-.5px;margin:0 0 4px;text-transform:uppercase;}
+  .sub{font-size:13px;line-height:1.5;max-width:1100px;margin:0 0 6px;}
+  .kalam{font-family:"Kalam","Comic Sans MS",cursive;}
+  .evidence{font-family:"Kalam",cursive;font-size:14px;background:var(--card);
+    border:2px solid var(--line);box-shadow:6px 6px 0 var(--line);
+    padding:10px 14px;margin:14px 0 22px;max-width:1160px;}
+  .evidence b{font-family:"Space Mono",monospace;}
+
+  /* column headers */
+  .heads{display:grid;grid-template-columns:1fr 0.72fr 1fr;gap:16px;
+    position:sticky;top:0;z-index:20;padding:6px 0 10px;
+    background:linear-gradient(var(--paper) 78%,rgba(239,231,214,0));}
+  .head{border:3px solid var(--line);padding:8px 12px;font-size:14px;
+    text-transform:uppercase;letter-spacing:.5px;box-shadow:6px 6px 0 var(--line);}
+  .head small{display:block;font-size:11px;font-weight:normal;text-transform:none;
+    letter-spacing:0;margin-top:3px;line-height:1.35;}
+  .h-now{background:var(--card);}
+  .h-mid{background:#e7dcc2;border-style:dashed;}
+  .h-harness{background:#e7ecff;}
+
+  /* stage band */
+  .stage{margin:26px 0 4px;}
+  .stage-label{display:inline-block;background:var(--ink);color:var(--paper);
+    font-size:15px;text-transform:uppercase;letter-spacing:1px;padding:5px 14px;
+    box-shadow:5px 5px 0 var(--ochre);}
+  .stage-note{font-family:"Kalam",cursive;font-size:13px;margin:6px 0 2px;color:#4a4034;}
+
+  .row{display:grid;grid-template-columns:1fr 0.72fr 1fr;gap:16px;
+    align-items:stretch;margin:10px 0;}
+
+  .cell{border:2px solid var(--line);padding:9px 11px;background:var(--card);
+    box-shadow:4px 4px 0 var(--line);font-size:12.5px;line-height:1.4;}
+  .now .n{font-weight:bold;font-size:12px;color:var(--vermillion);}
+  .now .title{font-weight:bold;font-size:13.5px;display:block;margin:1px 0 5px;}
+  .meta{font-family:"Kalam",cursive;font-size:12.5px;margin:3px 0;}
+  .meta .lbl{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;
+    letter-spacing:.5px;color:#7a6f5c;display:inline-block;min-width:44px;}
+  .tool{display:inline-block;background:var(--ink);color:var(--paper);font-size:10.5px;
+    padding:1px 6px;margin:2px 3px 0 0;letter-spacing:.3px;}
+
+  /* class chips */
+  .chip{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.4px;
+    padding:2px 7px;border:2px solid var(--line);font-weight:bold;margin-bottom:4px;}
+  .c-auto{background:var(--green-earth);color:var(--paper);}   /* production-line */
+  .c-kit{background:var(--ochre);color:var(--ink);}            /* hybrid / kit */
+  .c-human{background:var(--violet);color:var(--paper);}       /* brains-work */
+
+  /* middle open cell */
+  .open{background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(26,22,18,.04) 10px,rgba(26,22,18,.04) 20px);
+    border:2px dashed var(--line);box-shadow:none;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-family:"Kalam",cursive;font-size:12px;color:#8a7f6c;min-height:64px;}
+
+  /* harness cell */
+  .harness{background:#eef1ff;}
+  .harness .hmark{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.4px;
+    padding:2px 7px;font-weight:bold;margin-bottom:5px;border:2px solid var(--line);}
+  .m-automate{background:var(--green-earth);color:#fff;}
+  .m-kit{background:var(--ochre);color:var(--ink);}
+  .m-human{background:var(--violet);color:#fff;}
+  .m-skip{background:#bcae90;color:var(--ink);}
+  .build{font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.4px;
+    text-transform:uppercase;margin-top:5px;color:#5a5142;}
+  .build b{color:var(--vermillion);}
+
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin:20px 0 4px;font-size:12px;
+    border-top:2px solid var(--line);padding-top:12px;}
+  .legend div{display:flex;align-items:center;gap:6px;}
+  .sw{width:16px;height:16px;border:2px solid var(--line);display:inline-block;}
+
+  footer{margin-top:36px;font-size:11px;color:#6a6152;max-width:1160px;line-height:1.6;
+    border-top:2px solid var(--line);padding-top:12px;}
+  @media print{ body{background:#fff;} .cell,.head{box-shadow:none;} }
+</style>
+</head>
+<body>
+
+<h1>EBR · The Big Map</h1>
+<div class="sub">The full manual technical process an MSP runs for one Executive Business Review — every step, the data pulled, the tool it comes from — with the co-worker / Harness pass sketched alongside. <b>The middle band is deliberately open:</b> workshop space to puzzle out what we skip, automate, or kit.</div>
+
+<div class="evidence">
+  <b>Evidence base — read before quoting.</b> Grounded in one operator's tool-by-tool account (Craig Fisher + David "Big&nbsp;D", Technica Solutions, 2026-08-07, SRC-U-009) and the 26-step service blueprint (2026-07-29), itself built on Stefanie Hammond's taught process + 15-tab template. <b>Small-n qual — directional, not projectable.</b> "Current State" = what David actually does today. Numbers (3h prep, 250 EBRs/yr, 100 clients, 82% aligned) are his, single-source. Nothing here is a market figure. Names in workshop artifacts must be fictionalised.
+</div>
+
+<div class="heads">
+  <div class="head h-now">Current State — how David does it today
+    <small>Manual. ~3h prep · 2h meeting · then follow-up. Two scarce people (David @80% + Vanessa @100%). Data pull + source tool named per step.</small></div>
+  <div class="head h-mid kalam">OPEN · Workshop space
+    <small>Skip it? · Automate it? · Kit it? · Leave it human? — put the stickies here</small></div>
+  <div class="head h-harness">Harness / Co-worker — how the system would do it
+    <small>A sketch, not a spec. Marker = the bet. Build-state = what acp-core has today.</small></div>
+</div>
+
+<div id="map"></div>
+
+<div class="legend">
+  <div><span class="sw c-auto"></span> <b>⚙ Production-line</b> — same input → same output, no judgment. Automate.</div>
+  <div><span class="sw c-kit"></span> <b>🔧 Hybrid</b> — pull is mechanical, synthesis is judgment. Kit it.</div>
+  <div><span class="sw c-human"></span> <b>★ Brains-work</b> — the value IS the judgment. Protect it.</div>
+  <div><span class="sw" style="background:#bcae90"></span> <b>Skip candidate</b> — may not need doing at all.</div>
+</div>
+
+<footer>
+  <b>Reading the markers.</b> The classification (⚙/🔧/★) is David Maister's leverage-ratio distinction applied to the EBR in the service blueprint. <b>The sharpest tension:</b> the single most-cited failure is an operator showing production-line data instead of doing the job-shop translation — so a tool that makes the raw data prettier makes that failure easier to commit. Automate the assembly; never automate the judgment. <br>
+  <b>Build-state</b> is checked against acp-core-main (2026-07-29): of the blueprint's 26 steps, 0 built · 1 specced · 8 adjacent · 17 absent. The Value Ledger's provenance-tiering is the one mechanism already shipped that this map needs.<br>
+  <b>FigJam:</b> this poster is auth-blocked from pushing to the board this session (Figma needs OAuth). Structured to drop onto the existing "big map" board once authorized. · Source: <span class="kalam">scout_input/craig-fisher-technica-ebr-transcript-2026-08-07.md · briefs/ebr-service-blueprint-2026-07-29.md</span>
+</footer>
+
+<script>
+// class: auto=production-line ⚙ · kit=hybrid 🔧 · human=brains ★ · skip=skip-candidate
+// hmark: automate / kit / human / skip
+// build: ABSENT / ADJACENT / SPECCED / BUILT
+const STAGES = [
+ {label:"0 · Cadence & Trigger", note:"Who is due, and getting the date on the calendar. Cheapest, highest-leverage discipline in the whole cycle — and it needs almost no AI.",
+  steps:[
+   {n:1,title:"Tier & due-date lookup",data:"Client tier A/B/C (by size/income); quarterly / 6-mo / annual",tool:["Internal list","Spreadsheet"],cls:"kit",
+    h:"Registry knows each client's tier + cadence; surfaces the due list automatically.",hmark:"automate",build:"ABSENT"},
+   {n:2,title:"Book / confirm next EBR",data:"Prior cycle's live verbal commit ('book it in the room')",tool:["No tool","Verbal"],cls:"human",
+    h:"Schedule mechanism can fire on cadence — but the live in-room commit is load-bearing for show-rate; assist, don't replace.",hmark:"human",build:"ADJACENT"},
+  ]},
+ {label:"1 · Prep — Assemble (the ~3h nobody sees · David)", note:"Every pull below is one scarce person off the paying service desk. This whole band is where the kit thesis lives: assemble silently, never show raw.",
+  steps:[
+   {n:3,title:"Pull device / hardware list",data:"Full device inventory (~5 min to run the report)",tool:["N-central"],cls:"auto",
+    h:"Connector pulls inventory on schedule, current at read-time — no scheduled-email staleness.",hmark:"automate",build:"ABSENT"},
+   {n:4,title:"Reconcile device discrepancies",data:"Analytics report vs new-asset report vs old device list — newer devices missing, older ones lingering",tool:["N-central"],cls:"kit",
+    h:"Diff the three sources, flag the deltas; human confirms which list is truth.",hmark:"kit",build:"ABSENT"},
+   {n:5,title:"Check OS versions",data:"Devices on wrong / EOL OS (e.g. minimum 24H2)",tool:["N-central","Intune"],cls:"auto",
+    h:"Rule check against the current baseline OS; list the offenders.",hmark:"automate",build:"ABSENT"},
+   {n:6,title:"Check-in / stale-agent status",data:"Devices not checked in for a long period — but verify the agent isn't just broken",tool:["N-central","Intune"],cls:"kit",
+    h:"Cross-check RMM vs Intune before calling a device dead; surface 'agent may be broken' as a caveat.",hmark:"kit",build:"ABSENT"},
+   {n:7,title:"EOL hardware & network kit",data:"Firewalls, WAPs, networking kit, unmanaged-office gear past end-of-life",tool:["Manual infra check"],cls:"auto",
+    h:"Warranty/EOL lookup per asset; flag by urgency. (No warranty/EOL concept in build today.)",hmark:"automate",build:"ABSENT"},
+   {n:8,title:"On-prem / infrastructure check",data:"Servers (only ~5–10 of 100 clients) + full infra even when no server",tool:["Manual"],cls:"kit",
+    h:"Per-client profile decides which infra checks apply; skip the server pass for cloud-only clients.",hmark:"kit",build:"ABSENT"},
+   {n:9,title:"License utilisation",data:"365 seats nobody logged into in 3–4 mo; over-licensing",tool:["Roost","Able licensing"],cls:"auto",
+    h:"Inactive-login query against 365; dormant-seat list. (Ledger names license_savings as a future idea only.)",hmark:"automate",build:"ABSENT"},
+   {n:10,title:"Hardware inventory (licensing)",data:"Hardware inventory + license counts",tool:["N-able"],cls:"auto",
+    h:"Same connector as #3 feeds the asset & employee tabs — pulled once, reused.",hmark:"automate",build:"ABSENT"},
+   {n:11,title:"Tenant alignment vs golden tenant",data:"365 tenant settings vs golden baseline; alignment % (e.g. '82% aligned'); scale 1–9 (BP=5)",tool:["Enforcer"],cls:"kit",
+    h:"Read the Enforcer alignment score straight through; but the baseline stays the MSP's authored opinion, editable & attributable.",hmark:"kit",build:"ABSENT"},
+   {n:12,title:"Review each deviation",data:"Which policies missing / deviated; who accepted the deviation and why",tool:["Enforcer"],cls:"human",
+    h:"Surface deviations + link any related ticket; human judges whether each is intentional. Enforcer can add work here, not just remove it.",hmark:"human",build:"ABSENT"},
+   {n:13,title:"Manual tenant checks Enforcer can't see",data:"DLP, retention policies — confirm ON and not erroring",tool:["Manual 365"],cls:"kit",
+    h:"Where an API exists, pull the on/error state; where it doesn't, hand the human a checklist stub. Name the blind spot.",hmark:"kit",build:"ABSENT"},
+   {n:14,title:"Applied ≠ working check",data:"Temp changes engineers forgot to revert (e.g. user pulled from compliance policy and never restored)",tool:["Manual 365"],cls:"human",
+    h:"Enforcer flags real-time drift; the 'is this deliberate?' call stays human.",hmark:"human",build:"ABSENT"},
+   {n:15,title:"Guest-user & MFA export",data:"Guest users + last login; MFA view (fast export; MFA flaws vs Enforcer)",tool:["Cloud Capsule"],cls:"auto",
+    h:"Pull the export; reconcile MFA view against Enforcer where they disagree.",hmark:"automate",build:"ABSENT"},
+   {n:16,title:"Awareness-training data",data:"Completion rates · initial gap analysis · course progress",tool:["uSecure"],cls:"auto",
+    h:"Completion-rate export straight into the training tab.",hmark:"automate",build:"ABSENT"},
+   {n:17,title:"Phishing-sim results",data:"Who clicked / gave credentials this period ('my favourite part')",tool:["uSecure"],cls:"auto",
+    h:"Pull the fail list; feed the SOC / training upsell prompt.",hmark:"automate",build:"ABSENT"},
+   {n:18,title:"Ticket volume",data:"New tickets for the period (NOT individual tickets — those don't belong in an EBR)",tool:["Halo (PSA)"],cls:"auto",
+    h:"Standard PSA report export; aggregate only, minutiae filtered out.",hmark:"automate",build:"ADJACENT"},
+   {n:19,title:"SLA attainment",data:"SLA % / happiness stats ('always impressive')",tool:["Halo"],cls:"auto",
+    h:"Pull from the client dashboard into Current Climate.",hmark:"automate",build:"ADJACENT"},
+   {n:20,title:"Patch compliance",data:"Share of machines current on security updates",tool:["N-central / RMM"],cls:"auto",
+    h:"Direct pull; flag overdue.",hmark:"automate",build:"ADJACENT"},
+   {n:21,title:"Backup + restore-test status",data:"Backup job success AND restore-test verified (two different claims)",tool:["Backup monitoring"],cls:"auto",
+    h:"Pull both; explicitly separate 'job ran' from 'restore verified' — only the weaker one is reliably in source.",hmark:"automate",build:"ADJACENT"},
+   {n:22,title:"Map to NCSC 10 Steps",data:"Findings vs the UK gov 'top 10' cyber guideline",tool:["Manual checklist"],cls:"kit",
+    h:"Auto-tag each finding to an NCSC step; the 'compliant enough?' narrative stays human. (NCSC/Cyber-Essentials, not NIST.)",hmark:"kit",build:"ABSENT"},
+   {n:23,title:"Cyber Essentials alignment",data:"Where client falls short of the gov minimum (= the sales lever)",tool:["Manual"],cls:"kit",
+    h:"Gap list against Cyber Essentials; used to sell the cyber package. Verdict stays human.",hmark:"kit",build:"ABSENT"},
+   {n:24,title:"Export each source",data:"Web / Excel / CSV — whatever each tool emits",tool:["Various"],cls:"auto",
+    h:"Connectors replace the manual export entirely.",hmark:"automate",build:"ABSENT"},
+   {n:25,title:"Restructure to house format",data:"Delete columns ('a million columns'), reshape to the EBR sheet's layout",tool:["Excel"],cls:"auto",
+    h:"Templated transform per source → house schema.",hmark:"automate",build:"ABSENT"},
+   {n:26,title:"Copy-paste / pipe into the sheet",data:"David hand-assembles every source into the 15-tab spreadsheet",tool:["Excel","Manual"],cls:"auto",
+    h:"Auto-populate the tabs. This hand-assembly is the pure-cost step the whole bet is aimed at.",hmark:"automate",build:"ABSENT"},
+  ]},
+ {label:"2 · Prep — Judge (★★ scarce · the step with NO tool)", note:"The actual constraint. 'You can't prepare 20 minutes before you walk in.' The one band with no supporting tool on either side of the map — and the one where automating the judgment silently erodes the operator's competence.",
+  steps:[
+   {n:27,title:"Find every potential risk",data:"Deep dive to the 'how did you miss this?' standard — a missed hole is on the MSP, not the client",tool:["Judgment"],cls:"human",
+    h:"Hold the structure and surface prompts; the exhaustiveness call is human. NOTE: machine-found risk expands the record of what the MSP knew — volume of detection is volume of exposure.",hmark:"human",build:"ABSENT"},
+   {n:28,title:"Translate gaps → business consequence",data:"'What does this cost you if it fails in November' · reputational-damage framing, not ICO-fine framing",tool:["Judgment"],cls:"human",
+    h:"Draft a first-pass translation the operator edits — but confirm-gate every unverified claim before it can be spoken. Never let the tool write the final sentence.",hmark:"kit",build:"SPECCED"},
+   {n:29,title:"Set roadmap priority order",data:"12 / 24 / 36-month sequence; where they are → where they should be",tool:["Judgment"],cls:"human",
+    h:"Suggest an order from the gaps found; the priority call is the thing the client pays for — keep it human, re-tested live.",hmark:"human",build:"ABSENT"},
+   {n:30,title:"Decide what's in vs out",data:"Cut minutiae — individual tickets & live projects have no place in an EBR",tool:["Judgment"],cls:"kit",
+    h:"Filter the raw pulls to EBR-altitude by default; human overrides.",hmark:"kit",build:"ABSENT"},
+   {n:31,title:"Continuity / promise reconcile",data:"Did what we said in EBR #1 & #2 actually get done? Reconcile across multiple spreadsheets — 'not utilising AI' for this today",tool:["Multiple sheets","Manual"],cls:"kit",
+    h:"THE named pain: no economies of scale across cycles. A cross-year living document + gap-check is the clearest kit win here.",hmark:"kit",build:"ABSENT"},
+   {n:32,title:"Split the document surfaces",data:"Vanessa's client-facing (orange) · David's risk review (blue) · internal-only notes to keep",tool:["Excel colour-coding"],cls:"kit",
+    h:"Two real artifacts (working doc + client extract), not one doc with a redaction toggle. An accidental un-toggle is a client incident.",hmark:"kit",build:"ABSENT"},
+  ]},
+ {label:"3 · The Meeting (Stefanie's 15 tabs · ~2h · protect)", note:"Brains-work band. 'This is the whole meeting.' A product surface should support live judgment, not generate it. Auto-populate the tabs from prep; never auto-speak the room.",
+  steps:[
+   {n:33,title:"Meeting kick-off",data:"Purpose + agenda recap",tool:["Live"],cls:"human",
+    h:"Assemble the agenda from what prep found; human runs the room. (Class unconfirmed in source — ask an operator.)",hmark:"human",build:"ABSENT"},
+   {n:34,title:"Current Climate",data:"Environment snapshot — fed by pulls #3, #18, #19",tool:["Live · from prep"],cls:"auto",
+    h:"Auto-populated, zero prep, correct on arrival. Lowest-risk automation on the map — but also lowest differentiation.",hmark:"automate",build:"ABSENT"},
+   {n:35,title:"Risk & Security Review",data:"Register entries from pulls #11–23; delivered as consequence, by the delivery lead, NOT a technician",tool:["Live · from prep"],cls:"kit",
+    h:"Entries arrive pre-ranked; the room hears consequences not findings; tech Qs parked. Confirm-gate unverified claims. THE load-bearing moment.",hmark:"kit",build:"SPECCED"},
+   {n:36,title:"Compliancy Review",data:"Standing vs NCSC / Cyber Essentials",tool:["Live · from prep"],cls:"kit",
+    h:"Status shown against the named standard; the verdict is spoken by a human (legal adjacency).",hmark:"kit",build:"ABSENT"},
+   {n:37,title:"Business Priorities & Goals",data:"Client's real 12/24/36-mo goals — no system of record; exists only in the conversation",tool:["Live"],cls:"human",
+    h:"Listen and capture verbatim into the living doc; NEVER suggest the goals. Template this and the meeting collapses to stats recitation → client declines the next one.",hmark:"human",build:"ADJACENT"},
+   {n:38,title:"Hardware / Software Asset Review",data:"Direct output of pulls #3, #7, #10",tool:["Live · from prep"],cls:"auto",
+    h:"Fully auto-populated; warranty/EOL flagged by urgency; feeds roadmap + budget with no retyping.",hmark:"automate",build:"ABSENT"},
+   {n:39,title:"Employee Review",data:"Joiners/leavers diff — output of the user-reconcile pull",tool:["Live · from prep"],cls:"auto",
+    h:"Auto-populated; provisioning follow-ups fall out as action items.",hmark:"automate",build:"ABSENT"},
+   {n:40,title:"Technology Roadmap",data:"12–36 mo roadmap; re-prioritised live against what the client just said",tool:["Live"],cls:"kit",
+    h:"Entries flow in automatically; live re-prioritising is fast — but the order itself stays the human's call.",hmark:"kit",build:"ABSENT"},
+   {n:41,title:"Technology Budget",data:"Money tied to roadmap; CFO asks for a copy = the buy-in moment",tool:["Live"],cls:"human",
+    h:"Keep budget tied line-by-line to roadmap items; protect as a live conversation. Clearest ROI-demonstration moment there is.",hmark:"human",build:"ADJACENT"},
+   {n:42,title:"Additional Items",data:"Unspecified in source",tool:["Live"],cls:"human",
+    h:"Don't build to an empty slot — ask an operator first.",hmark:"skip",build:"ABSENT"},
+   {n:43,title:"Referrals & Testimonials",data:"The ask — depends on how the last 50 min went; sits at the end for that reason",tool:["Live"],cls:"human",
+    h:"Remind that the opportunity exists + track whether it happened; the operator decides and phrases it. Scripted, it reads as a script.",hmark:"human",build:"ABSENT"},
+   {n:44,title:"Next Meeting Planning",data:"Book the next date LIVE, in the room, before anyone leaves",tool:["Live · verbal"],cls:"human",
+    h:"Highest return-per-effort step; capture the date instantly — but replacing the live commit with 'we'll send an invite' is untested show-rate risk. Flag, don't assume.",hmark:"human",build:"ADJACENT"},
+  ]},
+ {label:"4 · Follow-up", note:"Mostly mechanical — and it contains Stefanie's #1 client-killer. Action items that never become tickets 'quickly cause your customer to lose faith'.",
+  steps:[
+   {n:45,title:"Transcribe / summarise",data:"Meeting summary (Vanessa adopted Copilot for this unprompted)",tool:["Copilot"],cls:"auto",
+    h:"Draft summary from the transcript; human tops-and-tails.",hmark:"automate",build:"ABSENT"},
+   {n:46,title:"Re-issue roadmap + budget",data:"Reordered roadmap + budget after live re-prioritisation",tool:["Excel"],cls:"auto",
+    h:"Regenerate from the live-updated entries — no retyping.",hmark:"automate",build:"ABSENT"},
+   {n:47,title:"Action items → PSA tickets",data:"Every agreed item → a real ticket with owner + due date",tool:["Halo (PSA)"],cls:"auto",
+    h:"Auto-create tickets w/ owner + due date. THE single clearest win in the template — and the failure mode most likely to sink the whole meeting if skipped.",hmark:"automate",build:"ADJACENT"},
+   {n:48,title:"Send client-facing extract",data:"Follow-up email: relevant risk items + hardware report + budget listed (doc NOT attached)",tool:["Email"],cls:"kit",
+    h:"Compose the client extract from the working doc — composed, not filtered. (Ledger's PDF/CSV export is the one artifact pipe that ships today.)",hmark:"kit",build:"ADJACENT"},
+   {n:49,title:"Referral chase",data:"Follow through on any referral offered",tool:["Manual"],cls:"human",
+    h:"Track + remind; the outreach stays human.",hmark:"human",build:"ABSENT"},
+   {n:50,title:"Update the living document",data:"Deposit this cycle's decisions into institutional memory; keep internal notes",tool:["Working doc"],cls:"kit",
+    h:"Append to a cross-year living doc that compounds — the switching-cost surface nobody has priced. Continuity survives the operator leaving.",hmark:"kit",build:"ABSENT"},
+  ]},
+ {label:"5 · Extend / Between cycles", note:"The cheap discipline half. Two of the highest-leverage moves in the whole cycle (tiering, staying in touch) need zero AI.",
+  steps:[
+   {n:51,title:"Ongoing marketing to base",data:"Retention touches to existing clients (not acquisition)",tool:["Marketing"],cls:"kit",
+    h:"Cadence reminders; content stays human.",hmark:"kit",build:"ABSENT"},
+   {n:52,title:"Anniversary / holiday gestures",data:"Relationship touches between EBRs",tool:["Manual"],cls:"human",
+    h:"Remind on dates; the gesture is human.",hmark:"skip",build:"ABSENT"},
+   {n:53,title:"Push info to no-meeting clients",data:"Some clients refuse EBRs — push critical info without a meeting",tool:["Email"],cls:"kit",
+    h:"Deliver a lightweight async digest to the opt-out tier. Any TAM math must respect that this population exists.",hmark:"kit",build:"ABSENT"},
+  ]},
+];
+
+const CLS = {auto:{c:"c-auto",t:"⚙ Production-line"}, kit:{c:"c-kit",t:"🔧 Hybrid · kit"}, human:{c:"c-human",t:"★ Brains-work"}, skip:{c:"c-skip",t:"skip?"}};
+const HMARK = {automate:{c:"m-automate",t:"Automate"}, kit:{c:"m-kit",t:"Kit it"}, human:{c:"m-human",t:"Keep human"}, skip:{c:"m-skip",t:"Skip candidate"}};
+
+const map = document.getElementById("map");
+let auto=0,kit=0,human=0,skip=0;
+STAGES.forEach(st=>{
+  const band=document.createElement("div");
+  band.className="stage";
+  band.innerHTML=`<div class="stage-label">${st.label}</div><div class="stage-note">${st.note}</div>`;
+  map.appendChild(band);
+  st.steps.forEach(s=>{
+    if(s.hmark==="automate")auto++; else if(s.hmark==="kit")kit++; else if(s.hmark==="skip")skip++; else human++;
+    const cls=CLS[s.cls]||CLS.human;
+    const hm=HMARK[s.hmark]||HMARK.human;
+    const tools=s.tool.map(t=>`<span class="tool">${t}</span>`).join("");
+    const row=document.createElement("div");
+    row.className="row";
+    row.innerHTML=`
+      <div class="cell now">
+        <span class="chip ${cls.c}">${cls.t}</span>
+        <span class="n">${String(s.n).padStart(2,"0")}</span>
+        <span class="title">${s.title}</span>
+        <div class="meta"><span class="lbl">Data</span> ${s.data}</div>
+        <div class="meta"><span class="lbl">From</span> ${tools}</div>
+      </div>
+      <div class="cell open">skip? · automate? · kit? · human?</div>
+      <div class="cell harness">
+        <span class="hmark ${hm.c}">${hm.t}</span>
+        <div>${s.h}</div>
+        <div class="build">acp-core today: <b>${s.build}</b></div>
+      </div>`;
+    map.appendChild(row);
+  });
+});
+// tally into footer
+const tally=document.createElement("div");
+tally.className="stage-note";
+tally.style.marginTop="18px";
+tally.innerHTML=`<b>Tally (the harness's opening bet — to be argued in the workshop):</b> ${STAGES.reduce((a,s)=>a+s.steps.length,0)} atomic steps · ⚙ automate ${auto} · 🔧 kit ${kit} · ★ keep human ${human} · skip-candidate ${skip}. These are a starting position, not a verdict — the middle band is where they get contested.`;
+map.appendChild(tally);
+</script>
+</body>
+</html>

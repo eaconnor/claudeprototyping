@@ -408,7 +408,7 @@ const FAMILY=[
 const CYCLES=['Q3·25','Q4·25','Q1·26','Q2·26','Q3·26'];
 const GC={red:'#c0392b',amber:'#a56a00',green:'#137a46',held:'#8a8a93'};
 const NAVITEMS=[['runbooks','Runbooks'],['experts','Experts'],['mcp','MCP configs'],['coworkers','Coworkers'],['execution','Execution'],['ledger','Value Ledger']];
-const BUILD=['Your report','Connect AI','Structure & sources','Fill the gaps','How much','Review','Activate'];
+const BUILD=['Your report','Connect AI','Build the register','Review','Activate'];
 const DTABS=['Overview','Configuration','Versions','Runs','Audit','Promotion'];
 const SHAPES=[
   {id:'workbook',name:'8-tab Excel workbook',meta:'the structured case',quality:'high',desc:'Tabs per control area, consistent columns, a grading column, a carry-forward tab.',tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Incidents & tickets','Carry-forward']},
@@ -418,7 +418,8 @@ const SHAPES=[
 ];
 
 let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
-  extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[], structTab:'read',
+  extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[],
+  brMode:'build', showParseLog:false, openLineage:{}, openIv:{},
   interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null};
@@ -647,51 +648,121 @@ function renderBuild(){
     <div style="display:flex;align-items:center;gap:10px;margin:14px 0"><span style="font-size:12px;color:var(--text-2)">Which runbook will this coworker run?</span>${honestyBadge()}</div>
     <div class="actions"><span class="lk" onclick="goStep(0)">← Back</span><button class="btn primary" ${S.ai?'':'disabled'} onclick="goStep(2)">Continue →</button></div></div>`;}
 
-  else if(s===2){const sh=shape();
-    const structTabs=`<div class="tabs" style="border-bottom:1px solid var(--line);margin-bottom:20px"><div class="tab ${S.structTab==='read'?'on':''}" onclick="setStructTab('read')">Read it</div><div class="tab ${S.structTab==='sources'?'on':''}" onclick="setStructTab('sources')">Sources</div></div>`;
-    const readBody=`<p class="lede">Structure only — what sections exist, what repeats, where the grades live. Each becomes a stream of findings in the register.${S.extraFiles.length?` Plus ${S.extraFiles.length} extra file${S.extraFiles.length>1?'s':''} for context.`:''}</p>
-    <div class="console" id="pc">${S.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('')}</div>
-    ${S.parsed?`${sh.template?`<div class="callout"><b>Started from Stefanie’s framework.</b> The structure is the template, risk register built in — every finding a clean slate you fill over cycles.</div>`:sh.quality==='low'?`<div class="warncall"><b>This one barely parsed.</b> Nothing repeats between quarters. Honest answer: start from the template instead, or have a conversation first.</div>`:sh.quality==='medium'?`<div class="warncall"><b>Partial parse.</b> Headings found, grades implied by slide colour. The register will guess the grading scale and need correcting on cycle one.</div>`:`<div class="callout"><b>Clean parse.</b> Consistent tabs, a grading column, and a carry-forward tab — proof this is a series, not a one-off.</div>`}`:'<div style="font-size:12.5px;color:var(--text-2)">Reading…</div>'}`;
-    const sourcesBody=`<p class="lede">Plain on top — enough to read to a client. Open any row for the ${T('connector')} setup your engineer needs. Availability is scouted, not assumed.</p>
-    ${AREAS.map(a=>`<div class="src"><div class="h" onclick="tech('${a.sec.replace(/'/g,"\\'")}')"><span class="s">${a.sec}</span><span class="p">${a.plain}</span><span class="pill ${a.avail}">${({auto:'Connected',cw:'From a coworker',client:'Ask the client',you:'Your judgment'})[a.avail]}</span><span class="caret">${S.openTech[a.sec]?'▲':'▼'}</span></div><div class="tech ${S.openTech[a.sec]?'open':''}"><div class="kv"><b>Setup:</b> ${techStr(a)} · <b>Ceiling:</b> ${({measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'})[a.tier]} · <b>Owner:</b> ${a.owner}</div></div></div>`).join('')}
-    <div class="callout"><b>Two areas are fed by other coworkers</b> (risk, incidents) — build those and this fills in on its own. <b>Two have no connector at all</b> — the next step is how you fill those without chasing the client yourself.</div>`;
-    h+=`<div class="panel"><h2>Structure & sources</h2>${structTabs}${S.structTab==='sources'?sourcesBody:readBody}
-    <div class="actions"><span class="lk" onclick="goStep(1)">← Back</span>${S.parsed?`<button class="btn primary" onclick="goStep(3)">Fill the gaps →</button>`:''}</div></div>`;}
+  else if(s===2){
+    const sh=shape(), does=countDoes(), back=AREAS.length-does;
+    h+=`<div class="panel">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:2px">
+      <div style="flex:1;min-width:240px">
+        <h2 style="margin-bottom:4px">Build the register</h2>
+        <p class="lede" style="margin-bottom:0">${S.brMode==='build'?'The technical view. What each area draws on, how much the coworker does on its own, and what still needs you — one row per area.':'The client-legible snapshot. Plain findings, no technical detail — take this to a client any time. Nothing here is final until you activate.'}</p>
+      </div>
+      <div class="viewtabs" role="tablist" aria-label="Build or Report mode" style="margin-top:2px">
+        <button class="${S.brMode==='build'?'on':''}" onclick="setBrMode('build')" aria-pressed="${S.brMode==='build'}">Build</button>
+        <button class="${S.brMode==='report'?'on':''}" onclick="setBrMode('report')" aria-pressed="${S.brMode==='report'}">Report</button>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+    ${S.brMode==='build'?buildModeBody(sh,does,back):reportModeBody()}
+    <div class="actions"><span class="lk" onclick="goStep(1)">← Back</span>${S.parsed?`<button class="btn primary" onclick="goStep(3)">See the register →</button>`:''}</div></div>`;}
 
-  else if(s===3){const gaps=gapAreas();h+=`<div class="panel"><h2>Fill what no system can tell you</h2><p class="lede">Some answers only the client has — the soft-skill questions that get skipped. Instead of chasing them, the coworker drafts an interview, you approve it, and a secure link goes to the client. Answers flow straight into the register.</p>
-    ${gaps.map(a=>{const st=S.interview[a.sec]||'none';return `<div class="iv-card"><div class="ivt"><span class="s">${a.sec}</span>${st==='none'?'':`<span class="iv-state ${st}">${st==='draft'?'Draft ready':st==='sent'?'Sent to client':'Answers received'}</span>`}</div>
-      <div style="font-size:12.5px;color:var(--text-2);margin-bottom:${st==='none'?'12':'10'}px">${a.plain}</div>
-      ${st!=='none'?`<div class="iv-q"><span class="who">Coworker asks the client</span>${a.sec==='Awareness training'?'When did staff last complete phishing-awareness training, and roughly what share finished it?':'Of the risks we flagged last quarter, which have you decided to fund, defer, or accept — and who signed off?'}</div>${st==='back'?`<div class="iv-q" style="background:var(--green-soft);border-color:#cdeeda"><span class="who">Client replied</span>${a.sec==='Awareness training'?'Training ran in June, about 80% completed. New starters not yet enrolled.':'Funding the MFA rollout; deferring the IR plan to next quarter — signed by the ops director.'}</div>`:''}`:''}
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">${st==='none'?`<button class="btn" onclick="iv('${a.sec.replace(/'/g,"\\'")}','draft')">Draft an interview</button>`:''}${st==='draft'?`<button class="btn primary" onclick="iv('${a.sec.replace(/'/g,"\\'")}','sent')">Approve &amp; send secure link</button> <span class="lk" onclick="iv('${a.sec.replace(/'/g,"\\'")}','none')">edit</span>`:''}${st==='sent'?`<button class="btn" onclick="iv('${a.sec.replace(/'/g,"\\'")}','back')">Simulate client reply</button>`:''}${st==='back'?`<span style="font-size:12px;color:var(--green)">✓ Folded into the register as an Estimated finding — a human still vouches before it goes client-facing.</span>`:''}</div></div>`;}).join('')}
-    <div style="font-size:12px;color:var(--text-2);margin-top:6px">You never have to send an interview — you can fill these yourself. The point is the coworker does the chasing, not you.</div>
-    <div class="actions"><span class="lk" onclick="goStep(2)">← Back</span><button class="btn primary" onclick="goStep(4)">Decide how much it does →</button></div></div>`;}
-
-  else if(s===4){const does=countDoes(),back=AREAS.length-does;h+=`<div class="panel"><h2>How much should it do on day one?</h2><p class="lede">You don’t hand over the whole register to trust it. It drafts only what it can stand behind and hands you the rest, graded by ${T('tier','confidence')}. Start small; give it more as it earns it.</p>
-    <div class="cards" style="margin-bottom:16px"><div class="card ${S.preset==='sure'?'picked':''}" onclick="setPreset('sure')"><div class="rec">START HERE</div><div class="nm">Only what it’s sure of</div><div class="d">Drafts measured/benchmarked; hands you the guesses.</div></div><div class="card ${S.preset==='whole'?'picked':''}" onclick="setPreset('whole')"><div class="nm">Draft the whole register</div><div class="d">Attempts everything; flags low-confidence for you.</div></div></div>
-    ${AREAS.map(a=>{const d=autoDoes(a);return `<div class="gate-row ${d?'does':'you'}"><div class="tgl ${d?'on':''}" onclick="flip('${a.sec.replace(/'/g,"\\'")}')"><span class="k"></span></div><span class="tier ${a.tier}">${({measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'})[a.tier]}</span><span class="s">${a.sec}</span><span class="a">${d?'Coworker drafts':'You do this'}</span></div>`;}).join('')}
-    <div class="callout">Day one: it drafts <b>${does} of ${AREAS.length}</b> and hands you <b>${AREAS.length-does}</b>. ${T('held','Unverified')} never reaches a client until a human vouches.</div>
-    <div class="handhold"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M4 20v-1a5 5 0 015-5"/><path d="M15 11l2 2 4-4"/><path d="M14 20v-1a4 4 0 013-3.9"/></svg></div>
-      <div><h4>Add the Advisor for what it hands back <span class="prem">Premium</span></h4><p>The findings it hands you are the judgment calls. The Advisor turns a raw finding into plain talking points and a recommended next step — so the person presenting doesn’t have to be the person who understands the vulnerability. Built for the account lead, not just the engineer.</p>
-      <label class="chk" style="margin-bottom:0"><input type="checkbox" ${S.handhold?'checked':''} onchange="S.handhold=this.checked;render()"><span>Include the Advisor to walk me through the handed-back findings${back?` (${back} this cycle)`:''}.</span></label></div></div>
-    <div class="actions"><span class="lk" onclick="goStep(3)">← Back</span><button class="btn primary" onclick="goStep(5)">See the register →</button></div></div>`;}
-
-  else if(s===5){h+=`<div class="panel"><h2>Here’s the register I’d build</h2><p class="lede">A draft ${T('register')}. Immutable once you activate it, so read it now. This is the durable artifact — one living register per client, graded, tracked, evidence kept.</p>
+  else if(s===3){h+=`<div class="panel"><h2>Here’s the register I’d build</h2><p class="lede">A draft ${T('register')}. Immutable once you activate it, so read it now. This is the durable artifact — one living register per client, graded, tracked, evidence kept.</p>
     ${posture()}
     <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
     ${S.regView==='register'?regTable():S.regView==='system'?systemMap():overTime()}
     <div class="callout" style="margin-top:18px">Powered by <b>${S.ai==='nzo'?'N-zo':'Claude Code'}</b>${S.handhold?' + Advisor':''} · built from <b>${shape()?shape().name:'—'}</b>${S.extraFiles.length?` + ${S.extraFiles.length} context file${S.extraFiles.length>1?'s':''}`:''} · drafts <b>${countDoes()} of ${AREAS.length}</b> areas day one. Trigger: on-demand (not calendar-fired). Sign-off required before client-facing.</div>
-    <div class="actions"><span class="lk" onclick="goStep(4)">← Back</span><button class="btn primary" onclick="goStep(6)">Review and activate →</button></div></div>`;}
+    <div class="actions"><span class="lk" onclick="goStep(2)">← Back</span><button class="btn primary" onclick="goStep(4)">Publish →</button></div></div>`;}
 
-  else if(s===6){const a=S.ack,all=a.read&&a.judgment&&a.record;h+=`<div class="panel"><h2>You activate it, not me</h2><p class="lede">A coworker that switches itself on is one nobody agreed to. Three confirmations — none a formality.</p>
+  else if(s===4){const a=S.ack,all=a.read&&a.judgment&&a.record;h+=`<div class="panel"><h2>You activate it, not me</h2><p class="lede">A coworker that switches itself on is one nobody agreed to. Three confirmations — none a formality.</p>
     <div class="gate-box"><h3>Before this goes live</h3>
     <label class="chk"><input type="checkbox" ${a.read?'checked':''} onchange="ack('read',this.checked)"><span>I’ve read the draft register and it matches how we run an EBR.</span></label>
     <label class="chk"><input type="checkbox" ${a.judgment?'checked':''} onchange="ack('judgment',this.checked)"><span>I understand it learned our <b>structure</b>, not our <b>judgment</b> — I’ll correct grades, especially early.</span></label>
     <label class="chk"><input type="checkbox" ${a.record?'checked':''} onchange="ack('record',this.checked)"><span>This becomes our <b>system of record</b>; a <b>named person</b> signs off before anything reaches a client.</span></label>
     <button class="btn primary" ${all?'':'disabled'} onclick="activate()">Activate this coworker</button></div>
     <div class="warncall"><b>Still unresolved:</b> whether the sign-off owner is the technical practitioner (David) or the account lead (Vanessa). This screen asks you to name someone; the product doesn’t yet enforce who.</div>
-    <div class="actions"><span class="lk" onclick="goStep(5)">← Back</span></div></div>`;}
+    <div class="actions"><span class="lk" onclick="goStep(3)">← Back</span></div></div>`;}
   el('stage').innerHTML=h;
   if(s===2 && !S.parsed) runParse();
+}
+
+/* ---- Build the register (merged step, addendum 2026-09-01 — collapses old "Structure & sources" /
+   "Fill the gaps" / "How much it does" into one screen with a Build/Report mode toggle, modeled on
+   Power BI Reading view <-> Editing view, scout/04). Build mode = technical view: per-area row with
+   inline autonomy control (autoDoes/flip/countDoes, relocated here from the old global toggle-list —
+   Gmail-filter / Zapier Human-in-the-Loop per-item scoping, scout/03), a "Setup details" disclosure
+   (techStr — was the raw always-visible Sources tab), a "Where this comes from" 3-node lineage chain
+   (dbt Explorer / Tableau Lineage tab pattern, scout/02: source -> connector/tier -> this value), and
+   for gap areas a "Client interview" disclosure (S.interview/iv() — was the separate "Fill the gaps"
+   step). The parse simulation (S.parseLog/runParse) is kept, not deleted — moved behind a collapsed
+   "Parse details" disclosure instead of rendering as the primary/first thing on the screen. Report
+   mode = the client-legible snapshot (plain findings via regTable(), no toggles/no parse log) — this
+   is the "mini dashboard... snapshot" Beth asked for. ---- */
+function setBrMode(m){S.brMode=m;render();}
+function toggleParseLog(){S.showParseLog=!S.showParseLog;render();}
+function toggleLineage(sec){S.openLineage[sec]=!S.openLineage[sec];render();}
+function toggleIv(sec){S.openIv[sec]=!S.openIv[sec];render();}
+function tierLabel(t){return ({measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'})[t];}
+function availLabel(av){return ({auto:'Connected',cw:'From a coworker',client:'Ask the client',you:'Your judgment'})[av];}
+function qsec(s){return s.replace(/'/g,"\\'");}
+function buildModeBody(sh,does,back){
+  const parseQuality=!S.parsed?'<div style="font-size:12.5px;color:var(--text-2)">Reading…</div>':
+    sh.template?`<div class="callout"><b>Started from Stefanie’s framework.</b> The structure is the template, risk register built in — every finding a clean slate you fill over cycles.</div>`:
+    sh.quality==='low'?`<div class="warncall"><b>This one barely parsed.</b> Nothing repeats between quarters. Honest answer: start from the template instead, or have a conversation first.</div>`:
+    sh.quality==='medium'?`<div class="warncall"><b>Partial parse.</b> Headings found, grades implied by slide colour. The register will guess the grading scale and need correcting on cycle one.</div>`:
+    `<div class="callout"><b>Clean parse.</b> Consistent tabs, a grading column, and a carry-forward tab — proof this is a series, not a one-off.</div>`;
+  return `
+    <div class="callout">Day one: it drafts <b>${does} of ${AREAS.length}</b> areas and hands you <b>${back}</b>. ${T('held','Unverified')} never reaches a client until a human vouches.</div>
+    <div class="cards" style="margin:14px 0 18px"><div class="card ${S.preset==='sure'?'picked':''}" onclick="setPreset('sure')"><div class="rec">START HERE</div><div class="nm">Only what it’s sure of</div><div class="d">Drafts measured/benchmarked; hands you the guesses.</div></div><div class="card ${S.preset==='whole'?'picked':''}" onclick="setPreset('whole')"><div class="nm">Draft the whole register</div><div class="d">Attempts everything; flags low-confidence for you.</div></div></div>
+    <div class="rc-wrap" style="margin-bottom:18px"><div class="rc-step"><div class="rc-head" onclick="toggleParseLog()"><span class="rc-t">Parse details — how ${sh?sh.name.toLowerCase():'your report'} was read</span><span class="rc-chip ${S.parsed?'ok':'sub'}">${S.parsed?'Parsed':'Reading…'}</span><span class="rc-caret">${S.showParseLog?'▲':'▼'}</span></div><div class="rc-body ${S.showParseLog?'open':''}"><div class="console" id="pc">${S.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('')}</div>${parseQuality}</div></div></div>
+    <div class="sec-h" style="margin-bottom:10px">Each area, source to finding</div>
+    ${AREAS.map(a=>areaCard(a)).join('')}
+    <div style="font-size:12px;color:var(--text-2);margin:4px 0 18px">You never have to send an interview — you can fill these yourself. The point is the coworker does the chasing, not you.</div>
+    <div class="handhold"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M4 20v-1a5 5 0 015-5"/><path d="M15 11l2 2 4-4"/><path d="M14 20v-1a4 4 0 013-3.9"/></svg></div>
+      <div><h4>Add the Advisor for what it hands back <span class="prem">Premium</span></h4><p>The findings it hands you are the judgment calls. The Advisor turns a raw finding into plain talking points and a recommended next step — so the person presenting doesn’t have to be the person who understands the vulnerability. Built for the account lead, not just the engineer.</p>
+      <label class="chk" style="margin-bottom:0"><input type="checkbox" ${S.handhold?'checked':''} onchange="S.handhold=this.checked;render()"><span>Include the Advisor to walk me through the handed-back findings${back?` (${back} this cycle)`:''}.</span></label></div></div>`;
+}
+function reportModeBody(){
+  return `<div class="callout" style="margin-bottom:16px">The snapshot a client could see today — plain findings, no technical detail. Take it any time; nothing is final until you activate.</div>
+    ${regTable()}`;
+}
+function areaCard(a){
+  const d=autoDoes(a),techOpen=!!S.openTech[a.sec],linOpen=!!S.openLineage[a.sec],isGap=(a.avail==='client'||a.avail==='you'),st=S.interview[a.sec]||'none';
+  return `<div class="src" style="margin-bottom:10px">
+    <div class="h" style="flex-wrap:wrap">
+      <span class="s">${a.sec}</span><span class="p">${a.plain}</span><span class="pill ${a.avail}">${availLabel(a.avail)}</span>
+      <div style="display:flex;align-items:center;gap:9px;flex:none;margin-left:8px">
+        <span class="tier ${a.tier}">${tierLabel(a.tier)}</span>
+        <div class="tgl ${d?'on':''}" onclick="flip('${qsec(a.sec)}')" role="switch" tabindex="0" aria-checked="${d}" aria-label="${d?'Coworker drafts':'You do this'} — ${a.sec}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flip('${qsec(a.sec)}')}"><span class="k"></span></div>
+        <span style="font-family:var(--font-m);font-size:10px;font-weight:700;color:${d?'var(--green)':'var(--amber)'};min-width:96px;text-align:right">${d?'Coworker drafts':'You do this'}</span>
+      </div>
+    </div>
+    <div class="rc-step"><div class="rc-head" onclick="tech('${qsec(a.sec)}')"><span class="rc-t" style="font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--text-2)">Setup details</span><span class="rc-caret">${techOpen?'▲':'▼'}</span></div>
+      <div class="rc-body ${techOpen?'open':''}"><div class="kv" style="font-family:var(--font-m);font-size:10.5px;color:var(--text);line-height:1.7"><b>Setup:</b> ${techStr(a)} · <b>Owner:</b> ${a.owner}</div></div></div>
+    <div class="rc-step"><div class="rc-head" onclick="toggleLineage('${qsec(a.sec)}')"><span class="rc-t" style="font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--text-2)">Where this comes from</span><span class="rc-caret">${linOpen?'▲':'▼'}</span></div>
+      <div class="rc-body ${linOpen?'open':''}">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0 4px">
+          <span class="pill you">${a.tech.src}</span><span style="color:var(--text-2)">→</span>
+          <span class="tier ${a.tier}">${tierLabel(a.tier)} · ${a.tech.how}</span><span style="color:var(--text-2)">→</span>
+          <span class="pill cw">${a.sec}</span>
+        </div>
+        <div style="font-family:var(--font-m);font-size:10.5px;color:var(--text-2);padding-bottom:6px">Tool: ${a.tech.tool} · Auth: ${a.tech.auth} · Grain: ${a.tech.grain}</div>
+      </div></div>
+    ${isGap?interviewRow(a,st):''}
+  </div>`;
+}
+function interviewRow(a,st){
+  const open=!!S.openIv[a.sec];
+  return `<div class="rc-step"><div class="rc-head" onclick="toggleIv('${qsec(a.sec)}')"><span class="rc-t" style="font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--text-2)">Client interview</span><span class="rc-chip ${st==='none'?'sub':st==='draft'?'warn':st==='sent'?'info':'ok'}">${st==='none'?'Not started':st==='draft'?'Draft ready':st==='sent'?'Sent to client':'Answers received'}</span><span class="rc-caret">${open?'▲':'▼'}</span></div>
+    <div class="rc-body ${open?'open':''}">
+      <div style="font-size:12.5px;color:var(--text-2);margin:10px 0">Only the client can answer this. The coworker drafts an interview, you approve it, a secure link goes out — answers flow straight into the register.</div>
+      ${st!=='none'?`<div class="iv-q"><span class="who">Coworker asks the client</span>${a.sec==='Awareness training'?'When did staff last complete phishing-awareness training, and roughly what share finished it?':'Of the risks we flagged last quarter, which have you decided to fund, defer, or accept — and who signed off?'}</div>`:''}
+      ${st==='back'?`<div class="iv-q" style="background:var(--green-soft);border-color:#cdeeda"><span class="who">Client replied</span>${a.sec==='Awareness training'?'Training ran in June, about 80% completed. New starters not yet enrolled.':'Funding the MFA rollout; deferring the IR plan to next quarter — signed by the ops director.'}</div>`:''}
+      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        ${st==='none'?`<button class="btn btn-sm" onclick="iv('${qsec(a.sec)}','draft')">Draft an interview</button>`:''}
+        ${st==='draft'?`<button class="btn primary btn-sm" onclick="iv('${qsec(a.sec)}','sent')">Approve &amp; send secure link</button> <span class="lk" onclick="iv('${qsec(a.sec)}','none')">edit</span>`:''}
+        ${st==='sent'?`<button class="btn btn-sm" onclick="iv('${qsec(a.sec)}','back')">Simulate client reply</button>`:''}
+        ${st==='back'?`<span style="font-size:12px;color:var(--green)">✓ Folded into the register as an Estimated finding — a human still vouches before it goes client-facing.</span>`:''}
+      </div>
+    </div></div>`;
 }
 /* FTUX guidance — first screen only, role-tailored. Marcus/Priya are role-play-simulator.html's
    names for the same two archetypes this app calls "the technical practitioner" (Marcus) and
@@ -701,9 +772,9 @@ function renderFtux(){
   if(S.ftuxRole===undefined)S.ftuxRole=null;
   const copy={
     marcus:{who:'Marcus — technical practitioner',
-      body:`Drop the real workbook, not a template — a parser can only find structure that's actually there, and you'll want to see it fail honestly on a messy tab before you trust it on a clean one. After this, spend your time in <b>Structure &amp; sources</b>: that's where you check what's actually wired up versus what still needs a connector, and where the coworker/runbook honesty badge tells you what's real today versus staged.`},
+      body:`Drop the real workbook, not a template — a parser can only find structure that's actually there, and you'll want to see it fail honestly on a messy tab before you trust it on a clean one. After this, spend your time in <b>Build the register</b>: that's where you check what's actually wired up versus what still needs a connector, and where the coworker/runbook honesty badge tells you what's real today versus staged.`},
     priya:{who:'Priya — relationship / account lead',
-      body:`You don't need a perfect file — the Stefanie template gets you a working register today, and the narrative is what you're actually accountable for. Your real work starts two screens on, in <b>Decide how much it does</b> and <b>Activate</b>: that's where sign-off lands, and where the Advisor (Premium) turns a raw finding into something you can say out loud to a client without translating it yourself first.`}};
+      body:`You don't need a perfect file — the Stefanie template gets you a working register today, and the narrative is what you're actually accountable for. Your real work starts on the very next screen, <b>Build the register</b>: switch it to <b>Report</b> mode any time for the client-legible view, decide how much it drafts on its own, and carry through to <b>Activate</b> — that's where sign-off lands, and where the Advisor (Premium) turns a raw finding into something you can say out loud to a client without translating it yourself first.`}};
   const picked=S.ftuxRole?copy[S.ftuxRole]:null;
   return `<div class="ftux">
     <div class="ftux-ask">${picked?`<span class="who">${picked.who}</span><span class="lk" onclick="S.ftuxRole=null;render()">change</span>`:`<b>First time here?</b><span style="color:var(--text-2)">Tell me which seat you're in and I'll point you at what matters —</span><button class="btn btn-sm" onclick="S.ftuxRole='marcus';render()">I'm technical (Marcus)</button><button class="btn btn-sm" onclick="S.ftuxRole='priya';render()">I own the relationship (Priya)</button>`}</div>
@@ -847,12 +918,11 @@ function pick(id){S.shape=id;S.parsed=false;S.parseLog=[];render();}
 function setTb(g){S.tbGrade=g;render();}
 function saveTb(){S.tbSaved=true;render();}
 function setAI(a){S.ai=a;render();}
-function setStructTab(t){S.structTab=t;render();}
 function setPreset(p){S.preset=p;S.overrides={};render();}
 function flip(sec){const cur=autoDoes(AREAS.find(x=>x.sec===sec));S.overrides[sec]=!cur;render();}
 function tech(sec){S.openTech[sec]=!S.openTech[sec];render();}
 function ack(k,v){S.ack[k]=v;render();}
-function goStep(n){if(n===5){S.regView='register';}S.step=n;render();window.scrollTo(0,0);}
+function goStep(n){if(n===3){S.regView='register';}S.step=n;render();window.scrollTo(0,0);}
 function activate(){S.activated=true;S.capstoneSeen=false;render();window.scrollTo(0,0);}
 function goToDashboard(){S.capstoneSeen=true;S.tab='Overview';S.regView='delta';render();window.scrollTo(0,0);toast('Coworker activated — welcome to your live register');}
 function setTab(t){S.tab=t;S.openFinding=null;render();}
@@ -941,8 +1011,8 @@ function liabilityBody(){
 }
 /* ---- Continuity / delta — brief Section B step 2, now the Dashboard's default landing view
    (Pass-2 instruction 2). Reads since/cycles/lead/leadWhy straight off FINDINGS — Pass 1 added these
-   fields for exactly this. Setup step 6 ("Review the register") keeps its own register-first default;
-   see goStep()'s n===5 reset — this view does not touch that screen. ---- */
+   fields for exactly this. Setup step 3 ("Review the register") keeps its own register-first default;
+   see goStep()'s n===3 reset — this view does not touch that screen. ---- */
 function deltaView(){
   const lead=FINDINGS.find(f=>f.lead);
   return `<div class="verify-marker"><b>⟨VERIFY⟩</b><span>Unconfirmed whether David actually opens the review here — carried from the runbook draft as the assumed default, not confirmed practice.<span class="tip">Source: technica-ebr-runbook-draft-2026-08-21.md — "does David actually open on the delta?" is marked ⟨VERIFY⟩, David's judgment to confirm (CLAUDE.md §18), not resolved by this build.</span></span></div>

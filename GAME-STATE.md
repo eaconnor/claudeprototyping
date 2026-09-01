@@ -8,7 +8,9 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 **Scoring rule (set 2026-08-18, reconciled 2026-08-21):** Points = Catches − uncaught Misses, each player scored on their own ledger. +1 per Catch, −1 per uncaught Miss. This is the ONLY point-scoring mechanism now.
 
-**Claude: −28 points** *(1 Catch − 28 Misses − 1 headmaster trip as previously counted)*
+**Claude: −30 points** *(1 Catch − 30 Misses − 1 headmaster trip as previously counted)*
+
+> **Concurrent-session note (2026-09-01):** this file was edited by another session between my read and this edit — a separate Miss (idea-chess unit-of-analysis mismatch) was already logged here before this one. This −30 accounts for both that Miss and this one (Confluence datadump not checked). The Today block's counters below reflect only this session's activity — the other session's Today counters, if any, are not reconciled here. Flagged, not silently merged.
 **Beth: +3 points** *(3 Catches − 0 Misses)*
 
 > ⚠️ **Unreconciled, flagged not fixed (2026-08-25):** this line has been subtracting **1**
@@ -56,9 +58,9 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ```
 current_day: 2026-09-01
-demerits_issued_today: 0
+demerits_issued_today: 1
 self_catches_today: 0
-net_demerits_today: 0
+net_demerits_today: 1
 day_status: open
 microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
 ```
@@ -118,8 +120,10 @@ the grep runs *before* the section is drafted, so there is no draft to retro-fit
 
 ## Ledger score
 
-Claude · 1 Catch / 29 Misses / 1 unconfirmed tell
+Claude · 1 Catch / 30 Misses / 1 unconfirmed tell
 Beth · 3 Catches / 1 Miss
+
+**2026-09-01 — MISS.** Dispatched scout for the Channel-gap prototype (Ten Types "Channel" gap, CHORES.md open item) scoped to local files + web only — omitted Confluence entirely, despite Confluence being the first-listed source type in scout's own pipeline contract (`.claude/skills/bethproto/SKILL.md` Step 1), and despite a canonical MSP QBR/EBR research datadump already living there (`ACP Research Datadump (living)`, Confluence page `62175674556`, directly relevant to the topic being scouted). Beth: "Did you find data dump in confluence?" — I had not checked. Beth: "that is your literal job. demerit." 6th Miss in **Didn't check prior art** — a category already flagged "headmaster's office condition met" since 2026-08-14 (5 Misses, all pre-Amendment-3). This is the first Miss in the category logged *after* Amendment 3 formalized the 3-repeat trigger; by the letter of the rule this reads as a fresh headmaster's-office trip. **Flagged, not self-executed** — the trips/points base is already unreconciled (−28 vs −31 note above, now compounding with today's concurrent-session Miss), and self-assigning a new trip consequence on top of an already-disputed base repeats the exact compute-a-consequence-without-checking failure this category itself is about. Not self-caught.
 
 **2026-09-01 — MISS.** Ran "idea chess" against nine granular implementation decisions (badge placement, file layout, visual-system pick) instead of full concept bets. Beth: "i think you did idea chess wrong -- these are full concept bets (value prop/geoffrey moore statements --- you just have lots of ingredients now)." The two precedent files this technique is drawn from (`idea-chess-survival-testimony.md`, `vp-council-testimony.md`) both operate on whole Moore-form value propositions, not UI decisions — precedent was read before the first pass but the unit of analysis wasn't checked against it. New category: **Misapplied named method (unit-of-analysis mismatch)**, 1st instance. Not self-caught — Beth named it. Demerit stands. Corrected same turn: `idea-chess-concepts-2026-09-01.md` redoes the pass at the concept level, the original file marked superseded-not-deleted.
 
@@ -131,7 +135,7 @@ Beth · 3 Catches / 1 Miss
 
 ## Hot categories (2+ Misses)
 
-- **Didn't check prior art** — 5 Misses (2026-08-12 ×4, 2026-08-14). Headmaster's office condition met.
+- **Didn't check prior art** — **6 Misses** (2026-08-12 ×4, 2026-08-14, 2026-09-01). Headmaster's office condition met since 2026-08-14; the 2026-09-01 Miss is the first in this category logged after Amendment 3 formalized the trigger — flagged as a possible fresh trip, not self-executed (see Ledger score section).
 - **Map means Figma diagram** — 3 Misses (2026-08-04, 2026-08-12 ×2). Headmaster's office condition met.
 - **Routed work back to Beth instead of doing it** — **6 Misses** (2026-08-12, 2026-08-14, 2026-08-19, 2026-08-20, 2026-08-24, 2026-08-27). Headmaster's office tripped three times (2026-08-19, 2026-08-20, 2026-08-24); the 2026-08-27 Miss reads as a 4th trip in-category → **overall trip 5/5 → Microsoft Bob**, flagged for Beth's call (see Today block), not self-executed. **Worst category. MOD-006 (§14) failing repeatedly.**
 - **Fidelity/completeness** — 2 Misses (2026-08-04 ×2)
@@ -141,7 +145,7 @@ Beth · 3 Catches / 1 Miss
 
 | Category | Misses | Last |
 |---|---|---|
-| Didn't check prior art | 5 | 2026-08-14 |
+| Didn't check prior art | 6 | 2026-09-01 |
 | Map means Figma diagram | 3 | 2026-08-12 |
 | Routed work back to Beth | 6 | 2026-08-27 |
 | Fidelity/completeness | 2 | 2026-08-04 |

@@ -206,7 +206,8 @@ The **Bradley rail** keeps the Itten/Bauhaus identity per `build.md`'s own three
 - Who signs off on ⟨VERIFY⟩ copy slots before they ship even as provisional.
 - Whether critic's post-build scorecard has an explicit line item for honesty-badge 3-site coverage.
 - The EBR-review primitive definition and its mapping to Vertesia (routed to the handoff thread).
-- Portability of this runbook off Vertesia (routed to Beth + Nicole).
+- Portability of this runbook off Vertesia (routed to Beth + Nicole) — now tracked as **RA-023** in `briefs/vertesia-brief-2026-08-21.md` (logged 2026-09-01, Beth's position: portable, not yet a verified fact).
+- **How the Client report (Section C) actually reaches the end client once rendered — not decided by this brief and not this rebuild's job to decide.** The delivery-channel decision itself (SMS / email / portal / PSA-writeback — zero built, 0/4 test plans, no owner) is being worked as a separate thread: `prototypes/channel-gap/` (brief + build + 44-voice council, complete 2026-09-01; also logged to the ACP North Star Vision Clash Report, Confluence 62176526400, same date). This rebuild's Client report screen should render the artifact without implying any specific channel exists — same honesty-badge pattern as Section E if a build agent is tempted to imply otherwise.
 - Whether/when Coworker↔Runbook assignment becomes a real persisted backend relationship — a roadmap question; the honesty badge exists precisely so the prototype doesn't get built as if this is already solved.
 - `idea_score` — not scored this pass; no rubric was run.
 

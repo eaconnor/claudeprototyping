@@ -864,6 +864,12 @@ function overview(){
   </div>`;
 }
 function countDoesLabel(){return '5 of 6';}
+function posture(){
+  const r=FINDINGS.filter(f=>f.grade==='red').length,a=FINDINGS.filter(f=>f.grade==='amber').length,held=FINDINGS.filter(f=>f.grade==='held').length;
+  const seg=(c,n)=>n?`<div class="seg ${c}" style="flex:${n}"></div>`:'';
+  return `<div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
+    <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>`;
+}
 function regTable(){
   const order={red:0,amber:1,green:2,held:3};
   return `<div class="reg">${[...FINDINGS].sort((x,y)=>order[x.grade]-order[y.grade]).map(f=>`

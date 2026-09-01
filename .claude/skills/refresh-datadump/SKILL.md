@@ -49,6 +49,16 @@ datadump.**
   Query ACP/harness vocabulary: `ACP` · `harness` · `coworker` · `runbook` · `Value Ledger` ·
   `control plane` · `Idea Chess` · `QBR` / `EBR` · `vCISO` / `vCIO` · offering names · the
   gate names (`Q1`, `data-egress`, `Q2`).
+  **⚠️ Verify this tool exists before trusting a "swept" claim (added 2026-09-01).** `ccd_session_mgmt`
+  is not present in this repo's `.mcp.json` and does not resolve via `ToolSearch` in a cloud/remote
+  session — checked directly, not assumed. At least two prior runs (2026-08-14, 2026-08-21) reported
+  specific session counts from this tool that cannot be reproduced or verified from this checkout.
+  **Before writing "Claude Code sessions: LIVE/PARTIAL/N listed" into a changeset, confirm the tool
+  actually resolves in *this* session** (e.g. `ToolSearch` returns it, not just that the step ran
+  without visibly erroring). If it doesn't resolve, log `gap: could not sweep Claude Code session
+  transcripts from this environment` per the rule below — do not carry forward a prior run's count
+  as if it were this run's finding. A specific number with no reproducible tool behind it is exactly
+  the failure mode the Chicago principle (CLAUDE.md §4) warns about.
 - **Teams** — `chat_message_search` beyond the Brain Dump channel; Copilot summaries and
   meeting recaps get pasted into channels and DMs.
 - **SharePoint / OneDrive** — `sharepoint_search` + `sharepoint_folder_search` for

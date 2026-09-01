@@ -20,6 +20,7 @@
     --line:#e7e7ec; --line-2:#d7d7de;
     --apex:#8500cc; --apex-soft:rgba(133,0,204,.07); --purple:#a24dff; --cyan:#0a95c4; --cyan-soft:#e7f6fb;
     --red:#c0392b; --red-soft:#fbecea; --amber:#a56a00; --amber-soft:#f8eeda; --green:#137a46; --green-soft:#e7f6ee; --held:#8a8a93;
+    --lock:#a56a00; --lock-soft:#f8eeda; /* Pass 2: locked state — its own semantic role, not reused selection-purple */
     --r:6px; --r-lg:10px; --r-pill:999px;
     --sh:0 1px 2px rgba(20,10,40,.05),0 1px 3px rgba(20,10,40,.05); --sh-lg:0 6px 24px -8px rgba(20,10,40,.16);
     --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif; --font-m:'Inter',ui-monospace,monospace;
@@ -167,6 +168,83 @@
   .rep-find .g{width:11px;height:11px;border-radius:50%;margin-top:4px} .rep-find .ft{font-family:var(--font-h);font-weight:700;font-size:14.5px;color:var(--ink);margin-bottom:5px} .rep-find .fm{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:6px} .rep-find .fr{font-size:13px;color:var(--apex);font-weight:500;line-height:1.5}
   .decision{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13.5px} .decision:last-child{border-bottom:none} .decision .dv{font-family:var(--font-h);font-weight:600;font-size:12px;white-space:nowrap}
   @media print{.top,.nav,.exportbar,.head .btns,.head .chips,.head .title-row .back,.tabs{display:none!important} .shell{grid-template-columns:1fr} .body{padding:0} .rep-cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  /* ---- Pass 2 (2026-09-01): run-cycle stepper, ⟨VERIFY⟩ provisional marker, Chooser, Runbooks two-pane ----
+     Visual convention: dashed-border chip family (established by .honesty-badge above) extended here for a
+     second, distinct meaning — .verify-marker flags unconfirmed FIELD PRACTICE (David's ⟨VERIFY⟩ slots),
+     .honesty-badge flags unconfirmed BACKEND STATE. Same family, different color/copy so they're not confused. */
+  .verify-marker{display:flex;align-items:flex-start;gap:8px;border:1.5px dashed var(--cyan);background:var(--cyan-soft);color:#086a8c;font-size:12px;line-height:1.5;padding:10px 13px;border-radius:var(--r);cursor:help;position:relative;max-width:680px}
+  .verify-marker b{font-family:var(--font-m);font-weight:700;font-size:10.5px;letter-spacing:.03em;flex:none;padding-top:1px}
+  .verify-marker .tip{position:absolute;left:0;bottom:calc(100% + 8px);width:320px;background:var(--ink);color:#eee;border-radius:var(--r);padding:10px 12px;font-size:11.5px;font-weight:400;line-height:1.5;box-shadow:var(--sh-lg);opacity:0;visibility:hidden;transform:translateY(4px);transition:.15s;z-index:30;white-space:normal;text-align:left}
+  .verify-marker:hover .tip,.verify-marker:focus .tip{opacity:1;visibility:visible;transform:translateY(0)}
+  .verify-marker .tip::after{content:"";position:absolute;left:16px;top:100%;border:6px solid transparent;border-top-color:var(--ink)}
+
+  /* run-cycle stepper */
+  .rc-wrap{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:6px}
+  .rc-step{border-bottom:1px solid var(--line)} .rc-step:last-child{border-bottom:none}
+  .rc-head{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer}
+  .rc-head:hover{background:var(--hover)}
+  .rc-head .rc-n{font-family:var(--font-m);font-size:10px;color:var(--text-2);width:20px;flex:none}
+  .rc-head .rc-t{font-family:var(--font-h);font-weight:700;font-size:13.5px;color:var(--ink);flex:1}
+  .rc-chip{font-family:var(--font-m);font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);white-space:nowrap}
+  .rc-chip.ok{background:var(--green-soft);color:var(--green)} .rc-chip.warn{background:var(--amber-soft);color:var(--amber)} .rc-chip.info{background:var(--cyan-soft);color:var(--cyan)} .rc-chip.sub{background:#f0f0f3;color:var(--held)}
+  .rc-caret{font-family:var(--font-m);font-size:10px;color:var(--text-2)}
+  .rc-body{max-height:0;overflow:hidden;transition:.2s;background:var(--hover)}
+  .rc-body.open{max-height:1200px;padding:6px 16px 18px;border-top:1px solid var(--line)}
+  .rc-step.subfilter .rc-head{padding:8px 16px 8px 42px;opacity:.82} .rc-step.subfilter .rc-t{font-size:12px;font-weight:600}
+
+  /* Chooser — ported mechanic from ebr-coworker-options/test-chooser-screen.html (row/pick/tier/tone) */
+  .ch-tone{display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;font-size:12px}
+  .ch-tone span{padding:4px 12px;color:var(--text-2);cursor:pointer}
+  .ch-tone span.sel{background:var(--apex);color:#fff;font-weight:600}
+  .ch-row{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+  .ch-row:hover{background:var(--hover)} .ch-row.blocked{background:var(--hover);opacity:.75}
+  .ch-pick{width:22px;height:22px;flex:none;margin-top:1px;border-radius:var(--r);border:1.5px solid var(--line-2);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text-2);cursor:pointer;font-size:12px}
+  .ch-pick.on{background:var(--apex);border-color:var(--apex);color:#fff}
+  .ch-pick.lock{background:#f0f0f3;border-color:var(--line-2);color:var(--held);cursor:not-allowed}
+  .ch-f{flex:1;min-width:0} .ch-t{color:var(--ink);font-weight:600;font-size:13.5px}
+  .ch-sm{font-size:12px;color:var(--text-2);margin-top:3px;line-height:1.5}
+  .ch-biz{display:inline-block;font-size:11px;font-weight:600;color:var(--green);background:var(--green-soft);border-radius:var(--r-pill);padding:2px 9px;margin-top:7px}
+
+  /* Runbooks — two-pane list+detail, grafted into existing nav/shell. Apex Bridge tokens throughout;
+     Will Mincher's Figma read as a states/behavior spec only — never his literal AILERON purple skin. */
+  .rb-shell{display:grid;grid-template-columns:340px 1fr;gap:16px;align-items:start}
+  @media(max-width:940px){.rb-shell{grid-template-columns:1fr}}
+  .rb-search{display:flex;gap:8px;margin-bottom:10px} .rb-search input{flex:1;border:1px solid var(--line-2);border-radius:var(--r);padding:8px 11px;font-family:var(--font-b);font-size:12.5px}
+  .rb-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px} .rb-filters .f{font-family:var(--font-m);font-size:10.5px;color:var(--text-2);border:1px solid var(--line-2);border-radius:var(--r-pill);padding:4px 10px}
+  .rb-list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+  .rb-item{padding:13px 15px;border-bottom:1px solid var(--line);cursor:pointer;position:relative} .rb-item:last-child{border-bottom:none}
+  .rb-item:hover{background:var(--hover)} .rb-item.sel{background:var(--apex-soft);border-left:3px solid var(--apex);padding-left:12px}
+  .rb-item .nm{font-family:var(--font-h);font-weight:700;font-size:13.5px;color:var(--ink);margin-bottom:3px;padding-right:22px}
+  .rb-item .dt{font-size:11px;color:var(--text-2);margin-bottom:8px}
+  .rb-item .pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .rb-pill{font-family:var(--font-m);font-size:9px;font-weight:700;padding:2px 8px;border-radius:var(--r-pill);white-space:nowrap}
+  .rb-pill.active{background:var(--green-soft);color:var(--green)} .rb-pill.inactive{background:#f0f0f3;color:var(--held)}
+  .rb-pill.v-draft{background:#eef0fb;color:#3d4a9e} .rb-pill.v-active{background:var(--green-soft);color:var(--green)} .rb-pill.v-deprecated{background:var(--red-soft);color:var(--red)}
+  .rb-pill.scope{background:var(--apex-soft);color:var(--apex)}
+  .rb-lock{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-m);font-size:9px;font-weight:700;padding:2px 8px;border-radius:var(--r-pill);background:var(--lock-soft);color:var(--lock);cursor:help;position:relative}
+  .rb-lock .tip{position:absolute;left:0;bottom:calc(100% + 7px);width:230px;background:var(--ink);color:#eee;border-radius:var(--r);padding:9px 11px;font-size:11px;line-height:1.5;box-shadow:var(--sh-lg);opacity:0;visibility:hidden;transform:translateY(4px);transition:.15s;z-index:30;white-space:normal;text-align:left}
+  .rb-lock:hover .tip,.rb-lock:focus .tip{opacity:1;visibility:visible;transform:translateY(0)}
+  .rb-lock .tip::after{content:"";position:absolute;left:14px;top:100%;border:6px solid transparent;border-top-color:var(--ink)}
+  .rb-lock.noperm .tip{background:#0e0c14}
+  .rb-detail{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px}
+  .rb-dhead{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px}
+  .rb-dhead h2{font-family:var(--font-h);font-weight:800;font-size:19px;color:var(--ink);margin:0}
+  .rb-desc{font-size:13px;color:var(--text-2);line-height:1.55;margin-bottom:14px;max-width:62ch}
+  .rb-banner{border-left:3px solid var(--held);background:#f0f0f3;border-radius:0 var(--r) var(--r) 0;padding:11px 14px;font-size:12.5px;color:var(--text);line-height:1.5;margin-bottom:14px}
+  .rb-banner a{color:var(--apex);font-weight:600}
+  .rb-section{border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+  .rb-section.locked{opacity:.8}
+  .rb-section .sh{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--hover);border-bottom:1px solid var(--line)}
+  .rb-section .sh .st{font-family:var(--font-h);font-weight:700;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-2);flex:1}
+  .rb-section .sh .ro{font-family:var(--font-m);font-size:9.5px;color:var(--text-2);border:1px solid var(--line-2);border-radius:var(--r-pill);padding:2px 8px}
+  .rb-section .sh .ed{font-size:11.5px;color:var(--apex);font-weight:600;margin-left:10px}
+  .rb-section .sb{padding:12px 14px;font-size:12.5px;color:var(--text);line-height:1.7}
+  .rb-kebab{position:absolute;top:11px;right:11px}
+  .rb-kebab>button{width:24px;height:24px;border:1px solid var(--line-2);border-radius:var(--r);background:var(--surface);color:var(--text-2);font-weight:700;line-height:1}
+  .rb-kebab>button:hover{background:var(--hover)}
+  .rb-menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r);box-shadow:var(--sh-lg);min-width:160px;z-index:20;overflow:hidden}
+  .rb-menu button{display:block;width:100%;text-align:left;padding:9px 13px;font-size:12.5px;color:var(--ink);background:none;border:none;cursor:pointer}
+  .rb-menu button:hover{background:var(--hover)}
 </style>
 </head>
 <body>
@@ -332,14 +410,17 @@ const SHAPES=[
 let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null,
   extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[], structTab:'read',
   interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
-  tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false};
+  tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
+  chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null};
 const el=id=>document.getElementById(id);
 const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
 
 function toast(m){const t=el('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1900);}
 
 function renderNav(){
-  el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>`<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}</a>`).join('')+`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
+  el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>`<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}</a>`).join('')
+    +`<a href="role-play-simulator.html" target="_blank" rel="noopener" style="margin-top:10px;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;font-size:11px;line-height:1.4;color:var(--nav-fg-2);border:1px dashed rgba(255,255,255,.22)">↗ Extended scenario — not MVP</a>`
+    +`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
 }
 function setNav(k){S.nav=k;S.ebrOpen=false;render();}
 function openEbr(){S.nav='coworkers';S.ebrOpen=true;render();}

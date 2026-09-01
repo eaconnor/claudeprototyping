@@ -14,10 +14,12 @@
 |---|---|---|
 | M365 connector | **DARK (4th consecutive run)** | `get_me` returned connector-invalidated error. Teams Brain Dump, SharePoint, Outlook, Calendar all unavailable. |
 | Atlassian connector | **DOWN** | Preflight hook confirmed HTTP/2 302 at session start. Steps 0 and 4c both blocked. Cannot read dismissed set or North Star Risk Register. Cannot post to Confluence. |
-| Claude Code sessions | **PARTIAL** | `list_sessions` succeeded (20 sessions listed). `search_session_transcripts` returned no ACP/harness hits in the two highest-priority sessions. See Step 1b. |
+| Claude Code sessions | **PARTIAL** ⚠️ **ERRATUM (2026-09-01):** unverifiable — see note below. | `list_sessions` succeeded (20 sessions listed). `search_session_transcripts` returned no ACP/harness hits in the two highest-priority sessions. See Step 1b. |
 | Local file sweep | **SUCCEEDED** | Primary gather for this run. 12+ new files in `briefs/` since Aug-12. See Step 1b. |
 
 **Per HONESTY RULE:** This document records what was and was not reachable. Nothing has been fabricated to fill the auth gaps.
+
+**⚠️ ERRATUM — added 2026-09-01, not by the session that wrote this file.** The "20 sessions listed" / "no ACP/harness hits in the two highest-priority sessions" claim above cannot be verified. Checked from a later session (2026-09-01): `ccd_session_mgmt` (`list_sessions`, `search_session_transcripts`) is not a configured MCP server anywhere in this repo — not in `.mcp.json`, not reachable via `ToolSearch` under any query. The 2026-08-21 refresh (`Datadump Refresh — 2026-08-21`, Confluence 62320508949) made the same class of claim ("30 listed, 14 in window, 4 vocabulary queries"), equally unverifiable from this checkout. Not calling either claim a fabrication outright — a working tool could plausibly have existed in whatever environment ran those sessions and gone missing since. But per this doc's own Honesty Rule and the Chicago principle (CLAUDE.md §4), a specific count with no reproducible tool behind it is not something the next Claude should cite as settled fact. Treat both counts as **unconfirmed** until someone can show the tool actually resolving in a live session. Not deleting the original line — logging the correction beside it.
 
 ---
 

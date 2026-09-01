@@ -84,6 +84,7 @@ Full detail: `briefs/insights-report-2026-09-01.md`. Five decisions, not build t
 
 ### Existing Open Items
 
+<<<<<<< HEAD
 - [x] **ACP → Harness rename across prototypes and product-facing copy.** `[mechanical]` — **2026-08-21. Done, grep-verified.** Live product-facing scope was **5 files, 7 occurrences**, all renamed and verified in-file after the edit:
   - `prototypes/qbr-draft-flow/qbr-hifi.html` ×2 (onboarding pane copy L1356; `srcKind` code comment L3212)
   - `prototypes/qbr-draft-flow/qbr-hifi-v2.html` ×1 (same onboarding copy, L1002)
@@ -94,6 +95,10 @@ Full detail: `briefs/insights-report-2026-09-01.md`. Five decisions, not build t
   - *Two corrections to the original entry:* `prototypes/qbr-triage-apex.html` — named as a likely offender — had **zero** ACP hits. The newest prototypes (`harness-ebr-v2`, `ebr-big-map`, `ebr-coworker-options`) were already clean. The entry's "probably more across the prototype corpus" was pessimistic; see `briefs/insights-report-2026-08-21.md` §2c on why a small edit sat open two weeks.
 
 - [x] ~~**Original entry, retained for the scoping rules — closed by the line above.**~~
+=======
+- [ ] **ACP → Harness rename across prototypes and product-facing copy.** `[mechanical]`
+  - *2026-09-01 recheck (Beth thought this might be done — it isn't):* `prototypes/qbr-draft-flow/qbr-hifi.html` line ~1002 still reads "Priya's account already runs **ACP** for Ticket Triage & Dispatch" — genuine onboarding copy, not a citation, the exact case this chore names. `prototypes/acp-handoff-preview.html` and `prototypes/qbr-analyst-apex.html` also still say ACP in top-level prototype HTML. `prototypes/qbr-triage-apex.html` (named in the original chore text) doesn't exist under that filename — stale reference, drop it. Full corpus grep across `prototypes/` + `briefs/` returns ~250 hits, but the great majority are legitimate citations or frozen `briefs/handoffs/` archives this chore explicitly says not to touch. Scope is: live, non-archived prototype HTML files only.
+>>>>>>> origin/main
   - *Why:* 2026-08-07, Beth: "ACP is now Harness." This widens the earlier 2026-07-31 call (which read as QBR-surface-only — see `project_nable_harness_naming` memory) to the platform name itself. Existing prototypes still say "ACP" throughout their UI chrome and copy — `prototypes/qbr-draft-flow/qbr-hifi.html` (built 2026-08-07, same day as the rename call) uses "ACP" repeatedly (onboarding copy, side-nav footnote, Bradley-rail routing cards), `prototypes/qbr-triage-apex.html` likely does too, and there are probably more across the prototype corpus.
   - *What NOT to touch:* spec citations quoting the real `acp-core-main-3`/`acp-core-main` repo (FSN-83143, FSN-82692, `specs/004-ai-coworker-registry`, etc.) — those say ACP because that's what the actual source says. Only this project's own product-facing prototype copy renames; cited spec text keeps its original name with the naming divergence noted, same pattern already used for QBR Advisor vs. QBR Analyst vs. Harness.
   - *Action:* grep prototypes/ and briefs/ for "ACP" in product-facing (non-citation) copy, rename to Harness, verify in browser. Not urgent — no user-facing deadline named — but real rework debt building up with each new prototype shipped under the old name.
@@ -113,7 +118,7 @@ Full detail: `briefs/insights-report-2026-09-01.md`. Five decisions, not build t
 
 - [x] **Terminology cleanup on the 5 published Idea Chess Confluence pages.** — 2026-07-31. All 5 pages retitled ("(full kill-sheet)" → "(full stress-test)") and body prose passed to chess/game vocabulary ("Battleship Day. Job: sink the ship." → "Idea Chess. Job: find where it falls."; "Council kill-pass" → "Council stress-test"; "Kill criterion:" → "Stress-test:"; "Best shot:" → "Best move:"; "The kill, in one paragraph" → "The verdict, in one paragraph"). Offerings A (62180851809) and B (62180917356) had already been updated in this session before the summary point — verified on refetch, no re-work needed. Offerings C (62179377873), D (62179737945), E (62180131345) updated live, version 2 confirmed on each. "battlecard," "beachhead," "adversarial," and canonical-source filenames (murder-board-offering-*.md) left unchanged per scope.
 
-- [x] **Full-datadump abductive research spreadsheet — complete 2026-08-07.** File at `briefs/abductive-corpus-council44-2026-08-07.md` · 402 rows · 14 clusters · 39 source files · **AWAITING BETH'S PASS** — fill Interpretation and Tag columns, then invoke `/abductive-tag` for Claude's deductive columns.
+- [ ] **Full-datadump abductive research spreadsheet — in progress, not done.** File built 2026-08-07 at `briefs/abductive-corpus-council44-2026-08-07.md` · 402 rows · 14 clusters · 39 source files · **AWAITING BETH'S PASS** — fill Interpretation and Tag columns, then invoke `/abductive-tag` for Claude's deductive columns. *(Corrected 2026-09-01 — was mismarked `[x]` done; the file scaffold is done, the actual coding pass is not. Beth confirmed still in progress.)*
   - *Why:* the QBR/EBR coded-research pass (`briefs/qbr-ebr-coded-research-2026-07-28.md`)
     deliberately scoped itself to 17 files, not the full corpus (87 briefs + 72 `scout_input` ≈
     159 files) — coding at that granularity everywhere is a materially bigger job than any single

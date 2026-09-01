@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Channel Decision Space — ACP/Harness QBR-EBR (Tier 1 Concept)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-app: #0b1220; --bg-surface: #121b2e; --bg-elevated: #182238; --bg-deep: #070d18;
@@ -18,10 +18,11 @@
     --low: #058142; --low-soft: rgba(5,129,66,0.12);
     --alpha-accent: #a78bfa; --alpha-soft: rgba(167,139,250,0.13);
     --topbar-bg: #0a1730; --topbar-border: var(--brand);
+    --topbar-text: #ffffff; --topbar-text-secondary: #c9d3ea;
     --rail-bg: #16112e; --rail-border: var(--alpha-accent);
-    --radius-sm: 2px; --radius-md: 4px; --radius-lg: 16px; --radius-full: 999px;
+    --accent-ink: #16112e; --overlay-scrim: rgba(4,7,16,0.72); --text-on-brand: #ffffff;
+    --radius-sm: 2px; --radius-md: 6px; --radius-lg: 8px; --radius-full: 999px;
     --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-brand: 'Manrope', -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
   [data-theme="light"] {
@@ -39,10 +40,10 @@
     height: 56px; background: var(--topbar-bg); border-bottom: 2px solid var(--topbar-border);
     display: flex; align-items: center; padding: 0 20px; gap: 16px; position: sticky; top: 0; z-index: 100;
   }
-  .brand-mark { font-family: var(--font-brand); font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.2px; }
+  .brand-mark { font-family: var(--font-mono); font-weight: 700; font-size: 15px; color: var(--topbar-text); letter-spacing: 0.2px; }
   .brand-mark span { color: var(--brand); }
   .topbar-divider { width: 1px; height: 22px; background: var(--border-strong); }
-  .product-name { font-size: 13px; color: #c9d3ea; }
+  .product-name { font-size: 13px; color: var(--topbar-text-secondary); }
   .topbar-spacer { flex: 1; }
   .pill {
     font-family: var(--font-mono); font-size: 11px; padding: 3px 9px; border-radius: 20px;
@@ -63,7 +64,7 @@
     color: var(--text-tertiary); border: none; cursor: pointer; border-right: 1px solid var(--border-strong);
   }
   .mode-toggle button:last-child { border-right: none; }
-  .mode-toggle button.active { background: var(--brand); color: #fff; }
+  .mode-toggle button.active { background: var(--brand); color: var(--text-on-brand); }
 
   .shell { display: flex; align-items: flex-start; }
   .main { flex: 1; padding: 24px 28px; max-width: calc(100% - 420px); }
@@ -90,7 +91,7 @@
   .check-yes { color: var(--low); font-weight: 700; }
   .check-no { color: var(--text-muted); font-weight: 700; }
 
-  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; font-family: var(--font-brand); }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; font-family: var(--font-mono); }
   .subhead { font-size: 12.5px; color: var(--text-tertiary); margin-bottom: 20px; max-width: 780px; line-height: 1.55; }
   .seed-stamp {
     display: inline-block; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
@@ -133,7 +134,7 @@
   .channel-card { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-deep);
     padding: 14px; display: flex; flex-direction: column; }
   .channel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
-  .channel-name { font-family: var(--font-brand); font-size: 15px; font-weight: 700; }
+  .channel-name { font-family: var(--font-mono); font-size: 15px; font-weight: 700; }
   .channel-pos { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-muted); }
   .evid-list { list-style: none; display: flex; flex-direction: column; gap: 7px; flex: 1; }
   .evid-list li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
@@ -145,7 +146,7 @@
     padding: 10px; background: var(--alpha-soft); }
   .divergence-label { font-family: var(--font-mono); font-weight: 700; font-size: 10px; color: var(--alpha-accent);
     text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-  .divergence-label .qmark { width: 15px; height: 15px; border-radius: 50%; background: var(--alpha-accent); color: #16112e;
+  .divergence-label .qmark { width: 15px; height: 15px; border-radius: 50%; background: var(--alpha-accent); color: var(--accent-ink);
     display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
   .quote-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .quote-bubble { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -183,7 +184,7 @@
     padding: 2px 7px; color: var(--text-tertiary); }
 
   /* modal */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(4,7,16,0.72); z-index: 1000;
+  .modal-overlay { display: none; position: fixed; inset: 0; background: var(--overlay-scrim); z-index: 1000;
     align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
   .modal-council { background: var(--bg-surface); border: 1px solid var(--alpha-accent); border-radius: var(--radius-lg);
@@ -252,7 +253,7 @@
 <body data-theme="dark">
 
 <div class="topbar">
-  <div class="brand-mark">ACP <span>·</span> AGENT CONTROL PLANE</div>
+  <div class="brand-mark">HARNESS <span>·</span> ACP CONTROL PLANE</div>
   <div class="topbar-divider"></div>
   <div class="product-name">Channel Decision Space — QBR/EBR Delivery (undecided)</div>
   <div class="topbar-spacer"></div>
@@ -328,7 +329,6 @@
           <ul class="evid-list">
             <li><span class="evid-tag evid-r">R</span> <span><code>notification_recipients</code> schema already has an <code>email</code> type — the only candidate with existing schema surface today.</span></li>
             <li><span class="evid-tag evid-q">?</span> <span>No email template, content model, or send-trigger for QBR/EBR output exists anywhere in the codebase.</span></li>
-            <li><span class="evid-tag evid-d">D</span> <span>Competitor pattern: myITprocess ships PDF-by-email as part of its delivery pattern (vendor self-report, unconfirmed).</span></li>
             <li><span class="evid-tag evid-r">R</span> <span>Gateway code is inbound-only — no outbound send mechanism of any kind exists yet.</span></li>
           </ul>
           <div class="no-divergence">no unresolved competitor divergence flagged for this candidate</div>
@@ -612,10 +612,10 @@
       body.setAttribute('data-theme', mode);
       document.getElementById(mode === 'light' ? 'modeLight' : 'modeDark').classList.add('active');
     }
-    localStorage.setItem('apx-mode-pref-channel-gap', mode);
+    localStorage.setItem('apx-mode-pref', mode);
   }
   (function initMode() {
-    const saved = localStorage.getItem('apx-mode-pref-channel-gap') || 'dark';
+    const saved = localStorage.getItem('apx-mode-pref') || 'dark';
     setMode(saved);
   })();
 </script>

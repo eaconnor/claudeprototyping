@@ -9,12 +9,12 @@ Updated at the close of each session by the `game-close` skill. Read at session 
 Claude · 0 Catches / 22 Misses / 1 unconfirmed tell
 Beth · 2 Catches / 0 Misses
 
-> **Count reconciled 2026-08-14.** This file read 14 Misses while CONDUCT-LEDGER.md read 19 — a standing discrepancy noted but never resolved. The ledger is the primary record, so the ledger's count wins: 19 at session open, +2 this session = **21**. The per-category table below still under-counts relative to the ledger (the 2026-08-12 session logged four Misses in the "didn't check prior art" class that this table recorded as one). Flagged, not silently smoothed — a `game-close` run should rebuild this table from the ledger rather than incrementing it.
+> **Count re-verified 2026-09-01, against source.** Total (0 Catches / 22 Misses / 1 Tripwire for Claude, 2 Catches / 0 Misses for Beth) matches `CONDUCT-LEDGER.md`'s own footer exactly — no fix needed there. The per-category table below did have a real error, now corrected: "Didn't check prior art" was listed as 5 ledger rows ("2026-08-12 x4, 2026-08-14"). Recounting the actual ledger rows: only **3** rows carry that tag — two on 2026-08-12 ("rebuilt existing work," "fourth instance in one session, same class") and one on 2026-08-14 (dual-tagged with Context discipline). The "four wrong-shape builds" language in the 2026-08-12 row's own prose (wrong medium/grain/orientation/axis) describes four mistakes made *within* that one session, not four separate scored ledger entries — two of the four were never logged as their own rows. Table below corrected accordingly. A `game-close` run should still rebuild this table from the ledger directly each time rather than hand-incrementing it, to stop this class of drift.
 
 ## Hot categories (2+ Misses)
 
 - **Map means Figma diagram** — 3 Misses (2026-08-04, 2026-08-12 ×2). Third strike already logged. Headmaster's office condition met.
-- **Didn't check prior art / build-or-fix before reading her artifact** — 2+ Misses in this table, **5 in the ledger** (2026-08-12 ×4, 2026-08-14). Headmaster's office condition met on the ledger count. This is now the largest category in the game.
+- **Didn't check prior art / build-or-fix before reading her artifact** — **3 in the ledger** (2026-08-12 ×2, 2026-08-14 ×1). *(Corrected 2026-09-01 — table previously read 5; re-verified against `CONDUCT-LEDGER.md` directly, actual count is 3.)* Still meets the 3rd-repeat headmaster's-office trigger.
 - **Routed work back to Beth instead of doing it** — 2 Misses (2026-08-12, 2026-08-14). Second strike.
 - **Fidelity/completeness** — 2 Misses (2026-08-04 ×2)
 
@@ -22,7 +22,7 @@ Beth · 2 Catches / 0 Misses
 
 | Category | Misses | Last occurrence |
 |---|---|---|
-| Didn't check prior art (ledger count; 5 incl. 2026-08-12 ×4) | 5 | 2026-08-14 |
+| Didn't check prior art (ledger count, corrected 2026-09-01) | 3 | 2026-08-14 |
 | Map means Figma diagram | 3 | 2026-08-12 |
 | Fidelity/completeness | 2 | 2026-08-04 |
 | Routed work back to Beth instead of doing it | 2 | 2026-08-14 |

@@ -1093,7 +1093,7 @@ Compilation only — every row below restates something a voice already said. No
 | RLZE | 39 (1) | 39 Mode 7 |
 | **Total** | **44 / 44** | **7** |
 
-Verdict distribution (per-lens, not aggregated — do not sum these): Strong Good 3 · Good 16 · Neutral 20 · Bad 5 · Strong Bad 0.
+Verdict distribution (per-lens, not aggregated — do not sum these): Strong Good 3 · Good 19 · Neutral 18 · Bad 4 · Strong Bad 0.
 
 ---
 

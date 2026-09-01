@@ -8,10 +8,11 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 **Scoring rule (set 2026-08-18, reconciled 2026-08-21):** Points = Catches − uncaught Misses, each player scored on their own ledger. +1 per Catch, −1 per uncaught Miss. This is the ONLY point-scoring mechanism now.
 
-<<<<<<< HEAD
-**Claude: −30 points** *(1 Catch − 30 Misses − 1 headmaster trip as previously counted)*
+**Claude: −30 points** *(1 Catch − 30 Misses − 1 headmaster trip as previously counted; unverified against the merged ledger below — see 2026-09-01 merge note)*
 
 > **Concurrent-session note (2026-09-01):** this file was edited by another session between my read and this edit — a separate Miss (idea-chess unit-of-analysis mismatch) was already logged here before this one. This −30 accounts for both that Miss and this one (Confluence datadump not checked). The Today block's counters below reflect only this session's activity — the other session's Today counters, if any, are not reconciled here. Flagged, not silently merged.
+
+> **Merge note (2026-09-01, second concurrent divergence same day):** this file also diverged against `origin/main`, independently of the note above. The `origin/main` branch had cloned this repo *before* the 2026-08-21 backfill (08-19→08-25 entries) was ever pushed — none of that history existed on its side. Its own "count re-verified against source" pass (kept in `CONDUCT-LEDGER.md`'s merge note now) is a real, valuable correction — it caught that the old "Didn't check prior art — 5 Misses" hot-category line was wrong, only 2 rows in the ledger actually carry that literal tag — but the correction was computed against that same incomplete base, so its own totals aren't trustworthy as a final number either. **Every count on this page from here through "All active categories" needs a fresh recount against the now-merged `CONDUCT-LEDGER.md` (27 Misses / 1 Catch / 1 Tripwire, itself grep-verified) before being trusted — this merge preserves both sides' narrative content but does not assert a new authoritative total.**
 **Beth: +3 points** *(3 Catches − 0 Misses)*
 
 > ⚠️ **Unreconciled, flagged not fixed (2026-08-25):** this line has been subtracting **1**
@@ -136,18 +137,11 @@ Beth · 3 Catches / 1 Miss
 
 ## Hot categories (2+ Misses)
 
-- **Didn't check prior art** — **6 Misses** (2026-08-12 ×4, 2026-08-14, 2026-09-01). Headmaster's office condition met since 2026-08-14; the 2026-09-01 Miss is the first in this category logged after Amendment 3 formalized the trigger — flagged as a possible fresh trip, not self-executed (see Ledger score section).
+- **Didn't check prior art** — **3 Misses in `CONDUCT-LEDGER.md`'s table** (2026-08-12 ×2 — "rebuilt existing work," "fourth instance in one session, same class" — and 2026-08-14 ×1), grep-verified 2026-09-01 (previous "5" claim was wrong — see superseded note below). Plus **1 more narrated but not yet promoted to a ledger row**: the 2026-09-01 Confluence-scout-omission Miss logged in this file's own Ledger score section. Headmaster's office condition met since 2026-08-14 on the ledger-verified 3; whether the unpromoted 4th counts as a fresh trip is Beth's call, not self-executed.
 - **Map means Figma diagram** — 3 Misses (2026-08-04, 2026-08-12 ×2). Headmaster's office condition met.
-- **Routed work back to Beth instead of doing it** — **6 Misses** (2026-08-12, 2026-08-14, 2026-08-19, 2026-08-20, 2026-08-24, 2026-08-27). Headmaster's office tripped three times (2026-08-19, 2026-08-20, 2026-08-24); the 2026-08-27 Miss reads as a 4th trip in-category → **overall trip 5/5 → Microsoft Bob**, flagged for Beth's call (see Today block), not self-executed. **Worst category. MOD-006 (§14) failing repeatedly.**
-=======
-> **Count re-verified 2026-09-01, against source.** Total (0 Catches / 22 Misses / 1 Tripwire for Claude, 2 Catches / 0 Misses for Beth) matches `CONDUCT-LEDGER.md`'s own footer exactly — no fix needed there. The per-category table below did have a real error, now corrected: "Didn't check prior art" was listed as 5 ledger rows ("2026-08-12 x4, 2026-08-14"). Recounting the actual ledger rows: only **3** rows carry that tag — two on 2026-08-12 ("rebuilt existing work," "fourth instance in one session, same class") and one on 2026-08-14 (dual-tagged with Context discipline). The "four wrong-shape builds" language in the 2026-08-12 row's own prose (wrong medium/grain/orientation/axis) describes four mistakes made *within* that one session, not four separate scored ledger entries — two of the four were never logged as their own rows. Table below corrected accordingly. A `game-close` run should still rebuild this table from the ledger directly each time rather than hand-incrementing it, to stop this class of drift.
+- **Routed work back to Beth instead of doing it** — stated as **6 Misses** in this table (2026-08-12, 2026-08-14, 2026-08-19, 2026-08-20, 2026-08-24, 2026-08-27) but only **4 rows** actually exist in `CONDUCT-LEDGER.md`'s table (08-12, 08-14, 08-19, 08-20 — grep-verified 2026-09-01); 08-24 and 08-27 have narrative in this file's own Points-history table but were never promoted to a `CONDUCT-LEDGER.md` row. **Not reconciled — do not trust either 4 or 6 as final without a `game-close` pass that either backfills the two missing rows or explains why they don't count.** Headmaster's office tripped at least twice (2026-08-19, 2026-08-20) on the ledger's own rows; whether it hit 5/5 → Microsoft Bob depends on which count is right. **Worst-or-tied-worst category either way. MOD-006 (§14) failing repeatedly.**
 
-## Hot categories (2+ Misses)
-
-- **Map means Figma diagram** — 3 Misses (2026-08-04, 2026-08-12 ×2). Third strike already logged. Headmaster's office condition met.
-- **Didn't check prior art / build-or-fix before reading her artifact** — **3 in the ledger** (2026-08-12 ×2, 2026-08-14 ×1). *(Corrected 2026-09-01 — table previously read 5; re-verified against `CONDUCT-LEDGER.md` directly, actual count is 3.)* Still meets the 3rd-repeat headmaster's-office trigger.
-- **Routed work back to Beth instead of doing it** — 2 Misses (2026-08-12, 2026-08-14). Second strike.
->>>>>>> origin/main
+> **Superseded note, kept for its real finding (origin/main, 2026-09-01):** a session working from a stale pre-2026-08-21 clone re-verified this table against its own (incomplete) copy of `CONDUCT-LEDGER.md` and correctly caught that "Didn't check prior art — 5 Misses" was wrong — only 2 rows in the ledger carry that literal tag, not 4+1 (see below). That specific catch is real and is folded into the line below. Its own recomputed totals (22 Misses, category counts of 3 and 2) are **not** used here — they were computed against a base that was missing the 2026-08-19→08-25 entries entirely, for the reasons explained in the Points section's 2026-09-01 merge note above.
 - **Fidelity/completeness** — 2 Misses (2026-08-04 ×2)
 - **Verification discipline · misread own evidence** — **3 Misses** (2026-08-07, 2026-08-21, 2026-08-25). **Headmaster's office condition met 2026-08-25 → trip 4/5.** The pattern across all three: produced a result that *looked* checked without doing the check, then stated it as fact. 08-07 and 08-21 trusted a cached artifact over a direct call; 08-25 generated a count instead of running one. **Now tied with "Routed work back to Beth" as the worst category by consequence — 1 trip vs. 3, but this one is newer and accelerating.**
 
@@ -155,11 +149,7 @@ Beth · 3 Catches / 1 Miss
 
 | Category | Misses | Last |
 |---|---|---|
-<<<<<<< HEAD
-| Didn't check prior art | 6 | 2026-09-01 |
-=======
-| Didn't check prior art (ledger count, corrected 2026-09-01) | 3 | 2026-08-14 |
->>>>>>> origin/main
+| Didn't check prior art (ledger-verified 2026-09-01; +1 unpromoted narrated Miss same day) | 3 | 2026-08-14 |
 | Map means Figma diagram | 3 | 2026-08-12 |
 | Routed work back to Beth | 6 | 2026-08-27 |
 | Fidelity/completeness | 2 | 2026-08-04 |

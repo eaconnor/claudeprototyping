@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Channel Decision Space — ACP/Harness QBR-EBR (Tier 1 Concept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-app: #0b1220; --bg-surface: #121b2e; --bg-elevated: #182238; --bg-deep: #070d18;
+    --border: #1f2c47; --border-strong: #2a3a5c;
+    --text-primary: #e6edf7; --text-secondary: #9aa8c2; --text-tertiary: #6b7a96; --text-muted: #4b5772;
+    --brand: #c046ff; --brand-strong: #8500cc; --brand-soft: rgba(192,70,255,0.14);
+    --critical: #ef4444; --critical-soft: rgba(239,68,68,0.13);
+    --high: #f97316; --high-soft: rgba(249,115,22,0.13);
+    --medium: #eab308; --medium-soft: rgba(234,179,8,0.12);
+    --low: #058142; --low-soft: rgba(5,129,66,0.12);
+    --alpha-accent: #a78bfa; --alpha-soft: rgba(167,139,250,0.13);
+    --topbar-bg: #0a1730; --topbar-border: var(--brand);
+    --rail-bg: #16112e; --rail-border: var(--alpha-accent);
+    --radius-sm: 2px; --radius-md: 4px; --radius-lg: 16px; --radius-full: 999px;
+    --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-brand: 'Manrope', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  [data-theme="light"] {
+    --bg-app: #fafafa; --bg-surface: #ffffff; --bg-elevated: #f8ebff; --bg-deep: #fafafa;
+    --border: #d5d5d5; --border-strong: #c046ff;
+    --text-primary: #18191a; --text-secondary: #2e2e33; --text-tertiary: #404047; --text-muted: #5c5c66;
+    --topbar-bg: #0a1730; --rail-bg: #f0eafa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-ui); background: var(--bg-app); color: var(--text-primary);
+    font-size: 14px; line-height: 1.5; min-height: 100vh;
+  }
+  .topbar {
+    height: 56px; background: var(--topbar-bg); border-bottom: 2px solid var(--topbar-border);
+    display: flex; align-items: center; padding: 0 20px; gap: 16px; position: sticky; top: 0; z-index: 100;
+  }
+  .brand-mark { font-family: var(--font-brand); font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.2px; }
+  .brand-mark span { color: var(--brand); }
+  .topbar-divider { width: 1px; height: 22px; background: var(--border-strong); }
+  .product-name { font-size: 13px; color: #c9d3ea; }
+  .topbar-spacer { flex: 1; }
+  .pill {
+    font-family: var(--font-mono); font-size: 11px; padding: 3px 9px; border-radius: 20px;
+    background: var(--alpha-soft); color: var(--alpha-accent); border: 1px solid var(--alpha-accent);
+    font-weight: 600; letter-spacing: 0.4px;
+  }
+  .btn {
+    font-family: var(--font-ui); font-size: 12.5px; font-weight: 600; padding: 7px 13px;
+    border-radius: var(--radius-md); border: 1px solid var(--border-strong); background: var(--bg-elevated);
+    color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--brand); }
+  .btn-council { border-color: var(--alpha-accent); color: var(--alpha-accent); }
+  .btn-ghost { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary); }
+  .mode-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius-md); overflow: hidden; }
+  .mode-toggle button {
+    font-family: var(--font-mono); font-size: 11px; padding: 6px 10px; background: var(--bg-elevated);
+    color: var(--text-tertiary); border: none; cursor: pointer; border-right: 1px solid var(--border-strong);
+  }
+  .mode-toggle button:last-child { border-right: none; }
+  .mode-toggle button.active { background: var(--brand); color: #fff; }
+
+  .shell { display: flex; align-items: flex-start; }
+  .main { flex: 1; padding: 24px 28px; max-width: calc(100% - 420px); }
+  .rail { width: 420px; background: var(--rail-bg); border-left: 4px solid var(--rail-border);
+    box-shadow: inset 6px 0 14px -10px rgba(167,139,250,0.5); min-height: calc(100vh - 56px);
+    padding: 22px; position: sticky; top: 56px;
+    background-image: repeating-linear-gradient(135deg, rgba(167,139,250,0.035) 0px, rgba(167,139,250,0.035) 2px, transparent 2px, transparent 14px);
+  }
+
+  /* pip indicator (fidelity tier, 1 of 3) */
+  .pip-row { display: inline-flex; gap: 4px; align-items: center; margin-right: 8px; }
+  .pip { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); display: inline-block; }
+  .pip.filled { background: var(--medium); }
+
+  .fidelity-banner {
+    background: var(--bg-surface); border: 1px solid var(--medium); border-left: 4px solid var(--medium);
+    border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 20px;
+  }
+  .fidelity-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+  .fidelity-flag { font-family: var(--font-mono); font-weight: 700; font-size: 12px; color: var(--medium); display: flex; align-items: center; }
+  .fidelity-check { font-size: 12px; color: var(--text-secondary); }
+  .check-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 18px; border-top: 1px solid var(--border); padding-top: 10px; }
+  .check-item { font-size: 11.5px; color: var(--text-secondary); display: flex; gap: 6px; align-items: flex-start; line-height: 1.4; }
+  .check-yes { color: var(--low); font-weight: 700; }
+  .check-no { color: var(--text-muted); font-weight: 700; }
+
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; font-family: var(--font-brand); }
+  .subhead { font-size: 12.5px; color: var(--text-tertiary); margin-bottom: 20px; max-width: 780px; line-height: 1.55; }
+  .seed-stamp {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
+    border: 1px dashed var(--border-strong); padding: 1px 6px; border-radius: 3px; margin-left: 6px;
+  }
+
+  .section-label { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--text-tertiary); margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label .zone-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .card {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 18px; margin-bottom: 14px;
+  }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .card-sub { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; line-height: 1.5; }
+
+  /* infra grid */
+  .infra-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .infra-item { background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 10px 12px; font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .infra-item b { color: var(--text-primary); }
+
+  /* evidence tag badges — identical treatment across R/D/A/? */
+  .evid-tag { font-family: var(--font-mono); font-weight: 700; font-size: 10.5px; padding: 2px 7px;
+    border-radius: 3px; display: inline-flex; align-items: center; border: 1px solid; flex-shrink: 0;
+    min-width: 26px; justify-content: center; }
+  .evid-r { background: var(--low-soft); color: var(--low); border-color: var(--low); }
+  .evid-d { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
+  .evid-a { background: var(--medium-soft); color: var(--medium); border-color: var(--medium); }
+  .evid-q { background: var(--bg-elevated); color: var(--text-secondary); border-color: var(--text-muted); }
+
+  .evid-key { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; font-size: 11.5px; color: var(--text-tertiary); align-items: center; }
+  .evid-key .k { display: flex; gap: 6px; align-items: center; }
+
+  /* channel zone — 2x2 equal grid, no ranking */
+  .channel-zone { border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 18px;
+    background: var(--bg-surface); }
+  .channel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 4px; }
+  .channel-card { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-deep);
+    padding: 14px; display: flex; flex-direction: column; }
+  .channel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+  .channel-name { font-family: var(--font-brand); font-size: 15px; font-weight: 700; }
+  .channel-pos { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-muted); }
+  .evid-list { list-style: none; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+  .evid-list li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+
+  .no-divergence { margin-top: 10px; border: 1px dashed var(--border-strong); border-radius: var(--radius-sm);
+    padding: 8px 10px; font-size: 10.5px; color: var(--text-muted); font-family: var(--font-mono); text-align: center; }
+
+  .divergence { margin-top: 10px; border: 1px solid var(--alpha-accent); border-radius: var(--radius-md);
+    padding: 10px; background: var(--alpha-soft); }
+  .divergence-label { font-family: var(--font-mono); font-weight: 700; font-size: 10px; color: var(--alpha-accent);
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .divergence-label .qmark { width: 15px; height: 15px; border-radius: 50%; background: var(--alpha-accent); color: #16112e;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
+  .quote-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quote-bubble { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 8px 9px; font-size: 11px; color: var(--text-secondary); line-height: 1.45; }
+  .quote-bubble .date { font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+  .divergence-note { font-size: 11px; color: var(--text-tertiary); margin-top: 8px; line-height: 1.5; }
+
+  /* connector between zones */
+  .connector { display: flex; align-items: center; gap: 10px; margin: 18px 0; }
+  .connector-line { flex: 1; border-top: 2px dashed var(--alpha-accent); }
+  .connector-label { font-family: var(--font-mono); font-size: 10.5px; color: var(--alpha-accent); font-weight: 700;
+    background: var(--bg-app); padding: 4px 10px; border: 1px solid var(--alpha-accent); border-radius: var(--radius-full);
+    white-space: nowrap; text-align: center; }
+
+  /* customer engagement zone */
+  .ce-zone { border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 18px;
+    background: var(--bg-elevated); }
+  .ce-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
+  .ce-option { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-surface);
+    padding: 12px 10px; text-align: center; font-size: 12px; color: var(--text-secondary); position: relative; }
+  .ce-option.current { border-color: var(--low); }
+  .ce-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px;
+    display: inline-block; margin-top: 6px; }
+  .ce-badge.current { background: var(--low-soft); color: var(--low); }
+  .ce-badge.open { background: var(--bg-deep); color: var(--text-muted); border: 1px dashed var(--border-strong); }
+  .ce-warn { margin-top: 12px; font-size: 11.5px; color: var(--alpha-accent); background: var(--bg-app);
+    border: 1px dashed var(--alpha-accent); border-radius: var(--radius-sm); padding: 8px 10px; line-height: 1.5; }
+
+  .open-q-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .open-q-list li { font-size: 12.5px; color: var(--text-secondary); display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+
+  .footer-note { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px;
+    color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+  .attribution-badge { font-family: var(--font-mono); border: 1px solid var(--border-strong); border-radius: 3px;
+    padding: 2px 7px; color: var(--text-tertiary); }
+
+  /* modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(4,7,16,0.72); z-index: 1000;
+    align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal-council { background: var(--bg-surface); border: 1px solid var(--alpha-accent); border-radius: var(--radius-lg);
+    width: 620px; max-width: 92vw; max-height: 80vh; overflow-y: auto; padding: 24px;
+    box-shadow: 0 0 0 1px var(--alpha-accent), 0 20px 60px rgba(0,0,0,0.5); }
+  .modal-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .modal-body { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .voice-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .voice-row { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 12px; background: var(--bg-deep); font-size: 12.5px; }
+  .voice-status { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); border: 1px dashed var(--border-strong);
+    padding: 2px 7px; border-radius: 3px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* rail contents */
+  .readiness-badge { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .readiness-badge .tier-pill { font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+    background: var(--alpha-soft); color: var(--alpha-accent); padding: 5px 11px; border-radius: 20px;
+    border: 1px solid var(--alpha-accent); display: inline-flex; align-self: flex-start; }
+  .rail-section { margin-bottom: 20px; }
+  .rail-section-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--alpha-accent); margin-bottom: 10px; }
+  .rail-blurb { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .math-block { display: flex; gap: 8px; margin-bottom: 4px; }
+  .math-stat { flex: 1; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 8px 6px; text-align: center; }
+  .math-stat .num { font-family: var(--font-mono); font-weight: 700; font-size: 16px; }
+  .math-stat .lbl { font-size: 9px; color: var(--text-tertiary); margin-top: 2px; }
+  .math-lead .num { color: var(--medium); }
+  .math-note { font-size: 10.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+
+  details.rail-collapse { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px;
+    background: var(--bg-deep); }
+  details.rail-collapse summary { padding: 10px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  details.rail-collapse summary::-webkit-details-marker { display: none; }
+  details.rail-collapse .rail-collapse-body { padding: 0 12px 12px; font-size: 12px; color: var(--text-secondary); }
+  details.rail-collapse .rail-collapse-body ul { padding-left: 16px; margin-top: 6px; }
+  details.rail-collapse .rail-collapse-body li { margin-bottom: 6px; line-height: 1.5; }
+
+  .routed-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 13px; margin-bottom: 10px;
+    background: var(--bg-deep); }
+  .routed-card .team { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--brand);
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+  .routed-card .action { font-size: 12.5px; margin-bottom: 6px; line-height: 1.45; }
+  .routed-card .why { font-size: 11.5px; color: var(--text-tertiary); margin-bottom: 6px; }
+  .routed-card .cons { font-size: 11.5px; color: var(--high); margin-bottom: 6px; }
+  .routed-card .roi { font-size: 11px; border-top: 1px solid var(--border); padding-top: 7px; margin-top: 7px; }
+  .routed-card .roi-line { display: flex; gap: 6px; margin-bottom: 3px; }
+  .roi-tag { font-family: var(--font-mono); font-weight: 700; font-size: 9.5px; min-width: 58px; color: var(--text-tertiary); }
+  .roi-generic { color: var(--text-muted); font-style: italic; }
+
+  .assumption-line { font-size: 11.5px; color: var(--text-tertiary); border-left: 2px solid var(--brand);
+    padding-left: 9px; margin-bottom: 8px; line-height: 1.5; }
+  .assumption-line b { color: var(--text-secondary); }
+
+  @media (max-width: 1100px) {
+    .shell { flex-direction: column; }
+    .main { max-width: 100%; }
+    .rail { width: 100%; position: static; }
+    .channel-grid, .infra-grid, .ce-options { grid-template-columns: 1fr; }
+    .quote-pair { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="brand-mark">ACP <span>·</span> AGENT CONTROL PLANE</div>
+  <div class="topbar-divider"></div>
+  <div class="product-name">Channel Decision Space — QBR/EBR Delivery (undecided)</div>
+  <div class="topbar-spacer"></div>
+  <button class="btn btn-council" onclick="document.getElementById('councilModal').classList.add('open')">◆ Council</button>
+  <span class="pill">TIER 1 · CONCEPT</span>
+  <div class="mode-toggle">
+    <button id="modeLight" onclick="setMode('light')">Light</button>
+    <button id="modeDark" class="active" onclick="setMode('dark')">Dark</button>
+    <button id="modeSystem" onclick="setMode('system')">System</button>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="main">
+
+    <div class="fidelity-banner">
+      <div class="fidelity-top">
+        <span class="fidelity-flag"><span class="pip-row"><span class="pip filled"></span><span class="pip"></span><span class="pip"></span></span>TIER 1 · CONCEPT</span>
+        <span class="fidelity-check">Testing: a decision-space visualization — not a recommendation, not a build of any candidate channel</span>
+        <span class="fidelity-check">·</span>
+        <span class="fidelity-check">World-claims: <strong>26.3% [A]/[?]</strong> — under the 30% threshold</span>
+        <span class="fidelity-check">·</span>
+        <span class="fidelity-check">Regime: <strong>PROCEED-FLAGGED</strong></span>
+      </div>
+      <div class="check-matrix">
+        <div class="check-item"><span class="check-yes">✓</span> All four channel candidates render at equal visual weight</div>
+        <div class="check-item"><span class="check-yes">✓</span> [R]/[D]/[A]/[?] tags rendered identically across all candidates</div>
+        <div class="check-item"><span class="check-yes">✓</span> Channel and Customer Engagement occupy separate visual zones</div>
+        <div class="check-item"><span class="check-yes">✓</span> Both unresolved competitor divergences shown open, not settled</div>
+        <div class="check-item"><span class="check-no">✗</span> Recommends or ranks a candidate channel — <em>by design, not omission</em></div>
+        <div class="check-item"><span class="check-no">✗</span> Connects to a live system or real client data — static concept only</div>
+      </div>
+    </div>
+
+    <h1>The Channel is undecided. This shows the decision space, not an answer.</h1>
+    <p class="subhead">
+      Real, code-verified backend infrastructure exists for ACP/Harness QBR/EBR — a generic MCP gateway,
+      envelope-encrypted credential storage, daily tool-discovery sync. None of it can reach a client.
+      No delivery channel exists anywhere in the codebase. Four candidates are named in the corpus. None is chosen.
+      This artifact is Beth's decision space, laid out flat — it does not pick for her.
+      <span class="seed-stamp">seed data: none invented — content sourced from briefs/channel-gap.brief.md</span>
+    </p>
+
+    <div class="section-label"><span class="zone-dot" style="background:var(--low);"></span>What exists — verified backend infrastructure</div>
+    <div class="card">
+      <div class="card-sub">Gate 1 of the brief — the strongest gate. Every item below is [R], code-verified, twice independently against the same snapshot lineage.</div>
+      <div class="infra-grid">
+        <div class="infra-item"><span class="evid-tag evid-r">R</span> &nbsp;<b>MCP gateway</b> — generic, <code>auth_type</code>-driven provider classes. No vendor hardcoded.</div>
+        <div class="infra-item"><span class="evid-tag evid-r">R</span> &nbsp;<b>Credential layer</b> — envelope-encrypted (AES-256-GCM, KMS/local fallback), four auth-provider classes.</div>
+        <div class="infra-item"><span class="evid-tag evid-r">R</span> &nbsp;<b>Tool-discovery sync</b> — daily background pass, per-server failure isolation.</div>
+        <div class="infra-item"><span class="evid-tag evid-r">R</span> &nbsp;<b>Direction</b> — gateway code is entirely inbound (external tool servers → agents). Zero outbound delivery mechanism in <code>sync.py</code>, <code>encryption.py</code>, or <code>providers.py</code>.</div>
+        <div class="infra-item"><span class="evid-tag evid-r">R</span> &nbsp;<b>No frontend</b> — <code>apps/</code> contains exactly one directory, <code>backend</code>. Re-verified 2026-09-01.</div>
+        <div class="infra-item"><span class="evid-tag evid-r">R</span> &nbsp;<b><code>notification_recipients</code> schema</b> — two types today, <code>email</code> / <code>actor</code>. No <code>sms</code>.</div>
+      </div>
+    </div>
+
+    <div class="section-label"><span class="zone-dot" style="background:var(--brand);"></span>Zone 1 — Channel: four candidates, none chosen</div>
+    <div class="channel-zone">
+      <div class="card-sub" style="margin-bottom:12px;">
+        Ordered alphabetically, not by how validated each looks. Equal grid position, equal card size, equal evidence-tag treatment.
+      </div>
+      <div class="evid-key">
+        <span class="k"><span class="evid-tag evid-r">R</span> code/document-verified, direct</span>
+        <span class="k"><span class="evid-tag evid-d">D</span> directional / vendor self-report, unconfirmed</span>
+        <span class="k"><span class="evid-tag evid-a">A</span> assumption — extends beyond cited evidence</span>
+        <span class="k"><span class="evid-tag evid-q">?</span> unknown / unresolved</span>
+      </div>
+
+      <div class="channel-grid">
+
+        <div class="channel-card">
+          <div class="channel-head"><span class="channel-name">Email</span><span class="channel-pos">alphabetical 1/4 — not a rank</span></div>
+          <ul class="evid-list">
+            <li><span class="evid-tag evid-r">R</span> <span><code>notification_recipients</code> schema already has an <code>email</code> type — the only candidate with existing schema surface today.</span></li>
+            <li><span class="evid-tag evid-q">?</span> <span>No email template, content model, or send-trigger for QBR/EBR output exists anywhere in the codebase.</span></li>
+            <li><span class="evid-tag evid-d">D</span> <span>Competitor pattern: myITprocess ships PDF-by-email as part of its delivery pattern (vendor self-report, unconfirmed).</span></li>
+            <li><span class="evid-tag evid-r">R</span> <span>Gateway code is inbound-only — no outbound send mechanism of any kind exists yet.</span></li>
+          </ul>
+          <div class="no-divergence">no unresolved competitor divergence flagged for this candidate</div>
+        </div>
+
+        <div class="channel-card">
+          <div class="channel-head"><span class="channel-name">Portal</span><span class="channel-pos">alphabetical 2/4 — not a rank</span></div>
+          <ul class="evid-list">
+            <li><span class="evid-tag evid-r">R</span> <span>Apex Bridge (Beth's own design/demo tool) is explicitly <b>not</b> a candidate real channel — confirmed directly.</span></li>
+            <li><span class="evid-tag evid-r">R</span> <span>No frontend directory exists anywhere in the codebase — a portal is built from zero, not extended.</span></li>
+            <li><span class="evid-tag evid-d">D</span> <span>Competitor pattern: myITprocess also claims an "always-on portal" (vendor self-report, unconfirmed).</span></li>
+            <li><span class="evid-tag evid-q">?</span> <span>See UNRESOLVED divergence below — CloudRadial's own claim doesn't cleanly agree with itself.</span></li>
+          </ul>
+          <div class="divergence">
+            <div class="divergence-label"><span class="qmark">?</span> UNRESOLVED — CloudRadial, both sides sourced</div>
+            <div class="quote-pair">
+              <div class="quote-bubble"><span class="date">Marketing copy, checked live 2026-09-01</span>"On-demand QBRs... available 24/7."</div>
+              <div class="quote-bubble"><span class="date">qbr-ebr.ux.md, footnote 50, July 2026</span>CloudRadial has no between-EBR client-facing view.</div>
+            </div>
+            <div class="divergence-note">Marketing-vs-shipped gap? Changed since July? Definitional mismatch on "client-facing"? Not resolved here — carried forward as open, not settled.</div>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="channel-head"><span class="channel-name">PSA-writeback</span><span class="channel-pos">alphabetical 3/4 — not a rank</span></div>
+          <ul class="evid-list">
+            <li><span class="evid-tag evid-d">D</span> <span>vCIOToolbox is the only tool in the five-vendor pool claiming PSA-ticket writeback (no client-facing surface) — vendor self-report, zero independent confirmation.</span></li>
+            <li><span class="evid-tag evid-r">R</span> <span>No PSA-writeback plumbing exists in ACP gateway code — inbound-only (tool servers → agents), not outbound to a PSA ticket.</span></li>
+            <li><span class="evid-tag evid-q">?</span> <span>Footnotes 42/43/50 — the basis for "no PSA writeback exists elsewhere" — all trace to one underlying file. Single-source, flagged [WOBBLY] by the source scout.</span></li>
+            <li><span class="evid-tag evid-q">?</span> <span>See UNRESOLVED divergence below — vCIOToolbox's own docs don't cleanly agree with the July footnote.</span></li>
+          </ul>
+          <div class="divergence">
+            <div class="divergence-label"><span class="qmark">?</span> UNRESOLVED — vCIOToolbox, both sides sourced</div>
+            <div class="quote-pair">
+              <div class="quote-bubble"><span class="date">Current product docs</span>Shipped 2-way ticket + opportunity sync to Autotask.</div>
+              <div class="quote-bubble"><span class="date">qbr-ebr.ux.md, footnote 43, July 2026</span>AI features called "future tense... not shipping."</div>
+            </div>
+            <div class="divergence-note">May not actually conflict — July footnote may be scoped to AI features only, not the sync mechanism — but close enough to the same claim territory to flag, not silently harmonize.</div>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="channel-head"><span class="channel-name">SMS</span><span class="channel-pos">alphabetical 4/4 — not a rank</span></div>
+          <ul class="evid-list">
+            <li><span class="evid-tag evid-r">R</span> <span>Workshop call, 2026-08-06: "SMS out, reply becomes a PSA ticket" — a directional call was made, once, in one meeting.</span></li>
+            <li><span class="evid-tag evid-r">R</span> <span>Real MSP precedent exists for the <b>inbound</b> direction only (client-initiated text → ticket), cited to Syncro / mspprocess.com.</span></li>
+            <li><span class="evid-tag evid-a">A</span> <span><b>Bidirectional extension</b> (system texts out, client reply becomes a ticket) goes beyond that inbound-only precedent — assumption, not a validated pattern.</span></li>
+            <li><span class="evid-tag evid-q">?</span> <span>The precedent's own cited stat (98% open rate, ~3min avg response vs ~3-day email) could not be found on mspprocess.com on direct fetch, 2026-09-01.</span></li>
+          </ul>
+          <div class="no-divergence">no unresolved competitor divergence flagged for this candidate</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">adjacent — not the same decision</div>
+      <div class="connector-line"></div>
+    </div>
+
+    <div class="section-label"><span class="zone-dot" style="background:var(--alpha-accent);"></span>Zone 2 — Customer Engagement: a different, adjacent decision</div>
+    <div class="ce-zone">
+      <div class="card-sub">
+        "Channel" is how anything reaches a client at all. "Customer Engagement" is what relationship the client has
+        with the content once a channel exists. A Portal answers both at once — which is exactly why they get collapsed
+        in casual conversation. Kept apart here on purpose.
+      </div>
+      <div class="ce-options">
+        <div class="ce-option">Bespoke<br><span class="ce-badge open">undecided [?]</span></div>
+        <div class="ce-option current">Templated<br><span class="ce-badge current">current state [R]</span></div>
+        <div class="ce-option">Client-facing between EBRs<br><span class="ce-badge open">undecided [?]</span></div>
+        <div class="ce-option">Scored / gamified<br><span class="ce-badge open">undecided [?]</span></div>
+      </div>
+      <div class="ce-warn">
+        ⚠ Choosing <b>Portal</b> as the Channel does not, by itself, resolve this decision — but it touches
+        "client-facing between EBRs" directly. A build that picks Portal without naming which decision it's actually
+        resolving will quietly foreclose this option while claiming only to have picked a Channel.
+      </div>
+    </div>
+
+    <div class="section-label"><span class="zone-dot" style="background:var(--text-muted);"></span>Open questions — named, not filled</div>
+    <div class="card">
+      <ul class="open-q-list">
+        <li><span class="evid-tag evid-q">?</span> No OKR objective, key result, or counter-metric for the Channel decision exists anywhere in this corpus.</li>
+        <li><span class="evid-tag evid-q">?</span> No one is named as owning delivery of whichever Channel gets chosen (the Structure gap — adjacent to this brief, not solved by it).</li>
+        <li><span class="evid-tag evid-q">?</span> <code>apps/fake-mcps</code> freshness — "no frontend exists" is solid against the static snapshot checked, not independently verified against the live repo.</li>
+        <li><span class="evid-tag evid-q">?</span> The mspprocess.com 98%/3min/3-day stat needs re-sourcing, or a decision to stop citing it, before it appears again.</li>
+      </ul>
+    </div>
+
+    <div class="footer-note">
+      <span class="attribution-badge">0% Beth — tool-generated this pass, not yet human-edited</span>
+      <span>Brief: briefs/channel-gap.brief.md</span>
+      <span>Math recount: briefs/channel-gap-math-recount.md</span>
+      <span>Critic pass 1: prototypes/channel-gap/critic-pass-1.md</span>
+    </div>
+
+  </div>
+
+  <!-- BRADLEY RAIL -->
+  <div class="rail">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+      <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Internal review tooling — not part of the ACP product</span>
+      <button class="btn btn-council" onclick="document.getElementById('councilModal').classList.add('open')">◆ Council</button>
+    </div>
+    <div class="readiness-badge">
+      <span class="tier-pill">TIER 1 · CONCEPT</span>
+      <span style="font-size:11.5px; color:var(--text-tertiary);">Decision-space visualization — no candidate is recommended, none is built.</span>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">What this is testing</div>
+      <div class="rail-blurb">
+        Whether the Channel decision — SMS, email, portal, or PSA-writeback, for delivering QBR/EBR output to a
+        client — can be laid out honestly enough that Beth can look at it once and see the whole space: what's
+        verified, what's assumed, what's still unresolved between competitors. It is not testing which channel
+        is right. That call isn't made here.
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">The math (recount-verified, not self-reported)</div>
+      <div class="math-block">
+        <div class="math-stat math-lead"><div class="num">26.3%</div><div class="lbl">WORLD-CLAIMS<br>[A]/[?]</div></div>
+        <div class="math-stat"><div class="num">0%</div><div class="lbl">TEST-PLAN<br>READY (0/4)</div></div>
+        <div class="math-stat"><div class="num">39.1%</div><div class="lbl">INFLATED —<br>DO NOT QUOTE</div></div>
+      </div>
+      <div class="math-note">
+        26.3% is the lead number. 0/4 candidates having a test plan is correct at this tier, per
+        <code>machine_behavior</code> — not a gap to close before shipping this artifact. See
+        <code>briefs/channel-gap-math-recount.md</code>.
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">What you nailed</div>
+      <details class="rail-collapse" open>
+        <summary>5 points ▾</summary>
+        <div class="rail-collapse-body">
+          <ul>
+            <li>All four candidates render in an alphabetized 2×2 grid, equal card size — no default SMS-first ordering despite SMS having the most prose in the corpus.</li>
+            <li>The [A] tag on SMS's bidirectional-extension claim gets the same badge size/weight/treatment as every [R] tag around it.</li>
+            <li>Channel and Customer Engagement sit in genuinely separate bordered zones with an explicit connector, not one flowing card.</li>
+            <li>Both competitor divergences render as split quote-bubble "UNRESOLVED" cards with dated sources on each side — neither side picked.</li>
+            <li>Rail ROI blocks stay generic across all four candidates — no per-candidate numbers invented to fill a gap.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">What will hurt you</div>
+      <details class="rail-collapse">
+        <summary>4 risks ▾</summary>
+        <div class="rail-collapse-body">
+          <ul>
+            <li>A 2×2 grid still has a reading order (top-left first). Alphabetizing removes topic-based bias, not position bias — a skimmer may still anchor on Email for no substantive reason.</li>
+            <li>The mspprocess.com stat's failed re-verification is shown as [?], but a viewer skimming past the badge could still walk away remembering "98% open rate" as settled.</li>
+            <li>No acceptance test exists for "did this avoid the SMS-bias failure mode" — that check happens at critic-pass-2, after the fact, not before.</li>
+            <li>The Structure gap (who owns delivery once a channel is picked) is named here and in the brief but resolved nowhere — it will resurface the moment Beth makes the Channel call.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">Assumptions made in this build</div>
+      <div class="assumption-line"><b>Ordering:</b> alphabetical (Email → Portal → PSA-writeback → SMS), not by
+        perceived validation — chosen specifically to block the first-position-bias risk critic-pass-1 named.</div>
+      <div class="assumption-line"><b>Divergence grammar:</b> split quote-bubble pair + "UNRESOLVED" badge, both
+        sides dated — the brief named the requirement but not the visual form; this is one workable form, not the
+        only one.</div>
+      <div class="assumption-line"><b>No per-candidate ROI:</b> the rail's routed-card ROI blocks say "unknown until
+        Beth picks a channel" for all four — filling in a plausible number for one candidate and leaving others
+        blank would itself be a recommendation by omission.</div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">Routed cards</div>
+
+      <div class="routed-card">
+        <div class="team">Product</div>
+        <div class="action">Make the Channel call — SMS, email, portal, or PSA-writeback (or something not yet
+          named). This artifact routes that decision to Beth; nothing on this screen decides it for her.</div>
+        <div class="why">Why now: Channel is one of four open, unchecked CHORES.md items as of 2026-09-01; no
+          owner is named for whichever channel gets picked.</div>
+        <div class="cons">If shipped without it: the backend (gateway, encryption, sync) keeps generating output
+          with nowhere to send it.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> Everything downstream of this call.</div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="team">Design</div>
+        <div class="action">Design the client-facing surface (portal UI, email template, SMS conversation flow,
+          or PSA-ticket format) — but only once Product's Channel call locks the target.</div>
+        <div class="why">Why now: not yet — this is correctly blocked. Designing a candidate's UI before the
+          decision is made is the exact recommendation-by-omission risk this brief exists to prevent.</div>
+        <div class="cons">If shipped without it: N/A by design — nothing should be built here until Product routes
+          the answer back.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> Which candidate, therefore which UI problem.</div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="team">Research</div>
+        <div class="action">Re-source the mspprocess.com 98%/3min/3-day stat or formally retire the citation.
+          Resolve or explicitly timestamp both competitor divergences (CloudRadial portal claim,
+          vCIOToolbox sync-vs-AI-features scope) rather than let them go stale.</div>
+        <div class="why">Why now: both [?]-tagged divergences are currently load-bearing in any conversation about
+          what competitors already ship — if either resolves, it changes how validated a candidate looks.</div>
+        <div class="cons">If shipped without it: a future pass could silently harden a [D]/[?] claim into an [R]
+          one without anyone re-checking it — the exact failure mode this brief was built to block.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> Whether either divergence is a real conflict or a scope mismatch.</div>
+        </div>
+      </div>
+
+      <div class="routed-card">
+        <div class="team">Eng</div>
+        <div class="action">Nothing yet — no channel is chosen. When one is, the real gateway code
+          (<code>app/mcp/encryption.py</code> envelope encryption, <code>gateway/sync.py</code> daily discovery
+          sync, the four auth-provider classes) is the technical starting point. <code>notification_recipients</code>
+          (<code>data-model.md:129-132</code>) needs a new type added if SMS or portal are chosen — only
+          <code>email</code>/<code>actor</code> exist today.</div>
+        <div class="why">Why now: the gateway is confirmed inbound-only plumbing — zero outbound delivery mechanism
+          exists in <code>sync.py</code>, <code>encryption.py</code>, or <code>providers.py</code> for any candidate.</div>
+        <div class="cons">If shipped without it: building a delivery mechanism from scratch risks duplicating
+          security-sensitive credential-handling code that already exists and is tested.</div>
+        <div class="roi">
+          <div class="roi-line"><span class="roi-tag">BUSINESS:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">USER:</span> <span class="roi-generic">Unknown until Beth picks a channel — ROI depends entirely on which one.</span></div>
+          <div class="roi-line"><span class="roi-tag">UNKNOWN:</span> Build effort — varies hugely by candidate (schema-only add vs. full frontend from zero).</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- COUNCIL MODAL — not yet run. No testimony fabricated. -->
+<div class="modal-overlay" id="councilModal">
+  <div class="modal-council">
+    <div class="modal-title">◆ Council — not yet run</div>
+    <div class="modal-body">
+      No council pass has been run against this brief. This is a placeholder entry point, not testimony.
+      Per <code>machine_behavior</code>, nothing in this artifact should be read as multi-voice analysis until
+      Step 6 of the pipeline (<code>.claude/agents/council.md</code>) is actually invoked with <code>--council</code>.
+    </div>
+    <div class="voice-list">
+      <div class="voice-row"><span>Jobs-to-Be-Done</span><span class="voice-status">not run</span></div>
+      <div class="voice-row"><span>Service Blueprint</span><span class="voice-status">not run</span></div>
+      <div class="voice-row"><span>Self-Determination Theory</span><span class="voice-status">not run</span></div>
+      <div class="voice-row"><span>Disruptive Innovation</span><span class="voice-status">not run</span></div>
+      <div class="voice-row"><span>Value Chain</span><span class="voice-status">not run</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('councilModal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setMode(mode) {
+    const body = document.body;
+    document.querySelectorAll('.mode-toggle button').forEach(b => b.classList.remove('active'));
+    if (mode === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      document.getElementById('modeSystem').classList.add('active');
+    } else {
+      body.setAttribute('data-theme', mode);
+      document.getElementById(mode === 'light' ? 'modeLight' : 'modeDark').classList.add('active');
+    }
+    localStorage.setItem('apx-mode-pref-channel-gap', mode);
+  }
+  (function initMode() {
+    const saved = localStorage.getItem('apx-mode-pref-channel-gap') || 'dark';
+    setMode(saved);
+  })();
+</script>
+
+</body>
+</html>

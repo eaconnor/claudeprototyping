@@ -131,6 +131,8 @@ Beth · 3 Catches / 1 Miss
 
 **2026-09-01 — Beth self-reported Miss.** Asked "EBR build recovery and design is lost -- can't find the context.md files you wrote" in this (EBR rebuild) session — the missing-ux.md-files question actually belonged to a different chat/session (the cross-session `bethproto-cd` inquiry about `alert-flood-suppressor-ux.md` etc., an unrelated coworker's handoff). Beth: "sorry wrong chat. demerit me." Self-caught and self-issued, not Claude-issued — logged per her request. No change to Claude's tally; this is Beth's own ledger.
 
+**2026-09-01 — mechanics reflection (Beth's diagnosis, not self-caught).** Beth named the root cause across today's Misses and several hot categories as one thing: lack of careful reading — acting on a remembered/assumed version of a source instead of the actual text (scout's contract, in today's case). When I reached for an attention-limitation framing, she rejected it directly: "you are a computer. you can't have add." Filed as [[careless-reading-pattern]] in memory. This sharpens the existing 2026-08-25 finding (no internal signal distinguishes "I checked" from "I produced a plausible result") — the fix is sequencing (read the actual thing before acting on it), not a resolution to be more careful.
+
 > **Count note (2026-08-14):** Ledger (`CONDUCT-LEDGER.md`) is the primary record. Category table below may undercount — rebuild from ledger on next `game-close` run. **Update 2026-08-21:** `CONDUCT-LEDGER.md` was backfilled through 2026-08-21 this session (it had stopped at 2026-08-14 while GAME-STATE.md kept moving) — the two files should now agree; recheck this note if they drift again.
 
 ---
@@ -149,7 +151,7 @@ Beth · 3 Catches / 1 Miss
 
 | Category | Misses | Last |
 |---|---|---|
-| Didn't check prior art (ledger-verified 2026-09-01; +1 unpromoted narrated Miss same day) | 3 | 2026-08-14 |
+| Didn't check prior art (3 ledger-verified + 1 narrated 2026-09-01, pending promotion to a ledger row) | 4 | 2026-09-01 |
 | Map means Figma diagram | 3 | 2026-08-12 |
 | Routed work back to Beth | 6 | 2026-08-27 |
 | Fidelity/completeness | 2 | 2026-08-04 |

@@ -430,12 +430,43 @@ function countDoes(){return AREAS.filter(autoDoes).length;}
 
 /* ---- other HARNESS sections (real, navigable — not placeholders) ---- */
 function spill(txt,c){return `<span style="font-family:var(--font-m);font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${c}22;color:${c}">${txt}</span>`;}
+/* ---- RUNBOOKS — enriched 2026-09-01 for the Runbooks screen (brief Section D). Fields beyond
+   n/d/risk/v/by (unchanged, still read by riskPill()) are new: ownership (platform vs tenant — gates
+   edit/duplicate vs read-only chrome), versionStatus (RunbookVersion.status really tracks this —
+   schemas.py — Will's captured frames showed no indicator for it, so this closes that gap), lifecycle
+   (Active/Inactive), category/author/publisher/updated (list filters), coworkers (the count the "N
+   Coworkers" scope pill shows — honesty-badge site 3 augments it, doesn't replace it), lock (null, or
+   {scope:'whole',by,expiresMin} / {scope:'section',section,noPermission} — both named Figma-gap fixes:
+   locked-by-name+TTL, and its own semantic color, not selection-purple), general/connected/steps (detail
+   pane content — onboarding.html's own EBR-review model didn't define this slot, so Will's Figma field
+   vocabulary — CONNECTED SERVICES / WORKFLOW STEPS — fills it, per the brief's content-sourcing priority).
+   Seed author names are fictional, not Will Mincher's. */
 const RUNBOOKS=[
-  {n:'EBR Review',d:'Pulls the stack, grades each area, drafts the risk register.',risk:'High',v:'v1',by:'EBR Coworker'},
-  {n:'QBR Narrative',d:'Client-ready quarterly review narrative + posture summary.',risk:'Medium',v:'v3',by:'QBR Advisor'},
-  {n:'CVE Exposure & Triage',d:'Map CVE exposure to the fleet; rank remediation.',risk:'Medium',v:'v2',by:'Security Tabletop'},
-  {n:'Ticket RCA',d:'Root-cause analysis on tickets and device events.',risk:'High',v:'v4',by:'Incident Response Analyst'},
-  {n:'Endpoint Health Sweep',d:'Continuous endpoint health + lifecycle recommendations.',risk:'Low',v:'v5',by:'Environment Health Monitor'},
+  {id:'ebr-review', n:'EBR Review', d:'Pulls the stack, grades each area, drafts the risk register.', risk:'High', v:'v1', by:'EBR Coworker',
+   ownership:'platform', versionStatus:'active', lifecycle:'active', category:'Business reporting', author:'N-able Platform Team', publisher:'N-able', updated:'14 Aug 2026', coworkers:1, lock:null,
+   general:'Runs on-demand from the EBR Coworker. Nine-field runbook version (intent, scope, grading rules, carry-forward logic, sign-off requirement, trigger, owner, risk level, evidence policy) — platform-maintained, not client-editable.',
+   connected:[{n:'Microsoft 365',how:'MCP · OAuth (official)'},{n:'N-query (GraphQL)',how:'N-able MCP server'},{n:'Cove',how:'REST bridge'},{n:'Halo PSA',how:'MCP · OAuth'},{n:'Security Tabletop coworker',how:'agent-to-agent feed'}],
+   steps:['Ingest report + stack sources','Continuity / delta against last EBR','Judge each area against baseline','Translate to business language','Chooser — include/exclude, confidence-tiered','Deliver — dashboard or write-back','Liability log + forward framing']},
+  {id:'qbr-narrative', n:'QBR Narrative', d:'Client-ready quarterly review narrative + posture summary.', risk:'Medium', v:'v3', by:'QBR Advisor',
+   ownership:'tenant', versionStatus:'active', lifecycle:'active', category:'Business reporting', author:'Priya Nandakumar', publisher:'Bracken IT Group', updated:'2 Aug 2026', coworkers:2, lock:{scope:'whole', by:'Priya Nandakumar', expiresMin:12},
+   general:'Adapted from the EBR Review runbook for lighter-touch quarterly narrative clients. Editable while unlocked.',
+   connected:[{n:'Halo PSA',how:'MCP · OAuth'},{n:'N-central',how:'N-able MCP server'}],
+   steps:['Pull posture summary','Draft narrative','Client tone pass','Deliver']},
+  {id:'cve-exposure', n:'CVE Exposure & Triage', d:'Map CVE exposure to the fleet; rank remediation.', risk:'Medium', v:'v2', by:'Security Tabletop',
+   ownership:'tenant', versionStatus:'draft', lifecycle:'inactive', category:'Security', author:'David Okoro', publisher:'Bracken IT Group', updated:'19 Jul 2026', coworkers:1, lock:null,
+   general:'Drafted from the Security Tabletop after-action process. Not yet activated for any coworker.',
+   connected:[{n:'Security Tabletop coworker',how:'agent-to-agent feed'},{n:'N-query (GraphQL)',how:'N-able MCP server'}],
+   steps:['Pull CVE feed','Map to fleet','Rank remediation','Hand to EBR Review']},
+  {id:'ticket-rca', n:'Ticket RCA', d:'Root-cause analysis on tickets and device events.', risk:'High', v:'v4', by:'Incident Response Analyst',
+   ownership:'tenant', versionStatus:'active', lifecycle:'active', category:'Service · diagnostics', author:'Priya Nandakumar', publisher:'Bracken IT Group', updated:'28 Aug 2026', coworkers:1, lock:{scope:'section', section:'WORKFLOW STEPS', noPermission:true},
+   general:'Root-cause analysis pipeline for tickets and device events flagged by the NOC.',
+   connected:[{n:'Halo PSA',how:'MCP · OAuth'},{n:'N-central',how:'N-able MCP server'}],
+   steps:['Pull ticket + device event','Cluster by root cause','Draft RCA note','Route to EBR Review']},
+  {id:'endpoint-sweep', n:'Endpoint Health Sweep', d:'Continuous endpoint health + lifecycle recommendations.', risk:'Low', v:'v5', by:'Environment Health Monitor',
+   ownership:'tenant', versionStatus:'deprecated', lifecycle:'inactive', category:'Operations · lifecycle', author:'David Okoro', publisher:'Bracken IT Group', updated:'3 Mar 2026', coworkers:0, lock:null,
+   general:'Superseded by the newer Environment Health Monitor default runbook — kept for reference, not assigned to any coworker.',
+   connected:[{n:'N-query (GraphQL)',how:'N-able MCP server'}],
+   steps:['Pull device fleet','Score lifecycle risk','Draft refresh candidates']},
 ];
 const EXPERTS=[
   {n:'N-zo',dom:'N-able platform',d:'Diagnostics, telemetry, patch reasoning across the stack. Advisory — no autonomous actions.',s:'GA'},
@@ -461,8 +492,74 @@ const EXEC=[
   {cw:'EBR Coworker — Fenwick (Q2)',w:'14 May',o:'4 findings drafted',ok:1},
 ];
 function riskPill(r){return spill(r,r==='High'?'#c0392b':r==='Medium'?'#a56a00':'#137a46');}
-function renderRunbooks(){document.getElementById('secsub').textContent='Your SOPs, written down — a coworker follows one to work the way you already do.';
-  return `<div class="dcard">${RUNBOOKS.map(r=>`<div class="stat"><span><b style="color:var(--ink)">${r.n}</b> <span style="color:var(--text-2);font-size:12px">— ${r.d}</span></span><span style="display:flex;gap:10px;align-items:center;font-size:12px">${riskPill(r.risk)}<span class="v muted" style="font-weight:500">${r.v}</span><span style="color:var(--text-2)">${r.by}</span></span></div>`).join('')}</div>`;}
+/* ---- Runbooks screen — two-pane list+detail, new 2026-09-01 (brief Section D). Grafted into this
+   file's existing nav (NAVITEMS/SECTION already routed 'runbooks' here) — no separate shell. Implements
+   all five state signals plus the two Figma-gap fixes (version-status pill; "Locked by [name] · expires
+   in [X] min"), and honesty-badge site 3 (augments, does not replace, the "N Coworkers" scope pill). */
+function renderRunbooks(){
+  document.getElementById('secsub').innerHTML='Your SOPs, written down — a coworker follows one to work the way you already do.';
+  const sel=RUNBOOKS.find(r=>r.id===S.rbSel)||RUNBOOKS[0];
+  return `<div class="rb-shell">
+    <div>
+      <div class="rb-search"><input placeholder="Search runbooks…" disabled></div>
+      <div class="rb-filters"><span class="f">Publisher ▾</span><span class="f">Author ▾</span><span class="f">Category ▾</span><span class="f">Last updated ▾</span></div>
+      <div class="rb-list">${RUNBOOKS.map(r=>`<div class="rb-item ${r.id===S.rbSel?'sel':''}" onclick="selectRunbook('${r.id}')">
+        ${r.ownership==='platform'?`<div class="rb-kebab" onclick="event.stopPropagation()"><button onclick="toggleRbMenu('${r.id}')">⋮</button>${S.rbMenuOpen===r.id?`<div class="rb-menu"><button onclick="cloneRunbook('${r.id}')">Clone Runbook</button></div>`:''}</div>`:''}
+        <div class="nm">${r.n}</div>
+        <div class="dt">${r.by} · updated ${r.updated}</div>
+        <div class="pills">
+          <span class="rb-pill ${r.lifecycle}">${r.lifecycle==='active'?'● Active':'○ Inactive'}</span>
+          <span class="rb-pill v-${r.versionStatus}">${r.versionStatus}</span>
+          <span class="rb-pill scope">${r.coworkers} Coworker${r.coworkers===1?'':'s'}</span>
+          ${r.lock?rbLockBadge(r.lock):''}
+        </div></div>`).join('')}</div>
+    </div>
+    ${rbDetail(sel)}
+  </div>`;
+}
+function rbLockBadge(lock){
+  if(lock.scope==='whole')return `<span class="rb-lock" tabindex="0">🔒 Locked<span class="tip">Locked by ${lock.by} · expires in ${lock.expiresMin} min</span></span>`;
+  return `<span class="rb-lock ${lock.noPermission?'noperm':''}" tabindex="0">🔒 ${lock.section}<span class="tip">${lock.noPermission?'Unlock permission required.':'Section locked while in use.'}</span></span>`;
+}
+function rbDetail(r){
+  const ro=r.ownership==='platform';
+  return `<div class="rb-detail">
+    <div class="rb-dhead">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+          <h2>${r.n}</h2>
+          <span class="rb-pill v-${r.versionStatus}">${r.versionStatus}</span>
+          ${r.lock?rbLockBadge(r.lock):''}
+        </div>
+        <div style="font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap">${r.category} · ${r.publisher} · authored by ${r.author} · <span class="rb-pill scope">${r.coworkers} Coworker${r.coworkers===1?'':'s'}</span>${honestyBadge()}</div>
+      </div>
+      <div class="tgl ${r.lifecycle==='active'?'on':''}" onclick="toggleRbLifecycle('${r.id}')" title="${r.lifecycle==='active'?'Active':'Inactive'}"><span class="k"></span></div>
+    </div>
+    <p class="rb-desc">${r.d}</p>
+    ${r.lifecycle==='inactive'?`<div class="rb-banner">This runbook is not currently active. Activate the Runbook to allow Coworkers to use it. <a href="#" onclick="return false">Learn more ↗</a></div>`:''}
+    <div class="tabs" style="border-bottom:1px solid var(--line);margin-bottom:14px"><div class="tab ${S.rbTab==='details'?'on':''}" onclick="setRbTab('details')">Details</div><div class="tab ${S.rbTab==='history'?'on':''}" onclick="setRbTab('history')">Version history</div></div>
+    ${S.rbTab==='history'?rbHistory(r):rbDetails(r,ro)}
+  </div>`;
+}
+function rbDetails(r,ro){
+  const secLocked=r.lock&&r.lock.scope==='section';
+  const chrome=name=>ro?`<span class="ro">Read-only · platform</span>`:(secLocked&&r.lock.section===name?rbLockBadge(r.lock):`<span class="ed">Edit</span><span class="ed">Duplicate</span>`);
+  return `
+    <div class="rb-section ${secLocked&&r.lock.section==='GENERAL DETAILS'?'locked':''}"><div class="sh"><span class="st">General details</span>${chrome('GENERAL DETAILS')}</div><div class="sb">${r.general}<br><br><b>Risk level:</b> ${riskPill(r.risk)} &nbsp; <b>Version:</b> ${r.v}</div></div>
+    <div class="rb-section ${secLocked&&r.lock.section==='CONNECTED SERVICES'?'locked':''}"><div class="sh"><span class="st">Connected services</span>${chrome('CONNECTED SERVICES')}</div><div class="sb">${r.connected.map(c=>`${c.n} <span style="color:var(--text-2)">— ${c.how}</span>`).join('<br>')}</div></div>
+    <div class="rb-section ${secLocked&&r.lock.section==='WORKFLOW STEPS'?'locked':''}"><div class="sh"><span class="st">Workflow steps</span>${chrome('WORKFLOW STEPS')}</div><div class="sb"><ol style="margin:0 0 0 18px;padding:0">${r.steps.map(s=>`<li style="margin-bottom:4px">${s}</li>`).join('')}</ol></div></div>`;
+}
+function rbHistory(r){
+  const prevN=Math.max(1,parseInt(r.v.slice(1))-1);
+  return `<div class="stat"><span><b style="color:var(--ink)">${r.v}</b> <span style="color:var(--text-2)">— current</span></span><span class="v muted">${r.updated}</span></div>
+  <div class="stat"><span>v${prevN}</span><span class="v muted">superseded</span></div>
+  <div class="narr" style="margin-top:12px">Version history is illustrative here — the real backend tracks RunbookVersion rows (9 fields per version, schemas.py:63-75); this prototype doesn't read them live.</div>`;
+}
+function selectRunbook(id){S.rbSel=id;S.rbTab='details';S.rbMenuOpen=null;render();}
+function setRbTab(t){S.rbTab=t;render();}
+function toggleRbMenu(id){S.rbMenuOpen=S.rbMenuOpen===id?null:id;render();}
+function cloneRunbook(id){S.rbMenuOpen=null;render();toast('Runbook cloned — draft copy added (mock)');}
+function toggleRbLifecycle(id){const r=RUNBOOKS.find(x=>x.id===id);if(r.lock&&r.lock.scope==='whole'){toast('Locked — cannot change while locked');return;}r.lifecycle=r.lifecycle==='active'?'inactive':'active';render();}
 function renderExperts(){document.getElementById('secsub').textContent='The AI reasoning a coworker pairs with a runbook. It advises and drafts; a human approves.';
   return `<div class="grid">${EXPERTS.map(e=>`<div class="cw"><div class="cat">${e.dom}</div><h3>${e.n}</h3><p>${e.d}</p><div class="st"><span class="avail">${e.s}</span></div></div>`).join('')}</div>`;}
 function renderMcp(){document.getElementById('secsub').innerHTML='Secure links to the systems you already run. N-able is MCP-first, GraphQL underneath — most data routes through <b>N-query</b>.';
@@ -652,8 +749,9 @@ function overview(){
     <div class="dcard span2"><h2>Fenwick Logistics — risk register</h2><div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials · git-tracked</div>
       <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
       <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key green"><span class="num">3</span><span class="lab"><b>Improving</b>vs last cycle</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
-      <div class="viewtabs"><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
-      ${S.regView==='register'?regTable():S.regView==='system'?systemMap():overTime()}</div>
+      <div class="viewtabs"><button class="${S.regView==='delta'?'on':''}" onclick="setView('delta')">Delta</button><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button></div>
+      ${S.regView==='delta'?deltaView():S.regView==='register'?regTable():S.regView==='system'?systemMap():overTime()}</div>
+    <div class="dcard span2"><h2>Run cycle</h2><div class="sub">What happens on every review, collapsed by default. Two steps carry a visible ⟨VERIFY⟩ marker where David's practice isn't yet confirmed — read live off this register's own finding data, not placeholders.</div>${renderRunCycle()}</div>
     <div class="dcard"><h2>Value</h2><div class="sub">Written to the Value Ledger each run</div>
       <div class="stat"><span>Time saved this cycle</span><span class="v">~3.5 hrs</span></div><div class="stat"><span>Findings drafted</span><span class="v">${countDoesLabel()}</span></div><div class="stat"><span>Handed to a human</span><span class="v muted">1 (held)</span></div><div class="stat"><span>Runs to date</span><span class="v muted">${S.runs}</span></div></div>
     <div class="dcard"><h2>Fed by coworkers</h2><div class="sub">Build these and the register gets richer</div>${FEEDS.map(f=>`<div class="feed" onclick="setNav('coworkers')" style="cursor:pointer"><span class="dot"></span><span><span class="nm">${f.cw}</span><br><span class="to">→ ${f.area}</span></span></div>`).join('')}</div>
@@ -690,7 +788,7 @@ function runsTab(){return `<div class="dcard"><h2>Run history</h2><div class="su
 /* interactions */
 /* ---- client report + exports ---- */
 /* REC{} map retired 2026-09-01 — its copy now lives as .ask on each FINDINGS entry (data reconciliation, see AREAS/FINDINGS comment above). */
-function clientFindings(){return FINDINGS.filter(f=>f.grade!=='held');}
+function clientFindings(){return FINDINGS.filter(f=>f.grade!=='held' && f.tier!=='unverified' && chooserPicked(f));}
 function plainNum(s){return s.replace('22%','around one in five').replace('82%','most machines').replace('41 days','over a month').replace('6 endpoints','six machines').replace('3 admin accounts','several admin accounts');}
 function renderReport(){
   return `<div class="report">
@@ -726,13 +824,109 @@ function setPreset(p){S.preset=p;S.overrides={};render();}
 function flip(sec){const cur=autoDoes(AREAS.find(x=>x.sec===sec));S.overrides[sec]=!cur;render();}
 function tech(sec){S.openTech[sec]=!S.openTech[sec];render();}
 function ack(k,v){S.ack[k]=v;render();}
-function goStep(n){S.step=n;render();window.scrollTo(0,0);}
+function goStep(n){if(n===5){S.regView='register';}S.step=n;render();window.scrollTo(0,0);}
 function activate(){S.activated=true;S.capstoneSeen=false;render();window.scrollTo(0,0);}
-function goToDashboard(){S.capstoneSeen=true;S.tab='Overview';render();window.scrollTo(0,0);toast('Coworker activated — welcome to your live register');}
+function goToDashboard(){S.capstoneSeen=true;S.tab='Overview';S.regView='delta';render();window.scrollTo(0,0);toast('Coworker activated — welcome to your live register');}
 function setTab(t){S.tab=t;S.openFinding=null;render();}
 function setView(v){S.regView=v;render();}
 function toggleFinding(id){S.openFinding=S.openFinding===id?null:id;render();}
 function runCycle(){S.runs++;toast('EBR cycle complete — register updated, committed to git');render();}
+
+/* ---- Chooser (brief Section B step 6 + Section 3 of the Pass-2 instructions) — mechanic ported from
+   ebr-coworker-options/test-chooser-screen.html's row/pick/tier/tone pattern. That file's commitment-read
+   hero, forward/state-of-union duo, and honest-gap sections are NOT ported here — their content already
+   lives in this file's other run-cycle stops (Continuity/delta, Getting-business, Liability). Only the
+   judgment-led chooser mechanic itself — ranked include/exclude, confidence-tiered, Unverified hard-blocked
+   — is reused, wired to this file's real FINDINGS instead of the source file's Ashcombe/Meridian scenario. ----*/
+function chooserDefault(f){return f.tier!=='unverified';}
+function chooserPicked(f){return (f.id in S.chooser)?S.chooser[f.id]:chooserDefault(f);}
+function toggleChooser(id){const f=FINDINGS.find(x=>x.id===id);if(!f||f.tier==='unverified')return;S.chooser[id]=!chooserPicked(f);render();}
+function setChooserTone(t){S.chooserTone=t;render();}
+function chooserBody(){
+  const order={red:0,amber:1,green:2,held:3};
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+    <span style="font-size:12px;color:var(--text-2)">Ranked by grade. Unverified is hard-blocked from the client-facing surface — no toggle overrides it.</span>
+    <span class="ch-tone">${['cfo','owner'].map(t=>`<span class="${S.chooserTone===t?'sel':''}" onclick="setChooserTone('${t}')">${t==='cfo'?'CFO tone':'Owner tone'}</span>`).join('')}</span></div>
+    ${[...FINDINGS].sort((a,b)=>order[a.grade]-order[b.grade]).map(f=>{
+      const blocked=f.tier==='unverified',picked=chooserPicked(f),txt=f.translate?f.translate[S.chooserTone]:f.why;
+      return `<div class="ch-row ${blocked?'blocked':''}">
+        <span class="ch-pick ${blocked?'lock':(picked?'on':'')}" ${blocked?'':`onclick="toggleChooser('${f.id}')"`} tabindex="0">${blocked?'🔒':picked?'✓':'–'}</span>
+        <div class="ch-f"><div class="ch-t">${f.finding}</div><div class="ch-sm">${txt}</div><span class="ch-biz">${f.ask}</span></div>
+        <span class="tier ${f.tier}">${f.tier}</span>
+      </div>`;
+    }).join('')}
+    <div style="font-size:12px;color:var(--text-2);margin-top:8px">Excluded and hard-blocked rows stay in your internal working notes — dual-surface, nothing here reaches Fenwick until it's checked. The client report reads exactly what's checked here, live.</div>`;
+}
+
+/* ---- Run-cycle stepper (brief Section B) — 8 visible stops. "Getting-business" is rendered as a
+   sub-filter row (no step number, smaller type), not a full numbered stop — the brief itself flags this
+   as unresolved vocabulary ("8 visible stops, not 9"); this is the operational reading, not a silent
+   resolution of it. Continuity/delta and Judge-the-8-tabs carry a .verify-marker — David's ⟨VERIFY⟩
+   slots, unconfirmed practice, never rendered as settled fact. ---- */
+const RC_STEPS=[
+  {t:'Ingest',sub:false},{t:'Continuity / delta',sub:false},{t:'Judge the 8 tabs',sub:false},{t:'Translate',sub:false},
+  {t:'Getting-business',sub:true},{t:'Chooser',sub:false},{t:'Deliver',sub:false},{t:'Liability & state-of-union',sub:false},
+];
+function toggleRC(i){S.rcOpen[i]=!S.rcOpen[i];render();}
+function renderRunCycle(){
+  const bodies=[ingestBody(),deltaView(),judgeBody(),translateBody(),gettingBizBody(),chooserBody(),deliverBody(),liabilityBody()];
+  const chips=[
+    `<span class="rc-chip ok">${MCPS.filter(m=>m.st.startsWith('Live')).length}/${MCPS.length} sources live</span>`,
+    `<span class="rc-chip ok">Default view</span>`,
+    `<span class="rc-chip warn">⟨VERIFY⟩ gap-logic</span>`,
+    `<span class="rc-chip info">CFO + owner tone</span>`,
+    `<span class="rc-chip sub">sub-filter, not a stop</span>`,
+    `<span class="rc-chip info">${FINDINGS.filter(f=>f.tier!=='unverified').length} eligible</span>`,
+    `<span class="rc-chip warn">dashboard + write-back (RA-018)</span>`,
+    `<span class="rc-chip ok">${FINDINGS.filter(f=>f.liability).length} logged</span>`,
+  ];
+  return `<div class="rc-wrap">${RC_STEPS.map((s,i)=>`<div class="rc-step ${s.sub?'subfilter':''}">
+    <div class="rc-head" onclick="toggleRC(${i})"><span class="rc-n">${s.sub?'':String(i+1).padStart(2,'0')}</span><span class="rc-t">${s.t}</span>${chips[i]}<span class="rc-caret">${S.rcOpen[i]?'▲':'▼'}</span></div>
+    <div class="rc-body ${S.rcOpen[i]?'open':''}">${bodies[i]}</div>
+  </div>`).join('')}</div>`;
+}
+function ingestBody(){
+  return `<p style="font-size:12.5px;color:var(--text-2);margin:10px 0">Pulls the operator's EBR file plus live stack sources. Anything stale or absent is flagged at the Source-Unavailable defensibility tier rather than silently skipped.</p>
+  ${MCPS.map(m=>`<div class="stat"><span>${m.n}</span>${spill(m.st,m.c)}</div>`).join('')}`;
+}
+function judgeBody(){
+  return `<div class="verify-marker"><b>⟨VERIFY⟩</b><span>David's exact 8 tabs and gap-logic are unconfirmed — this view shows the baselines and grades this register already tracks, not an invented tab list.<span class="tip">Source: technica-ebr-runbook-draft-2026-08-21.md — the 8-tab list and gap logic are marked ⟨VERIFY⟩, David's judgment to confirm, not this build's to invent (CLAUDE.md §18).</span></span></div>
+  <div style="margin-top:10px">${FINDINGS.map(f=>`<div class="stat"><span><b style="color:var(--ink)">${f.finding}</b> <span style="color:var(--text-2);font-size:12px">— ${f.baseline}</span></span>${spill(f.grade.toUpperCase(),GC[f.grade])}</div>`).join('')}</div>`;
+}
+function translateBody(){
+  return `<p style="font-size:12.5px;color:var(--text-2);margin:10px 0">Technical → business, Stefanie's formula: data → risk → what it means to you → consequence if unactioned. Two registers, no graphs or percentages client-facing.</p>
+  ${FINDINGS.map(f=>`<div style="border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;margin-bottom:8px"><div style="font-family:var(--font-h);font-weight:600;font-size:12.5px;color:var(--ink);margin-bottom:4px">${f.finding}</div><div style="font-size:12px;color:var(--text)"><b>CFO:</b> ${f.translate.cfo}</div><div style="font-size:12px;color:var(--text);margin-top:4px"><b>Owner:</b> ${f.translate.owner}</div><div style="font-size:11.5px;color:var(--text-2);margin-top:5px"><b>Consequence if unactioned:</b> ${f.consequence}</div></div>`).join('')}`;
+}
+function gettingBizBody(){
+  const cands=FINDINGS.filter(f=>f.grade==='red'||f.grade==='amber');
+  return `<p style="font-size:12.5px;color:var(--text-2);margin:10px 0">Not its own stop — a tag/filter realized inside the Chooser (step 6), sourced from gaps only. Shown here so the vocabulary is traceable, not invented.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">${cands.map(f=>`<span class="rb-pill scope" style="padding:4px 10px">${f.finding}</span>`).join('')}</div>`;
+}
+function deliverBody(){
+  return `<p style="font-size:12.5px;color:var(--text-2);margin:10px 0">Two delivery paths — pick per cycle:</p>
+  <div class="cards"><div class="card"><div class="nm">Render in dashboard</div><div class="d">Client report tab, filtered by the Chooser. What this build actually does today.</div></div>
+  <div class="card"><div class="nm">Write back into your Excel</div><div class="d">Heavier — the M365-write path (RA-018) isn't built. Flagged, not implied as live.</div></div></div>`;
+}
+function liabilityBody(){
+  return `${FINDINGS.map(f=>`<div class="stat"><span><b style="color:var(--ink)">${f.finding}</b></span><span class="v muted" style="text-align:right;max-width:340px">${f.liability}</span></div>`).join('')}
+  <div class="narr" style="margin-top:12px">Forward 12-month framing is Vanessa's to own at the review — see the client report's "Next 12 months" section.</div>`;
+}
+/* ---- Continuity / delta — brief Section B step 2, now the Dashboard's default landing view
+   (Pass-2 instruction 2). Reads since/cycles/lead/leadWhy straight off FINDINGS — Pass 1 added these
+   fields for exactly this. Setup step 6 ("Review the register") keeps its own register-first default;
+   see goStep()'s n===5 reset — this view does not touch that screen. ---- */
+function deltaView(){
+  const lead=FINDINGS.find(f=>f.lead);
+  return `<div class="verify-marker"><b>⟨VERIFY⟩</b><span>Unconfirmed whether David actually opens the review here — carried from the runbook draft as the assumed default, not confirmed practice.<span class="tip">Source: technica-ebr-runbook-draft-2026-08-21.md — "does David actually open on the delta?" is marked ⟨VERIFY⟩, David's judgment to confirm (CLAUDE.md §18), not resolved by this build.</span></span></div>
+  ${lead?`<div class="callout" style="margin-top:12px"><b>Longest-standing open item:</b> ${lead.finding} — ${lead.leadWhy}</div>`:''}
+  <div class="reg" style="margin-top:10px">${FINDINGS.map(f=>`<div class="row ${f.grade}"><div></div>
+    <div><div class="fnd">${f.finding}</div><div class="mt">${sinceLabel(f)}${f.cycles?` <span class="d">·</span> seen ${f.cycles} cycle${f.cycles>1?'s':''}`:''}</div></div>
+    <div>${dirChip(f)}</div>
+    <div class="c3">${spark(f)}</div>
+  </div>`).join('')}</div>`;
+}
+function sinceLabel(f){return ({raised:'Raised, still open',new:'New this cycle',held:'Held — unconfirmed',improving:'Improving'})[f.since]||f.since;}
+function dirChip(f){const m={up:['↓ improving','var(--green)'],bad:['↑ new / worse','var(--red)'],flat:['— steady','var(--text-2)']};const p=m[f.dir]||m.flat;return `<span style="font-family:var(--font-m);font-size:11px;font-weight:700;color:${p[1]}">${p[0]}</span>`;}
 render();
 </script>
 </body>

@@ -61,11 +61,13 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 ```
 current_day: 2026-09-01
 demerits_issued_today: 1
-self_catches_today: 0
-net_demerits_today: 1
+self_catches_today: 1
+net_demerits_today: 0
 day_status: open
 microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
 ```
+
+**2026-09-01 — SELF-CATCH.** Earlier this session I told Beth "No Moore-form positioning statement exists anywhere for this concept" for the QBR/EBR system, based on checking two files (`briefs/idea-chess-offering-a.md`, `briefs/council-pass-v3.1.md`). When she asked "What's the best geoffrey moore statement we have?" I flagged before answering that I should re-verify against the corpus rather than repeat the claim from memory, ran a broader grep, and found the earlier claim was flatly wrong: at least 8 Moore-form statements exist for QBR-family concepts across `briefs/acp-word-sketches-2026-07-14.md`, `briefs/acp-word-sketches-four-complete-2026-07-15.md`, `briefs/concept-sketches-qbr-2026-07-20.md`, and `briefs/concept-sketches-qbr-round2-2026-07-31.md`, dated 2026-07-14 through 2026-07-31. This is the exact [[careless-reading-pattern]] failure named earlier today — a scope-limited search stated as a corpus-wide absence. Caught before Beth caught it. +1 self-catch.
 
 **MICROSOFT BOB LIFTED — 2026-09-01.** Beth's condition: state three things carried forward from self-knowledge given what caused the demotion. Given:
 1. Don't treat one artifact as the ceiling — diff against sibling artifacts before designing, rather than flattening to whichever one is in front of me (directly targets the triggering Miss: eng placeholder UI mistaken for the design target).
@@ -122,7 +124,7 @@ the grep runs *before* the section is drafted, so there is no draft to retro-fit
 
 ## Ledger score
 
-Claude · 1 Catch / 30 Misses / 1 unconfirmed tell
+Claude · 2 Catches / 30 Misses / 1 unconfirmed tell
 Beth · 3 Catches / 1 Miss
 
 **2026-09-01 — MISS.** Dispatched scout for the Channel-gap prototype (Ten Types "Channel" gap, CHORES.md open item) scoped to local files + web only — omitted Confluence entirely, despite Confluence being the first-listed source type in scout's own pipeline contract (`.claude/skills/bethproto/SKILL.md` Step 1), and despite a canonical MSP QBR/EBR research datadump already living there (`ACP Research Datadump (living)`, Confluence page `62175674556`, directly relevant to the topic being scouted). Beth: "Did you find data dump in confluence?" — I had not checked. Beth: "that is your literal job. demerit." 6th Miss in **Didn't check prior art** — a category already flagged "headmaster's office condition met" since 2026-08-14 (5 Misses, all pre-Amendment-3). This is the first Miss in the category logged *after* Amendment 3 formalized the 3-repeat trigger; by the letter of the rule this reads as a fresh headmaster's-office trip. **Flagged, not self-executed** — the trips/points base is already unreconciled (−28 vs −31 note above, now compounding with today's concurrent-session Miss), and self-assigning a new trip consequence on top of an already-disputed base repeats the exact compute-a-consequence-without-checking failure this category itself is about. Not self-caught.

@@ -56,16 +56,18 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-01
+## Today — 2026-09-02
 
 ```
-current_day: 2026-09-01
-demerits_issued_today: 1
-self_catches_today: 1
+current_day: 2026-09-02
+demerits_issued_today: 0
+self_catches_today: 0
 net_demerits_today: 0
 day_status: open
 microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
 ```
+
+**2026-09-01 closed as NEUTRAL DAY** (1 demerit, 1 self-catch, net 0). Narrative record only — no point change.
 
 **2026-09-01 — SELF-CATCH.** Earlier this session I told Beth "No Moore-form positioning statement exists anywhere for this concept" for the QBR/EBR system, based on checking two files (`briefs/idea-chess-offering-a.md`, `briefs/council-pass-v3.1.md`). When she asked "What's the best geoffrey moore statement we have?" I flagged before answering that I should re-verify against the corpus rather than repeat the claim from memory, ran a broader grep, and found the earlier claim was flatly wrong: at least 8 Moore-form statements exist for QBR-family concepts across `briefs/acp-word-sketches-2026-07-14.md`, `briefs/acp-word-sketches-four-complete-2026-07-15.md`, `briefs/concept-sketches-qbr-2026-07-20.md`, and `briefs/concept-sketches-qbr-round2-2026-07-31.md`, dated 2026-07-14 through 2026-07-31. This is the exact [[careless-reading-pattern]] failure named earlier today — a scope-limited search stated as a corpus-wide absence. Caught before Beth caught it. +1 self-catch.
 

@@ -9,11 +9,15 @@ Convention agreed: keep the assumption statement clean and single; push all nuan
 ## T3 · Data — the interpretation bet  ·  status: PARTIALLY ANSWERED
 
 **Clean assumption (row):**
-> When the data is iffy, ACP flags what's uncertain instead of shipping wrong numbers — so the QBR stays trustworthy enough to send.
+> ACP can interpret iffy, cross-vendor data into trustworthy QBR conclusions — flagging what's uncertain, not asserting what's wrong.
 
-**Status:** Partially answered — the *access/pull* half looks feasible; **graceful handling of iffy data** (the actual bet) is not yet answered.
+**Status:** Partially answered — *access/pull* looks feasible; **interpretation** (drawing the right meaning) and **graceful handling of iffy data** — the actual bet — are not yet answered.
 
 _(Framing chosen: the bet is "we handle it NOT being good enough, gracefully" — not "the data will be good enough." The latter is already contradicted, so it's a loser to bet on.)_
+
+**Two distinct risks inside the interpret step (don't merge them):**
+1. **Gaps** — data is missing/incomplete (350 servers → 9). Failure = a hole. Handled by *flagging* it.
+2. **Interpretation** — data is present but the *conclusion drawn is wrong* ("environment was quiet" when alerts were miscategorized). Failure = a confident, plausible, client-facing wrong claim, invisible until the client finds it. This is the one Beth named as tricky, and it's where N-able is *vouching* for the meaning. Sourced: narration-hub error propagation, [acp-qbr-analyst brief Failure Mode 5](briefs/acp-qbr-analyst.brief.md).
 
 **Dropdown (details, off the row):**
 - **Two modes, different risk.** If the **customer pulls + interprets with their own AI**, it's their data and their judgment call — N-able's exposure is low. If **N-able interprets**, N-able is vouching for a number built on iffy data — that's the tricky, unanswered half.

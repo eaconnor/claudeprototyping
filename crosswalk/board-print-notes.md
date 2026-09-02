@@ -65,16 +65,30 @@ _(Framing chosen: the bet is "we handle it NOT being good enough, gracefully" �
 - **The cheap real test:** run the Technica EBR **concierge-style** — David/Vanessa + N-able assemble it, ACP provides the notebook + structure — and measure **how much ACP carries vs. how much still needs David.** Tests 2a without waiting on six connectors.
 - **Mode decision (applies to T3 too):** "Technica + us, whatever makes sense" — pragmatic hybrid, not purist customer-alone or native-only.
 
-### 2b · People will buy the version we spec'd  ·  status: OPEN
+### 2b · We can build a sustainable business off of this  ·  status: OPEN — mostly [A]
 
-**Clean assumption (row):**
-> People will buy the version we've spec'd.
+**Clean assumption (row):** *(Beth reframed from "people will buy the spec'd version" — more precise: needs $ estimates + upside)*
+> We can build a sustainable business off of this.
 
-**Status:** Open — untested; distinct from "is there demand at all" (T1). Demand for the *job* can be real while the *spec'd realization* misses.
+**Status:** Open, and the money is mostly scaffolding — nearly every figure is [A], single-source, or self-contradictory. The load-bearing *undecided* lever is the **pricing model**, not the market size.
 
-**Dropdown:**
-- Not T1. T1 = is there demand for the job. 2b = does our specific spec'd version capture it.
-- Spec choices the field questions: leading go-live with **Ticket Triage** while demand ranks **QBR #1** (S48 vs SP08); **headless** while 22 partners want a bookmarkable app (EV-AX16); the specific locked autonomy model.
-- The version was spec'd off an incomplete, buyer-skewed base (only 8 of 20 interviews done; N-UEM catalog mislabeled) — so "the version" encodes bets the research didn't settle.
+**The shape of the money (dropdown):**
+- **Floor vs ceiling fork:** per-tech/tools model ≈ **$1B floor**; share-of-services model ≈ **$4B+ ceiling**. Both [A] — price/capture inputs unsourced; the concept brief flags the $4.3B as "directional only, not a citable source."
+- **The pricing-model choice IS the lever** — it alone decides which universe (tools ~$1B vs services ~$4B). Undecided.
+- **Billing mechanism inside vCIO/vCISO:** flat-fee-by-practice-size survives ~14%; revenue-share ~0.02% — a 700× swing. *(Cited to a file not read directly — verify before quoting.)*
+- **Survival scores:** ambitious/OS version ~5%; tactical QBR-only ~45–50%, ~$5M scale. Package floors all <14% except vCIO/vCISO packaging (~14%).
+- **The board contradicts itself:** $15M ARR / $2,200/mo on one slide, $5M topline "back of envelope" the next. The contradiction *is* the finding.
+- **WTP anchors are all single Guidepoint voices** — Derek $300/mo, Vikram 10–15% of SOC spend, Kenneth $300/user "nuts." Do not project.
+- (Still-true spec-fit sub-note: the version was spec'd off an incomplete base — 8 of 20 interviews, N-UEM catalog mislabeled — leading with Ticket Triage while demand ranks QBR #1, headless while partners want a bookmarkable app.)
 
-**Sources:** [S48 spec choice](crosswalk/raw/claims-specs-arch-infra-usecases.md) · [SP08 QBR#1 / SP12 8-of-20](crosswalk/raw/claims-superpower-deck-SP.md) · [EV-AX16 bookmarkable-app](scout_input/01-acp-axial-evidence-extraction.md) · [U-EV04/05 sample](crosswalk/raw/claims-specs-arch-infra-usecases.md)
+**What makes it bigger (upside levers, dropdown):**
+- Pricing-model choice (per-tech → share-of-services) · flat-fee vCIO/vCISO packaging · buy/partner the normalization moat (**Thread**: 725+ MSP partners, ConnectWise/Autotask/HaloPSA integrated — unvetted deal) · vendor marketplace + take-rate (cold-start, no committed supply) · installed-base cross-sell (number unverified) · reframe Control Plane as flagship · Candidate 1's certification/insurance up-market escape (zero buyer validation).
+- Every lever is [A]/unvetted. **A menu of bets, not a plan.**
+
+**Considered → rejected: white-label Technica** *(Beth's call — language kept as-is, not softened)*
+- **#1 · It's not yours to take.** Technica's EBR is David and Vanessa's hard-won expertise, shared as *research* — not a product to resell to other MSPs, possibly their own competitors. Value extraction, not creation — the §10b anti-pattern.
+- **#2 · Ships the skeleton without the muscle.** The EBR works because their *judgment* fills the parts no tool can. White-label the template and you sell the frame minus the thing that made it good — and commoditize the bespoke competence MSPs sell as their own. The deck's rule: "MSP owns the voice." A white-labeled Technica is nobody's voice.
+- (Also true but survivable: #3 borrows a moat you don't own · #4 bakes n=1 into the product · #5 doesn't build the missing connectors.)
+- **#1 and #2 are the ones with teeth** — why it's *wrong*, not just *hard*.
+
+**Sources:** [monetary estimates + levers](scout_input/01-acp-monetary-estimates-and-bigger-levers.md) · [TAM fork / pricing](briefs/acp-concept-brief-2026-07-20.md) · [board ARR contradiction + survival](briefs/acp-problem-statement-2026-07-28.md) · [spec choices SP08/EV-AX16](crosswalk/raw/claims-superpower-deck-SP.md) · white-label reasoning per CLAUDE.md §10b

@@ -15,7 +15,7 @@ Confirmed folds: **T2 (WTP), T5 (OS/one-job framing) → 2b** · **M1 (switch/fi
 | 1 | **Data / interpretation** — ACP can interpret iffy, cross-vendor data into trustworthy QBR conclusions | T3 | partially answered ✎ |
 | 2a | **We can build it as spec'd** — create & maintain the runbooks the thing runs on | T7, M6 | leaning no ✎ |
 | 2b | **We can build a sustainable business off this** — pricing model is the deciding lever; enough demand at the scale we price for | T2, T5 | open, mostly [A] ✎ |
-| M5 | **Chokepoint / home-field** — do we structurally own the position, or are we a supplicant to competitors' PSA/RMM? *(kept separate — different)* | — | pending |
+| M5 | **Chokepoint — data or governance?** two competing moat theories, one per author (Beth's deck: own the telemetry · Nicole's docs: own the control plane) | — | ✎ divergence |
 | 3 | **Real demand** — the job is hire-worthy, for the operator not just the buyer | T1, M1, M3 | pending |
 | 4 | **Right target** — nonconsumer or incumbent's customer? | M4 | pending |
 | 5 | **Headless vs visible** — legit strategy or structural defect? | T4 | pending |
@@ -120,3 +120,22 @@ _Board bookkeeping: M6 retired as a standalone row — absorbed into #2 (2a). Ki
 - **#1 and #2 are the ones with teeth** — why it's *wrong*, not just *hard*.
 
 **Sources:** [monetary estimates + levers](scout_input/01-acp-monetary-estimates-and-bigger-levers.md) · [TAM fork / pricing](briefs/acp-concept-brief-2026-07-20.md) · [board ARR contradiction + survival](briefs/acp-problem-statement-2026-07-28.md) · [spec choices SP08/EV-AX16](crosswalk/raw/claims-superpower-deck-SP.md) · white-label reasoning per CLAUDE.md §10b
+
+---
+
+## M5 · Chokepoint — data or governance?  ·  status: DIVERGENCE (two theories, two authors)
+
+**Clean assumption (row):** *(stated as Nicole's operative bet — Beth's deck bets the opposite; that fork is the finding)*
+> N-able's moat is the control plane — governing and metering every agent — not the data it owns.
+
+**Status:** DIVERGENCE / genuinely UNKNOWN. This is Nicole's bet in her authoritative docs; Beth's superpower deck bets the *opposite* moat (first-party telemetry depth). **We don't know which is defensible — and that's the honest state, not a low-confidence guess (§4).** What would resolve it: test each moat theory against a real competitor move (can someone route around our governance? can someone match our telemetry?). Until then, name it unknown and don't pick by default.
+
+**Dropdown:**
+- **Two chokepoint theories, two authors:**
+  - **Nicole's docs → control plane:** own the plane that governs/meters all agents — logged, scoped, metered (H08/H09); seven-layer monetization + marketplace take-rate (H76/H77); governs even MSP-built agents (H31 "BIG QUESTION"). Explicitly *stack-independent* — "zero dependency on N-Central or another N-able product" (S16).
+  - **Beth's deck → telemetry depth:** the moat is first-party data — Adlumin/Cove/script-repo/SOC (SP01–04); "whoever has the deepest native stack wins." *(Beth's synthesis built on Nicole's primary research — NOT Nicole's assumption.)*
+- **Beth's telemetry theory is internally shaky on its own terms:** the deck's own QBR data-map (p6) lists PSA, Identity (Entra = Microsoft), Awareness (KnowBe4 / uSecure) — a third of the six sources aren't N-able's. "We have the data for all six" ≠ the deck's own decomposition.
+- **The fork implies different products:** data-moat → deep-native-stack QBR (smaller, N-able-heavy market, ~$1B floor, Technica-shaped). Governance-moat → control plane over anyone's agents (Nicole's seven-layer / marketplace vision; the ~5%-survival OS bet).
+- **The real M5 test:** which moat is defensible — and *pick one*, because the two authors are building toward different products.
+
+**Sources:** Nicole control-plane — [H08/H09/H31/H76/H77](crosswalk/raw/claims-headless-H.md), [S16](crosswalk/raw/claims-specs-arch-infra-usecases.md) · Beth telemetry — [SP01–SP04 + p6 data-map](crosswalk/raw/claims-superpower-deck-SP.md) · divergence per §18.

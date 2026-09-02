@@ -1,6 +1,10 @@
-# Raw claims — MSP Superpower Problem.pdf (Nicole primary + Beth secondary, June 2026)
+# Raw claims — MSP Superpower Problem.pdf (BETH's authored deck; Nicole = primary research feeding it)
 
-Source: `~/Library/CloudStorage/OneDrive-N-able/Microsoft Teams Chat Files/MSP Superpower Problem.pdf`, 19pp. Read in full 2026-09-02 (extracted via pypdf). **Primary source — upstream of the crosswalk; the origin of several claims previously held only as paraphrase.** Provenance (p19 source notes): 8 demand interviews Jun 12–17 2026 Guidepoint panel (Tab 2); N-Zo 90→17.5 min = Condens UEM, Taha, n=11; SOC 90% = Will Ledesma RSA 2026; ScalePad $300 = Kenneth M. direct quote; 13/17 autonomy concern = Taha Condens.
+Source: `~/Library/CloudStorage/OneDrive-N-able/Microsoft Teams Chat Files/MSP Superpower Problem.pdf`, 19pp. Read in full 2026-09-02 (extracted via pypdf).
+
+**ATTRIBUTION (corrected 2026-09-02 — Beth's flag):** this deck is **Beth's synthesis** (secondary research + authorship). Nicole did the primary *research* it draws on (the 8 demand interviews, the demand ranking, p4). So the **framing claims are Beth's overlay, NOT Nicole's assertions** — the superpower/native-stack-moat thesis (SP01–04), the "one job / LEAP" (SP05–06), the "we have the whole stack" climax. Only the embedded primary *data* (the n=8 ranking SP08, the WTP quotes SP13) is Nicole's research. **Do not map SP framing claims onto Nicole's side of the crosswalk** — they belong with Beth's synthesis. (This is the same overlay-vs-authored-vision trap the vision-synthesis pass already flagged for "vCISO/vCIO" and "Shopify not Kaseya.")
+
+Provenance (p19 source notes): 8 demand interviews Jun 12–17 2026 Guidepoint panel (Tab 2); N-Zo 90→17.5 min = Condens UEM, Taha, n=11; SOC 90% = Will Ledesma RSA 2026; ScalePad $300 = Kenneth M. direct quote; 13/17 autonomy concern = Taha Condens.
 
 Format: CLAIM-ID | claim | deck page | load-bearing.
 

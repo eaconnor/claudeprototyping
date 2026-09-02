@@ -100,16 +100,27 @@
 
 **Note on T9:** under the product-kill rule it drops from my earlier #3 to #8 — it's a *meta-risk*. Being wrong here doesn't fail the product in market; it means we mis-rank everything else. Real, but a different kind of risk. Flagged for Beth: keep it in the list as a map-integrity caveat, or pull it out as its own pre-check?
 
-### Five missing kill-bets the council insists on (candidate new rows — Beth's call)
+### Added to the board — six kill-bets not in Nicole's docs (Beth confirmed M1–M5 on; M6 from the superpower deck)
 
-The nine themes came from Nicole's docs. The council named five product-kill assumptions **not in any of them**:
+The nine themes came from Nicole's docs. Five product-kill assumptions were surfaced by the council and a sixth by the MSP Superpower Problem deck — **all now on the board:**
 - **M1 · Switch/fire (JTBD)** — will MSPs actually abandon what they do today? T1 measures ranked preference; nobody measured *displacement*.
 - **M2 · Failure/exception path (Service Blueprint)** — what happens, frontstage + backstage, when the AI is wrong *in front of the client*? T6 grants trust; nothing covers recovering a broken promise.
 - **M3 · Whose agency (SDT)** — the design serves the buyer's decision, but the operator runs it daily. Different person, unstudied.
 - **M4 · Disruption target (Disruptive)** — nonconsumer (Cormier-shaped) or incumbent's-customer (ScalePad-shaped)? The themes conflate two populations under one ranking.
-- **M5 · Chokepoint ownership (Value Chain)** — is ACP inside N-able's *own* value chain (home-field), or a supplicant to competitor-controlled PSA/RMM systems? Distinct from "can we get the data" (T3) — it's "do we have the right to."
+- **M5 · Chokepoint ownership (Value Chain)** — is ACP inside N-able's *own* value chain (home-field), or a supplicant to competitor-controlled PSA/RMM systems? *The superpower deck asserts the answer* (SP01–SP04: "we have the stack, nobody else does") — but only for **N-able-native** clients; it says nothing about the cross-vendor stacks where T3's egress wall + 30% normalization live. So M5 is now a **claim to test, native-vs-cross-vendor**, not an open blank.
+- **M6 · The living-runbook wicked problem (superpower deck p7, SP16–SP19)** — the whole ACP value rests on runbooks existing and staying current, and *"nobody has solved"* creating them from tacit knowledge + keeping them from going stale (cold-start, drift, loop-never-closes). **Product-kill weight: high** — if the runbooks can't be created/maintained at scale, there is nothing for the coworkers to run. This sits near the top of the kill-order, adjacent to T3/T7.
 
-**Divergence note (§18):** where Beth's abductive kill-order disagrees with this deductive one — and where a single lens disagrees with the pack (T4 especially) — that gap is the signal. Name it, don't average it.
+### Superpower deck — folded in (2026-09-02, primary source, read in full)
+
+`MSP Superpower Problem.pdf` (Nicole primary + Beth secondary, June 2026) is **upstream of the crosswalk** — the origin of claims previously held as paraphrase. It changes four themes and adds two things:
+- **T1 sourced** → the QBR-#1 ranking is the deck's n=8 Guidepoint (SP08), the same study as EV-AB17. The deck itself notes only **8 of 20 interviews done** (p10) — research was explicitly incomplete at deck time.
+- **T2 sourced** → Kenneth's "$300+/user/mo, barely worked" is a direct quote here (SP13); the ScalePad-as-opportunity framing (SP14) is in live tension with the later ScalePad-as-threat read (EV-AB16).
+- **T5 sourced** → "one job, not six" is explicitly **"THE LEAP"** (SP05) — a design synthesis over demand-sourced use cases, not an interviewee statement. Confirms EV-AB04.
+- **T8 sourced** → the 15-min bar is really **90→17.5 min, n=11** (SP11), and the deck's own fog list marks "how the 15-minute prep feels" as untested (SP12). The deck agrees T8 is SILENT.
+- **M5 gets its asserted answer** (the superpower thesis, native-only — see above).
+- **The deck already has its own riskiest-assumptions map** (Battleship, p10, SP20–SP21): KNOWN = gated autonomy, split intent/execution, QBR-capstone; FOG = our-own-runbooks, cold-start creation, evergreen loop, what-the-MVP-is, 15-min-feel. **This is a riskiest-list Beth already started — reconcile it with the board rather than duplicating it.**
+
+**Divergence note (§18):** where Beth's abductive kill-order disagrees with this deductive one — where a single lens disagrees with the pack (T4 especially) — and where the deck's own KNOWN/FOG map disagrees with the crosswalk's status — that gap is the signal. Name it, don't average it.
 
 ---
 

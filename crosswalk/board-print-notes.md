@@ -51,8 +51,10 @@ _(Framing chosen: the bet is "we handle it NOT being good enough, gracefully" �
 - Open + blocking questions in the spec as written: exact ConnectWise API scopes unknown; whether a qualifying AI Expert even exists at launch; on-prem support undecided.
 - Internal contradictions: Expert "executes" vs "advisory-only"; composability claimed then removed at v0.1.1; management-MCP auth model still an open question.
 - Honest build-state underneath: QBR Advisor 0/40 tasks ("the name exists; the thing does not"); Value Ledger renders $0 (built but no producer wired); governance is audit-after, not control.
-- Hardest single piece: **M6, the living-runbook problem** — the substrate the whole spec assumes, and "nobody has solved" creating/maintaining runbooks from tacit knowledge.
+- **The heart of this bet is the living-runbook problem (was M6 — now folded into 2, Beth's call).** "Can we build it as spec'd" *is* "can we create and maintain the runbooks" — the substrate everything runs on. The deck: "the answer everyone agrees on and nobody actually has" — create from tacit knowledge, keep current against drift, close the loop from incidents. Six failure modes (go stale · never existed · loop never closes · lost at 2am · cold start · blind to drift). **Dual nature: the top kill-risk if unsolved, the real differentiator if solved.** Sourced [SP16–SP19](crosswalk/raw/claims-superpower-deck-SP.md).
 - Contains the "does it work *today*" honesty note: don't demo what renders $0 as if it works.
+
+_Board bookkeeping: M6 retired as a standalone row — absorbed into #2 (2a). Kill-order shifts up by one below it._
 
 **Sources:** [EV-AB03 / EV-AB12 / EV-AB14](crosswalk/raw/evidence-field-AB-WM.md) · [I03 / I11 / I13 / I24](crosswalk/raw/claims-specs-arch-infra-usecases.md) · [S55 / S56 / S57](crosswalk/raw/claims-specs-arch-infra-usecases.md) · [SP16–SP19 runbook problem](crosswalk/raw/claims-superpower-deck-SP.md)
 
@@ -64,6 +66,7 @@ _(Framing chosen: the bet is "we handle it NOT being good enough, gracefully" �
   - Today normalization is entirely manual ("pipes it in, copy-paste"). Regime is `PROCEED-FLAGGED` (build on imperfect evidence, don't claim validation).
 - **The cheap real test:** run the Technica EBR **concierge-style** — David/Vanessa + N-able assemble it, ACP provides the notebook + structure — and measure **how much ACP carries vs. how much still needs David.** Tests 2a without waiting on six connectors.
 - **Mode decision (applies to T3 too):** "Technica + us, whatever makes sense" — pragmatic hybrid, not purist customer-alone or native-only.
+- **Technica is the first pancake, not the plan (Beth).** Assume MORE MSPs after — Technica is one rough learning case, not the product shape. This *de-risks n=1* (we don't freeze Technica; also retires the white-label #4 objection — #1/#2 still hold) but *sharpens 2a's core difficulty*: more shops = more heterogeneous stacks = more of the T3 connector/interpretation wall. So the real test question isn't "can we rebuild Technica's EBR" — it's **"how much of what we learn on shop #1 carries to shop #2 vs. resets to zero."** That carry-over rate is the actual 2a signal, and it's the lean-startup loop in action (pancake → learn → next shop → refine).
 
 ### 2b · We can build a sustainable business off of this  ·  status: OPEN — mostly [A]
 

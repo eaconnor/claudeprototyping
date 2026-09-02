@@ -6,6 +6,27 @@ Convention agreed: keep the assumption statement clean and single; push all nuan
 
 ---
 
+## CONSOLIDATED BOARD (merges confirmed 2026-09-02) — 15 raw bets → 9 + 1 meta
+
+Confirmed folds: **T2 (WTP), M5 (chokepoint), T5 (OS/one-job framing) → 2b** · **M1 (switch/fire), M3 (whose agency) → T1** · **M6 (runbook), T7 (does it work) → 2a**.
+
+| # | Bet (clean assumption) | absorbs | status |
+|---|---|---|---|
+| 1 | **Data / interpretation** — ACP can interpret iffy, cross-vendor data into trustworthy QBR conclusions | T3 | partially answered ✎ |
+| 2a | **We can build it as spec'd** — create & maintain the runbooks the thing runs on | T7, M6 | leaning no ✎ |
+| 2b | **We can build a sustainable business off this** — pricing model is the deciding lever | T2, M5, T5 | open, mostly [A] ✎ |
+| 3 | **Real demand** — the job is hire-worthy, for the operator not just the buyer | T1, M1, M3 | pending |
+| 4 | **Right target** — nonconsumer or incumbent's customer? | M4 | pending |
+| 5 | **Headless vs visible** — legit strategy or structural defect? | T4 | pending |
+| 6 | **Earned autonomy is graspable** — comprehension without explanation | T6 | pending |
+| 7 | **Failure path** — what happens when the AI is wrong in front of the client | M2 | pending |
+| 8 | **Time-to-value** — 15/20-min achievable and the right bar | T8 | pending |
+| meta | **Provenance** — is the research base sound (mis-ranks all else if not) | T9 | pending |
+
+✎ = discussed in the one-at-a-time pass. **Remaining pass:** 3 (demand), 4 (target), 5 (headless), 6 (autonomy), 7 (failure path), 8 (time), meta (provenance).
+
+---
+
 ## T3 · Data — the interpretation bet  ·  status: PARTIALLY ANSWERED
 
 **Clean assumption (row):**
@@ -83,6 +104,8 @@ _Board bookkeeping: M6 retired as a standalone row — absorbed into #2 (2a). Ki
 - **The board contradicts itself:** $15M ARR / $2,200/mo on one slide, $5M topline "back of envelope" the next. The contradiction *is* the finding.
 - **WTP anchors are all single Guidepoint voices** — Derek $300/mo, Vikram 10–15% of SOC spend, Kenneth $300/user "nuts." Do not project.
 - (Still-true spec-fit sub-note: the version was spec'd off an incomplete base — 8 of 20 interviews, N-UEM catalog mislabeled — leading with Ticket Triage while demand ranks QBR #1, headless while partners want a bookmarkable app.)
+- **Absorbs T5 (OS / one-job framing).** "Which business shape" *is* the pricing fork: a narrow QBR tool (~$1B, ~45–50% survival) vs. the expansive "one operating system / one department" LEAP (~$4B ceiling, ~5% survival). Same decision, two vocabularies — the framing choice and the pricing-model choice are the same lever. Sourced [SP05 LEAP](crosswalk/raw/claims-superpower-deck-SP.md) · [EV-AB15 survival](crosswalk/raw/evidence-field-AB-WM.md).
+- **Absorbs M5 (chokepoint/home-field):** the superpower thesis (first-party stack) is the asserted answer — native-only. **Absorbs T2 (WTP):** the single-Guidepoint anchors above.
 
 **What makes it bigger (upside levers, dropdown):**
 - Pricing-model choice (per-tech → share-of-services) · flat-fee vCIO/vCISO packaging · buy/partner the normalization moat (**Thread**: 725+ MSP partners, ConnectWise/Autotask/HaloPSA integrated — unvetted deal) · vendor marketplace + take-rate (cold-start, no committed supply) · installed-base cross-sell (number unverified) · reframe Control Plane as flagship · Candidate 1's certification/insurance up-market escape (zero buyer validation).

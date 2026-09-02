@@ -1284,10 +1284,10 @@ function applyMode(m){
   const i=document.getElementById('modeIcon'), l=document.getElementById('modeLabel');
   if(i) i.innerHTML=MODE_ICON[m]; if(l) l.textContent=m.charAt(0).toUpperCase()+m.slice(1);
 }
+let curMode=lsGet('apx-mode-pref')||'light'; /* in-memory source of truth — works even when storage is blocked (private mode / data: URLs) */
 function cycleMode(){
-  let m=lsGet('apx-mode-pref')||'light';
-  m=MODES[(MODES.indexOf(m)+1)%MODES.length];
-  lsSet('apx-mode-pref',m); applyMode(m);
+  curMode=MODES[(MODES.indexOf(curMode)+1)%MODES.length];
+  lsSet('apx-mode-pref',curMode); applyMode(curMode);
 }
 function toggleRail(){
   const open=!document.body.classList.contains('rail-open');
@@ -1295,9 +1295,9 @@ function toggleRail(){
   lsSet('apx-rail',open?'open':'closed');
 }
 (function initChrome(){
-  applyMode(lsGet('apx-mode-pref')||'light');
+  applyMode(curMode);
   document.body.classList.toggle('rail-open', lsGet('apx-rail')!=='closed'); // default open
-  if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if((lsGet('apx-mode-pref')||'light')==='system')applyMode('system');});}
+  if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(curMode==='system')applyMode('system');});}
 })();
 render();
 </script>

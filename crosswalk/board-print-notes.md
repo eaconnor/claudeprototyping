@@ -56,6 +56,15 @@ _(Framing chosen: the bet is "we handle it NOT being good enough, gracefully" �
 
 **Sources:** [EV-AB03 / EV-AB12 / EV-AB14](crosswalk/raw/evidence-field-AB-WM.md) · [I03 / I11 / I13 / I24](crosswalk/raw/claims-specs-arch-infra-usecases.md) · [S55 / S56 / S57](crosswalk/raw/claims-specs-arch-infra-usecases.md) · [SP16–SP19 runbook problem](crosswalk/raw/claims-superpower-deck-SP.md)
 
+**Test for 2a — the Technica recreation (Beth: "Technica + us, use whatever makes sense" — pragmatic hybrid, human-in-loop):**
+- **How close, precisely** (from [harness-ebr-v2 brief](briefs/harness-ebr-v2-2026-08-13.brief.md), 8 tabs / 27 parts):
+  - **Fully automated recreation = far.** The core innovation, the **cycle-memory notebook** (Parts 8, 27), does not exist — no notebook, no diff against last cycle, no continuity (the whole point).
+  - **~6 of 8 tabs need connectors not yet built:** HaloPSA/PSA (15, 25), Cloud Capsule + Inforcer (16, 20), uSecure (17), N-central + reconciliation (18), M365 (20, 24).
+  - **Some parts have no source in any tool:** warranty/end-of-support (13, 19), what-went-wrong (14), sector signals (23), referrals (26) — human-only.
+  - Today normalization is entirely manual ("pipes it in, copy-paste"). Regime is `PROCEED-FLAGGED` (build on imperfect evidence, don't claim validation).
+- **The cheap real test:** run the Technica EBR **concierge-style** — David/Vanessa + N-able assemble it, ACP provides the notebook + structure — and measure **how much ACP carries vs. how much still needs David.** Tests 2a without waiting on six connectors.
+- **Mode decision (applies to T3 too):** "Technica + us, whatever makes sense" — pragmatic hybrid, not purist customer-alone or native-only.
+
 ### 2b · People will buy the version we spec'd  ·  status: OPEN
 
 **Clean assumption (row):**

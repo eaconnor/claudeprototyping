@@ -22,6 +22,8 @@
     --r:6px; --r-lg:14px;
     --font-h:'Manrope',-apple-system,sans-serif; --font-b:'Inter',-apple-system,sans-serif;
     --font-m:'Inter',ui-monospace,monospace;
+    /* Bradley rail (Band's own violet reflection surface — the ONLY Band-palette element on this corporate page) */
+    --alpha-accent:#a78bfa; --rail-bg:#f0eafa; --rail-border:var(--alpha-accent);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -148,6 +150,47 @@
   footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
   footer .logo{font-size:16px}
   .proto-note{background:#fff5d6;border-bottom:1px solid #e9d9a0;color:#6b5300;font-size:12.5px;text-align:center;padding:8px 16px;font-family:var(--font-m)}
+
+  /* ===== Bradley rail — Band's own reflection surface (build.md three-surface rule); overlay dock so the marketing layout stays pristine ===== */
+  .rail-tab{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:60;writing-mode:vertical-rl;
+    background:var(--rail-border);color:#fff;font-family:var(--font-m);font-size:11px;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;padding:16px 8px;border:none;border-radius:8px 0 0 8px;cursor:pointer;box-shadow:-3px 0 12px -6px rgba(91,58,126,.5)}
+  .rail-tab:hover{background:#916ff5}
+  .rail-scrim{position:fixed;inset:0;background:rgba(20,6,40,.34);z-index:64;opacity:0;visibility:hidden;transition:.2s}
+  body.rail-open .rail-scrim{opacity:1;visibility:visible}
+  .rail{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:92vw;z-index:66;overflow-y:auto;
+    background:var(--rail-bg);border-left:4px solid var(--rail-border);box-shadow:inset 6px 0 14px -10px rgba(167,139,250,.5);
+    transform:translateX(100%);transition:transform .22s ease;font-family:var(--font-b);padding:0 0 40px}
+  body.rail-open .rail{transform:translateX(0)}
+  .rail::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(135deg,transparent 0 13px,rgba(167,139,250,.05) 13px 14px)}
+  .rail-hd{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:9px;padding:15px 16px;background:var(--rail-bg);border-bottom:1px solid rgba(167,139,250,.28)}
+  .rail-hd .mk{font-family:var(--font-m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--rail-border);font-weight:700}
+  .rail-hd h3{font-family:var(--font-h);font-size:15px;font-weight:800;color:var(--ink);flex:1}
+  .rail-hd .x{width:26px;height:26px;border:none;background:rgba(167,139,250,.16);color:var(--text);border-radius:6px;font-size:15px;line-height:1;cursor:pointer}
+  .rail-hd .x:hover{background:rgba(167,139,250,.3)}
+  .rail-body{padding:16px;position:relative;z-index:1}
+  .rail-badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-m);font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#4a2f7a;background:rgba(167,139,250,.2);border:1px solid var(--rail-border);border-radius:999px;padding:5px 11px;margin-bottom:12px}
+  .rail-blurb{font-size:12.5px;line-height:1.6;color:var(--text);margin-bottom:16px}
+  .rail-blurb b{color:var(--ink)}
+  .rail-dual{display:grid;gap:9px;margin-bottom:18px}
+  .rail-dual .blk{border-radius:8px;padding:11px 13px;font-size:12px;line-height:1.55}
+  .rail-dual .nailed{background:rgba(0,168,110,.1);border:1px solid rgba(0,168,110,.3)}
+  .rail-dual .hurt{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.26)}
+  .rail-dual h4{font-family:var(--font-h);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  .rail-dual .nailed h4{color:#0a7d43} .rail-dual .hurt h4{color:#b23325}
+  .rail-dual ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin:0}
+  .rail-dual li{padding-left:14px;position:relative;color:var(--text)}
+  .rail-dual li::before{content:"";position:absolute;left:0;top:6px;width:6px;height:6px;border-radius:50%}
+  .rail-dual .nailed li::before{background:#00a86e} .rail-dual .hurt li::before{background:#c0392b}
+  .rail-sec{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rail-border);font-weight:700;margin:4px 0 10px}
+  .route{background:#fff;border:1px solid rgba(167,139,250,.3);border-radius:8px;padding:12px 13px;margin-bottom:10px;box-shadow:0 1px 2px rgba(91,58,126,.06)}
+  .route .tag{font-family:var(--font-m);font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;padding:3px 8px;border-radius:999px;display:inline-block;margin-bottom:8px}
+  .route.product .tag{background:#1f3c96} .route.design .tag{background:#5b3a7e} .route.research .tag{background:#c99a2e} .route.eng .tag{background:#5e7a3f}
+  .route .row{font-size:11.8px;line-height:1.5;color:var(--text);margin-bottom:5px}
+  .route .row b{color:var(--ink);font-weight:700}
+  .route .roi{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(167,139,250,.3);font-size:11px;line-height:1.5;color:var(--text-2)}
+  .route .roi b{color:var(--text)}
+  .rail-cs{font-family:var(--font-m);font-size:9.5px;color:var(--rail-border);font-weight:700}
 </style>
 </head>
 <body>
@@ -330,5 +373,71 @@
   </div>
 </footer>
 
+<button class="rail-tab" onclick="toggleRail()" aria-label="Open Bradley rail">● Bradley</button>
+<div class="rail-scrim" onclick="toggleRail()"></div>
+<aside class="rail" id="rail" aria-label="Bradley rail">
+  <div class="rail-hd"><span class="mk">Bradley</span><h3>Readiness &amp; routed work</h3><button class="x" onclick="toggleRail()" aria-label="Close rail">×</button></div>
+  <div class="rail-body">
+    <span class="rail-badge">● Tier 1 · Concept</span>
+    <p class="rail-blurb">Tests whether the <b>vision positioning</b> lands — "hire the coworker, keep the judgment" plus the confidence-tier trust story — as something a skeptical MSP owner would reframe their business around. Marketing surface, not the product. <span class="rail-cs">[CS: concept]</span></p>
+
+    <div class="rail-dual">
+      <div class="blk nailed"><h4>What you nailed</h4><ul>
+        <li>Confidence-tier trust framing (Measured→Unverified) in plain words — the honesty story, sold.</li>
+        <li>Coworker family grounded in real research (FSN-83143, 22 partners) — not invented for the pitch.</li>
+        <li>"It learns your process, not the other way around" — the manual-first pedagogy, on-message.</li>
+      </ul></div>
+      <div class="blk hurt"><h4>What will hurt you</h4><ul>
+        <li><b>Hero is still pre-rebuild</b> — "Keep the judgment" hasn't been replaced with the Maister leverage-ratio / £300k-resilience thesis. Blocked on Beth's fragment (§1: never generate first).</li>
+        <li>Every metric, grade and time claim on the page is fictional — no proof yet, only positioning.</li>
+        <li>Time-saving promise ("a day → the drive to the meeting") rests on one interview, not a measured baseline.</li>
+      </ul></div>
+    </div>
+
+    <div class="rail-sec">Routed — who does what next</div>
+
+    <div class="route product"><span class="tag">Product</span>
+      <div class="row"><b>Does:</b> Decide the headline promise — "keep the judgment," or the Maister leverage ratio ("automate the assembly, never the judgment")?</div>
+      <div class="row"><b>Why now:</b> Hero is still the pre-rebuild line; the vision thesis isn't in the copy <span class="rail-cs">[blocked on Beth's fragment]</span>.</div>
+      <div class="row"><b>If you ship without it:</b> The page sells the feature, not the vision — no reason a skeptical owner reframes around it.</div>
+      <div class="roi"><b>Business:</b> positioning drives inbound quality — <i>Unknown</i>. <b>User:</b> owner immediately gets "why this matters to me." <b>Unknown:</b> no message-test data.</div>
+    </div>
+
+    <div class="route design"><span class="tag">Design</span>
+      <div class="row"><b>Does:</b> Beth's copy pass on the new hero once she brings the fragment; Paul sharpens — not a generate-from-blank build.</div>
+      <div class="row"><b>Why now:</b> §1 — the hero is her voice, the seed; the build agent doesn't write it <span class="rail-cs">[CLAUDE.md §1 · BET-F]</span>.</div>
+      <div class="row"><b>If you ship without it:</b> Off-voice marketing copy that reads generated.</div>
+      <div class="roi"><b>Business:</b> on-brand voice = trust. <b>User:</b> plain language, one idea per section. <b>Unknown:</b> none — this is judgment.</div>
+    </div>
+
+    <div class="route research"><span class="tag">Research</span>
+      <div class="row"><b>Does:</b> Validate the "day → drive to the meeting" time claim and the "skip it when busy" pain.</div>
+      <div class="row"><b>Why now:</b> Grounded in one interview (Stefanie, 2026-07-30) + FSN-83143; the headline time claim is illustrative, not measured <span class="rail-cs">[single-source]</span>.</div>
+      <div class="row"><b>If you ship without it:</b> The core promise rests on an unmeasured baseline.</div>
+      <div class="roi"><b>Business:</b> a provable time claim is the strongest CTA — <i>Unknown magnitude</i>. <b>User:</b> knows what they'll actually save. <b>Unknown:</b> no baseline measured.</div>
+    </div>
+
+    <div class="route eng"><span class="tag">Eng</span>
+      <div class="row"><b>Does:</b> Confirm "your data never leaves your tenant" and "nothing goes live until activate" match reality.</div>
+      <div class="row"><b>Why now:</b> These are trust claims on a public page — must be true, not aspirational <span class="rail-cs">[A]</span>.</div>
+      <div class="row"><b>If you ship without it:</b> A reassurance the product can't guarantee is a liability.</div>
+      <div class="roi"><b>Business:</b> avoids a trust-breaking overclaim. <b>User:</b> the safety promise holds. <b>Unknown:</b> whether tenant-isolation is enforced today.</div>
+    </div>
+  </div>
+</aside>
+
+<script>
+/* Bradley rail dock — overlay so the marketing layout stays pristine; default closed, floating tab makes it unmissable.
+   No light/dark mode toggle or JetBrains Mono here on purpose: those are Apex product-surface conventions; this page
+   deliberately holds n-able corporate branding (see head comment). The rail is the only Band-palette element. */
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function toggleRail(){
+  const open=!document.body.classList.contains('rail-open');
+  document.body.classList.toggle('rail-open',open);
+  lsSet('apx-landing-rail',open?'open':'closed');
+}
+if(lsGet('apx-landing-rail')==='open') document.body.classList.add('rail-open');
+</script>
 </body>
 </html>

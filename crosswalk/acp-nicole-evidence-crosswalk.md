@@ -78,21 +78,38 @@
 
 ---
 
-## Claude's first-pass riskiness ranking — Beth reorders (§18)
+## Ordering axis — product-kill risk (Beth's rule)
 
-This is a *deductive* ordering (load-bearing × evidence-weakness). It is one input, not a verdict. Beth's abduction over the themes governs.
+**Riskiest = if this assumption is wrong, how likely it kills the product in market.** Not "how big/interesting is the gap." The list is the game: check the assumptions most likely to kill us before the market does. The council's per-lens **survival reads are kill conditions** — this ordering is read straight off them.
 
-1. **T3 · Data access** — a pre-gate that is both load-bearing and currently *failing* (ledger $0, normalization 30%, egress wall). If this is wrong, nothing above it is real.
-2. **T2 · WTP for the core** — contradicted by every WTP data point; the revenue thesis rests on it.
-3. **T9 · Provenance integrity** — undercuts the demand evidence for T1/T2/T5 at the root; cheap to name, expensive to ignore.
-4. **T7 · Does it work today** — build-state contradicts "it works"; gates whether any demo claim is honest.
-5. **T5 · Operating-system framing** — internal scoring (~5%) and field both favor the narrower bet.
-6. **T1 · Real demand below #1** — QBR #1 holds (buyer-side); the rest of the ranking is unsupported.
-7. **T4 · Headless** — cleanly contradicted, but lower-stakes than the pricing/data bets.
-8. **T6 · Earned-autonomy self-evidence** — SILENT, testable, squarely Beth's UX territory.
-9. **T8 · Time-to-value targets** — SILENT/unvalidated; matters at build time, not thesis time.
+### First-pass kill order (council-informed) — Beth reorders (§18)
 
-**Divergence note (§18):** where Beth's abductive ranking disagrees with this deductive one, that gap is the signal — it marks where tacit expertise is doing work the corpus can't. Name it, don't average it.
+| Rank | Theme | If wrong → | Council kill-weight |
+|---|---|---|---|
+| 1 | **T3 · Data access** | No product — can't populate a QBR at all | **Fatal ×2** (Service Blueprint, Value Chain); legal feasibility-wall, not a build gap |
+| 2 | **T7 · Does it work today** | Nothing ships; the demo lies | **Fatal ×2** (JTBD, Service Blueprint); 0/40 build-state, ledger $0 |
+| 3 | **T2 · WTP for core** | No revenue; ~$4B ceiling has no floor | **Bordering-fatal**; riskiest for JTBD + Disruptive; Value Chain says coupled to T3 |
+| 4 | **T5 · OS framing** | Wrong battle — ScalePad already owns the seat | Riskiest for Disruptive + Value Chain; internal score ~5% |
+| 5 | **T1 · Real demand** | No market — job may not be hire-worthy | Riskiest for JTBD (compounds with T2); buyer-only sample |
+| 6 | **T4 · Headless** | Wrong wrapper — or wrong strategy | **Contested**: legit strategy (Disruptive, Value Chain) vs structural defect (Service Blueprint, SDT) |
+| 7 | **T6 · Earned autonomy** | Trust model collapses (over- or under-trust) | Riskiest for SDT; comprehension never instrumented |
+| 8 | **T9 · Provenance** | *Second-order* — kills trust in this map, not the market directly | Large for JTBD, but it corrupts the assessment of T1/T2/T5 rather than killing the product itself |
+| 9 | **T8 · Time-to-value** | Onboarding tuning problem; gates a step, not the thesis | Moderate; knowledge-gap, lowest direct kill-risk |
+
+**Per-lens survival reads (kill conditions):** Value Chain ~15% · Service Blueprint ~15% · Disruptive ~20% · JTBD ~25% · SDT ~30%. Every lens lands under one-in-three. Full testimony: `crosswalk/council-testimony.md`.
+
+**Note on T9:** under the product-kill rule it drops from my earlier #3 to #8 — it's a *meta-risk*. Being wrong here doesn't fail the product in market; it means we mis-rank everything else. Real, but a different kind of risk. Flagged for Beth: keep it in the list as a map-integrity caveat, or pull it out as its own pre-check?
+
+### Five missing kill-bets the council insists on (candidate new rows — Beth's call)
+
+The nine themes came from Nicole's docs. The council named five product-kill assumptions **not in any of them**:
+- **M1 · Switch/fire (JTBD)** — will MSPs actually abandon what they do today? T1 measures ranked preference; nobody measured *displacement*.
+- **M2 · Failure/exception path (Service Blueprint)** — what happens, frontstage + backstage, when the AI is wrong *in front of the client*? T6 grants trust; nothing covers recovering a broken promise.
+- **M3 · Whose agency (SDT)** — the design serves the buyer's decision, but the operator runs it daily. Different person, unstudied.
+- **M4 · Disruption target (Disruptive)** — nonconsumer (Cormier-shaped) or incumbent's-customer (ScalePad-shaped)? The themes conflate two populations under one ranking.
+- **M5 · Chokepoint ownership (Value Chain)** — is ACP inside N-able's *own* value chain (home-field), or a supplicant to competitor-controlled PSA/RMM systems? Distinct from "can we get the data" (T3) — it's "do we have the right to."
+
+**Divergence note (§18):** where Beth's abductive kill-order disagrees with this deductive one — and where a single lens disagrees with the pack (T4 especially) — that gap is the signal. Name it, don't average it.
 
 ---
 

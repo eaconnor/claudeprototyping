@@ -145,6 +145,17 @@ Two photos, no caption. Transcribing what's there rather than interpreting it in
 
 ---
 
+## Dunlop review, 2026-09-03 — real decisions, not hypotheses
+
+Christopher Dunlop reviewed the two screens (`harness-ebr-build-screen-2026-09-03.png`, `harness-landing-hero-2026-09-03.png`) pulled for this session. Unlike everything above, this is a second stakeholder's direct reaction, not a design hypothesis — treating it accordingly. Beth confirms alignment on all four points; nothing here is contested.
+
+1. **Cut Experts from the nav.** Dunlop: confusing, not needed. This directly resolves part of workstream A — one fewer tab to design around. Not yet removed from `ebr-app.html` (still plan-only, no rebuild this session) but this is a live decision, not an `[A]` Assumed one, for whenever build resumes.
+2. **Nav direction confirmed: Execution is the main/home page; Value Ledger is a setting, not a primary tab.** Both Dunlop and Beth land here independently — this resolves the biggest open piece of workstream A (what's the primary surface) and reframes workstream F: if Value Ledger drops to settings-level, the metrics-grounding work done above (the spec's real jobs-to-be-done, the `ai_reasoning` review-gap) still matters for *what* it shows, but the earlier candidate-metrics list's assumption that it's a primary dashboard should be dropped — it's a settings surface, not a hero view.
+3. **Needs an all-coworkers status view.** Matches workstream E's inventory item ("what's automated — which coworkers are active, where") — now confirmed by a second stakeholder, not just Beth's own list.
+4. **Reference named, not yet locatable: "Sidhant's coworker build status bar"** — a status-bar pattern showing build quality/completeness ("how good, if they are done"). Checked this repo first, per standing practice: **Sidhant Hanwate is a real N-able engineer on this project** (ACP dev channel, PRs `acp-core#26`, `acp-core#39` — confirmed via `datadump-refresh-2026-08-21.md`), but **no screenshot or description of this specific status-bar UI exists anywhere in this local repo.** It likely lives in the actual `acp-core` codebase or a Teams/PR screenshot Beth or Dunlop has seen directly — out of reach here (the standing `acp-core` repo-access boundary applies regardless). `[CS: UNKNOWN — real precedent, not fabricated, but not verifiable from here]`. Needs a screenshot or link from Beth/Dunlop before this gets built to spec, rather than guessing at what "good/done" indicators look like.
+
+---
+
 ## Framing metaphors for the human↔bot-army relationship — brainstorm, 2026-09-03
 
 Requested vague, not developed — ingredients to react to later, not a shortlist or a recommendation. `[N/A — generative brainstorm, not sourced, not evaluated]`. Already in active use elsewhere in this doc/repo: **"coworker"** (product's own naming), **"bot army"** (Beth's whiteboard), **"factory floor" / "kits"** (Beth's whiteboard, corroborates the vision-synthesis kitting thesis above), **"Head Nerd by your side"** (North Star canon). More directions, loosely grouped:

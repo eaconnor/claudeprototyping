@@ -37,16 +37,40 @@ Notes 3, 4. The bet: Experts / MCP configs / Coworkers / Execution / Value Ledge
 
 **Prework:** scout pass kicked off for governance/control-plane/permission-graph inspiration specifically (distinct from the register-viz references already in `DESIGN-REFS.md`) — see below.
 
-### D — Coworker organization model
-Note 7. Open question: organize coworkers by MSP/client, by coworker type/category, or both (faceted). This is a data-model decision as much as a UI one — it affects the Coworkers tab, workstream E's company view, and potentially workstream C's visualization axes.
+### D — Coworker organization model + "what's the heart of the product" (the crux, per Beth 2026-09-03)
+Note 7, plus Beth's own escalation of this workstream: "this is probably first, need to explore options — it is probably the crux of the experience... need to figure out this control plane schizzle — what's the heart of the product. likely need to consult north star vision thread." Two distinct questions bundled here — kept separate below, because they have different owners and different answers.
 
-**This is Beth's abductive call (CLAUDE.md §18), not a research question** — it's about how she believes MSP techs will reach for these tools, drawn from her domain expertise, not something a scout pass resolves. Naming the tradeoff rather than deciding it:
+**Question 1 — coworker organization axis.** Organize by MSP/client, by coworker type/category, or both (faceted). This is a data-model decision as much as a UI one — it affects the Coworkers tab, workstream E's company view, and potentially workstream C's visualization axes.
+
+**This is Beth's abductive call (CLAUDE.md §18), not a research question** — naming the tradeoff, not deciding it:
 - **By coworker type** (Security, Operations, Business reporting — the `FAMILY` array's existing `cat` field, confirmed at `ebr-app.html:531-537`) — matches "what job does this do," weak on "show me everything for client X."
 - **By client/MSP** — matches the EBR Coworker's own shape (one coworker instance per client, e.g. "EBR Coworker — Fenwick Logistics") and workstream E's company view, weak on "what coworker types exist at all."
 - **Faceted (both, one primary + one filter)** — most flexible, most nav-design work, and the one most likely to actually be needed once E's company view exists alongside the type-based Coworkers list.
 
+**Question 2 — the control-plane question. Consulted the canonical source, not the local file.** "North star vision thread" = the Confluence page **"ACP North Star — the guiding bet"** (space AI, page `62176526400`, Beth Connor + Nicole Reineke, last modified Sep 1 2026 — the living doc, not a point-in-time export). Read directly, `[CS: VERIFIED — Confluence 62176526400]`. This has a real, current, and load-bearing answer — and it complicates the premise of note 2/3 rather than confirming it:
+
+> **"The reframe"** (the page's own section header): *"We are **not** selling a control plane. We are selling the product/service the MSP sells to their clients — vCISO + vCIO at scale. The coworkers are the delivery mechanism; the QBR is where the service becomes visible. The product isn't for the MSP's engineer. It's for the MSP's client relationship."* Tagged on the page itself as `[CS: LOW · [A] strategic framing — the premise of the bet, unvalidated]` — so even the canonical doc holds this as a bet, not settled fact.
+
+**Named tension, not resolved here — this is Beth's call:** `prototypes/ebr-coworker-005-arc`'s own prework (`briefs/vision-synthesis-2026-07-27.md`, a *different*, earlier synthesis pass) reads the Jul 20 "play to win" doc as having promoted the control plane from "seat" to **flagship** — "governed, auditable bundle," with the framing "B governs, A advises." The live North Star page's Critical Questions section still lists this as genuinely open, not resolved either direction: *"Is there standalone willingness-to-pay for governance, or is it the seat under the client-facing and IR/RCA offerings (control plane)?"* — unanswered, gated on Q1/Q2 below, no owner. **So: the two sources in this repo disagree on which way this leans, and the canonical live doc says it's still an open question, not a decided one.** Making control plane nav-prominent (note 2) is a bet on one side of a question the product's own north star hasn't settled. Worth naming before nav work leans into it.
+
+**Two portfolio-gating questions the North Star page puts ahead of everything else here, both open, both unowned, neither resolved as of Sep 1 2026:**
+- **Q1** — can N-able legally/contractually pull non-N-able vendors' data into a client-facing artifact? ~40% likelihood, gates QBR/IR-RCA/cross-tool offerings.
+- **Q2** — does the *operator* (not just the buyer) want the mechanism (AI drafts, human edits/approves), or just the destination handed over? ~50% likelihood, gates QBR, the governed-control-plane direction, IR/RCA, and ticket-triage. Touched three times since 2026-08-04 (SaaS-CS adjacent evidence, one UK MSP interview SRC-U-009, Beth's own domain read 2026-09-01) — **none of those touches moved the likelihood**, still ~50%, still no owner, still no real operator ethnography run.
+
+**Vision Clash Report — build-state findings on the same page, relevant to sequencing everything above:**
+- Day-1 onboarding coworker is Ticket Triage, not QBR — flagged CONFLICT against the vision, which leads with QBR. Open owner call: "sequencing or drift?"
+- **No delivery channel exists for QBR/EBR output** — zero frontend anywhere in the actual `apps/` tree, zero outbound path in the gateway code, verified twice by code (2026-08-12 and 2026-09-01). Four candidate channels (SMS/email/portal/PSA-writeback), zero test plans, no owner. Directly relevant to workstream A/E — whatever nav and company-view design happens here has no confirmed way to actually deliver the artifact to a client yet.
+
 ### E — Human orientation / company / governance surface
-Note 5. A genuinely new nav branch, not a rename of an existing tab: a view of *my company* — what's automated, what's connected, all clients, who has permission to use which coworkers, version history, who's using what.
+Note 5, plus Beth's 2026-09-03 addition: "what can we learn from Vertesia? what does someone want to do... I need to think through this... need to figure out how to make [seeing my bot army] delightful." A genuinely new nav branch, not a rename of an existing tab: a view of *my company* — what's automated, what's connected, all clients, who has permission to use which coworkers, version history, who's using what.
+
+**Vertesia — this is not just a moodboard question, it may be a build/buy/skin question. Read `briefs/vertesia-brief-2026-08-21.md` (already researched in this repo, 2026-08-21, `[CS: HIGH]` — vertesiahq.com + partner due-diligence docs + Confluence 62302388241) rather than re-scouting it.** Facts that matter here:
+- Vertesia is an AI-native content + agent-orchestration **runtime** — it runs, watches, and keeps state for agents, is model-agnostic (100+ models), and its content layer already has **metadata, versioning, permissions, and lifecycle management** built in. Founded by ex-Nuxeo (enterprise content-management) leadership — the DNA is content governance, now pointed at agents.
+- **The current partner plan (confirmed, Aug 19 Confluence): Vertesia owns the console/orchestration surface; N-able builds the runbooks and every connector.** If that allocation holds, permissions/versioning/lifecycle for the underlying agents may already exist *inside Vertesia's own console* — workstream E might not be a from-scratch design problem, it might be a "what does HARNESS need to surface from Vertesia's console vs. build itself" problem. **This changes the shape of the question, not just the inspiration for it — flagging before any UI gets drawn.**
+- Open and unresolved (`RA-023`, Beth's own 2026-09-01 note): does the judgment layer (C2) stay portable, or does it accumulate inside Vertesia's schema? If the answer is "accumulates," the moat leaks to the platform — this is the load-bearing risk on top of the build/buy question above.
+- Not yet answered anywhere in this repo: how Vertesia's content/agent model maps to Apex's own primitives (Customer/Policy/Device/Audit Log) — named as unknown in the brief itself, not fabricated here.
+
+**"What does someone want to do" with the company/bot-army view — genuinely open, not resolved by this pass.** Naming what exists as a technique precedent rather than answering it: `briefs/003-value-ledger-council-testimony-2026-08-03.md` ran a Jobs-to-Be-Done lens against the Value Ledger spec (functional/emotional/social jobs, what gets fired) — the same lens applies cleanly to "what does an MSP admin want from a view of their whole coworker fleet," and hasn't been run against that question yet. Naming it as a candidate next step, not doing it here since it's explicitly the "need to think through this" piece.
 
 **Inventory of what this needs to surface (holding this list so it survives the nav redesign, per workstream A):**
 - What's automated — which coworkers are active, where
@@ -59,7 +83,16 @@ Note 5. A genuinely new nav branch, not a rename of an existing tab: a view of *
 **Overlap risk to flag now, before F is scoped separately:** "usage" here and the Value Ledger's "by coworker" breakdown (workstream F) are close enough to duplicate each other if designed independently. Decide which surface owns usage-over-time before building both.
 
 ### F — Value Ledger metrics
-Note 6. Read the actual current content (`ebr-app.html:720-727`) rather than assuming — done as prework, see below.
+Note 6, escalated by Beth 2026-09-03: **"back it up, Joe. what is this actually supposed to do? need to go back to the docs."** Correct instinct — my first pass on this workstream (still below, kept not deleted) generated candidate metrics from looking at the prototype's code, not from the actual spec. Went back to the docs, as asked:
+
+**The actual spec's purpose, per `briefs/003-value-ledger-council-testimony-2026-08-03.md` (five-voice council review of `specs/003-value-ledger/spec.md`, the real 261-line feature spec, `[CS: VERIFIED]` — read in full by that prior session):**
+- **The named job:** an MSP Admin needs a defensible, credible number to put in front of a client (or their own management) at a QBR — replacing the homegrown spreadsheet/anecdotal ROI claim MSPs already make by hand. This is the spec's own User Story 3, the sharpest statement in the document.
+- **A second, less-examined job is bundled into the same feature:** N-able's own product/marketing team wants aggregate metrics across tenants (User Story 4) — a *different* customer's job, technically separated (anonymization, suppression rules) but never named as a second job-to-be-done in the spec itself. The council's JTBD lens flags this as unexamined scope-conflation, not a flaw that's been resolved.
+- **Two value categories, tracked separately, with asymmetric trust design:** `script_execution` (the MSP admin sets their own baseline/labor rate — they own the number) vs. `ai_reasoning` (the coworker self-reports its own time-saved estimate, only checked by an "implausible if >8hr" flag) — **and no FR, entity, or dependency in the spec names who reviews a flagged self-report, on what cadence, or what happens next.** A flagged-data category with no closing loop, in a system whose entire output is a client-facing trust number.
+- **The chokepoint the spec itself identifies:** the Platform Default Baseline catalog — "whoever controls what 'manual time for this task' means controls the ROI story for every tenant using the default" — named as a Medium-risk dependency with **no owner, no research plan, no timeline**, anywhere in the document.
+- **Cross-referenced against the North Star's own Vision Clash Report (read live, see workstream D above): "Value Ledger has no wired producer — fully built, but renders $0 at launch (no runbook writes to it yet)."** Logged as an open sequencing decision on the canonical doc itself, not something this session is surfacing for the first time.
+
+**What this means for "do we have the right metrics":** the current `ebr-app.html` ledger tab (hours/cost/runs, by-coworker breakdown) doesn't yet reflect the spec's actual central mechanic — the `script_execution` vs. `ai_reasoning` split, the "using default" baseline indicator, or anything that visibly builds the credibility the whole feature exists to produce. The candidate-additions list below was generated before this grounding pass and should be read as superseded by it, not added alongside it, until Beth decides which of the spec's actual FRs this prototype needs to represent versus which are legitimately out of scope for a demo.
 
 ---
 
@@ -83,6 +116,50 @@ Note 6. Read the actual current content (`ebr-app.html:720-727`) rather than ass
 - Okta/Entra ID admin consoles: no permission-graph visualization surfaced for either. Named as a gap, not guessed at.
 
 **Beth-named addition, 2026-09-03: Lemonade's onboarding (Maya).** Added to the scout file, bucket 1, item 7. `[CS: HIGH]` on the mechanism (multiple independent sources agree): Maya asks one question at a time in an ongoing conversation instead of a static form, assesses risk in the background, and issues a personalized quote in under 90 seconds–2 minutes — explains coverage in plain language, can process payment in the same flow. `[CS: MEDIUM]` on the "90%+ of policies sold this way" figure — repeated everywhere but traces back to Lemonade's own PR/investor material, not an independent audit. **This is the strongest single precedent found for note 8** — conversational, one-question-at-a-time intake ending in a ready personalized output, not a form or a template picker. Worth weighing directly against Clay's survey-then-AI-generate mechanism above — same goal, different shape (live conversation vs. async generation from a form).
+
+---
+
+## Beth's whiteboard, 2026-09-03 — primary material, transcribed not designed
+
+Two photos, no caption. Transcribing what's there rather than interpreting it into a solution — this is her own mental model made visible, it doesn't need my synthesis layered on top, only accurate capture plus honest cross-references to what's already sourced elsewhere in this doc. Uncertain reads marked `(my read —?)`.
+
+**Board 1, left column — a daily-briefing home surface (not yet a named workstream — call it G until it has one):**
+"What's in my daily briefing?" → a to-do box, split **me — bot army**. Questions under it: "What do I have to do? What do I want bots to do? What can I follow up on — needs my attention b/c bots/other people." Sorted by **important / urgent**. This reads as a literal answer to "what's the home screen" that doesn't cleanly live in any of A–F — it's the surface where a person checks in on their bot army and their own to-do list side by side. Touches B (it's plausibly the thing onboarding delivers you *into*), D, and E all at once.
+
+**Board 1, top — Beth's own working definition of "control plane" (relevant directly to workstream D's "what's the heart of the product"):**
+"bot check-in" → **control plane**, defined as three questions: *"what are they doing? how well are they doing it? ★ what's scary?"* — with an arrow out to "how to fix/improve → get better data/insights." This is sharper and more concrete than anything in the sourced docs above (North Star's "the reframe" argues control-plane-as-hero is an unvalidated bet; this sketch defines what a control plane would actually *do* if built — activity, quality, risk, in that order, feeding an improvement loop). Worth holding both: the North Star tension (is control plane the hero or the seat) is a positioning question; this sketch answers a different, also-necessary question (if there is a control plane, what does it check on). They don't contradict each other.
+
+**Board 1, middle — task assignment ("Assign work / Tackle to-do list"):** bots tell the person what they can/cannot do on their list; either the bot self-selects a task or the person assigns it. Three paths off the to-do list: **Use bot** / **Do it myself** / **Make new bot**. This is Beth's own version of note 8's "bring your task, get matched" — more specific than any of the scouted precedents (Lemonade/Clay/Capital One) above, because it names the three real outcomes of looking at a task, not just "match me to something."
+
+**Board 1, bottom — create-bot flow:** define task ("what do you want to do?") → choose best existing runbook or make a new one → **tailor + train** (from excel sheets/past docs) or **train** from scratch → "get it to be what you like" via what looks like a rating mechanism (bot icons tagged "ok at this" / "perfect" / "meh... 87(?)" `(my read —?)`) across numbered steps → "makes 👤+bot workflow happen" → "runs tests & then does it with each loop." Reads as an iterative, rated refinement loop rather than a one-shot config wizard — relevant to workstream B once onboarding/build-a-coworker gets designed.
+
+**Board 2 — the visualization workstream (C), sketched, not just referenced:** a **"Coworker Army"** label over a radial burst of small nodes radiating from a single point (a starburst/network shape, not a Lima tree or circle specifically — closer in spirit to the Kiali/Wiz network-graph precedents in the scout file than to a hierarchy). Below it, a **"factory" floor** — a conveyor/bar icon with a figure, and rows of bars-with-circles suggesting production lines. Separately, **"Kits"** — a sketched toolbox — with an arrow down to "your piece / template / mental model" and an arrow back up to **"get it back — with stuff done, little kits."**
+
+**Genuine cross-reference worth naming, not a reach:** "factory floor" + "kits" + "get it back... in little kits" lines up directly with `briefs/vision-synthesis-2026-07-27.md`'s operations-theory finding (already sourced in workstream D's territory above) — *"the operator wants a **kitted** mechanism — expert-by-your-side — neither full automation (production-line) nor raw templates,"* framed there as job-shop-vs-production-line theory. That synthesis was Claude's from a research session; this sketch is Beth's own hand arriving at the same shape independently, which is a real corroboration worth flagging, not two unrelated things forced together.
+
+**Sticky note, partially visible:** "history/delta / golden tenant / other tenants" — relevant to workstream E's version-history item and workstream D's org-model question: a "golden tenant" (reference/template tenant) vs. "other tenants" implies a canonical-setup-plus-deltas model worth carrying into whichever of D/E gets designed first.
+
+---
+
+## Framing metaphors for the human↔bot-army relationship — brainstorm, 2026-09-03
+
+Requested vague, not developed — ingredients to react to later, not a shortlist or a recommendation. `[N/A — generative brainstorm, not sourced, not evaluated]`. Already in active use elsewhere in this doc/repo: **"coworker"** (product's own naming), **"bot army"** (Beth's whiteboard), **"factory floor" / "kits"** (Beth's whiteboard, corroborates the vision-synthesis kitting thesis above), **"Head Nerd by your side"** (North Star canon). More directions, loosely grouped:
+
+- **Crew / vessel:** captain + crew, bridge/helm, deckhands, "who's on watch"
+- **Apprentice / guild:** journeyman, master craftsperson + apprentices, workshop, guild hall
+- **Staff / roster:** team roster, bench, lineup, "who's starting today," shift schedule
+- **Stable / ranch:** stable of horses, ranch hands, "who's saddled and ready," a herd
+- **Orchestra:** conductor + section, players who need cueing, rehearsal vs. performance
+- **Garden / ecosystem:** tending, cultivating, what's dormant vs. in bloom, pruning
+- **Household / staff:** butler, household staff, "running the house," below/above stairs
+- **Squadron / fleet:** wing commander, sorties, ships in dock vs. deployed
+- **Lab / experiment:** the bench, active experiments, what's running vs. shelved
+- **Newsroom:** editor + reporters, the assignment desk, beats, "who's on this story"
+- **Kitchen / brigade:** head chef + line cooks, stations, mise en place, the pass
+- **Constellation / swarm:** a swarm with a queen/hub, nodes lighting up, a constellation you're steering
+- **Farm hands / harvest:** seasonal hands, what's ready to harvest, fields under cultivation
+- **Toolshed:** tools on a pegboard, which ones are out being used vs. hanging ready
+- **Classroom:** teacher + students at different levels, who needs help vs. who's ahead
 
 ---
 

@@ -56,16 +56,18 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-02
+## Today — 2026-09-03
 
 ```
-current_day: 2026-09-02
+current_day: 2026-09-03
 demerits_issued_today: 0
 self_catches_today: 0
 net_demerits_today: 0
 day_status: open
 microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
 ```
+
+**2026-09-02 closed as POINT DAY** (0 demerits, 0 self-catches). Under the reconciled scoring rule a clean day is a narrative label, not a +1 bonus (the old day-bonus was retired 2026-08-21 to stop double-counting against the ledger formula) — so no point is added here. Recorded for the streak, not the score. *(If Beth wants the pre-08-21 "+1 clean day" bonus honored instead, that's her clipboard — flagged, not self-applied.)*
 
 **2026-09-01 closed as NEUTRAL DAY** (1 demerit, 1 self-catch, net 0). Narrative record only — no point change.
 

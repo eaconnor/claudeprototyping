@@ -178,19 +178,55 @@ Requested vague, not developed — ingredients to react to later, not a shortlis
 
 ---
 
-## Recommended order, given dependencies
+## Card-sort inventory — prework for "get the activities and card sort this out"
 
-1. **F (Value Ledger metrics)** — contained, doesn't gate on anything else. The audit above is the prework; deciding which candidate additions to build is a small, separate call whenever Beth wants it.
-2. **Scout returns** → feeds Beth's moodboard for B and C.
-3. **D (coworker org model)** — Beth's call, doesn't need the moodboard, but changes what A and C are designed around. Worth deciding early rather than late.
-4. **Beth's moodboard** (her own work, per her note) for B (onboarding) and C (visualization system), now informed by scout material + existing `DESIGN-REFS.md`.
-5. **A (nav shape)** — drawn only after C and D have real shape, since it's downstream of both. E's inventory (already captured above) feeds in here too.
-6. **Resume `NEXT-STEPS-2026-09-02.md` Step 4** (landing.html copy) whenever Beth wants — it was already flagged as independent of the rest of that file's sequence, and nothing here blocks it.
+Every candidate card mentioned anywhere in this doc, pulled together in one place so the sort works from a complete set rather than whatever's top of mind. Not sorted, not grouped into a proposed nav — that's the exercise itself, Beth's to run. Organized here only by where each card came from, so provenance stays visible.
+
+**Current nav (minus Experts — Dunlop, cut):** Runbooks · MCP configs · Coworkers · Execution *(→ candidate home page, Dunlop+Beth)* · Value Ledger *(→ candidate setting, not primary, Dunlop+Beth)*
+
+**Platform coworker types (`FAMILY`, `ebr-app.html:531-537`):** Security Tabletop · Incident Response Analyst · Environment Health Monitor · Alert Flood Suppressor · QBR Advisor · (+ the user's own built instance, e.g. "EBR Coworker — Fenwick Logistics")
+
+**Company/governance surface (workstream E):** What's automated · What's connected (integrations) · All clients · Permissions · Version history · Usage · All-coworkers status view (Dunlop) · Build-status bar per coworker (Dunlop/Sidhant reference)
+
+**Home/daily-briefing surface (whiteboard, workstream G):** Daily briefing/to-do · Bot check-in ("what are they doing / how well / what's scary") · Assign work — tackle to-do list · Create a bot
+
+**Coworker org axis (workstream D, still open — the sort may itself be evidence toward this):** By coworker type · By client/MSP · Faceted (both)
+
+**From the Vertesia read (workstream E):** content/agent lifecycle — versioning, permissions, audit — possibly Vertesia's own console's job, not HARNESS's to build; include as a card so the sort surfaces whether people expect to find it here at all.
+
+**Sticky note:** Golden tenant (reference/template) · Other tenants · History/delta
+
+---
+
+## JTBD pass — "what does someone want from a view of their whole coworker fleet" (workstream E)
+
+Named earlier as open and unanswered — running the same lens `003-value-ledger-council-testimony-2026-08-03.md` already used, against already-sourced material in this doc (North Star, the whiteboard, Dunlop's review). **This is Claude's analysis applied to existing sources, not new primary research — treat as `[A]` generated hypothesis, same discipline as the Value Ledger council pass, not as validated findings.**
+
+- **Functional job:** know, at a glance, whether the fleet is doing its job without opening each coworker individually — Dunlop's all-coworkers status view and Sidhant's build-status-bar reference both point here directly. The whiteboard's three check-in questions ("what are they doing / how well / what's scary") are the same job stated as questions rather than a screen.
+- **Emotional job:** not getting blindsided — the "★ what's scary" question and the Value Ledger spec's own credibility problem (workstream F) are the same anxiety in two different registers: *am I about to be embarrassed in front of a client because a bot did something I didn't catch.* Transparency-as-the-answer (Beth's "transparency = winning," workstream D) is the direct response to this job, not a separate concern.
+- **Social job:** being able to show someone else (a boss, a client, Dunlop-in-a-review) that the fleet is under control — the same job the Value Ledger's User Story 3 serves for a single client-facing number, generalized to the whole fleet rather than one QBR.
+- **What gets fired:** manually checking each coworker's tab one at a time — the thing a consolidated status view (Dunlop's ask) directly replaces.
+- **Open, not answered here:** whether "the whole fleet" means all coworkers across all clients (an MSP-wide view) or all coworkers within one client (a per-tenant view) — this is the same ambiguity as workstream D's org-axis question, surfacing again from a different angle. Two different JTBD answers depending on which scope is meant; worth naming as one question, not designing for both by default.
+
+---
+
+## Recommended order, given dependencies (updated post-Dunlop)
+
+1. ~~F (Value Ledger metrics)~~ — audited; largely superseded by Dunlop's call that it's a setting, not a hero surface. Grounding work stays useful for *what* it shows there.
+2. ~~Scout~~ → returned, feeding Beth's moodboard for B and C.
+3. **The card-sort** (new, this pass) — run it. It now doubles as evidence toward D's org-axis question (does the sort naturally group by type or by client?) and toward A's shape, since Dunlop already resolved two of A's biggest questions (home = Execution, Value Ledger = setting, Experts cut).
+4. **D, Question 2 (the control-plane tension)** — still genuinely open and still Beth's call: North Star's "not selling a control plane" framing vs. the "flagship" read vs. the whiteboard's concrete three-question definition. These aren't mutually exclusive but the positioning bet is unresolved.
+5. **D, Question 1 (org axis)** and **the JTBD scope question (E)** — same underlying ambiguity (MSP-wide vs. per-client) surfaced twice now; worth resolving as one decision, not two.
+6. **Beth's moodboard** for B and C, now informed by scout material + `DESIGN-REFS.md` + the whiteboard's own visual direction (the radial "Coworker Army" burst).
+7. **A (nav shape)** — meaningfully de-risked already (Experts cut, home page named, Value Ledger demoted, all-coworkers status view confirmed needed). What's left to draw is mostly C's visualization shape and D's org axis landing.
+8. **Resume `NEXT-STEPS-2026-09-02.md` Step 4** (landing.html copy) whenever Beth wants — still independent of the rest of that sequence.
 
 ## Open decisions — Beth's, not mine
 
-- Nav shape (A) — no draft exists yet, waiting on moodboard + D.
+- **Resolved this session (Dunlop + Beth aligned):** cut Experts; Execution = home; Value Ledger = setting; need an all-coworkers status view.
+- Nav shape (A) — narrowed by the above, but still not drawn.
+- Control-plane positioning (D, Q2) — hero, seat, or "not selling a control plane at all" per North Star's current framing. Genuinely unresolved, sourced tension named above.
+- Coworker org axis / fleet-view scope — MSP-wide vs. per-client (D and E, same question from two angles).
 - Onboarding vs. standing feature for the "shop for automation" flow (B/note 8).
-- Coworker org axis — by type, by client, or faceted (D).
-- Whether "usage" lives in the company view (E) or the Value Ledger (F), not both.
-- Whether the visualization ambition (C) is in service of or in tension with the tested "trust it fast" value prop — flagged `[WOBBLY]` above, worth an explicit yes/no before build time is spent.
+- Whether the visualization ambition (C) is in service of or in tension with the tested "trust it fast" value prop — flagged `[WOBBLY]` above.
+- Sidhant's build-status-bar reference — needs a screenshot/link before it can be built to spec rather than guessed at.

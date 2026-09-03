@@ -1,0 +1,16 @@
+# A4 — Internal evidence base is solid enough to size the ICP
+
+**Assumption:** The cited internal source slides (LRP PlatformDefinition.pptx sl.11-14,22; FY24 Q2 QLS GTM CLEAN sl.18-20,24-26; Q4 QLS GTM sl.8,15,43-45; pNPS 2025 Understanding RMM Customers sl.8,19,23,28,31-37) support the ICP sizing claims the deck builds on them.
+
+## Search attempted
+**Not performed.** This session's toolset is WebSearch / WebFetch / Read only — no Atlassian (Confluence/Jira) MCP tool was available to query n-able.atlassian.net, ADL/PUT/ProdUX, or any other space. I did not attempt to guess at, reconstruct, or infer the contents of these source decks. [CS: UNKNOWN — search not performed due to tool unavailability, not because the material doesn't exist]
+
+## What's already known from the deck/critic (repeated here only as the record of what's being tested, not as a finding)
+- The deck's own Evidence-to-ICP matrix grades its sources itself: Canalys segmentation MEDIUM ("totals debated, likely high"); N-sight customer behaviour HIGH-for-current-users-only ("39% of 318 respondents; describes current users not non-customer demand"); market/GTM economics MEDIUM ("internal analysis not independent"); Canalys channel survey MEDIUM (N=432, Nov 2024). [CS: VERIFIED — deck states its own grades, deck lines 51-58]
+- Deck's own instruction to itself: "Validate licensed source tables before external publication." [CS: VERIFIED — deck line 58]
+- Critic: "the deck's cited internal source slides are not in the scout folder, so I cannot grep-verify them (47% rule: a stat you can't verify, you don't quote as fact)." Every one of the four cited internal decks is bucketed "Internally-sourced-only — traceable to a named slide, unverifiable in this corpus." [CS: VERIFIED — critic-pass-1.md lines 42, 48-52]
+
+## Read
+- **Resolves:** Not resolved by this pass. Neither confirmed nor contradicted — genuinely unknown pending access to the actual source decks. This is a verification gap, not necessarily a substantive problem: the underlying data plausibly exists inside N-able (Roy Serhal's team, Taha's research per Mackie's margin note, pNPS survey team) and may well support the sizing claims once pulled. Nothing here suggests fabrication — the deck grades its own sources honestly, which is a mark in its favor, not against it.
+- **Riskiness:** Real but lower-severity than A1/A2/A6 *if* the underlying decks turn out to say what the Ecoverse deck claims — because unlike A1/A2/A3, this isn't a live strategic bet, it's a citation that either checks out or doesn't. It becomes high-severity only if pulling the source decks reveals the ICP sizing doesn't hold up (e.g., the 39%-of-318 finding turns out to describe a narrower or different population than claimed).
+- **Test cost:** Low and mechanical — someone with N-able Confluence/SharePoint/internal-deck access (or a future session with Atlassian MCP access) pulls the four named source decks and greps the specific slide numbers cited against the specific claims made. This is the exact 47%-rule verification CLAUDE.md requires before any of these figures leave the room in a SOURCES.md or handoff packet. Recommend routing this as a named follow-up task, not treating this file as the completed check.

@@ -4,6 +4,35 @@ Running log of Beth's curation decisions, to apply when the dashboard is printed
 
 Convention agreed: keep the assumption statement clean and single; push all nuance into the expand/dropdown; add source links when available.
 
+**Framing (Beth, 2026-09-02):** this board is Beth's instrument to **influence** the direction from the research/UX angle — Nicole (Chief AI Officer) drives the Harness deal; Beth can play the board from another angle but is not the decision-owner. So the board's job is grounded, sourced risk that gives Beth leverage — not a plan she owns.
+
+---
+
+## RE-BASELINED BOARD — the exec-deck product (Harness Proposal, Aug 2026)
+
+The [Harness Proposal](crosswalk/raw/claims-harness-proposal-HP.md) is a **materially different product** than the crosswalk was built around: a **governance control plane OEM'd from Vertesia**, running above anyone's stack (zero N-able-product dependency); QBR is the *wedge*; per-tech Good/Better/Best pricing; the **Best tier = reselling AI governance to the MSP's clients**; ICP 11-49-employee MSPs; ~$8M ARR by Y3. It also **decides several open board bets** — so the board re-baselines.
+
+| # | Bet (exec-deck product) | vs. old board | kill-weight |
+|---|---|---|---|
+| 1 | **Vertesia is the right foundation and a safe 3-yr bet** — generic platform, 12 customers, ZERO MSP proof; and the choice (Vertesia vs NeoAgent) is itself unsettled | NEW (replaces "build it") | fatal if wrong — everything sits on it |
+| 2 | **We can build the MSP layer fast on a generic platform** — coworkers, runbooks, integrations, incl. the living-runbook problem | transformed 2a + M6 | high |
+| 3 | **Governance IS the product MSPs will pay for** — "buy the plane, not the agents" | NEW moat bet (answers M5→governance) | **HIGH — and in direct tension with the research** (see ⚠) |
+| 4 | **Data / interpretation still works** — trustworthy cross-stack QBR; "empty beats wrong" is now policy | = old #1 (T3) | high |
+| 5 | **The governance-resale business (Best tier) is real** — MSPs resell AI governance to clients | NEW (the "different product") | high — rests on ONE Jonathan quote |
+| 6 | **Per-tech pricing sustains it with headroom** — if Good absorbs the $10-20/tech anchor, Better/Best have none | resolves 2b fork; new tension | high; ~$8M Y3 also needs 60% opt-up + 16 deals/mo |
+| 7 | **Real demand** — QBR wedge, for the operator not just the buyer | = T1 (+M1/M3) | med — same n=8 base |
+| 8 | **Above-the-stack / self-serve lands** — vendor-agnostic, self-serve signup | reframed T4 | med — bookmarkable-app tension persists |
+| 9 | **Earned autonomy is graspable** — MANUAL→ASSISTED→AUTONOMOUS ladder | = T6 | med |
+| 10 | **Failure path** — what happens when the AI acts wrong in a client env ("empty beats wrong" only covers gaps) | = M2 | med |
+| 11 | **Time-to-value** — 90→17.5, first real run self-serve in one session | = T8 | med |
+| meta | **Provenance** — still the n=8 Guidepoint base | = T9 | meta |
+
+**⚠ The single sharpest lever for Beth's influence:** bet #3 (governance is the paid product) **directly contradicts her own research** — [EV-AB11 / EV-AX08-09](crosswalk/raw/evidence-field-AB-WM.md): governance is expected as *table-stakes*, "probably not something you're going to get someone to pay for" standalone (Shawn, advises 200+ MSPs), and no line-item WTP for governance was found anywhere. The exec deck bets the whole business on governance-as-paid-product; the field says MSPs won't pay for governance alone. That tension, sourced, is the most board-influencing thing on here.
+
+**Superseded/answered by the exec deck:** M5 (chokepoint) → decided toward governance, explicitly zero-dependency (HP02/HP04). The old superpower/telemetry thesis is the road not taken.
+
+---
+
 ---
 
 ## CONSOLIDATED BOARD (merges confirmed 2026-09-02) — 15 raw bets → 10 + 1 meta

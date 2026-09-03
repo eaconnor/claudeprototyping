@@ -31,6 +31,21 @@ The [Harness Proposal](crosswalk/raw/claims-harness-proposal-HP.md) is a **mater
 
 **Superseded/answered by the exec deck:** M5 (chokepoint) → decided toward governance, explicitly zero-dependency (HP02/HP04). The old superpower/telemetry thesis is the road not taken.
 
+### Council additions (exec-deck pass, 2026-09-02 — full testimony: [council-testimony-harness-exec.md](crosswalk/council-testimony-harness-exec.md))
+
+Survival reads: JTBD ~20% · Service Blueprint ~15% · SDT ~25% · Disruptive ~20% · **Value Chain ~10%** — the new product scores *worse* than the old.
+
+New kill-bets the 11 didn't name (all raise the same way — that Beth can carry as influence):
+- **#12 · N-able doesn't own the chokepoint even if governance is the right moat.** The plane is *licensed from Vertesia* (3-yr term, 2% inference pass-through in perpetuity). Value Chain's fatal finding (~10%): even if M5 resolves to governance, the technical chokepoint (orchestration + inference) belongs to a 25-person startup. Sharpens bet #1 from "partner quality" to "**structural margin/ownership**." Test = diligence (exit clause? IP escrow? Vertesia runway?), not research.
+- **#13 · Internal cannibalization.** Zero-dependency Harness (HP02) undercuts N-able's own N-central/Cove/Adlumin cross-sell — a disruption vector pointed *inward*, unnamed in the deck. (Disruptive)
+- **#14 · Margin survives its own growth?** $450K + 2%-of-inference *perpetual* means Vertesia's take grows with N-able's success on a meter N-able doesn't set. (Value Chain)
+- **#15 · Vertesia support capacity** — 25 people / 12 customers vs 300+ MSPs Y1; can N-able even diagnose a Vertesia-side failure it doesn't operate? (Service Blueprint)
+- **#16 · Whose autonomy per tier** (SDT) · **#17 · what current informal governance gets fired** (JTBD).
+
+**The cheapest pivotal test:** bet #5 (governance-resale is real) rests on ONE Jonathan quote — **5-10 discovery calls with Integrator/MIP MSPs** settle it either way ("would you resell AI governance to your clients, what would you charge"). That one test decides whether the whole pricing ladder has a top.
+
+**The lens split worth carrying:** the resale tier (Best) is the strongest rescue of the governance-can't-be-sold problem — but JTBD + Value Chain say it *works* (changes the job / the insertion point) while SDT + Service Blueprint say it makes it *worse* (relabeled hygiene / oversold trust pushed onto the MSP's client). Same three sentences, two verdicts.
+
 ---
 
 ---

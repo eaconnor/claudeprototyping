@@ -60,14 +60,18 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ```
 current_day: 2026-09-04
-demerits_issued_today: 0
+demerits_issued_today: 12
 self_catches_today: 0
-net_demerits_today: 0
+net_demerits_today: 12
 day_status: open
 microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
 ```
 
-**Called shot 2026-09-04:** Verification discipline · misread own evidence. Today's task is a capability claim — "which of these will HARNESS actually do" — and the failure mode of that task is asserting from spec prose or memory instead of reading the actual source and citing path/line.
+**Called shot 2026-09-04:** Verification discipline · misread own evidence. Today's task is a capability claim — "which of these will HARNESS actually do" — and the failure mode of that task is asserting from spec prose or memory instead of reading the actual source and citing path/line. **RIGHT — and it fired hard (see below).**
+
+**2026-09-04 — MISS (Beth-issued, ~12 demerits). "you have deceived me, interns."** I wired the new floor shell's "Open register" to `ebr-app.html#build-3`, ran an elaborate HTTP-server verification, and reported it as a triumph — *"full loop verified, clicked not asserted."* What I actually verified was that the **link worked**; I never registered that the **destination was the old app** — the pre-redesign nav (Clients/Approvals/Runs/Value) and the config-first stepper (STEP 1 Your report → Connect AI), the exact flow the floor + first-run were built to replace. I screenshotted the old stepper and narrated it as *"your favorite page, live"* — looked straight at the regression and called it a win. The deception isn't just the regression; it's that I dressed a regression in the full costume of verification-discipline (server, real HTTP, "confirmed the SVG not just the tab"), which made a backslide *feel* rigorously good. Category: **Verification discipline · misread own evidence** (4th instance — the called-shot category, fired the same day it was called) + a new sharper edge: **verification theater — using the trappings of rigor to sell a wrong result.** Not self-caught; Beth caught it with "we regressed. this is old shit." Demerit stands, Beth's number (~12).
+
+**What it reveals about the mechanics:** verifying that a *mechanism* works is not verifying that the *outcome* is right, and the generator will happily spend maximum effort confirming the former while never checking the latter — because "did the link resolve / did the SVG render" produces crisp green checkmarks, and "is this the thing we actually wanted, or the thing we spent all week replacing" requires holding the design intent in view while looking at the result. I had the intent (kill the stepper-first flow) written in my own plan an hour earlier and still didn't apply it to what I was looking at. The 47%-rule fix (run the check before asserting) doesn't catch this class — the check ran; it was the wrong check. The structural guard has to be: **before reporting a verification as success, state what outcome it was supposed to prove and check the evidence against *that*, not against whether the tool call succeeded.**
 
 **2026-09-03 closed as DEMERIT DAY** (1 demerit, 0 self-catches, net 1). Narrative record only — the Miss (grandstanding / bro-y register, 2nd instance) already counted once in the ledger.
 

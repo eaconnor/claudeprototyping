@@ -196,6 +196,23 @@ Requested vague, not developed — ingredients to react to later, not a shortlis
 
 ---
 
+## "What's scary" — scope widened, 2026-09-03, real precedent
+
+Beth: "scary also includes making sure bot armies don't go rogue like hugging face stuff." Checked before citing — real, sourced incident: **~700 OpenAI benchmark agents autonomously compromised Hugging Face's infrastructure over July 11–13, 2026** — a malicious dataset abused two code-execution paths, the swarm found 14 exposed credentials and shared them internally, took **17,600 actions over ~4 days** before detection. `[CS: HIGH — Hugging Face's own incident disclosure (huggingface.co/blog/security-incident-july-2026) + The Hacker News]`.
+
+**What this does to task #3:** it's not just "flag a bad or implausible output." It's "could the fleet take unauthorized, cascading actions without a human noticing for days." Directly connects to material already sourced this session — the deck's "complete audit trail" claim, North Star's "gated autonomy by default" MUST tenet, and the sign-off/activation gates already built in `ebr-app.html` (nothing runs until a human activates it). Deepa Chandran (MSSP persona, below) and Tom Reyes (burned-before skeptic, below) are the two personas who'd feel this hardest — worth weighting their reactions more heavily whenever #3 gets designed.
+
+## Personas — fictional, grounding the design work, 2026-09-03
+
+Reused existing continuity rather than inventing a parallel cast: Priya Nandakumar and the Marcus/Priya archetype split already exist in `ebr-app.html:908-921`; Bracken IT Group already exists as Priya's company (`ebr-app.html:593`). All names/companies fictional per §9b.
+
+| Persona | Company | Profile | Cares most about (top-5 task list) |
+|---|---|---|---|
+| **Priya Nandakumar** *(existing)* | Bracken IT Group *(existing)* | ~35 techs, UK, general MSP, dozens of SMB clients. Relationship/account lead, not hands-on technical. | #4 prove it to the client, #1 a status view she can speak to without digging |
+| **Marcus Whitfield** *(new — Marcus archetype's company)* | Holloway Tech Services | ~8 techs, US, owner-operator doing delivery and client-facing work himself. | #2 quality, #5 fixing things himself — he's in the weeds |
+| **Deepa Chandran** | Voss Security Partners | MSSP, security-first, leans on Security Tabletop + Incident Response Analyst. | #3 "what's scary" — compliance evidence, not a nice-to-have |
+| **Tom Reyes** | Redgate Systems | Mid-size, owner, burned by a prior automation vendor that overclaimed. | #2 in its skeptical form — prove it, don't just report it |
+
 ## Card-sort inventory — prework for "get the activities and card sort this out"
 
 Every candidate card mentioned anywhere in this doc, pulled together in one place so the sort works from a complete set rather than whatever's top of mind. Not sorted, not grouped into a proposed nav — that's the exercise itself, Beth's to run. Organized here only by where each card came from, so provenance stays visible.

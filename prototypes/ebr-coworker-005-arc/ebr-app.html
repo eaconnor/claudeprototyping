@@ -83,7 +83,7 @@
   .btns{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
   .btn{font-family:var(--font-brand);font-weight:600;font-size:13px;border:1px solid var(--border-strong);background:var(--bg-surface);color:var(--text-secondary);border-radius:var(--radius-md);padding:8px 14px}
   .btn:hover{background:var(--bg-elevated)} .btn.primary{background:var(--brand-strong);border-color:var(--brand-strong);color:#fff} .btn.primary:hover{background:#6f00a8} .btn.primary:disabled{background:var(--bg-deep);border-color:var(--border);color:var(--held);opacity:1;cursor:not-allowed}
-  .btn.cyan{background:var(--cyan);border-color:var(--cyan);color:#fff} .btn.cyan:hover{background:#0982ab}
+  .btn.cyan{background:var(--brand-strong);border-color:var(--brand-strong);color:#fff} .btn.cyan:hover{background:#6f00a8}
   .tabs{display:flex;gap:2px;overflow-x:auto}
   .tab{font-family:var(--font-brand);font-weight:600;font-size:13px;color:var(--text-tertiary);padding:12px 14px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap} .tab.on{color:var(--brand-strong);border-bottom-color:var(--brand-strong)} .tab:hover{color:var(--text-primary)}
   .body{padding:26px 32px 80px;max-width:1080px}
@@ -161,7 +161,7 @@
      min-width:0 is the fix. Critic R1 and R2 both flagged the clipping; R2 called it the single
      most damaging thing in the set. */
   .row>*{min-width:0} .row:last-child{border-bottom:none} .row::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:2px} .row.red::before{background:var(--critical)} .row.amber::before{background:var(--medium)} .row.held::before{background:var(--held)} .row.held{opacity:.66} .row:hover{background:var(--bg-elevated)}
-  .fnd{font-family:var(--font-brand);font-weight:600;font-size:14.5px;color:var(--text-primary);margin-bottom:4px;letter-spacing:-.01em} .mt{font-size:12px;color:var(--text-tertiary)} .mt .d{opacity:.4;margin:0 6px} .fprev{font-size:12px;font-style:italic;color:var(--text-tertiary);margin-top:4px;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.45}
+  .fnd{font-family:var(--font-brand);font-weight:600;font-size:14.5px;color:var(--text-primary);margin-bottom:4px;letter-spacing:-.01em} .mt{font-size:12px;color:var(--text-tertiary)} .mt .d{opacity:.4;margin:0 6px} .fprev{font-size:12px;font-style:italic;color:var(--text-tertiary);margin-top:4px;max-width:100%;line-height:1.5}
   .tier{font-family:var(--font-mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap} .tier.measured{background:var(--low-soft);color:var(--low)} .tier.benchmarked{background:var(--cyan-soft);color:var(--cyan)} .tier.estimated{background:var(--medium-soft);color:var(--medium)} .tier.unverified{background:#f0f0f3;color:var(--held)}
   .c3{display:flex;align-items:center;gap:14px;justify-content:flex-end} .ev{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-align:right;max-width:150px;line-height:1.4}
   .fdetail{grid-column:1/-1;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;margin:4px 0 2px;font-size:12.5px;color:var(--text-secondary);line-height:1.6} .fdetail b{color:var(--text-primary)} .fdetail-out{font-weight:600;color:var(--text-primary);margin-bottom:8px;line-height:1.5} .fdetail-meta{color:var(--text-secondary)}
@@ -175,7 +175,7 @@
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text-primary);color:#fff;padding:12px 20px;border-radius:var(--radius-full);font-size:13px;box-shadow:var(--sh-lg);opacity:0;transition:.2s;pointer-events:none;z-index:50} .toast.on{opacity:1}
   /* rich build-flow bits */
   .or{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--text-tertiary);font-size:12px;font-family:var(--font-mono)} .or::before,.or::after{content:"";flex:1;height:1px;background:var(--border)}
-  .shape.tmpl{border-color:var(--cyan)} .shape.tmpl:hover,.shape.tmpl.picked{border-color:var(--cyan);background:var(--cyan-soft)}
+  .shape.tmpl{border-style:dashed} .shape.tmpl:hover,.shape.tmpl.picked{border-color:var(--brand-strong);background:var(--brand-soft)}
   .addfiles{margin-top:18px} .file-chip{display:inline-flex;align-items:center;gap:7px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-full);padding:6px 12px;font-size:12px;margin:4px 6px 4px 0;color:var(--text-secondary)} .file-chip .kind{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary)} .file-chip .x{cursor:pointer;color:var(--text-tertiary);font-weight:700}
   .add-input{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap} .add-input input{flex:1;min-width:200px;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:9px 12px;font-family:var(--font-ui);font-size:13px}
   .console{background:#17131f;border-radius:var(--radius-lg);padding:15px 17px;margin-bottom:14px;font-family:var(--font-mono);font-size:11.5px;line-height:1.8;max-height:300px;overflow-y:auto} .console .cl{display:flex;gap:11px;color:#c3bdd0} .console .cl .ts{color:#7c7590;flex:none;font-variant-numeric:tabular-nums} .console .cl.ok{color:#5ad894}.console .cl.warn{color:#ffc251}.console .cl.err{color:#ff8f8f}.console .cl.dim{color:#8a80a0}.console .cl.cw{color:#4fe3ff}
@@ -481,7 +481,7 @@
   .ledger-honest b{color:var(--text-secondary)}
   .rate-note{color:var(--text-tertiary)} .rate-note b{color:var(--text-secondary);font-family:var(--font-mono)}
   /* Approve = go, not destroy (critic R1: red means destroy) */
-  .cp-btn.cp-go{background:var(--low);border:none;color:#fff}
+  .cp-btn.cp-go{background:var(--text-primary);border:1px solid var(--text-primary);color:#fff}
   .gate-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;padding:11px 13px;background:var(--bg-deep);border-radius:var(--radius-md)}
   .gate{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-secondary);cursor:pointer}
   .gate b{color:var(--text-primary);font-weight:600}
@@ -490,7 +490,7 @@
   .ev-key{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:9px 12px;margin:0 0 16px;line-height:1.9}
   .ev-key b{color:var(--text-secondary);font-size:11.5px;margin-right:2px}
   .grid-note{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-tertiary);margin:-6px 0 14px}
-  .count-check{font-family:var(--font-mono);font-size:10px;color:var(--held);margin:-8px 0 16px}
+  .count-check{font-family:var(--font-mono);font-size:10px;color:var(--held);margin:14px 0 16px;clear:both}
   .count-check b{color:var(--low)}
   .rb-fork{display:flex;align-items:center;gap:14px;background:var(--bg-deep);border-radius:var(--radius-md);padding:12px 14px;margin:0 0 16px;font-size:12px;color:var(--text-tertiary);line-height:1.55}
   .rb-fork b{color:var(--text-primary)} .rb-fork button{flex:none}
@@ -503,6 +503,24 @@
   .cp-trustline{font-size:11.5px;color:var(--text-tertiary);margin:2px 0 6px;cursor:pointer} .cp-trustline b{color:var(--text-secondary)}
   .cp-trustline code{font-family:var(--font-mono);font-size:10.5px;background:var(--bg-deep);padding:1px 5px;border-radius:2px}
   .cp-more{color:var(--brand-strong)}
+  .signer{margin:16px 0 14px;padding:14px;background:var(--bg-deep);border-radius:var(--radius-md)}
+  .signer label{display:block;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);margin-bottom:6px}
+  .signer input{width:100%;max-width:340px;font-family:var(--font-ui);font-size:13.5px;padding:9px 11px;border:1px solid var(--border-strong);border-radius:var(--radius-md);color:var(--text-primary);background:var(--bg-surface)}
+  .signer input:focus{outline:none;border-color:var(--brand-strong)}
+  .signer-note{font-size:11.5px;color:var(--text-tertiary);margin-top:8px;line-height:1.55} .signer-note b{color:var(--text-primary)}
+  .gate-block{font-size:11.5px;color:var(--medium);margin-top:8px}
+  .clientframe{display:flex;align-items:center;gap:9px;background:var(--brand-soft);border-bottom:1px solid var(--brand);padding:11px 32px;font-size:12.5px;color:var(--text-secondary);margin:-20px -32px 0}
+  .clientframe b{color:var(--brand-strong)} .clientframe .cf-dot{width:8px;height:8px;border-radius:50%;background:var(--brand-strong);flex:none}
+  .conn-note{font-size:12px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:10px 13px;margin-bottom:14px;line-height:1.55}
+  .conn-row{display:grid;grid-template-columns:minmax(150px,1fr) auto minmax(190px,1.1fr) auto auto;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--border)}
+  .conn-row>*{min-width:0} .conn-row:last-child{border-bottom:none}
+  .conn-main b{display:block;font-family:var(--font-brand);font-weight:700;font-size:13.5px;color:var(--text-primary)}
+  .conn-sc{font-size:11px;color:var(--text-tertiary)}
+  .conn-st{font-family:var(--font-mono);font-size:9.5px;font-weight:700;text-transform:uppercase;padding:3px 8px;border-radius:var(--radius-sm);white-space:nowrap}
+  .conn-scope{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);line-height:1.7} .conn-scope b{color:var(--text-secondary)}
+  .conn-sync{font-family:var(--font-mono);font-size:10px;color:var(--held);white-space:nowrap}
+  .conn-why{grid-column:1/-1;font-size:11.5px;color:var(--medium);margin-top:2px}
+  @media(max-width:1000px){.conn-row{grid-template-columns:1fr auto} .conn-scope,.conn-sync,.conn-act{grid-column:1/-1}}
   /* Clients — the home screen */
   .cl-head{font-size:12.5px;color:var(--text-tertiary);margin-bottom:14px} .cl-head b{color:var(--text-primary)}
   .cl-row{display:grid;grid-template-columns:18px minmax(150px,.9fr) minmax(240px,2fr) minmax(120px,auto) auto;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--border)}
@@ -739,7 +757,7 @@ let S={nav:'clients', ebrOpen:false, activated:false, capstoneSeen:false, step:0
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null,
   reviewChoice:{f1:{action:'confirm'},f5:{action:'confirm'},f2:{action:'confirm'},f3:{action:'confirm'}}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
-  requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
+  signer:'', requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
 const el=id=>document.getElementById(id);
 const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',controlplane:'<path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="2"/>',clients:'<path d="M3 21V9l6-4 6 4v12M9 21v-6h4v6M17 21V11l4 2.5V21"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
 
@@ -830,15 +848,15 @@ const EXPERTS=[
   {n:'Claude Code',dom:'Bring-your-own',d:'External agent; same runbook + approval model.',s:'Connect'},
 ];
 const MCPS=[
-  {n:'N-query (GraphQL)',sc:'Device fleet · patch compliance · security posture · customer hierarchy',st:'Endpoint live · OAuth WIP',c:'#a56a00'},
-  {n:'N-central',sc:'Device fleet, asset inventory, telemetry, actions',st:'Live',c:'#137a46'},
-  {n:'N-sight',sc:'Operational data, actions',st:'Live',c:'#137a46'},
-  {n:'Microsoft 365',sc:'Identity, admin accounts, tenant config',st:'Live · official',c:'#137a46'},
-  {n:'Halo PSA',sc:'Tickets, notes',st:'Live',c:'#137a46'},
-  {n:'Cove',sc:'Backup jobs, restore tests',st:'REST bridge',c:'#0a95c4'},
-  {n:'Adlumin',sc:'Detections, alerts, investigations',st:'Planned',c:'#0a95c4'},
-  {n:'Billing',sc:'Invoices, usage, charge explanations',st:'POC',c:'#0a95c4'},
-  {n:'usecure',sc:'Awareness training',st:'No connector — by hand',c:'#8a8a93'},
+  {n:'N-central',sc:'Device fleet, asset inventory, telemetry',st:'attention',why:'Credential expired yesterday 11:05 — a run failed mid-way. Nothing was written.',read:'devices, inventory, telemetry',write:'nothing',sync:'failed yesterday 11:05',act:'Renew the credential'},
+  {n:'Microsoft 365',sc:'Identity, admin accounts, tenant config',st:'live',read:'admin list, tenant config',write:'nothing',sync:'today 09:12'},
+  {n:'Halo PSA',sc:'Tickets, notes',st:'live',read:'tickets, notes',write:'notes (draft only)',sync:'today 09:12'},
+  {n:'N-sight',sc:'Operational data',st:'live',read:'operational data',write:'nothing',sync:'today 08:40'},
+  {n:'Cove',sc:'Backup jobs, restore tests',st:'live',read:'backup jobs, restore tests',write:'nothing',sync:'today 09:11'},
+  {n:'N-query (GraphQL)',sc:'Patch compliance, security posture, customer hierarchy',st:'partial',why:'Reads work; OAuth is not finished, so it runs on an API key for now.',read:'patch state, posture, hierarchy',write:'nothing',sync:'today 09:12'},
+  {n:'usecure',sc:'Awareness training',st:'partial',why:'No connector exists. Someone exports it and types the number in — which is why training findings are tagged as hand-entered.',read:'nothing automatic',write:'nothing',sync:'by hand, 14 May'},
+  {n:'Adlumin',sc:'Detections, alerts, investigations',st:'none',read:'—',write:'—',sync:'not connected'},
+  {n:'Billing',sc:'Invoices, usage, charge explanations',st:'none',read:'—',write:'—',sync:'not connected'},
 ];
 const FCOUNT={get total(){return FINDINGS.length;},
   get held(){return FINDINGS.filter(f=>f.grade==='held').length;},
@@ -927,8 +945,18 @@ function cloneRunbook(id){S.rbMenuOpen=null;render();toast('Forked \u2014 “'+(
 function toggleRbLifecycle(id){const r=RUNBOOKS.find(x=>x.id===id);if(r.lock&&r.lock.scope==='whole'){toast('Locked — cannot change while locked');return;}r.lifecycle=r.lifecycle==='active'?'inactive':'active';render();}
 function renderExperts(){document.getElementById('secsub').textContent='The AI reasoning a coworker pairs with a runbook. It advises and drafts; a human approves.';
   return `<div class="grid">${EXPERTS.map(e=>`<div class="cw"><div class="cat">${e.dom}</div><h3>${e.n}</h3><p>${e.d}</p><div class="st"><span class="avail">${e.s}</span></div></div>`).join('')}</div>`;}
-function renderMcp(){document.getElementById('secsub').innerHTML='Secure links to the systems you already run. N-able is MCP-first, GraphQL underneath — most data routes through <b>N-query</b>.';
-  return `<div class="dcard">${MCPS.map(m=>`<div class="stat"><span><b style="color:var(--text-primary)">${m.n}</b> <span style="color:var(--text-tertiary);font-size:12px">— ${m.sc}</span></span>${spill(m.st,m.c)}</div>`).join('')}</div>`;}
+function renderMcp(){document.getElementById('secsub').innerHTML='Where your coworkers get their data \u2014 and, just as importantly, what they are allowed to write back.';
+  const lbl={live:['connected','var(--low)','var(--low-soft)'],partial:['needs a look','var(--medium)','var(--medium-soft)'],attention:['broken','var(--critical)','var(--critical-soft)'],none:['not connected','var(--held)','var(--bg-deep)']};
+  const order={attention:0,partial:1,live:2,none:3};
+  return `<div class="conn-note">No coworker can write device configuration or use a stored credential from any of these \u2014 that is a property of the grant model, not a per-connector setting.</div>
+    <div class="dcard">${MCPS.slice().sort((a,b)=>order[a.st]-order[b.st]).map(m=>{const[t,col,bg]=lbl[m.st];return `<div class="conn-row">
+      <span class="conn-main"><b>${m.n}</b><span class="conn-sc">${m.sc}</span></span>
+      <span class="conn-st" style="color:${col};background:${bg}">${t}</span>
+      <span class="conn-scope"><b>reads</b> ${m.read}<br><b>writes</b> ${m.write}</span>
+      <span class="conn-sync">${m.sync}</span>
+      <span class="conn-act">${m.act?`<button class="btn btn-sm primary">${m.act} \u2192</button>`:''}</span>
+      ${m.why?`<span class="conn-why">${m.why}</span>`:''}
+    </div>`;}).join('')}</div>`;}
 /* ---- Control plane — integrated from the standalone concept prototype (control-plane-concept-v10),
    9 rounds of fresh-context critic scoring this session, plateaued at 6/10 across two independent
    passes on the same screenshot (real agreement, not noise). The three convergent, unresolved
@@ -1164,9 +1192,9 @@ function renderExecution(){document.getElementById('secsub').textContent='Every 
       <span class="ex-main"><b>${r.cw}</b><span class="ex-client">${r.client}</span></span>
       <span class="ex-out" style="${r.st==='fail'||r.st==='boundary'?'color:var(--critical)':r.st==='held'?'color:var(--medium)':''}">${r.o}${r.fix?`<span class="ex-fix">${r.fix}</span>`:''}</span>
       <span class="ex-when">${r.w}</span></div>`;}).join('')}</div>`;}
-function renderLedger(){document.getElementById('secsub').textContent='What the coworkers have given back — time and cost saved, written per run, traceable per client.';
-  return `<div class="dash"><div class="dcard span2"><h2>Value saved</h2><div class="sub">This quarter · 9 runs across 3 coworkers · <span class="rate-note">costed at <b>£80/hr</b> blended <span class="lk" style="font-size:11px">change rate</span></span></div>
-    <div class="keys"><div class="key green"><span class="num">14.0</span><span class="lab"><b>hours saved</b>this quarter</span></div><div class="key green"><span class="num">£1,120</span><span class="lab"><b>cost saved</b>14.0 hrs × £80</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">9</span><span class="lab"><b>runs</b>across the 3 coworkers below</span></div></div>
+function renderLedger(){document.getElementById('secsub').textContent='Time our coworkers did the groundwork for, costed at your blended rate, written per run and traceable per client.';
+  return `<div class="dash"><div class="dcard span2"><h2>Value found</h2><div class="sub">This quarter \u00b7 ${EXEC.length} runs across ${new Set(EXEC.map(r=>r.cw)).size} coworkers \u00b7 <span class="rate-note">costed at <b>£80/hr</b> blended <span class="lk" style="font-size:11px">change rate</span></span></div>
+    <div class="keys"><div class="key green"><span class="num">14.0</span><span class="lab"><b>hours of our time</b>the coworkers did the groundwork for</span></div><div class="key green"><span class="num">£1,120</span><span class="lab"><b>at £80/hr</b>14.0 hrs × £80</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">${EXEC.length}</span><span class="lab"><b>runs</b>across ${new Set(EXEC.map(r=>r.cw)).size} coworkers</span></div></div>
     <div class="ledger-honest">Negative entries are <b>held out</b> of this total, not subtracted from it — a coworker that ran slower than your baseline is flagged for review instead. Read this as <b>value found</b>, not net. <span class="lk" style="font-size:11px" onclick="setNav('controlplane')">See what's held →</span></div></div>
     <div class="dcard span2"><h2>By client</h2><div class="sub">What you can put in front of each client · this quarter</div>
     <div class="stat"><span>Fenwick Logistics</span><span class="v">11.0 hrs · £880 · <span class="lk" style="font-size:11.5px" onclick="location.hash='report'">client report →</span></span></div>
@@ -1174,10 +1202,9 @@ function renderLedger(){document.getElementById('secsub').textContent='What the 
     <div class="stat"><span>Hallworth Print</span><span class="v muted">1.0 hr · £80</span></div>
     <div class="stat"><span>Marlow Freight Co.</span><span class="v muted">0 hrs — coworker paused since 09:14</span></div>
     <div class="stat"><span>Ferris Dental Group</span><span class="v muted">held for review — baseline came from the coworker's own estimate</span></div></div>
-    <div class="dcard span2"><h2>By coworker</h2><div class="sub">Time saved · this quarter</div>
-    <div class="stat"><span>EBR Coworker</span><span class="v">~11 hrs · 3 runs</span></div>
-    <div class="stat"><span>Security Tabletop</span><span class="v muted">~2 hrs · 3 runs</span></div>
-    <div class="stat"><span>Environment Health Monitor</span><span class="v muted">~1 hr · 3 runs</span></div>
+    <div class="dcard span2"><h2>By coworker</h2><div class="sub">Runs this quarter · every coworker that ran appears here</div>
+    ${[...new Set(EXEC.map(r=>r.cw))].map(cw=>{const rs=EXEC.filter(r=>r.cw===cw),bad=rs.filter(r=>r.st==='fail'||r.st==='boundary').length;
+      return `<div class="stat"><span>${cw}</span><span class="v ${bad?'muted':''}">${rs.length} run${rs.length===1?'':'s'}${bad?` \u00b7 ${bad} needs attention`:''}</span></div>`;}).join('')}
     <div class="narr" style="margin-top:12px">Every figure traces to a run in Execution and a commit in the register's git history — the honest evidence, not a headline number.</div></div></div>`;}
 /* ---- Clients — the missing first-class object. Every top task the four personas actually have is
    per-client ("is my client OK", "prove value to this client", "what did we do at Fenwick"), and
@@ -1301,8 +1328,14 @@ function renderBuild(){
     <label class="chk"><input type="checkbox" ${a.read?'checked':''} onchange="ack('read',this.checked)"><span>I’ve read the draft register and it matches how we run an EBR.</span></label>
     <label class="chk"><input type="checkbox" ${a.judgment?'checked':''} onchange="ack('judgment',this.checked)"><span>I understand it learned our <b>structure</b>, not our <b>judgment</b> — I’ll correct grades, especially early.</span></label>
     <label class="chk"><input type="checkbox" ${a.record?'checked':''} onchange="ack('record',this.checked)"><span>This becomes our <b>system of record</b>; a <b>named person</b> signs off before anything reaches a client.</span></label>
-    <button class="btn primary" ${all?'':'disabled'} onclick="activate()">Activate this coworker</button></div>
-    <div class="warncall"><b>Who signs off is your call.</b> Name the person accountable for this client’s register below — that name is written into the audit trail with every publish.</div>
+    <div class="signer">
+      <label for="signer">Accountable for this client&rsquo;s register</label>
+      <input id="signer" list="signer-list" placeholder="Start typing a name&hellip;" value="${(S.signer||'').replace(/"/g,'&quot;')}" oninput="S.signer=this.value;render()">
+      <datalist id="signer-list"><option>Jude Scally</option><option>Vanessa Okonjo</option><option>David Ferreira</option><option>Priya Nandakumar</option></datalist>
+      <div class="signer-note">${S.signer?`<b>${S.signer}</b> is written into the audit trail on every publish, and shown on the client report. Change it any time \u2014 the change itself is logged.`:'Required. This name goes into the audit trail on every publish and appears on the client report.'}</div>
+    </div>
+    <button class="btn primary" ${all&&S.signer?'':'disabled'} onclick="activate()">Activate this coworker</button>
+    ${all&&!S.signer?'<div class="gate-block">Name someone accountable above to activate.</div>':''}</div>
     <div class="actions"><span class="lk" onclick="goStep(3)">← Back</span></div></div>`;}
   el('stage').innerHTML=h;
   if(s===2 && !S.parsed) runParse();
@@ -1463,7 +1496,9 @@ function renderCapstone(){
 /* ---- Dashboard ---- */
 function renderDashboard(){
   ebrHead();
-  if(S.reportOpen){ el('stage').innerHTML=renderReport(); return; }
+  if(S.reportOpen){
+    el('head').innerHTML=`<div class="clientframe"><span class="cf-dot"></span><b>Client view</b> \u2014 this is exactly what Fenwick Logistics sees. Nothing here is editable, and internal-only findings are excluded.<span style="flex:1"></span><span class="lk" onclick="closeReport()">\u2190 Back to the internal register</span></div>`;
+    el('stage').innerHTML=renderReport(); return; }
   if(S.tab==='Overview') el('stage').innerHTML=overview();
   else if(S.tab==='Runs') el('stage').innerHTML=runsTab();
   else if(S.tab==='Audit') el('stage').innerHTML=`<div class="dcard"><h2>Audit trail</h2><div class="sub">Every change is a git commit — the dated evidence chain</div><div class="stat"><span>Q3 2026 register committed · today 09:12</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="stat"><span>Grade corrected: phishing kept Amber</span><span class="v muted">David · teach-back</span></div><div class="stat"><span>Q2 2026 cycle committed · 14 May</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="narr" style="margin-top:14px">"Prove it to opposing counsel" — the register’s git history is the attestation trail. Nothing is deleted; declined risks stay on record.</div></div>`;
@@ -1622,10 +1657,10 @@ function plainNum(s){return s.replace('22%','22% — around one in five').replac
 function renderReport(){
   return `<div class="report">
     <div class="exportbar"><span class="lk" style="margin-right:auto;color:var(--text-tertiary)" onclick="closeReport()">← Back to dashboard</span>
-      <span class="lbl">Export:</span><button class="btn" onclick="exportCSV()">Excel</button><button class="btn" onclick="exportPptx()">PowerPoint</button><button class="btn" onclick="exportDoc()">Word</button><button class="btn" onclick="exportPDF()">PDF</button></div>
+      <span class="lbl">Export:</span><button class="btn primary" onclick="exportPptx()">PowerPoint \u2192</button><button class="btn" onclick="exportPDF()">PDF</button><button class="btn" onclick="exportDoc()">Word</button><button class="btn" onclick="exportCSV()">Excel</button></div>
     <div class="rep-cover"><div class="ey">EXECUTIVE BUSINESS REVIEW · Q3 2026</div><h2>Fenwick Logistics</h2><div class="meta">Prepared by Bracken IT Group · presented by Vanessa · reviewed against NCSC 10 / Cyber Essentials</div></div>
     <div class="rep-sec"><h3>A note from Vanessa</h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
-    <div class="rep-sec"><h3>What we found <span class="lk" style="font-size:12px;font-weight:500;margin-left:8px" onclick="goToTranslate()">See where this came from ←</span></h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${f.translate[S.chooserTone]}</div><div class="fm">${plainNum(f.finding)}</div><div class="fw">${f.why}</div><div class="fr">Our recommendation — ${f.ask}</div></div></div>`).join('')}</div>
+    <div class="rep-sec"><h3>What we found <span class="lk" style="font-size:12px;font-weight:500;margin-left:8px" onclick="goToTranslate()">See where this came from ←</span></h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${f.translate[S.chooserTone]}</div><div class="fm">${plainNum(f.finding)} <span class="tier ${f.tier}">${f.tier}</span></div><div class="fr">Our recommendation \u2014 ${f.ask}</div></div></div>`).join('')}</div>
     <div class="rep-sec"><h3>What this cost you in our time</h3>
       <div class="rep-val"><div class="rv"><span class="n">11.0</span><span class="l">hours of our people&rsquo;s time this quarter</span></div><div class="rv"><span class="n">&pound;880</span><span class="l">at your &pound;80/hr contracted rate</span></div><div class="rv"><span class="n">3</span><span class="l">review cycles, all evidenced</span></div></div>
       <p class="rep-note">This is time our coworkers did the groundwork for and our people checked &mdash; not an estimate of what you saved. Where a figure came from the machine&rsquo;s own guess rather than a measured baseline, we leave it out of this number entirely rather than round it in our favour.</p></div>

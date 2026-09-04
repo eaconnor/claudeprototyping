@@ -334,6 +334,88 @@
   .route .roi b{color:var(--text-secondary)}
   .rail-cs{font-family:var(--font-mono);font-size:9.5px;color:var(--alpha-accent);font-weight:700}
   @media(max-width:900px){body.rail-open .shell{margin-right:0} .rail{width:100%;max-width:372px}}
+
+  /* ===== Control plane — integrated from control-plane-concept-v10, 9 critic rounds this session.
+     Namespaced cp- throughout: this file already owns .chip/.chips/.actions/.status-shaped classes
+     for the EBR build/dashboard flow, and re-using those names unscoped would visually collide. ===== */
+  .cp-hero{display:flex;align-items:center;gap:14px;background:var(--critical-soft);border:1px solid var(--critical);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:14px;transition:.3s}
+  .cp-hero.cp-calm{background:var(--low-soft);border-color:var(--low)}
+  .cp-hero .num{font-family:var(--font-brand);font-weight:800;font-size:28px;color:var(--critical)}
+  .cp-hero.cp-calm .num{color:var(--low)}
+  .cp-hero .tx{font-size:13px;color:var(--text-primary)}
+  .cp-kpi-strip{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .cp-kpi-tile{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:8px 12px}
+  .cp-kpi-tile.clickable{cursor:pointer}
+  .cp-kpi-tile .k{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;color:var(--text-tertiary)}
+  .cp-kpi-tile .v{font-family:var(--font-brand);font-weight:800;font-size:16px;color:var(--text-primary)}
+  .cp-kpi-tile.warn{border-color:var(--critical)} .cp-kpi-tile.warn .v{color:var(--critical)}
+  .cp-kpi-detail{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:9px 12px;margin-bottom:14px;line-height:1.7}
+  .cp-kpi-detail a{color:var(--brand-strong)}
+  .cp-legend{display:flex;gap:14px;font-size:10px;font-family:var(--font-mono);color:var(--text-tertiary);margin-bottom:16px;align-items:center;flex-wrap:wrap}
+  .cp-legend .cp-thread{margin:0}
+  .cp-section-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);margin:20px 0 8px}
+  .cp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+  .cp-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;transition:.3s}
+  .cp-card.attn{border-color:var(--critical);box-shadow:inset 4px 0 0 var(--critical)}
+  .cp-card.resolved{border-color:var(--low);box-shadow:inset 4px 0 0 var(--low)}
+  .cp-cname{font-family:var(--font-brand);font-weight:700;font-size:14px;color:var(--text-primary)}
+  .cp-cmeta{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-top:1px;display:flex;justify-content:space-between}
+  .cp-report-lk{font-family:var(--font-ui);text-transform:none;color:var(--brand-strong);font-size:10px;cursor:pointer}
+  .cp-cwrow{margin-top:10px;padding-top:10px;border-top:1px solid var(--bg-deep)}
+  .cp-cwtop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .cp-cwname{font-family:var(--font-brand);font-weight:700;font-size:12.5px;color:var(--text-primary)}
+  .cp-cwcat{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary)}
+  .cp-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;margin-top:4px} .cp-status .d{width:6px;height:6px;border-radius:50%}
+  .cp-status.active .d{background:var(--low)} .cp-status.active{color:var(--low)}
+  .cp-status.holding .d{background:var(--critical)} .cp-status.holding{color:var(--critical);font-weight:700}
+  .cp-status.dormant .d{background:var(--held)} .cp-status.dormant{color:var(--held)}
+  .cp-qual{font-family:var(--font-mono);font-size:11.5px;color:var(--text-secondary);margin-top:4px}
+  .cp-qual b{color:var(--text-primary);font-weight:700} .cp-qual .arrow{color:var(--held);margin:0 2px}
+  .cp-qual.dropped b{color:var(--medium)} .cp-qual .frac{color:var(--held);font-size:10px}
+  .cp-why{font-size:10px;color:var(--text-tertiary);margin-top:3px;max-width:280px}
+  .cp-why.warn{color:var(--critical);font-weight:600}
+  .cp-thread{font-size:9.5px;font-family:var(--font-mono);margin-top:5px;padding:3px 7px;border-radius:var(--radius-sm);display:inline-block}
+  .cp-thread.cp-critical{color:var(--critical);background:var(--critical-soft);font-weight:700}
+  .cp-thread.cp-medium{color:var(--medium);background:var(--medium-soft);font-weight:600}
+  .cp-thread.cp-low{color:var(--low);background:var(--low-soft)}
+  .cp-detail-toggle{font-family:var(--font-mono);font-size:10px;color:var(--brand-strong);cursor:pointer;margin-top:8px;display:inline-block}
+  .cp-tech-detail{margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-strong)}
+  .cp-scope-line{font-size:9.5px;color:var(--held);font-family:var(--font-mono);max-width:320px}
+  .cp-log-peek{font-size:9px;font-family:var(--font-mono);color:var(--held);white-space:nowrap}
+  .cp-log-peek a,a.cp-log-peek{color:var(--brand-strong)}
+  .cp-btn{font-family:var(--font-brand);font-weight:700;font-size:10.5px;border-radius:var(--radius-md);padding:5px 9px;white-space:nowrap;border:1px solid var(--border-strong);background:var(--bg-surface);color:var(--text-secondary);cursor:pointer}
+  .cp-btn.cp-primary{background:var(--critical);border:none;color:#fff}
+  .cp-remediate{background:var(--bg-deep);border-radius:var(--radius-md);padding:10px 12px;margin-top:10px}
+  .cp-remediate-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .cp-remediate-item:last-of-type{border-bottom:none}
+  .cp-task{font-size:11px;color:var(--text-secondary);max-width:260px}
+  .cp-task b{color:var(--text-primary)}
+  .cp-correct-field{font-family:var(--font-mono);font-size:10.5px;color:var(--medium);white-space:nowrap}
+  .cp-correct-field input{font-family:var(--font-mono);font-size:10.5px;width:56px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:2px 4px;color:var(--text-primary)}
+  .cp-remediate-actions{display:flex;gap:5px}
+  .cp-item-done{font-family:var(--font-mono);font-size:10px;color:var(--low);font-weight:600}
+  .cp-item-done.rej{color:var(--held)}
+  .cp-fix-cause{font-size:10px;color:var(--text-tertiary);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-strong)}
+  .cp-fix-cause a{color:var(--brand-strong)}
+  .cp-onboard{background:var(--bg-deep);border-left:3px solid var(--held);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:12px 16px}
+  .cp-onboard .oh{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--held);margin-bottom:4px}
+  .cp-onboard .desc{font-size:11.5px;color:var(--text-secondary);margin-bottom:4px}
+  .cp-onboard .grants{font-size:10.5px;color:var(--text-tertiary);margin-bottom:8px}
+  .cp-onboard .excl{font-size:9.5px;color:var(--held);margin-top:8px}
+  .cp-mc-panel{margin-top:8px}
+  .cp-mc-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--bg-deep);font-size:11px}
+  .cp-mc-row .mcname{font-weight:600;color:var(--text-primary)}
+  .cp-view-toggle{display:flex;gap:0;margin-bottom:16px;border:1px solid var(--border-strong);border-radius:var(--radius-md);width:fit-content;overflow:hidden}
+  .cp-view-toggle a{font-family:var(--font-brand);font-weight:700;font-size:12px;padding:8px 16px;background:var(--bg-surface);color:var(--text-tertiary);cursor:pointer}
+  .cp-view-toggle a.on{background:var(--text-primary);color:#fff}
+  table.cp-table{width:100%;border-collapse:collapse;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px}
+  table.cp-table th{text-align:left;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-tertiary);background:var(--bg-deep);padding:9px 12px;border-bottom:1px solid var(--border)}
+  table.cp-table td{padding:13px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:12px}
+  table.cp-table tr:last-child td{border-bottom:none}
+  table.cp-table tr.flagged{background:var(--critical-soft);box-shadow:inset 5px 0 0 var(--critical)}
+  .cp-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+  .cp-chip{font-family:var(--font-mono);font-size:9.5px;border-radius:var(--radius-sm);padding:2px 6px;background:var(--bg-deep);color:var(--text-secondary)}
+  .cp-chip.write{background:var(--brand-soft);color:var(--brand-strong)}
 </style>
 </head>
 <body>
@@ -537,7 +619,11 @@ const FAMILY=[
 ];
 const CYCLES=['Q3·25','Q4·25','Q1·26','Q2·26','Q3·26'];
 const GC={red:'#c0392b',amber:'#a56a00',green:'#137a46',held:'#8a8a93'};
-const NAVITEMS=[['runbooks','Runbooks'],['experts','Experts'],['mcp','MCP configs'],['coworkers','Coworkers'],['execution','Execution'],['ledger','Value Ledger']];
+/* Dunlop review, 2026-09-03: cut Experts (confusing, not needed); Execution = home; Value Ledger =
+   a setting, not a primary tab. All three confirmed by Beth independently — applied here. */
+const NAVITEMS=[['runbooks','Runbooks'],['mcp','MCP configs'],['coworkers','Coworkers'],['controlplane','Control plane'],['execution','Execution']];
+const SETTINGSITEMS=[['ledger','Value Ledger']];
+const ALLNAV=NAVITEMS.concat(SETTINGSITEMS);
 const BUILD=['Your report','Connect AI','Build the register','Review','Activate'];
 const DTABS=['Overview','Configuration','Versions','Runs','Audit','Promotion'];
 const SHAPES=[
@@ -547,20 +633,23 @@ const SHAPES=[
   {id:'stefanie',name:"Stefanie's EBR framework",meta:'start from scratch · template',quality:'high',template:true,desc:"No report yet? Start from N-able's EBR framework — the manual boot-camp process, already structured, risk register built in.",tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Risk register','Carry-forward']},
 ];
 
-let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
+let S={nav:'execution', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
   extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[],
   brMode:'build', showParseLog:false, openLineage:{}, openIv:{},
   interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null,
-  reviewChoice:{} /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */};
+  reviewChoice:{}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
+  cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
 const el=id=>document.getElementById(id);
-const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
+const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',controlplane:'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
 
 function toast(m){const t=el('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1900);}
 
+function navLink(k,l){return `<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}</a>`;}
 function renderNav(){
-  el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>`<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}</a>`).join('')
+  el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>navLink(k,l)).join('')
+    +`<div class="grp" style="margin-top:10px">SETTINGS</div>`+SETTINGSITEMS.map(([k,l])=>navLink(k,l)).join('')
     +`<a href="role-play-simulator.html" target="_blank" rel="noopener" style="margin-top:10px;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;font-size:11px;line-height:1.4;color:var(--nav-fg-2);border:1px dashed rgba(255,255,255,.22)">↗ Extended scenario — not MVP</a>`
     +`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
 }
@@ -715,6 +804,197 @@ function renderExperts(){document.getElementById('secsub').textContent='The AI r
   return `<div class="grid">${EXPERTS.map(e=>`<div class="cw"><div class="cat">${e.dom}</div><h3>${e.n}</h3><p>${e.d}</p><div class="st"><span class="avail">${e.s}</span></div></div>`).join('')}</div>`;}
 function renderMcp(){document.getElementById('secsub').innerHTML='Secure links to the systems you already run. N-able is MCP-first, GraphQL underneath — most data routes through <b>N-query</b>.';
   return `<div class="dcard">${MCPS.map(m=>`<div class="stat"><span><b style="color:var(--text-primary)">${m.n}</b> <span style="color:var(--text-tertiary);font-size:12px">— ${m.sc}</span></span>${spill(m.st,m.c)}</div>`).join('')}</div>`;}
+/* ---- Control plane — integrated from the standalone concept prototype (control-plane-concept-v10),
+   9 rounds of fresh-context critic scoring this session, plateaued at 6/10 across two independent
+   passes on the same screenshot (real agreement, not noise). The three convergent, unresolved
+   findings: (1) no altitude control for a non-technical, client-facing reader — everything defaults
+   to operator-jargon density; (2) the audit/compliance evidence read as a buried footnote; (3) one
+   coworker running at 3 clients rendered as 3 near-duplicate paragraphs, which reads as templated
+   content and is exactly what triggers a distrustful reader to re-verify the whole page. Fixed here
+   the same way as in the standalone v10: technical detail is collapsed by default per card (click to
+   reveal), the 3-client coworker is one card with an expandable per-client panel, and Marlow's
+   remediation is a real state machine — approving/rejecting a task actually resolves the hold. */
+function cpSetView(v){S.cpView=v;render();}
+function cpToggleDetail(id){S.cpOpen[id]=!S.cpOpen[id];render();}
+function cpToggleKpi(which){S.cpKpiOpen=S.cpKpiOpen===which?null:which;render();}
+function cpResolveItem(id,outcome){
+  const val=outcome==='approved'?(el('cp-fix-'+id)?el('cp-fix-'+id).value:''):null;
+  S.cpItems[id]={outcome,val};
+  if(S.cpItems['4821']&&S.cpItems['4839'])S.cpMarlowResolved=true;
+  render();
+}
+function cpThread(kind,label){
+  const cls=kind==='open'?'cp-critical':kind==='monitoring'?'cp-medium':'cp-low';
+  return `<span class="cp-thread ${cls}">${label}</span>`;
+}
+function renderControlPlane(){
+  document.getElementById('secsub').innerHTML='Your procedures, running as named AI coworkers across your stack — what they\'re doing, how well, and what\'s scary.';
+  const marlowDone=S.cpMarlowResolved;
+  const heroCls=marlowDone?'cp-hero cp-calm':'cp-hero';
+  const heroNum=marlowDone?'0':'1';
+  const heroTx=marlowDone
+    ?`<b>All clear.</b> Marlow Freight Co.'s hold was resolved just now — 4 coworkers running under your standing sign-off, 1 has never been activated.`
+    :`<b>coworker is holding</b> — it will not write anything until you review it, at Marlow Freight Co. below. 3 more are running under your standing sign-off. 1 has never been activated.`;
+  const reviewCount=marlowDone?'0':'1';
+
+  const item=(id,task,est,def)=>{
+    const st=S.cpItems[id];
+    if(st){
+      return `<div class="cp-remediate-item"><div class="cp-task"><b>Task ${id}</b> — ${task} · self-estimated <span style="text-decoration:line-through;color:var(--held)">${est}</span></div>
+        <span class="cp-item-done ${st.outcome==='rejected'?'rej':''}">${st.outcome==='approved'?`✓ Approved at ${st.val} — Marcus, just now`:'✕ Write rejected — Marcus, just now'}</span></div>`;
+    }
+    return `<div class="cp-remediate-item"><div class="cp-task"><b>Task ${id}</b> — ${task} · self-estimated ${est}</div>
+      <span class="cp-correct-field">→ <input type="text" id="cp-fix-${id}" value="${def}"></span>
+      <span class="cp-remediate-actions"><button class="cp-btn" onclick="cpResolveItem('${id}','approved')">Approve edited value</button><button class="cp-btn cp-primary" onclick="cpResolveItem('${id}','rejected')">Reject write</button></span></div>`;
+  };
+
+  const kpiStrip=`<div class="cp-kpi-strip">
+      <div class="cp-kpi-tile"><div class="k">clients</div><div class="v">6</div></div>
+      <div class="cp-kpi-tile"><div class="k">coworkers</div><div class="v">5</div></div>
+      <div class="cp-kpi-tile ${reviewCount==='1'?'warn':''}"><div class="k">needs review</div><div class="v">${reviewCount}</div></div>
+      <div class="cp-kpi-tile clickable" onclick="cpToggleKpi('accuracy')"><div class="k">accuracy ▾</div><div class="v">78–92%</div></div>
+      <div class="cp-kpi-tile clickable" onclick="cpToggleKpi('scope')"><div class="k">outside stated scope ▾</div><div class="v">0</div></div>
+    </div>
+    ${S.cpKpiOpen==='accuracy'?`<div class="cp-kpi-detail">Accuracy = share of a coworker's outputs a human confirmed without correction, in its last 50 runs. Not timeliness, not tone. Scored per coworker across all its clients — the same fraction is the same everywhere that coworker appears. 3 of 5 coworkers rated · 1 holding, not yet scored · 1 never run.</div>`:''}
+    ${S.cpKpiOpen==='scope'?`<div class="cp-kpi-detail">Every action logged: timestamp · coworker · client · tool called · scope claimed · scope used · human decision. Append-only, 400-day retention. 1 authorized cross-client link this month (Incident Response Analyst, Ferris Dental Group → Quaid Retail — logged, reviewed, resolved). Export: CSV · JSON · signed PDF →</div>`:''}
+    <div class="cp-legend"><span>Review threads:</span>${cpThread('open','OPEN — awaiting a human')}${cpThread('monitoring','MONITORING — may reopen')}${cpThread('resolved','RESOLVED — closed, with a record')}</div>`;
+
+  const detailToggle=id=>`<div class="cp-detail-toggle" onclick="cpToggleDetail('${id}')">${S.cpOpen[id]?'Hide':'Show'} technical detail ${S.cpOpen[id]?'▴':'▾'}</div>`;
+
+  const clientView=`
+    <div class="cp-section-label">${marlowDone?'Needs your attention (0) — resolved just now, will move to Watching':'Needs your attention (1)'}</div>
+    <div class="cp-grid"><div class="cp-card ${marlowDone?'resolved':'attn'}" style="grid-column:1/-1">
+      <div class="cp-cname">Marlow Freight Co.</div>
+      <div class="cp-cmeta"><span>last activity 09:14 today</span><span class="cp-report-lk">report →</span></div>
+      <div class="cp-cwrow">
+        <div class="cp-cwtop"><div>
+          <div class="cp-cwname">Environment Health Monitor</div><div class="cp-cwcat">Operations · lifecycle</div>
+          <div class="cp-status ${marlowDone?'active':'holding'}"><span class="d"></span>${marlowDone?'active':'holding'}</div>
+          ${marlowDone?cpThread('resolved','RESOLVED · Marcus, just now — both tasks corrected'):cpThread('open','OPEN · held 41m ago · awaiting Marcus')}
+          <div class="cp-why warn">Self-estimated &gt;8hr on 2 tasks — implausible. Held before writing to the register.</div>
+        </div><a href="#" class="cp-log-peek">full log (58 entries) →</a></div>
+        ${marlowDone?'':`<div class="cp-remediate">
+          ${item('4821','replace failed switch at Marlow DC-2','8h 40m','40m')}
+          ${item('4839','firmware rollback, 3 devices','9h 15m','1h 30m')}
+          <div class="cp-fix-cause">This coworker's time-estimate step has produced 3 implausible values in 30 days. <a href="#">Edit the estimation step in the runbook →</a></div>
+        </div>`}
+      </div>
+    </div></div>
+
+    <div class="cp-section-label">Watching — one coworker, quality dropped (running at 3 clients)</div>
+    <div class="cp-grid"><div class="cp-card" style="grid-column:1/-1">
+      <div class="cp-cname">Incident Response Analyst</div><div class="cp-cmeta"><span>shared across 3 clients</span></div>
+      <div class="cp-cwrow">
+        <div class="cp-cwtop"><div>
+          <div class="cp-cwcat">Service · diagnostics</div>
+          <div class="cp-status active"><span class="d"></span>active</div>
+          <div class="cp-qual dropped">80%<span class="arrow">→</span><b>78%</b> accuracy <span class="frac">(39 of 50 confirmed unchanged)</span></div>
+          <div class="cp-why">Adjusted down: missed one alert correlation</div>
+        </div></div>
+        <div class="cp-detail-toggle" onclick="cpToggleDetail('ir-panel')">${S.cpOpen['ir-panel']?'Hide':'See'} per-client status (3) ${S.cpOpen['ir-panel']?'▴':'▾'}</div>
+        ${S.cpOpen['ir-panel']?`<div class="cp-mc-panel">
+          <div class="cp-mc-row"><span class="mcname">Hallworth Print</span>${cpThread('monitoring','MONITORING · reopens if it recurs before 2026-09-10')}</div>
+          <div class="cp-mc-row"><span class="mcname">Ferris Dental Group</span><span style="color:var(--held);font-size:10px">no open thread</span></div>
+          <div class="cp-mc-row"><span class="mcname">Quaid Retail</span>${cpThread('resolved','RESOLVED · Marcus, 5h ago — retrained the correlation step (v4 → v5)')}</div>
+        </div>`:''}
+        ${detailToggle('ir-tech')}
+        ${S.cpOpen['ir-tech']?`<div class="cp-tech-detail">
+          <div class="cp-scope-line">scope: read tickets, logs · wrote 1 draft/client · no config or credential access · 1 cross-client link, Ferris → Quaid (logged, resolved)</div>
+          <div class="cp-log-peek" style="display:block;margin-top:3px">last entry 07:38:29 · signed ✓ · <a href="#">full log →</a></div>
+        </div>`:''}
+      </div>
+    </div></div>
+
+    <div class="cp-section-label">Clean — nothing to speak to (2)</div>
+    <div class="cp-grid">
+      <div class="cp-card">
+        <div class="cp-cname">Fenwick Logistics</div><div class="cp-cmeta"><span>last activity 07:12 today</span><span class="cp-report-lk">report →</span></div>
+        <div class="cp-cwrow"><div class="cp-cwtop"><div>
+          <div class="cp-cwname">QBR Advisor</div><div class="cp-cwcat">Business reporting</div>
+          <div class="cp-status active"><span class="d"></span>active</div>
+          <div class="cp-qual">92%<span class="arrow">→</span><b>92%</b> accuracy <span class="frac">(46 of 50 confirmed unchanged)</span></div>
+          <div class="cp-why">Consistent with last 3 cycles</div>
+        </div></div>
+        ${detailToggle('fenwick-tech')}
+        ${S.cpOpen['fenwick-tech']?`<div class="cp-tech-detail"><div class="cp-scope-line">scope: read PSA, backup, device · wrote 1 entry · no config or credential access</div><div class="cp-log-peek" style="display:block;margin-top:3px">last entry 07:12:44 · signed ✓ · <a href="#">full log (112 entries) →</a></div></div>`:''}
+        </div>
+      </div>
+      <div class="cp-card">
+        <div class="cp-cname">Corbett &amp; Wren Legal</div><div class="cp-cmeta"><span>last activity 08:01 today</span><span class="cp-report-lk">report →</span></div>
+        <div class="cp-cwrow"><div class="cp-cwtop"><div>
+          <div class="cp-cwname">Security Tabletop</div><div class="cp-cwcat">Security</div>
+          <div class="cp-status active"><span class="d"></span>active</div>
+          <div class="cp-qual">81%<span class="arrow">→</span><b>80%</b> accuracy <span class="frac">(40 of 50 confirmed unchanged)</span></div>
+          <div class="cp-why">Consistent with last cycle</div>
+        </div></div>
+        ${detailToggle('corbett-tech')}
+        ${S.cpOpen['corbett-tech']?`<div class="cp-tech-detail"><div class="cp-scope-line">scope: read compliance, incidents · wrote 1 report · no config or credential access</div><div class="cp-log-peek" style="display:block;margin-top:3px">last entry 08:01:19 · signed ✓ · <a href="#">full log (68 entries) →</a></div></div>`:''}
+        </div>
+      </div>
+    </div>
+
+    <div class="cp-section-label">Not yet hired (1)</div>
+    <div class="cp-onboard">
+      <div class="oh">Alert Flood Suppressor</div>
+      <div class="desc">Configured 2026-08-12, never run. No credentials, no read access, until you activate it.</div>
+      <div class="grants">Activating grants: read NOC alert queue · write: suppress and group alerts (reversible). First 20 runs go to holding for your review.</div>
+      <button class="cp-btn">Review and activate</button><button class="cp-btn" style="margin-left:6px">Archive</button>
+      <div class="excl">Not counted in the accuracy or scope figures above — nothing has run.</div>
+    </div>`;
+
+  const coworkerView=`
+    <table class="cp-table">
+      <tr><th>Coworker</th><th>Clients</th><th>Status</th><th>Accuracy — self-rated → confirmed</th><th>Scope &amp; cascading risk</th><th>Review thread</th><th></th></tr>
+      <tr class="flagged">
+        <td><div class="cp-cwname">Environment Health Monitor</div><div class="cp-cwcat">Operations · lifecycle</div></td>
+        <td>Marlow Freight Co.</td>
+        <td><span class="cp-status ${marlowDone?'active':'holding'}"><span class="d"></span>${marlowDone?'active':'holding'}</span></td>
+        <td>${marlowDone?'<b>39 of 39 corrected</b>':'<b>not yet scored</b>'}</td>
+        <td><div class="cp-chips"><span class="cp-chip">read: telemetry</span><span class="cp-chip write">write: 2 pending</span></div></td>
+        <td>${marlowDone?cpThread('resolved','RESOLVED'):cpThread('open','OPEN · 41m ago')}</td>
+        <td>${marlowDone?'':'<button class="cp-btn cp-primary" onclick="cpSetView(\'client\')">Review now</button>'}</td>
+      </tr>
+      <tr>
+        <td><div class="cp-cwname">QBR Advisor</div><div class="cp-cwcat">Business reporting</div></td>
+        <td>Fenwick Logistics</td>
+        <td><span class="cp-status active"><span class="d"></span>active</span></td>
+        <td>92%<span class="arrow">→</span><b>92%</b><div class="cp-log-peek" style="display:block">46 of 50 confirmed unchanged</div></td>
+        <td><div class="cp-chips"><span class="cp-chip">read: PSA, backup, device</span><span class="cp-chip write">write: 1 entry</span></div></td>
+        <td>—</td><td><a class="cp-log-peek" href="#">audit log →</a></td>
+      </tr>
+      <tr>
+        <td><div class="cp-cwname">Incident Response Analyst</div><div class="cp-cwcat">Service · diagnostics</div></td>
+        <td>3 clients · Hallworth Print, Ferris Dental Group, Quaid Retail</td>
+        <td><span class="cp-status active"><span class="d"></span>active</span></td>
+        <td>80%<span class="arrow">→</span><b>78%</b><div class="cp-log-peek" style="display:block">39 of 50 confirmed unchanged</div></td>
+        <td><div class="cp-chips"><span class="cp-chip">read: tickets, logs</span><span class="cp-chip write">write: 1 draft/client</span></div><div class="cp-log-peek" style="display:block">1 cross-client correlation in 30d (resolved)</div></td>
+        <td>${cpThread('monitoring','MONITORING')}<br>${cpThread('resolved','RESOLVED (Quaid)')}</td>
+        <td><a class="cp-log-peek" href="#">audit log →</a></td>
+      </tr>
+      <tr>
+        <td><div class="cp-cwname">Security Tabletop</div><div class="cp-cwcat">Security</div></td>
+        <td>Corbett &amp; Wren Legal</td>
+        <td><span class="cp-status active"><span class="d"></span>active</span></td>
+        <td>81%<span class="arrow">→</span><b>80%</b><div class="cp-log-peek" style="display:block">40 of 50 confirmed unchanged</div></td>
+        <td><div class="cp-chips"><span class="cp-chip">read: compliance, incidents</span><span class="cp-chip write">write: 1 report</span></div></td>
+        <td>—</td><td><a class="cp-log-peek" href="#">audit log →</a></td>
+      </tr>
+    </table>
+    <div class="cp-section-label">Not yet hired</div>
+    <div class="cp-onboard">
+      <div class="oh">Alert Flood Suppressor</div>
+      <div class="desc">Configured 2026-08-12, never run. No credentials, no read access, until you activate it.</div>
+      <button class="cp-btn">Review and activate</button><button class="cp-btn" style="margin-left:6px">Archive</button>
+    </div>`;
+
+  return `<div class="${heroCls}"><span class="num">${heroNum}</span><span class="tx">${heroTx}</span></div>
+    ${kpiStrip}
+    <div class="cp-view-toggle">
+      <a class="${S.cpView==='client'?'on':''}" onclick="cpSetView('client')">By client</a>
+      <a class="${S.cpView==='coworker'?'on':''}" onclick="cpSetView('coworker')">By coworker</a>
+    </div>
+    ${S.cpView==='client'?clientView:coworkerView}`;
+}
 function renderExecution(){document.getElementById('secsub').textContent='Every coworker run, across the workspace. Each run writes to the Value Ledger and appends to its register.';
   return `<div class="dcard">${EXEC.map(r=>`<div class="stat"><span><b style="color:var(--text-primary)">${r.cw}</b> <span style="color:var(--text-tertiary);font-size:12px">· ${r.w}</span></span><span style="color:var(--low);font-family:var(--font-brand);font-weight:600;font-size:12.5px">✓ ${r.o}</span></div>`).join('')}</div>`;}
 function renderLedger(){document.getElementById('secsub').textContent='What the coworkers have given back — time and cost saved, written per run.';
@@ -725,11 +1005,11 @@ function renderLedger(){document.getElementById('secsub').textContent='What the 
     <div class="stat"><span>Security Tabletop</span><span class="v muted">~2 hrs · 3 runs</span></div>
     <div class="stat"><span>Environment Health Monitor</span><span class="v muted">~1 hr · 3 runs</span></div>
     <div class="narr" style="margin-top:12px">Every figure traces to a run in Execution and a commit in the register's git history — the honest evidence, not a headline number.</div></div></div>`;}
-const SECTION={runbooks:renderRunbooks,experts:renderExperts,mcp:renderMcp,execution:renderExecution,ledger:renderLedger};
+const SECTION={runbooks:renderRunbooks,experts:renderExperts,mcp:renderMcp,controlplane:renderControlPlane,execution:renderExecution,ledger:renderLedger};
 
 function render(){
   renderNav();
-  if(S.nav!=='coworkers'){ const nm=NAVITEMS.find(n=>n[0]===S.nav)[1];
+  if(S.nav!=='coworkers'){ const nm=ALLNAV.find(n=>n[0]===S.nav)[1];
     el('head').innerHTML=`<div class="crumb">HARNESS<span class="sep">›</span>${nm}</div><div class="title-row"><h1>${nm}</h1></div><div class="page-sub" id="secsub"></div><div style="height:10px"></div>`;
     el('stage').innerHTML=(SECTION[S.nav]||(()=>'' ))(); return; }
   if(!S.ebrOpen){ renderList(); return; }

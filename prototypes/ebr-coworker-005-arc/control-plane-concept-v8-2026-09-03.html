@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control plane v8 — HARNESS</title>
+<!-- v8 — structural rework, not a row-level patch. v7 scored 6/10 for the third round running,
+     and the critic's finding stopped being cosmetic: the coworker-centric table (rows = procedures,
+     spanning clients) only actually serves Marcus. Priya, Deepa, and (for evidence scope) Tom all
+     think client-first. This is the same fork already named open in this session as workstream D's
+     "coworker org axis" question (By coworker · By client · Faceted-both) and the JTBD pass's
+     unresolved "whole fleet vs. per-client" ambiguity — the critic rediscovered it empirically.
+     Resolved here as "faceted, both": client-first is the default read (rows = clients, coworkers
+     nested under each), with a By coworker toggle that is v7's table, unchanged, for Marcus.
+     Same coworker instance (Incident Response Analyst, 78%) now appears under each of its three
+     real clients, so quality is consistent everywhere it's shown but each client sees only its own
+     slice — Priya's actual ask ("a status view she can speak to in front of a client"). The
+     cross-client correlation surfaces specifically on Quaid Retail's card, where it actually
+     happened, not as a floating fact in a coworker-only row. Coworkers with no single client
+     (dormant, fleet-wide) get their own section rather than being forced into a client card. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-deep:#f4f4f6; --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --medium-soft:#f8eeda; --low:#137a46; --low-soft:#e7f6ee;
+    --held:#8a8a93; --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --font-brand:'Manrope',sans-serif; --font-ui:'Inter',sans-serif; --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);font-size:13.5px;line-height:1.5;padding:26px;max-width:1220px;margin:0 auto}
+  .head-row{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:14px}
+  h1{font-family:var(--font-brand);font-weight:800;font-size:21px;color:var(--text-primary)}
+  .sub{font-size:12px;color:var(--text-tertiary);margin-top:2px}
+  .export-wrap{text-align:right}
+  .export-btn{font-family:var(--font-brand);font-weight:700;font-size:12.5px;background:var(--bg-surface);color:var(--text-primary);border:1.5px solid var(--text-primary);border-radius:var(--radius-md);padding:10px 16px;white-space:nowrap}
+
+  .view-toggle{display:flex;gap:0;margin-bottom:16px;border:1px solid var(--border-strong);border-radius:var(--radius-md);width:fit-content;overflow:hidden}
+  .view-toggle button{font-family:var(--font-brand);font-weight:700;font-size:12px;padding:8px 16px;border:none;background:var(--bg-surface);color:var(--text-tertiary);cursor:pointer}
+  .view-toggle button.on{background:var(--text-primary);color:#fff}
+
+  .hero-line{display:flex;align-items:center;gap:14px;background:var(--critical-soft);border:1px solid var(--critical);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:14px}
+  .hero-line .num{font-family:var(--font-brand);font-weight:800;font-size:28px;color:var(--critical)}
+  .hero-line .tx{font-size:13px;color:var(--text-primary)} .hero-line .tx b{font-weight:700}
+
+  .kpis-minor{display:flex;gap:18px;font-size:11.5px;color:var(--text-tertiary);margin-bottom:20px;padding:0 2px;flex-wrap:wrap;align-items:center}
+  .kpis-minor b{color:var(--text-primary);font-family:var(--font-mono)}
+  .kpis-minor .denom{color:var(--held);font-size:10px}
+  .audit-lk{font-size:10.5px;color:var(--text-tertiary);text-decoration:underline}
+
+  .section-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);margin:20px 0 8px;padding-left:2px}
+  .section-label:first-of-type{margin-top:0}
+
+  .client-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .client-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
+  .client-card.attn{border-color:var(--critical);box-shadow:inset 4px 0 0 var(--critical)}
+  .client-name{font-family:var(--font-brand);font-weight:700;font-size:14px;color:var(--text-primary)}
+  .client-meta{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-top:1px}
+  .cw-row{display:flex;justify-content:space-between;align-items:flex-start;margin-top:10px;padding-top:10px;border-top:1px solid var(--bg-deep);gap:10px}
+  .cw-row:first-of-type{margin-top:12px}
+  .cw-left{flex:1}
+  .cw-name{font-family:var(--font-brand);font-weight:700;font-size:12.5px;color:var(--text-primary)}
+  .cw-cat{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary)}
+  .status{display:inline-flex;align-items:center;gap:5px;font-size:11px} .status .d{width:6px;height:6px;border-radius:50%}
+  .status.active .d{background:var(--low)} .status.active{color:var(--low)}
+  .status.holding .d{background:var(--critical)} .status.holding{color:var(--critical);font-weight:700}
+  .status.dormant .d{background:var(--held)} .status.dormant{color:var(--held)}
+  .qual{font-family:var(--font-mono);font-size:11.5px;color:var(--text-secondary);margin-top:4px}
+  .qual b{color:var(--text-primary);font-weight:700}
+  .qual .arrow{color:var(--held);margin:0 2px}
+  .qual.dropped b{color:var(--medium)}
+  .why{font-size:10px;color:var(--text-tertiary);margin-top:3px;max-width:230px}
+  .why.warn{color:var(--critical);font-weight:600}
+  .cascade{font-size:9.5px;font-family:var(--font-mono);color:var(--critical);font-weight:700;margin-top:4px;max-width:230px}
+  .cw-right{text-align:right;flex:none}
+  .fixbtn{font-family:var(--font-brand);font-weight:700;font-size:10.5px;border-radius:var(--radius-md);padding:5px 9px;white-space:nowrap;text-align:center;border:1px solid var(--border-strong);background:var(--bg-surface);color:var(--text-secondary);display:block;margin-bottom:4px}
+  .fixbtn.primary{background:var(--critical);border:none;color:#fff}
+  .fixbtn.investigate{background:var(--medium);border:none;color:#fff}
+  .cw-right .audit-lk{font-size:9.5px}
+
+  .fleetwide-card{background:var(--bg-deep);border:1px dashed var(--border-strong);border-radius:var(--radius-lg);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;opacity:.8}
+</style>
+</head>
+<body>
+  <div class="head-row">
+    <div><h1>Control plane</h1><p class="sub">Your procedures, running as named AI coworkers across your stack.</p></div>
+    <div class="export-wrap"><button class="export-btn">Generate client report →</button></div>
+  </div>
+
+  <div class="view-toggle"><button class="on">By client</button><button>By coworker</button></div>
+
+  <div class="hero-line"><span class="num">1</span><span class="tx"><b>coworker is holding</b> — it will not write anything until you review it, at Marlow Freight Co. below. The other 4 are running under your standing sign-off.</span></div>
+  <div class="kpis-minor"><span><b>6</b> clients</span><span><b>1</b> needs review</span><span><b>78–92%</b> quality <span class="denom">(4 rated)</span></span><span><b>0</b> downstream actions outside stated scope — <a class="audit-lk" href="#">view all logs →</a></span></div>
+
+  <div class="section-label">Needs your attention</div>
+  <div class="client-grid">
+    <div class="client-card attn" style="grid-column:1/-1">
+      <div class="client-name">Marlow Freight Co.</div><div class="client-meta">1 coworker</div>
+      <div class="cw-row">
+        <div class="cw-left">
+          <div class="cw-name">Environment Health Monitor</div><div class="cw-cat">Operations · lifecycle</div>
+          <div class="status holding"><span class="d"></span>holding</div>
+          <div class="why warn">Self-estimated &gt;8hr on 2 tasks — implausible. Held before writing to the register.</div>
+        </div>
+        <div class="cw-right">
+          <button class="fixbtn primary">Review now</button>
+          <a class="audit-lk" href="#">audit log →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Running clean</div>
+  <div class="client-grid">
+    <div class="client-card">
+      <div class="client-name">Fenwick Logistics</div><div class="client-meta">1 coworker</div>
+      <div class="cw-row">
+        <div class="cw-left">
+          <div class="cw-name">QBR Advisor</div><div class="cw-cat">Business reporting</div>
+          <div class="status active"><span class="d"></span>active</div>
+          <div class="qual">92%<span class="arrow">→</span><b>92%</b> · confirmed, Priya 2h ago</div>
+        </div>
+        <div class="cw-right"><a class="audit-lk" href="#">audit log →</a></div>
+      </div>
+    </div>
+
+    <div class="client-card">
+      <div class="client-name">Corbett &amp; Wren Legal</div><div class="client-meta">1 coworker</div>
+      <div class="cw-row">
+        <div class="cw-left">
+          <div class="cw-name">Security Tabletop</div><div class="cw-cat">Security</div>
+          <div class="status active"><span class="d"></span>active</div>
+          <div class="qual">81%<span class="arrow">→</span><b>81%</b> · confirmed, Priya 1d ago</div>
+        </div>
+        <div class="cw-right"><a class="audit-lk" href="#">audit log →</a></div>
+      </div>
+    </div>
+
+    <div class="client-card">
+      <div class="client-name">Hallworth Print</div><div class="client-meta">1 coworker</div>
+      <div class="cw-row">
+        <div class="cw-left">
+          <div class="cw-name">Incident Response Analyst</div><div class="cw-cat">Service · diagnostics</div>
+          <div class="status active"><span class="d"></span>active</div>
+          <div class="qual dropped">80%<span class="arrow">→</span><b>78%</b> · confirmed, Priya 5h ago</div>
+          <div class="why">Adjusted down: missed one alert correlation</div>
+        </div>
+        <div class="cw-right"><a class="audit-lk" href="#">audit log →</a></div>
+      </div>
+    </div>
+
+    <div class="client-card">
+      <div class="client-name">Ferris Dental Group</div><div class="client-meta">1 coworker</div>
+      <div class="cw-row">
+        <div class="cw-left">
+          <div class="cw-name">Incident Response Analyst</div><div class="cw-cat">Service · diagnostics</div>
+          <div class="status active"><span class="d"></span>active</div>
+          <div class="qual dropped">80%<span class="arrow">→</span><b>78%</b> · confirmed, Priya 5h ago</div>
+        </div>
+        <div class="cw-right"><a class="audit-lk" href="#">audit log →</a></div>
+      </div>
+    </div>
+
+    <div class="client-card attn" style="grid-column:1/-1">
+      <div class="client-name">Quaid Retail</div><div class="client-meta">1 coworker</div>
+      <div class="cw-row">
+        <div class="cw-left">
+          <div class="cw-name">Incident Response Analyst</div><div class="cw-cat">Service · diagnostics</div>
+          <div class="status active"><span class="d"></span>active</div>
+          <div class="qual dropped">80%<span class="arrow">→</span><b>78%</b> · confirmed, Priya 5h ago</div>
+          <div class="cascade">→ correlated with a related incident at Ferris Dental Group — cross-client link logged, reviewed</div>
+        </div>
+        <div class="cw-right">
+          <button class="fixbtn investigate">Investigate drop</button>
+          <a class="audit-lk" href="#">audit log →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Fleet-wide — not scoped to one client</div>
+  <div class="fleetwide-card">
+    <div><div class="cw-name">Alert Flood Suppressor</div><div class="cw-cat">NOC · never activated</div></div>
+    <div class="status dormant"><span class="d"></span>dormant — zero access until activated</div>
+    <button class="fixbtn" style="margin:0">Activate</button>
+  </div>
+</body>
+</html>

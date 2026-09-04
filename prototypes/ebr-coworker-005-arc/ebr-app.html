@@ -490,6 +490,19 @@
   .ev-key{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:9px 12px;margin:0 0 16px;line-height:1.9}
   .ev-key b{color:var(--text-secondary);font-size:11.5px;margin-right:2px}
   .grid-note{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-tertiary);margin:-6px 0 14px}
+  .count-check{font-family:var(--font-mono);font-size:10px;color:var(--held);margin:-8px 0 16px}
+  .count-check b{color:var(--low)}
+  .rb-fork{display:flex;align-items:center;gap:14px;background:var(--bg-deep);border-radius:var(--radius-md);padding:12px 14px;margin:0 0 16px;font-size:12px;color:var(--text-tertiary);line-height:1.55}
+  .rb-fork b{color:var(--text-primary)} .rb-fork button{flex:none}
+  table.cp-table td.cannot{color:var(--held)}
+  .rep-val{display:flex;gap:30px;flex-wrap:wrap;margin:4px 0 14px}
+  .rep-val .rv{display:flex;flex-direction:column} .rep-val .n{font-family:var(--font-brand);font-weight:800;font-size:26px;color:var(--text-primary);line-height:1.1}
+  .rep-val .l{font-size:11.5px;color:var(--text-tertiary);max-width:20ch;margin-top:3px}
+  .tb-grade em{display:block;font-style:normal;font-size:10px;color:var(--text-tertiary);margin-top:2px}
+  .tb-why{font-size:11px;color:var(--text-tertiary);margin:8px 0 4px} .tb-why b{color:var(--text-secondary)}
+  .cp-trustline{font-size:11.5px;color:var(--text-tertiary);margin:2px 0 6px;cursor:pointer} .cp-trustline b{color:var(--text-secondary)}
+  .cp-trustline code{font-family:var(--font-mono);font-size:10.5px;background:var(--bg-deep);padding:1px 5px;border-radius:2px}
+  .cp-more{color:var(--brand-strong)}
   /* Clients — the home screen */
   .cl-head{font-size:12.5px;color:var(--text-tertiary);margin-bottom:14px} .cl-head b{color:var(--text-primary)}
   .cl-row{display:grid;grid-template-columns:18px minmax(150px,.9fr) minmax(240px,2fr) minmax(120px,auto) auto;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--border)}
@@ -520,7 +533,7 @@
     <circle cx="20.5" cy="24" r="1.6" fill="url(#hg)"/>
     <path d="M50.9 14 L52 10.5 L53.6 13.7 L56.4 12.3 L55.1 15.4 L58 16.6 L54.6 17.1 L55 20.4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".9"/>
   </svg></span>HARNESS</div>
-  <a href="landing.html" style="font-family:var(--font-ui);font-size:12.5px;color:var(--nav-fg);text-decoration:none;border:1px solid rgba(255,255,255,.14);padding:5px 11px;border-radius:var(--radius-full);margin-left:4px" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,.3)'" onmouseout="this.style.color='var(--nav-fg)';this.style.borderColor='rgba(255,255,255,.14)'">↗ Vision &amp; marketing page</a>
+
   <div class="spacer"></div>
   <button class="tog" id="modeTog" onclick="cycleMode()" title="Appearance: light / dark / system"><span id="modeIcon"></span><span id="modeLabel">Light</span></button>
   <button class="tog rail-tog" onclick="toggleRail()" title="Bradley rail — readiness &amp; routed work"><span class="dot"></span>Bradley</button>
@@ -736,7 +749,7 @@ function navLink(k,l){return `<a class="${S.nav===k?'on':''}" onclick="setNav('$
 function renderNav(){
   el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>navLink(k,l)).join('')
     +`<div class="grp" style="margin-top:10px">SETTINGS</div>`+SETTINGSITEMS.map(([k,l])=>navLink(k,l)).join('')
-    +`<a href="role-play-simulator.html" target="_blank" rel="noopener" style="margin-top:auto;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;font-size:11px;line-height:1.4;color:var(--nav-fg-2)">↗ Extended scenario</a>`
+    
     +`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
 }
 function setNav(k){S.nav=k;S.ebrOpen=false;if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();}
@@ -777,7 +790,7 @@ function spill(txt,c){return `<span style="font-family:var(--font-mono);font-siz
 const RUNBOOKS=[
   {id:'ebr-review', n:'EBR Review', d:'Pulls the stack, grades each area, drafts the risk register.', risk:'High', v:'v1', by:'EBR Coworker',
    ownership:'platform', versionStatus:'active', lifecycle:'active', category:'Business reporting', author:'N-able Platform Team', publisher:'N-able', updated:'14 Aug 2026', coworkers:1, lock:null,
-   general:'Runs on-demand from the EBR Coworker. Nine-field runbook version (intent, scope, grading rules, carry-forward logic, sign-off requirement, trigger, owner, risk level, evidence policy) — platform-maintained, not client-editable.',
+   general:'Runs on-demand from the EBR Coworker. Nine-field runbook version \u2014 platform-maintained, so N-able keeps it current. Fork it to make it yours.',
    connected:[{n:'Microsoft 365',how:'MCP · OAuth (official)'},{n:'N-query (GraphQL)',how:'N-able MCP server'},{n:'Cove',how:'REST bridge'},{n:'Halo PSA',how:'MCP · OAuth'},{n:'Security Tabletop coworker',how:'agent-to-agent feed'}],
    steps:['Ingest report + stack sources','Continuity / delta against last EBR','Judge each area against baseline','Translate to business language','Chooser — include/exclude, confidence-tiered','Deliver — dashboard or write-back','Liability log + forward framing']},
   {id:'qbr-narrative', n:'QBR Narrative', d:'Client-ready quarterly review narrative + posture summary.', risk:'Medium', v:'v3', by:'QBR Advisor',
@@ -827,13 +840,20 @@ const MCPS=[
   {n:'Billing',sc:'Invoices, usage, charge explanations',st:'POC',c:'#0a95c4'},
   {n:'usecure',sc:'Awareness training',st:'No connector — by hand',c:'#8a8a93'},
 ];
+const FCOUNT={get total(){return FINDINGS.length;},
+  get held(){return FINDINGS.filter(f=>f.grade==='held').length;},
+  get reviewed(){return FINDINGS.filter(f=>S.reviewChoice[f.id]&&S.reviewChoice[f.id].action).length;},
+  get unreviewed(){return FINDINGS.length-FCOUNT.reviewed;},
+  get red(){return FINDINGS.filter(f=>f.grade==='red').length;},
+  get amber(){return FINDINGS.filter(f=>f.grade==='amber').length;}};
+function findingsLine(){return `${FCOUNT.total} findings, ${FCOUNT.unreviewed} awaiting your review`;}
 const CLIENTS=['All clients','Fenwick Logistics','Marlow Freight Co.','Corbett & Wren Legal','Hallworth Print','Ferris Dental Group','Quaid Retail'];
 const EXEC=[
-  {cw:'EBR Coworker',client:'Fenwick Logistics',w:'today · 09:12',o:'5 findings drafted, 1 held for review',st:'held',fix:'<button class="btn btn-sm" onclick="location.hash=\'dashboard\'">Open the register \u2192</button>'},
+  {cw:'EBR Coworker',client:'Fenwick Logistics',w:'today · 09:12',o:findingsLine()+' \u2014 drafted today',st:'held',fix:'<button class="btn btn-sm" onclick="location.hash=\'dashboard\'">Open the register \u2192</button>'},
   {cw:'Security Tabletop',client:'Corbett & Wren Legal',w:'today · 08:01',o:'CVE exposure: 6 endpoints',st:'ok'},
   {cw:'Environment Health Monitor',client:'Marlow Freight Co.',w:'today · 09:14',o:'Paused by the system — its runbook lost its last active version',st:'fail',fix:'<button class="btn btn-sm" onclick="setNav(\'runbooks\')">Restore the runbook version \u2192</button>'},
   {cw:'Incident Response Analyst',client:'Hallworth Print',w:'yesterday · 16:40',o:'Root cause drafted on 3 tickets',st:'ok'},
-  {cw:'Incident Response Analyst',client:'Quaid Retail',w:'yesterday · 14:22',o:'Read data from a second client (Ferris Dental Group) to correlate this incident — a client-boundary crossing. Logged, and awaiting your sign-off.',st:'boundary',fix:'<button class="btn btn-sm primary" onclick="setNav(\'controlplane\')">Review the crossing \u2192</button>'},
+  {cw:'Incident Response Analyst',client:'Quaid Retail',w:'yesterday · 14:22',o:'Read data from a second client (Ferris Dental Group) to correlate this incident — a client-boundary crossing. Logged, and waiting for your sign-off in Approvals.',st:'boundary',fix:'<button class="btn btn-sm primary" onclick="setNav(\'controlplane\')">Sign it off in Approvals \u2192</button>'},
   {cw:'Security Tabletop',client:'Ferris Dental Group',w:'yesterday · 11:05',o:'Run failed — N-central credential expired mid-run. Nothing written.',st:'fail',fix:'<button class="btn btn-sm" onclick="setNav(\'mcp\')">Renew the credential \u2192</button> <button class="btn btn-sm">Retry run</button>'},
   {cw:'EBR Coworker',client:'Fenwick Logistics',w:'14 May',o:'4 findings drafted',st:'ok'},
 ];
@@ -855,9 +875,7 @@ function renderRunbooks(){
         <div class="dt">${r.by} · updated ${r.updated}</div>
         <div class="pills">
           <span class="rb-pill ${r.lifecycle}">${r.lifecycle==='active'?'● Active':'○ Inactive'}</span>
-          <span class="rb-pill v-${r.versionStatus}">${r.versionStatus}</span>
           <span class="rb-pill scope">${r.coworkers} Coworker${r.coworkers===1?'':'s'}</span>
-          ${r.lock?rbLockBadge(r.lock):''}
         </div></div>`).join('')}</div>
     </div>
     ${rbDetail(sel)}
@@ -882,6 +900,7 @@ function rbDetail(r){
       <div class="tgl ${r.lifecycle==='active'?'on':''}" onclick="toggleRbLifecycle('${r.id}')" title="${r.lifecycle==='active'?'Active':'Inactive'}"><span class="k"></span></div>
     </div>
     <p class="rb-desc">${r.d}</p>
+    ${ro?`<div class="rb-fork"><div><b>Platform runbook — the original stays locked.</b> N-able versions and maintains this one, so your edits can\u2019t be overwritten by an update and can\u2019t break anyone else\u2019s coworker. Fork it and the copy is yours: every field, every step, fully editable.</div><button class="btn primary btn-sm" onclick="cloneRunbook('${r.id}')">Fork into an editable copy \u2192</button></div>`:''}
     ${r.lifecycle==='inactive'?`<div class="rb-banner">This runbook is not currently active. Activate the Runbook to allow Coworkers to use it. <a href="#" onclick="return false">Learn more ↗</a></div>`:''}
     <div class="tabs" style="border-bottom:1px solid var(--border);margin-bottom:14px"><div class="tab ${S.rbTab==='details'?'on':''}" onclick="setRbTab('details')">Details</div><div class="tab ${S.rbTab==='history'?'on':''}" onclick="setRbTab('history')">Version history</div></div>
     ${S.rbTab==='history'?rbHistory(r):rbDetails(r,ro)}
@@ -889,7 +908,7 @@ function rbDetail(r){
 }
 function rbDetails(r,ro){
   const secLocked=r.lock&&r.lock.scope==='section';
-  const chrome=name=>ro?`<span class="ro">Read-only · platform</span>`:(secLocked&&r.lock.section===name?rbLockBadge(r.lock):`<span class="ed">Edit</span><span class="ed">Duplicate</span>`);
+  const chrome=name=>ro?``:(secLocked&&r.lock.section===name?rbLockBadge(r.lock):`<span class="ed">Edit</span><span class="ed">Duplicate</span>`);
   return `
     <div class="rb-section ${secLocked&&r.lock.section==='GENERAL DETAILS'?'locked':''}"><div class="sh"><span class="st">General details</span>${chrome('GENERAL DETAILS')}</div><div class="sb">${r.general}<br><br><b>Risk level:</b> ${riskPill(r.risk)} &nbsp; <b>Version:</b> ${r.v}</div></div>
     <div class="rb-section ${secLocked&&r.lock.section==='CONNECTED SERVICES'?'locked':''}"><div class="sh"><span class="st">Connected services</span>${chrome('CONNECTED SERVICES')}</div><div class="sb">${r.connected.map(c=>`${c.n} <span style="color:var(--text-tertiary)">— ${c.how}</span>`).join('<br>')}</div></div>
@@ -904,7 +923,7 @@ function rbHistory(r){
 function selectRunbook(id){S.rbSel=id;S.rbTab='details';S.rbMenuOpen=null;render();}
 function setRbTab(t){S.rbTab=t;render();}
 function toggleRbMenu(id){S.rbMenuOpen=S.rbMenuOpen===id?null:id;render();}
-function cloneRunbook(id){S.rbMenuOpen=null;render();toast('Runbook cloned — draft copy added (mock)');}
+function cloneRunbook(id){S.rbMenuOpen=null;render();toast('Forked \u2014 “'+(RUNBOOKS.find(x=>x.id===id)||{}).n+' (your copy)” created as an editable draft. The platform original is untouched.');}
 function toggleRbLifecycle(id){const r=RUNBOOKS.find(x=>x.id===id);if(r.lock&&r.lock.scope==='whole'){toast('Locked — cannot change while locked');return;}r.lifecycle=r.lifecycle==='active'?'inactive':'active';render();}
 function renderExperts(){document.getElementById('secsub').textContent='The AI reasoning a coworker pairs with a runbook. It advises and drafts; a human approves.';
   return `<div class="grid">${EXPERTS.map(e=>`<div class="cw"><div class="cat">${e.dom}</div><h3>${e.n}</h3><p>${e.d}</p><div class="st"><span class="avail">${e.s}</span></div></div>`).join('')}</div>`;}
@@ -962,6 +981,11 @@ function cpThread(kind,label){
 const CP_RISK={low:'Low',medium:'Medium',high:'High'};
 /* Real proposed changesets. Ops and risk tiers per the Management Plane doc's risk table. */
 const CP_CHANGESETS=[
+  {id:'cs-3',risk:'high',op:'client-boundary crossing',title:'Sign off: a coworker read a second client\u2019s data',
+   actor:'Incident Response Analyst',at:'yesterday 14:22',
+   changes:['Incident Response Analyst, working <b>Quaid Retail</b>, read incident data from <b>Ferris Dental Group</b> to correlate a root cause','The correlation is already written to Quaid\u2019s register \u2014 <b>this is a retrospective sign-off, not a gate</b>','Nothing was written to Ferris Dental Group'],
+   preview:['read: Ferris Dental \u2014 incident history','wrote: Quaid Retail \u2014 1 root-cause note','no config or credential access'],
+   note:'Correlating across two clients can be exactly right technically and still be a contractual or GDPR problem. Only you can say whether these two engagements permit it. If not, revoke and the note comes out of Quaid\u2019s register.'},
   {id:'cs-2',risk:'high',op:'activate',title:'Activate “Disk Space Monitor” v3',
    actor:'claude-code-session-a41f',at:'14:02 today',
    changes:['Coworker family: <b>draft → active</b> (only <code>active</code> is run-eligible)','Version 3 becomes the single active version','Trust level stays <b>manual</b> — every run still waits for a human'],
@@ -1020,9 +1044,9 @@ function renderControlPlane(){
     <div class="cp-kpi-tile ${pending.length?'warn':''}"><div class="k">awaiting your approval</div><div class="v">${pending.length}</div></div>
     <div class="cp-kpi-tile"><div class="k">active · run-eligible</div><div class="v">3</div></div>
     <div class="cp-kpi-tile ${sysPaused?'warn':''}"><div class="k">paused by the system</div><div class="v">${sysPaused}</div></div>
-    <div class="cp-kpi-tile ${reviewCount?'warn':''}"><div class="k">ledger entries held</div><div class="v">${reviewCount}</div></div>
-    <div class="cp-kpi-tile clickable" onclick="cpToggleKpi('trust')"><div class="k">trust levels ▾</div><div class="v">4 manual · 1 assisted</div></div>
+    <div class="cp-kpi-tile ${reviewCount?'warn':''}" title="Value Ledger entries flagged requires_review \u2014 a different object from held register findings"><div class="k">value entries held</div><div class="v">${reviewCount}</div></div>
   </div>
+  <div class="cp-trustline" onclick="cpToggleKpi('trust')"><b>Trust levels:</b> 4 coworkers on <code>manual</code> \u00b7 1 on <code>assisted</code> \u00b7 0 on <code>autonomous</code> <span class="cp-more">what these mean \u25be</span></div>
   ${S.cpKpiOpen==='trust'?`<div class="cp-kpi-detail"><b>trust_level</b> is a real per-coworker setting: <code>manual</code> (default — a human approves every run) · <code>assisted</code> · <code>autonomous</code>. It changes only through an explicit <code>trust_level_change</code> operation, which is high-risk and lands in the queue above. Raising it is never a side effect of anything else.</div>`:''}`;
 
   const tabs=`<div class="cp-view-toggle">
@@ -1098,6 +1122,24 @@ function renderControlPlane(){
       </div></div>`:''}
     </div>
     <div class="cp-card">
+      <div class="cp-lbl">Blast radius — what each coworker can actually reach</div>
+      <table class="cp-table" style="margin:6px 0 0">
+        <tr><th>Coworker</th><th>Can read</th><th>Can write</th><th>Cannot touch</th><th>Reach</th></tr>
+        <tr><td><b>EBR Coworker</b><div class="cp-cwcat">trust: assisted</div></td><td>M365 admin list, Cove restore tests, N-central patch state, usecure training</td><td>Fenwick&rsquo;s register only</td><td class="cannot">device config &middot; credentials &middot; any other client</td><td>1 client &middot; 0 devices written</td></tr>
+        <tr><td><b>Security Tabletop</b><div class="cp-cwcat">trust: manual</div></td><td>CVE feed, N-central inventory</td><td>evidence report (draft)</td><td class="cannot">device config &middot; credentials &middot; remediation actions</td><td>2 clients &middot; 0 devices written</td></tr>
+        <tr><td><b>Incident Response Analyst</b><div class="cp-cwcat">trust: manual</div></td><td>ticket events, device logs</td><td>root-cause note (draft)</td><td class="cannot">device config &middot; credentials &middot; ticket closure</td><td>3 clients &middot; <b style="color:var(--critical)">1 cross-client read, awaiting sign-off</b></td></tr>
+        <tr><td><b>Environment Health Monitor</b><div class="cp-cwcat">paused by the system</div></td><td>&mdash; paused, reads nothing</td><td>&mdash;</td><td class="cannot">everything, while paused</td><td>0 clients</td></tr>
+        <tr><td><b>Alert Flood Suppressor</b><div class="cp-cwcat">never activated</div></td><td>&mdash; no grant yet</td><td>&mdash;</td><td class="cannot">everything, until you activate it</td><td>0 clients</td></tr>
+      </table>
+      <div class="cp-guar">No coworker in this workspace can write device configuration or use a stored credential. That is a property of the grant model, not a setting on each coworker &mdash; there is no switch on this page that turns it on.</div>
+    </div>
+    <div class="cp-card">
+      <div class="cp-lbl">Evidence export &mdash; what you can hand an auditor</div>
+      <div class="cp-scope-line">One signed bundle per client per cycle: every finding with its evidence class and source call, every state change with actor and timestamp, every approval with the delegation chain, every held entry and why it was held.</div>
+      <div class="cp-acts"><button class="cp-btn cp-go">Export evidence bundle (signed PDF + JSON)</button><button class="cp-btn">Scope it to one client</button><button class="cp-btn">Scope it to a date range</button></div>
+      <div class="cp-note">Bundles are generated from the append-only audit table, not re-derived from the current view &mdash; so a bundle you exported last quarter still reconciles against this one.</div>
+    </div>
+    <div class="cp-card">
       <div class="cp-lbl">One honesty note about the headline number</div>
       <div class="cp-scope-line">The fleet total floors negative entries at <b>0</b> for display. A coworker that ran <i>slower</i> than your manual baseline is held out of the rollup rather than subtracted from it — see Security Tabletop under Fleet status. Read the total as “value found”, not net.</div>
     </div>`;
@@ -1143,7 +1185,7 @@ function renderLedger(){document.getElementById('secsub').textContent='What the 
    row and a report title. Critic R2 called this the largest IA error in the set. This is now the
    home screen: one row per client, the state that matters, and a direct route to the deliverable. */
 const CLIENTBOOK=[
-  {n:'Fenwick Logistics',cw:2,st:'ok',line:'Register current as of today 09:12 · 5 findings, 1 held for your review',val:'11.0 hrs · £880',act:'report'},
+  {n:'Fenwick Logistics',cw:2,st:'ok',line:'Register current as of today 09:12 \u00b7 '+findingsLine(),val:'11.0 hrs · £880',act:'report'},
   {n:'Marlow Freight Co.',cw:1,st:'fail',line:'Environment Health Monitor paused by the system at 09:14 — its runbook lost its last active version',val:'0 hrs — nothing ran',act:'fix'},
   {n:'Corbett & Wren Legal',cw:1,st:'ok',line:'Security Tabletop ran today 08:01 · CVE exposure on 6 machines',val:'2.0 hrs · £160'},
   {n:'Hallworth Print',cw:1,st:'ok',line:'Root cause drafted on 3 tickets yesterday 16:40',val:'1.0 hr · £80'},
@@ -1433,7 +1475,8 @@ function overview(){
   return `<div class="dash">
     <div class="dcard span2"><h2>Fenwick Logistics — risk register</h2><div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials · git-tracked</div>
       <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
-      <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key green"><span class="num">3</span><span class="lab"><b>Improving</b>vs last cycle</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
+      <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
+      <div class="count-check">${r} + ${a} + ${held} = ${FCOUNT.total} findings in this register \u00b7 <b>3 improving</b> vs last cycle (a trend, not a fourth category)</div>
       <div class="viewtabs"><button class="${S.regView==='delta'?'on':''}" onclick="setView('delta')">Delta</button><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button><button class="${S.regView==='translate'?'on':''}" onclick="setView('translate')">Translate</button></div>
       ${S.regView==='delta'?deltaView():S.regView==='register'?regTable(true):S.regView==='system'?systemMap():S.regView==='translate'?translateArc():overTime()}</div>
     <div class="dcard span2"><h2>Run cycle</h2><div class="sub">What happens on every review, collapsed by default. Two steps carry a visible ⟨VERIFY⟩ marker where David's practice isn't yet confirmed — read live off this register's own finding data, not placeholders.</div>${renderRunCycle()}</div>
@@ -1495,11 +1538,12 @@ function reviewRow(f){
     </div>
     ${act==='correct'?`<div class="tb-box" style="margin-top:0" onclick="event.stopPropagation()">
       <div class="tb-grades">
-        <div class="tb-grade ${c.grade==='red'?'picked':''}" onclick="setReviewGrade('${f.id}','red')"><span class="g" style="background:var(--critical)"></span>Red</div>
-        <div class="tb-grade ${c.grade==='amber'?'picked':''}" onclick="setReviewGrade('${f.id}','amber')"><span class="g" style="background:var(--medium)"></span>Amber</div>
-        <div class="tb-grade ${c.grade==='green'?'picked':''}" onclick="setReviewGrade('${f.id}','green')"><span class="g" style="background:var(--low)"></span>Green</div>
+        <div class="tb-grade ${c.grade==='red'?'picked':''}" onclick="setReviewGrade('${f.id}','red')"><span class="g" style="background:var(--critical)"></span>Red<em>act this quarter</em></div>
+        <div class="tb-grade ${c.grade==='amber'?'picked':''}" onclick="setReviewGrade('${f.id}','amber')"><span class="g" style="background:var(--medium)"></span>Amber<em>watch, plan a fix</em></div>
+        <div class="tb-grade ${c.grade==='green'?'picked':''}" onclick="setReviewGrade('${f.id}','green')"><span class="g" style="background:var(--low)"></span>Green<em>meets policy</em></div>
       </div>
-      <input class="tb-note" style="min-height:auto" placeholder="One-line reason (optional)" value="${(c.note||'').replace(/"/g,'&quot;')}" oninput="S.reviewChoice['${f.id}'].note=this.value">
+      <div class="tb-why"><b>Why you're changing it</b> \u2014 written into the audit trail with your name, and shown to whoever reads this register next.</div>
+      <input class="tb-note" style="min-height:auto" placeholder="e.g. Client accepted the risk in writing on 12 Aug \u2014 ref CW-2026-114" value="${(c.note||'').replace(/"/g,'&quot;')}" oninput="S.reviewChoice['${f.id}'].note=this.value">
     </div>`:''}
   </div>`;
 }
@@ -1510,7 +1554,7 @@ function setReviewAction(id,action){
 }
 function setReviewGrade(id,grade){S.reviewChoice[id].grade=grade;render();}
 function reviewedCount(){return Object.keys(S.reviewChoice).length;}
-function spark(f){const pts=f.history.filter(v=>v!==null);if(pts.length<2)return `<span class="ev" style="font-style:normal">new</span>`;const w=84,h=26,min=Math.min(...pts),max=Math.max(...pts),rng=(max-min)||1,step=w/(pts.length-1),nm=v=>h-4-((v-min)/rng)*(h-8);const d=pts.map((v,i)=>`${i?'L':'M'}${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' ');const last=pts[pts.length-1],first=pts[0],better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber,g='g'+f.id;const area=`M0,${h} L`+pts.map((v,i)=>`${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' L')+` L${w},${h} Z`;return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="${g}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".2"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${((pts.length-1)*step).toFixed(1)}" cy="${nm(last).toFixed(1)}" r="2.6" fill="${col}"/></svg>`;}
+function spark(f){const pts=f.history.filter(v=>v!==null);if(pts.length<2)return `<span class="ev" style="font-style:normal">new</span>`;const w=84,h=26,min=Math.min(...pts),max=Math.max(...pts),rng=(max-min)||1,step=w/(pts.length-1),nm=v=>h-4-((v-min)/rng)*(h-8);const d=pts.map((v,i)=>`${i?'L':'M'}${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' ');const last=pts[pts.length-1],first=pts[0],better=last<first,col=better?GC.green:GC.amber,g='g'+f.id;const area=`M0,${h} L`+pts.map((v,i)=>`${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' L')+` L${w},${h} Z`;return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="${g}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".2"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${((pts.length-1)*step).toFixed(1)}" cy="${nm(last).toFixed(1)}" r="2.6" fill="${col}"/></svg>`;}
 function systemMap(){const W=840,H=490,cx=W/2,cy=H/2;const areas=[...new Set(FINDINGS.map(f=>f.area))];FEEDS.forEach(fd=>{if(!areas.includes(fd.area))areas.push(fd.area);});const R=148,Rl=228,Rc=254,n=areas.length,ap={};areas.forEach((a,i)=>{const g=(-90+i*360/n)*Math.PI/180;ap[a]={x:cx+R*Math.cos(g),y:cy+R*Math.sin(g),g};});const cv=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;return `M${x1},${y1} Q${mx-dy*0.12},${my+dx*0.12} ${x2},${y2}`;};let links=areas.map(a=>`<path d="${cv(cx,cy,ap[a].x,ap[a].y)}" fill="none" stroke="#e2e2e8" stroke-width="1.2"/>`).join('');let leaves=FINDINGS.map((f,i)=>{const p=ap[f.area],g=p.g+0.3*((i%2)?1:-1),lx=cx+Rl*Math.cos(g),ly=cy+Rl*Math.sin(g),hd=f.grade==='held';const cg=Math.cos(g),anchor=cg>0.2?'start':cg<-0.2?'end':'middle',tx=lx+(cg>0.2?9:cg<-0.2?-9:0);return `<path d="${cv(p.x,p.y,lx,ly)}" stroke="${hd?'#c9c9d0':GC[f.grade]}" stroke-width="1.3" ${hd?'stroke-dasharray="3 3"':''} fill="none" opacity=".6"/><circle cx="${lx}" cy="${ly}" r="6.5" fill="${hd?'#fff':GC[f.grade]}" stroke="${hd?'#8a8a93':'#fff'}" stroke-width="${hd?2:1.2}"/><text x="${tx}" y="${ly+(Math.sin(g)>0?18:-11)}" text-anchor="${anchor}" font-family="Inter" font-size="9" fill="#6b6c72">${f.finding.length>22?f.finding.slice(0,20)+'…':f.finding}</text>`;}).join('');let an=areas.map(a=>{const p=ap[a];return `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#fff" stroke="#8500cc" stroke-width="1.6"/><text x="${p.x}" y="${p.y-11}" text-anchor="middle" font-family="Manrope" font-size="10.5" font-weight="600" fill="#18171c">${a}</text>`;}).join('');let fd=FEEDS.map(f=>{const p=ap[f.area],g=p.g,fx=cx+Rc*Math.cos(g),fy=cy+Rc*Math.sin(g);return `<path d="${cv(fx,fy,p.x,p.y)}" stroke="#0a95c4" stroke-width="1.5" fill="none" opacity=".85" marker-end="url(#ar)"/><rect x="${fx-54}" y="${fy-11}" width="108" height="22" rx="11" fill="#e7f6fb" stroke="#0a95c4"/><text x="${fx}" y="${fy+4}" text-anchor="middle" font-family="Inter" font-size="9" font-weight="600" fill="#086a8c">${f.cw}</text>`;}).join('');return `<div class="svg-wrap" style="margin-top:6px"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#0a95c4"/></marker></defs>${links}${fd}${leaves}${an}<circle cx="${cx}" cy="${cy}" r="35" fill="#17131f"/><text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Manrope" font-size="12" font-weight="700" fill="#fff">Fenwick</text><text x="${cx}" y="${cy+12}" text-anchor="middle" font-family="Inter" font-size="9" fill="#c3bdd0">Customer</text></svg></div><div class="narr">Cyan arrows are other coworkers feeding a section. Build them and the register fills itself in.</div>`;}
 /* ---- Translate arc diagram — Manuel Lima's arc-diagram technique (addendum 2026-09-01, third pass,
    Register<->Report). Left set = Register (FINDINGS: grade dot + finding + tier), right set = Report
@@ -1561,9 +1605,9 @@ function translateArc(){
     <div class="svg-wrap"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${arcs}${left}${right}</svg></div>
     <div class="narr">Held findings arc through dashed and muted — logged in the register, never reaching the client-facing column. This is the literal translate step, wired live: change tone above and both the report preview and this diagram redraw from the same <code style="font-family:var(--font-mono)">FINDINGS</code> data.</div>`;
 }
-function overTime(){const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px">${tr.map(f=>{const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=188,h=52,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=f.id==='f2'?false:last<first,col=better?GC.green:GC.amber;return `<div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px"><div style="font-family:var(--font-brand);font-weight:600;font-size:13px;color:var(--text-primary);margin-bottom:2px">${f.finding}</div><div style="font-family:var(--font-mono);font-size:11px;color:${col};margin-bottom:8px">${first}→${last} · ${better?'↓ improving':(f.id==='f2'?'↑ slipped':'—')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg></div>`;}).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New findings carry no history, shown honestly as new.</div>`;}
+function overTime(){const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px">${tr.map(f=>{const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=188,h=52,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=last<first,col=better?GC.green:GC.amber;return `<div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px"><div style="font-family:var(--font-brand);font-weight:600;font-size:13px;color:var(--text-primary);margin-bottom:2px">${f.finding}</div><div style="font-family:var(--font-mono);font-size:11px;color:${col};margin-bottom:8px">${first}→${last} · ${last===first?'\u2014 unchanged':(better?'\u2193 improving':'\u2191 worse')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg></div>`;}).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New findings carry no history, shown honestly as new.</div>`;}
 function runsTab(){return `<div class="dcard"><h2>Run history</h2><div class="sub">Each run writes to the Value Ledger and appends to the register</div>
-  <div class="stat"><span><b style="color:var(--text-primary)">Q3 2026 cycle</b> · today 09:12</span><span class="v" style="color:var(--low)">Completed · 5 findings</span></div>
+  <div class="stat"><span><b style="color:var(--text-primary)">Q3 2026 cycle</b> · today 09:12</span><span class="v" style="color:var(--low)">Completed \u00b7 ${FCOUNT.total} findings</span></div>
   <div class="stat"><span>Q2 2026 cycle · 14 May</span><span class="v muted">Completed · 4 findings</span></div>
   <div class="stat"><span>Q1 2026 cycle · 10 Feb</span><span class="v muted">Completed · 4 findings</span></div>
   <div class="narr" style="margin-top:14px">Value → <b>Time saved: ~11 hrs across 3 cycles</b>. Every run is a commit; git history is the audit trail.</div>
@@ -1582,7 +1626,10 @@ function renderReport(){
     <div class="rep-cover"><div class="ey">EXECUTIVE BUSINESS REVIEW · Q3 2026</div><h2>Fenwick Logistics</h2><div class="meta">Prepared by Bracken IT Group · presented by Vanessa · reviewed against NCSC 10 / Cyber Essentials</div></div>
     <div class="rep-sec"><h3>A note from Vanessa</h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
     <div class="rep-sec"><h3>What we found <span class="lk" style="font-size:12px;font-weight:500;margin-left:8px" onclick="goToTranslate()">See where this came from ←</span></h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${f.translate[S.chooserTone]}</div><div class="fm">${plainNum(f.finding)}</div><div class="fw">${f.why}</div><div class="fr">Our recommendation — ${f.ask}</div></div></div>`).join('')}</div>
-    <div class="rep-sec"><h3>What’s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five. The direction is right on every front — this is the story worth telling at renewal.</p></div>
+    <div class="rep-sec"><h3>What this cost you in our time</h3>
+      <div class="rep-val"><div class="rv"><span class="n">11.0</span><span class="l">hours of our people&rsquo;s time this quarter</span></div><div class="rv"><span class="n">&pound;880</span><span class="l">at your &pound;80/hr contracted rate</span></div><div class="rv"><span class="n">3</span><span class="l">review cycles, all evidenced</span></div></div>
+      <p class="rep-note">This is time our coworkers did the groundwork for and our people checked &mdash; not an estimate of what you saved. Where a figure came from the machine&rsquo;s own guess rather than a measured baseline, we leave it out of this number entirely rather than round it in our favour.</p></div>
+    <div class="rep-sec"><h3>What&rsquo;s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five. The direction is right on every front — this is the story worth telling at renewal.</p></div>
     <div class="rep-sec"><h3>Decisions for you</h3>
       <div class="decision"><span>Fund MFA enforcement on the remaining admin accounts</span><span class="dv" style="color:var(--critical)">Recommended now</span></div>
       <div class="decision"><span>Approve remediation of the exposed machines</span><span class="dv" style="color:var(--critical)">Recommended now</span></div>

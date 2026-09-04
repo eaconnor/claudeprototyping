@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARNESS Nav — Card Sort</title>
+<!-- Facilitation instrument for the nav/IA card sort (first-run-and-nav-plan-2026-09-04.md, immediate action).
+     Full candidate-card set from nav-redesign-intake-2026-09-03.md:216-232. Draggable, groups renamable/addable,
+     Dunlop's two settled calls pre-placed + locked, exports the grouping as markdown. Sort persists (localStorage). -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1612; --paper:#efe7d6; --card:#f7f0df; --line:#1a1612;
+    --nav:#1F3C96; --coworker:#5E7A3F; --company:#5B3A7E; --home:#D8472B; --vertesia:#0a95c4; --sticky:#C99A2E;
+    --grid:rgba(26,22,18,.05);
+    --font-h:'Space Mono',monospace; --font-b:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--font-b);font-size:14px;line-height:1.5;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;padding:22px 26px 60px}
+  header{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font-family:var(--font-h);font-weight:700;font-size:22px;letter-spacing:-.01em}
+  .sub{font-size:12.5px;color:#5c554a;max-width:60ch;margin-bottom:14px}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}
+  button{font-family:var(--font-h);font-weight:700;font-size:12px;border:2px solid var(--line);background:var(--card);
+    color:var(--ink);padding:8px 13px;cursor:pointer;box-shadow:3px 3px 0 var(--line)}
+  button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--line)}
+  button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;margin-bottom:16px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:11px;height:11px;display:inline-block;border:1.5px solid var(--line)}
+  .cut{font-size:11px;color:#8a1f1f;font-family:var(--font-h)}
+
+  .board{display:flex;gap:14px;align-items:flex-start;overflow-x:auto;padding-bottom:14px}
+  .col{flex:0 0 236px;background:rgba(247,240,223,.7);border:2px solid var(--line);box-shadow:5px 5px 0 var(--line);min-height:120px;display:flex;flex-direction:column}
+  .col.pool{flex:0 0 260px;background:rgba(26,22,18,.04)}
+  .col-h{display:flex;align-items:center;gap:6px;padding:9px 10px;border-bottom:2px solid var(--line);background:var(--card)}
+  .col-h .t{font-family:var(--font-h);font-weight:700;font-size:12.5px;flex:1;background:transparent;border:none;outline:none;color:var(--ink)}
+  .col-h .t:focus{background:#fff;box-shadow:inset 0 -2px 0 var(--home)}
+  .col-h .n{font-family:var(--font-h);font-size:11px;color:#8a8478}
+  .col-h .del{border:none;box-shadow:none;background:transparent;font-size:14px;padding:0 4px;color:#8a1f1f}
+  .col-h .del:hover{transform:none;box-shadow:none}
+  .col-h .lock{font-size:11px;color:#5c554a}
+  .drop{padding:10px;display:flex;flex-direction:column;gap:8px;flex:1;min-height:70px}
+  .drop.over{background:rgba(216,71,43,.08);outline:2px dashed var(--home);outline-offset:-6px}
+
+  .card{border:2px solid var(--line);background:var(--card);padding:8px 10px;cursor:grab;box-shadow:2px 2px 0 var(--line);position:relative}
+  .card:active{cursor:grabbing}
+  .card.drag{opacity:.4}
+  .card .lbl{font-weight:600;font-size:13px;line-height:1.3}
+  .card .meta{font-size:10.5px;color:#6b6459;margin-top:2px}
+  .card .swatch{position:absolute;top:0;left:0;width:5px;height:100%}
+  .b-nav{--c:var(--nav)} .b-coworker{--c:var(--coworker)} .b-company{--c:var(--company)}
+  .b-home{--c:var(--home)} .b-vertesia{--c:var(--vertesia)} .b-sticky{--c:var(--sticky)}
+  .card .swatch{background:var(--c)}
+  .addcol{flex:0 0 60px;align-self:stretch;border:2px dashed var(--line);background:transparent;box-shadow:none;
+    font-size:22px;display:flex;align-items:center;justify-content:center;min-height:120px}
+  .addcol:hover{background:rgba(26,22,18,.05);transform:none;box-shadow:none}
+  .foot{margin-top:18px;font-size:12px;color:#5c554a;max-width:74ch;border-top:2px solid var(--line);padding-top:12px}
+  .foot b{color:var(--ink)}
+  dialog{border:2px solid var(--line);box-shadow:8px 8px 0 var(--line);padding:0;max-width:640px;width:92vw;background:var(--card)}
+  dialog .dh{padding:12px 14px;border-bottom:2px solid var(--line);font-family:var(--font-h);font-weight:700;display:flex}
+  dialog .dh button{margin-left:auto;padding:3px 9px}
+  dialog textarea{width:100%;height:340px;border:none;padding:14px;font-family:'Space Mono',monospace;font-size:12px;resize:vertical;outline:none;background:#fff}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>HARNESS Nav — Card Sort</h1>
+  </div>
+  <div class="bar">
+    <button onclick="addCol()">+ Group</button>
+    <button onclick="exportMd()">Export ↓</button>
+    <button onclick="resetAll()">Reset</button>
+  </div>
+</header>
+<div class="sub">Drag every card into a group. Rename a group by clicking its title; add your own with <b>+ Group</b>. Experts is already cut (Dunlop). When you're done, <b>Export</b> for a copy of the grouping. Your sort auto-saves.</div>
+<div class="legend">
+  <span><i style="background:var(--nav)"></i> Current nav</span>
+  <span><i style="background:var(--coworker)"></i> Coworker types</span>
+  <span><i style="background:var(--company)"></i> Company / governance</span>
+  <span><i style="background:var(--home)"></i> Home / daily briefing</span>
+  <span><i style="background:var(--vertesia)"></i> Vertesia-boundary</span>
+  <span><i style="background:var(--sticky)"></i> Sticky note</span>
+  <span class="cut">✕ Experts — cut (Dunlop)</span>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="foot">
+  <b>After you sort:</b> did the coworker cards group by <b>type</b> (Security / Ops / Reporting) or by <b>client</b> (everything for Fenwick)? That lean is real evidence for D's org-axis question. And note which "company / governance" cards you'd expect <b>Vertesia's console</b> to own vs. HARNESS to build — that's the build/buy/skin question for workstream E.
+</div>
+
+<dialog id="exp"><div class="dh">Grouping — copy this<button onclick="document.getElementById('exp').close()">Close</button></div><textarea id="expTxt" readonly></textarea></dialog>
+
+<script>
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+const CARDS=[
+  // current nav (minus Experts — Dunlop cut)
+  {id:'runbooks',b:'nav',lbl:'Runbooks',meta:'current nav'},
+  {id:'mcp',b:'nav',lbl:'MCP configs',meta:'current nav'},
+  {id:'coworkers',b:'nav',lbl:'Coworkers',meta:'current nav'},
+  {id:'execution',b:'nav',lbl:'Execution',meta:'current nav · candidate HOME (Dunlop)'},
+  {id:'ledger',b:'nav',lbl:'Value Ledger',meta:'current nav · candidate SETTING (Dunlop)'},
+  // coworker types (FAMILY)
+  {id:'cw-sec',b:'coworker',lbl:'Security Tabletop',meta:'coworker · Security'},
+  {id:'cw-ir',b:'coworker',lbl:'Incident Response Analyst',meta:'coworker · Service'},
+  {id:'cw-env',b:'coworker',lbl:'Environment Health Monitor',meta:'coworker · Operations'},
+  {id:'cw-alert',b:'coworker',lbl:'Alert Flood Suppressor',meta:'coworker · NOC'},
+  {id:'cw-qbr',b:'coworker',lbl:'QBR Advisor',meta:'coworker · Business reporting'},
+  {id:'cw-mine',b:'coworker',lbl:'EBR Coworker — Fenwick',meta:'your built instance'},
+  // company / governance (E)
+  {id:'automated',b:'company',lbl:"What's automated",meta:'company view'},
+  {id:'connected',b:'company',lbl:"What's connected",meta:'integrations'},
+  {id:'clients',b:'company',lbl:'All clients',meta:'MSP client roster'},
+  {id:'perms',b:'company',lbl:'Permissions',meta:'who can use / configure what'},
+  {id:'versions',b:'company',lbl:'Version history',meta:'per-coworker · real Versions tab'},
+  {id:'usage',b:'company',lbl:'Usage',meta:'who uses what, how often'},
+  {id:'status',b:'company',lbl:'All-coworkers status view',meta:'Dunlop — confirmed needed'},
+  {id:'buildbar',b:'company',lbl:'Build-status bar (per coworker)',meta:"Dunlop / Sidhant ref"},
+  // home / daily briefing (G — whiteboard)
+  {id:'briefing',b:'home',lbl:'Daily briefing / to-do',meta:'whiteboard · me | bot army'},
+  {id:'checkin',b:'home',lbl:'Bot check-in',meta:'doing / how well / ★ scary'},
+  {id:'assign',b:'home',lbl:'Assign work — tackle to-do',meta:'do myself / use bot / make bot'},
+  {id:'createbot',b:'home',lbl:'Create a bot',meta:'define → train → rate loop'},
+  // vertesia boundary (E)
+  {id:'lifecycle',b:'vertesia',lbl:'Agent lifecycle — version/perms/audit',meta:"maybe Vertesia's console, not HARNESS"},
+  // sticky note
+  {id:'golden',b:'sticky',lbl:'Golden tenant',meta:'reference / template'},
+  {id:'others',b:'sticky',lbl:'Other tenants',meta:'sticky note'},
+  {id:'histdelta',b:'sticky',lbl:'History / delta',meta:'sticky note'},
+];
+
+const DEFAULT={
+  cols:[
+    {id:'pool',title:'Unsorted',cards:CARDS.filter(c=>c.id!=='execution'&&c.id!=='ledger').map(c=>c.id)},
+    {id:'home',title:'Home surface',cards:['execution'],note:'Dunlop'},
+    {id:'settings',title:'Settings',cards:['ledger'],note:'Dunlop'},
+    {id:'primary',title:'Primary nav (tabs)',cards:[]},
+    {id:'company',title:'Company / fleet view',cards:[]},
+  ]
+};
+let STATE=JSON.parse(lsGet('harness-cardsort')||'null')||structuredClone(DEFAULT);
+function save(){lsSet('harness-cardsort',JSON.stringify(STATE))}
+const card=id=>CARDS.find(c=>c.id===id);
+
+function render(){
+  const board=document.getElementById('board');board.innerHTML='';
+  STATE.cols.forEach(col=>{
+    const el=document.createElement('div');el.className='col'+(col.id==='pool'?' pool':'');
+    const cards=col.cards.map(cid=>{const c=card(cid);if(!c)return'';return `<div class="card b-${c.b}" draggable="true" data-id="${c.id}"><span class="swatch"></span><div class="lbl">${c.lbl}</div><div class="meta">${c.meta}</div></div>`}).join('');
+    el.innerHTML=`<div class="col-h">
+      <input class="t" value="${col.title.replace(/"/g,'&quot;')}" data-col="${col.id}">
+      ${col.note?`<span class="lock">🔒 ${col.note}</span>`:''}
+      <span class="n">${col.cards.length}</span>
+      ${col.id==='pool'?'':`<button class="del" title="Delete group" data-del="${col.id}">✕</button>`}
+    </div><div class="drop" data-col="${col.id}">${cards}</div>`;
+    board.appendChild(el);
+  });
+  const add=document.createElement('button');add.className='addcol';add.textContent='+';add.onclick=addCol;board.appendChild(add);
+  wire();save();
+}
+function wire(){
+  document.querySelectorAll('.card').forEach(c=>{
+    c.ondragstart=e=>{e.dataTransfer.setData('id',c.dataset.id);c.classList.add('drag')};
+    c.ondragend=()=>c.classList.remove('drag');
+  });
+  document.querySelectorAll('.drop').forEach(d=>{
+    d.ondragover=e=>{e.preventDefault();d.classList.add('over')};
+    d.ondragleave=()=>d.classList.remove('over');
+    d.ondrop=e=>{e.preventDefault();d.classList.remove('over');const id=e.dataTransfer.getData('id');move(id,d.dataset.col)};
+  });
+  document.querySelectorAll('.col-h .t').forEach(t=>{
+    t.onchange=()=>{const col=STATE.cols.find(c=>c.id===t.dataset.col);if(col){col.title=t.value;save()}};
+  });
+  document.querySelectorAll('.del').forEach(b=>b.onclick=()=>delCol(b.dataset.del));
+}
+function move(id,toCol){
+  STATE.cols.forEach(c=>c.cards=c.cards.filter(x=>x!==id));
+  const t=STATE.cols.find(c=>c.id===toCol);if(t)t.cards.push(id);
+  render();
+}
+function addCol(){STATE.cols.push({id:'g'+Date.now(),title:'New group',cards:[]});render()}
+function delCol(id){const col=STATE.cols.find(c=>c.id===id);if(!col)return;const pool=STATE.cols.find(c=>c.id==='pool');if(pool)pool.cards.push(...col.cards);STATE.cols=STATE.cols.filter(c=>c.id!==id);render()}
+function resetAll(){if(confirm('Reset the sort? This clears your grouping.')){STATE=structuredClone(DEFAULT);render()}}
+function exportMd(){
+  let md='# HARNESS nav — card sort ('+new Date().toISOString().slice(0,10)+')\n\n';
+  STATE.cols.forEach(col=>{
+    if(col.id==='pool'&&col.cards.length===0)return;
+    md+='## '+col.title+(col.note?' _('+col.note+')_':'')+'\n';
+    if(col.cards.length===0){md+='_(empty)_\n\n';return}
+    col.cards.forEach(cid=>{const c=card(cid);if(c)md+='- '+c.lbl+' — '+c.meta+'\n'});
+    md+='\n';
+  });
+  const ta=document.getElementById('expTxt');ta.value=md;document.getElementById('exp').showModal();ta.select();
+}
+render();
+</script>
+</body>
+</html>

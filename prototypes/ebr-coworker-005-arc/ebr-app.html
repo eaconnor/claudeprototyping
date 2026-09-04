@@ -539,6 +539,9 @@
   .fw-map{background:var(--bg-deep);border-radius:var(--radius-md);padding:12px 14px;margin-top:16px}
   .fw-r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px;padding:6px 0;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-tertiary)}
   .fw-r:first-of-type{border-top:none} .fw-r b{color:var(--text-primary);font-weight:600}
+  .rate-toggle{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--text-tertiary);margin-top:4px;cursor:pointer}
+  .rate-toggle input{width:13px;height:13px;accent-color:var(--brand-strong)}
+  .nav-badge{margin-left:auto;background:var(--critical);color:#fff;font-family:var(--font-mono);font-size:9.5px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
   .client-select.styled{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23404047' stroke-width='1.6' stroke-linecap='round'/></svg>");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
   .cl-none{font-family:var(--font-mono);font-size:9.5px;color:var(--held)}
   .rv-reason{font-size:11.5px;color:var(--text-secondary);background:var(--bg-deep);border-left:2px solid var(--brand-strong);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:7px 10px;margin:6px 0 0;line-height:1.5}
@@ -779,17 +782,18 @@ const SHAPES=[
 let S={nav:'clients', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
   extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[],
   brMode:'build', brModeSet:false, showHandled:false, showParseLog:false, openLineage:{}, openIv:{},
-  interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
+  interview:{}, handhold:false, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null,
   reviewChoice:{f1:{action:'confirm',by:'Vanessa Okonjo',at:'today 09:41'},f5:{action:'confirm',by:'David Ferreira',at:'today 09:44'},f2:{action:'confirm',by:'Vanessa Okonjo',at:'today 09:47'},f3:{action:'correct',grade:'amber',note:'Client accepted the risk in writing on 12 Aug \u2014 ref CW-2026-114',by:'Vanessa Okonjo',at:'today 09:52'}}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
-  clientQ:'', showFine:true, signer:'', requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
+  clientQ:'', showFine:true, showRate:false, signer:'', requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
 const el=id=>document.getElementById(id);
 const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',controlplane:'<path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="2"/>',clients:'<path d="M3 21V9l6-4 6 4v12M9 21v-6h4v6M17 21V11l4 2.5V21"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
 
 function toast(m){const t=el('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1900);}
 
-function navLink(k,l){return `<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}</a>`;}
+function navLink(k,l){const pend=(k==='controlplane')?CP_CHANGESETS.filter(c=>!S.cpItems[c.id]).length:0;
+  return `<a class="${S.nav===k?'on':''}" onclick="setNav('${k}')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${NAVSVG[k]}</svg></span>${l}${pend?`<span class="nav-badge">${pend}</span>`:''}</a>`;}
 function renderNav(){
   el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>navLink(k,l)).join('')
     +`<div class="grp" style="margin-top:10px">SETTINGS</div>`+SETTINGSITEMS.map(([k,l])=>navLink(k,l)).join('')
@@ -974,7 +978,7 @@ function renderExperts(){document.getElementById('secsub').textContent='The AI r
 function renderMcp(){document.getElementById('secsub').innerHTML='Where your coworkers get their data \u2014 and, just as importantly, what they are allowed to write back.';
   const lbl={live:['connected','var(--low)','var(--low-soft)'],partial:['works, with a caveat','var(--medium)','var(--medium-soft)'],manual:['no connector','var(--held)','var(--bg-deep)'],attention:['broken','var(--critical)','var(--critical-soft)'],none:['not connected','var(--held)','var(--bg-deep)']};
   const order={attention:0,partial:1,manual:2,live:3,none:4};
-  return `<div class="conn-note">No coworker can write device configuration or use a stored credential from any of these \u2014 that is a property of the grant model, not a per-connector setting.</div>
+  return `<div class="conn-note">No coworker can write device configuration or use a stored credential from any of these.</div>
     <div class="dcard">${MCPS.slice().sort((a,b)=>order[a.st]-order[b.st]).map(m=>{const[t,col,bg]=lbl[m.st];return `<div class="conn-row">
       <span class="conn-main"><b>${m.n}</b><span class="conn-sc">${m.sc}</span></span>
       <span class="conn-st" style="color:${col};background:${bg}">${t}</span>
@@ -1047,7 +1051,7 @@ const CP_CHANGESETS=[
    note:'Activation always requires explicit human sign-off. This is a fixed limit in the model, not a setting you can turn off.'},
   {id:'cs-1',risk:'medium',op:'create',title:'Create coworker “Backup Verification Analyst” (draft)',
    actor:'claude-code-session-a41f',at:'13:47 today',
-   changes:['Creates it in <b>draft</b> — it cannot run yet','Cannot run until separately activated — creation and activation are never the same operation'],
+   changes:['Creates it in <b>draft</b> — it cannot run yet','It cannot run until you activate it separately'],
    preview:['runbook: Backup verification (cloned from platform)','trust level: manual','MCP: N-central'],
    note:'Medium-risk management operations queue here for review rather than applying directly.'},
 ];
@@ -1084,14 +1088,14 @@ function cpSrcBadge(src){
   return `<span class="cp-src ${rank[1]}" title="baseline_source = ${src} — ${rank[0]} source: ${rank[2]}">baseline: ${src.replace(/_/g,' ')}</span>`;
 }
 function renderControlPlane(){
-  document.getElementById('secsub').innerHTML='Two planes, one screen. <b>What&rsquo;s waiting on your authority</b> — nothing goes live without it — and <b>what your coworkers are doing</b> once it does.';
+  document.getElementById('secsub').innerHTML='What needs your authority. Most of it is a gate \u2014 nothing activates until you say so. A client-boundary crossing is different: it is caught and logged <b>after</b> it happens, and those cards say so.';
   const pending=CP_CHANGESETS.filter(c=>!S.cpItems[c.id]);
   const highPending=pending.filter(c=>c.risk==='high').length;
   const reviewCount=CP_FLEET.filter(f=>f.review).length;
   const sysPaused=CP_FLEET.filter(f=>f.bySystem).length;
 
   const banner=pending.length
-    ? `<div class="cp-hero"><span class="num">${pending.length}</span><span class="tx"><b>change${pending.length===1?'':'s'} need${pending.length===1?'s':''} your approval</b>${highPending?` — <b>${highPending===1?'one is high-risk':highPending+' of them are high-risk'}</b>`:''}. An AI drafted ${pending.length===1?'it':'them'}; it cannot approve its own work.</span></div>`
+    ? `<div class="cp-hero"><span class="num">${pending.length}</span><span class="tx"><b>${pending.length===1?'change needs':'changes need'} your sign-off</b>${highPending?` — <b>${highPending===1?'one is high-risk':highPending+' of them are high-risk'}</b>`:''}. An AI drafted ${pending.length===1?'it':'them'}; it cannot approve its own work.</span></div>`
     : `<div class="cp-hero cp-calm"><span class="num">0</span><span class="tx"><b>Nothing waiting on you.</b> The queue is clear — every change below was approved by a named human.</span></div>`;
 
   const kpis=`<div class="cp-kpi-strip">
@@ -1220,7 +1224,7 @@ function renderExecution(){document.getElementById('secsub').textContent='Every 
       <span class="ex-when">${r.w}</span></div>`;}).join('')}</div>`;}
 function renderLedger(){document.getElementById('secsub').textContent='Time our coworkers did the groundwork for, costed at your blended rate, written per run and traceable per client.';
   return `<div class="dash"><div class="dcard span2"><h2>Value found</h2><div class="sub">This quarter \u00b7 ${EXEC.length} runs across ${new Set(EXEC.map(r=>r.cw)).size} coworkers \u00b7 <span class="rate-note">costed at <b>£80/hr</b> blended <span class="lk" style="font-size:11px">change rate</span></span></div>
-    <div class="keys"><div class="key green"><span class="num">14.0</span><span class="lab"><b>hours of our time</b>the coworkers did the groundwork for</span></div><div class="key green"><span class="num">£1,120</span><span class="lab"><b>at £80/hr</b>14.0 hrs × £80</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">${EXEC.length}</span><span class="lab"><b>runs</b>across ${new Set(EXEC.map(r=>r.cw)).size} coworkers</span></div></div>
+    <div class="keys"><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">14.0</span><span class="lab"><b>hours of our time</b>the coworkers did the groundwork for</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">£1,120</span><span class="lab"><b>our cost at £80/hr</b>what this took us \u2014 not a saving</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">${EXEC.length}</span><span class="lab"><b>runs</b>across ${new Set(EXEC.map(r=>r.cw)).size} coworkers</span></div></div>
     <div class="ledger-honest">Negative entries are <b>held out</b> of this total, not subtracted from it — a coworker that ran slower than your baseline is flagged for review instead. Read this as <b>value found</b>, not net. <span class="lk" style="font-size:11px" onclick="setNav('controlplane')">See what's held →</span></div></div>
     <div class="dcard span2"><h2>By client</h2><div class="sub">What you can put in front of each client · this quarter</div>
     <div class="stat"><span>Fenwick Logistics</span><span class="v">11.0 hrs · £880 · <span class="lk" style="font-size:11.5px" onclick="location.hash='report'">client report →</span></span></div>
@@ -1577,7 +1581,7 @@ function overview(){
     <div class="dcard span2"><h2>Fenwick Logistics — risk register</h2><div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials · git-tracked</div>
       <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
       <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
-      <div class="count-check">${r} + ${a} + ${held} = ${FCOUNT.total} findings in this register \u00b7 <b>3 improving</b> vs last cycle (a trend, not a fourth category)</div>
+      <div class="count-check">${r} + ${a} + ${held} = ${FCOUNT.total} findings in this register</div>
       <div class="viewtabs"><button class="${S.regView==='delta'?'on':''}" onclick="setView('delta')">Delta</button><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='system'?'on':''}" onclick="setView('system')">System map</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button><button class="${S.regView==='translate'?'on':''}" onclick="setView('translate')">Translate</button></div>
       ${S.regView==='delta'?deltaView():S.regView==='register'?regTable(true):S.regView==='system'?systemMap():S.regView==='translate'?translateArc():overTime()}</div>
     <div class="dcard span2"><h2>Run cycle</h2><div class="sub">What happens on every review, collapsed by default. Two steps carry a visible ⟨VERIFY⟩ marker where David's practice isn't yet confirmed — read live off this register's own finding data, not placeholders.</div>${renderRunCycle()}</div>
@@ -1730,8 +1734,9 @@ function renderReport(){
     <div class="rep-cover"><div class="ey">EXECUTIVE BUSINESS REVIEW · Q3 2026</div><h2>Fenwick Logistics</h2><div class="meta">Prepared by Bracken IT Group · presented by Vanessa · reviewed against NCSC 10 / Cyber Essentials</div></div>
     <div class="rep-sec"><h3>A note from Vanessa Okonjo <span class="wrote">written by Vanessa, not drafted by a coworker \u00b7 edited today 10:04</span></h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
     <div class="rep-sec"><h3>What we found <span class="lk" style="font-size:12px;font-weight:500;margin-left:8px" onclick="goToTranslate()">See where this came from ←</span></h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${f.translate[S.chooserTone]}</div><div class="fm">${plainNum(f.finding)} <span class="tier ${f.tier}">${f.tier}</span></div><div class="fr">Our recommendation \u2014 ${f.ask}</div></div></div>`).join('')}</div>
-    <div class="rep-sec"><h3>What this cost you in our time</h3>
-      <div class="rep-val"><div class="rv"><span class="n">11.0</span><span class="l">hours of our people&rsquo;s time this quarter</span></div><div class="rv"><span class="n">&pound;880</span><span class="l">at your &pound;80/hr contracted rate</span></div><div class="rv"><span class="n">3</span><span class="l">review cycles, all evidenced</span></div></div>
+    <div class="rep-sec"><h3>The work behind this review</h3>
+      <div class="rep-val"><div class="rv"><span class="n">11.0</span><span class="l">hours of our people&rsquo;s time this quarter</span></div>${S.showRate?`<div class="rv"><span class="n">&pound;880</span><span class="l">at your &pound;80/hr contracted rate</span></div>`:''}<div class="rv"><span class="n">3</span><span class="l">review cycles, all evidenced</span></div></div>
+      <label class="rate-toggle"><input type="checkbox" ${S.showRate?'checked':''} onchange="S.showRate=this.checked;render()"> Show the money figure to this client${S.showRate?'':' \u2014 currently hidden'}</label>
       <p class="rep-note">This is time our coworkers did the groundwork for and our people checked &mdash; not an estimate of what you saved. Where a figure came from the machine&rsquo;s own guess rather than a measured baseline, we leave it out of this number entirely rather than round it in our favour.</p></div>
     <div class="rep-sec"><h3>What&rsquo;s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five \u2014 this one figure is typed in by hand from your training platform rather than read automatically, so treat it as indicative. The direction is right on every front — this is the story worth telling at renewal.</p></div>
     <div class="rep-sec"><h3>Decisions for you</h3>
@@ -1739,7 +1744,7 @@ function renderReport(){
       <div class="decision"><span>Approve remediation of the exposed machines</span><span class="dv" style="color:var(--critical)">Recommended now</span></div>
       <div class="decision"><span>Put a documented incident-response plan in place</span><span class="dv" style="color:var(--medium)">For discussion</span></div>
     </div>
-    <div class="rep-sec"><h3>Next 12 months</h3><p class="rep-note" style="color:var(--text-tertiary)">We’ll agree this together at the review — where you are now, where we’ll take you, and what it costs. Your account lead owns this section and will talk it through live rather than hand you a number cold.</p></div>
+
     <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);border-top:1px solid var(--border);padding-top:12px;line-height:1.6">Held and unverified findings are excluded from this client view, and with <b>Require review</b> on so is anything a human hasn’t looked at yet (the full internal register is on file). Every figure here is the register’s own figure — nothing is rounded or softened on the way to you. Exports write back to your own workbook or deck — your columns and order preserved.</div>
   </div>`;
 }
@@ -1834,7 +1839,7 @@ function ingestBody(){
   ${MCPS.map(m=>`<div class="stat"><span>${m.n}</span>${spill(m.st,m.c)}</div>`).join('')}`;
 }
 function judgeBody(){
-  return `<div class="verify-marker"><b>⟨VERIFY⟩</b><span>David's exact 8 tabs and gap-logic are unconfirmed — this view shows the baselines and grades this register already tracks, not an invented tab list.<span class="tip">Source: technica-ebr-runbook-draft-2026-08-21.md — the 8-tab list and gap logic are marked ⟨VERIFY⟩, David's judgment to confirm, not this build's to invent (CLAUDE.md §18).</span></span></div>
+  return `
   <div style="margin-top:10px">${FINDINGS.map(f=>`<div class="stat"><span><b style="color:var(--text-primary)">${f.finding}</b> <span style="color:var(--text-tertiary);font-size:12px">— ${f.baseline}</span></span>${spill(f.grade.toUpperCase(),GC[f.grade])}</div>`).join('')}</div>`;
 }
 function translateBody(){
@@ -1853,7 +1858,7 @@ function deliverBody(){
 }
 function liabilityBody(){
   return `${FINDINGS.map(f=>`<div class="stat"><span><b style="color:var(--text-primary)">${f.finding}</b></span><span class="v muted" style="text-align:right;max-width:340px">${f.liability}</span></div>`).join('')}
-  <div class="narr" style="margin-top:12px">Forward 12-month framing is Vanessa's to own at the review — see the client report's "Next 12 months" section.</div>`;
+  <div class="narr" style="margin-top:12px">Forward 12-month framing is Vanessa's to own, live at the review — deliberately not drafted here.</div>`;
 }
 /* ---- Continuity / delta — brief Section B step 2, now the Dashboard's default landing view
    (Pass-2 instruction 2). Reads since/cycles/lead/leadWhy straight off FINDINGS — Pass 1 added these
@@ -1861,8 +1866,7 @@ function liabilityBody(){
    see goStep()'s n===3 reset — this view does not touch that screen. ---- */
 function deltaView(){
   const lead=FINDINGS.find(f=>f.lead);
-  return `<div class="verify-marker"><b>⟨VERIFY⟩</b><span>Unconfirmed whether David actually opens the review here — carried from the runbook draft as the assumed default, not confirmed practice.<span class="tip">Source: technica-ebr-runbook-draft-2026-08-21.md — "does David actually open on the delta?" is marked ⟨VERIFY⟩, David's judgment to confirm (CLAUDE.md §18), not resolved by this build.</span></span></div>
-  ${lead?`<div class="callout" style="margin-top:12px"><b>Longest-standing open item:</b> ${lead.finding} — ${lead.leadWhy}</div>`:''}
+  return `${lead?`<div class="callout" style="margin-top:12px"><b>Longest-standing open item:</b> ${lead.finding} — ${lead.leadWhy}</div>`:''}
   <div class="delta-note">Wrong about any of these? Change the grade here \u2014 your name and your reason go into the audit trail, and the client report updates on the next publish. You do not need to edit the coworker.</div>
   <div class="reg" style="margin-top:10px">${FINDINGS.map(f=>`<div class="row ${f.grade}"><div></div>
     <div><div class="fnd">${f.finding}</div><div class="mt">${sinceLabel(f)}${f.cycles?` <span class="d">·</span> seen ${f.cycles} cycle${f.cycles>1?'s':''}`:''}</div>${reviewRow(f)}</div>

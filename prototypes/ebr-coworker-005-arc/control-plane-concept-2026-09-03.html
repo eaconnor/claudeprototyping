@@ -85,6 +85,17 @@
   .flag-cell.ok{color:var(--held)}
   .flag-cell.warn{color:var(--medium)}
   .placeholder-note{font-family:var(--font-mono);font-size:10px;color:var(--held);padding:10px 18px;background:var(--bg-deep);border-top:1px dashed var(--border-strong)}
+
+  .mcpgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+  .mcpcard{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px}
+  .mcpcard.native{border-color:var(--brand-soft);background:linear-gradient(180deg,var(--brand-soft),var(--bg-surface) 60%)}
+  .mcpcard.byo{border-style:dashed;display:flex;flex-direction:column;justify-content:center;color:var(--text-tertiary)}
+  .mcphead{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--held)} .dot.ok{background:var(--low)} .dot.warn{background:var(--medium)}
+  .mcpname{font-family:var(--font-brand);font-weight:700;font-size:13px;color:var(--text-primary)}
+  .mcptag{margin-left:auto;font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase}
+  .mcpcard p{font-size:11.5px;color:var(--text-tertiary);margin-bottom:8px}
+  .mcpmeta{font-family:var(--font-mono);font-size:10px;color:var(--held)}
 </style>
 </head>
 <body>
@@ -152,6 +163,17 @@
         <div>never</div></div>
 
       <div class="placeholder-note">the build-quality bar is a placeholder — Dunlop referenced "Sidhant's coworker build status bar" as an existing pattern to match; not built to spec until someone shares it</div>
+    </div>
+
+    <div class="sec-h">MCP configs <span class="tag">what the control plane is actually reading from</span></div>
+    <div class="mcpgrid">
+      <div class="mcpcard native"><div class="mcphead"><span class="dot ok"></span><span class="mcpname">N-central</span><span class="mcptag">native</span></div><p>Device inventory, patch state, alerts</p><div class="mcpmeta">synced 4m ago</div></div>
+      <div class="mcpcard native"><div class="mcphead"><span class="dot ok"></span><span class="mcpname">Cove</span><span class="mcptag">native</span></div><p>Backup jobs, restore points, failures</p><div class="mcpmeta">synced 4m ago</div></div>
+      <div class="mcpcard native"><div class="mcphead"><span class="dot ok"></span><span class="mcpname">Adlumin</span><span class="mcptag">native</span></div><p>Detections, incidents, MDR events</p><div class="mcpmeta">synced 11m ago</div></div>
+      <div class="mcpcard"><div class="mcphead"><span class="dot ok"></span><span class="mcpname">ConnectWise</span><span class="mcptag">3rd-party</span></div><p>Tickets, time entries, contracts</p><div class="mcpmeta">synced 6m ago</div></div>
+      <div class="mcpcard"><div class="mcphead"><span class="dot ok"></span><span class="mcpname">Halo</span><span class="mcptag">3rd-party</span></div><p>Tickets, assets</p><div class="mcpmeta">synced 22m ago</div></div>
+      <div class="mcpcard"><div class="mcphead"><span class="dot warn"></span><span class="mcpname">ScalePad</span><span class="mcptag">3rd-party</span></div><p>Lifecycle, warranty data</p><div class="mcpmeta">re-auth needed</div></div>
+      <div class="mcpcard byo"><div class="mcphead"><span class="dot"></span><span class="mcpname">+ Add a connector</span></div><p>BYO MCP server or request a new integration</p></div>
     </div>
   </main>
 </div>

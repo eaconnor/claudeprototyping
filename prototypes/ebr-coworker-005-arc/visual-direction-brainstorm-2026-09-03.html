@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visual direction brainstorm — bot army in action</title>
+<!-- Three metaphors, same six coworkers, same status data, so it's a fair side-by-side.
+     Not a recommendation — reactions wanted. Apex Bridge tokens reused for continuity. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-app:#fafafa; --bg-surface:#ffffff; --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --low:#137a46;
+    --held:#8a8a93; --radius-md:4px; --radius-lg:16px;
+    --font-brand:'Manrope',-apple-system,sans-serif; --font-ui:'Inter',-apple-system,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);padding:28px;max-width:1300px;margin:0 auto}
+  h1{font-family:var(--font-brand);font-weight:800;font-size:20px;color:var(--text-primary);margin-bottom:4px}
+  .sub{font-size:12.5px;color:var(--text-tertiary);margin-bottom:26px}
+  .panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .panel{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-surface)}
+  .plabel{padding:12px 16px;border-bottom:1px solid var(--border)}
+  .plabel .t{font-family:var(--font-brand);font-weight:700;font-size:13.5px;color:var(--text-primary)}
+  .plabel .d{font-size:11px;color:var(--text-tertiary);margin-top:2px}
+  .stage{height:460px;position:relative}
+
+  /* ---- 1. military map ---- */
+  .map-stage{background:#0d1410;background-image:linear-gradient(rgba(90,255,160,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(90,255,160,.06) 1px,transparent 1px);background-size:28px 28px}
+  .map-stage text{font-family:var(--font-mono)}
+  .blip-ring{fill:none;stroke-width:1.4}
+  .blip-active .blip-ring{stroke:#5aff9f} .blip-active .blip-dot{fill:#5aff9f}
+  .blip-dormant .blip-ring{stroke:#4a5a52} .blip-dormant .blip-dot{fill:#4a5a52}
+  .blip-weak .blip-ring{stroke:#ff6b5a} .blip-weak .blip-dot{fill:#ff6b5a}
+  .map-label{fill:#c8e6d4;font-size:9.5px}
+  .map-sub{fill:#5f7a6c;font-size:8px}
+  .map-line{stroke:#2a3a32;stroke-width:1;stroke-dasharray:2 3}
+
+  /* ---- 2. factory floor ---- */
+  .factory-stage{background:#f4f1ea;padding:20px}
+  .belt{height:10px;background:repeating-linear-gradient(90deg,#c9c2ac 0 14px,#b5ad93 14px 16px);border-radius:5px;position:relative;margin:18px 0}
+  .station{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .station .box{width:64px;height:64px;border-radius:10px;background:#fff;border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;position:relative}
+  .station.on .box{border-color:var(--low)}
+  .station.weak .box{border-color:var(--held);opacity:.55}
+  .station .light{position:absolute;top:-5px;right:-5px;width:12px;height:12px;border-radius:50%;border:2px solid #fff}
+  .station.on .light{background:var(--low)} .station.warn .light{background:var(--medium)} .station.weak .light{background:var(--held)}
+  .station .lab{font-family:var(--font-mono);font-size:9px;color:#5a5347;text-align:center;max-width:78px;line-height:1.3}
+  .kit{width:26px;height:20px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:3px}
+  .stations-row{display:flex;justify-content:space-between;padding:0 6px}
+  .kits-row{display:flex;justify-content:flex-end;gap:8px;padding:0 10px;margin-top:8px}
+
+  /* ---- 3. SIEM ---- */
+  .siem-stage{background:#0a0d14;padding:14px;display:grid;grid-template-rows:auto 1fr;gap:10px}
+  .siem-top{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .siem-tile{background:#121826;border:1px solid #1f2940;border-radius:4px;padding:8px}
+  .siem-tile .k{font-family:var(--font-mono);font-size:8.5px;color:#5f7091;text-transform:uppercase}
+  .siem-tile .v{font-family:var(--font-mono);font-size:15px;font-weight:700;color:#dfe8fb;margin-top:3px}
+  .siem-tile.ok .v{color:#5aff9f} .siem-tile.warn .v{color:#ffb24a} .siem-tile.dim .v{color:#4a5a72}
+  .siem-feed{background:#121826;border:1px solid #1f2940;border-radius:4px;padding:8px;overflow:hidden}
+  .feed-row{display:grid;grid-template-columns:52px 16px 1fr 40px;gap:8px;font-family:var(--font-mono);font-size:9.5px;padding:5px 4px;border-bottom:1px solid #182036;color:#8fa2c4}
+  .feed-row .sev{width:8px;height:8px;border-radius:50%;align-self:center}
+  .sev.ok{background:#2f6b4a} .sev.warn{background:#8a5a1e} .sev.crit{background:#8a2f2f}
+  .feed-row .pct{text-align:right;color:#5f7091}
+</style>
+</head>
+<body>
+<h1>Bot army in action — three visual directions</h1>
+<p class="sub">Same six coworkers, same status data, three different metaphors. Reacting, not deciding.</p>
+
+<div class="panels">
+
+  <div class="panel">
+    <div class="plabel"><div class="t">Military map</div><div class="d">deployed units on a grid, status = alive/dormant/hit</div></div>
+    <div class="stage map-stage">
+      <svg width="100%" height="100%" viewBox="0 0 400 460">
+        <line class="map-line" x1="200" y1="60" x2="90" y2="150"/>
+        <line class="map-line" x1="200" y1="60" x2="310" y2="150"/>
+        <line class="map-line" x1="200" y1="60" x2="140" y2="250"/>
+        <line class="map-line" x1="200" y1="60" x2="260" y2="330"/>
+        <line class="map-line" x1="200" y1="60" x2="80" y2="360"/>
+        <g class="blip-active"><circle class="blip-ring" cx="200" cy="60" r="16"/><circle class="blip-dot" cx="200" cy="60" r="4"/></g>
+        <text class="map-label" x="216" y="57">QBR ADVISOR</text><text class="map-sub" x="216" y="68">HQ · 92% · the wedge</text>
+
+        <g class="blip-active"><circle class="blip-ring" cx="90" cy="150" r="13"/><circle class="blip-dot" cx="90" cy="150" r="4"/></g>
+        <text class="map-label" x="50" y="130">INCIDENT RESPONSE</text><text class="map-sub" x="60" y="170">78%</text>
+
+        <g class="blip-active"><circle class="blip-ring" cx="310" cy="150" r="13"/><circle class="blip-dot" cx="310" cy="150" r="4"/></g>
+        <text class="map-label" x="270" y="130">ENV HEALTH MONITOR</text><text class="map-sub" x="290" y="170">65% · 2 flagged</text>
+        <circle cx="310" cy="150" r="20" fill="none" stroke="#ff6b5a" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <g class="blip-active"><circle class="blip-ring" cx="140" cy="250" r="13"/><circle class="blip-dot" cx="140" cy="250" r="4"/></g>
+        <text class="map-label" x="98" y="230">SECURITY TABLETOP</text><text class="map-sub" x="110" y="270">81%</text>
+
+        <g class="blip-dormant"><circle class="blip-ring" cx="80" cy="360" r="11" stroke-dasharray="3 3"/><circle class="blip-dot" cx="80" cy="360" r="3"/></g>
+        <text class="map-label" x="20" y="345" fill="#5f7a6c">ALERT FLOOD SUPPRESSOR</text><text class="map-sub" x="45" y="380">dormant · do not lead</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="plabel"><div class="t">Factory floor</div><div class="d">stations on a line, kits coming off the end — matches the whiteboard</div></div>
+    <div class="stage factory-stage">
+      <div class="stations-row">
+        <div class="station on"><div class="light"></div><div class="box">QBR</div><div class="lab">QBR Advisor<br>92%</div></div>
+        <div class="station on"><div class="light"></div><div class="box">IR</div><div class="lab">Incident Response<br>78%</div></div>
+        <div class="station warn"><div class="light"></div><div class="box">EH</div><div class="lab">Env Health<br>65% · flagged</div></div>
+        <div class="station on"><div class="light"></div><div class="box">ST</div><div class="lab">Security Tabletop<br>81%</div></div>
+        <div class="station weak"><div class="light"></div><div class="box">AF</div><div class="lab">Alert Flood<br>dormant</div></div>
+      </div>
+      <div class="belt"></div>
+      <div class="kits-row"><div class="kit"></div><div class="kit"></div><div class="kit"></div><span style="font-family:var(--font-mono);font-size:9px;color:#5a5347;align-self:center">→ kits, done, handed back</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="plabel" style="background:#0a0d14;border-color:#1f2940"><div class="t" style="color:#dfe8fb">SOC / SIEM console</div><div class="d" style="color:#5f7091">dense telemetry, live event stream, correlation</div></div>
+    <div class="stage siem-stage">
+      <div class="siem-top">
+        <div class="siem-tile ok"><div class="k">active</div><div class="v">4</div></div>
+        <div class="siem-tile dim"><div class="k">dormant</div><div class="v">1</div></div>
+        <div class="siem-tile warn"><div class="k">flagged</div><div class="v">2</div></div>
+        <div class="siem-tile ok"><div class="k">avg quality</div><div class="v">79%</div></div>
+        <div class="siem-tile ok"><div class="k">runs/24h</div><div class="v">37</div></div>
+      </div>
+      <div class="siem-feed">
+        <div class="feed-row"><span>14:02:11</span><span class="sev ok"></span><span>QBR Advisor — Fenwick Logistics register built</span><span class="pct">92%</span></div>
+        <div class="feed-row"><span>13:58:40</span><span class="sev warn"></span><span>Env Health Monitor — estimate flagged &gt;8hr, review needed</span><span class="pct">65%</span></div>
+        <div class="feed-row"><span>13:41:02</span><span class="sev ok"></span><span>Security Tabletop — compliance evidence generated</span><span class="pct">81%</span></div>
+        <div class="feed-row"><span>12:55:19</span><span class="sev ok"></span><span>Incident Response — root cause drafted, live ticket</span><span class="pct">78%</span></div>
+        <div class="feed-row"><span>—</span><span class="sev crit"></span><span>Alert Flood Suppressor — never activated</span><span class="pct">—</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

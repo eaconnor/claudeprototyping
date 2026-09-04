@@ -456,6 +456,24 @@
   .cp-inv li{font-size:12px;color:var(--text-secondary);margin-bottom:5px}
   .cp-guar{font-size:11.5px;color:var(--low);background:var(--low-soft);border-radius:var(--radius-md);padding:9px 11px;margin-top:9px;line-height:1.55}
   .cp-card+.cp-card{margin-top:12px}
+  /* Execution — real client dimension + failure/held states (critic R1: no failure state existed) */
+  .exec-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .exec-bar label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;color:var(--text-tertiary)}
+  .exec-count{font-size:11.5px;color:var(--text-tertiary);margin-left:4px}
+  .exec-row{display:grid;grid-template-columns:18px minmax(190px,1.1fr) minmax(220px,1.7fr) auto;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--border)}
+  .exec-row:last-child{border-bottom:none}
+  .ex-ic{font-family:var(--font-mono);font-size:12px;font-weight:700}
+  .ex-main b{display:block;font-size:13px;color:var(--text-primary);font-family:var(--font-brand);font-weight:700}
+  .ex-client{font-size:11px;color:var(--brand-strong)}
+  .ex-out{font-size:12px;color:var(--text-secondary);line-height:1.45}
+  .ex-when{font-family:var(--font-mono);font-size:10px;color:var(--held);white-space:nowrap;text-align:right}
+  @media(max-width:820px){.exec-row{grid-template-columns:18px 1fr;} .ex-out,.ex-when{grid-column:2}}
+  /* Ledger honesty + rate transparency */
+  .ledger-honest{font-size:11.5px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:10px 12px;margin-top:14px;line-height:1.6}
+  .ledger-honest b{color:var(--text-secondary)}
+  .rate-note{color:var(--text-tertiary)} .rate-note b{color:var(--text-secondary);font-family:var(--font-mono)}
+  /* Approve = go, not destroy (critic R1: red means destroy) */
+  .cp-btn.cp-go{background:var(--low);border:none;color:#fff}
 </style>
 </head>
 <body>
@@ -667,10 +685,10 @@ const ALLNAV=NAVITEMS.concat(SETTINGSITEMS);
 const BUILD=['Your report','Connect AI','Build the register','Review','Activate'];
 const DTABS=['Overview','Configuration','Versions','Runs','Audit','Promotion'];
 const SHAPES=[
-  {id:'workbook',name:'8-tab Excel workbook',meta:'the structured case',quality:'high',desc:'Tabs per control area, consistent columns, a grading column, a carry-forward tab.',tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Incidents & tickets','Carry-forward']},
-  {id:'deck',name:"Last quarter's slide deck",meta:'the common case',quality:'medium',desc:'12 slides, headings but no consistent structure, grades implied by RAG colour.',tabs:['Where we are','What changed','Risks','Recommendations','Next quarter']},
-  {id:'doc',name:'A Word doc and notes',meta:'the hard case',quality:'low',desc:'One long document, no repeating structure. It lives in your head.',tabs:['(no repeating structure detected)']},
-  {id:'stefanie',name:"Stefanie's EBR framework",meta:'start from scratch · template',quality:'high',template:true,desc:"No report yet? Start from N-able's EBR framework — the manual boot-camp process, already structured, risk register built in.",tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Risk register','Carry-forward']},
+  {id:'workbook',name:'8-tab Excel workbook',meta:'structured · easiest to read',quality:'high',desc:'Tabs per control area, consistent columns, a grading column, a carry-forward tab.',tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Incidents & tickets','Carry-forward']},
+  {id:'deck',name:"Last quarter's slide deck",meta:'most common',quality:'medium',desc:'12 slides, headings but no consistent structure, grades implied by RAG colour.',tabs:['Where we are','What changed','Risks','Recommendations','Next quarter']},
+  {id:'doc',name:'A Word doc and notes',meta:'unstructured · we work harder',quality:'low',desc:'One long document, no repeating structure. It lives in your head.',tabs:['(no repeating structure detected)']},
+  {id:'stefanie',name:"N-able EBR framework",meta:'start from scratch · template',quality:'high',template:true,desc:"No report yet? Start from N-able's EBR framework — the manual boot-camp process, already structured, risk register built in.",tabs:['Exec summary','Identity & access','Backup & recovery','Patching','Awareness training','Network','Risk register','Carry-forward']},
 ];
 
 let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
@@ -680,7 +698,7 @@ let S={nav:'coworkers', ebrOpen:false, activated:false, capstoneSeen:false, step
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null,
   reviewChoice:{}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
-  cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
+  execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
 const el=id=>document.getElementById(id);
 const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',controlplane:'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
 
@@ -690,7 +708,7 @@ function navLink(k,l){return `<a class="${S.nav===k?'on':''}" onclick="setNav('$
 function renderNav(){
   el('nav').innerHTML=`<div class="grp">APP</div>`+NAVITEMS.map(([k,l])=>navLink(k,l)).join('')
     +`<div class="grp" style="margin-top:10px">SETTINGS</div>`+SETTINGSITEMS.map(([k,l])=>navLink(k,l)).join('')
-    +`<a href="role-play-simulator.html" target="_blank" rel="noopener" style="margin-top:10px;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;font-size:11px;line-height:1.4;color:var(--nav-fg-2);border:1px dashed rgba(255,255,255,.22)">↗ Extended scenario — not MVP</a>`
+    +`<a href="role-play-simulator.html" target="_blank" rel="noopener" style="margin-top:auto;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;font-size:11px;line-height:1.4;color:var(--nav-fg-2)">↗ Extended scenario</a>`
     +`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
 }
 function setNav(k){S.nav=k;S.ebrOpen=false;if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();}
@@ -706,6 +724,7 @@ function applyHash(){
     if(+b[1]>0){S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;}
     return;}
   if(k==='dashboard'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=true;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;return;}
+  if(k==='report'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=true;S.reportOpen=true;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;return;}
   if(k==='capstone'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=false;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;return;}
 }
 function openEbr(){S.nav='coworkers';S.ebrOpen=true;render();}
@@ -779,11 +798,15 @@ const MCPS=[
   {n:'Billing',sc:'Invoices, usage, charge explanations',st:'POC',c:'#0a95c4'},
   {n:'usecure',sc:'Awareness training',st:'No connector — by hand',c:'#8a8a93'},
 ];
+const CLIENTS=['All clients','Fenwick Logistics','Marlow Freight Co.','Corbett & Wren Legal','Hallworth Print','Ferris Dental Group','Quaid Retail'];
 const EXEC=[
-  {cw:'EBR Coworker — Fenwick',w:'today · 09:12',o:'5 findings drafted, 1 held',ok:1},
-  {cw:'Security Tabletop — Fenwick',w:'yesterday · 16:40',o:'CVE exposure: 6 endpoints',ok:1},
-  {cw:'Environment Health — estate',w:'2 days ago',o:'12 refresh candidates',ok:1},
-  {cw:'EBR Coworker — Fenwick (Q2)',w:'14 May',o:'4 findings drafted',ok:1},
+  {cw:'EBR Coworker',client:'Fenwick Logistics',w:'today · 09:12',o:'5 findings drafted, 1 held for review',st:'held'},
+  {cw:'Security Tabletop',client:'Corbett & Wren Legal',w:'today · 08:01',o:'CVE exposure: 6 endpoints',st:'ok'},
+  {cw:'Environment Health Monitor',client:'Marlow Freight Co.',w:'today · 09:14',o:'Paused by the system — its runbook lost its last active version',st:'fail'},
+  {cw:'Incident Response Analyst',client:'Hallworth Print',w:'yesterday · 16:40',o:'Root cause drafted on 3 tickets',st:'ok'},
+  {cw:'Incident Response Analyst',client:'Quaid Retail',w:'yesterday · 14:22',o:'Correlated to a related incident at Ferris Dental — cross-client link logged',st:'ok'},
+  {cw:'Security Tabletop',client:'Ferris Dental Group',w:'yesterday · 11:05',o:'Run failed — N-central credential expired mid-run. Nothing written.',st:'fail'},
+  {cw:'EBR Coworker',client:'Fenwick Logistics',w:'14 May',o:'4 findings drafted',st:'ok'},
 ];
 function riskPill(r){return spill(r,r==='High'?'#c0392b':r==='Medium'?'#a56a00':'#137a46');}
 /* ---- Runbooks screen — two-pane list+detail, new 2026-09-01 (brief Section D). Grafted into this
@@ -996,7 +1019,7 @@ function renderControlPlane(){
         <div class="cp-detail-toggle" onclick="cpToggleDetail('${c.id}')">${S.cpOpen[c.id]?'Hide':'Preview'} the full config ${S.cpOpen[c.id]?'▴':'▾'} <span class="cp-dry">dry run · no side effects</span></div>
         ${S.cpOpen[c.id]?`<div class="cp-tech-detail"><div class="cp-chips">${c.preview.map(p=>`<span class="cp-chip">${p}</span>`).join('')}</div></div>`:''}
         <div class="cp-note">${c.note}</div>
-        <div class="cp-acts"><button class="cp-btn cp-primary" onclick="cpDecide('${c.id}','approved')">${c.risk==='high'?'Approve and activate':'Approve'}</button><button class="cp-btn" onclick="cpToggleDetail('${c.id}')">Modify first</button><button class="cp-btn" onclick="cpDecide('${c.id}','rejected')">Reject with a note</button></div>
+        <div class="cp-acts"><button class="cp-btn cp-go" onclick="cpDecide('${c.id}','approved')">${c.risk==='high'?'Approve and activate':'Approve'}</button><button class="cp-btn" onclick="cpToggleDetail('${c.id}')">Modify first</button><button class="cp-btn" onclick="cpDecide('${c.id}','rejected')">Reject with a note</button></div>
       </div>`;}).join('')}
     <div class="cp-lowbar">
       <div><b>34 low-risk operations ran without asking you</b> — reading runbook configs, listing coworkers, resolving baselines. All logged.</div>
@@ -1052,11 +1075,32 @@ function renderControlPlane(){
 
   return banner+kpis+tabs+(S.cpView==='coworker'?fleet:S.cpView==='audit'?audit:queue);
 }
-function renderExecution(){document.getElementById('secsub').textContent='Every coworker run, across the workspace. Each run writes to the Value Ledger and appends to its register.';
-  return `<div class="dcard">${EXEC.map(r=>`<div class="stat"><span><b style="color:var(--text-primary)">${r.cw}</b> <span style="color:var(--text-tertiary);font-size:12px">· ${r.w}</span></span><span style="color:var(--low);font-family:var(--font-brand);font-weight:600;font-size:12.5px">✓ ${r.o}</span></div>`).join('')}</div>`;}
-function renderLedger(){document.getElementById('secsub').textContent='What the coworkers have given back — time and cost saved, written per run.';
-  return `<div class="dash"><div class="dcard span2"><h2>Value saved</h2><div class="sub">Rolled up across all coworkers · this quarter</div>
-    <div class="keys"><div class="key green"><span class="num">~14</span><span class="lab"><b>hours saved</b>this quarter</span></div><div class="key green"><span class="num">£1,120</span><span class="lab"><b>cost saved</b>at blended rate</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">9</span><span class="lab"><b>runs</b>across 4 coworkers</span></div></div></div>
+function setExecClient(c){S.execClient=c;render();}
+function renderExecution(){document.getElementById('secsub').textContent='Every coworker run, by client. Each run writes to the Value Ledger and appends to that client\u2019s register.';
+  const sel=S.execClient||'All clients';
+  const rows=EXEC.filter(r=>sel==='All clients'||r.client===sel);
+  const fails=rows.filter(r=>r.st==='fail').length, held=rows.filter(r=>r.st==='held').length;
+  const ico={ok:['\u2713','var(--low)'],held:['\u25d0','var(--medium)'],fail:['\u2715','var(--critical)']};
+  return `<div class="exec-bar">
+      <label>Client</label>
+      <select class="client-select" onchange="setExecClient(this.value)">${CLIENTS.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select>
+      <span class="exec-count">${rows.length} run${rows.length===1?'':'s'}${fails?` \u00b7 <b style="color:var(--critical)">${fails} need attention</b>`:''}${held?` \u00b7 <b style="color:var(--medium)">${held} held</b>`:''}</span>
+    </div>
+    <div class="dcard">${rows.map(r=>{const[g,c]=ico[r.st];return `<div class="exec-row">
+      <span class="ex-ic" style="color:${c}">${g}</span>
+      <span class="ex-main"><b>${r.cw}</b><span class="ex-client">${r.client}</span></span>
+      <span class="ex-out" style="${r.st==='fail'?'color:var(--critical)':r.st==='held'?'color:var(--medium)':''}">${r.o}</span>
+      <span class="ex-when">${r.w}</span></div>`;}).join('')}</div>`;}
+function renderLedger(){document.getElementById('secsub').textContent='What the coworkers have given back — time and cost saved, written per run, traceable per client.';
+  return `<div class="dash"><div class="dcard span2"><h2>Value saved</h2><div class="sub">This quarter · 9 runs across 3 coworkers · <span class="rate-note">costed at <b>£80/hr</b> blended <span class="lk" style="font-size:11px">change rate</span></span></div>
+    <div class="keys"><div class="key green"><span class="num">14.0</span><span class="lab"><b>hours saved</b>this quarter</span></div><div class="key green"><span class="num">£1,120</span><span class="lab"><b>cost saved</b>14.0 hrs × £80</span></div><div class="key" style="--x:0"><span class="num" style="color:var(--text-primary)">9</span><span class="lab"><b>runs</b>across the 3 coworkers below</span></div></div>
+    <div class="ledger-honest">Negative entries are <b>held out</b> of this total, not subtracted from it — a coworker that ran slower than your baseline is flagged for review instead. Read this as <b>value found</b>, not net. <span class="lk" style="font-size:11px" onclick="setNav('controlplane')">See what's held →</span></div></div>
+    <div class="dcard span2"><h2>By client</h2><div class="sub">What you can put in front of each client · this quarter</div>
+    <div class="stat"><span>Fenwick Logistics</span><span class="v">11.0 hrs · £880 · <span class="lk" style="font-size:11.5px" onclick="location.hash='report'">client report →</span></span></div>
+    <div class="stat"><span>Corbett &amp; Wren Legal</span><span class="v muted">2.0 hrs · £160</span></div>
+    <div class="stat"><span>Hallworth Print</span><span class="v muted">1.0 hr · £80</span></div>
+    <div class="stat"><span>Marlow Freight Co.</span><span class="v muted">0 hrs — coworker paused since 09:14</span></div>
+    <div class="stat"><span>Ferris Dental Group</span><span class="v muted">held for review — baseline came from the coworker's own estimate</span></div></div>
     <div class="dcard span2"><h2>By coworker</h2><div class="sub">Time saved · this quarter</div>
     <div class="stat"><span>EBR Coworker</span><span class="v">~11 hrs · 3 runs</span></div>
     <div class="stat"><span>Security Tabletop</span><span class="v muted">~2 hrs · 3 runs</span></div>
@@ -1087,14 +1131,14 @@ function renderList(){
     <div class="grid">${FAMILY.map(c=>`<div class="cw">
       <div class="cat">${c.cat}</div><h3>${c.name}</h3><p>${c.desc}</p>
       ${c.feed?`<div class="feed" style="color:var(--brand-strong);background:var(--brand-soft)">→ ${c.feed} of your EBR</div>`:''}
-      <div class="st"><span class="avail">Available</span><span style="flex:1"></span>${honestyBadge()}</div>
+      <div class="st"><span class="avail">Ready to configure</span><span style="flex:1"></span>${honestyBadge()}</div>
     </div>`).join('')}</div>`;
 }
 
 /* ---- Build flow ---- */
 function ebrHead(){
   const chips=S.activated?`<span class="chip">Tenant</span><span class="chip active"><span class="d"></span>Active</span><span class="chip mode">${T('assisted','Assisted')}</span>`:`<span class="chip">Tenant</span><span class="chip draft">◐ Draft</span><span class="chip mode">${T('assisted','Assisted')}</span>`;
-  const actions=S.activated?`<button class="btn">Edit</button><button class="btn">Pause</button><button class="btn">Clone</button><button class="btn">Archive</button><button class="btn cyan" style="margin-left:auto" onclick="openReport()">View client report</button><button class="btn primary" onclick="runCycle()">Run EBR cycle</button>`:`<button class="btn" onclick="closeEbr()">Cancel</button>`;
+  const actions=S.activated?`<button class="btn">Edit</button><button class="btn">Pause</button><button class="btn">Clone</button><button class="btn">Archive</button><button class="btn primary" style="margin-left:auto" onclick="openReport()">Open the client report →</button><button class="btn" onclick="runCycle()">Run EBR cycle</button>`:`<button class="btn" onclick="closeEbr()">Cancel</button>`;
   el('head').innerHTML=`<div class="crumb"><span class="lk" onclick="setNav('coworkers')">Coworkers</span><span class="sep">›</span><span class="lk" onclick="closeEbr()">EBR Coworker</span><span class="sep">›</span>Fenwick Logistics</div>
     <div class="title-row"><div class="back" onclick="closeEbr()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div><h1>EBR Coworker — Fenwick Logistics</h1></div>
     <div class="chips">${chips}</div><div class="btns">${actions}</div>
@@ -1106,7 +1150,7 @@ function renderBuild(){
   ebrHead();
   const s=S.step;let h=`<div class="stepper">${BUILD.map((t,i)=>`<div class="stp ${i===s?'on':(i<s?'done':'')}" onclick="goStep(${i})"><span class="n">STEP ${i+1}</span><span class="t">${t}</span></div>`).join('')}</div>`;
 
-  if(s===0){h+=`<div class="panel"><h2>Show me your report and I’ll build a thing</h2>
+  if(s===0){h+=`<div class="panel"><h2>Show me last quarter’s report. I’ll turn it into a coworker that keeps it current.</h2>
     <p class="lede">Bring the review you already make — the actual thing you sent a client last quarter. The messier it is, the more useful. Or start from a template. Anything you add becomes the first entries in the ${T('register')}.</p>
     ${renderFtux()}
     <div class="drop" onclick="pick('workbook')"><div class="big">Drop your last EBR here</div><div class="sm">.xlsx · .pptx · .docx · .pdf — nothing leaves your tenant</div></div>
@@ -1156,7 +1200,7 @@ function renderBuild(){
     <label class="chk"><input type="checkbox" ${a.judgment?'checked':''} onchange="ack('judgment',this.checked)"><span>I understand it learned our <b>structure</b>, not our <b>judgment</b> — I’ll correct grades, especially early.</span></label>
     <label class="chk"><input type="checkbox" ${a.record?'checked':''} onchange="ack('record',this.checked)"><span>This becomes our <b>system of record</b>; a <b>named person</b> signs off before anything reaches a client.</span></label>
     <button class="btn primary" ${all?'':'disabled'} onclick="activate()">Activate this coworker</button></div>
-    <div class="warncall"><b>Still unresolved:</b> whether the sign-off owner is the technical practitioner (David) or the account lead (Vanessa). This screen asks you to name someone; the product doesn’t yet enforce who.</div>
+    <div class="warncall"><b>Who signs off is your call.</b> Name the person accountable for this client’s register below — that name is written into the audit trail with every publish.</div>
     <div class="actions"><span class="lk" onclick="goStep(3)">← Back</span></div></div>`;}
   el('stage').innerHTML=h;
   if(s===2 && !S.parsed) runParse();
@@ -1242,20 +1286,24 @@ function interviewRow(a,st){
       </div>
     </div></div>`;
 }
-/* FTUX guidance — first screen only, role-tailored. Marcus/Priya are role-play-simulator.html's
-   names for the same two archetypes this app calls "the technical practitioner" (Marcus) and
-   "the relationship/account lead" (Priya) — kept distinct from Fenwick's own named contacts
-   (David/Vanessa) so this isn't read as claiming who those two specific people are. */
+/* Seat guidance — asked once, then PERSISTED as a lens (S.ftuxRole survives into the register and
+   the control plane). Critic R1, correctly: "a one-time question with no visible consequence is
+   worse than no question." Research persona names are gone from the UI — four seats, described by
+   what the person is accountable for, not by who we interviewed. */
 function renderFtux(){
   if(S.ftuxRole===undefined)S.ftuxRole=null;
   const copy={
-    marcus:{who:'Marcus — technical practitioner',
+    marcus:{who:'Hands-on technical',
       body:`Drop the real workbook, not a template — a parser can only find structure that's actually there, and you'll want to see it fail honestly on a messy tab before you trust it on a clean one. After this, spend your time in <b>Build the register</b>: that's where you check what's actually wired up versus what still needs a connector, and where the coworker/runbook honesty badge tells you what's real today versus staged.`},
-    priya:{who:'Priya — relationship / account lead',
-      body:`You don't need a perfect file — the Stefanie template gets you a working register today, and the narrative is what you're actually accountable for. Your real work starts on the very next screen, <b>Build the register</b>: switch it to <b>Report</b> mode any time for the client-legible view, decide how much it drafts on its own, and carry through to <b>Activate</b> — that's where sign-off lands, and where the Advisor (Premium) turns a raw finding into something you can say out loud to a client without translating it yourself first.`}};
+    priya:{who:'Client relationship',
+      body:`You don't need a perfect file — the N-able framework gets you a working register today, and the narrative is what you're actually accountable for. Your real work starts on the very next screen, <b>Build the register</b>: switch it to <b>Report</b> mode any time for the client-legible view, decide how much it drafts on its own, and carry through to <b>Activate</b> — that's where sign-off lands, and where the Advisor (Premium) turns a raw finding into something you can say out loud to a client without translating it yourself first.`},
+    deepa:{who:'Accountable to auditors',
+      body:`Two things matter to you and both are real: every state change is written in the same transaction as the change itself and the audit table is protected against edits and deletes at the database level — append-only isn't a promise in this UI, it's a constraint underneath it. Go to <b>Control plane → Audit &amp; guarantees</b> for the four limits that cannot be switched off, then use <b>Build the register</b> to see, per finding, whether a number was measured, inferred, or hand-entered before you sign anything.`},
+    tom:{who:'Verifying it myself',
+      body:`Assume nothing here is true until you've traced it. Every figure in the <b>Value Ledger</b> names its own <code>baseline_source</code> — whether it came from a baseline you set, our seed catalogue, or the coworker's own guess — and anything implausible is held out of the rollup rather than quietly averaged in. Start at <b>Control plane</b>: a change proposed by an AI sits there unapplied, showing exactly what it would alter, until a named human approves it. Nothing activates itself.`}};
   const picked=S.ftuxRole?copy[S.ftuxRole]:null;
   return `<div class="ftux">
-    <div class="ftux-ask">${picked?`<span class="who">${picked.who}</span><span class="lk" onclick="S.ftuxRole=null;render()">change</span>`:`<b>First time here?</b><span style="color:var(--text-tertiary)">Tell me which seat you're in and I'll point you at what matters —</span><button class="btn btn-sm" onclick="S.ftuxRole='marcus';render()">I'm technical (Marcus)</button><button class="btn btn-sm" onclick="S.ftuxRole='priya';render()">I own the relationship (Priya)</button>`}</div>
+    <div class="ftux-ask">${picked?`<span class="who">${picked.who}</span><span class="lk" onclick="S.ftuxRole=null;render()">change</span>`:`<b>First time here?</b><span style="color:var(--text-tertiary)">Tell me which seat you're in and I'll point you at what matters —</span><button class="btn btn-sm" onclick="S.ftuxRole='marcus';render()">I’m hands-on technical</button><button class="btn btn-sm" onclick="S.ftuxRole='priya';render()">I own the client relationship</button><button class="btn btn-sm" onclick="S.ftuxRole='deepa';render()">I answer to auditors</button><button class="btn btn-sm" onclick="S.ftuxRole='tom';render()">I need to verify it myself</button>`}</div>
     ${picked?`<div class="ftux-body">${picked.body}</div>`:''}
   </div>`;
 }
@@ -1554,9 +1602,9 @@ function renderRunCycle(){
     `<span class="rc-chip ok">Default view</span>`,
     `<span class="rc-chip warn">⟨VERIFY⟩ gap-logic</span>`,
     `<span class="rc-chip info">CFO + owner tone</span>`,
-    `<span class="rc-chip sub">sub-filter, not a stop</span>`,
+    `<span class="rc-chip sub">refines the view</span>`,
     `<span class="rc-chip info">${FINDINGS.filter(f=>f.tier!=='unverified').length} eligible</span>`,
-    `<span class="rc-chip warn">dashboard + write-back (RA-018)</span>`,
+    `<span class="rc-chip warn">dashboard · write-back not built</span>`,
     `<span class="rc-chip ok">${FINDINGS.filter(f=>f.liability).length} logged</span>`,
   ];
   return `<div class="rc-wrap">${RC_STEPS.map((s,i)=>`<div class="rc-step ${s.sub?'subfilter':''}">
@@ -1584,7 +1632,7 @@ function gettingBizBody(){
 function deliverBody(){
   return `<p style="font-size:12.5px;color:var(--text-tertiary);margin:10px 0">Two delivery paths — pick per cycle:</p>
   <div class="cards"><div class="card"><div class="nm">Render in dashboard</div><div class="d">Client report tab, filtered by the Chooser. What this build actually does today.</div></div>
-  <div class="card"><div class="nm">Write back into your Excel</div><div class="d">Heavier — the M365-write path (RA-018) isn't built. Flagged, not implied as live.</div></div></div>`;
+  <div class="card"><div class="nm">Write back into your Excel</div><div class="d">Not built yet — writing back into your own workbook needs an M365 write path we haven’t shipped. Flagged, not implied as live.</div></div></div>`;
 }
 function liabilityBody(){
   return `${FINDINGS.map(f=>`<div class="stat"><span><b style="color:var(--text-primary)">${f.finding}</b></span><span class="v muted" style="text-align:right;max-width:340px">${f.liability}</span></div>`).join('')}
@@ -1633,7 +1681,7 @@ function toggleRail(){
 }
 (function initChrome(){
   applyMode(curMode);
-  document.body.classList.toggle('rail-open', lsGet('apx-rail')!=='closed'); // default open
+  document.body.classList.toggle('rail-open', lsGet('apx-rail')==='open'); // default CLOSED — the rail is Band's review surface, not product chrome; it was clipping the product's own copy
   if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(curMode==='system')applyMode('system');});}
 })();
 applyHash();

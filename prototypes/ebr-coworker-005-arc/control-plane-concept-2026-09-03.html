@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control plane — concept — HARNESS</title>
+<!-- Design-exploration concept, one screen. Not wired into ebr-app.html. Reuses its exact
+     Apex Bridge tokens/fonts so it reads as the same product. Built from today's resolved
+     givens only: the deck's own "control plane" definition + differentiator language
+     (verbatim/near-verbatim, not invented copy), the whiteboard's three check-in questions,
+     Dunlop's all-coworkers status view + build-status-bar ask, the honesty-badge/co-rating
+     mechanic already in ebr-app.html, and the deck's real five-coworker priority order. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-elevated:#f8ebff; --bg-deep:#f4f4f6;
+    --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047; --text-muted:#5c5c66;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --medium-soft:#f8eeda; --low:#137a46; --low-soft:#e7f6ee;
+    --nav:#17131f; --nav-fg:#c3bdd0; --nav-fg-2:#7c7590; --nav-on-bg:#2a2140;
+    --cyan:#0a95c4; --cyan-soft:#e7f6fb; --held:#8a8a93;
+    --lock:#5b6b7a; --lock-soft:#eceff2;
+    --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --sh:0 1px 2px rgba(20,10,40,.05),0 1px 3px rgba(20,10,40,.05); --sh-lg:0 6px 24px -8px rgba(20,10,40,.16);
+    --font-brand:'Manrope',-apple-system,sans-serif; --font-ui:'Inter',-apple-system,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+
+  .top{display:flex;align-items:center;gap:14px;height:52px;padding:0 18px;background:var(--nav);color:#fff}
+  .brand{font-family:var(--font-brand);font-weight:700;font-size:15px;letter-spacing:.22em}
+  .top .flag{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--nav-fg-2);border:1px solid rgba(255,255,255,.15);padding:4px 9px;border-radius:var(--radius-full)}
+
+  .shell{display:grid;grid-template-columns:216px 1fr;min-height:calc(100vh - 52px)}
+  .nav{background:var(--nav);padding:14px 12px}
+  .nav .grp{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;color:var(--nav-fg-2);padding:6px 10px 8px}
+  .nav a{display:flex;align-items:center;justify-content:space-between;gap:11px;padding:9px 11px;border-radius:var(--radius-md);font-size:13.5px;color:var(--nav-fg);margin-bottom:1px}
+  .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .nav a.on{background:var(--nav-on-bg);color:#fff}
+  .nav a.setting{font-size:12px;color:var(--nav-fg-2)}
+  .nav .cut{font-size:10.5px;color:var(--nav-fg-2);text-decoration:line-through;padding:9px 11px;opacity:.5}
+
+  .main{overflow-y:auto;padding:26px 32px 80px;max-width:1120px}
+  .crumb{font-size:12.5px;color:var(--text-tertiary);margin-bottom:8px}
+  h1{font-family:var(--font-brand);font-weight:800;font-size:24px;color:var(--text-primary);letter-spacing:-.01em;margin-bottom:6px}
+  .lede{font-size:13.5px;color:var(--text-tertiary);max-width:70ch;margin-bottom:6px}
+  .src{font-family:var(--font-mono);font-size:10px;color:var(--held);margin-bottom:26px}
+  .stack-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+  .stack-strip .lab{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-right:4px}
+  .tool{font-size:11.5px;color:var(--text-secondary);background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-full);padding:4px 11px}
+  .tool.native{color:var(--brand-strong);border-color:var(--brand-soft);background:var(--brand-soft)}
+
+  .qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+  .qcard{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--sh)}
+  .qcard .n{font-family:var(--font-mono);font-size:10px;color:var(--brand-strong);letter-spacing:.06em;margin-bottom:6px}
+  .qcard h3{font-family:var(--font-brand);font-weight:700;font-size:15px;color:var(--text-primary);margin-bottom:8px}
+  .qcard p{font-size:12.5px;color:var(--text-tertiary);line-height:1.5}
+  .qcard.scary{border-color:var(--critical-soft);background:linear-gradient(180deg,var(--critical-soft),var(--bg-surface) 40%)}
+  .qcard.scary h3{color:var(--critical)}
+
+  .sec-h{font-family:var(--font-brand);font-weight:700;font-size:13px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.04em;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+  .sec-h .tag{font-family:var(--font-mono);font-size:9.5px;text-transform:none;letter-spacing:0;color:var(--held);border:1px solid var(--border);border-radius:var(--radius-full);padding:2px 8px}
+
+  .fleet{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:32px}
+  .frow{display:grid;grid-template-columns:1.4fr .8fr 1.6fr .8fr .9fr;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border)}
+  .frow:last-child{border-bottom:none}
+  .frow.head{background:var(--bg-deep);font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.04em;padding:10px 18px}
+  .cwname{font-family:var(--font-brand);font-weight:700;font-size:13.5px;color:var(--text-primary)}
+  .cwcat{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-top:2px}
+  .rank{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--bg-deep);color:var(--text-tertiary);font-family:var(--font-mono);font-size:10px;margin-right:8px}
+  .rank.wedge{background:var(--brand-soft);color:var(--brand-strong)}
+  .rank.weak{background:var(--critical-soft);color:var(--critical)}
+  .status{display:inline-flex;align-items:center;gap:6px;font-size:11.5px}
+  .status .d{width:7px;height:7px;border-radius:50%}
+  .status.active .d{background:var(--low)} .status.active{color:var(--low)}
+  .status.dormant .d{background:var(--held)} .status.dormant{color:var(--held)}
+  .bar-wrap{display:flex;align-items:center;gap:8px}
+  .bar{flex:1;height:6px;border-radius:var(--radius-full);background:var(--bg-deep);overflow:hidden;position:relative}
+  .bar .fill{height:100%;border-radius:var(--radius-full)}
+  .bar-pct{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);min-width:30px;text-align:right}
+  .co-rated{font-family:var(--font-mono);font-size:9px;color:var(--brand-strong);white-space:nowrap}
+  .flag-cell{font-size:11.5px}
+  .flag-cell.ok{color:var(--held)}
+  .flag-cell.warn{color:var(--medium)}
+  .placeholder-note{font-family:var(--font-mono);font-size:10px;color:var(--held);padding:10px 18px;background:var(--bg-deep);border-top:1px dashed var(--border-strong)}
+</style>
+</head>
+<body>
+<div class="top"><span class="brand">HARNESS</span><span class="flag">design concept · not wired · 2026-09-03</span></div>
+<div class="shell">
+  <nav class="nav">
+    <div class="grp">APP</div>
+    <a href="#">Runbooks</a>
+    <div class="cut">Experts — cut, Dunlop 09-03</div>
+    <a href="#">MCP configs</a>
+    <a href="#">Coworkers</a>
+    <a class="on" href="#">Control plane <span style="font-size:9px;opacity:.7">(was Execution)</span></a>
+    <a class="setting" href="#">Value ledger — setting</a>
+  </nav>
+  <main class="main">
+    <div class="crumb">HARNESS › Control plane</div>
+    <h1>Control plane</h1>
+    <p class="lede">Your procedures, running as named AI coworkers across your whole stack — including competitors' tools — with a complete audit trail and a measurable ledger of the time and money saved.</p>
+    <div class="src">source: N-able Harness commercial deck, Aug 2026 — near-verbatim, not invented copy</div>
+
+    <div class="stack-strip">
+      <span class="lab">reading across:</span>
+      <span class="tool native">N-central</span><span class="tool native">Cove</span><span class="tool native">Adlumin</span>
+      <span class="tool">ConnectWise</span><span class="tool">Halo</span><span class="tool">ScalePad</span><span class="tool">+ your own</span>
+    </div>
+
+    <div class="qgrid">
+      <div class="qcard"><div class="n">01</div><h3>What are they doing?</h3><p>Live across all active coworkers — last run, current step, next scheduled action.</p></div>
+      <div class="qcard"><div class="n">02</div><h3>How well are they doing it?</h3><p>Build-quality and completeness per coworker, rated by the coworker and corrected by you — not a self-report alone.</p></div>
+      <div class="qcard scary"><div class="n">03</div><h3>What's scary?</h3><p>Anything flagged as implausible, low-confidence, or waiting on a human review — surfaced here, not buried in a tab.</p></div>
+    </div>
+
+    <div class="sec-h">All coworkers <span class="tag">Dunlop, 09-03 — needs this view</span></div>
+    <div class="fleet">
+      <div class="frow head"><div>coworker</div><div>status</div><div>build quality — human + bot co-rated</div><div>what's scary</div><div>last run</div></div>
+
+      <div class="frow"><div><span class="rank wedge">1</span><span class="cwname">QBR Advisor</span><div class="cwcat">Business reporting · the wedge, 5 of 8 would pay</div></div>
+        <div class="status active"><span class="d"></span>active</div>
+        <div class="bar-wrap"><div class="bar"><div class="fill" style="width:92%;background:var(--low)"></div></div><span class="bar-pct">92%</span><span class="co-rated">co-rated</span></div>
+        <div class="flag-cell ok">nothing flagged</div>
+        <div>2h ago</div></div>
+
+      <div class="frow"><div><span class="rank">2</span><span class="cwname">Incident Response Analyst</span><div class="cwcat">Service · diagnostics</div></div>
+        <div class="status active"><span class="d"></span>active</div>
+        <div class="bar-wrap"><div class="bar"><div class="fill" style="width:78%;background:var(--low)"></div></div><span class="bar-pct">78%</span><span class="co-rated">co-rated</span></div>
+        <div class="flag-cell ok">nothing flagged</div>
+        <div>1d ago</div></div>
+
+      <div class="frow"><div><span class="rank">3</span><span class="cwname">Environment Health Monitor</span><div class="cwcat">Operations · lifecycle</div></div>
+        <div class="status active"><span class="d"></span>active</div>
+        <div class="bar-wrap"><div class="bar"><div class="fill" style="width:65%;background:var(--medium)"></div></div><span class="bar-pct">65%</span><span class="co-rated">self-reported only</span></div>
+        <div class="flag-cell warn">2 estimates flagged &gt;8hr</div>
+        <div>3h ago</div></div>
+
+      <div class="frow"><div><span class="rank">4</span><span class="cwname">Security Tabletop</span><div class="cwcat">Security · the surprise, strong for MSSPs</div></div>
+        <div class="status active"><span class="d"></span>active</div>
+        <div class="bar-wrap"><div class="bar"><div class="fill" style="width:81%;background:var(--low)"></div></div><span class="bar-pct">81%</span><span class="co-rated">co-rated</span></div>
+        <div class="flag-cell ok">nothing flagged</div>
+        <div>6d ago</div></div>
+
+      <div class="frow"><div><span class="rank weak">5</span><span class="cwname">Alert Flood Suppressor</span><div class="cwcat">NOC · operations · weakest of the five, do not lead</div></div>
+        <div class="status dormant"><span class="d"></span>dormant</div>
+        <div class="bar-wrap"><div class="bar"><div class="fill" style="width:0%"></div></div><span class="bar-pct">—</span><span class="co-rated">never activated</span></div>
+        <div class="flag-cell ok">—</div>
+        <div>never</div></div>
+
+      <div class="placeholder-note">the build-quality bar is a placeholder — Dunlop referenced "Sidhant's coworker build status bar" as an existing pattern to match; not built to spec until someone shares it</div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

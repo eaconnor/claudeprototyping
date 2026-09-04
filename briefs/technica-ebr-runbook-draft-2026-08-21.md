@@ -49,3 +49,13 @@ Guardrails: high → explicit sign-off. Trigger: file-drop / on-demand. Autonomy
 - The EBR-review primitive definition + how it maps to Vertesia. Handoff thread.
 - Portability of this runbook off Vertesia — the Defend crux. Beth + Nicole.
 - **New, 2026-09-01:** when/whether Coworker↔Runbook assignment becomes a real persisted relationship — currently an in-memory stub (`app/runbooks/ports.py`). Not this brief's call; flagging so the rebuilt prototype doesn't get built as if it's already solved.
+
+**Correction, 2026-09-04:** the "8 tabs, opening move, gap-logic" ⟨VERIFY⟩ above is now resolved against
+the real artifact — Technica's actual EBR spreadsheet (`prototypes/ebr-coworker-005-arc/md-coworker/technica-ebr-source/`,
+reproduced tab-for-tab from `Technica_Executive Business Review - Redacted.xlsx`). Two corrections this
+draft got wrong, not just unverified: **(1)** there is no NCSC 10 / Cyber Essentials grading baseline in
+the real sheet — Cyber Essentials appears once, as an accreditation upsell, not the rubric this document's
+step 3 claims. **(2)** grading is plain text **Low/Medium/High/N/A**, not red/amber/green — no fill colour,
+no conditional formatting on that column, checked directly. See that folder's `README.md` for the full
+list of corrections (including a previously-unnamed source, RocketCyber, tracked in tab 2) before building
+against this brief's step 3 or step 8 as written.

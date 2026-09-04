@@ -26,9 +26,21 @@ versions) · `briefs/technica-ebr-runbook-draft-2026-08-21.md` · Apex Sentient 
 surfaces, confidence-and-switch) · stefanie-hammond 2026-07-30 · lewis-pope-ebr-details 2026-08-25.
 
 **Before you run this against Technica for real, know the current state:** as of 2026-08-27, 0/7 sources
-were reachable (`risk-register.md` cycle log) and no Technica EBR spreadsheet was in the repo. Wire the
-connectors first — see `WIRING-RUNBOOK.technica.md` in this folder — or this cycle will produce nothing
-but `Source-Unavailable` rows again, honestly, per invariant 4.
+were reachable (`risk-register.md` cycle log). That second gap is now closed — **Technica's actual EBR
+spreadsheet has been reproduced** at `technica-ebr-source/` in this folder (from
+`Technica_Executive Business Review - Redacted.xlsx`, already redacted at source). Wire the connectors —
+see `WIRING-RUNBOOK.technica.md` — or this cycle will still produce nothing but `Source-Unavailable` rows,
+honestly, per invariant 4.
+
+**Correction, 2026-09-04 — the real spreadsheet contradicts two load-bearing assumptions below, not just
+leaves them unverified.** Full detail in `technica-ebr-source/README.md`; the short version:
+- **No NCSC 10 / Cyber Essentials baseline exists in the real artifact.** Cyber Essentials appears once,
+  as an accreditation upsell — not the grading rubric step 3 below describes.
+- **Grading is Low/Medium/High/N/A, plain text — not red/amber/green.** Checked directly: no fill colour,
+  no conditional formatting on the Risk Level column.
+Every "NCSC 10" and "red/amber/green" reference below is the *previous* assumption, kept visible rather
+than silently edited out, so the gap between what was assumed and what's real stays legible. Do not build
+against those two claims as written.
 
 ---
 
@@ -63,8 +75,9 @@ yet a one-click connector. [CS: VERIFIED — QSR-4141, 2026-08-27] See `scout_in
 | Backup & recovery | Cove | Cove API (REST) — no vendor MCP yet, needs a dev-built bridge | Measured |
 | Billing / usage (optional) | **Billing MCP** (POC) | invoice totals, usage trends, charge explanations — POC, not live | Estimated |
 | Awareness training | usecure | **no MCP, no confirmed API** — hand-supplied or client-interview | Estimated |
-| Technica EBR file | operator's 8-tab Excel | not in repo as of 2026-08-27; 8 tabs / opening move / gap-logic are `⟨VERIFY with David⟩` | your judgment |
-| Carry-forward | previous Technica `risk-register.md` | read the last committed version — cycle 1 has none | your judgment |
+| Technica EBR file | operator's 8-tab Excel | **reproduced** at `technica-ebr-source/` — 8 real tabs, structure confirmed; per-cycle content still needs a fresh export each quarter | your judgment |
+| Carry-forward | Last Meeting Notes / Meeting Notes columns, per risk row (tab 3) | this **is** the real continuity mechanism — not a separate diff step against a prior register | Measured |
+| RocketCyber alerts/compromises | tab 2 dashboard metrics | `[?]` — not in any Sources table before this reproduction; unresolved whether it's a live connector target, legacy tooling, or a gap. Do not fold into "Adlumin" without confirming. | Unverified |
 | Exec summary | you | not inferable from any source | your judgment |
 
 > **Prefer N-query** for anything on the N-able GraphQL supergraph (device/patch/security/hierarchy) — one
@@ -79,12 +92,19 @@ yet a one-click connector. [CS: VERIFIED — QSR-4141, 2026-08-27] See `scout_in
 
 1. **Ingest.** Read Technica's EBR file + pull each source above. Flag any stale/absent source as
    `Source-Unavailable` (that is itself a finding).
-2. **Continuity / delta first.** Read the last committed Technica `risk-register.md`. Which commitments were
-   kept / slipped / rolled? What changed since? Open on the delta, not a blank re-check.
-   `⟨VERIFY: does David open on the delta?⟩`
-3. **Judge each area** against the **NCSC 10 / Cyber Essentials** baseline. For each gap → consequence
-   (business + liability) → priority. Grade **red / amber / green**.
-   `⟨VERIFY: the exact areas + gap-logic are David's⟩`
+2. **Continuity / delta first.** Confirmed 2026-09-04: in practice this is row-level, not a separate pass —
+   each risk carries a "Last Meeting Notes" / "Meeting Notes" column pair in the register itself (tab 3).
+   Read those before proposing anything new. Whether David *opens* the meeting on the delta (vs. covering
+   it inline per-row) is still `⟨VERIFY⟩` — the mechanism is confirmed, the sequencing isn't.
+3. **Judge each area.** `[Superseded 2026-09-04 — see the correction near the top of this file]` For each
+   gap → consequence (business + liability) → priority. Grade **Low / Medium / High**, plain text —
+   confirmed against the real risk register, not red/amber/green. **N/A-graded rows are suppressed from
+   the client-facing surface**, per Technica's own rule (tab 3, row 9: "will be hidden from the report and
+   reviewed again for changed next EBR") — distinct from `Source-Unavailable`, which is never hidden.
+   The ~11 categories observed this cycle (Risk Management, Incident Management, Supply Chain Security,
+   Engagement & Training, Asset Management, Data Security, User Management, Architecture & Configuration,
+   Vulnerability Management, Identity & Access Management, Logging & Monitoring) are this cycle's evidence,
+   not a confirmed fixed set — `⟨VERIFY with David: does this list grow?⟩`
 4. **Translate** technical → business, Stefanie's formula: *data → risk → what it means to you →
    consequences if unactioned.* Two registers of tone: CFO / owner. No graphs or percentages in the
    client-facing surface.
@@ -181,7 +201,12 @@ one-click. Once QSR-4141 lands, `suggest_connectors` would surface N-query direc
   Vanessa (account lead) as sign-off, dated 2026-08-27. `learned-judgment.md`, same folder, still lists
   this as unresolved ("David or Vanessa?"). Someone needs to reconcile these before the next real cycle.
 - Risk tier: high vs medium — no "medium" behaviour is specified yet.
-- David's actual 8 areas, opening move, and gap-logic — encoded from the record; the tacit judgment is his.
+- **Resolved 2026-09-04:** David's 8 areas = the 8 real tabs (confirmed, not encoded-from-record). His
+  gap-logic per risk row is confirmed structurally (Category/Scenario/Date/Level/Treatment/carry-forward
+  notes). Still open: whether the ~11 categories observed this cycle are the complete set, and whether he
+  opens the meeting on the delta or covers it per-row.
+- **New 2026-09-04:** RocketCyber — tracked by Technica every cycle, absent from every prior Sources table.
+  Live connector, legacy tool being phased out, or genuine gap? Unknown — ask before assuming an answer.
 - usecure: any public API at all? Unknown. Until resolved, that area is by-hand, capped at Estimated.
 - Whether git history satisfies attestation-grade retention: [CS: UNKNOWN] — test, do not assume.
 - The Fenwick/Technica seam in this folder's git history (see "How the coworker persists" above) — Beth's

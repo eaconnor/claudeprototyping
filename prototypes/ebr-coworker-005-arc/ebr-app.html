@@ -200,7 +200,7 @@
   .report{max-width:800px}
   .exportbar{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;align-items:center} .exportbar .lbl{font-size:12px;color:var(--text-tertiary);margin-right:2px;font-family:var(--font-mono)}
   .rep-cover{background:var(--text-primary);color:#fff;border-radius:var(--radius-lg);padding:32px 34px;margin-bottom:20px;position:relative;overflow:hidden}
-  .rep-cover::after{content:"";position:absolute;right:-50px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(79,227,255,.18),transparent 65%)}
+
   .rep-cover .ey{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:#c9b8ff;margin-bottom:12px;position:relative}
   .rep-cover h2{font-family:var(--font-brand);font-weight:800;font-size:32px;color:#fff;margin-bottom:8px;letter-spacing:-.02em;position:relative}
   .rep-cover .meta{font-size:12.5px;color:#d5c9ef;position:relative}
@@ -524,10 +524,23 @@
   @media(max-width:1000px){.conn-row{grid-template-columns:1fr auto} .conn-scope,.conn-sync,.conn-act{grid-column:1/-1}}
   /* Clients — the home screen */
   .cl-head{font-size:12.5px;color:var(--text-tertiary);margin-bottom:14px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap} .cl-head b{color:var(--text-primary)}
-  .cl-key{font-family:var(--font-mono);font-size:9.5px;color:var(--held);margin-left:auto}
+  .cl-key{font-family:var(--font-mono);font-size:9.5px;color:var(--held)}
+  .cl-bar{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  .cl-search{font-family:var(--font-ui);font-size:13px;padding:8px 11px;border:1px solid var(--border-strong);border-radius:var(--radius-md);min-width:210px;color:var(--text-primary);background:var(--bg-surface)}
+  .cl-search:focus{outline:none;border-color:var(--brand-strong)}
+  .cl-stat{font-size:12.5px;color:var(--text-tertiary)} .cl-stat b{color:var(--text-primary)}
+  .cl-group{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:18px 0 8px}
+  .cl-group:first-of-type{margin-top:0}
+  .cl-gh{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);cursor:pointer}
   .cl-none{font-family:var(--font-mono);font-size:9.5px;color:var(--held)}
   .rv-reason{font-size:11.5px;color:var(--text-secondary);background:var(--bg-deep);border-left:2px solid var(--brand-strong);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:7px 10px;margin:6px 0 0;line-height:1.5}
   .rv-reason b{color:var(--text-tertiary);font-weight:600}
+  .audit-export{margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary);line-height:1.6}
+  .audit-export b{color:var(--text-primary)}
+  .audit-acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .fix-preview{font-size:11px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:9px 11px;margin:7px 0 8px;line-height:1.6;max-width:52ch} .fix-preview b{color:var(--text-secondary)}
+  .handled{background:var(--bg-deep);border-radius:var(--radius-md);padding:12px 14px;margin:2px 0 18px}
+  .handled-h{font-size:12px;color:var(--text-tertiary);cursor:pointer;line-height:1.6} .handled-h b{color:var(--text-primary)}
   .cl-row{display:grid;grid-template-columns:18px minmax(150px,.9fr) minmax(240px,2fr) minmax(120px,auto) auto;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--border)}
   .cl-row>*{min-width:0} .cl-row:last-child{border-bottom:none}
   .cl-ic{font-family:var(--font-mono);font-size:12px;font-weight:700}
@@ -731,7 +744,7 @@ const AREAS=[
    tech:{src:'Your judgment',how:'Not inferable from any source',tool:'—',auth:'—',grain:'—'}},
 ];
 function techStr(a){const t=a.tech;return `${t.src} · ${t.how} · tool: ${t.tool} · auth: ${t.auth} · grain: ${t.grain}`;}
-function honestyBadge(){return `<span class="honesty-badge" tabindex="0">\u25d0 Set per build \u2014 not yet a saved link<span class="tip">Today, a coworker's runbook is configured per-build. The backend doesn't yet persist which runbook a coworker runs — this connection is in-memory only.</span></span>`;}
+function honestyBadge(){return `<span class="honesty-badge" tabindex="0">\u25d0 Set when you build the coworker<span class="tip">Today, a coworker's runbook is configured per-build. The backend doesn't yet persist which runbook a coworker runs — this connection is in-memory only.</span></span>`;}
 const FAMILY=[
   {id:'tabletop',cat:'Security',name:'Security Tabletop',desc:'Maps CVE exposure, plans remediation, triages vulnerabilities.',feed:'Feeds Risk & vulnerabilities'},
   {id:'ir',cat:'Service · diagnostics',name:'Incident Response Analyst',desc:'Root-cause analysis on tickets and device events.',feed:'Feeds Incidents & tickets'},
@@ -757,12 +770,12 @@ const SHAPES=[
 
 let S={nav:'clients', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
   extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[],
-  brMode:'build', brModeSet:false, showParseLog:false, openLineage:{}, openIv:{},
+  brMode:'build', brModeSet:false, showHandled:false, showParseLog:false, openLineage:{}, openIv:{},
   interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null,
   reviewChoice:{f1:{action:'confirm',by:'Vanessa Okonjo',at:'today 09:41'},f5:{action:'confirm',by:'David Ferreira',at:'today 09:44'},f2:{action:'confirm',by:'Vanessa Okonjo',at:'today 09:47'},f3:{action:'correct',grade:'amber',note:'Client accepted the risk in writing on 12 Aug \u2014 ref CW-2026-114',by:'Vanessa Okonjo',at:'today 09:52'}}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
-  signer:'', requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
+  clientQ:'', showFine:true, signer:'', requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
 const el=id=>document.getElementById(id);
 const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',controlplane:'<path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="2"/>',clients:'<path d="M3 21V9l6-4 6 4v12M9 21v-6h4v6M17 21V11l4 2.5V21"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
 
@@ -788,7 +801,7 @@ function applyHash(){
   if(b){S.nav='coworkers';S.ebrOpen=true;S.activated=false;S.step=+b[1];
     if(+b[1]>0){S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'nzo';S.parsed=true;}
     return;}
-  if(k==='dashboard'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=true;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'nzo';S.parsed=true;return;}
+  if(k==='dashboard'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=true;S.regView='delta';S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'nzo';S.parsed=true;return;}
   if(k==='report'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=true;S.reportOpen=true;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'nzo';S.parsed=true;return;}
   if(k==='capstone'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=false;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'nzo';S.parsed=true;return;}
 }
@@ -874,7 +887,7 @@ const CLIENTS=['All clients','Fenwick Logistics','Marlow Freight Co.','Corbett &
 const EXEC=[
   {cw:'EBR Coworker',client:'Fenwick Logistics',w:'today · 09:12',o:findingsLine()+' \u2014 drafted today',st:'held',fix:'<button class="btn btn-sm" onclick="location.hash=\'dashboard\'">Open the register \u2192</button>'},
   {cw:'Security Tabletop',client:'Corbett & Wren Legal',w:'today · 08:01',o:'CVE exposure: 6 endpoints',st:'ok'},
-  {cw:'Environment Health Monitor',client:'Marlow Freight Co.',w:'today · 09:14',o:'Paused by the system — its runbook lost its last active version',st:'fail',fix:'<button class="btn btn-sm" onclick="setNav(\'runbooks\')">Restore the runbook version \u2192</button>'},
+  {cw:'Environment Health Monitor',client:'Marlow Freight Co.',w:'today · 09:14',o:'Paused by the system. The procedure it follows had its last working version withdrawn at 09:14, so it stopped rather than run against nothing.',st:'fail',fix:'<div class="fix-preview"><b>If you restore:</b> it goes back to v2 (saved 14 Aug, the last version a human signed off), the coworker resumes on its next cycle, and nothing already sent to a client changes. Reversible.</div><button class="btn btn-sm" onclick="setNav(\'runbooks\')">Restore v2 and resume \u2192</button> <button class="btn btn-sm" onclick="setNav(\'runbooks\')">Ask someone technical first</button>'},
   {cw:'Incident Response Analyst',client:'Hallworth Print',w:'yesterday · 16:40',o:'Root cause drafted on 3 tickets',st:'ok'},
   {cw:'Incident Response Analyst',client:'Quaid Retail',w:'yesterday · 14:22',o:'Read data from a second client (Ferris Dental Group) to correlate this incident — a client-boundary crossing. Logged, and waiting for your sign-off in Approvals.',st:'boundary',fix:'<button class="btn btn-sm primary" onclick="setNav(\'controlplane\')">Sign it off in Approvals \u2192</button>'},
   {cw:'Security Tabletop',client:'Ferris Dental Group',w:'yesterday · 11:05',o:'Run failed — N-central credential expired mid-run. Nothing written.',st:'fail',fix:'<button class="btn btn-sm" onclick="setNav(\'mcp\')">Renew the credential \u2192</button> <button class="btn btn-sm">Retry run</button>'},
@@ -1021,12 +1034,12 @@ const CP_CHANGESETS=[
    note:'Correlating across two clients can be exactly right technically and still be a contractual or GDPR problem. Only you can say whether these two engagements permit it. If not, revoke and the note comes out of Quaid\u2019s register.'},
   {id:'cs-2',risk:'high',op:'activate',title:'Activate “Disk Space Monitor” v3',
    actor:'claude-code-session-a41f',at:'14:02 today',
-   changes:['Coworker family: <b>draft → active</b> (only <code>active</code> is run-eligible)','Version 3 becomes the single active version','Trust level stays <b>manual</b> — every run still waits for a human'],
+   changes:['This coworker goes from <b>draft to live</b> — only live coworkers can run at all','Version 3 becomes the single active version','Trust level stays <b>manual</b> — every run still waits for a human'],
    preview:['runbook: Endpoint disk cleanup &lt;15%','3 approved scripts','MCP: N-central, N-query'],
    note:'Activation always requires explicit human sign-off. This is a fixed limit in the model, not a setting you can turn off.'},
   {id:'cs-1',risk:'medium',op:'create',title:'Create coworker “Backup Verification Analyst” (draft)',
    actor:'claude-code-session-a41f',at:'13:47 today',
-   changes:['New coworker family in <b>draft</b>','Cannot run until separately activated — creation and activation are never the same operation'],
+   changes:['Creates it in <b>draft</b> — it cannot run yet','Cannot run until separately activated — creation and activation are never the same operation'],
    preview:['runbook: Backup verification (cloned from platform)','trust level: manual','MCP: N-central'],
    note:'Medium-risk management operations queue here for review rather than applying directly.'},
 ];
@@ -1218,24 +1231,35 @@ function renderLedger(){document.getElementById('secsub').textContent='Time our 
    home screen: one row per client, the state that matters, and a direct route to the deliverable. */
 const CLIENTBOOK=[
   {n:'Fenwick Logistics',cw:2,st:'ok',line:'Register current as of today 09:12 \u00b7 '+findingsLine(),val:'11.0 hrs · £880',act:'report'},
-  {n:'Marlow Freight Co.',cw:1,st:'fail',line:'Environment Health Monitor paused by the system at 09:14 — its runbook lost its last active version',val:'0 hrs — nothing ran',act:'fix',fixLabel:'Restore the runbook version \u2192'},
+  {n:'Marlow Freight Co.',cw:1,st:'fail',line:'Stopped at 09:14. The procedure it follows had its last working version withdrawn, so it stopped rather than run against nothing.',val:'0 hrs — nothing ran',act:'fix',fixLabel:'See how to restart it \u2192'},
   {n:'Corbett & Wren Legal',cw:1,st:'ok',line:'Security Tabletop ran today 08:01 · CVE exposure on 6 machines',val:'2.0 hrs · £160'},
   {n:'Hallworth Print',cw:1,st:'ok',line:'Root cause drafted on 3 tickets yesterday 16:40',val:'1.0 hr · £80'},
   {n:'Quaid Retail',cw:1,st:'warn',line:'A coworker correlated this client to an incident at Ferris Dental — cross-client link, needs your sign-off',val:'held pending review',act:'boundary'},
-  {n:'Ferris Dental Group',cw:1,st:'warn',line:'Run failed yesterday 11:05 — N-central credential expired mid-run. Nothing written.',val:'held — baseline was the coworker\u2019s own estimate',act:'fix',fixLabel:'Renew the credential \u2192'},
+  {n:'Ferris Dental Group',cw:1,st:'warn',line:'Run failed yesterday 11:05 \u2014 N-central credential expired mid-run. Nothing written, so this quarter\u2019s value is held rather than counted.',val:'held \u2014 the run failed, so the only baseline left was its own estimate',act:'fix',fixLabel:'Renew the credential \u2192'},
 ];
 function renderClients(){
   document.getElementById('secsub').textContent='Your book of business. One row per client — what ran, what it saved, and what needs you.';
   const needs=CLIENTBOOK.filter(c=>c.st!=='ok').length;
   const ico={ok:['\u2713','var(--low)'],warn:['\u25d0','var(--medium)'],fail:['\u2715','var(--critical)']};
-  return `<div class="cl-head"><b>${CLIENTBOOK.length} clients</b> \u00b7 <span style="color:var(--critical)">${needs} need you</span> \u00b7 ${EXEC.filter(r=>r.w.indexOf('today')===0).length} runs today, ${EXEC.length} this quarter<span class="cl-key">\u2713 nothing needed &nbsp; \u25d0 waiting on you &nbsp; \u2715 broken</span></div>
-    <div class="dcard">${CLIENTBOOK.map(c=>{const[g,col]=ico[c.st];return `<div class="cl-row">
+  const q=(S.clientQ||'').toLowerCase();
+  const shown=CLIENTBOOK.filter(c=>!q||c.n.toLowerCase().indexOf(q)>-1);
+  const attn=shown.filter(c=>c.st!=='ok'), fine=shown.filter(c=>c.st==='ok');
+  const row=c=>{const[g,col]=ico[c.st];return `<div class="cl-row">
       <span class="cl-ic" style="color:${col}">${g}</span>
       <span class="cl-main"><b>${c.n}</b><span class="cl-cw">${c.cw} coworker${c.cw===1?'':'s'}</span></span>
       <span class="cl-line" style="${c.st==='fail'?'color:var(--critical)':c.st==='warn'?'color:var(--medium)':''}">${c.line}</span>
       <span class="cl-val">${c.val}</span>
       <span class="cl-act">${c.act==='report'?`<button class="btn btn-sm primary" onclick="location.hash='report'">Client report \u2192</button>`:c.act==='fix'?`<button class="btn btn-sm" onclick="setNav('execution')">${c.fixLabel}</button>`:c.act==='boundary'?`<button class="btn btn-sm" onclick="setNav('controlplane')">Sign it off \u2192</button>`:'<span class="cl-none">nothing needed</span>'}</span>
-    </div>`;}).join('')}</div>`;
+    </div>`;};
+  return `<div class="cl-bar">
+      <input class="cl-search" placeholder="Find a client\u2026" value="${(S.clientQ||'').replace(/"/g,'&quot;')}" oninput="S.clientQ=this.value;render()">
+      <span class="cl-stat"><b>${CLIENTBOOK.length}</b> clients \u00b7 <b style="color:var(--critical)">${needs}</b> need you \u00b7 <b>${EXEC.filter(r=>r.w.indexOf('today')===0).length}</b> runs today, ${EXEC.length} this quarter</span>
+    </div>
+    ${attn.length?`<div class="cl-group"><span class="cl-gh">Needs you (${attn.length})</span><span class="cl-key">\u25d0 waiting on you &nbsp; \u2715 broken</span></div>
+    <div class="dcard">${attn.map(row).join('')}</div>`:''}
+    ${fine.length?`<div class="cl-group"><span class="cl-gh" onclick="S.showFine=!S.showFine;render()">Running clean (${fine.length}) <span class="cp-more">${S.showFine===false?'show \u25be':'hide \u25b4'}</span></span><span class="cl-key">\u2713 nothing needed</span></div>
+    ${S.showFine===false?'':`<div class="dcard">${fine.map(row).join('')}</div>`}`:''}
+    ${!shown.length?`<div class="dcard"><div style="font-size:13px;color:var(--text-tertiary);padding:6px 0">No client matches \u201c${S.clientQ}\u201d.</div></div>`:''}`;
 }
 const SECTION={clients:renderClients,runbooks:renderRunbooks,experts:renderExperts,mcp:renderMcp,controlplane:renderControlPlane,execution:renderExecution,ledger:renderLedger};
 
@@ -1269,7 +1293,7 @@ function renderList(){
 
 /* ---- Build flow ---- */
 function ebrHead(){
-  const chips=S.activated?`<span class="chip">Tenant</span><span class="chip active"><span class="d"></span>Active</span><span class="chip mode">${T('assisted','Assisted')}</span>`:`<span class="chip">Tenant</span><span class="chip draft">◐ Draft</span><span class="chip mode">${T('assisted','Assisted')}</span>`;
+  const chips=S.activated?`<span class="chip">Fenwick Logistics</span><span class="chip active"><span class="d"></span>Active</span><span class="chip mode">${T('assisted','Assisted')}</span>`:`<span class="chip">Fenwick Logistics</span><span class="chip draft">◐ Draft</span><span class="chip mode">${T('assisted','Assisted')}</span>`;
   const actions=S.activated?`<button class="btn">Edit</button><button class="btn">Pause</button><button class="btn">Clone</button><button class="btn">Archive</button><button class="btn primary" style="margin-left:auto" onclick="openReport()">Open the client report →</button><button class="btn" onclick="runCycle()">Run EBR cycle</button>`:`<button class="btn" onclick="closeEbr()">Cancel</button>`;
   el('head').innerHTML=`<div class="crumb"><span class="lk" onclick="setNav('coworkers')">Coworkers</span><span class="sep">›</span><span class="lk" onclick="closeEbr()">EBR Coworker</span><span class="sep">›</span>Fenwick Logistics</div>
     <div class="title-row"><div class="back" onclick="closeEbr()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div><h1>EBR Coworker — Fenwick Logistics</h1></div>
@@ -1379,8 +1403,12 @@ function buildModeBody(sh,does,back){
     <div class="callout">Day one: it drafts <b>${does} of ${AREAS.length}</b> areas and hands you <b>${back}</b>. ${T('held','Unverified')} never reaches a client until a human vouches.</div>
     <div class="cards" style="margin:14px 0 18px"><div class="card ${S.preset==='sure'?'picked':''}" onclick="setPreset('sure')"><div class="rec">START HERE</div><div class="nm">Only what it’s sure of</div><div class="d">Drafts measured/benchmarked; hands you the guesses.</div></div><div class="card ${S.preset==='whole'?'picked':''}" onclick="setPreset('whole')"><div class="nm">Draft the whole register</div><div class="d">Attempts everything; flags low-confidence for you.</div></div></div>
     <div class="rc-wrap" style="margin-bottom:18px"><div class="rc-step"><div class="rc-head" onclick="toggleParseLog()"><span class="rc-t">Parse details — how ${sh?sh.name.toLowerCase():'your report'} was read</span><span class="rc-chip ${S.parsed?'ok':'sub'}">${S.parsed?'Parsed':'Reading…'}</span><span class="rc-caret">${S.showParseLog?'▲':'▼'}</span></div><div class="rc-body ${S.showParseLog?'open':''}"><div class="console" id="pc">${S.parseLog.map(l=>`<div class="cl ${l.cls}"><span class="ts">${l.t}</span><span>${l.text}</span></div>`).join('')}</div>${parseQuality}</div></div></div>
-    <div class="sec-h" style="margin-bottom:10px">Each area, source to finding</div>
-    ${AREAS.map(a=>areaCard(a)).join('')}
+    <div class="sec-h" style="margin-bottom:10px">The ${back} it needs you for</div>
+    ${AREAS.filter(a=>a.avail==='client'||a.avail==='you').map(a=>areaCard(a)).join('')}
+    <div class="handled">
+      <div class="handled-h" onclick="S.showHandled=!S.showHandled;render()"><b>${AREAS.length-back} areas it handles on its own</b> \u2014 ${AREAS.filter(a=>!(a.avail==='client'||a.avail==='you')).map(a=>a.sec).join(' \u00b7 ')} <span class="cp-more">${S.showHandled?'hide \u25b4':'check them \u25be'}</span></div>
+      ${S.showHandled?`<div style="margin-top:12px">${AREAS.filter(a=>!(a.avail==='client'||a.avail==='you')).map(a=>areaCard(a)).join('')}</div>`:''}
+    </div>
     <div style="font-size:12px;color:var(--text-tertiary);margin:4px 0 18px">You never have to send an interview — you can fill these yourself. The point is the coworker does the chasing, not you.</div>
     <div class="handhold"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M4 20v-1a5 5 0 015-5"/><path d="M15 11l2 2 4-4"/><path d="M14 20v-1a4 4 0 013-3.9"/></svg></div>
       <div><h4>Add the Advisor for what it hands back <span class="prem">Premium</span></h4><p>The findings it hands you are the judgment calls. The Advisor turns a raw finding into plain talking points and a recommended next step — so the person presenting doesn’t have to be the person who understands the vulnerability. Built for the account lead, not just the engineer.</p>
@@ -1510,7 +1538,9 @@ function renderDashboard(){
     el('stage').innerHTML=renderReport(); return; }
   if(S.tab==='Overview') el('stage').innerHTML=overview();
   else if(S.tab==='Runs') el('stage').innerHTML=runsTab();
-  else if(S.tab==='Audit') el('stage').innerHTML=`<div class="dcard"><h2>Audit trail</h2><div class="sub">Every change is a git commit — the dated evidence chain</div><div class="stat"><span>Q3 2026 register committed · today 09:12</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="stat"><span>Grade corrected: phishing kept Amber</span><span class="v muted">David · teach-back</span></div><div class="stat"><span>Q2 2026 cycle committed · 14 May</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="narr" style="margin-top:14px">"Prove it to opposing counsel" — the register’s git history is the attestation trail. Nothing is deleted; declined risks stay on record.</div></div>`;
+  else if(S.tab==='Audit') el('stage').innerHTML=`<div class="dcard"><h2>Audit trail</h2><div class="sub">Every change is a git commit — the dated evidence chain</div><div class="stat"><span>Q3 2026 register committed · today 09:12</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="stat"><span>Grade corrected: phishing kept Amber</span><span class="v muted">David · teach-back</span></div><div class="stat"><span>Q2 2026 cycle committed · 14 May</span><span class="v muted">by N-zo, approved Vanessa</span></div><div class="narr" style="margin-top:14px">"Prove it to opposing counsel" — the register’s git history is the attestation trail. Nothing is deleted; declined risks stay on record.</div>
+    <div class="audit-export"><div><b>Evidence bundle</b> — every finding with its evidence class and source call, every grade change with the human who made it and their stated reason, every approval with its delegation chain, every held entry and why. Generated from the append-only trail, not re-derived from this view.</div>
+      <div class="audit-acts"><button class="btn primary">Export signed bundle (PDF + JSON)</button><button class="btn">Scope to a date range</button><button class="btn">Map to NCSC 10 / Cyber Essentials</button></div></div></div>`;
   else el('stage').innerHTML=`<div class="empty"><b>${S.tab}</b><br>Real HARNESS tab, in the shell for fidelity. The EBR dashboard lives on <span style="color:var(--brand-strong);cursor:pointer" onclick="setTab('Overview')">Overview</span>.</div>`;
 }
 function overview(){
@@ -1676,7 +1706,7 @@ function renderReport(){
     <div class="rep-sec"><h3>What this cost you in our time</h3>
       <div class="rep-val"><div class="rv"><span class="n">11.0</span><span class="l">hours of our people&rsquo;s time this quarter</span></div><div class="rv"><span class="n">&pound;880</span><span class="l">at your &pound;80/hr contracted rate</span></div><div class="rv"><span class="n">3</span><span class="l">review cycles, all evidenced</span></div></div>
       <p class="rep-note">This is time our coworkers did the groundwork for and our people checked &mdash; not an estimate of what you saved. Where a figure came from the machine&rsquo;s own guess rather than a measured baseline, we leave it out of this number entirely rather than round it in our favour.</p></div>
-    <div class="rep-sec"><h3>What&rsquo;s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five. The direction is right on every front — this is the story worth telling at renewal.</p></div>
+    <div class="rep-sec"><h3>What&rsquo;s improved since last review</h3><p class="rep-note">Admin accounts without protection are down from eight to three. The share of machines kept fully up to date has risen steadily all year. Staff clicking a test phishing email is down from a third to around one in five \u2014 this one figure is typed in by hand from your training platform rather than read automatically, so treat it as indicative. The direction is right on every front — this is the story worth telling at renewal.</p></div>
     <div class="rep-sec"><h3>Decisions for you</h3>
       <div class="decision"><span>Fund MFA enforcement on the remaining admin accounts</span><span class="dv" style="color:var(--critical)">Recommended now</span></div>
       <div class="decision"><span>Approve remediation of the exposed machines</span><span class="dv" style="color:var(--critical)">Recommended now</span></div>

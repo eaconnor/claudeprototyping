@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control plane v9 — HARNESS</title>
+<!-- v9 — built from an Opus-planned pass after v8 (never critiqued — caught by grep, not by a
+     critic round). v8 had four verified regressions: a "(4 rated)" stat that matched nothing
+     visible (3 distinct rated coworkers, not 4); a hero line claiming "4 running" when only 3
+     were; the entire per-row scope/evidence trail from v7 deleted while the page-level "0
+     downstream actions" claim stayed, now unsubstantiated and contradicted by Quaid's visible
+     cascade; and the client-filter + report-scope-note from v6/v7 silently dropped. All fixed here.
+     Also resolves the six gaps the v7 critic named: Marcus's "Investigate/Adjust" dead-ends now
+     expand into an actual correction workflow (edit the estimate, approve/reject, fix the runbook
+     cause); Deepa's audit-log links get a depth/format preview instead of being a black box;
+     Tom's "flagged, then what?" gets a real review-thread lifecycle (open/monitoring/resolved,
+     shown in all three states so the vocabulary is legible); "quality" is finally defined (share of
+     outputs confirmed unchanged, last 50 runs) and shown as a checkable fraction, not a bare %;
+     the dormant coworker is reframed as a hiring decision, not a faded copy of an active row; and
+     buttons only appear where a row states a condition requiring one — "Adjust rating" no longer
+     shows up on rows that say "consistent, no issue." The toggle from v8 is now functional (real
+     JS, driven by location.hash, screenshot-able in two states) instead of decorative — "By
+     coworker" is v7's table, adapted, and it earns its place by showing the one thing the
+     client-first view structurally can't: that Incident Response Analyst is one coworker running
+     at three clients, so the same accuracy number and the same cross-client correlation appear in
+     both views and reconcile against the same headline count. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-deep:#f4f4f6; --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --medium-soft:#f8eeda; --low:#137a46; --low-soft:#e7f6ee;
+    --held:#8a8a93; --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --font-brand:'Manrope',sans-serif; --font-ui:'Inter',sans-serif; --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);font-size:13.5px;line-height:1.5;padding:26px;max-width:1220px;margin:0 auto}
+  .head-row{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:14px}
+  h1{font-family:var(--font-brand);font-weight:800;font-size:21px;color:var(--text-primary)}
+  .sub{font-size:12px;color:var(--text-tertiary);margin-top:2px}
+  .export-btn{font-family:var(--font-brand);font-weight:700;font-size:12.5px;background:var(--bg-surface);color:var(--text-primary);border:1.5px solid var(--text-primary);border-radius:var(--radius-md);padding:10px 16px;white-space:nowrap}
+
+  .view-toggle{display:flex;gap:0;margin-bottom:16px;border:1px solid var(--border-strong);border-radius:var(--radius-md);width:fit-content;overflow:hidden}
+  .view-toggle a{font-family:var(--font-brand);font-weight:700;font-size:12px;padding:8px 16px;text-decoration:none;background:var(--bg-surface);color:var(--text-tertiary);display:inline-block}
+  body[data-view="client"] .view-toggle a[href="#client"]{background:var(--text-primary);color:#fff}
+  body[data-view="coworker"] .view-toggle a[href="#coworker"]{background:var(--text-primary);color:#fff}
+
+  .hero-line{display:flex;align-items:center;gap:14px;background:var(--critical-soft);border:1px solid var(--critical);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:14px}
+  .hero-line .num{font-family:var(--font-brand);font-weight:800;font-size:28px;color:var(--critical)}
+  .hero-line .tx{font-size:13px;color:var(--text-primary)} .hero-line .tx b{font-weight:700}
+
+  .kpis-minor{display:flex;gap:18px;font-size:11.5px;color:var(--text-tertiary);margin-bottom:6px;padding:0 2px;flex-wrap:wrap;align-items:center}
+  .kpis-minor b{color:var(--text-primary);font-family:var(--font-mono)}
+  .kpis-minor .denom{color:var(--held);font-size:10px}
+  .audit-lk{font-size:10.5px;color:var(--text-tertiary);text-decoration:underline}
+  .metric-def{font-size:10px;color:var(--held);margin-bottom:18px;padding:0 2px;max-width:80ch}
+
+  .evidence-strip{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:9px 12px;margin:18px 0;line-height:1.7}
+  .evidence-strip a{color:var(--brand-strong)}
+
+  .section-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);margin:20px 0 8px;padding-left:2px}
+  .section-label:first-of-type{margin-top:0}
+
+  .client-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .client-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
+  .client-card.attn{border-color:var(--critical);box-shadow:inset 4px 0 0 var(--critical)}
+  .client-name{font-family:var(--font-brand);font-weight:700;font-size:14px;color:var(--text-primary)}
+  .client-meta{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-top:1px}
+  .shared-note{font-size:9.5px;color:var(--held);margin-top:2px}
+  .cw-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--bg-deep)}
+  .cw-row:first-of-type{margin-top:12px}
+  .cw-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .cw-name{font-family:var(--font-brand);font-weight:700;font-size:12.5px;color:var(--text-primary)}
+  .cw-cat{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary)}
+  .status{display:inline-flex;align-items:center;gap:5px;font-size:11px} .status .d{width:6px;height:6px;border-radius:50%}
+  .status.active .d{background:var(--low)} .status.active{color:var(--low)}
+  .status.holding .d{background:var(--critical)} .status.holding{color:var(--critical);font-weight:700}
+  .status.dormant .d{background:var(--held)} .status.dormant{color:var(--held)}
+  .qual{font-family:var(--font-mono);font-size:11.5px;color:var(--text-secondary);margin-top:4px}
+  .qual b{color:var(--text-primary);font-weight:700}
+  .qual .arrow{color:var(--held);margin:0 2px}
+  .qual.dropped b{color:var(--medium)}
+  .frac{color:var(--held);font-size:10px}
+  .why{font-size:10px;color:var(--text-tertiary);margin-top:3px;max-width:260px}
+  .why.warn{color:var(--critical);font-weight:600}
+  .thread{font-size:9.5px;font-family:var(--font-mono);margin-top:5px;padding:3px 7px;border-radius:var(--radius-sm);display:inline-block}
+  .thread.open{color:var(--critical);background:var(--critical-soft);font-weight:700}
+  .thread.monitoring{color:var(--medium);background:var(--medium-soft);font-weight:600}
+  .thread.resolved{color:var(--low);background:var(--low-soft)}
+  .scope-line{font-size:9.5px;color:var(--held);font-family:var(--font-mono);margin-top:5px;max-width:280px}
+  .log-peek{font-size:9px;font-family:var(--font-mono);color:var(--held);margin-top:2px}
+  .cw-right{text-align:right;flex:none}
+  .fixbtn{font-family:var(--font-brand);font-weight:700;font-size:10.5px;border-radius:var(--radius-md);padding:5px 9px;white-space:nowrap;text-align:center;border:1px solid var(--border-strong);background:var(--bg-surface);color:var(--text-secondary);display:inline-block;margin-bottom:4px}
+  .fixbtn.primary{background:var(--critical);border:none;color:#fff}
+  .fixbtn.investigate{background:var(--medium);border:none;color:#fff}
+  .cw-right .audit-lk{display:block;font-size:9.5px;margin-top:2px}
+
+  .remediate{background:var(--bg-deep);border-radius:var(--radius-md);padding:10px 12px;margin-top:10px}
+  .remediate-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)}
+  .remediate-item:last-of-type{border-bottom:none}
+  .remediate-item .task{font-size:11px;color:var(--text-secondary);max-width:280px}
+  .remediate-item .task b{color:var(--text-primary)}
+  .correct-field{font-family:var(--font-mono);font-size:10.5px;color:var(--medium);white-space:nowrap}
+  .correct-field input{font-family:var(--font-mono);font-size:10.5px;width:56px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:2px 4px;color:var(--text-primary)}
+  .remediate-actions{display:flex;gap:5px;flex:none}
+  .remediate-actions .fixbtn{margin-bottom:0;font-size:9.5px;padding:4px 7px}
+  .fix-cause{font-size:10px;color:var(--text-tertiary);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-strong)}
+  .fix-cause a{color:var(--brand-strong)}
+
+  .onboard-strip{background:var(--bg-deep);border-left:3px solid var(--held);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:12px 16px}
+  .onboard-strip .oh{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--held);margin-bottom:4px}
+  .onboard-strip .desc{font-size:11.5px;color:var(--text-secondary);margin-bottom:4px}
+  .onboard-strip .grants{font-size:10.5px;color:var(--text-tertiary);margin-bottom:8px}
+  .onboard-strip .excl{font-size:9.5px;color:var(--held);margin-top:8px}
+
+  table{width:100%;border-collapse:collapse;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  th{text-align:left;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-tertiary);background:var(--bg-deep);padding:9px 12px;border-bottom:1px solid var(--border)}
+  td{padding:13px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr.flagged{background:var(--critical-soft);box-shadow:inset 5px 0 0 var(--critical)}
+  .cwname{font-family:var(--font-brand);font-weight:700;font-size:13px;color:var(--text-primary)}
+  .client-lk{font-size:11px;color:var(--brand-strong)}
+  .cwcat{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary);margin-top:2px}
+  .needs-review-tag{display:inline-block;font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:.03em;color:var(--critical);border:1px solid var(--critical);border-radius:var(--radius-sm);padding:1px 5px;margin-top:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+  .chip{font-family:var(--font-mono);font-size:9.5px;border-radius:var(--radius-sm);padding:2px 6px;background:var(--bg-deep);color:var(--text-secondary)}
+  .chip.write{background:var(--brand-soft);color:var(--brand-strong)}
+  .actions{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+  .filter-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .filter-row label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;color:var(--text-tertiary)}
+  .client-select{font-family:var(--font-ui);font-size:12.5px;font-weight:600;color:var(--text-primary);background:var(--bg-surface);border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:7px 10px}
+
+  #view-client, #view-coworker{display:none}
+  body[data-view="client"] #view-client{display:block}
+  body[data-view="coworker"] #view-coworker{display:block}
+</style>
+</head>
+<body data-view="client">
+<script>
+  (function(){
+    function apply(){
+      var h = (location.hash||'').replace('#','');
+      var q = new URLSearchParams(location.search).get('view');
+      var v = (h === 'coworker' || q === 'coworker') ? 'coworker' : 'client';
+      document.body.dataset.view = v;
+    }
+    apply();
+    window.addEventListener('hashchange', apply);
+  })();
+</script>
+
+  <div class="head-row">
+    <div><h1>Control plane</h1><p class="sub">Your procedures, running as named AI coworkers across your stack.</p></div>
+    <button class="export-btn">Fleet summary (PDF) →</button>
+  </div>
+
+  <div class="view-toggle"><a href="#client">By client</a><a href="#coworker">By coworker</a></div>
+
+  <div class="hero-line"><span class="num">1</span><span class="tx"><b>coworker is holding</b> — it will not write anything until you review it, at Marlow Freight Co. below. 3 more are running under your standing sign-off. 1 has never been activated.</span></div>
+  <div class="kpis-minor"><span><b>6</b> clients</span><span><b>5</b> coworkers</span><span><b>1</b> needs review</span><span><b>78–92%</b> accuracy <span class="denom">(3 of 5 rated · 1 holding · 1 never run)</span></span><span><b>0</b> downstream actions outside stated scope <span class="denom">(1 authorized cross-client link, logged)</span></span></div>
+  <div class="metric-def">Accuracy = share of a coworker's outputs a human confirmed without correction, in its last 50 runs. Not timeliness, not tone. Scored per coworker across all its clients — the same fraction is the same everywhere that coworker appears.</div>
+
+  <!-- ============ VIEW: BY CLIENT ============ -->
+  <div id="view-client">
+
+    <div class="section-label">Needs your attention (1)</div>
+    <div class="client-grid">
+      <div class="client-card attn" style="grid-column:1/-1">
+        <div class="client-name">Marlow Freight Co.</div><div class="client-meta">last activity 09:14 today</div>
+        <div class="cw-row">
+          <div class="cw-top">
+            <div>
+              <div class="cw-name">Environment Health Monitor</div><div class="cw-cat">Operations · lifecycle</div>
+              <div class="status holding"><span class="d"></span>holding</div>
+              <div class="thread open">OPEN · held 41m ago · awaiting Marcus</div>
+              <div class="why warn">Self-estimated &gt;8hr on 2 tasks — implausible. Held before writing to the register.</div>
+            </div>
+            <div class="cw-right"><a class="audit-lk" href="#">full log (58 entries) →</a><div class="log-peek">last entry 09:14:02 · read:telemetry · signed ✓</div></div>
+          </div>
+          <div class="remediate">
+            <div class="remediate-item">
+              <div class="task"><b>Task 4821</b> — replace failed switch at Marlow DC-2 · self-estimated 8h 40m</div>
+              <div class="correct-field">→ <input type="text" value="40m"></div>
+              <div class="remediate-actions"><button class="fixbtn">Approve as-is</button><button class="fixbtn primary">Reject write</button></div>
+            </div>
+            <div class="remediate-item">
+              <div class="task"><b>Task 4839</b> — firmware rollback, 3 devices · self-estimated 9h 15m</div>
+              <div class="correct-field">→ <input type="text" value="1h 30m"></div>
+              <div class="remediate-actions"><button class="fixbtn">Approve as-is</button><button class="fixbtn primary">Reject write</button></div>
+            </div>
+            <div class="fix-cause">This coworker's time-estimate step has produced 3 implausible values in 30 days. <a href="#">Edit the estimation step in the runbook →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Watching — 1 monitoring, 1 resolved, 1 no action needed (3)</div>
+    <div class="client-grid">
+      <div class="client-card">
+        <div class="client-name">Hallworth Print</div><div class="client-meta">last activity 04:20 today</div>
+        <div class="shared-note">shared coworker — also runs at Ferris Dental Group, Quaid Retail</div>
+        <div class="cw-row">
+          <div class="cw-top">
+            <div>
+              <div class="cw-name">Incident Response Analyst</div><div class="cw-cat">Service · diagnostics</div>
+              <div class="status active"><span class="d"></span>active</div>
+              <div class="qual dropped">80%<span class="arrow">→</span><b>78%</b> accuracy <span class="frac">(39 of 50 confirmed unchanged)</span></div>
+              <div class="why">Adjusted down: missed one alert correlation</div>
+              <div class="thread monitoring">MONITORING · reopens if it recurs before 2026-09-10</div>
+              <div class="scope-line">scope: read tickets, logs · wrote 1 draft · no config or credential access</div>
+            </div>
+            <div class="cw-right"><a class="audit-lk" href="#">full log (94 entries) →</a><div class="log-peek">last entry 04:20:51 · signed ✓</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-name">Ferris Dental Group</div><div class="client-meta">last activity 06:02 today</div>
+        <div class="shared-note">shared coworker — also runs at Hallworth Print, Quaid Retail</div>
+        <div class="cw-row">
+          <div class="cw-top">
+            <div>
+              <div class="cw-name">Incident Response Analyst</div><div class="cw-cat">Service · diagnostics</div>
+              <div class="status active"><span class="d"></span>active</div>
+              <div class="qual dropped">80%<span class="arrow">→</span><b>78%</b> accuracy <span class="frac">(39 of 50 confirmed unchanged)</span></div>
+              <div class="why">Adjusted down: missed one alert correlation</div>
+              <div class="scope-line">scope: read tickets, logs · wrote 1 draft · no config or credential access</div>
+            </div>
+            <div class="cw-right"><a class="audit-lk" href="#">full log (77 entries) →</a><div class="log-peek">last entry 06:02:14 · signed ✓</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="client-card" style="grid-column:1/-1">
+        <div class="client-name">Quaid Retail</div><div class="client-meta">last activity 07:38 today</div>
+        <div class="shared-note">shared coworker — also runs at Hallworth Print, Ferris Dental Group</div>
+        <div class="cw-row">
+          <div class="cw-top">
+            <div>
+              <div class="cw-name">Incident Response Analyst</div><div class="cw-cat">Service · diagnostics</div>
+              <div class="status active"><span class="d"></span>active</div>
+              <div class="qual dropped">80%<span class="arrow">→</span><b>78%</b> accuracy <span class="frac">(39 of 50 confirmed unchanged)</span></div>
+              <div class="why">Adjusted down: missed one alert correlation</div>
+              <div class="thread resolved">RESOLVED · Marcus, 5h ago — correlation was real; retrained the correlation step (v4 → v5) · <a href="#" style="color:inherit">resolution record →</a></div>
+              <div class="scope-line">scope: read tickets, logs · wrote 1 draft · no config or credential access · 1 cross-client link to Ferris Dental Group (logged, resolved)</div>
+            </div>
+            <div class="cw-right"><a class="audit-lk" href="#">full log (81 entries) →</a><div class="log-peek">last entry 07:38:29 · signed ✓</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Clean — nothing to speak to (2)</div>
+    <div class="client-grid">
+      <div class="client-card">
+        <div class="client-name">Fenwick Logistics</div><div class="client-meta">last activity 07:12 today</div>
+        <div class="cw-row">
+          <div class="cw-top">
+            <div>
+              <div class="cw-name">QBR Advisor</div><div class="cw-cat">Business reporting</div>
+              <div class="status active"><span class="d"></span>active</div>
+              <div class="qual">92%<span class="arrow">→</span><b>92%</b> accuracy <span class="frac">(46 of 50 confirmed unchanged)</span></div>
+              <div class="why">Consistent with last 3 cycles</div>
+              <div class="scope-line">scope: read PSA, backup, device · wrote 1 entry · no config or credential access</div>
+            </div>
+            <div class="cw-right"><a class="audit-lk" href="#">full log (112 entries) →</a><div class="log-peek">last entry 07:12:44 · signed ✓</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-name">Corbett &amp; Wren Legal</div><div class="client-meta">last activity 08:01 today</div>
+        <div class="cw-row">
+          <div class="cw-top">
+            <div>
+              <div class="cw-name">Security Tabletop</div><div class="cw-cat">Security</div>
+              <div class="status active"><span class="d"></span>active</div>
+              <div class="qual">81%<span class="arrow">→</span><b>80%</b> accuracy <span class="frac">(40 of 50 confirmed unchanged)</span></div>
+              <div class="why">Consistent with last cycle</div>
+              <div class="scope-line">scope: read compliance, incidents · wrote 1 report · no config or credential access</div>
+            </div>
+            <div class="cw-right"><a class="audit-lk" href="#">full log (68 entries) →</a><div class="log-peek">last entry 08:01:19 · signed ✓</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Not yet hired (1)</div>
+    <div class="onboard-strip">
+      <div class="oh">Alert Flood Suppressor</div>
+      <div class="desc">Configured 2026-08-12, never run. No credentials, no read access, until you activate it.</div>
+      <div class="grants">Activating grants: read NOC alert queue · write: suppress and group alerts (reversible). First 20 runs go to holding for your review.</div>
+      <button class="fixbtn">Review and activate</button>
+      <button class="fixbtn" style="margin-left:6px">Archive</button>
+      <div class="excl">Not counted in the accuracy or scope figures above — nothing has run.</div>
+    </div>
+
+    <div class="evidence-strip">Every action logged: timestamp · coworker · client · tool called · scope claimed · scope used · human decision. Append-only, 400-day retention.<br>Export: CSV · JSON · signed PDF <a href="#">→</a></div>
+  </div>
+
+  <!-- ============ VIEW: BY COWORKER ============ -->
+  <div id="view-coworker">
+    <div class="filter-row">
+      <label>Viewing</label>
+      <select class="client-select">
+        <option>All clients (6)</option>
+        <option>Marlow Freight Co.</option>
+        <option>Fenwick Logistics</option>
+        <option>Corbett &amp; Wren Legal</option>
+        <option>Hallworth Print</option>
+        <option>Ferris Dental Group</option>
+        <option>Quaid Retail</option>
+      </select>
+    </div>
+
+    <table>
+      <tr><th>Coworker</th><th>Clients</th><th>Status</th><th>Accuracy — self-rated → confirmed</th><th>Scope &amp; cascading risk</th><th>Review thread</th><th></th></tr>
+
+      <tr class="flagged">
+        <td><div class="cwname">Environment Health Monitor</div><div class="cwcat">Operations · lifecycle</div></td>
+        <td><a class="client-lk" href="#">Marlow Freight Co.</a></td>
+        <td><span class="status holding"><span class="d"></span>holding</span><div class="needs-review-tag">needs review</div></td>
+        <td><span class="qual"><b>not yet scored</b></span></td>
+        <td><div class="chips"><span class="chip">read: telemetry</span><span class="chip write">write: 2 pending</span></div></td>
+        <td><div class="thread open">OPEN · 41m ago</div></td>
+        <td><div class="actions"><button class="fixbtn primary">Review now</button></div></td>
+      </tr>
+
+      <tr>
+        <td><div class="cwname">QBR Advisor</div><div class="cwcat">Business reporting</div></td>
+        <td><a class="client-lk" href="#">Fenwick Logistics</a></td>
+        <td><span class="status active"><span class="d"></span>active</span></td>
+        <td><span class="qual">92%<span class="arrow">→</span><b>92%</b></span><div class="log-peek">46 of 50 confirmed unchanged</div></td>
+        <td><div class="chips"><span class="chip">read: PSA, backup, device</span><span class="chip write">write: 1 entry</span></div></td>
+        <td>—</td>
+        <td><a class="audit-lk" href="#">audit log →</a></td>
+      </tr>
+
+      <tr>
+        <td><div class="cwname">Incident Response Analyst</div><div class="cwcat">Service · diagnostics</div></td>
+        <td><a class="client-lk" href="#">3 clients · Hallworth Print, Ferris Dental Group, Quaid Retail</a></td>
+        <td><span class="status active"><span class="d"></span>active</span></td>
+        <td><span class="qual dropped">80%<span class="arrow">→</span><b>78%</b></span><div class="log-peek">39 of 50 confirmed unchanged</div></td>
+        <td><div class="chips"><span class="chip">read: tickets, logs</span><span class="chip write">write: 1 draft/client</span></div><div class="log-peek">1 cross-client correlation in 30d (resolved)</div></td>
+        <td><div class="thread monitoring">MONITORING</div><div class="thread resolved" style="margin-top:3px">RESOLVED (Quaid)</div></td>
+        <td><a class="audit-lk" href="#">audit log →</a></td>
+      </tr>
+
+      <tr>
+        <td><div class="cwname">Security Tabletop</div><div class="cwcat">Security</div></td>
+        <td><a class="client-lk" href="#">Corbett &amp; Wren Legal</a></td>
+        <td><span class="status active"><span class="d"></span>active</span></td>
+        <td><span class="qual">81%<span class="arrow">→</span><b>80%</b></span><div class="log-peek">40 of 50 confirmed unchanged</div></td>
+        <td><div class="chips"><span class="chip">read: compliance, incidents</span><span class="chip write">write: 1 report</span></div></td>
+        <td>—</td>
+        <td><a class="audit-lk" href="#">audit log →</a></td>
+      </tr>
+    </table>
+
+    <div class="section-label">Not yet hired</div>
+    <div class="onboard-strip">
+      <div class="oh">Alert Flood Suppressor</div>
+      <div class="desc">Configured 2026-08-12, never run. No credentials, no read access, until you activate it.</div>
+      <button class="fixbtn">Review and activate</button>
+      <button class="fixbtn" style="margin-left:6px">Archive</button>
+    </div>
+  </div>
+</body>
+</html>

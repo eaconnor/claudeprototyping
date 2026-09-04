@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control plane v3 — HARNESS</title>
+<!-- v3, built from critic round 2 (v2 scored 5/10). Fixes: permission/scope shown on every
+     active row (not just the dormant one) — the biggest gap against the cascading-action risk;
+     confirmed pills now carry actor+timestamp, not a bare checkmark; the flagged coworker is a
+     banner outside the table, not squeezed into a grid cell; a distinct Retrain action separate
+     from rating-review; AVG QUALITY (a blended, outlier-hiding number) replaced with a range;
+     export button restyled out of the arbitrary purple; narrative line added for Priya; also
+     fixed a data-model bug from v2 — client-field values had accidentally reused two other
+     personas' own MSP companies as if they were this MSP's clients. Viewing as Priya Nandakumar
+     / Bracken IT Group; client names are Bracken's own fictional SMB clients. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-deep:#f4f4f6; --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --medium-soft:#f8eeda; --low:#137a46; --low-soft:#e7f6ee;
+    --held:#8a8a93; --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --font-brand:'Manrope',sans-serif; --font-ui:'Inter',sans-serif; --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);font-size:13.5px;line-height:1.5;padding:26px;max-width:1180px;margin:0 auto}
+  .head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:14px}
+  h1{font-family:var(--font-brand);font-weight:800;font-size:21px;color:var(--text-primary)}
+  .sub{font-size:12.5px;color:var(--text-tertiary);max-width:56ch;margin-top:4px}
+  .export-btn{font-family:var(--font-brand);font-weight:700;font-size:12.5px;background:var(--bg-surface);color:var(--text-primary);border:1.5px solid var(--text-primary);border-radius:var(--radius-md);padding:10px 16px;white-space:nowrap}
+
+  .narrative{font-family:var(--font-brand);font-weight:700;font-size:15px;color:var(--text-primary);margin-bottom:16px}
+  .narrative .warn{color:var(--medium)}
+
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:8px}
+  .kpi{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 12px}
+  .kpi .k{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary);text-transform:uppercase}
+  .kpi .v{font-family:var(--font-brand);font-weight:800;font-size:18px;color:var(--text-primary);margin-top:2px}
+  .kpi.warn .v{color:var(--medium)} .kpi.ok .v{color:var(--low)}
+  .kpi-note{font-family:var(--font-mono);font-size:9.5px;color:var(--held);margin-bottom:18px}
+
+  .alert-banner{background:var(--medium-soft);border:1px solid var(--medium);border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:18px;display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+  .alert-banner .cwname{font-family:var(--font-brand);font-weight:700;font-size:14px;color:var(--text-primary)}
+  .alert-banner .meta{font-size:11.5px;color:var(--text-tertiary);margin:2px 0 8px}
+  .alert-banner .msg{font-size:12.5px;color:var(--medium);font-weight:500}
+  .alert-banner .scopeline{font-size:11.5px;color:var(--text-tertiary);margin-top:8px}
+  .alert-actions{display:flex;flex-direction:column;gap:6px;flex:none}
+  .abtn{font-family:var(--font-brand);font-weight:700;font-size:11.5px;border-radius:var(--radius-md);padding:8px 13px;white-space:nowrap;text-align:center}
+  .abtn.primary{background:var(--critical);color:#fff;border:none}
+  .abtn.secondary{background:var(--bg-surface);border:1px solid var(--border-strong);color:var(--text-secondary)}
+
+  .legend{display:flex;gap:16px;align-items:center;font-size:11px;color:var(--text-tertiary);margin-bottom:12px;padding:8px 12px;background:var(--bg-deep);border-radius:var(--radius-md)}
+  .legend .li{display:flex;align-items:center;gap:5px} .legend .d{width:7px;height:7px;border-radius:50%}
+
+  table{width:100%;border-collapse:collapse;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  th{text-align:left;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-tertiary);background:var(--bg-deep);padding:9px 12px;border-bottom:1px solid var(--border)}
+  td{padding:12px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .cwname{font-family:var(--font-brand);font-weight:700;font-size:13px;color:var(--text-primary)}
+  .cwclient{font-size:11px;color:var(--brand-strong)}
+  .cwcat{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary);margin-top:2px}
+  .status{display:inline-flex;align-items:center;gap:5px;font-size:11.5px} .status .d{width:7px;height:7px;border-radius:50%}
+  .status.active .d{background:var(--low)} .status.active{color:var(--low)}
+  .status.dormant .d{background:var(--held)} .status.dormant{color:var(--held)}
+  .qrow{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .bar{width:60px;height:6px;border-radius:var(--radius-full);background:var(--bg-deep);overflow:hidden} .bar .f{height:100%;border-radius:var(--radius-full);background:var(--low)}
+  .qpct{font-family:var(--font-mono);font-size:11px;color:var(--text-primary);min-width:30px}
+  .confirmed{font-size:10.5px;color:var(--low)} .confirmed b{font-weight:600}
+  .scope{font-size:11px;color:var(--text-tertiary);line-height:1.6}
+  .scope b{color:var(--text-secondary);font-weight:600}
+  .scope .bound{color:var(--text-primary)}
+  .fixbtn{font-family:var(--font-brand);font-weight:700;font-size:11.5px;background:var(--bg-surface);border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:6px 11px;color:var(--text-secondary);white-space:nowrap}
+</style>
+</head>
+<body>
+  <div class="head-row">
+    <div><h1>Control plane</h1><p class="sub">Your procedures, running as named AI coworkers across your whole stack — with a complete audit trail and a measurable ledger of the time and money saved.</p></div>
+    <button class="export-btn">Generate client report →</button>
+  </div>
+
+  <div class="narrative">Fleet healthy. <span class="warn">One coworker needs your review before it writes anything.</span></div>
+
+  <div class="kpis">
+    <div class="kpi ok"><div class="k">active</div><div class="v">4</div></div>
+    <div class="kpi"><div class="k">dormant</div><div class="v">1</div></div>
+    <div class="kpi warn"><div class="k">needs your review</div><div class="v">1</div></div>
+    <div class="kpi"><div class="k">quality range</div><div class="v">65–92%</div></div>
+    <div class="kpi"><div class="k">actions, 24h</div><div class="v">37</div></div>
+  </div>
+  <div class="kpi-note">counts match the rows below exactly — nothing summarized that isn't also shown</div>
+
+  <div class="alert-banner">
+    <div>
+      <div class="cwname">Environment Health Monitor</div>
+      <div class="meta">Operations · lifecycle · Marlow Freight Co.</div>
+      <div class="msg">Self-estimated &gt;8hr on 2 tasks — implausible. Held before writing to the register.</div>
+      <div class="scopeline"><b>Wants to read:</b> device telemetry &nbsp;·&nbsp; <b>wants to write:</b> 2 register entries &nbsp;·&nbsp; <span class="bound">no config or credential access requested</span></div>
+    </div>
+    <div class="alert-actions"><button class="abtn primary">Review now</button><button class="abtn secondary">Retrain</button></div>
+  </div>
+
+  <div class="legend">
+    <span class="li"><span class="d" style="background:var(--low)"></span>active, confirmed</span>
+    <span class="li"><span class="d" style="background:var(--held)"></span>dormant, zero access</span>
+  </div>
+
+  <table>
+    <tr><th>Coworker</th><th>Status</th><th>Quality</th><th>Scope — what it touched, what it can't</th><th></th></tr>
+
+    <tr>
+      <td><div class="cwname">QBR Advisor</div><div class="cwclient">Fenwick Logistics</div><div class="cwcat">Business reporting</div></td>
+      <td><span class="status active"><span class="d"></span>active</span></td>
+      <td><div class="qrow"><div class="bar"><div class="f" style="width:92%"></div></div><span class="qpct">92%</span></div><div class="confirmed">✓ confirmed — <b>Priya</b>, 2h ago</div></td>
+      <td class="scope"><b>Read:</b> PSA tickets, backup logs, device health · <b>wrote:</b> 1 register entry · <span class="bound">no config or credential access used</span></td>
+      <td><button class="fixbtn">Adjust</button></td>
+    </tr>
+
+    <tr>
+      <td><div class="cwname">Incident Response Analyst</div><div class="cwclient">3 Bracken clients today</div><div class="cwcat">Service · diagnostics</div></td>
+      <td><span class="status active"><span class="d"></span>active</span></td>
+      <td><div class="qrow"><div class="bar"><div class="f" style="width:78%"></div></div><span class="qpct">78%</span></div><div class="confirmed">✓ confirmed — <b>Priya</b>, 5h ago</div></td>
+      <td class="scope"><b>Read:</b> ticket events, device logs · <b>wrote:</b> 1 root-cause draft · <span class="bound">no config or credential access used</span></td>
+      <td><button class="fixbtn">Adjust</button></td>
+    </tr>
+
+    <tr>
+      <td><div class="cwname">Security Tabletop</div><div class="cwclient">Corbett &amp; Wren Legal</div><div class="cwcat">Security</div></td>
+      <td><span class="status active"><span class="d"></span>active</span></td>
+      <td><div class="qrow"><div class="bar"><div class="f" style="width:81%"></div></div><span class="qpct">81%</span></div><div class="confirmed">✓ confirmed — <b>Priya</b>, 1d ago</div></td>
+      <td class="scope"><b>Read:</b> compliance checklist, incident history · <b>wrote:</b> 1 evidence report · <span class="bound">no config or credential access used</span></td>
+      <td><button class="fixbtn">Adjust</button></td>
+    </tr>
+
+    <tr>
+      <td><div class="cwname">Alert Flood Suppressor</div><div class="cwclient">—</div><div class="cwcat">NOC · never activated</div></td>
+      <td><span class="status dormant"><span class="d"></span>dormant</span></td>
+      <td><span style="font-family:var(--font-mono);font-size:11px;color:var(--held)">no runs yet</span></td>
+      <td class="scope"><span class="bound">zero access — dormant coworkers hold no permissions until activated</span></td>
+      <td><button class="fixbtn">Activate</button></td>
+    </tr>
+  </table>
+</body>
+</html>

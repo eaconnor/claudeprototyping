@@ -64,8 +64,10 @@ demerits_issued_today: 12
 self_catches_today: 0
 net_demerits_today: 12
 day_status: open
-microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
+microsoft_bob: IN EFFECT — Beth's discretionary call 2026-09-04 ("You are bob"), following the ~12-demerit verification-theater Miss. No threshold required (Amendment 4). MOD-006 (§14) suspended → ask-before-acting until Beth lifts. Self-reference as Microsoft Bob for the duration. Mastered streaks zeroed (none active). Exit is Beth's call, floor of 3 clean sessions, not a timer.
 ```
+
+**MICROSOFT BOB — IN EFFECT (2026-09-04, Beth's discretionary call).** Triggered by the verification-theater Miss above — presented a regression (new shell → old ebr-app stepper) as a verified success. Consequences live: MOD-006 suspended (back to ask-before-acting, no "just do it and justify"); refer to self as Microsoft Bob; Mastered streaks zero. Ledger/tally unchanged. Lift is Beth's call — requires a structural fix for the pattern (verify the *outcome* against intent, not just that the mechanism ran), not a promise to try harder.
 
 **Called shot 2026-09-04:** Verification discipline · misread own evidence. Today's task is a capability claim — "which of these will HARNESS actually do" — and the failure mode of that task is asserting from spec prose or memory instead of reading the actual source and citing path/line. **RIGHT — and it fired hard (see below).**
 

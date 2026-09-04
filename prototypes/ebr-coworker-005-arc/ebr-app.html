@@ -532,6 +532,14 @@
   .cl-group{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:18px 0 8px}
   .cl-group:first-of-type{margin-top:0}
   .cl-gh{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);cursor:pointer}
+  .wrote{font-family:var(--font-mono);font-size:9.5px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--held);margin-left:9px}
+  .delta-note{font-size:12px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:10px 12px;margin-top:12px;line-height:1.55}
+  .seatbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--text-tertiary);background:var(--brand-soft);border-radius:var(--radius-md);padding:8px 11px;margin-bottom:14px}
+  .seatbar b{color:var(--brand-strong)} .seatbar .lk{margin-left:auto;font-size:11px}
+  .fw-map{background:var(--bg-deep);border-radius:var(--radius-md);padding:12px 14px;margin-top:16px}
+  .fw-r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px;padding:6px 0;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-tertiary)}
+  .fw-r:first-of-type{border-top:none} .fw-r b{color:var(--text-primary);font-weight:600}
+  .client-select.styled{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23404047' stroke-width='1.6' stroke-linecap='round'/></svg>");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
   .cl-none{font-family:var(--font-mono);font-size:9.5px;color:var(--held)}
   .rv-reason{font-size:11.5px;color:var(--text-secondary);background:var(--bg-deep);border-left:2px solid var(--brand-strong);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:7px 10px;margin:6px 0 0;line-height:1.5}
   .rv-reason b{color:var(--text-tertiary);font-weight:600}
@@ -572,7 +580,7 @@
 
   <div class="spacer"></div>
   <button class="tog" id="modeTog" onclick="cycleMode()" title="Appearance: light / dark / system"><span id="modeIcon"></span><span id="modeLabel">Light</span></button>
-  <button class="tog rail-tog" onclick="toggleRail()" title="Design review notes for this prototype \u2014 readiness, gaps and routed work. Not part of the product."><span class="dot"></span>Review notes</button>
+  <button class="tog rail-tog" onclick="toggleRail()" title="Design review notes for this prototype \u2014 not part of the product" aria-label="Design review notes"><span class="dot"></span></button>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg></div>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .3c0 1.7-2.5 2-2.5 3.7M12 17h.01"/></svg></div>
@@ -1201,7 +1209,7 @@ function renderExecution(){document.getElementById('secsub').textContent='Every 
   const ico={ok:['\u2713','var(--low)'],held:['\u25d0','var(--medium)'],fail:['\u2715','var(--critical)'],boundary:['\u26a0','var(--critical)']};
   return `<div class="exec-bar">
       <label>Client</label>
-      <select class="client-select" onchange="setExecClient(this.value)">${CLIENTS.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select>
+      <select class="client-select styled" onchange="setExecClient(this.value)">${CLIENTS.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select>
       <span class="exec-count">${rows.length} run${rows.length===1?'':'s'}${fails?` \u00b7 <b style="color:var(--critical)">${fails} failed</b>`:''}${bnd?` \u00b7 <b style="color:var(--critical)">${bnd} crossed a client boundary</b>`:''}${held?` \u00b7 <b style="color:var(--medium)">${held} held</b>`:''}</span>
     <span class="ex-key">\u2713 clean &nbsp; \u25d0 held for review &nbsp; \u2715 failed &nbsp; \u26a0 needs your sign-off</span>
     </div>
@@ -1333,13 +1341,14 @@ function renderBuild(){
         <h2 style="margin-bottom:4px">Build the register</h2>
         <p class="lede" style="margin-bottom:0">${S.brMode==='build'?'What each area draws on, how much the coworker does on its own, and what still needs you \u2014 one row per area.':'The same register, written the way you\u2019d say it to a client. Plain findings, no source detail. Nothing is final until you activate.'}</p>
       </div>
-      <div class="viewtabs" role="tablist" aria-label="Which view of the register" style="margin-top:2px">
+      <div class="viewtabs" role="tablist" aria-label="Which view of the register" style="margin-top:2px" data-seat="${S.ftuxRole||''}">
         <button class="${S.brMode==='build'?'on':''}" onclick="setBrMode('build')" aria-pressed="${S.brMode==='build'}">Sources &amp; setup</button>
         <button class="${S.brMode==='report'?'on':''}" onclick="setBrMode('report')" aria-pressed="${S.brMode==='report'}">What the client sees</button>
       </div>
     </div>
     <div style="height:16px"></div>
-    ${S.brMode==='build'?buildModeBody(sh,does,back):reportModeBody()}
+    ${seatBar()}
+    ${S.brMode==='build'?buildModeBody(sh,does,back)+frameworkMap():reportModeBody()}
     <div class="actions"><span class="lk" onclick="goStep(1)">← Back</span>${S.parsed?`<button class="btn primary" onclick="goStep(3)">See the register →</button>`:''}</div></div>`;}
 
   else if(s===3){const rvDone=reviewedCount();h+=`<div class="panel"><h2>Here’s the register I’d build</h2><p class="lede">I drafted this ${T('register')} from your report — before it goes live, tell me what’s right, what’s wrong, and what should wait. This becomes the durable artifact: one living register per client, graded, tracked, evidence kept.</p>
@@ -1387,11 +1396,19 @@ function setBrMode(m){S.brMode=m;S.brModeSet=true;render();}
    question was a promise the next screen broke — it profiled the user and then served the
    engineer surface to all four. */
 function seatDefaultMode(){return (S.ftuxRole==='priya')?'report':'build';}
+/* The seat is a persistent lens, not a one-time question. Critic R7, fairly: shipping a
+   segmentation quiz with no consequence teaches the user the UI doesn't mean what it says. */
+const SEATS={marcus:'Hands-on technical',priya:'Client relationship',deepa:'Accountable to auditors',tom:'Verifying it myself'};
+function showToolIds(){return S.ftuxRole!=='priya';}
+function seatBar(){
+  if(!S.ftuxRole)return '';
+  return `<div class="seatbar"><b>${SEATS[S.ftuxRole]}</b> \u2014 ${S.ftuxRole==='priya'?'plain language only; source calls and tool names are hidden':S.ftuxRole==='deepa'?'evidence class and source shown on every finding':S.ftuxRole==='tom'?'every figure shows where it came from':'source calls and tool names shown'} <span class="lk" onclick="S.ftuxRole=null;S.brModeSet=false;render()">change seat</span></div>`;
+}
 function toggleParseLog(){S.showParseLog=!S.showParseLog;render();}
 function toggleLineage(sec){S.openLineage[sec]=!S.openLineage[sec];render();}
 function toggleIv(sec){S.openIv[sec]=!S.openIv[sec];render();}
 function tierLabel(t){return ({measured:'Measured',benchmarked:'Benchmarked',estimated:'Estimated',unverified:'Your judgment'})[t];}
-function availLabel(av){return ({auto:'Connected',cw:'From a coworker',client:'Ask the client',you:'Your judgment'})[av];}
+function availLabel(av){return ({auto:'Connected',cw:'From a coworker',client:'Ask the client',you:'You write this'})[av];}
 function qsec(s){return s.replace(/'/g,"\\'");}
 function buildModeBody(sh,does,back){
   const parseQuality=!S.parsed?'<div style="font-size:12.5px;color:var(--text-tertiary)">Reading…</div>':
@@ -1414,9 +1431,19 @@ function buildModeBody(sh,does,back){
       <div><h4>Add the Advisor for what it hands back <span class="prem">Premium</span></h4><p>The findings it hands you are the judgment calls. The Advisor turns a raw finding into plain talking points and a recommended next step — so the person presenting doesn’t have to be the person who understands the vulnerability. Built for the account lead, not just the engineer.</p>
       <label class="chk" style="margin-bottom:0"><input type="checkbox" ${S.handhold?'checked':''} onchange="S.handhold=this.checked;render()"><span>Include the Advisor to walk me through the handed-back findings${back?` (${back} this cycle)`:''}.</span></label></div></div>`;
 }
+function frameworkMap(){
+  if(S.ftuxRole!=='deepa')return '';
+  return `<div class="fw-map"><div class="cp-lbl">Control mapping \u2014 shown because you answer to auditors</div>
+    <div class="fw-r"><b>3 admin accounts without MFA</b><span>NCSC 10 \u00b7 Identity &amp; access \u2014 Cyber Essentials A.2</span></div>
+    <div class="fw-r"><b>Backup restore test overdue 41 days</b><span>NCSC 10 \u00b7 Backups \u2014 Cyber Essentials A.5</span></div>
+    <div class="fw-r"><b>Windows patch compliance at 82%</b><span>NCSC 10 \u00b7 Patch management \u2014 Cyber Essentials A.4</span></div>
+    <div class="fw-r"><b>CVE-2026-4471 on 6 endpoints</b><span>NCSC 10 \u00b7 Vulnerability management</span></div>
+    <div class="fw-r"><b>Phishing click-rate 22%</b><span>NCSC 10 \u00b7 Awareness training \u2014 <span style="color:var(--medium)">hand-entered, indicative only</span></span></div>
+    <div class="fw-r"><b>No documented incident-response plan</b><span>NCSC 10 \u00b7 Incident response \u2014 <span style="color:var(--held)">absence is the finding; held from the client</span></span></div></div>`;
+}
 function reportModeBody(){
   return `<div class="callout" style="margin-bottom:16px">The snapshot a client could see today — plain findings, no technical detail. Take it any time; nothing is final until you activate.</div>
-    ${regTable()}`;
+    ${regTable()}${frameworkMap()}`;
 }
 function areaCard(a){
   const d=autoDoes(a),techOpen=!!S.openTech[a.sec],linOpen=!!S.openLineage[a.sec],isGap=(a.avail==='client'||a.avail==='you'),st=S.interview[a.sec]||'none';
@@ -1589,7 +1616,7 @@ function regTable(reviewMode){
     <div class="row ${f.grade}" onclick="toggleFinding('${f.id}')"><div></div>
       <div><div class="fnd">${f.finding}</div><div class="mt">${f.area}<span class="d">·</span>${f.owner}<span class="d">·</span>${f.status}</div><div class="fprev">${f.translate?f.translate[S.chooserTone]:''}</div></div>
       <div><span class="tier ${f.tier}">${f.tier}</span></div>
-      <div class="c3">${spark(f)}<div class="ev">${f.ev}</div></div>
+      <div class="c3">${spark(f)}${showToolIds()?`<div class="ev">${f.ev}</div>`:''}</div>
     </div>${S.openFinding===f.id?`<div class="fdetail"><div class="fdetail-out">${f.translate?f.translate[S.chooserTone]:f.consequence}</div><div class="fdetail-meta"><b>What it means:</b> ${f.why}<br><b>Owner:</b> ${f.owner} · <b>Confidence:</b> ${f.tier} · <b>Evidence:</b> ${f.ev}${f.grade==='held'?' — <b style="color:var(--held)">held from client view until vouched</b>':''}</div></div>`:''}${reviewMode?reviewRow(f):''}`).join('')}</div>
     <div class="held-foot"><span class="dot"></span><span><b style="color:var(--held)">Held.</b> The IR-plan gap is inferred, not measured — kept internally (absence is a finding) but hard-blocked from the client view. Click any row for detail.</span></div>`;
 }
@@ -1701,7 +1728,7 @@ function renderReport(){
     <div class="exportbar"><span class="lk" style="margin-right:auto;color:var(--text-tertiary)" onclick="closeReport()">← Back to dashboard</span>
       <span class="lbl">Export:</span><button class="btn primary" onclick="exportPptx()">PowerPoint \u2192</button><button class="btn" onclick="exportPDF()">PDF</button><button class="btn" onclick="exportDoc()">Word</button><button class="btn" onclick="exportCSV()">Excel</button></div>
     <div class="rep-cover"><div class="ey">EXECUTIVE BUSINESS REVIEW · Q3 2026</div><h2>Fenwick Logistics</h2><div class="meta">Prepared by Bracken IT Group · presented by Vanessa · reviewed against NCSC 10 / Cyber Essentials</div></div>
-    <div class="rep-sec"><h3>A note from Vanessa</h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
+    <div class="rep-sec"><h3>A note from Vanessa Okonjo <span class="wrote">written by Vanessa, not drafted by a coworker \u00b7 edited today 10:04</span></h3><p class="rep-note">Your security posture improved on every measure we track this quarter — but two items need a decision from you now. Below is where you stand, in plain terms, and what we recommend. The full detail behind every point is on file if you want it.</p></div>
     <div class="rep-sec"><h3>What we found <span class="lk" style="font-size:12px;font-weight:500;margin-left:8px" onclick="goToTranslate()">See where this came from ←</span></h3>${clientFindings().map(f=>`<div class="rep-find"><span class="g" style="background:${GC[f.grade]}"></span><div><div class="ft">${f.translate[S.chooserTone]}</div><div class="fm">${plainNum(f.finding)} <span class="tier ${f.tier}">${f.tier}</span></div><div class="fr">Our recommendation \u2014 ${f.ask}</div></div></div>`).join('')}</div>
     <div class="rep-sec"><h3>What this cost you in our time</h3>
       <div class="rep-val"><div class="rv"><span class="n">11.0</span><span class="l">hours of our people&rsquo;s time this quarter</span></div><div class="rv"><span class="n">&pound;880</span><span class="l">at your &pound;80/hr contracted rate</span></div><div class="rv"><span class="n">3</span><span class="l">review cycles, all evidenced</span></div></div>
@@ -1782,13 +1809,13 @@ function chooserBody(){
    slots, unconfirmed practice, never rendered as settled fact. ---- */
 const RC_STEPS=[
   {t:'Ingest',sub:false},{t:'Continuity / delta',sub:false},{t:'Judge the 8 tabs',sub:false},{t:'Translate',sub:false},
-  {t:'Business context',sub:true},{t:'Chooser',sub:false},{t:'Deliver',sub:false},{t:'Liability & state-of-union',sub:false},
+  {t:'Business context'},{t:'Chooser',sub:false},{t:'Deliver',sub:false},{t:'Liability & state-of-union',sub:false},
 ];
 function toggleRC(i){S.rcOpen[i]=!S.rcOpen[i];render();}
 function renderRunCycle(){
   const bodies=[ingestBody(),deltaView(),judgeBody(),translateBody(),gettingBizBody(),chooserBody(),deliverBody(),liabilityBody()];
   const chips=[
-    `<span class="rc-chip ok">${MCPS.filter(m=>m.st.startsWith('Live')).length}/${MCPS.length} sources live</span>`,
+    `<span class="rc-chip ${MCPS.filter(m=>m.st==='live').length===MCPS.length?'ok':'sub'}">${MCPS.filter(m=>m.st==='live').length} of ${MCPS.length} sources connected</span>`,
     `<span class="rc-chip ok">Default view</span>`,
     `<span class="rc-chip warn">⟨VERIFY⟩ gap-logic</span>`,
     `<span class="rc-chip info">CFO + owner tone</span>`,
@@ -1836,8 +1863,9 @@ function deltaView(){
   const lead=FINDINGS.find(f=>f.lead);
   return `<div class="verify-marker"><b>⟨VERIFY⟩</b><span>Unconfirmed whether David actually opens the review here — carried from the runbook draft as the assumed default, not confirmed practice.<span class="tip">Source: technica-ebr-runbook-draft-2026-08-21.md — "does David actually open on the delta?" is marked ⟨VERIFY⟩, David's judgment to confirm (CLAUDE.md §18), not resolved by this build.</span></span></div>
   ${lead?`<div class="callout" style="margin-top:12px"><b>Longest-standing open item:</b> ${lead.finding} — ${lead.leadWhy}</div>`:''}
+  <div class="delta-note">Wrong about any of these? Change the grade here \u2014 your name and your reason go into the audit trail, and the client report updates on the next publish. You do not need to edit the coworker.</div>
   <div class="reg" style="margin-top:10px">${FINDINGS.map(f=>`<div class="row ${f.grade}"><div></div>
-    <div><div class="fnd">${f.finding}</div><div class="mt">${sinceLabel(f)}${f.cycles?` <span class="d">·</span> seen ${f.cycles} cycle${f.cycles>1?'s':''}`:''}</div></div>
+    <div><div class="fnd">${f.finding}</div><div class="mt">${sinceLabel(f)}${f.cycles?` <span class="d">·</span> seen ${f.cycles} cycle${f.cycles>1?'s':''}`:''}</div>${reviewRow(f)}</div>
     <div>${dirChip(f)}</div>
     <div class="c3">${spark(f)}</div>
   </div>`).join('')}</div>`;

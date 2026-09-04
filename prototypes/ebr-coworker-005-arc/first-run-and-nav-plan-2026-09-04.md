@@ -5,6 +5,11 @@ Two threads that belong together, folded per Beth: (1) the **nav/IA redesign** t
 
 **Detailed source of truth stays `prototypes/ebr-coworker-005-arc/nav-redesign-intake-2026-09-03.md`** (workstreams, personas, scout findings, whiteboard transcription, card-sort inventory). This plan *unifies and sequences* the two threads; it does not replace that doc — which is intact (read-only).
 
+## Decided 2026-09-04 (Beth — strong signal)
+- **Nav frame → Option D: "working day, control-plane home"** (4 tabs: Home / Coworkers / Company / Settings; control plane is the *home surface*, not a 5th tab — threads D-Q2 without betting it). Sketch: `nav-options-sketch-2026-09-04.html`.
+- **Home surface → the Floor.** Beth: *"I LOVE the floor!"* The control-plane home opens as an **establishing overview** — every coworker as a live line on a factory floor, work flowing, health + ★what's-scary at a glance — then **drills into the list** (overview→detail; the "walk the floor" opening). **Constellation** (whiteboard's Coworker Army radial) is the alternate lens, not the default. Sketch: `control-plane-home-sketch-2026-09-04.html`. Tier 1 vision, fictional data, layer-2 aspirational viz.
+- Still open on the Floor: does the ★scary row wire to the 4 safety directions (rate / scope-drift / attention-decay / containment); the by-type⇄by-client facet; Floor-vs-Constellation default (Beth leans Floor).
+
 ## Settled (Dunlop + Beth, 2026-09-03 — do NOT re-open)
 - **Experts cut** from the nav.
 - **Execution = home / primary surface.**

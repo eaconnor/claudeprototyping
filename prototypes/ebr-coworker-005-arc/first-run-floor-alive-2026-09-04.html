@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First run — the floor comes alive</title>
+<!-- Tier 1 vision sketch: the first-run reframe (workstream B) meeting the control-plane Floor home.
+     Beat 1 empty floor → Beat 2 drop 2-3 past EBRs (answer key you own; per-quarter parse confidence, NOT averaged)
+     → Beat 3 coworker rebuilds a quarter you KNOW, match vs miss, the register flows down the first line (Kit round-trip)
+     → Beat 4 floor alive, carry-forward delta real day one. Ties first-run aha to the Floor Beth loves.
+     ALL DATA FICTIONAL (§9b). Sketch, not spec. Continuous with control-plane-home-sketch-2026-09-04.html. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0713; --surf:#170e28; --line:#2a1c44; --line2:#3a2a5c;
+    --brand:#c046ff; --brand2:#8500cc; --glow:rgba(192,70,255,.5);
+    --tx:#ece7f5; --tx2:#9d93b8; --tx3:#6b6284;
+    --ok:#3ddc97; --warn:#ffb545; --bad:#ff5c6c;
+    --fh:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fm:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1100px 600px at 78% -10%,rgba(192,70,255,.13),transparent 60%),var(--bg);
+    color:var(--tx);font-family:var(--fb);font-size:14px;min-height:100vh}
+  .top{display:flex;align-items:center;gap:14px;padding:14px 26px;border-bottom:1px solid var(--line)}
+  .brand{font-family:var(--fh);font-weight:800;letter-spacing:.22em;font-size:14px}
+  .crumb{font-family:var(--fm);font-size:11px;color:var(--tx3);letter-spacing:.08em}
+  .step-dots{margin-left:auto;display:flex;gap:7px}
+  .step-dots i{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+  .step-dots i.on{background:var(--brand);box-shadow:0 0 8px var(--glow)}
+
+  .stage{max-width:1080px;margin:0 auto;padding:30px 30px 40px}
+  .cap{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;min-height:14px}
+  h1{font-family:var(--fh);font-weight:800;font-size:28px;letter-spacing:-.02em;margin-bottom:8px;line-height:1.1}
+  .say{color:var(--tx2);font-size:15px;max-width:66ch;line-height:1.6;margin-bottom:22px;min-height:48px}
+  .say b{color:var(--tx)}
+
+  /* drop zone (beat 2) */
+  .drop{display:none;border:2px dashed var(--line2);border-radius:14px;padding:18px 20px;margin-bottom:22px;background:rgba(23,14,40,.5)}
+  .drop.show{display:block}
+  .drop .dh{font-family:var(--fm);font-size:11px;color:var(--tx3);letter-spacing:.06em;margin-bottom:12px}
+  .files{display:flex;gap:12px;flex-wrap:wrap}
+  .file{flex:1;min-width:210px;background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .file .fn{font-family:var(--fm);font-size:12px;color:var(--tx);margin-bottom:8px;word-break:break-all}
+  .conf{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:5px}
+  .c-clean{color:var(--ok);border:1px solid var(--ok)} .c-med{color:var(--warn);border:1px solid var(--warn)} .c-low{color:var(--bad);border:1px solid var(--bad)}
+  .drop .note{font-size:12px;color:var(--tx3);margin-top:12px}
+
+  /* rebuild panel (beat 3) */
+  .rebuild{display:none;background:var(--surf);border:1px solid var(--brand);border-radius:12px;padding:16px 18px;margin-bottom:22px;box-shadow:0 0 30px -12px var(--glow)}
+  .rebuild.show{display:block;animation:zoom .3s ease}
+  @keyframes zoom{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .rebuild h3{font-family:var(--fh);font-weight:800;font-size:16px;margin-bottom:10px}
+  .mm{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .mm .r{display:grid;grid-template-columns:16px 1fr auto;gap:10px;align-items:center;font-size:13px}
+  .mm .r .d{width:9px;height:9px;border-radius:50%}
+  .mm .r .tag{font-family:var(--fm);font-size:10px;font-weight:700}
+  .kit{font-size:12.5px;color:var(--tx2);border-top:1px dashed var(--line2);padding-top:11px;line-height:1.5}
+  .kit b{color:var(--brand)}
+
+  /* the floor */
+  .floor-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .floor-h h2{font-family:var(--fh);font-weight:700;font-size:14px}
+  .floor-h span{font-size:12px;color:var(--tx3)}
+  .lane{display:grid;grid-template-columns:200px 1fr 120px;align-items:center;gap:14px;background:var(--surf);
+    border:1px solid var(--line);border-radius:12px;padding:11px 16px;margin-bottom:9px;opacity:.4;filter:saturate(.4);transition:.5s}
+  .lane.alive{opacity:1;filter:none}
+  .lane.justlit{animation:pulse 1.2s ease 2}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 26px -6px var(--glow)}}
+  .station{display:flex;align-items:center;gap:10px}
+  .health{width:9px;height:9px;border-radius:50%;flex:none}
+  .h-ok{background:var(--ok)} .h-warn{background:var(--warn)} .h-off{background:var(--line2)}
+  .station .nm{font-family:var(--fh);font-weight:700;font-size:13.5px;line-height:1.2}
+  .station .cat{font-family:var(--fm);font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+  .belt{position:relative;height:28px;border-top:1px dashed var(--line2);border-bottom:1px dashed var(--line2);overflow:hidden}
+  .belt .item{position:absolute;top:50%;width:12px;height:12px;border-radius:3px;transform:translateY(-50%);background:var(--brand);box-shadow:0 0 8px var(--glow);animation:flow linear infinite}
+  @keyframes flow{from{left:-16px}to{left:100%}}
+  .readout{text-align:right;font-size:11.5px;color:var(--tx2)}
+  .readout .empty{color:var(--tx3);font-style:italic}
+
+  .controls{display:flex;gap:12px;align-items:center;margin-top:22px}
+  button{font-family:var(--fh);font-weight:700;font-size:14px;border:none;border-radius:8px;padding:11px 20px;cursor:pointer}
+  .go{background:var(--brand2);color:#fff;box-shadow:0 0 20px -8px var(--glow)}
+  .go:hover{background:var(--brand)}
+  .back{background:transparent;border:1px solid var(--line2);color:var(--tx2)}
+  .foot{max-width:1080px;margin:0 auto;padding:14px 30px 40px;color:var(--tx3);font-size:12px;line-height:1.6}
+  .foot b{color:var(--tx2)}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">HARNESS</span>
+  <span class="crumb" id="crumb">First run</span>
+  <div class="step-dots"><i class="on"></i><i></i><i></i><i></i></div>
+</div>
+
+<div class="stage">
+  <div class="cap" id="cap"></div>
+  <h1 id="h1"></h1>
+  <div class="say" id="say"></div>
+
+  <div class="drop" id="drop">
+    <div class="dh">▼ 3 quarters you already own — dropped in</div>
+    <div class="files">
+      <div class="file"><div class="fn">Fenwick-EBR-Q3-2026.xlsx</div><span class="conf c-clean">● clean parse</span></div>
+      <div class="file"><div class="fn">Fenwick-EBR-Q2-2026.pptx</div><span class="conf c-med">● medium parse</span></div>
+      <div class="file"><div class="fn">Fenwick-EBR-Q1-2026.pdf</div><span class="conf c-low">● low — old format</span></div>
+    </div>
+    <div class="note">Confidence is shown <b>per quarter</b> — never averaged. A clean workbook and a two-year-old slide deck are not the same, and pretending they are is exactly the trust the product is built to keep.</div>
+  </div>
+
+  <div class="rebuild" id="rebuild">
+    <h3>Here's your Q3, rebuilt.</h3>
+    <div class="mm">
+      <div class="r"><span class="d" style="background:var(--ok)"></span><span>Matched <b>5 of your 6</b> findings — same grades you gave them</span><span class="tag" style="color:var(--ok)">MATCH</span></div>
+      <div class="r"><span class="d" style="background:var(--warn)"></span><span>You graded 3 admin accounts without MFA <b>red</b>; I had it amber</span><span class="tag" style="color:var(--warn)">YOUR CALL</span></div>
+      <div class="r"><span class="d" style="background:var(--brand)"></span><span>The register you know — findings, tone, sign-off — flowing down the line now</span><span class="tag" style="color:var(--brand)">LIVE</span></div>
+    </div>
+    <div class="kit"><b>You never gave the work away.</b> You handed me your quarter; here it comes back — done, in your shape, yours to correct. That's the kit: your piece in, your piece back with the assembly done.</div>
+  </div>
+
+  <div class="floor-h"><h2 id="floorlabel">Your floor</h2><span id="floorsub">— empty. nothing running yet.</span></div>
+  <div id="lanes"></div>
+
+  <div class="controls">
+    <button class="back" id="backBtn" onclick="go(-1)" style="display:none">← Back</button>
+    <button class="go" id="goBtn" onclick="go(1)"></button>
+  </div>
+</div>
+
+<div class="foot" id="whyfoot"></div>
+
+<script>
+const LANES=[
+  {id:'ebr', nm:'EBR Coworker — Fenwick', cat:'Your build', h:'h-ok', dur:2.6, n:5},
+  {id:'sec', nm:'Security Tabletop', cat:'Security · feeds EBR', h:'h-ok', dur:2.2, n:4},
+  {id:'ir', nm:'Incident Response Analyst', cat:'Service · feeds EBR', h:'h-warn', dur:1.6, n:6},
+  {id:'env', nm:'Environment Health Monitor', cat:'Operations · feeds EBR', h:'h-ok', dur:3.4, n:3},
+];
+// which lanes are alive per beat, + readout
+const BEATS=[
+  {cap:'The opening scene',h1:'This is your floor.',say:"Every coworker you run will live here — a line on the floor, work moving down it, health at a glance. Right now it's <b>empty</b>. Let's fill it — and the fastest way in is something you already have.",alive:[],drop:false,rebuild:false,floorsub:'— empty. nothing running yet.',go:'Bring me your last few quarters →',crumb:'First run · 1 of 4'},
+  {cap:'You already own the answer key',h1:'Hand me quarters you already know.',say:"Don't configure anything yet. Drop your last <b>two or three EBRs</b> — the ones you built by hand. You know exactly what's in them, which makes them the perfect way to see whether I can be trusted with them.",alive:[],drop:true,rebuild:false,floorsub:'— reading what you gave me…',go:'Rebuild the one I know best →',crumb:'First run · 2 of 4'},
+  {cap:'Watch the first line light up',h1:'Here comes your quarter — done.',say:"I rebuilt the quarter you know best and put it on the floor. Check me against your own memory: where I matched you, and the one place you'd overrule me.",alive:['ebr'],drop:false,rebuild:true,floorsub:'— one line running.',go:'Now light up what feeds it →',crumb:'First run · 3 of 4'},
+  {cap:'The floor is alive',h1:'Delta real on day one.',say:"The coworkers that feed your EBR come online with it. And because you gave me <b>three</b> quarters, the carry-forward delta is real <b>today</b> — what slipped, what improved, what's new — not something you earn over a year of watching. This is your home now.",alive:['ebr','sec','ir','env'],drop:false,rebuild:false,floorsub:'— 4 lines running · delta live.',go:'This is home ✓',crumb:'First run · 4 of 4'},
+];
+let beat=0, prev=[];
+function renderLanes(alive,justlit){
+  document.getElementById('lanes').innerHTML=LANES.map(l=>{
+    const on=alive.includes(l.id);
+    let items='';if(on){for(let i=0;i<l.n;i++){const delay=-(i*l.dur/l.n);items+=`<span class="item" style="animation-duration:${l.dur}s;animation-delay:${delay}s"></span>`}}
+    return `<div class="lane ${on?'alive':''} ${justlit.includes(l.id)?'justlit':''}">
+      <div class="station"><span class="health ${on?l.h:'h-off'}"></span><div><div class="nm">${l.nm}</div><div class="cat">${l.cat}</div></div></div>
+      <div class="belt">${items}</div>
+      <div class="readout">${on?`<b>running</b><br><span style="color:var(--tx3)">just now</span>`:`<span class="empty">not set up</span>`}</div>
+    </div>`;
+  }).join('');
+}
+function draw(){
+  const b=BEATS[beat];
+  document.getElementById('cap').textContent=b.cap;
+  document.getElementById('h1').textContent=b.h1;
+  document.getElementById('say').innerHTML=b.say;
+  document.getElementById('crumb').textContent=b.crumb;
+  document.getElementById('drop').classList.toggle('show',b.drop);
+  document.getElementById('rebuild').classList.toggle('show',b.rebuild);
+  document.getElementById('floorsub').textContent=b.floorsub;
+  document.getElementById('goBtn').textContent=b.go;
+  document.getElementById('goBtn').style.visibility = beat===BEATS.length-1?'hidden':'visible';
+  document.getElementById('backBtn').style.display = beat>0?'inline-block':'none';
+  const justlit=b.alive.filter(x=>!prev.includes(x));
+  renderLanes(b.alive,justlit);
+  prev=b.alive.slice();
+  [...document.querySelectorAll('.step-dots i')].forEach((d,i)=>d.classList.toggle('on',i<=beat));
+  document.getElementById('whyfoot').innerHTML='<b>The move:</b> the first-run aha isn’t a config wizard — it’s <b>watching your floor come alive</b> from work you already own. The register you love is what flows down the first line; the delta is real day one because you gave it several quarters, not one. <b>Tier 1 vision sketch · all data fictional (§9b) · per-quarter parse confidence shown, never averaged.</b>';
+}
+function go(d){beat=Math.max(0,Math.min(BEATS.length-1,beat+d));draw();window.scrollTo({top:0,behavior:'smooth'})}
+draw();
+</script>
+</body>
+</html>

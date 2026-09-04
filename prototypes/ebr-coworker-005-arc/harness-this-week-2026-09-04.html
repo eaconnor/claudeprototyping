@@ -277,7 +277,7 @@ function homeHTML(){
 }
 function setFloor(v){floorView=v;render();if(v==='const')constellation()}
 function drill(id){const c=FLOOR.find(x=>x.id===id);const rows=RUNS[id]||[];const d=document.getElementById('drill');
-  d.innerHTML=`<div class="into">▼ stepped onto the line — its list</div><div class="dh"><span class="health ${c.h}"></span><span class="nm">${c.nm}</span><a class="close" href="ebr-app.html" title="open the full app">Open register ↗</a><button class="close" onclick="document.getElementById('drill').classList.remove('open')">Close ✕</button></div>
+  d.innerHTML=`<div class="into">▼ stepped onto the line — its list</div><div class="dh"><span class="health ${c.h}"></span><span class="nm">${c.nm}</span><a class="close" href="ebr-app.html#build-3" title="open the register — your favorite page">Open register ↗</a><button class="close" onclick="document.getElementById('drill').classList.remove('open')">Close ✕</button></div>
   ${rows.map(r=>`<div class="drow"><span style="width:9px;height:9px;border-radius:50%;background:${DOT[r[0]]}"></span><span>${r[1]}</span><span class="rt">${r[2]}</span><span class="st" style="color:${DOT[r[0]]}">${r[3]}</span></div>`).join('')}`;
   d.classList.add('open');d.scrollIntoView({behavior:'smooth',block:'nearest'});}
 function constellation(){const el=document.getElementById('constellation');if(!el)return;const R=36;let h='<div class="hub">YOUR<br>FLEET</div>';
@@ -288,7 +288,7 @@ function constellation(){const el=document.getElementById('constellation');if(!e
 function coworkersHTML(){
   return `<div class="head"><div class="crumb"><b>HARNESS</b> › Coworkers</div><h1>Coworkers</h1><p class="psub">Your fleet. Open one to build, review, or run its register — that opens the full app.</p></div>
   <div class="body"><div class="stub-note">Each "Open register" opens ebr-app.html — the existing build/register flow, untouched.</div>
-  <div class="grid">${FLOOR.map(c=>`<div class="cardx"><div class="k">${c.cat}</div><h3>${c.nm.split(' — ')[0]}</h3><p>${c.flag?'★ '+c.flag:c.need?'▲ '+c.need:c.runs+' runs today · healthy'}</p><a class="go" href="ebr-app.html">Open register ↗</a></div>`).join('')}</div></div>`;
+  <div class="grid">${FLOOR.map(c=>`<div class="cardx"><div class="k">${c.cat}</div><h3>${c.nm.split(' — ')[0]}</h3><p>${c.flag?'★ '+c.flag:c.need?'▲ '+c.need:c.runs+' runs today · healthy'}</p><a class="go" href="ebr-app.html#build-3">Open register ↗</a></div>`).join('')}</div></div>`;
 }
 function companyHTML(){
   const cards=[['What\'s automated','Which coworkers run, for which clients, where.'],['All clients','Your MSP client roster, mapped to the coworkers serving them.'],['Tenants','Golden tenant (your template) vs. other tenants — setup-plus-deltas.'],['History / delta','What changed, per client, per cycle.']];

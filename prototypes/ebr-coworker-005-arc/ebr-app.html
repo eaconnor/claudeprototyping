@@ -487,8 +487,9 @@
   .gate b{color:var(--text-primary);font-weight:600}
   .gate input{width:15px;height:15px;accent-color:var(--brand-strong)}
   .gate-note{font-size:11.5px;color:var(--text-tertiary);flex:1;min-width:220px}
-  .ev-key{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-md);padding:9px 12px;margin:0 0 16px;line-height:1.9}
-  .ev-key b{color:var(--text-secondary);font-size:11.5px;margin-right:2px}
+  .ev-key{background:var(--bg-deep);border-radius:var(--radius-md);padding:11px 13px;margin:0 0 16px}
+  .ev-key .ev-h{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);margin-bottom:7px}
+  .ev-key .ev-r{display:grid;grid-template-columns:88px 1fr;gap:9px;align-items:baseline;padding:2.5px 0;font-size:11.5px;color:var(--text-secondary)}
   .grid-note{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-tertiary);margin:-6px 0 14px}
   .count-check{font-family:var(--font-mono);font-size:10px;color:var(--held);margin:14px 0 16px;clear:both}
   .count-check b{color:var(--low)}
@@ -522,7 +523,11 @@
   .conn-why{grid-column:1/-1;font-size:11.5px;color:var(--medium);margin-top:2px}
   @media(max-width:1000px){.conn-row{grid-template-columns:1fr auto} .conn-scope,.conn-sync,.conn-act{grid-column:1/-1}}
   /* Clients — the home screen */
-  .cl-head{font-size:12.5px;color:var(--text-tertiary);margin-bottom:14px} .cl-head b{color:var(--text-primary)}
+  .cl-head{font-size:12.5px;color:var(--text-tertiary);margin-bottom:14px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap} .cl-head b{color:var(--text-primary)}
+  .cl-key{font-family:var(--font-mono);font-size:9.5px;color:var(--held);margin-left:auto}
+  .cl-none{font-family:var(--font-mono);font-size:9.5px;color:var(--held)}
+  .rv-reason{font-size:11.5px;color:var(--text-secondary);background:var(--bg-deep);border-left:2px solid var(--brand-strong);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:7px 10px;margin:6px 0 0;line-height:1.5}
+  .rv-reason b{color:var(--text-tertiary);font-weight:600}
   .cl-row{display:grid;grid-template-columns:18px minmax(150px,.9fr) minmax(240px,2fr) minmax(120px,auto) auto;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--border)}
   .cl-row>*{min-width:0} .cl-row:last-child{border-bottom:none}
   .cl-ic{font-family:var(--font-mono);font-size:12px;font-weight:700}
@@ -554,7 +559,7 @@
 
   <div class="spacer"></div>
   <button class="tog" id="modeTog" onclick="cycleMode()" title="Appearance: light / dark / system"><span id="modeIcon"></span><span id="modeLabel">Light</span></button>
-  <button class="tog rail-tog" onclick="toggleRail()" title="Bradley rail — readiness &amp; routed work"><span class="dot"></span>Bradley</button>
+  <button class="tog rail-tog" onclick="toggleRail()" title="Design review notes for this prototype \u2014 readiness, gaps and routed work. Not part of the product."><span class="dot"></span>Review notes</button>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg></div>
   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .3c0 1.7-2.5 2-2.5 3.7M12 17h.01"/></svg></div>
@@ -726,7 +731,7 @@ const AREAS=[
    tech:{src:'Your judgment',how:'Not inferable from any source',tool:'—',auth:'—',grain:'—'}},
 ];
 function techStr(a){const t=a.tech;return `${t.src} · ${t.how} · tool: ${t.tool} · auth: ${t.auth} · grain: ${t.grain}`;}
-function honestyBadge(){return `<span class="honesty-badge" tabindex="0">◐ TARGET STATE — not yet wired<span class="tip">Today, a coworker's runbook is configured per-build. The backend doesn't yet persist which runbook a coworker runs — this connection is in-memory only.</span></span>`;}
+function honestyBadge(){return `<span class="honesty-badge" tabindex="0">\u25d0 Set per build \u2014 not yet a saved link<span class="tip">Today, a coworker's runbook is configured per-build. The backend doesn't yet persist which runbook a coworker runs — this connection is in-memory only.</span></span>`;}
 const FAMILY=[
   {id:'tabletop',cat:'Security',name:'Security Tabletop',desc:'Maps CVE exposure, plans remediation, triages vulnerabilities.',feed:'Feeds Risk & vulnerabilities'},
   {id:'ir',cat:'Service · diagnostics',name:'Incident Response Analyst',desc:'Root-cause analysis on tickets and device events.',feed:'Feeds Incidents & tickets'},
@@ -752,11 +757,11 @@ const SHAPES=[
 
 let S={nav:'clients', ebrOpen:false, activated:false, capstoneSeen:false, step:0, ai:null, shape:null, ftuxRole:null,
   extraFiles:[{name:'Kickoff-call-transcript.docx',kind:'transcript'}], addDraft:'', parsed:false, parseLog:[],
-  brMode:'build', showParseLog:false, openLineage:{}, openIv:{},
+  brMode:'build', brModeSet:false, showParseLog:false, openLineage:{}, openIv:{},
   interview:{}, handhold:true, preset:'sure', overrides:{}, openTech:{}, ack:{read:false,judgment:false,record:false},
   tab:'Overview', regView:'register', openFinding:null, runs:1, tbGrade:null, tbNote:'', tbSaved:false, reportOpen:false,
   chooser:{}, chooserTone:'cfo', rcOpen:{}, rbSel:'ebr-review', rbTab:'details', rbMenuOpen:null,
-  reviewChoice:{f1:{action:'confirm'},f5:{action:'confirm'},f2:{action:'confirm'},f3:{action:'confirm'}}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
+  reviewChoice:{f1:{action:'confirm',by:'Vanessa Okonjo',at:'today 09:41'},f5:{action:'confirm',by:'David Ferreira',at:'today 09:44'},f2:{action:'confirm',by:'Vanessa Okonjo',at:'today 09:47'},f3:{action:'correct',grade:'amber',note:'Client accepted the risk in writing on 12 Aug \u2014 ref CW-2026-114',by:'Vanessa Okonjo',at:'today 09:52'}}, /* Review-step (s===3) per-finding choices — session-only, visual/interactional this pass; does NOT rewrite FINDINGS (addendum 2026-09-01, second pass) */
   signer:'', requireReview:true, execClient:'All clients', cpView:'client', cpOpen:{}, cpItems:{}, cpKpiOpen:null, cpMarlowResolved:false /* Control plane — integrated from the standalone concept prototype's v10, critic-scored across 9 rounds this session; state lives here so it survives nav switches the same way the rest of S does */};
 const el=id=>document.getElementById(id);
 const NAVSVG={runbooks:'<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/>',experts:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>',mcp:'<path d="M9 15l6-6M8.5 12.5l-2 2a3 3 0 104 4l2-2M15.5 11.5l2-2a3 3 0 10-4-4l-2 2"/>',coworkers:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4.5M8.5 4.5h7M9 13v1M15 13v1"/>',controlplane:'<path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="2"/>',clients:'<path d="M3 21V9l6-4 6 4v12M9 21v-6h4v6M17 21V11l4 2.5V21"/>',execution:'<path d="M5 12h4l2 5 3-10 2 5h3"/>',ledger:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3 3 7 3s7-1.3 7-3v-6"/>'};
@@ -854,7 +859,7 @@ const MCPS=[
   {n:'N-sight',sc:'Operational data',st:'live',read:'operational data',write:'nothing',sync:'today 08:40'},
   {n:'Cove',sc:'Backup jobs, restore tests',st:'live',read:'backup jobs, restore tests',write:'nothing',sync:'today 09:11'},
   {n:'N-query (GraphQL)',sc:'Patch compliance, security posture, customer hierarchy',st:'partial',why:'Reads work; OAuth is not finished, so it runs on an API key for now.',read:'patch state, posture, hierarchy',write:'nothing',sync:'today 09:12'},
-  {n:'usecure',sc:'Awareness training',st:'partial',why:'No connector exists. Someone exports it and types the number in — which is why training findings are tagged as hand-entered.',read:'nothing automatic',write:'nothing',sync:'by hand, 14 May'},
+  {n:'usecure',sc:'Awareness training',st:'manual',why:'No connector exists. Someone exports it and types the number in — which is why training findings are tagged as hand-entered.',read:'nothing automatic',write:'nothing',sync:'by hand, 14 May'},
   {n:'Adlumin',sc:'Detections, alerts, investigations',st:'none',read:'—',write:'—',sync:'not connected'},
   {n:'Billing',sc:'Invoices, usage, charge explanations',st:'none',read:'—',write:'—',sync:'not connected'},
 ];
@@ -946,8 +951,8 @@ function toggleRbLifecycle(id){const r=RUNBOOKS.find(x=>x.id===id);if(r.lock&&r.
 function renderExperts(){document.getElementById('secsub').textContent='The AI reasoning a coworker pairs with a runbook. It advises and drafts; a human approves.';
   return `<div class="grid">${EXPERTS.map(e=>`<div class="cw"><div class="cat">${e.dom}</div><h3>${e.n}</h3><p>${e.d}</p><div class="st"><span class="avail">${e.s}</span></div></div>`).join('')}</div>`;}
 function renderMcp(){document.getElementById('secsub').innerHTML='Where your coworkers get their data \u2014 and, just as importantly, what they are allowed to write back.';
-  const lbl={live:['connected','var(--low)','var(--low-soft)'],partial:['needs a look','var(--medium)','var(--medium-soft)'],attention:['broken','var(--critical)','var(--critical-soft)'],none:['not connected','var(--held)','var(--bg-deep)']};
-  const order={attention:0,partial:1,live:2,none:3};
+  const lbl={live:['connected','var(--low)','var(--low-soft)'],partial:['works, with a caveat','var(--medium)','var(--medium-soft)'],manual:['no connector','var(--held)','var(--bg-deep)'],attention:['broken','var(--critical)','var(--critical-soft)'],none:['not connected','var(--held)','var(--bg-deep)']};
+  const order={attention:0,partial:1,manual:2,live:3,none:4};
   return `<div class="conn-note">No coworker can write device configuration or use a stored credential from any of these \u2014 that is a property of the grant model, not a per-connector setting.</div>
     <div class="dcard">${MCPS.slice().sort((a,b)=>order[a.st]-order[b.st]).map(m=>{const[t,col,bg]=lbl[m.st];return `<div class="conn-row">
       <span class="conn-main"><b>${m.n}</b><span class="conn-sc">${m.sc}</span></span>
@@ -1065,7 +1070,7 @@ function renderControlPlane(){
   const sysPaused=CP_FLEET.filter(f=>f.bySystem).length;
 
   const banner=pending.length
-    ? `<div class="cp-hero"><span class="num">${pending.length}</span><span class="tx"><b>change${pending.length===1?'':'s'} need${pending.length===1?'s':''} your approval</b>${highPending?` — ${highPending} is a <b>high-risk activation</b>`:''}. An AI drafted ${pending.length===1?'it':'them'}; it cannot approve its own work.</span></div>`
+    ? `<div class="cp-hero"><span class="num">${pending.length}</span><span class="tx"><b>change${pending.length===1?'':'s'} need${pending.length===1?'s':''} your approval</b>${highPending?` — <b>${highPending===1?'one is high-risk':highPending+' of them are high-risk'}</b>`:''}. An AI drafted ${pending.length===1?'it':'them'}; it cannot approve its own work.</span></div>`
     : `<div class="cp-hero cp-calm"><span class="num">0</span><span class="tx"><b>Nothing waiting on you.</b> The queue is clear — every change below was approved by a named human.</span></div>`;
 
   const kpis=`<div class="cp-kpi-strip">
@@ -1213,23 +1218,23 @@ function renderLedger(){document.getElementById('secsub').textContent='Time our 
    home screen: one row per client, the state that matters, and a direct route to the deliverable. */
 const CLIENTBOOK=[
   {n:'Fenwick Logistics',cw:2,st:'ok',line:'Register current as of today 09:12 \u00b7 '+findingsLine(),val:'11.0 hrs · £880',act:'report'},
-  {n:'Marlow Freight Co.',cw:1,st:'fail',line:'Environment Health Monitor paused by the system at 09:14 — its runbook lost its last active version',val:'0 hrs — nothing ran',act:'fix'},
+  {n:'Marlow Freight Co.',cw:1,st:'fail',line:'Environment Health Monitor paused by the system at 09:14 — its runbook lost its last active version',val:'0 hrs — nothing ran',act:'fix',fixLabel:'Restore the runbook version \u2192'},
   {n:'Corbett & Wren Legal',cw:1,st:'ok',line:'Security Tabletop ran today 08:01 · CVE exposure on 6 machines',val:'2.0 hrs · £160'},
   {n:'Hallworth Print',cw:1,st:'ok',line:'Root cause drafted on 3 tickets yesterday 16:40',val:'1.0 hr · £80'},
   {n:'Quaid Retail',cw:1,st:'warn',line:'A coworker correlated this client to an incident at Ferris Dental — cross-client link, needs your sign-off',val:'held pending review',act:'boundary'},
-  {n:'Ferris Dental Group',cw:1,st:'warn',line:'Run failed yesterday 11:05 — N-central credential expired mid-run. Nothing written.',val:'held — baseline was the coworker\u2019s own estimate',act:'fix'},
+  {n:'Ferris Dental Group',cw:1,st:'warn',line:'Run failed yesterday 11:05 — N-central credential expired mid-run. Nothing written.',val:'held — baseline was the coworker\u2019s own estimate',act:'fix',fixLabel:'Renew the credential \u2192'},
 ];
 function renderClients(){
   document.getElementById('secsub').textContent='Your book of business. One row per client — what ran, what it saved, and what needs you.';
   const needs=CLIENTBOOK.filter(c=>c.st!=='ok').length;
   const ico={ok:['\u2713','var(--low)'],warn:['\u25d0','var(--medium)'],fail:['\u2715','var(--critical)']};
-  return `<div class="cl-head"><b>${CLIENTBOOK.length} clients</b> \u00b7 <span style="color:var(--critical)">${needs} need you</span> \u00b7 7 coworker runs today</div>
+  return `<div class="cl-head"><b>${CLIENTBOOK.length} clients</b> \u00b7 <span style="color:var(--critical)">${needs} need you</span> \u00b7 ${EXEC.filter(r=>r.w.indexOf('today')===0).length} runs today, ${EXEC.length} this quarter<span class="cl-key">\u2713 nothing needed &nbsp; \u25d0 waiting on you &nbsp; \u2715 broken</span></div>
     <div class="dcard">${CLIENTBOOK.map(c=>{const[g,col]=ico[c.st];return `<div class="cl-row">
       <span class="cl-ic" style="color:${col}">${g}</span>
       <span class="cl-main"><b>${c.n}</b><span class="cl-cw">${c.cw} coworker${c.cw===1?'':'s'}</span></span>
       <span class="cl-line" style="${c.st==='fail'?'color:var(--critical)':c.st==='warn'?'color:var(--medium)':''}">${c.line}</span>
       <span class="cl-val">${c.val}</span>
-      <span class="cl-act">${c.act==='report'?`<button class="btn btn-sm primary" onclick="location.hash='report'">Client report \u2192</button>`:c.act==='fix'?`<button class="btn btn-sm" onclick="setNav('execution')">Fix it \u2192</button>`:c.act==='boundary'?`<button class="btn btn-sm" onclick="setNav('controlplane')">Review link \u2192</button>`:''}</span>
+      <span class="cl-act">${c.act==='report'?`<button class="btn btn-sm primary" onclick="location.hash='report'">Client report \u2192</button>`:c.act==='fix'?`<button class="btn btn-sm" onclick="setNav('execution')">${c.fixLabel}</button>`:c.act==='boundary'?`<button class="btn btn-sm" onclick="setNav('controlplane')">Sign it off \u2192</button>`:'<span class="cl-none">nothing needed</span>'}</span>
     </div>`;}).join('')}</div>`;
 }
 const SECTION={clients:renderClients,runbooks:renderRunbooks,experts:renderExperts,mcp:renderMcp,controlplane:renderControlPlane,execution:renderExecution,ledger:renderLedger};
@@ -1296,17 +1301,17 @@ function renderBuild(){
     <div style="display:flex;align-items:center;gap:10px;margin:14px 0"><span style="font-size:12px;color:var(--text-tertiary)">Which runbook will this coworker run?</span>${honestyBadge()}</div>
     <div class="actions"><span class="lk" onclick="goStep(0)">← Back</span><button class="btn primary" ${S.ai?'':'disabled'} onclick="goStep(2)">Continue →</button></div></div>`;}
 
-  else if(s===2){
+  else if(s===2){ if(!S.brModeSet)S.brMode=seatDefaultMode();
     const sh=shape(), does=countDoes(), back=AREAS.length-does;
     h+=`<div class="panel">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:2px">
       <div style="flex:1;min-width:240px">
         <h2 style="margin-bottom:4px">Build the register</h2>
-        <p class="lede" style="margin-bottom:0">${S.brMode==='build'?'The technical view. What each area draws on, how much the coworker does on its own, and what still needs you — one row per area.':'The client-legible snapshot. Plain findings, no technical detail — take this to a client any time. Nothing here is final until you activate.'}</p>
+        <p class="lede" style="margin-bottom:0">${S.brMode==='build'?'What each area draws on, how much the coworker does on its own, and what still needs you \u2014 one row per area.':'The same register, written the way you\u2019d say it to a client. Plain findings, no source detail. Nothing is final until you activate.'}</p>
       </div>
-      <div class="viewtabs" role="tablist" aria-label="Build or Report mode" style="margin-top:2px">
-        <button class="${S.brMode==='build'?'on':''}" onclick="setBrMode('build')" aria-pressed="${S.brMode==='build'}">Build</button>
-        <button class="${S.brMode==='report'?'on':''}" onclick="setBrMode('report')" aria-pressed="${S.brMode==='report'}">Report</button>
+      <div class="viewtabs" role="tablist" aria-label="Which view of the register" style="margin-top:2px">
+        <button class="${S.brMode==='build'?'on':''}" onclick="setBrMode('build')" aria-pressed="${S.brMode==='build'}">Sources &amp; setup</button>
+        <button class="${S.brMode==='report'?'on':''}" onclick="setBrMode('report')" aria-pressed="${S.brMode==='report'}">What the client sees</button>
       </div>
     </div>
     <div style="height:16px"></div>
@@ -1353,7 +1358,11 @@ function renderBuild(){
    "Parse details" disclosure instead of rendering as the primary/first thing on the screen. Report
    mode = the client-legible snapshot (plain findings via regTable(), no toggles/no parse log) — this
    is the "mini dashboard... snapshot" Beth asked for. ---- */
-function setBrMode(m){S.brMode=m;render();}
+function setBrMode(m){S.brMode=m;S.brModeSet=true;render();}
+/* The seat chosen on step 1 selects the default view of the register. Without this the seat
+   question was a promise the next screen broke — it profiled the user and then served the
+   engineer surface to all four. */
+function seatDefaultMode(){return (S.ftuxRole==='priya')?'report':'build';}
 function toggleParseLog(){S.showParseLog=!S.showParseLog;render();}
 function toggleLineage(sec){S.openLineage[sec]=!S.openLineage[sec];render();}
 function toggleIv(sec){S.openIv[sec]=!S.openIv[sec];render();}
@@ -1532,11 +1541,11 @@ function posture(){
   const r=FINDINGS.filter(f=>f.grade==='red').length,a=FINDINGS.filter(f=>f.grade==='amber').length,held=FINDINGS.filter(f=>f.grade==='held').length;
   const seg=(c,n)=>n?`<div class="seg ${c}" style="flex:${n}"></div>`:'';
   return `<div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
-    <div class="ev-key"><b>How we know each finding:</b>
-      <span class="tier measured">measured</span> read directly from a connected system
-      <span class="tier benchmarked">benchmarked</span> compared against a published standard
-      <span class="tier estimated">estimated</span> the coworker&rsquo;s own estimate — weakest, say it carefully
-      <span class="tier unverified">unverified</span> inferred, never shown to a client</div>
+    <div class="ev-key"><div class="ev-h">How we know each finding \u2014 strongest first</div>
+      <div class="ev-r"><span class="tier measured">measured</span><span>read directly from a connected system</span></div>
+      <div class="ev-r"><span class="tier benchmarked">benchmarked</span><span>compared against a published standard</span></div>
+      <div class="ev-r"><span class="tier estimated">estimated</span><span>the coworker&rsquo;s own guess \u2014 weakest, say it carefully</span></div>
+      <div class="ev-r"><span class="tier unverified">unverified</span><span>inferred; never reaches a client</span></div></div>
     <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>`;
 }
 /* regTable(reviewMode) — reviewMode is optional/falsy by default so every existing call site
@@ -1568,9 +1577,11 @@ function reviewRow(f){
       <span class="rv-chip correct ${act==='correct'?'on':''}" onclick="event.stopPropagation();setReviewAction('${f.id}','correct')">✎ Correct the grade</span>
       <span class="rv-chip hold ${act==='hold'?'on':''}" onclick="event.stopPropagation();setReviewAction('${f.id}','hold')">⏸ Hold from client</span>
       ${!act?'<span class="rv-note">Not reviewed</span>':''}
-      ${act==='confirm'?'<span class="rv-note">Confirmed as drafted.</span>':''}
-      ${act==='hold'?'<span class="rv-note">Held — won’t reach the client this cycle.</span>':''}
+      ${act==='confirm'?`<span class="rv-note"><b>Confirmed as drafted</b> \u2014 ${c.by||S.signer||'you'}, ${c.at||'just now'}</span>`:''}
+      ${act==='hold'?`<span class="rv-note"><b>Held from the client</b> \u2014 ${c.by||S.signer||'you'}, ${c.at||'just now'}</span>`:''}
+      ${act==='correct'?`<span class="rv-note"><b>Grade corrected</b> \u2014 ${c.by||S.signer||'you'}, ${c.at||'just now'}</span>`:''}
     </div>
+    ${act==='correct'&&c.note?`<div class="rv-reason"><b>Reason on record:</b> ${c.note}</div>`:''}
     ${act==='correct'?`<div class="tb-box" style="margin-top:0" onclick="event.stopPropagation()">
       <div class="tb-grades">
         <div class="tb-grade ${c.grade==='red'?'picked':''}" onclick="setReviewGrade('${f.id}','red')"><span class="g" style="background:var(--critical)"></span>Red<em>act this quarter</em></div>
@@ -1584,7 +1595,8 @@ function reviewRow(f){
 }
 function setReviewAction(id,action){
   const cur=S.reviewChoice[id];
-  S.reviewChoice[id]=action==='correct'?{action:'correct',grade:(cur&&cur.grade)||null,note:(cur&&cur.note)||''}:{action};
+  const who=S.signer||'you', when='just now';
+  S.reviewChoice[id]=action==='correct'?{action:'correct',grade:(cur&&cur.grade)||null,note:(cur&&cur.note)||'',by:who,at:when}:{action,by:who,at:when};
   render();
 }
 function setReviewGrade(id,grade){S.reviewChoice[id].grade=grade;render();}
@@ -1640,7 +1652,7 @@ function translateArc(){
     <div class="svg-wrap"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${arcs}${left}${right}</svg></div>
     <div class="narr">Held findings arc through dashed and muted — logged in the register, never reaching the client-facing column. This is the literal translate step, wired live: change tone above and both the report preview and this diagram redraw from the same <code style="font-family:var(--font-mono)">FINDINGS</code> data.</div>`;
 }
-function overTime(){const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px">${tr.map(f=>{const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=188,h=52,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=last<first,col=better?GC.green:GC.amber;return `<div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px"><div style="font-family:var(--font-brand);font-weight:600;font-size:13px;color:var(--text-primary);margin-bottom:2px">${f.finding}</div><div style="font-family:var(--font-mono);font-size:11px;color:${col};margin-bottom:8px">${first}→${last} · ${last===first?'\u2014 unchanged':(better?'\u2193 improving':'\u2191 worse')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg></div>`;}).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New findings carry no history, shown honestly as new.</div>`;}
+function overTime(){const tr=FINDINGS.filter(f=>f.history.filter(v=>v!==null).length>=2);return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px">${tr.map(f=>{const pts=f.history.map((v,i)=>({v,i})).filter(p=>p.v!==null),w=188,h=52,min=Math.min(...pts.map(p=>p.v)),max=Math.max(...pts.map(p=>p.v)),rng=(max-min)||1,step=w/(f.history.length-1),nm=v=>h-8-((v-min)/rng)*(h-16);const d=pts.map((p,i)=>`${i?'L':'M'}${(p.i*step).toFixed(1)},${nm(p.v).toFixed(1)}`).join(' '),first=pts[0].v,last=pts[pts.length-1].v,better=last<first,col=better?GC.green:GC.amber;return `<div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px"><div style="font-family:var(--font-brand);font-weight:600;font-size:13px;color:var(--text-primary);margin-bottom:2px">${f.finding}</div><div style="font-family:var(--font-mono);font-size:11px;color:${col};margin-bottom:8px">${first}\u2192${last} over 5 cycles \u00b7 ${last===first?'unchanged':(better?'lower is better \u2014 improving':'higher is worse \u2014 slipped')}</div><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${(p.i*step).toFixed(1)}" cy="${nm(p.v).toFixed(1)}" r="2.4" fill="${col}"/>`).join('')}</svg></div>`;}).join('')}</div><div class="narr">The renewal story — same findings across five cycles. New findings carry no history, shown honestly as new.</div>`;}
 function runsTab(){return `<div class="dcard"><h2>Run history</h2><div class="sub">Each run writes to the Value Ledger and appends to the register</div>
   <div class="stat"><span><b style="color:var(--text-primary)">Q3 2026 cycle</b> · today 09:12</span><span class="v" style="color:var(--low)">Completed \u00b7 ${FCOUNT.total} findings</span></div>
   <div class="stat"><span>Q2 2026 cycle · 14 May</span><span class="v muted">Completed · 4 findings</span></div>
@@ -1671,7 +1683,7 @@ function renderReport(){
       <div class="decision"><span>Put a documented incident-response plan in place</span><span class="dv" style="color:var(--medium)">For discussion</span></div>
     </div>
     <div class="rep-sec"><h3>Next 12 months</h3><p class="rep-note" style="color:var(--text-tertiary)">We’ll agree this together at the review — where you are now, where we’ll take you, and what it costs. Your account lead owns this section and will talk it through live rather than hand you a number cold.</p></div>
-    <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);border-top:1px solid var(--border);padding-top:12px;line-height:1.6">Seed data — fictional. Held and unverified findings are excluded from this client view, and with <b>Require review</b> on so is anything a human hasn’t looked at yet (the full internal register is on file). Every figure here is the register’s own figure — nothing is rounded or softened on the way to you. Exports write back to your own workbook or deck — your columns and order preserved.</div>
+    <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);border-top:1px solid var(--border);padding-top:12px;line-height:1.6">Held and unverified findings are excluded from this client view, and with <b>Require review</b> on so is anything a human hasn’t looked at yet (the full internal register is on file). Every figure here is the register’s own figure — nothing is rounded or softened on the way to you. Exports write back to your own workbook or deck — your columns and order preserved.</div>
   </div>`;
 }
 function csvEsc(s){return '"'+String(s).replace(/"/g,'""')+'"';}

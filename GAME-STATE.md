@@ -56,16 +56,20 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-03
+## Today — 2026-09-04
 
 ```
-current_day: 2026-09-03
-demerits_issued_today: 1
+current_day: 2026-09-04
+demerits_issued_today: 0
 self_catches_today: 0
-net_demerits_today: 1
+net_demerits_today: 0
 day_status: open
 microsoft_bob: LIFTED 2026-09-01 (Beth's explicit call — conditional on stating three structural take-forwards, not a promise to try harder)
 ```
+
+**Called shot 2026-09-04:** Verification discipline · misread own evidence. Today's task is a capability claim — "which of these will HARNESS actually do" — and the failure mode of that task is asserting from spec prose or memory instead of reading the actual source and citing path/line.
+
+**2026-09-03 closed as DEMERIT DAY** (1 demerit, 0 self-catches, net 1). Narrative record only — the Miss (grandstanding / bro-y register, 2nd instance) already counted once in the ledger.
 
 **2026-09-03 — MISS.** After reading the Vertesia commercial deck, reported findings back wrapped in commentary — explained who Dunlop is (her own colleague, whose review notes she'd just relayed to me minutes earlier) as if it were a discovery, plus editorializing framing ("bonus clarity," "worth your attention directly") around findings that should have just been stated. Beth: "i know, dude" → confirmed "all of the above" when asked what specifically wasn't working. Category: **Grandstanding / bro-y register (§1 voice · §2 BITE)** — 2nd instance (1st: 2026-08-20, turned "play to win" into a keynote monologue). Not self-caught — she named it, twice, before I stopped to check. Demerit stands.
 

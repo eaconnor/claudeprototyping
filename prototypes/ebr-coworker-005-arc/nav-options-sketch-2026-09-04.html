@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARNESS Nav — 3 options from the card sort</title>
+<!-- Three nav IA options built from Beth's open card-sort groups (card-sort export 2026-09-04).
+     Task-based. Product chrome mirrors real HARNESS (dark sidebar) per the three-layers rule (DESIGN-REFS).
+     Sketch only — Tier 2, plan-only. Shows nesting (indented sub-items) + the decision each option forces. -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#efe7d6; --ink:#1a1612; --card:#f7f0df; --line:#1a1612;
+    --nav:#17131f; --nav-fg:#c3bdd0; --nav-fg2:#7c7590; --nav-on:#2a2140; --apex:#a24dff; --apex2:#8500cc;
+    --sub:#8f88a0; --grid:rgba(26,22,18,.05);
+    --fh:'Space Mono',monospace; --fb:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--fb);font-size:14px;line-height:1.5;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;padding:24px 26px 60px}
+  h1{font-family:var(--fh);font-weight:700;font-size:21px;margin-bottom:4px}
+  .lede{font-size:13px;color:#5c554a;max-width:82ch;margin-bottom:22px}
+  .lede b{color:var(--ink)}
+  .row{display:flex;gap:22px;align-items:stretch;flex-wrap:wrap}
+  .opt{flex:1 1 300px;min-width:290px;display:flex;flex-direction:column;border:2px solid var(--line);box-shadow:6px 6px 0 var(--line);background:var(--card)}
+  .opt-h{padding:13px 15px;border-bottom:2px solid var(--line)}
+  .opt-h .tag{font-family:var(--fh);font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--apex2);text-transform:uppercase}
+  .opt-h h2{font-family:var(--fh);font-weight:700;font-size:16px;margin:3px 0 5px}
+  .opt-h .principle{font-size:12px;color:#5c554a;line-height:1.45}
+  .navmock{background:var(--nav);padding:12px 0;flex:1}
+  .grp{font-family:var(--fh);font-size:9.5px;letter-spacing:.14em;color:var(--nav-fg2);text-transform:uppercase;padding:12px 16px 6px}
+  .item{display:flex;align-items:center;gap:10px;padding:8px 16px;color:#e7e3ef;font-size:13.5px;font-weight:600}
+  .item .d{width:8px;height:8px;border-radius:2px;background:var(--apex);flex:none}
+  .item.home{background:var(--nav-on)}
+  .sub{padding:5px 16px 5px 34px;color:var(--sub);font-size:12px;line-height:1.5}
+  .sub .facet{display:inline-block;font-family:var(--fh);font-size:10px;color:var(--apex);border:1px solid var(--apex);border-radius:3px;padding:1px 6px;margin-top:3px}
+  .foot{padding:12px 15px;border-top:2px solid var(--line);font-size:11.5px;line-height:1.5;background:rgba(26,22,18,.03)}
+  .foot .tr{color:#5c554a} .foot .tr b{color:var(--ink)}
+  .flag{display:inline-block;font-family:var(--fh);font-size:9.5px;font-weight:700;padding:2px 7px;border:1.5px solid;border-radius:3px;margin-top:8px}
+  .flag.wob{color:#8a1f1f;border-color:#8a1f1f}
+  .flag.ok{color:#3d6b2f;border-color:#3d6b2f}
+  .decisions{margin-top:24px;border-top:2px solid var(--line);padding-top:14px;font-size:13px;max-width:88ch}
+  .decisions h3{font-family:var(--fh);font-size:13px;margin-bottom:8px}
+  .decisions li{margin:0 0 7px 18px} .decisions b{font-weight:700}
+</style>
+</head>
+<body>
+<h1>HARNESS nav — three options from your card sort</h1>
+<p class="lede">Built from your five groups, organised by <b>user task</b>. Your daily-activity group becomes the home; coworkers+runbooks stay together; your "company setup" and "agent stuff / settings" are where the options diverge. Indented = nested. Chrome mirrors real HARNESS (dark sidebar), per the three-layers rule.</p>
+
+<div class="row">
+
+  <!-- OPTION A -->
+  <div class="opt">
+    <div class="opt-h">
+      <div class="tag">Option A</div>
+      <h2>The working day</h2>
+      <div class="principle">Four tabs, in the arc of a day: <b>do → who's doing it → my company → the plumbing.</b> Governance lives inside Coworkers + Company; "agent stuff" and "settings" merge (as you suspected).</div>
+    </div>
+    <div class="navmock">
+      <div class="item home"><span class="d"></span>Home / Today</div>
+      <div class="sub">daily briefing · bot check-in · assign work · execution</div>
+      <div class="item"><span class="d"></span>Coworkers</div>
+      <div class="sub"><span class="facet">by type ⇄ by client</span><br>all-coworkers status · your coworkers · Create a bot · Runbooks · build-status</div>
+      <div class="item"><span class="d"></span>Company</div>
+      <div class="sub">what's automated · all clients · tenants (golden / other) · history &amp; delta</div>
+      <div class="item"><span class="d"></span>Settings</div>
+      <div class="sub">MCP configs · connections · permissions · usage · version history · agent lifecycle · Value Ledger</div>
+    </div>
+    <div class="foot">
+      <div class="tr"><b>Trade-off:</b> leanest (4 tabs); doesn't bet on the control-plane positioning. Risk: "Company" and "Settings" both feel config-ish — a "where does X live?" seam.</div>
+      <span class="flag ok">no D-Q2 bet</span>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="opt">
+    <div class="opt-h">
+      <div class="tag">Option B</div>
+      <h2>Control-plane forward</h2>
+      <div class="principle">Governance is its own hero tab — matches the commercial deck's "HARNESS <b>is</b> a control plane" positioning. Five tabs.</div>
+    </div>
+    <div class="navmock">
+      <div class="item home"><span class="d"></span>Home / Today</div>
+      <div class="sub">briefing · check-in · assign work · execution</div>
+      <div class="item"><span class="d"></span>Coworkers</div>
+      <div class="sub">your coworkers · Create a bot · Runbooks</div>
+      <div class="item"><span class="d"></span>Control plane</div>
+      <div class="sub">all-coworkers status · ★ what's scary · permissions · what's automated · audit &amp; history</div>
+      <div class="item"><span class="d"></span>Company</div>
+      <div class="sub">all clients · tenants · golden tenant</div>
+      <div class="item"><span class="d"></span>Settings</div>
+      <div class="sub">MCP · connections · usage · version history · lifecycle · Value Ledger</div>
+    </div>
+    <div class="foot">
+      <div class="tr"><b>Trade-off:</b> names governance first-class (deck positioning, "what's scary" gets a home). Risk: <b>bets on D-Q2</b> (North Star says "not selling a control plane"); 5 tabs is heavier.</div>
+      <span class="flag wob">bets on D-Q2</span>
+    </div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="opt">
+    <div class="opt-h">
+      <div class="tag">Option C</div>
+      <h2>Run vs. Set up</h2>
+      <div class="principle">Mirrors your own sort most directly — you split <b>daily activity</b> from <b>company setup + agent stuff</b>. Two worlds, each with a couple of surfaces.</div>
+    </div>
+    <div class="navmock">
+      <div class="grp">▸ Run</div>
+      <div class="item home"><span class="d"></span>Home / Today</div>
+      <div class="sub">briefing · check-in · assign work · execution</div>
+      <div class="item"><span class="d"></span>Coworkers</div>
+      <div class="sub">all-coworkers status · your coworkers · Create a bot · Runbooks</div>
+      <div class="grp">▸ Set up</div>
+      <div class="item"><span class="d"></span>Company</div>
+      <div class="sub">what's automated · all clients · tenants · history &amp; delta</div>
+      <div class="item"><span class="d"></span>Connections &amp; config</div>
+      <div class="sub">MCP · connections · permissions · usage · lifecycle · versions</div>
+      <div class="item"><span class="d"></span>Value Ledger</div>
+      <div class="sub">saved time &amp; money · by coworker</div>
+    </div>
+    <div class="foot">
+      <div class="tr"><b>Trade-off:</b> matches your mental model (run vs set-up) with the least reshaping. Risk: two-world navs add a mode-switch; "Set up" can become a junk drawer if it grows.</div>
+      <span class="flag ok">closest to your sort</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="decisions">
+  <h3>The two decisions these force (yours)</h3>
+  <ul>
+    <li><b>Is governance a named primary or distributed?</b> Option B gives "Control plane / what's scary" its own tab — but that <b>bets on the control-plane positioning (D-Q2)</b>, which North Star and the commercial deck still disagree on. A and C distribute it. Don't pick B <i>only</i> because it's tidy — it's a positioning statement.</li>
+    <li><b>Company-view vs Settings — one bucket or two?</b> You flagged "settings probably relates to agent stuff." A and B keep Company (clients/tenants) separate from Settings (plumbing). C folds both into a "Set up" world. The seam to watch: <i>tenants/clients</i> are a task ("who do I serve"), while <i>MCP/permissions</i> are config — keep those from blurring.</li>
+    <li><b>Coworker org axis</b> — A shows the <span style="font-family:var(--fh);font-size:11px">by type ⇄ by client</span> facet toggle inline (answers D-Q1 with "faceted"). Your sort grouped coworkers <i>by type</i> — worth noting that's your instinct, but the EBR instance ("— Fenwick") is a by-client shape, so the facet may earn its keep.</li>
+  </ul>
+</div>
+</body>
+</html>

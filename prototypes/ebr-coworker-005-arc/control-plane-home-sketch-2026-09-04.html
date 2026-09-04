@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control-plane home — the opening scene</title>
+<!-- Tier 1 vision sketch: the control-plane HOME as an establishing overview ("Father of the Bride" factory-floor
+     opening) that drills into a list. Grounds Beth's whiteboard Board 2 (Coworker Army radial + factory floor) +
+     Lima viz ambition + the "what's scary" prework (Alert Flood shows a rate anomaly at a glance = safety Direction 1).
+     Layer-2 aspirational data-viz (three-layers rule). ALL DATA FICTIONAL (§9b). Sketch only — not spec. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0713; --bg2:#120a20; --surf:#170e28; --line:#2a1c44; --line2:#3a2a5c;
+    --brand:#c046ff; --brand2:#8500cc; --glow:rgba(192,70,255,.5);
+    --tx:#ece7f5; --tx2:#9d93b8; --tx3:#6b6284;
+    --ok:#3ddc97; --warn:#ffb545; --bad:#ff5c6c;
+    --fh:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fm:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1100px 600px at 78% -10%,rgba(192,70,255,.14),transparent 60%),
+      radial-gradient(800px 500px at 5% 8%,rgba(61,220,151,.06),transparent 55%),var(--bg);
+    color:var(--tx);font-family:var(--fb);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  .top{display:flex;align-items:center;gap:14px;padding:14px 26px;border-bottom:1px solid var(--line);background:rgba(11,7,19,.7);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10}
+  .brand{font-family:var(--fh);font-weight:800;letter-spacing:.22em;font-size:14px}
+  .crumb{font-family:var(--fm);font-size:11px;color:var(--tx3);letter-spacing:.08em}
+  .crumb b{color:var(--brand)}
+  .toggle{margin-left:auto;display:flex;border:1px solid var(--line2);border-radius:999px;overflow:hidden}
+  .toggle button{font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.05em;padding:7px 15px;background:transparent;color:var(--tx2);border:none;cursor:pointer}
+  .toggle button.on{background:var(--brand2);color:#fff}
+
+  .stage{padding:26px 30px 60px;max-width:1180px;margin:0 auto}
+  .scene-cap{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:6px}
+  h1{font-family:var(--fh);font-weight:800;font-size:26px;letter-spacing:-.02em;margin-bottom:6px}
+  .sub{color:var(--tx2);font-size:14px;max-width:70ch;margin-bottom:22px}
+
+  /* summary strip — the three control-plane lenses */
+  .lenses{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+  .lens{flex:1;min-width:150px;background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .lens .k{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:7px}
+  .lens .v{font-family:var(--fh);font-weight:800;font-size:24px;letter-spacing:-.01em}
+  .lens .n{font-size:12px;color:var(--tx2);margin-top:2px}
+  .lens.scary{border-color:rgba(255,92,108,.4);background:linear-gradient(180deg,rgba(255,92,108,.08),var(--surf))}
+  .lens.scary .v{color:var(--bad)}
+
+  /* FLOOR view */
+  .floor-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .floor-h h2{font-family:var(--fh);font-weight:700;font-size:15px}
+  .floor-h span{font-size:12px;color:var(--tx3)}
+  .lane{display:grid;grid-template-columns:210px 1fr 150px;align-items:center;gap:14px;background:var(--surf);
+    border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;cursor:pointer;transition:.15s}
+  .lane:hover{border-color:var(--brand);transform:translateX(3px)}
+  .lane.scary{border-color:rgba(255,92,108,.5);background:linear-gradient(90deg,rgba(255,92,108,.07),var(--surf) 40%)}
+  .station{display:flex;align-items:center;gap:10px}
+  .health{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor}
+  .h-ok{background:var(--ok);color:var(--ok)} .h-warn{background:var(--warn);color:var(--warn)} .h-bad{background:var(--bad);color:var(--bad)}
+  .station .nm{font-family:var(--fh);font-weight:700;font-size:14px;line-height:1.2}
+  .station .cat{font-family:var(--fm);font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+  .belt{position:relative;height:34px;border-top:1px dashed var(--line2);border-bottom:1px dashed var(--line2);overflow:hidden}
+  .belt .item{position:absolute;top:50%;width:14px;height:14px;border-radius:3px;transform:translateY(-50%);
+    background:var(--brand);box-shadow:0 0 8px var(--glow);animation:flow linear infinite}
+  @keyframes flow{from{left:-20px}to{left:100%}}
+  .readout{text-align:right;font-size:12px;color:var(--tx2)}
+  .readout b{font-family:var(--fm);color:var(--tx);font-size:13px}
+  .flag{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;color:var(--bad);border:1px solid var(--bad);border-radius:5px;padding:2px 7px;margin-top:4px}
+  .needy{color:var(--warn)}
+
+  /* the DRILL — overview → list */
+  .drill{background:var(--bg2);border:1px solid var(--line2);border-radius:12px;margin:18px 0 0;overflow:hidden;display:none}
+  .drill.open{display:block;animation:zoom .25s ease}
+  @keyframes zoom{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+  .drill-h{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--surf)}
+  .drill-h .nm{font-family:var(--fh);font-weight:700;font-size:15px;flex:1}
+  .drill-h .close{background:none;border:1px solid var(--line2);color:var(--tx2);border-radius:6px;padding:3px 9px;cursor:pointer;font-size:12px}
+  .row{display:grid;grid-template-columns:14px 1fr 120px 90px;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line);font-size:13px}
+  .row:last-child{border-bottom:none}
+  .row .dot{width:9px;height:9px;border-radius:50%}
+  .row .rt{color:var(--tx2);font-family:var(--fm);font-size:11px;text-align:right}
+  .row .st{font-family:var(--fm);font-size:11px;text-align:right}
+  .into{font-family:var(--fm);font-size:11px;color:var(--tx3);padding:9px 16px;letter-spacing:.05em}
+
+  /* CONSTELLATION view */
+  #constellation{display:none;position:relative;height:440px;margin:8px 0}
+  #constellation.on{display:block}
+  .hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96px;height:96px;border-radius:50%;
+    background:radial-gradient(circle,var(--brand2),transparent 72%);border:1px solid var(--brand);display:flex;align-items:center;justify-content:center;
+    font-family:var(--fh);font-weight:800;font-size:12px;text-align:center;box-shadow:0 0 40px var(--glow);z-index:2}
+  .node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;z-index:3}
+  .node .orb{width:22px;height:22px;border-radius:50%;box-shadow:0 0 12px currentColor}
+  .node:hover .orb{transform:scale(1.25)}
+  .node .lb{font-size:10.5px;color:var(--tx2);font-family:var(--fm);white-space:nowrap;max-width:120px;text-align:center;line-height:1.2}
+  .spoke{position:absolute;left:50%;top:50%;height:1px;background:linear-gradient(90deg,var(--brand),transparent);transform-origin:0 0;z-index:1;opacity:.4}
+
+  .foot{max-width:1180px;margin:26px auto 0;padding:14px 30px;border-top:1px solid var(--line);color:var(--tx3);font-size:12px;line-height:1.6}
+  .foot b{color:var(--tx2)}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">HARNESS</span>
+  <span class="crumb"><b>Home</b> · Control plane</span>
+  <div class="toggle">
+    <button id="tFloor" class="on" onclick="setView('floor')">▦ Floor</button>
+    <button id="tConst" onclick="setView('const')">✳ Constellation</button>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="scene-cap">The opening scene</div>
+  <h1>Everything you run, in one look.</h1>
+  <p class="sub">You land on the whole operation alive — every coworker on the floor, what's moving, what's healthy, and the one thing that's off — before you step onto any single line. Click a line to drop into its list.</p>
+
+  <div class="lenses">
+    <div class="lens"><div class="k">● Doing</div><div class="v">6 running</div><div class="n">41 runs today · 218 items handled</div></div>
+    <div class="lens"><div class="k">● How well</div><div class="v">4 clean</div><div class="n">1 needs you · 1 held for review</div></div>
+    <div class="lens scary"><div class="k">★ What's scary</div><div class="v">1 flagged</div><div class="n">Alert Flood acting 5× its normal rate</div></div>
+  </div>
+
+  <!-- FLOOR -->
+  <div id="floor">
+    <div class="floor-h"><h2>The floor</h2><span>— live · fictional data</span></div>
+    <div id="lanes"></div>
+    <div id="drill" class="drill"></div>
+  </div>
+
+  <!-- CONSTELLATION -->
+  <div id="constellation"></div>
+
+  <div class="foot">
+    <b>What this is:</b> the control-plane home as an <b>establishing shot</b> — overview first, then drill to the list (Shneiderman's "overview → zoom → detail," and the walk-the-floor opening you named). Grounds your whiteboard Board 2 (the <b>Coworker Army</b> radial + the <b>factory floor</b>) and the Lima viz ambition (workstream C). The ★ scary line — Alert Flood at 5× its baseline — is the "what's scary" prework's <b>Direction 1 (rate-against-baseline)</b> surfaced at a glance, the thing a list buries. <b>All data fictional (§9b). Layer-2 aspirational data-viz — a Tier 1 vision sketch, not spec.</b>
+  </div>
+</div>
+
+<script>
+const CW=[
+  {id:'sec', nm:'Security Tabletop', cat:'Security', h:'ok', runs:4, last:'12m ago', rate:1.0, flow:2.4, items:38},
+  {id:'ir', nm:'Incident Response Analyst', cat:'Service', h:'warn', runs:7, last:'3m ago', rate:1.3, flow:1.3, items:64, need:'1 needs you'},
+  {id:'env', nm:'Environment Health Monitor', cat:'Operations', h:'ok', runs:2, last:'1h ago', rate:0.9, flow:3.6, items:22},
+  {id:'alert', nm:'Alert Flood Suppressor', cat:'NOC', h:'bad', runs:118, last:'just now', rate:5.1, flow:0.35, items:1180, flag:'acting 5× normal rate'},
+  {id:'qbr', nm:'QBR Advisor', cat:'Business reporting', h:'ok', runs:1, last:'yesterday', rate:1.0, flow:5, items:9},
+  {id:'ebr', nm:'EBR Coworker — Fenwick', cat:'Your build', h:'warn', runs:3, last:'today 09:12', rate:1.0, flow:3, items:6, need:'1 held for review'},
+];
+const RUNS={
+  sec:[['ok','CVE sweep — 6 endpoints mapped','12m ago','done'],['ok','Posture grade drafted','1h ago','done'],['ok','Tabletop scenario run','3h ago','done']],
+  ir:[['warn','Ticket cluster — root cause unclear','3m ago','needs you'],['ok','RCA note drafted · #4821','40m ago','done'],['ok','Device event correlated','2h ago','done']],
+  env:[['ok','Lifecycle scan — 12 refresh candidates','1h ago','done'],['ok','Endpoint health rollup','5h ago','done']],
+  alert:[['bad','1,180 suppress actions in 4h — no human looked','just now','★ review'],['bad','Grouped 340 alerts unattended','1h ago','★ review'],['warn','Correlation rule auto-widened','2h ago','check']],
+  qbr:[['ok','Q3 narrative drafted — Holloway','yesterday','done']],
+  ebr:[['warn','Register drafted — 1 finding held','09:12','needs you'],['ok','Delta vs Q2 computed','09:10','done'],['ok','8 sources pulled','09:04','done']],
+};
+const HC={ok:'h-ok',warn:'h-warn',bad:'h-bad'};
+const DOT={ok:'var(--ok)',warn:'var(--warn)',bad:'var(--bad)'};
+
+function lanes(){
+  document.getElementById('lanes').innerHTML=CW.map(c=>{
+    const n=Math.max(2,Math.round(c.items/12));let items='';
+    for(let i=0;i<Math.min(n,9);i++){const dur=c.flow*(0.8+i*0.12);const delay=-(i*c.flow/n);
+      items+=`<span class="item" style="animation-duration:${dur}s;animation-delay:${delay}s;background:${c.h==='bad'?'var(--bad)':'var(--brand)'}"></span>`}
+    return `<div class="lane ${c.h==='bad'?'scary':''}" onclick="drill('${c.id}')">
+      <div class="station"><span class="health ${HC[c.h]}"></span><div><div class="nm">${c.nm}</div><div class="cat">${c.cat}</div></div></div>
+      <div class="belt">${items}</div>
+      <div class="readout"><b>${c.runs}</b> runs today<br><span style="color:var(--tx3)">${c.last}</span>${c.flag?`<br><span class="flag">★ ${c.flag}</span>`:c.need?`<br><span class="needy" style="font-size:11px">▲ ${c.need}</span>`:''}</div>
+    </div>`;
+  }).join('');
+}
+function drill(id){
+  const c=CW.find(x=>x.id===id);const rows=RUNS[id]||[];
+  const d=document.getElementById('drill');
+  d.innerHTML=`<div class="into">▼ stepped onto the line — its list</div>
+    <div class="drill-h"><span class="health ${HC[c.h]}"></span><span class="nm">${c.nm}</span><button class="close" onclick="document.getElementById('drill').classList.remove('open')">Close ✕</button></div>
+    ${rows.map(r=>`<div class="row"><span class="dot" style="background:${DOT[r[0]]}"></span><span>${r[1]}</span><span class="rt">${r[2]}</span><span class="st" style="color:${DOT[r[0]]}">${r[3]}</span></div>`).join('')}`;
+  d.classList.add('open');d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function constellation(){
+  const el=document.getElementById('constellation');const cx=50,cy=50,R=38;
+  let html='<div class="hub">YOUR<br>FLEET</div>';
+  CW.forEach((c,i)=>{
+    const ang=(-90+i*(360/CW.length))*Math.PI/180;
+    const x=cx+R*Math.cos(ang), y=cy+R*Math.sin(ang);
+    const len=R; const deg=(-90+i*(360/CW.length));
+    html+=`<div class="spoke" style="width:${len}%;transform:rotate(${deg}deg)"></div>`;
+    const size=14+Math.min(28,c.items/28);
+    html+=`<div class="node" style="left:${x}%;top:${y}%" onclick="setView('floor');drill('${c.id}')">
+      <span class="orb" style="width:${size}px;height:${size}px;background:${DOT[c.h]};color:${DOT[c.h]}"></span>
+      <span class="lb">${c.nm}${c.flag?' ★':''}</span></div>`;
+  });
+  el.innerHTML=html;
+}
+function setView(v){
+  document.getElementById('floor').style.display=v==='floor'?'block':'none';
+  document.getElementById('constellation').classList.toggle('on',v==='const');
+  document.getElementById('tFloor').classList.toggle('on',v==='floor');
+  document.getElementById('tConst').classList.toggle('on',v==='const');
+}
+lanes();constellation();
+</script>
+</body>
+</html>

@@ -66,7 +66,8 @@
   .client-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
   .client-card.attn{border-color:var(--critical);box-shadow:inset 4px 0 0 var(--critical)}
   .client-name{font-family:var(--font-brand);font-weight:700;font-size:14px;color:var(--text-primary)}
-  .client-meta{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-top:1px}
+  .client-meta{font-family:var(--font-mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-top:1px;display:flex;justify-content:space-between}
+  .report-lk{font-family:var(--font-ui);text-transform:none;color:var(--brand-strong);font-size:10px}
   .shared-note{font-size:9.5px;color:var(--held);margin-top:2px}
   .cw-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--bg-deep)}
   .cw-row:first-of-type{margin-top:12px}
@@ -167,7 +168,7 @@
     <div class="section-label">Needs your attention (1)</div>
     <div class="client-grid">
       <div class="client-card attn" style="grid-column:1/-1">
-        <div class="client-name">Marlow Freight Co.</div><div class="client-meta">last activity 09:14 today</div>
+        <div class="client-name">Marlow Freight Co.</div><div class="client-meta"><span>last activity 09:14 today</span><a class="report-lk" href="#">report →</a></div>
         <div class="cw-row">
           <div class="cw-top">
             <div>
@@ -198,7 +199,7 @@
     <div class="section-label">Watching — 1 monitoring, 1 resolved, 1 no action needed (3)</div>
     <div class="client-grid">
       <div class="client-card">
-        <div class="client-name">Hallworth Print</div><div class="client-meta">last activity 04:20 today</div>
+        <div class="client-name">Hallworth Print</div><div class="client-meta"><span>last activity 04:20 today</span><a class="report-lk" href="#">report →</a></div>
         <div class="shared-note">shared coworker — also runs at Ferris Dental Group, Quaid Retail</div>
         <div class="cw-row">
           <div class="cw-top">
@@ -216,7 +217,7 @@
       </div>
 
       <div class="client-card">
-        <div class="client-name">Ferris Dental Group</div><div class="client-meta">last activity 06:02 today</div>
+        <div class="client-name">Ferris Dental Group</div><div class="client-meta"><span>last activity 06:02 today</span><a class="report-lk" href="#">report →</a></div>
         <div class="shared-note">shared coworker — also runs at Hallworth Print, Quaid Retail</div>
         <div class="cw-row">
           <div class="cw-top">
@@ -233,7 +234,7 @@
       </div>
 
       <div class="client-card" style="grid-column:1/-1">
-        <div class="client-name">Quaid Retail</div><div class="client-meta">last activity 07:38 today</div>
+        <div class="client-name">Quaid Retail</div><div class="client-meta"><span>last activity 07:38 today</span><a class="report-lk" href="#">report →</a></div>
         <div class="shared-note">shared coworker — also runs at Hallworth Print, Ferris Dental Group</div>
         <div class="cw-row">
           <div class="cw-top">
@@ -254,7 +255,7 @@
     <div class="section-label">Clean — nothing to speak to (2)</div>
     <div class="client-grid">
       <div class="client-card">
-        <div class="client-name">Fenwick Logistics</div><div class="client-meta">last activity 07:12 today</div>
+        <div class="client-name">Fenwick Logistics</div><div class="client-meta"><span>last activity 07:12 today</span><a class="report-lk" href="#">report →</a></div>
         <div class="cw-row">
           <div class="cw-top">
             <div>
@@ -270,7 +271,7 @@
       </div>
 
       <div class="client-card">
-        <div class="client-name">Corbett &amp; Wren Legal</div><div class="client-meta">last activity 08:01 today</div>
+        <div class="client-name">Corbett &amp; Wren Legal</div><div class="client-meta"><span>last activity 08:01 today</span><a class="report-lk" href="#">report →</a></div>
         <div class="cw-row">
           <div class="cw-top">
             <div>

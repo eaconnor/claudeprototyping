@@ -416,6 +416,46 @@
   .cp-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
   .cp-chip{font-family:var(--font-mono);font-size:9.5px;border-radius:var(--radius-sm);padding:2px 6px;background:var(--bg-deep);color:var(--text-secondary)}
   .cp-chip.write{background:var(--brand-soft);color:var(--brand-strong)}
+  /* regrounded control plane — real ACP spec vocabulary */
+  .cp-csrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cp-risk{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:var(--radius-sm)}
+  .cp-risk.r-high{background:var(--critical);color:#fff}
+  .cp-risk.r-medium{background:var(--medium-soft);color:var(--medium)}
+  .cp-risk.r-low{background:var(--bg-deep);color:var(--text-tertiary)}
+  .cp-op{font-family:var(--font-mono);font-size:9.5px;color:var(--brand-strong);background:var(--brand-soft);padding:2px 7px;border-radius:var(--radius-sm)}
+  .cp-when{font-family:var(--font-mono);font-size:9.5px;color:var(--held);margin-left:auto}
+  .cp-own{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary);margin-top:4px;line-height:1.6}
+  .cp-own code{background:var(--bg-deep);padding:1px 4px;border-radius:2px;color:var(--text-secondary)}
+  .cp-lbl{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-tertiary);margin-bottom:5px}
+  .cp-changes{margin-top:10px;padding:10px 12px;background:var(--bg-deep);border-radius:var(--radius-md)}
+  .cp-changes ul{margin:0;padding-left:16px} .cp-changes li{font-size:11.5px;margin-bottom:3px;color:var(--text-secondary)}
+  .cp-changes code,.cp-scope-line code,.cp-held code,.cp-why code{font-family:var(--font-mono);font-size:.92em;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:2px}
+  .cp-note{font-size:11px;color:var(--text-tertiary);margin-top:9px;padding-left:10px;border-left:2px solid var(--border-strong);line-height:1.55}
+  .cp-dry{font-family:var(--font-mono);font-size:9px;color:var(--held);margin-left:6px}
+  .cp-acts{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap}
+  .cp-decided{font-family:var(--font-mono);font-size:11px;color:var(--low);font-weight:600;margin-top:4px}
+  .cp-card.cp-done{opacity:.75}
+  .cp-lowbar{background:var(--bg-deep);border-radius:var(--radius-md);padding:11px 14px;margin-top:12px;font-size:11.5px;color:var(--text-tertiary)}
+  .cp-lowbar b{color:var(--text-secondary)}
+  .cp-statrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:6px}
+  .cp-st{font-family:var(--font-mono);font-size:9.5px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:var(--radius-sm)}
+  .cp-st.s-active{background:var(--low-soft);color:var(--low)}
+  .cp-st.s-paused{background:var(--critical);color:#fff}
+  .cp-st.s-draft{background:var(--bg-deep);color:var(--held)}
+  .cp-st.s-archived{background:var(--bg-deep);color:var(--held)}
+  .cp-trust{font-family:var(--font-mono);font-size:9.5px;color:var(--text-tertiary)}
+  .cp-saved{font-family:var(--font-mono);font-size:10.5px;color:var(--low);font-weight:600}
+  .cp-saved.neg{color:var(--medium)}
+  .cp-src{font-family:var(--font-mono);font-size:9px;padding:2px 6px;border-radius:var(--radius-sm);cursor:help}
+  .cp-src-good{background:var(--low-soft);color:var(--low)}
+  .cp-src-mid{background:var(--bg-deep);color:var(--text-tertiary)}
+  .cp-src-weak{background:var(--medium-soft);color:var(--medium)}
+  .cp-sysnote{font-family:var(--font-mono);font-size:10px;color:var(--critical);margin-top:5px}
+  .cp-held{margin-top:10px;padding:10px 12px;background:var(--medium-soft);border-radius:var(--radius-md);font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+  .cp-inv{margin:0 0 4px;padding-left:18px}
+  .cp-inv li{font-size:12px;color:var(--text-secondary);margin-bottom:5px}
+  .cp-guar{font-size:11.5px;color:var(--low);background:var(--low-soft);border-radius:var(--radius-md);padding:9px 11px;margin-top:9px;line-height:1.55}
+  .cp-card+.cp-card{margin-top:12px}
 </style>
 </head>
 <body>
@@ -653,7 +693,21 @@ function renderNav(){
     +`<a href="role-play-simulator.html" target="_blank" rel="noopener" style="margin-top:10px;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;font-size:11px;line-height:1.4;color:var(--nav-fg-2);border:1px dashed rgba(255,255,255,.22)">↗ Extended scenario — not MVP</a>`
     +`<div class="user"><span class="av">JS</span>Jude Scally</div>`;
 }
-function setNav(k){S.nav=k;S.ebrOpen=false;render();}
+function setNav(k){S.nav=k;S.ebrOpen=false;if(location.hash.slice(1)!==k)history.replaceState(null,'','#'+k);render();}
+/* Hash routing — lets any view be linked, shared, and screenshotted directly (#controlplane,
+   #execution, …). Without it every screenshot lands on whatever the default nav is. */
+function applyHash(){
+  const k=location.hash.slice(1);if(!k)return;
+  if(ALLNAV.find(n=>n[0]===k)){S.nav=k;S.ebrOpen=false;return;}
+  /* Deep links into the EBR coworker itself, so any step of the build — the part of this product
+     that actually has to feel good — is linkable, reviewable and screenshot-able on its own. */
+  const b=k.match(/^build-([0-4])$/);
+  if(b){S.nav='coworkers';S.ebrOpen=true;S.activated=false;S.step=+b[1];
+    if(+b[1]>0){S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;}
+    return;}
+  if(k==='dashboard'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=true;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;return;}
+  if(k==='capstone'){S.nav='coworkers';S.ebrOpen=true;S.activated=true;S.capstoneSeen=false;S.shape=S.shape||SHAPES[0].id;S.ai=S.ai||'claude';S.parsed=true;return;}
+}
 function openEbr(){S.nav='coworkers';S.ebrOpen=true;render();}
 function closeEbr(){S.ebrOpen=false;render();}
 function autoDoes(a){if(a.sec in S.overrides)return S.overrides[a.sec];return ({measured:3,benchmarked:2,estimated:1,unverified:0})[a.tier]>=(S.preset==='whole'?0:2);}
@@ -827,173 +881,176 @@ function cpThread(kind,label){
   const cls=kind==='open'?'cp-critical':kind==='monitoring'?'cp-medium':'cp-low';
   return `<span class="cp-thread ${cls}">${label}</span>`;
 }
+/* ---- Control plane — REGROUNDED 2026-09-04 against the real ACP specs in nable-fusion/acp-core
+   (Beth asked for the repo explicitly). Everything below traces to a real spec field or rule:
+
+   · Intent Specs/ACP-Management-Plane-AI-Operator-Model.md (Nicole Reineke, v0.1.0, 2026-06-09)
+     — the two planes (Execution / Management); proposed-changeset model ("the management-plane
+     equivalent of a pull request"); risk tiers Low/Medium/High and their behaviours; the four
+     FIXED non-configurable limits; ownership triple created_by / approved_by / on_behalf_of;
+     audit delegation chain actor_type · delegated_by · approval_chain.
+   · specs/004-ai-coworker-registry/data-model.md + spec.md — real status enum
+     draft|active|paused|archived (only `active` is run-eligible, FR-012); real trust_level enum
+     manual|assisted|autonomous (default manual); actor_type human|ai|system; the audit table is
+     trigger-protected against UPDATE/DELETE (ENABLE ALWAYS) = append-only in the database, not a
+     marketing claim; FR-012a system auto-pause when a referenced runbook loses its last active
+     version, audit-logged as system-initiated and naming the runbook.
+   · specs/003-value-ledger/data-model.md — real ledger fields: time_saved_seconds
+     (= manual_baseline_seconds − actual_duration_seconds, MAY be negative), cost_saved,
+     requires_review (set for implausible AI estimates or negative time_saved),
+     baseline_source enum tenant_configured|platform_default|coworker_reported|
+     platform_default_rate|unknown, and the rollup note that total_time_saved_seconds
+     "Floors negative entries at 0 for display".
+
+   WHAT I REMOVED AND WHY [CS: VERIFIED by absence]: earlier passes of this screen showed an
+   "accuracy — self-rated → you confirmed" percentage and "39 of 50 outputs confirmed unchanged".
+   No such metric exists anywhere in acp-core. I invented it. It is gone. The real trust signal
+   is baseline_source (where the number came from) plus requires_review (the system's own doubt),
+   which is stronger anyway because it is auditable. */
+const CP_RISK={low:'Low',medium:'Medium',high:'High'};
+/* Real proposed changesets. Ops and risk tiers per the Management Plane doc's risk table. */
+const CP_CHANGESETS=[
+  {id:'cs-2',risk:'high',op:'activate',title:'Activate “Disk Space Monitor” v3',
+   actor:'claude-code-session-a41f',at:'14:02 today',
+   changes:['Coworker family: <b>draft → active</b> (only <code>active</code> is run-eligible)','Version 3 becomes the single active version','Trust level stays <b>manual</b> — every run still waits for a human'],
+   preview:['runbook: Endpoint disk cleanup &lt;15%','3 approved scripts','MCP: N-central, N-query'],
+   note:'Activation always requires explicit human sign-off. This is a fixed limit in the model, not a setting you can turn off.'},
+  {id:'cs-1',risk:'medium',op:'create',title:'Create coworker “Backup Verification Analyst” (draft)',
+   actor:'claude-code-session-a41f',at:'13:47 today',
+   changes:['New coworker family in <b>draft</b>','Cannot run until separately activated — creation and activation are never the same operation'],
+   preview:['runbook: Backup verification (cloned from platform)','trust level: manual','MCP: N-central'],
+   note:'Medium-risk management operations queue here for review rather than applying directly.'},
+];
+const CP_FLEET=[
+  {name:'Environment Health Monitor',client:'Marlow Freight Co.',status:'paused',bySystem:true,trust:'manual',
+   why:'Its runbook <b>“Endpoint lifecycle v2”</b> lost its last active version at 09:14. Every coworker referencing that runbook was paused automatically — a pin does not survive the death of its family.',
+   sysnote:'System-initiated, not a human action. Resume is refused until this coworker points at an executable runbook.',
+   saved:null,src:null,review:null,act:'Point it at a runbook'},
+  {name:'QBR Advisor',client:'Fenwick Logistics',status:'active',trust:'assisted',
+   saved:'+6h 40m saved · 3 runs',src:'tenant_configured',
+   review:{msg:'1 ledger entry held out of the rollup: the coworker reported its own manual baseline as <b>8h 40m</b> against your configured baseline of <b>40m</b> — implausible, so <code>requires_review</code> was set automatically.',
+           act:'Review the entry'}},
+  {name:'Incident Response Analyst',client:'Hallworth Print · Ferris Dental · Quaid Retail',status:'active',trust:'manual',
+   saved:'+2h 10m saved · 9 runs',src:'platform_default',review:null},
+  {name:'Security Tabletop',client:'Corbett &amp; Wren Legal',status:'active',trust:'manual',
+   saved:'−15m (negative)',src:'coworker_reported',
+   review:{msg:'<code>time_saved_seconds</code> came out <b>negative</b> — the coworker took longer than the manual baseline — so <code>requires_review</code> was set. The fleet total below floors negatives at 0, so this run is <b>not</b> dragging the headline number down. That is a display rule, not a correction.',
+           act:'Set a tenant baseline for this task'}},
+  {name:'Alert Flood Suppressor',client:'—',status:'draft',trust:'manual',
+   saved:null,src:null,review:null,act:'Review and activate',
+   why:'Never activated. Holds no credentials and no read access while in <code>draft</code>.'},
+];
+function cpSetView(v){S.cpView=v;render();}
+function cpToggleDetail(id){S.cpOpen[id]=!S.cpOpen[id];render();}
+function cpToggleKpi(w){S.cpKpiOpen=S.cpKpiOpen===w?null:w;render();}
+function cpDecide(id,outcome){S.cpItems[id]={outcome};render();}
+function cpSrcBadge(src){
+  if(!src)return '';
+  const rank={tenant_configured:['strongest','cp-src-good','you configured this baseline'],
+    platform_default:['middling','cp-src-mid','N-able&rsquo;s seed catalogue, not your numbers'],
+    coworker_reported:['weakest','cp-src-weak','the coworker&rsquo;s own guess at what a human would have taken'],
+    platform_default_rate:['middling','cp-src-mid','platform rate card'],
+    unknown:['weakest','cp-src-weak','no baseline resolved']}[src];
+  return `<span class="cp-src ${rank[1]}" title="baseline_source = ${src} — ${rank[0]} source: ${rank[2]}">baseline: ${src.replace(/_/g,' ')}</span>`;
+}
 function renderControlPlane(){
-  document.getElementById('secsub').innerHTML='Your procedures, running as named AI coworkers across your stack — what they\'re doing, how well, and what\'s scary.';
-  const marlowDone=S.cpMarlowResolved;
-  const heroCls=marlowDone?'cp-hero cp-calm':'cp-hero';
-  const heroNum=marlowDone?'0':'1';
-  const heroTx=marlowDone
-    ?`<b>All clear.</b> Marlow Freight Co.'s hold was resolved just now — 4 coworkers running under your standing sign-off, 1 has never been activated.`
-    :`<b>coworker is holding</b> — it will not write anything until you review it, at Marlow Freight Co. below. 3 more are running under your standing sign-off. 1 has never been activated.`;
-  const reviewCount=marlowDone?'0':'1';
+  document.getElementById('secsub').innerHTML='Two planes, one screen. <b>What&rsquo;s waiting on your authority</b> — nothing goes live without it — and <b>what your coworkers are doing</b> once it does.';
+  const pending=CP_CHANGESETS.filter(c=>!S.cpItems[c.id]);
+  const highPending=pending.filter(c=>c.risk==='high').length;
+  const reviewCount=CP_FLEET.filter(f=>f.review).length;
+  const sysPaused=CP_FLEET.filter(f=>f.bySystem).length;
 
-  const item=(id,task,est,def)=>{
-    const st=S.cpItems[id];
-    if(st){
-      return `<div class="cp-remediate-item"><div class="cp-task"><b>Task ${id}</b> — ${task} · self-estimated <span style="text-decoration:line-through;color:var(--held)">${est}</span></div>
-        <span class="cp-item-done ${st.outcome==='rejected'?'rej':''}">${st.outcome==='approved'?`✓ Approved at ${st.val} — Marcus, just now`:'✕ Write rejected — Marcus, just now'}</span></div>`;
-    }
-    return `<div class="cp-remediate-item"><div class="cp-task"><b>Task ${id}</b> — ${task} · self-estimated ${est}</div>
-      <span class="cp-correct-field">→ <input type="text" id="cp-fix-${id}" value="${def}"></span>
-      <span class="cp-remediate-actions"><button class="cp-btn" onclick="cpResolveItem('${id}','approved')">Approve edited value</button><button class="cp-btn cp-primary" onclick="cpResolveItem('${id}','rejected')">Reject write</button></span></div>`;
-  };
+  const banner=pending.length
+    ? `<div class="cp-hero"><span class="num">${pending.length}</span><span class="tx"><b>change${pending.length===1?'':'s'} need${pending.length===1?'s':''} your approval</b>${highPending?` — ${highPending} is a <b>high-risk activation</b>`:''}. An AI drafted ${pending.length===1?'it':'them'}; it cannot approve its own work.</span></div>`
+    : `<div class="cp-hero cp-calm"><span class="num">0</span><span class="tx"><b>Nothing waiting on you.</b> The queue is clear — every change below was approved by a named human.</span></div>`;
 
-  const kpiStrip=`<div class="cp-kpi-strip">
-      <div class="cp-kpi-tile"><div class="k">clients</div><div class="v">6</div></div>
-      <div class="cp-kpi-tile"><div class="k">coworkers</div><div class="v">5</div></div>
-      <div class="cp-kpi-tile ${reviewCount==='1'?'warn':''}"><div class="k">needs review</div><div class="v">${reviewCount}</div></div>
-      <div class="cp-kpi-tile clickable" onclick="cpToggleKpi('accuracy')"><div class="k">accuracy ▾</div><div class="v">78–92%</div></div>
-      <div class="cp-kpi-tile clickable" onclick="cpToggleKpi('scope')"><div class="k">outside stated scope ▾</div><div class="v">0</div></div>
-    </div>
-    ${S.cpKpiOpen==='accuracy'?`<div class="cp-kpi-detail">Accuracy = share of a coworker's outputs a human confirmed without correction, in its last 50 runs. Not timeliness, not tone. Scored per coworker across all its clients — the same fraction is the same everywhere that coworker appears. 3 of 5 coworkers rated · 1 holding, not yet scored · 1 never run.</div>`:''}
-    ${S.cpKpiOpen==='scope'?`<div class="cp-kpi-detail">Every action logged: timestamp · coworker · client · tool called · scope claimed · scope used · human decision. Append-only, 400-day retention. 1 authorized cross-client link this month (Incident Response Analyst, Ferris Dental Group → Quaid Retail — logged, reviewed, resolved). Export: CSV · JSON · signed PDF →</div>`:''}
-    <div class="cp-legend"><span>Review threads:</span>${cpThread('open','OPEN — awaiting a human')}${cpThread('monitoring','MONITORING — may reopen')}${cpThread('resolved','RESOLVED — closed, with a record')}</div>`;
+  const kpis=`<div class="cp-kpi-strip">
+    <div class="cp-kpi-tile ${pending.length?'warn':''}"><div class="k">awaiting your approval</div><div class="v">${pending.length}</div></div>
+    <div class="cp-kpi-tile"><div class="k">active · run-eligible</div><div class="v">3</div></div>
+    <div class="cp-kpi-tile ${sysPaused?'warn':''}"><div class="k">paused by the system</div><div class="v">${sysPaused}</div></div>
+    <div class="cp-kpi-tile ${reviewCount?'warn':''}"><div class="k">ledger entries held</div><div class="v">${reviewCount}</div></div>
+    <div class="cp-kpi-tile clickable" onclick="cpToggleKpi('trust')"><div class="k">trust levels ▾</div><div class="v">4 manual · 1 assisted</div></div>
+  </div>
+  ${S.cpKpiOpen==='trust'?`<div class="cp-kpi-detail"><b>trust_level</b> is a real per-coworker setting: <code>manual</code> (default — a human approves every run) · <code>assisted</code> · <code>autonomous</code>. It changes only through an explicit <code>trust_level_change</code> operation, which is high-risk and lands in the queue above. Raising it is never a side effect of anything else.</div>`:''}`;
 
-  const detailToggle=id=>`<div class="cp-detail-toggle" onclick="cpToggleDetail('${id}')">${S.cpOpen[id]?'Hide':'Show'} technical detail ${S.cpOpen[id]?'▴':'▾'}</div>`;
+  const tabs=`<div class="cp-view-toggle">
+    <a class="${S.cpView==='client'?'on':''}" onclick="cpSetView('client')">Needs your authority${pending.length?` (${pending.length})`:''}</a>
+    <a class="${S.cpView==='coworker'?'on':''}" onclick="cpSetView('coworker')">Fleet status</a>
+    <a class="${S.cpView==='audit'?'on':''}" onclick="cpSetView('audit')">Audit &amp; guarantees</a>
+  </div>`;
 
-  const clientView=`
-    <div class="cp-section-label">${marlowDone?'Needs your attention (0) — resolved just now, will move to Watching':'Needs your attention (1)'}</div>
-    <div class="cp-grid"><div class="cp-card ${marlowDone?'resolved':'attn'}" style="grid-column:1/-1">
-      <div class="cp-cname">Marlow Freight Co.</div>
-      <div class="cp-cmeta"><span>last activity 09:14 today</span><span class="cp-report-lk">report →</span></div>
-      <div class="cp-cwrow">
-        <div class="cp-cwtop"><div>
-          <div class="cp-cwname">Environment Health Monitor</div><div class="cp-cwcat">Operations · lifecycle</div>
-          <div class="cp-status ${marlowDone?'active':'holding'}"><span class="d"></span>${marlowDone?'active':'holding'}</div>
-          ${marlowDone?cpThread('resolved','RESOLVED · Marcus, just now — both tasks corrected'):cpThread('open','OPEN · held 41m ago · awaiting Marcus')}
-          <div class="cp-why warn">Self-estimated &gt;8hr on 2 tasks — implausible. Held before writing to the register.</div>
-        </div><a href="#" class="cp-log-peek">full log (58 entries) →</a></div>
-        ${marlowDone?'':`<div class="cp-remediate">
-          ${item('4821','replace failed switch at Marlow DC-2','8h 40m','40m')}
-          ${item('4839','firmware rollback, 3 devices','9h 15m','1h 30m')}
-          <div class="cp-fix-cause">This coworker's time-estimate step has produced 3 implausible values in 30 days. <a href="#">Edit the estimation step in the runbook →</a></div>
-        </div>`}
-      </div>
-    </div></div>
-
-    <div class="cp-section-label">Watching — one coworker, quality dropped (running at 3 clients)</div>
-    <div class="cp-grid"><div class="cp-card" style="grid-column:1/-1">
-      <div class="cp-cname">Incident Response Analyst</div><div class="cp-cmeta"><span>shared across 3 clients</span></div>
-      <div class="cp-cwrow">
-        <div class="cp-cwtop"><div>
-          <div class="cp-cwcat">Service · diagnostics</div>
-          <div class="cp-status active"><span class="d"></span>active</div>
-          <div class="cp-qual dropped">80%<span class="arrow">→</span><b>78%</b> accuracy <span class="frac">(39 of 50 confirmed unchanged)</span></div>
-          <div class="cp-why">Adjusted down: missed one alert correlation</div>
-        </div></div>
-        <div class="cp-detail-toggle" onclick="cpToggleDetail('ir-panel')">${S.cpOpen['ir-panel']?'Hide':'See'} per-client status (3) ${S.cpOpen['ir-panel']?'▴':'▾'}</div>
-        ${S.cpOpen['ir-panel']?`<div class="cp-mc-panel">
-          <div class="cp-mc-row"><span class="mcname">Hallworth Print</span>${cpThread('monitoring','MONITORING · reopens if it recurs before 2026-09-10')}</div>
-          <div class="cp-mc-row"><span class="mcname">Ferris Dental Group</span><span style="color:var(--held);font-size:10px">no open thread</span></div>
-          <div class="cp-mc-row"><span class="mcname">Quaid Retail</span>${cpThread('resolved','RESOLVED · Marcus, 5h ago — retrained the correlation step (v4 → v5)')}</div>
-        </div>`:''}
-        ${detailToggle('ir-tech')}
-        ${S.cpOpen['ir-tech']?`<div class="cp-tech-detail">
-          <div class="cp-scope-line">scope: read tickets, logs · wrote 1 draft/client · no config or credential access · 1 cross-client link, Ferris → Quaid (logged, resolved)</div>
-          <div class="cp-log-peek" style="display:block;margin-top:3px">last entry 07:38:29 · signed ✓ · <a href="#">full log →</a></div>
-        </div>`:''}
-      </div>
-    </div></div>
-
-    <div class="cp-section-label">Clean — nothing to speak to (2)</div>
-    <div class="cp-grid">
-      <div class="cp-card">
-        <div class="cp-cname">Fenwick Logistics</div><div class="cp-cmeta"><span>last activity 07:12 today</span><span class="cp-report-lk">report →</span></div>
-        <div class="cp-cwrow"><div class="cp-cwtop"><div>
-          <div class="cp-cwname">QBR Advisor</div><div class="cp-cwcat">Business reporting</div>
-          <div class="cp-status active"><span class="d"></span>active</div>
-          <div class="cp-qual">92%<span class="arrow">→</span><b>92%</b> accuracy <span class="frac">(46 of 50 confirmed unchanged)</span></div>
-          <div class="cp-why">Consistent with last 3 cycles</div>
-        </div></div>
-        ${detailToggle('fenwick-tech')}
-        ${S.cpOpen['fenwick-tech']?`<div class="cp-tech-detail"><div class="cp-scope-line">scope: read PSA, backup, device · wrote 1 entry · no config or credential access</div><div class="cp-log-peek" style="display:block;margin-top:3px">last entry 07:12:44 · signed ✓ · <a href="#">full log (112 entries) →</a></div></div>`:''}
-        </div>
-      </div>
-      <div class="cp-card">
-        <div class="cp-cname">Corbett &amp; Wren Legal</div><div class="cp-cmeta"><span>last activity 08:01 today</span><span class="cp-report-lk">report →</span></div>
-        <div class="cp-cwrow"><div class="cp-cwtop"><div>
-          <div class="cp-cwname">Security Tabletop</div><div class="cp-cwcat">Security</div>
-          <div class="cp-status active"><span class="d"></span>active</div>
-          <div class="cp-qual">81%<span class="arrow">→</span><b>80%</b> accuracy <span class="frac">(40 of 50 confirmed unchanged)</span></div>
-          <div class="cp-why">Consistent with last cycle</div>
-        </div></div>
-        ${detailToggle('corbett-tech')}
-        ${S.cpOpen['corbett-tech']?`<div class="cp-tech-detail"><div class="cp-scope-line">scope: read compliance, incidents · wrote 1 report · no config or credential access</div><div class="cp-log-peek" style="display:block;margin-top:3px">last entry 08:01:19 · signed ✓ · <a href="#">full log (68 entries) →</a></div></div>`:''}
-        </div>
-      </div>
-    </div>
-
-    <div class="cp-section-label">Not yet hired (1)</div>
-    <div class="cp-onboard">
-      <div class="oh">Alert Flood Suppressor</div>
-      <div class="desc">Configured 2026-08-12, never run. No credentials, no read access, until you activate it.</div>
-      <div class="grants">Activating grants: read NOC alert queue · write: suppress and group alerts (reversible). First 20 runs go to holding for your review.</div>
-      <button class="cp-btn">Review and activate</button><button class="cp-btn" style="margin-left:6px">Archive</button>
-      <div class="excl">Not counted in the accuracy or scope figures above — nothing has run.</div>
+  /* --- Management plane: the proposed-changeset queue --- */
+  const queue=`
+    ${pending.length===0?`<div class="cp-onboard" style="border-left-color:var(--low)"><div class="oh" style="color:var(--low)">Queue clear</div><div class="desc">Every change has a named human approver. Switch to <b>Audit &amp; guarantees</b> to see the delegation chain.</div></div>`:''}
+    ${CP_CHANGESETS.map(c=>{
+      const done=S.cpItems[c.id];
+      if(done)return `<div class="cp-card cp-done"><div class="cp-cwtop"><div><div class="cp-cwname">${c.title}</div>
+        <div class="cp-decided">${done.outcome==='approved'?`✓ Approved and applied — Priya Nandakumar, just now`:`✕ Rejected — Priya Nandakumar, just now`}</div>
+        <div class="cp-own">created_by <code>ai · ${c.actor}</code> → approved_by <code>human · Priya Nandakumar</code> → on_behalf_of <code>Bracken IT Group</code></div>
+      </div></div></div>`;
+      return `<div class="cp-card ${c.risk==='high'?'attn':''}">
+        <div class="cp-csrow"><span class="cp-risk r-${c.risk}">${CP_RISK[c.risk]} risk</span><span class="cp-op">${c.op}</span><span class="cp-when">${c.at}</span></div>
+        <div class="cp-cwname" style="margin-top:6px">${c.title}</div>
+        <div class="cp-own">proposed by <code>ai · ${c.actor}</code> · delegated by <b>you</b> · no approver yet</div>
+        <div class="cp-changes"><div class="cp-lbl">What this actually changes</div><ul>${c.changes.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="cp-detail-toggle" onclick="cpToggleDetail('${c.id}')">${S.cpOpen[c.id]?'Hide':'Preview'} the full config ${S.cpOpen[c.id]?'▴':'▾'} <span class="cp-dry">dry run · no side effects</span></div>
+        ${S.cpOpen[c.id]?`<div class="cp-tech-detail"><div class="cp-chips">${c.preview.map(p=>`<span class="cp-chip">${p}</span>`).join('')}</div></div>`:''}
+        <div class="cp-note">${c.note}</div>
+        <div class="cp-acts"><button class="cp-btn cp-primary" onclick="cpDecide('${c.id}','approved')">${c.risk==='high'?'Approve and activate':'Approve'}</button><button class="cp-btn" onclick="cpToggleDetail('${c.id}')">Modify first</button><button class="cp-btn" onclick="cpDecide('${c.id}','rejected')">Reject with a note</button></div>
+      </div>`;}).join('')}
+    <div class="cp-lowbar">
+      <div><b>34 low-risk operations ran without asking you</b> — reading runbook configs, listing coworkers, resolving baselines. All logged.</div>
+      <div class="cp-detail-toggle" onclick="cpToggleDetail('lowops')">${S.cpOpen['lowops']?'Hide':'Show'} what the AI read ${S.cpOpen['lowops']?'▴':'▾'}</div>
+      ${S.cpOpen['lowops']?`<div class="cp-tech-detail"><div class="cp-scope-line">list_runbooks (12) · get_runbook_config (9) · list_coworkers (6) · read_value_summary (4) · list_approved_scripts (3) — reads only. No write, no activation, no policy change appears in this list, because an AI cannot perform those without the queue above.</div></div>`:''}
     </div>`;
 
-  const coworkerView=`
-    <table class="cp-table">
-      <tr><th>Coworker</th><th>Clients</th><th>Status</th><th>Accuracy — self-rated → confirmed</th><th>Scope &amp; cascading risk</th><th>Review thread</th><th></th></tr>
-      <tr class="flagged">
-        <td><div class="cp-cwname">Environment Health Monitor</div><div class="cp-cwcat">Operations · lifecycle</div></td>
-        <td>Marlow Freight Co.</td>
-        <td><span class="cp-status ${marlowDone?'active':'holding'}"><span class="d"></span>${marlowDone?'active':'holding'}</span></td>
-        <td>${marlowDone?'<b>39 of 39 corrected</b>':'<b>not yet scored</b>'}</td>
-        <td><div class="cp-chips"><span class="cp-chip">read: telemetry</span><span class="cp-chip write">write: 2 pending</span></div></td>
-        <td>${marlowDone?cpThread('resolved','RESOLVED'):cpThread('open','OPEN · 41m ago')}</td>
-        <td>${marlowDone?'':'<button class="cp-btn cp-primary" onclick="cpSetView(\'client\')">Review now</button>'}</td>
-      </tr>
-      <tr>
-        <td><div class="cp-cwname">QBR Advisor</div><div class="cp-cwcat">Business reporting</div></td>
-        <td>Fenwick Logistics</td>
-        <td><span class="cp-status active"><span class="d"></span>active</span></td>
-        <td>92%<span class="arrow">→</span><b>92%</b><div class="cp-log-peek" style="display:block">46 of 50 confirmed unchanged</div></td>
-        <td><div class="cp-chips"><span class="cp-chip">read: PSA, backup, device</span><span class="cp-chip write">write: 1 entry</span></div></td>
-        <td>—</td><td><a class="cp-log-peek" href="#">audit log →</a></td>
-      </tr>
-      <tr>
-        <td><div class="cp-cwname">Incident Response Analyst</div><div class="cp-cwcat">Service · diagnostics</div></td>
-        <td>3 clients · Hallworth Print, Ferris Dental Group, Quaid Retail</td>
-        <td><span class="cp-status active"><span class="d"></span>active</span></td>
-        <td>80%<span class="arrow">→</span><b>78%</b><div class="cp-log-peek" style="display:block">39 of 50 confirmed unchanged</div></td>
-        <td><div class="cp-chips"><span class="cp-chip">read: tickets, logs</span><span class="cp-chip write">write: 1 draft/client</span></div><div class="cp-log-peek" style="display:block">1 cross-client correlation in 30d (resolved)</div></td>
-        <td>${cpThread('monitoring','MONITORING')}<br>${cpThread('resolved','RESOLVED (Quaid)')}</td>
-        <td><a class="cp-log-peek" href="#">audit log →</a></td>
-      </tr>
-      <tr>
-        <td><div class="cp-cwname">Security Tabletop</div><div class="cp-cwcat">Security</div></td>
-        <td>Corbett &amp; Wren Legal</td>
-        <td><span class="cp-status active"><span class="d"></span>active</span></td>
-        <td>81%<span class="arrow">→</span><b>80%</b><div class="cp-log-peek" style="display:block">40 of 50 confirmed unchanged</div></td>
-        <td><div class="cp-chips"><span class="cp-chip">read: compliance, incidents</span><span class="cp-chip write">write: 1 report</span></div></td>
-        <td>—</td><td><a class="cp-log-peek" href="#">audit log →</a></td>
-      </tr>
-    </table>
-    <div class="cp-section-label">Not yet hired</div>
-    <div class="cp-onboard">
-      <div class="oh">Alert Flood Suppressor</div>
-      <div class="desc">Configured 2026-08-12, never run. No credentials, no read access, until you activate it.</div>
-      <button class="cp-btn">Review and activate</button><button class="cp-btn" style="margin-left:6px">Archive</button>
+  /* --- Execution plane: fleet --- */
+  const fleet=CP_FLEET.map((f,i)=>{
+    const id='fl'+i;
+    return `<div class="cp-card ${f.bySystem?'attn':''}">
+      <div class="cp-cwtop"><div style="flex:1">
+        <div class="cp-cwname">${f.name}</div>
+        <div class="cp-cwcat">${f.client}</div>
+        <div class="cp-statrow">
+          <span class="cp-st s-${f.status}">${f.status}${f.bySystem?' · by the system':''}</span>
+          <span class="cp-trust">trust: ${f.trust}</span>
+          ${f.saved?`<span class="cp-saved ${f.saved.indexOf('−')===0?'neg':''}">${f.saved}</span>`:''}
+          ${cpSrcBadge(f.src)}
+        </div>
+        ${f.why?`<div class="cp-why ${f.bySystem?'warn':''}">${f.why}</div>`:''}
+        ${f.sysnote?`<div class="cp-sysnote">${f.sysnote}</div>`:''}
+        ${f.review?`<div class="cp-held"><div class="cp-lbl">Held out of the rollup — <code>requires_review</code></div>${f.review.msg}<div class="cp-acts"><button class="cp-btn">${f.review.act}</button></div></div>`:''}
+      </div>${f.act?`<button class="cp-btn ${f.bySystem?'cp-primary':''}">${f.act}</button>`:''}</div>
+    </div>`;}).join('');
+
+  /* --- Audit + the invariants. Real schema field names, real DB-level guarantee. --- */
+  const audit=`
+    <div class="cp-card">
+      <div class="cp-lbl">These four limits are not settings. They cannot be turned off.</div>
+      <ul class="cp-inv">
+        <li>An AI <b>cannot activate</b> a runbook or coworker without human approval.</li>
+        <li>An AI <b>cannot approve its own</b> proposed changeset.</li>
+        <li>An AI <b>cannot grant itself</b> additional permissions, or change the permissions model.</li>
+        <li>An AI <b>cannot touch another tenant&rsquo;s</b> objects.</li>
+      </ul>
+      <div class="cp-note">An AI operates inside the permissions of the human who authorised its session, and can never exceed them — even if instructed to.</div>
+    </div>
+    <div class="cp-card">
+      <div class="cp-lbl">What the audit log records, per state-changing operation</div>
+      <div class="cp-scope-line"><code>actor_type</code> human · ai · system &nbsp;|&nbsp; <code>actor_id</code> &nbsp;|&nbsp; <code>delegated_by</code> (which human authorised the AI session) &nbsp;|&nbsp; <code>operation</code> create · draft_update · activate · pause · resume · archive · clone · trust_level_change · system_pause &nbsp;|&nbsp; <code>approval_chain</code> &nbsp;|&nbsp; <code>state_before</code> / <code>state_after</code></div>
+      <div class="cp-guar">Written in the <b>same transaction</b> as the change, before success returns — and the table is trigger-protected against UPDATE and DELETE. Append-only is enforced by the database, not by a promise in a UI.</div>
+      <div class="cp-detail-toggle" onclick="cpToggleDetail('chain')">${S.cpOpen['chain']?'Hide':'Show'} a real delegation chain ${S.cpOpen['chain']?'▴':'▾'}</div>
+      ${S.cpOpen['chain']?`<div class="cp-tech-detail"><div class="cp-scope-line">
+        <code>operation: system_pause</code> · <code>actor_type: system</code> · 09:14 — paused “Environment Health Monitor”, naming runbook “Endpoint lifecycle v2” as the trigger. No human, no AI: the system.<br>
+        <code>operation: activate</code> · <code>actor_type: ai</code> · <code>actor_id: claude-code-session-a41f</code> · <code>delegated_by: priya.n</code> · <code>approval_chain: [{proposed_at 14:02, approved_by priya.n, approved_at —}]</code> — <b>still open.</b> The timestamp that counts is the approval, not the proposal.
+      </div></div>`:''}
+    </div>
+    <div class="cp-card">
+      <div class="cp-lbl">One honesty note about the headline number</div>
+      <div class="cp-scope-line">The fleet total floors negative entries at <b>0</b> for display. A coworker that ran <i>slower</i> than your manual baseline is held out of the rollup rather than subtracted from it — see Security Tabletop under Fleet status. Read the total as “value found”, not net.</div>
     </div>`;
 
-  return `<div class="${heroCls}"><span class="num">${heroNum}</span><span class="tx">${heroTx}</span></div>
-    ${kpiStrip}
-    <div class="cp-view-toggle">
-      <a class="${S.cpView==='client'?'on':''}" onclick="cpSetView('client')">By client</a>
-      <a class="${S.cpView==='coworker'?'on':''}" onclick="cpSetView('coworker')">By coworker</a>
-    </div>
-    ${S.cpView==='client'?clientView:coworkerView}`;
+  return banner+kpis+tabs+(S.cpView==='coworker'?fleet:S.cpView==='audit'?audit:queue);
 }
 function renderExecution(){document.getElementById('secsub').textContent='Every coworker run, across the workspace. Each run writes to the Value Ledger and appends to its register.';
   return `<div class="dcard">${EXEC.map(r=>`<div class="stat"><span><b style="color:var(--text-primary)">${r.cw}</b> <span style="color:var(--text-tertiary);font-size:12px">· ${r.w}</span></span><span style="color:var(--low);font-family:var(--font-brand);font-weight:600;font-size:12.5px">✓ ${r.o}</span></div>`).join('')}</div>`;}
@@ -1579,6 +1636,8 @@ function toggleRail(){
   document.body.classList.toggle('rail-open', lsGet('apx-rail')!=='closed'); // default open
   if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(curMode==='system')applyMode('system');});}
 })();
+applyHash();
+window.addEventListener('hashchange',()=>{applyHash();render();});
 render();
 </script>
 </body>

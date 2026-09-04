@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARNESS — this week's concept build</title>
+<!-- "This week's HARNESS" snapshot (2026-09-04). Assembles the decided direction: Option-D nav (working day,
+     control-plane home), the Floor as Home (establishing overview → drill to list), the first-run "floor comes
+     alive" replay, and the coworker family linking out to ebr-app.html (the register/build flow, untouched).
+     Three-layers rule: light Apex product chrome + dark aspirational Floor viz within. Unicorn kept as a CONCEPT
+     MARK (Beth 2026-09-04). ALL DATA FICTIONAL (§9b). Concept build, not spec. Company/Settings are honest stubs. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Apex Bridge — light product chrome */
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-elevated:#f8ebff; --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047; --text-muted:#5c5c66;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --ok:#137a46; --warn:#a56a00; --bad:#c0392b; --cyan:#0a95c4;
+    --nav:#17131f; --nav-fg:#c3bdd0; --nav-fg2:#7c7590; --nav-on:#2a2140;
+    --alpha:#a78bfa; --rail-bg:#f0eafa;
+    --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --sh:0 1px 2px rgba(20,10,40,.05),0 1px 3px rgba(20,10,40,.05); --sh-lg:0 8px 30px -12px rgba(20,10,40,.22);
+    --fh:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fm:'JetBrains Mono',ui-monospace,monospace;
+    /* floor (dark aspirational viz) */
+    --fl-bg:#0b0713; --fl-surf:#170e28; --fl-line:#2a1c44; --fl-line2:#3a2a5c; --fl-glow:rgba(192,70,255,.5);
+    --fl-ok:#3ddc97; --fl-warn:#ffb545; --fl-bad:#ff5c6c; --fl-tx:#ece7f5; --fl-tx2:#9d93b8; --fl-tx3:#6b6284;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--fb);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none} button{font-family:inherit;cursor:pointer}
+
+  .ribbon{background:#fff5d6;border-bottom:1px solid #e9d9a0;color:#6b5300;font-size:12px;text-align:center;padding:6px 16px;font-family:var(--fm)}
+
+  .top{display:flex;align-items:center;gap:13px;height:52px;padding:0 18px;background:var(--nav);color:#fff}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--fh);font-weight:700;font-size:15px;letter-spacing:.22em}
+  .brand .n{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,rgba(192,70,255,.22),rgba(10,149,196,.10) 55%,transparent 72%);box-shadow:inset 0 0 0 1px rgba(192,70,255,.18)}
+  .brand .n svg{width:21px;height:21px}
+  .concept-tag{font-family:var(--fm);font-size:8.5px;font-weight:700;letter-spacing:.12em;color:var(--alpha);border:1px solid var(--alpha);border-radius:var(--radius-full);padding:2px 7px;text-transform:uppercase}
+  .top .sp{flex:1}
+  .top .tog{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:var(--radius-full);border:1px solid rgba(255,255,255,.14);background:transparent;color:var(--nav-fg);font-family:var(--fb);font-size:12px;font-weight:600}
+  .top .tog:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+  .top .tog.rail{border-color:var(--alpha);color:#d8c9ff}
+  .top .tog .dot{width:7px;height:7px;border-radius:50%;background:var(--alpha);box-shadow:0 0 6px var(--alpha)}
+
+  .shell{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 52px - 29px)}
+  .nav{background:var(--nav);padding:14px 12px;display:flex;flex-direction:column}
+  .nav .grp{font-family:var(--fm);font-size:9px;letter-spacing:.14em;color:var(--nav-fg2);padding:10px 10px 6px;text-transform:uppercase}
+  .nav a{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:var(--radius-md);font-size:13.5px;color:var(--nav-fg);margin-bottom:1px}
+  .nav a .i{width:16px;height:16px;flex:none;display:inline-flex} .nav a .i svg{width:16px;height:16px}
+  .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .nav a.on{background:var(--nav-on);color:#fff}
+  .nav .user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-top:1px solid rgba(255,255,255,.08);color:var(--nav-fg);font-size:12px}
+  .nav .user .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--brand-strong),var(--cyan));color:#fff;font-family:var(--fh);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .main{overflow-y:auto}
+
+  /* generic light content */
+  .head{padding:22px 30px 0}
+  .crumb{font-size:12px;color:var(--text-tertiary);margin-bottom:8px;font-family:var(--fm)}
+  .crumb b{color:var(--brand-strong)}
+  h1{font-family:var(--fh);font-weight:800;font-size:23px;color:var(--text-primary);letter-spacing:-.01em}
+  .psub{font-size:13.5px;color:var(--text-tertiary);margin:3px 0 0;max-width:70ch}
+  .body{padding:22px 30px 70px}
+  .stub-note{font-family:var(--fm);font-size:11px;color:var(--text-muted);background:var(--bg-elevated);border:1px dashed var(--border-strong);border-radius:var(--radius-md);padding:8px 12px;margin-bottom:16px;display:inline-block}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px} @media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}
+  .cardx{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--sh)}
+  .cardx .k{font-family:var(--fm);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:9px}
+  .cardx h3{font-family:var(--fh);font-weight:700;font-size:16px;color:var(--text-primary);margin-bottom:5px}
+  .cardx p{font-size:12.5px;color:var(--text-tertiary);line-height:1.5}
+  .cardx .go{display:inline-block;margin-top:11px;font-size:12.5px;font-weight:600;color:var(--brand-strong)}
+  .settings-list{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .settings-list .r{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);font-size:13.5px}
+  .settings-list .r:last-child{border-bottom:none}
+  .settings-list .r .nm{font-weight:600;color:var(--text-primary);flex:1}
+  .settings-list .r .m{font-size:12px;color:var(--text-muted)}
+
+  /* ===== FLOOR (dark aspirational viz — Home) ===== */
+  .floor{background:radial-gradient(1000px 500px at 80% -10%,rgba(192,70,255,.14),transparent 60%),var(--fl-bg);color:var(--fl-tx);min-height:calc(100vh - 52px - 29px);padding:22px 30px 60px}
+  .floor .fhead{display:flex;align-items:flex-end;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+  .floor .cap{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+  .floor h1{color:#fff}
+  .floor .ftog{margin-left:auto;display:flex;gap:8px}
+  .floor .ftog button{font-family:var(--fm);font-size:11px;font-weight:700;padding:7px 13px;border-radius:var(--radius-full);border:1px solid var(--fl-line2);background:transparent;color:var(--fl-tx2)}
+  .floor .ftog button.on{background:var(--brand-strong);color:#fff;border-color:var(--brand-strong)}
+  .floor .replay{font-family:var(--fm);font-size:11px;font-weight:700;padding:7px 13px;border-radius:var(--radius-full);border:1px solid var(--brand);background:rgba(192,70,255,.12);color:#e6d5ff}
+  .lenses{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+  .lens{flex:1;min-width:150px;background:var(--fl-surf);border:1px solid var(--fl-line);border-radius:12px;padding:13px 15px}
+  .lens .k{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fl-tx3);margin-bottom:6px}
+  .lens .v{font-family:var(--fh);font-weight:800;font-size:22px}
+  .lens .n{font-size:12px;color:var(--fl-tx2);margin-top:2px}
+  .lens.scary{border-color:rgba(255,92,108,.4)} .lens.scary .v{color:var(--fl-bad)}
+  .lane{display:grid;grid-template-columns:200px 1fr 130px;align-items:center;gap:14px;background:var(--fl-surf);border:1px solid var(--fl-line);border-radius:12px;padding:11px 16px;margin-bottom:9px;cursor:pointer;transition:.15s}
+  .lane:hover{border-color:var(--brand);transform:translateX(3px)}
+  .lane.scary{border-color:rgba(255,92,108,.5);background:linear-gradient(90deg,rgba(255,92,108,.07),var(--fl-surf) 40%)}
+  .lane.dim{opacity:.4;filter:saturate(.4)}
+  .lane.justlit{animation:pulse 1.1s ease 2}
+  @keyframes pulse{50%{box-shadow:0 0 26px -6px var(--fl-glow)}}
+  .station{display:flex;align-items:center;gap:10px}
+  .health{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor}
+  .h-ok{background:var(--fl-ok);color:var(--fl-ok)} .h-warn{background:var(--fl-warn);color:var(--fl-warn)} .h-bad{background:var(--fl-bad);color:var(--fl-bad)} .h-off{background:var(--fl-line2);color:transparent;box-shadow:none}
+  .station .nm{font-family:var(--fh);font-weight:700;font-size:13.5px;line-height:1.2;color:var(--fl-tx)}
+  .station .cat{font-family:var(--fm);font-size:9px;color:var(--fl-tx3);text-transform:uppercase;letter-spacing:.06em}
+  .belt{position:relative;height:30px;border-top:1px dashed var(--fl-line2);border-bottom:1px dashed var(--fl-line2);overflow:hidden}
+  .belt .item{position:absolute;top:50%;width:13px;height:13px;border-radius:3px;transform:translateY(-50%);box-shadow:0 0 8px var(--fl-glow);animation:flow linear infinite}
+  @keyframes flow{from{left:-18px}to{left:100%}}
+  .readout{text-align:right;font-size:11.5px;color:var(--fl-tx2)}
+  .readout .empty{color:var(--fl-tx3);font-style:italic}
+  .flag{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;color:var(--fl-bad);border:1px solid var(--fl-bad);border-radius:5px;padding:2px 6px;margin-top:4px}
+  .needy{color:var(--fl-warn);font-size:11px}
+  .drill{background:#120a20;border:1px solid var(--fl-line2);border-radius:12px;margin-top:16px;overflow:hidden;display:none}
+  .drill.open{display:block;animation:zoom .25s ease}
+  @keyframes zoom{from{opacity:0;transform:scale(.98)}}
+  .drill .into{font-family:var(--fm);font-size:11px;color:var(--fl-tx3);padding:9px 16px;letter-spacing:.05em}
+  .drill .dh{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--fl-line);background:var(--fl-surf)}
+  .drill .dh .nm{font-family:var(--fh);font-weight:700;font-size:14px;flex:1;color:var(--fl-tx)}
+  .drill .dh .close{background:none;border:1px solid var(--fl-line2);color:var(--fl-tx2);border-radius:6px;padding:3px 9px;font-size:12px}
+  .drow{display:grid;grid-template-columns:12px 1fr 110px 90px;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--fl-line);font-size:13px;color:var(--fl-tx)}
+  .drow:last-child{border-bottom:none}
+  .drow .rt{color:var(--fl-tx3);font-family:var(--fm);font-size:11px;text-align:right}
+  .drow .st{font-family:var(--fm);font-size:11px;text-align:right}
+  #constellation{display:none;position:relative;height:400px;margin:6px 0}
+  #constellation.on{display:block}
+  .hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:radial-gradient(circle,var(--brand-strong),transparent 72%);border:1px solid var(--brand);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;font-size:11px;text-align:center;color:#fff;box-shadow:0 0 40px var(--fl-glow);z-index:2}
+  .cnode{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;z-index:3}
+  .cnode .orb{border-radius:50%;box-shadow:0 0 12px currentColor} .cnode:hover .orb{transform:scale(1.2)}
+  .cnode .lb{font-size:10px;color:var(--fl-tx2);font-family:var(--fm);white-space:nowrap}
+  .spoke{position:absolute;left:50%;top:50%;height:1px;background:linear-gradient(90deg,var(--brand),transparent);transform-origin:0 0;z-index:1;opacity:.4}
+
+  /* first-run overlay */
+  .fr{position:fixed;inset:0;z-index:80;background:radial-gradient(1100px 600px at 78% -10%,rgba(192,70,255,.13),transparent 60%),var(--fl-bg);color:var(--fl-tx);overflow-y:auto;display:none}
+  .fr.open{display:block}
+  .fr .frtop{display:flex;align-items:center;gap:12px;padding:14px 26px;border-bottom:1px solid var(--fl-line)}
+  .fr .frtop .x{margin-left:auto;background:none;border:1px solid var(--fl-line2);color:var(--fl-tx2);border-radius:6px;padding:4px 10px;font-size:12px}
+  .fr .stg{max-width:1000px;margin:0 auto;padding:28px 30px}
+  .fr .cap{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:8px}
+  .fr h1{font-family:var(--fh);font-weight:800;font-size:26px;color:#fff;margin-bottom:8px}
+  .fr .say{color:var(--fl-tx2);font-size:15px;max-width:64ch;line-height:1.6;margin-bottom:20px;min-height:44px}
+  .fr .say b{color:var(--fl-tx)}
+  .fr .drop{display:none;border:2px dashed var(--fl-line2);border-radius:14px;padding:16px 18px;margin-bottom:20px}
+  .fr .drop.show{display:block}
+  .fr .files{display:flex;gap:10px;flex-wrap:wrap} .fr .file{flex:1;min-width:200px;background:var(--fl-surf);border:1px solid var(--fl-line);border-radius:10px;padding:11px 13px}
+  .fr .file .fn{font-family:var(--fm);font-size:12px;margin-bottom:7px}
+  .conf{display:inline-flex;gap:6px;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px}
+  .c-clean{color:var(--fl-ok);border:1px solid var(--fl-ok)} .c-med{color:var(--fl-warn);border:1px solid var(--fl-warn)} .c-low{color:var(--fl-bad);border:1px solid var(--fl-bad)}
+  .fr .note{font-size:12px;color:var(--fl-tx3);margin-top:10px}
+  .fr .rebuild{display:none;background:var(--fl-surf);border:1px solid var(--brand);border-radius:12px;padding:15px 17px;margin-bottom:20px;box-shadow:0 0 30px -12px var(--fl-glow)}
+  .fr .rebuild.show{display:block}
+  .fr .rebuild h3{font-family:var(--fh);font-weight:800;font-size:16px;margin-bottom:9px;color:#fff}
+  .fr .mm .r{display:grid;grid-template-columns:15px 1fr auto;gap:10px;align-items:center;font-size:13px;margin-bottom:6px}
+  .fr .mm .d{width:9px;height:9px;border-radius:50%}
+  .fr .kit{font-size:12.5px;color:var(--fl-tx2);border-top:1px dashed var(--fl-line2);padding-top:10px;margin-top:8px;line-height:1.5}
+  .fr .kit b{color:var(--brand)}
+  .fr .ctl{display:flex;gap:12px;margin-top:20px}
+  .fr .ctl .go{background:var(--brand-strong);color:#fff;border:none;border-radius:8px;padding:11px 20px;font-family:var(--fh);font-weight:700}
+  .fr .ctl .bk{background:transparent;border:1px solid var(--fl-line2);color:var(--fl-tx2);border-radius:8px;padding:11px 18px}
+  .fr .dots{margin-left:auto;display:flex;gap:6px;align-items:center} .fr .dots i{width:8px;height:8px;border-radius:50%;background:var(--fl-line2)} .fr .dots i.on{background:var(--brand)}
+
+</style>
+</head>
+<body>
+<div class="ribbon">This week's concept build · 2026-09-04 · fictional data throughout (§9b) · direction, not spec</div>
+<header class="top">
+  <div class="brand">
+    <span class="n"><svg viewBox="0 0 72 72" fill="none" aria-label="HARNESS unicorn">
+      <!-- unicorn concept mark — outline from OpenMoji unicorn (CC BY-SA 4.0), Beth-approved shape; kept as concept mark 2026-09-04, do not redraw freehand -->
+      <defs><linearGradient id="hg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff9ecf"/><stop offset=".5" stop-color="#c9a6ff"/><stop offset="1" stop-color="#9ad4ff"/></linearGradient></defs>
+      <g stroke="url(#hg)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32.5,41.8854c0,0,8.4783,6.7823,0,18.7647"/>
+        <path d="M24.809,19.1338 L10.25,11.75 L21.1747,23.995"/>
+        <path d="M35.1962,30.8696c0.5489,8.3555-9.3225,9.703-11.954,10.3347c-0.3325,0.0798-0.6318,0.25-0.8736,0.4919l-2.2227,2.2227 c-0.3494,0.3494-0.8234,0.5458-1.3176,0.5458h-3.5121c-1.203,0-2.2711-0.7698-2.6515-1.9111l-0.531-1.5931 c-0.258-0.774-0.1649-1.6222,0.2549-2.3218l8.7862-14.6436l4.7238-4.7238l-2.1151-6.9054c0,0,7.8026-0.6987,8.4135,5.3308 c0,0,16.9281,2.4418,10.5531,19.383c0,0-1.625,5.9489,2.375,11.1846"/>
+        <path d="M30.9167,14.0208c0,0,22.2444-4.0208,19.9583,19.9583"/>
+      </g>
+      <circle cx="20.5" cy="24" r="1.6" fill="url(#hg)"/>
+      <path d="M50.9 14 L52 10.5 L53.6 13.7 L56.4 12.3 L55.1 15.4 L58 16.6 L54.6 17.1 L55 20.4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".9"/>
+    </svg></span>HARNESS
+  </div>
+  <span class="concept-tag">concept mark</span>
+  <div class="sp"></div>
+</header>
+
+<div class="shell">
+  <aside class="nav">
+    <div class="grp">Run</div>
+    <a data-view="home" class="on" onclick="nav('home')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>Home · Control plane</a>
+    <a data-view="coworkers" onclick="nav('coworkers')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M9 9h6M9 13h4"/></svg></span>Coworkers</a>
+    <div class="grp">Set up</div>
+    <a data-view="company" onclick="nav('company')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></span>Company</a>
+    <a data-view="settings" onclick="nav('settings')"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg></span>Settings</a>
+    <div class="user"><span class="av">PN</span><div>Priya Nandakumar<br><span style="color:var(--nav-fg2);font-size:11px">Bracken IT Group</span></div></div>
+  </aside>
+
+  <main class="main" id="main"></main>
+</div>
+
+<!-- first-run overlay -->
+<div class="fr" id="fr">
+  <div class="frtop"><span class="cap" style="color:var(--brand)">FIRST RUN</span><span id="frcrumb" style="font-family:var(--fm);font-size:11px;color:var(--fl-tx3)"></span><div class="dots" id="frdots"></div><button class="x" onclick="closeFr()">Close ✕</button></div>
+  <div class="stg">
+    <div class="cap" id="frcap"></div>
+    <h1 id="frh1"></h1>
+    <div class="say" id="frsay"></div>
+    <div class="drop" id="frdrop">
+      <div style="font-family:var(--fm);font-size:11px;color:var(--fl-tx3);margin-bottom:11px">▼ 3 quarters you already own</div>
+      <div class="files">
+        <div class="file"><div class="fn">Fenwick-EBR-Q3-2026.xlsx</div><span class="conf c-clean">● clean parse</span></div>
+        <div class="file"><div class="fn">Fenwick-EBR-Q2-2026.pptx</div><span class="conf c-med">● medium parse</span></div>
+        <div class="file"><div class="fn">Fenwick-EBR-Q1-2026.pdf</div><span class="conf c-low">● low — old format</span></div>
+      </div>
+      <div class="note">Confidence shown <b style="color:var(--fl-tx)">per quarter</b> — never averaged.</div>
+    </div>
+    <div class="rebuild" id="frrebuild">
+      <h3>Here's your Q3, rebuilt.</h3>
+      <div class="mm">
+        <div class="r"><span class="d" style="background:var(--fl-ok)"></span><span>Matched <b>5 of your 6</b> findings — same grades you gave them</span><span style="font-family:var(--fm);font-size:10px;font-weight:700;color:var(--fl-ok)">MATCH</span></div>
+        <div class="r"><span class="d" style="background:var(--fl-warn)"></span><span>You graded MFA gap <b>red</b>; I had it amber</span><span style="font-family:var(--fm);font-size:10px;font-weight:700;color:var(--fl-warn)">YOUR CALL</span></div>
+        <div class="r"><span class="d" style="background:var(--brand)"></span><span>The register you know — flowing down the line now</span><span style="font-family:var(--fm);font-size:10px;font-weight:700;color:var(--brand)">LIVE</span></div>
+      </div>
+      <div class="kit"><b>You never gave the work away.</b> Your quarter comes back done, in your shape, yours to correct — that's the kit.</div>
+    </div>
+    <div style="margin-top:6px"><div style="font-family:var(--fm);font-size:12px;color:var(--fl-tx3);margin-bottom:10px" id="frfloorlabel"></div><div id="frlanes"></div></div>
+    <div class="ctl"><button class="bk" id="frback" onclick="frGo(-1)" style="display:none">← Back</button><button class="go" id="frgo" onclick="frGo(1)"></button></div>
+  </div>
+</div>
+
+<script>
+const FLOOR=[
+  {id:'ebr', nm:'EBR Coworker — Fenwick', cat:'Your build', h:'h-warn', runs:3, last:'today 09:12', flow:2.8, n:5, need:'1 held for review'},
+  {id:'sec', nm:'Security Tabletop', cat:'Security', h:'h-ok', runs:4, last:'12m ago', flow:2.3, n:4},
+  {id:'ir', nm:'Incident Response Analyst', cat:'Service', h:'h-warn', runs:7, last:'3m ago', flow:1.5, n:6, need:'1 needs you'},
+  {id:'env', nm:'Environment Health Monitor', cat:'Operations', h:'h-ok', runs:2, last:'1h ago', flow:3.4, n:3},
+  {id:'alert', nm:'Alert Flood Suppressor', cat:'NOC', h:'h-bad', runs:118, last:'just now', flow:0.4, n:9, flag:'acting 5× normal rate'},
+  {id:'qbr', nm:'QBR Advisor', cat:'Business reporting', h:'h-ok', runs:1, last:'yesterday', flow:5, n:2},
+];
+const RUNS={
+  ebr:[['warn','Register drafted — 1 finding held','09:12','needs you'],['ok','Delta vs Q2 computed','09:10','done'],['ok','8 sources pulled','09:04','done']],
+  sec:[['ok','CVE sweep — 6 endpoints mapped','12m','done'],['ok','Posture grade drafted','1h','done']],
+  ir:[['warn','Ticket cluster — root cause unclear','3m','needs you'],['ok','RCA note #4821','40m','done']],
+  env:[['ok','Lifecycle scan — 12 refresh candidates','1h','done']],
+  alert:[['bad','1,180 suppress actions in 4h — no human looked','now','★ review'],['bad','Grouped 340 alerts unattended','1h','★ review']],
+  qbr:[['ok','Q3 narrative drafted — Holloway','yest','done']],
+};
+const DOT={ok:'var(--fl-ok)',warn:'var(--fl-warn)',bad:'var(--fl-bad)'};
+
+let view='home', floorView='floor';
+function nav(v){view=v;document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.view===v));render()}
+
+function laneHTML(c,opts={}){
+  const dim=opts.dim; let items='';
+  if(!dim){const bg=c.h==='h-bad'?'var(--fl-bad)':'var(--brand)';for(let i=0;i<Math.min(c.n,9);i++){const dur=c.flow*(0.8+i*0.1);const delay=-(i*c.flow/c.n);items+=`<span class="item" style="animation-duration:${dur}s;animation-delay:${delay}s;background:${bg}"></span>`}}
+  return `<div class="lane ${c.h==='h-bad'&&!dim?'scary':''} ${dim?'dim':''}" ${opts.click?`onclick="${opts.click}"`:''}>
+    <div class="station"><span class="health ${dim?'h-off':c.h}"></span><div><div class="nm">${c.nm}</div><div class="cat">${c.cat}</div></div></div>
+    <div class="belt">${items}</div>
+    <div class="readout">${dim?`<span class="empty">not set up</span>`:`<b>${c.runs}</b> runs today<br><span style="color:var(--fl-tx3)">${c.last}</span>${c.flag?`<br><span class="flag">★ ${c.flag}</span>`:c.need?`<br><span class="needy">▲ ${c.need}</span>`:''}`}</div>
+  </div>`;
+}
+function homeHTML(){
+  return `<div class="floor">
+    <div class="fhead">
+      <div><div class="cap">Home · control plane — the floor</div><h1>Everything you run, in one look.</h1></div>
+      <button class="replay" onclick="openFr()">▶ Replay first run</button>
+      <div class="ftog"><button class="${floorView==='floor'?'on':''}" onclick="setFloor('floor')">▦ Floor</button><button class="${floorView==='const'?'on':''}" onclick="setFloor('const')">✳ Constellation</button></div>
+    </div>
+    <div class="lenses">
+      <div class="lens"><div class="k">● Doing</div><div class="v">6 running</div><div class="n">41 runs today · 218 items</div></div>
+      <div class="lens"><div class="k">● How well</div><div class="v">4 clean</div><div class="n">1 needs you · 1 held</div></div>
+      <div class="lens scary"><div class="k">★ What's scary</div><div class="v">1 flagged</div><div class="n">Alert Flood — 5× normal rate</div></div>
+    </div>
+    <div id="floorwrap" ${floorView==='const'?'style="display:none"':''}>
+      ${FLOOR.map(c=>laneHTML(c,{click:`drill('${c.id}')`})).join('')}
+      <div class="drill" id="drill"></div>
+    </div>
+    <div id="constellation" class="${floorView==='const'?'on':''}"></div>
+  </div>`;
+}
+function setFloor(v){floorView=v;render();if(v==='const')constellation()}
+function drill(id){const c=FLOOR.find(x=>x.id===id);const rows=RUNS[id]||[];const d=document.getElementById('drill');
+  d.innerHTML=`<div class="into">▼ stepped onto the line — its list</div><div class="dh"><span class="health ${c.h}"></span><span class="nm">${c.nm}</span><a class="close" href="ebr-app.html" title="open the full app">Open register ↗</a><button class="close" onclick="document.getElementById('drill').classList.remove('open')">Close ✕</button></div>
+  ${rows.map(r=>`<div class="drow"><span style="width:9px;height:9px;border-radius:50%;background:${DOT[r[0]]}"></span><span>${r[1]}</span><span class="rt">${r[2]}</span><span class="st" style="color:${DOT[r[0]]}">${r[3]}</span></div>`).join('')}`;
+  d.classList.add('open');d.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function constellation(){const el=document.getElementById('constellation');if(!el)return;const R=36;let h='<div class="hub">YOUR<br>FLEET</div>';
+  FLOOR.forEach((c,i)=>{const deg=-90+i*(360/FLOOR.length);const a=deg*Math.PI/180;const x=50+R*Math.cos(a),y=50+R*Math.sin(a);const sz=14+Math.min(26,c.n*2.2);
+    h+=`<div class="spoke" style="width:${R}%;transform:rotate(${deg}deg)"></div><div class="cnode" style="left:${x}%;top:${y}%" onclick="setFloor('floor');drill('${c.id}')"><span class="orb" style="width:${sz}px;height:${sz}px;background:${c.h==='h-bad'?'var(--fl-bad)':c.h==='h-warn'?'var(--fl-warn)':'var(--fl-ok)'};color:${c.h==='h-bad'?'var(--fl-bad)':'var(--fl-ok)'}"></span><span class="lb">${c.nm.split(' — ')[0]}${c.flag?' ★':''}</span></div>`});
+  el.innerHTML=h;}
+
+function coworkersHTML(){
+  return `<div class="head"><div class="crumb"><b>HARNESS</b> › Coworkers</div><h1>Coworkers</h1><p class="psub">Your fleet. Open one to build, review, or run its register — that opens the full app.</p></div>
+  <div class="body"><div class="stub-note">Each "Open register" opens ebr-app.html — the existing build/register flow, untouched.</div>
+  <div class="grid">${FLOOR.map(c=>`<div class="cardx"><div class="k">${c.cat}</div><h3>${c.nm.split(' — ')[0]}</h3><p>${c.flag?'★ '+c.flag:c.need?'▲ '+c.need:c.runs+' runs today · healthy'}</p><a class="go" href="ebr-app.html">Open register ↗</a></div>`).join('')}</div></div>`;
+}
+function companyHTML(){
+  const cards=[['What\'s automated','Which coworkers run, for which clients, where.'],['All clients','Your MSP client roster, mapped to the coworkers serving them.'],['Tenants','Golden tenant (your template) vs. other tenants — setup-plus-deltas.'],['History / delta','What changed, per client, per cycle.']];
+  return `<div class="head"><div class="crumb"><b>HARNESS</b> › Company</div><h1>Company</h1><p class="psub">Your operation across every client — who you serve and what's running for them.</p></div>
+  <div class="body"><div class="stub-note">Stub — from the card sort. Build/buy/skin (what's HARNESS's vs Vertesia's console) is unresolved (workstream E).</div>
+  <div class="grid">${cards.map(c=>`<div class="cardx"><h3>${c[0]}</h3><p>${c[1]}</p></div>`).join('')}</div></div>`;
+}
+function settingsHTML(){
+  const rows=[['MCP configs','integrations & tool servers'],['Connections','what\'s connected, at a glance'],['Permissions','who can use / configure which coworkers'],['Usage','who\'s using what, how often'],['Version history','per-coworker — ties to the real Versions tab'],['Agent lifecycle','version / perms / audit — may live in Vertesia\'s console'],['Value Ledger','saved time & money · by coworker (demoted from a tab — Dunlop)']];
+  return `<div class="head"><div class="crumb"><b>HARNESS</b> › Settings</div><h1>Settings</h1><p class="psub">Configuration and the agent plumbing — the "agent stuff" from your sort.</p></div>
+  <div class="body"><div class="stub-note">Stub — from the card sort. Value Ledger sits here (Dunlop: a setting, not a hero tab).</div>
+  <div class="settings-list">${rows.map(r=>`<div class="r"><span class="nm">${r[0]}</span><span class="m">${r[1]}</span></div>`).join('')}</div></div>`;
+}
+function render(){
+  const m=document.getElementById('main');
+  m.innerHTML = view==='home'?homeHTML() : view==='coworkers'?coworkersHTML() : view==='company'?companyHTML() : settingsHTML();
+  if(view==='home'&&floorView==='const')constellation();
+}
+
+/* ===== first run overlay ===== */
+const FR_LANES=[FLOOR[0],FLOOR[1],FLOOR[2],FLOOR[3]].map(c=>({...c,h:c.id==='ir'?'h-warn':'h-ok'}));
+const FRB=[
+  {cap:'The opening scene',h1:'This is your floor.',say:"Every coworker you run lives here — a line, work moving down it, health at a glance. Right now it's <b>empty</b>. The fastest way to fill it is something you already have.",alive:[],drop:false,rebuild:false,fl:'— empty. nothing running yet.',go:'Bring me your last few quarters →',crumb:'1 of 4'},
+  {cap:'You already own the answer key',h1:'Hand me quarters you already know.',say:"Don't configure anything. Drop your last <b>two or three EBRs</b> — the ones you built by hand. You know what's in them, which makes them the perfect trust test.",alive:[],drop:true,rebuild:false,fl:'— reading what you gave me…',go:'Rebuild the one I know best →',crumb:'2 of 4'},
+  {cap:'Watch the first line light up',h1:'Here comes your quarter — done.',say:"I rebuilt the quarter you know best. Check me against your own memory — where I matched, and the one place you'd overrule me.",alive:['ebr'],drop:false,rebuild:true,fl:'— one line running.',go:'Now light up what feeds it →',crumb:'3 of 4'},
+  {cap:'The floor is alive',h1:'Delta real on day one.',say:"The coworkers that feed your EBR come online with it. And because you gave me <b>three</b> quarters, the carry-forward delta is real <b>today</b> — not earned over a year. This is home.",alive:['ebr','sec','ir','env'],drop:false,rebuild:false,fl:'— 4 lines running · delta live.',go:'This is home ✓',crumb:'4 of 4'},
+];
+let frBeat=0, frPrev=[];
+function openFr(){frBeat=0;frPrev=[];document.getElementById('fr').classList.add('open');frDraw()}
+function closeFr(){document.getElementById('fr').classList.remove('open')}
+function frDraw(){const b=FRB[frBeat];
+  document.getElementById('frcap').textContent=b.cap;document.getElementById('frh1').textContent=b.h1;
+  document.getElementById('frsay').innerHTML=b.say;document.getElementById('frcrumb').textContent='First run · '+b.crumb;
+  document.getElementById('frdrop').classList.toggle('show',b.drop);
+  document.getElementById('frrebuild').classList.toggle('show',b.rebuild);
+  document.getElementById('frfloorlabel').textContent='Your floor '+b.fl;
+  const g=document.getElementById('frgo');g.textContent=b.go;g.style.visibility=frBeat===FRB.length-1?'hidden':'visible';
+  document.getElementById('frback').style.display=frBeat>0?'inline-block':'none';
+  const justlit=b.alive.filter(x=>!frPrev.includes(x));
+  document.getElementById('frlanes').innerHTML=FR_LANES.map(c=>{const on=b.alive.includes(c.id);const h=laneHTML(c,{dim:!on});return on&&justlit.includes(c.id)?h.replace('class="lane ','class="lane justlit '):h}).join('');
+  frPrev=b.alive.slice();
+  document.getElementById('frdots').innerHTML=FRB.map((_,i)=>`<i class="${i<=frBeat?'on':''}"></i>`).join('');
+}
+function frGo(d){const nb=frBeat+d;if(nb>FRB.length-1){closeFr();nav('home');return}frBeat=Math.max(0,nb);frDraw()}
+
+render();
+</script>
+</body>
+</html>

@@ -634,10 +634,11 @@
   /* ===== Vertesia-backend-friendly mod (2026-09-07) — additive only, nothing above touched =====
      Green = Vertesia's API carries this natively. Gray/dashed = confirmed gap, tagged with why.
      Rail: track-b-full-concept-rail-2026-09-07.md */
-  .v-badge{display:flex;align-items:flex-start;gap:8px;font-family:var(--font-mono);font-size:10.5px;padding:8px 10px;border-radius:var(--radius-md);margin-top:10px;line-height:1.5}
+  .v-badge{position:relative;display:flex;align-items:flex-start;gap:8px;font-family:var(--font-mono);font-size:10.5px;padding:10px 12px;border-radius:var(--radius-md);margin-top:10px;line-height:1.5}
   .v-badge .v-dot{width:7px;height:7px;border-radius:50%;flex:none;margin-top:3px}
-  .v-native{background:var(--low-soft);color:var(--text-secondary)} .v-native .v-dot{background:var(--low)}
-  .v-gap{background:var(--bg-deep);color:var(--text-tertiary);filter:grayscale(1);border:1px dashed var(--border-strong)} .v-gap .v-dot{background:var(--held)}
+  .v-badge .v-tag{position:absolute;top:-8px;left:10px;font-size:8px;font-weight:700;letter-spacing:.06em;padding:0 6px;border-radius:99px}
+  .v-native{background:var(--low-soft);color:var(--text-secondary);border:1px solid var(--low)} .v-native .v-dot{background:var(--low)} .v-native .v-tag{background:var(--low);color:#fff}
+  .v-gap{background:repeating-linear-gradient(45deg,#e3e3e8,#e3e3e8 6px,#d4d4dc 6px,#d4d4dc 12px);color:var(--text-tertiary);border:2px dashed var(--held)} .v-gap .v-dot{background:#8a2be2;filter:grayscale(1)} .v-gap .v-tag{background:var(--held);color:#fff}
   .v-badge .v-label{font-weight:700;color:var(--text-primary)}
   .v-badge .v-why{display:block;margin-top:2px;font-weight:400}
   .v-legend{display:flex;gap:16px;font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-top:10px;flex-wrap:wrap}
@@ -1671,7 +1672,7 @@ function renderDashboard(){
       <div class="audit-acts"><button class="btn primary">Export signed bundle (PDF + JSON)</button><button class="btn">Scope to a date range</button><button class="btn">Map to NCSC 10 / Cyber Essentials</button></div></div></div>`;
   else el('stage').innerHTML=`<div class="empty"><b>${S.tab}</b><br>Real HARNESS tab, in the shell for fidelity. The EBR dashboard lives on <span style="color:var(--brand-strong);cursor:pointer" onclick="setTab('Overview')">Overview</span>.</div>`;
 }
-function vBadge(kind,label,why){const native=kind==='native';return `<div class="v-badge ${native?'v-native':'v-gap'}"><span class="v-dot"></span><span><span class="v-label">${native?'Native — ':'Not covered — '}${label}</span>${why?`<span class="v-why">${why}</span>`:''}</span></div>`;}
+function vBadge(kind,label,why){const native=kind==='native';return `<div class="v-badge ${native?'v-native':'v-gap'}"><span class="v-tag">${native?'NATIVE':'NOT COVERED'}</span><span class="v-dot"></span><span><span class="v-label">${label}</span>${why?`<span class="v-why">${why}</span>`:''}</span></div>`;}
 function vLegend(){return `<div class="v-legend"><span><span class="sw n"></span>Vertesia carries this natively</span><span><span class="sw g"></span>confirmed gap — needs a custom layer</span></div>`;}
 function overview(){
   const r=FINDINGS.filter(f=>f.grade==='red').length,a=FINDINGS.filter(f=>f.grade==='amber').length,held=FINDINGS.filter(f=>f.grade==='held').length;

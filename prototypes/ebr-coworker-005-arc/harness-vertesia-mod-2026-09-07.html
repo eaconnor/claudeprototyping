@@ -1727,8 +1727,8 @@ function regTable(reviewMode){
       <div><span class="tier ${f.tier}">${f.tier}</span></div>
       <div class="c3">${spark(f)}${showToolIds()?`<div class="ev">${f.ev}</div>`:''}</div>
     </div>${S.openFinding===f.id?`<div class="fdetail"><div class="fdetail-out">${f.translate?f.translate[S.chooserTone]:f.consequence}</div><div class="fdetail-meta"><b>What it means:</b> ${f.why}<br><b>Owner:</b> ${f.owner} · <b>Confidence:</b> ${f.tier} · <b>Evidence:</b> ${f.ev}${f.grade==='held'?' — <b style="color:var(--held)">held from client view until vouched</b>':''}</div></div>`:''}${reviewMode?reviewRow(f):''}`).join('')}</div>
-    ${vBadge('native','Each grade change writes a Data Store mutate','Requires a reason — Vertesia 400s the mutate call without one; live-tested this session.')}
-    ${vBadge('gap','row-level evidence/attachment expand','Data Store columns are scalar SQL types — no file/blob attach confirmed against a row this session.')}
+    ${S.activated?vBadge('native','Each grade change writes a Data Store mutate','Requires a reason — Vertesia 400s the mutate call without one; live-tested this session.'):''}
+    ${S.activated?vBadge('gap','row-level evidence/attachment expand','Data Store columns are scalar SQL types — no file/blob attach confirmed against a row this session.'):''}
     <div class="held-foot"><span class="dot"></span><span><b style="color:var(--held)">Held.</b> The IR-plan gap is inferred, not measured — kept internally (absence is a finding) but hard-blocked from the client view. Click any row for detail.</span></div>`;
 }
 /* ---- Review-step per-finding choices (addendum 2026-09-01, second pass) ----

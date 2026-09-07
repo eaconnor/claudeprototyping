@@ -46,11 +46,11 @@ Whether the harness's real screens — not a redesign, the actual `overview()`, 
 - If you ship without it: the highest-stakes screen in this whole concept — sign-off before client send — ships on an unverified mechanism.
 - **ROI** — Business: avoids shipping the Approvals story on a guess. User: Deepa's compliance-evidence trust depends on this working as documented. Unknown: whether a paused run can be resumed by someone other than the original assignee — not in the schema, not tested.
 
-**Eng**
-- Eng does: check whether Vertesia's Files/Objects APIs can attach a blob to a Data Store row — the register's evidence-attachment gap may not actually be a gap; this exact flow was never tried this session, only the schema was read.
-- Why now: [D] 30 minutes of testing could shrink the custom-build list by the single biggest item on it.
-- If you ship without it: Design builds a custom evidence layer for something Vertesia might already carry natively.
-- **ROI** — Business: potentially removes the largest custom-build item entirely. User: same experience either way if it works. Unknown: whether Files/Objects supports arbitrary row-level linkage to a Data Store table — out of scope this session.
+**Eng — RESOLVED 2026-09-07, engineering-feasibility pass**
+- Answered: yes, coverable. `/files/upload-url` returns a stable `{url, id, path}`; nothing stops storing that string in a Data Store text column via `mutate` and rendering it as a link/image. Two calls, not one specialized endpoint — real per the OpenAPI schema, not yet built or live-tested.
+- Also resolved in the same pass: the "no version-history endpoint" gap badge was **wrong**, not just unconfirmed — `GET /data/{storeId}/versions` lists every version (every `mutate` auto-creates one per the schema's own description), and `/versions/{id}/query` reads historical state directly. Flipped to Native in the harness mod.
+- Still open, and now the sharpest remaining Eng question: a critic pass on this rail's own claims found that `human_task`/`answer-task` is a real 3-call sequence (`GET /tasks?assignee=&status=` → `PUT /tasks/{taskId}` → `POST /agents/{runId}/answer-task`) with a documented footgun — the spec explicitly warns not to call `/tasks/{taskId}/complete` for a `human_task` node. That sequence is schema-verified now, but still not live-fired against a real paused run.
+- **ROI** — Business: removed the largest custom-build item from the list entirely (evidence attachment) and corrected a wrong gap claim (audit trail) before either shipped as settled fact. User: same experience either way once built. Unknown: whether the 3-call sign-off sequence behaves as documented under a real paused run — the one thing left to actually fire.
 
 ## Personas checked against (unchanged from the concept pass)
 

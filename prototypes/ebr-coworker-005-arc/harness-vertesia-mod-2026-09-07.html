@@ -644,6 +644,12 @@
   .v-legend{display:flex;gap:16px;font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-top:10px;flex-wrap:wrap}
   .v-legend span{display:flex;align-items:center;gap:6px} .v-legend .sw{width:10px;height:10px;border-radius:3px}
   .v-legend .sw.n{background:var(--low)} .v-legend .sw.g{background:var(--held)}
+
+  .v-pagegap-banner{font-family:var(--font-mono);font-size:11px;line-height:1.65;color:var(--text-secondary);background:var(--bg-surface);border:2px dashed var(--held);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:18px}
+  .v-pagegap-banner .v-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;background:var(--held);color:#fff;padding:2px 8px;border-radius:99px;margin-bottom:8px}
+  .v-pagegap-banner b{color:var(--text-primary)}
+  .v-pagegap{filter:grayscale(1);opacity:.55;pointer-events:none;position:relative}
+  .v-pagegap::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(227,227,232,.35),rgba(227,227,232,.35) 7px,rgba(212,212,220,.35) 7px,rgba(212,212,220,.35) 14px);z-index:5}
 </style>
 </head>
 <body>
@@ -1298,7 +1304,15 @@ function renderControlPlane(){
       <div class="cp-scope-line">The fleet total floors negative entries at <b>0</b> for display. A coworker that ran <i>slower</i> than your manual baseline is held out of the rollup rather than subtracted from it — see Security Tabletop under Fleet status. Read the total as “value found”, not net.</div>
     </div>`;
 
-  return banner+kpis+tabs+(S.cpView==='coworker'?fleet:S.cpView==='audit'?audit:queue);
+  return `<div class="v-pagegap-banner"><span class="v-tag">WHOLE SCREEN — NOT COVERED</span><br>
+    <b>Never checked against Vertesia this session — not simply redundant with Chooser/Sign-off.</b>
+    Chooser and Sign-off confirmed a real mechanism (Process <code>human_task</code>) for approving what goes into a
+    <i>client report</i>. This screen is a different domain entirely — approving <i>operational changesets</i>
+    (activating a coworker, raising a trust level, a cross-client-boundary read), plus the audit-log invariants,
+    delegation chain, and blast-radius grant table underneath it. None of that was checked against Vertesia's
+    Process, permissions, or audit capabilities this session. Grayed as a whole because the uncertainty is
+    structural — a real backend design question, not a handful of missing fields.</div>
+  <div class="v-pagegap">${banner+kpis+tabs+(S.cpView==='coworker'?fleet:S.cpView==='audit'?audit:queue)}</div>`;
 }
 function setExecClient(c){S.execClient=c;render();}
 function renderExecution(){document.getElementById('secsub').textContent='Every coworker run, by client. Each run writes to the Value Ledger and appends to that client\u2019s register.';

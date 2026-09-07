@@ -625,3 +625,146 @@ button{font-family:inherit;cursor:pointer;}
 <div class="main">
 <main class="content">
 <div class="content-inner">
+
+<div class="page-head">
+  <div class="eyebrow">Capability inventory</div>
+  <h1>What Harness does today, and what it does not.</h1>
+  <p class="sub">
+    One card per capability, each carrying the state of its evidence rather than a sales status.
+    Every row and every state on this page is transcribed from a single sourced crosswalk of Jira and
+    Confluence. No state has been rounded up.
+  </p>
+</div>
+
+<!-- ===== LEGEND — above the fold, defined against evidence not sales status ===== -->
+<section class="legend" aria-labelledby="legend-h">
+  <div class="lg-head">
+    <h2 id="legend-h">What the three markers mean</h2>
+    <span class="datestamp">States as of 2026-09-04</span>
+    <span class="lg-note">Markers describe evidence of a build. They do not describe what you can buy.</span>
+  </div>
+  <div class="legend-defs">
+    <div class="legend-def">
+      <span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span>
+      <p class="def-body"><b>Built and running today.</b> Not a general-availability or purchasability claim
+      &mdash; nothing on this page is generally available.</p>
+    </div>
+    <div class="legend-def">
+      <span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span>
+      <p class="def-body"><b>Code exists, not complete.</b></p>
+    </div>
+    <div class="legend-def">
+      <span class="marker planned"><svg width="12" height="12" aria-hidden="true"><use href="#i-planned"/></svg>Planned</span>
+      <p class="def-body"><b>Specced, no build.</b></p>
+    </div>
+  </div>
+  <p class="lg-foot">
+    The release ladder is internal, then limited, then public preview. <b>There is no generally available
+    release on this page.</b> If a reader needs &ldquo;Available&rdquo; to mean purchasable, the honest count
+    for that marker is zero and this page needs different words &mdash; that definition is unresolved and
+    is Beth&rsquo;s and Laura&rsquo;s to sign, not this mock&rsquo;s.
+  </p>
+</section>
+
+<!-- ===== BAND 1 — Available ===== -->
+<section class="grid-band" aria-labelledby="band-available">
+  <div class="band-head">
+    <h3 id="band-available">Built and running today</h3>
+    <span class="count num">8 capabilities &middot; marker: Available</span>
+    <span class="trace">Transcribed from crosswalk &sect;2 (state <span class="num">does</span>) and &sect;5</span>
+  </div>
+  <div class="grid">
+
+    <article class="card s-available">
+      <div class="cat">Authoring layer</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>MSP-authored runbooks</h4>
+      <p class="desc">Plain-markdown runbooks with versioning, drafts, soft delete, and clone-and-modify from
+      N-able defaults. Visibility is scoped to the org that wrote them. An MSP turns its own procedures into
+      its own named coworkers.</p>
+      <p class="src">Crosswalk &sect;2 &middot; ACP-1, ACP-30 done &middot; FSN-84443 in progress</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Connection layer</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Customer-configurable MCP connections</h4>
+      <p class="desc">The MSP wires in its own tools through configurable MCP server connections behind an MCP
+      Gateway. The connection layer is configured by the customer rather than shipped as a fixed integration
+      list.</p>
+      <p class="src">Crosswalk &sect;2 &middot; ACP-9, ACP-11, ACP-39, ACP-42 done</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Governance</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Org-hierarchy multi-tenancy with per-action authorization</h4>
+      <p class="desc">Four levels &mdash; system, service org, customer, site &mdash; with authorization
+      evaluated per action. Sibling, parent and child name collisions and view-only versus manage denial are
+      covered by a passing test suite, not a claim.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-89713&ndash;89878 verifying</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Operations</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Execution monitoring</h4>
+      <p class="desc">Streamed progress while a coworker runs, run history afterwards, and captured output for
+      each run.</p>
+      <p class="src">Crosswalk &sect;2 &middot; ACP-43, ACP-44 done &middot; ACP-25 implementing</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Automation library</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Risk-classified script repository</h4>
+      <p class="desc">Every script carries a low, medium or high risk class and an MSP approval. A script
+      auto-runs only where its risk class sits at or below the tolerance configured for that coworker.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84434 (UC-03) &middot; spec verified, state high</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Coworker</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Business review and reporting coworker</h4>
+      <p class="desc">Assembles the client-facing quarterly business review from platform data &mdash; the
+      reporting artifact built by a coworker instead of by hand.</p>
+      <p class="src">Crosswalk &sect;2 (UC-01) &middot; FSN-84434 phase 01 &middot; ACP-46 implementing</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Coworker</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Patching coworker</h4>
+      <p class="desc">Runs repeatable patching work as a named coworker, inside the endpoint-management
+      operational domain the platform is scoped to.</p>
+      <p class="src">Crosswalk &sect;2 (UC-02) &middot; FSN-84434</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-available">
+      <div class="cat">Authoring layer</div>
+      <div class="marker-row"><span class="marker available"><svg width="12" height="12" aria-hidden="true"><use href="#i-available"/></svg>Available</span></div>
+      <h4>Coworker assembly</h4>
+      <p class="desc">Build a coworker by assembling its parts: AI experts, a runbook, the MCP connections it
+      may use, and the risk and autonomy guardrails that govern it. Create, read, update, delete.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84442 in progress &middot; ACP-6, ACP-37 done</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+  </div>
+</section>

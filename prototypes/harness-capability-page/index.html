@@ -879,3 +879,82 @@ button{font-family:inherit;cursor:pointer;}
 
   </div>
 </section>
+
+<!-- ===== BAND 3 — Planned, consolidated into one card on purpose ===== -->
+<section class="grid-band" aria-labelledby="band-planned">
+  <div class="band-head">
+    <h3 id="band-planned">Specced, no build</h3>
+    <span class="count num">11 rows in 1 card &middot; marker: Planned</span>
+    <span class="trace">Transcribed from crosswalk &sect;2 (state <span class="num">planned</span>)</span>
+  </div>
+  <div class="grid">
+    <article class="card s-planned wide">
+      <div class="cat">Roadmap &mdash; not shipped, not scheduled here</div>
+      <div class="marker-row"><span class="marker planned"><svg width="12" height="12" aria-hidden="true"><use href="#i-planned"/></svg>Planned</span></div>
+      <h4>Eleven capabilities that are specced and not built</h4>
+      <p class="desc">These are held in one card, at one weight, on purpose. Given a card each they would read
+      as a product line. <span class="not">Each of the eleven has a written spec and no working build.</span>
+      No date is attached to any of them on this page.</p>
+      <ul class="planned-list">
+        <li><b>Risk-based work prioritization</b> &mdash; ranks <b>work</b> by risk. It does not route tickets
+        to technicians, and models no technician skill, availability or workload.</li>
+        <li><b>Real-time vulnerability assessment</b></li>
+        <li><b>Context-aware troubleshooting and root-cause analysis</b></li>
+        <li><b>Asset insights and auto-recommendations</b></li>
+        <li><b>Endpoint health and lifecycle analysis</b></li>
+        <li><b>Documentation and knowledge-base assistant</b> &mdash; a standalone coworker, not an input to a
+        resolution loop.</li>
+        <li><b>Licence and cost optimization</b></li>
+        <li><b>Fast asset and user lookup</b></li>
+        <li><b>Scheduling and notifications</b> &mdash; cron scheduling, in-app and email notification, quiet
+        hours.</li>
+        <li><b>Self-serve onboarding to first value</b> with no prerequisite N-able product</li>
+        <li><b>Operator model</b> &mdash; the control plane itself operable by an MCP client</li>
+      </ul>
+      <p class="trap">
+        <b>Two rows here attract a claim they cannot support, so read them literally.</b><br>
+        <b>Risk-based work prioritization is not ticket dispatch.</b> It orders work by risk. It is a different
+        object from routing a ticket to a person, nothing in our sources models technician skill, availability
+        or workload, and the one shipped piece of work with &ldquo;dispatch&rdquo; in its name dispatches
+        <b>coworker runs</b>, not tickets to humans &mdash; it does not back this row.<br>
+        <b>Scheduling is on this list, not on the shelf above it.</b> Runs today are triggered on demand only.
+        Scheduling cannot be claimed.
+      </p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84435, FSN-84436, ACP-3 backlog, ACP-4 spec review</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; <b>planned, not built</b> &middot; not generally available &middot; not a purchasability claim &middot; no delivery date implied</p>
+    </article>
+  </div>
+</section>
+
+<!-- ===== PROVENANCE + WHAT IS DELIBERATELY ABSENT ===== -->
+<section class="prov" aria-labelledby="prov-h">
+  <h3 id="prov-h">Where these 16 cards come from, and what is deliberately not here</h3>
+  <ul>
+    <li>Every card traces to a named row in
+    <b>crosswalk/neoagent-harness-capability-crosswalk-2026-09-04.md</b>, which states of itself that nothing in
+    it is a decision. No row was added, invented, or promoted to a higher state.</li>
+    <li>Counted from that source: <b>8 built &middot; 7 in development &middot; 11 planned</b> in this track.
+    The 11 planned rows are consolidated into a single card rather than shown as eleven.</li>
+    <li>Marker definitions were chosen by this build against <b>evidence of a build</b>, because the operative
+    meaning of &ldquo;Available&rdquo; to this page&rsquo;s reader is unresolved. That definition is not signed.</li>
+    <li>Sourcing is strong but <b>narrow</b> &mdash; nearly all of it traces back to one crosswalk document.
+    Treat the single-source concentration as a condition on every state shown.</li>
+    <li>Type and shape follow the Apex 2.0 pull: Manrope headings, Inter body, radius 2/4/8/16/999, soft
+    shadows. <b>No monospace face</b> &mdash; none exists in the 2.0 file and the older generation&rsquo;s mono
+    tokens are not borrowed. <b>Light only</b> &mdash; the 2.0 pull has no dark-mode values and this build does
+    not invent them.</li>
+  </ul>
+  <div class="absent">
+    <b>Absent on purpose, not omitted by accident.</b> There is no &ldquo;our five use cases&rdquo; hero and no
+    second-track capability card on this page. Three different lists of &ldquo;the five top use cases&rdquo;
+    exist in our sources &mdash; two of them on the same page &mdash; and merging them into one marquee would
+    manufacture an agreement that does not exist. Which five is <b>the</b> five is an authority call for Beth and
+    Nicole, so that package is blocked rather than stubbed.
+    <b>Also never on this page:</b> any price, tier or packaging language; any commercial model; and any
+    capability our sources have no record of at all &mdash; an empty section beats a wrong one.
+  </div>
+</section>
+
+</div><!-- /.content-inner -->
+</main>

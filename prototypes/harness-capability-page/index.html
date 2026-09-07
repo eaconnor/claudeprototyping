@@ -768,3 +768,114 @@ button{font-family:inherit;cursor:pointer;}
 
   </div>
 </section>
+
+<!-- mid-page marker repeat: a single banner at the top is exactly what a crop removes -->
+<div class="repeat-strip" role="note">
+  <span class="datestamp">States as of 2026-09-04</span>
+  <span><span class="mini available"><svg width="11" height="11" aria-hidden="true"><use href="#i-available"/></svg> Available</span>
+  = built and running today, not a purchasability claim</span>
+  <span><span class="mini dev"><svg width="11" height="11" aria-hidden="true"><use href="#i-dev"/></svg> In development</span>
+  = code exists, not complete</span>
+  <span><span class="mini planned"><svg width="11" height="11" aria-hidden="true"><use href="#i-planned"/></svg> Planned</span>
+  = specced, no build</span>
+  <span>&middot; Nothing on this page is generally available.</span>
+</div>
+
+<!-- ===== BAND 2 — In development ===== -->
+<section class="grid-band" aria-labelledby="band-dev">
+  <div class="band-head">
+    <h3 id="band-dev">Code exists, not complete</h3>
+    <span class="count num">7 capabilities &middot; marker: In development</span>
+    <span class="trace">Transcribed from crosswalk &sect;2 (state <span class="num">partial</span>)</span>
+  </div>
+  <div class="grid">
+
+    <article class="card s-dev">
+      <div class="cat">Model choice</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Bring your own model</h4>
+      <p class="desc">Point a coworker at a model you choose rather than only at ours. The backend is done; the
+      interface work is not.</p>
+      <p class="trap"><b>Rendered conservatively.</b> One section of the source lists this among the rows built
+      today; another marks it in progress. This page shows the lower of the two states. Moving it up is an
+      explicit decision, not a rounding.</p>
+      <p class="src">Crosswalk &sect;2 and &sect;5 &middot; ACP-7 done &middot; ACP-34 code review &middot; ACP-35 implementing</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-dev">
+      <div class="cat">Automation library</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Script generator expert</h4>
+      <p class="desc">An expert authors a new script, presents it for human review, and it can be published back
+      into the risk-classified repository. In testing.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84435</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-dev">
+      <div class="cat">Governance</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Human approval gate</h4>
+      <p class="desc">A named human approves before a destructive action runs, and a run already in flight can be
+      cancelled. The verb is propose-then-approve, not execute.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84691 done &middot; ACP-53 implementing &middot; FSN-84441 plan</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-dev">
+      <div class="cat">Governance</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Autonomy ladder with a risk-tolerance ceiling</h4>
+      <p class="desc">An autonomy level from L1 confirms-all up to L4, multiplied by a risk-tolerance ceiling,
+      decides whether a run executes on its own or waits for approval. Promotion up the ladder is
+      admin-initiated. Configuration with enforcement, not a stance.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84436 (full autonomy is a later phase, opt-in, with admin acknowledgment)</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-dev">
+      <div class="cat">Governance</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Immutable audit trail</h4>
+      <p class="desc">Every action written to an append-only log with actor type, who delegated it, and the
+      approval chain behind it.</p>
+      <p class="trap"><b>Full attribution is not claimable yet.</b> Two specs disagree on which approval fields
+      exist, and that gap is open. Do not present end-to-end attribution as done.</p>
+      <p class="src">Crosswalk &sect;2 &middot; FSN-84693 ready for acceptance &middot; schema gap open</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-dev">
+      <div class="cat">Client deliverables</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Report generation and email delivery</h4>
+      <p class="desc">Turn a run&rsquo;s output into a file and deliver it by email &mdash; the path from what a
+      coworker did to something a client can open.</p>
+      <p class="src">Crosswalk &sect;2 &middot; ACP-48 done &middot; ACP-47 acceptance &middot; ACP-60 implementing</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+    <article class="card s-dev">
+      <div class="cat">Value reporting</div>
+      <div class="marker-row"><span class="marker dev"><svg width="12" height="12" aria-hidden="true"><use href="#i-dev"/></svg>In development</span></div>
+      <h4>Value ledger</h4>
+      <p class="desc">Time saved per run, measured against baselines the tenant declares, exportable to share
+      with a client. Backend code exists; the interface is not complete.</p>
+      <p class="trap"><b>No example figure appears anywhere on this page, deliberately.</b> The manual-time
+      baselines the ledger would measure against are open and the research has not been done &mdash; and that
+      number would be the first value figure an MSP ever sees. A ledger with invented baselines is the
+      made-up-numbers failure its own spec warns about.</p>
+      <p class="src">Crosswalk &sect;2 &middot; ACP-2 done &middot; ACP-29 acceptance &middot; ACP-28 implementing &middot; baselines open</p>
+      <p class="guard"><svg width="11" height="11" aria-hidden="true"><use href="#i-info"/></svg>
+      State as of 2026-09-04 &middot; Tier 1 concept mock &middot; not generally available &middot; not a purchasability claim</p>
+    </article>
+
+  </div>
+</section>

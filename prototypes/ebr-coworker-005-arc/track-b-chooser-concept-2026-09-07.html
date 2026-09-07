@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chooser concept — Vertesia-backend-friendly mod (static, not wired)</title>
+<!-- STATIC MOCK — no fetch, no serve.py, nothing wired. Purpose: show what the Chooser/sign-off
+     screen looks like once it's built to sit on top of Vertesia's real API surface (Track B
+     architecture: this app's own cards, Vertesia's data/process underneath), and to make the
+     coverage gap visible in the UI itself, not just in a brief.
+
+     COLOR = Vertesia's API can carry this natively (Data Store query/mutate — live-tested this
+     session; human_task pause/resume + rendering jobs — schema-confirmed via OpenAPI, not yet
+     live-tested end to end. Labeled honestly per element, not blanket-claimed.)
+     GRAYSCALE = confirmed gap. Vertesia doesn't carry this easily; still needs a custom layer.
+     Each grayscale block is tagged with the specific reason, not just "TODO."
+
+     Personas this was checked against (nav-redesign-intake-2026-09-03.md:209-214): Priya (status
+     without digging, prove to client), Marcus (quality, fixing it himself, doesn't want blocked),
+     Deepa (what's scary / compliance evidence), Tom (burned skeptic, prove don't report). -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Apex Bridge canonical tokens — copied verbatim from harness-2026-09-04.html */
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-elevated:#f8ebff; --bg-deep:#f4f4f6;
+    --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047; --text-muted:#5c5c66;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --medium-soft:#f8eeda; --low:#137a46; --low-soft:#e7f6ee;
+    --cyan:#0a95c4; --cyan-soft:#e7f6fb; --held:#8a8a93;
+    --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --sh:0 1px 2px rgba(20,10,40,.05),0 1px 3px rgba(20,10,40,.05); --sh-lg:0 6px 24px -8px rgba(20,10,40,.16);
+    --font-brand:'Manrope',-apple-system,sans-serif; --font-ui:'Inter',-apple-system,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:32px;max-width:920px;margin:0 auto}
+
+  .dash{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+  .dcard{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh);padding:20px 22px}
+  .dcard h2{font-family:var(--font-brand);font-weight:700;font-size:15px;color:var(--text-primary);margin-bottom:3px}
+  .dcard .sub{font-size:12px;color:var(--text-tertiary);margin-bottom:16px}
+  .reg{display:flex;flex-direction:column} .row{display:grid;grid-template-columns:3px minmax(0,1.6fr) minmax(0,1fr) auto;gap:16px;align-items:center;padding:15px 4px 15px 16px;border-bottom:1px solid var(--border);position:relative}
+  .row>*{min-width:0} .row:last-child{border-bottom:none} .row::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:2px} .row.red::before{background:var(--critical)} .row.amber::before{background:var(--medium)}
+  .fnd{font-family:var(--font-brand);font-weight:600;font-size:14.5px;color:var(--text-primary);margin-bottom:4px;letter-spacing:-.01em} .mt{font-size:12px;color:var(--text-tertiary)} .mt .d{opacity:.4;margin:0 6px}
+  .tier{font-family:var(--font-mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap} .tier.measured{background:var(--low-soft);color:var(--low)} .tier.estimated{background:var(--medium-soft);color:var(--medium)}
+  .reason{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);background:var(--bg-deep);border-radius:var(--radius-sm);padding:6px 9px;margin-top:6px}
+  .reason b{color:var(--text-primary)}
+
+  /* run-state banner (human_task pause) */
+  .run-state{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-md);margin-bottom:16px}
+  .run-state.paused{background:var(--medium-soft);border:1px solid var(--medium)}
+  .run-state .dot{width:9px;height:9px;border-radius:50%;background:var(--medium);flex:none;box-shadow:0 0 0 4px rgba(165,106,0,.15)}
+  .run-state .txt{font-size:12.5px;color:var(--text-secondary)} .run-state .txt b{color:var(--text-primary)}
+  .run-state .tag{margin-left:auto;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--low);background:var(--low-soft);padding:2px 8px;border-radius:99px;white-space:nowrap}
+
+  .src-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);border-top:1px solid var(--border);margin-top:16px;padding-top:12px}
+  .src-strip button{font-family:var(--font-mono);font-size:10.5px;font-weight:700;color:var(--brand-strong);background:var(--brand-soft);border:none;border-radius:var(--radius-full);padding:4px 12px;cursor:pointer}
+
+  /* sign-off form — native */
+  .signoff{margin-top:18px;border-top:1px solid var(--border);padding-top:16px}
+  .signoff label{display:block;font-size:11.5px;font-weight:600;color:var(--text-tertiary);margin-bottom:5px}
+  .signoff textarea{width:100%;font-family:var(--font-ui);font-size:13px;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:9px 11px;resize:vertical;min-height:56px;color:var(--text-primary)}
+  .signoff .hint{font-size:10.5px;color:var(--text-tertiary);margin-top:4px;font-family:var(--font-mono)}
+  .signoff .btnrow{display:flex;gap:10px;margin-top:12px}
+  .signoff button{font-family:var(--font-brand);font-weight:700;font-size:12.5px;border:none;border-radius:var(--radius-md);padding:9px 16px;cursor:pointer}
+  .btn-approve{background:var(--low);color:#fff} .btn-reject{background:var(--critical-soft);color:var(--critical);border:1px solid var(--critical)}
+
+  /* async job chip — native, schema-confirmed not live-tested */
+  .job-chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);background:var(--bg-deep);border-radius:var(--radius-full);padding:6px 12px;margin-top:14px}
+  .job-chip .spin{width:9px;height:9px;border-radius:50%;border:2px solid var(--border-strong);border-top-color:var(--brand);animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ===== GAP styling — anything Vertesia doesn't cover easily ===== */
+  .uncov{filter:grayscale(1);opacity:.5;position:relative;border:1px dashed var(--border-strong);border-radius:var(--radius-md);padding:14px;margin-top:16px}
+  .uncov::before{content:"NOT COVERED";position:absolute;top:-9px;left:12px;background:var(--bg-app);font-family:var(--font-mono);font-size:8.5px;font-weight:700;letter-spacing:.06em;color:var(--text-tertiary);padding:0 6px}
+  .uncov .why{filter:none;opacity:1;font-family:var(--font-mono);font-size:10px;color:var(--critical-soft);background:var(--critical);display:inline-block;padding:2px 7px;border-radius:99px;margin-bottom:8px}
+  .uncov input,.uncov button,.uncov textarea{pointer-events:none}
+  .uncov h3{font-family:var(--font-brand);font-size:13px;color:var(--text-primary);margin-bottom:6px}
+
+  .legend{display:flex;gap:20px;font-size:11.5px;color:var(--text-tertiary);margin-top:20px;padding-top:14px;border-top:1px solid var(--border)}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .legend .sw{width:12px;height:12px;border-radius:3px}
+  .sw.native{background:var(--low)} .sw.gap{background:var(--held);filter:grayscale(1)}
+</style>
+</head>
+<body>
+<div class="dash">
+  <div class="dcard">
+    <h2>Fenwick Logistics — sign-off (Chooser)</h2>
+    <div class="sub">Concept mod · static, not wired · shows what's Vertesia-backend-friendly today vs. what still needs a custom layer</div>
+
+    <!-- NATIVE: human_task pause state -->
+    <div class="run-state paused">
+      <div class="dot"></div>
+      <div class="txt">Run <b>#a29f-661</b> paused on <b>human_task</b> node — awaiting <b>Priya Nandakumar</b>'s sign-off</div>
+      <div class="tag">Process · human_task</div>
+    </div>
+
+    <!-- NATIVE: findings + reason, from Data Store query/mutate -->
+    <div class="reg">
+      <div class="row red">
+        <div></div>
+        <div>
+          <div class="fnd">Backup coverage gap — 3 endpoints unprotected</div>
+          <div class="mt">Backup/DR<span class="d">·</span>Jordan Ellis<span class="d">·</span>flagged</div>
+          <div class="reason"><b>Reason (mutate commit message):</b> "Confirmed via Cove console 09-05 — 3 devices missing agent, not a false positive"</div>
+        </div>
+        <div><span class="tier measured">measured</span></div>
+        <div></div>
+      </div>
+      <div class="row amber">
+        <div></div>
+        <div>
+          <div class="fnd">MFA enforcement — 2 admin accounts exempted</div>
+          <div class="mt">Identity<span class="d">·</span>Priya Nandakumar<span class="d">·</span>watch</div>
+          <div class="reason"><b>Reason (mutate commit message):</b> "Exception approved by client CTO, expires Q4 — kept amber not held"</div>
+        </div>
+        <div><span class="tier estimated">estimated</span></div>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- NATIVE: sign-off action -->
+    <div class="signoff">
+      <label>Sign-off note (becomes the mutate commit message + human_task answer)</label>
+      <textarea placeholder="e.g. Reviewed both findings against source evidence, approved for client send…"></textarea>
+      <div class="hint">Assignee: Priya Nandakumar · this note is required — Vertesia's mutate call 400s without one</div>
+      <div class="btnrow">
+        <button class="btn-approve">Approve &amp; resume run</button>
+        <button class="btn-reject">Reject — send back</button>
+      </div>
+    </div>
+
+    <!-- NATIVE: async rendering job -->
+    <div class="job-chip"><div class="spin"></div> Export PDF — rendering job queued (Vertesia /rendering/jobs)</div>
+
+    <!-- GAP: rich evidence/attachments -->
+    <div class="uncov">
+      <span class="why">Task fields are plain string/select/number only</span>
+      <h3>Evidence &amp; attachments panel</h3>
+      <div class="mt">Screenshot, log excerpt, or annotated diff proving the finding — the exact content Priya and Deepa need to "prove it" — can't live in a Vertesia HumanTaskDefinition field. This panel has to be rendered by this app, not Vertesia's Task Inbox.</div>
+    </div>
+
+    <!-- GAP: real-time push -->
+    <div class="uncov">
+      <span class="why">No websocket/push in the API — query/mutate only</span>
+      <h3>Live "someone else is reviewing this" indicator</h3>
+      <div class="mt">Would need polling on an interval to fake it — not a native subscribe. Fine for a manual-refresh model (already built in Track B), not fine if this needs to feel instant.</div>
+    </div>
+
+    <!-- GAP: semantic cross-client search -->
+    <div class="uncov">
+      <span class="why">Embeddings enable/recalculate confirmed in schema — not live-tested this session</span>
+      <h3>"Similar findings across other clients" search</h3>
+      <input type="text" placeholder="Search findings by meaning, not exact text…" style="width:100%;padding:9px 11px;border:1px solid var(--border-strong);border-radius:var(--radius-md);font-size:13px">
+    </div>
+
+    <div class="src-strip"><span>Source: Vertesia <code>/data/{store}/query</code> · static mock, not fetched</span><button disabled style="opacity:.5;cursor:not-allowed">Refresh</button></div>
+
+    <div class="legend">
+      <span><span class="sw native"></span>Vertesia carries this natively (color)</span>
+      <span><span class="sw gap"></span>confirmed gap — needs custom layer (grayscale)</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

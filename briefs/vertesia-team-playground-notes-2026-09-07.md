@@ -39,6 +39,16 @@ exists to prevent — now visible in the tool we're building it on top of.
 screen should feel like (plain task title, a form, a Submit button):
 https://cloud.us1.vertesia.io/store/tasks
 
+## Dashboards — the good approval card
+
+Asked Studio Assistant to build and save a dashboard against the existing `MspTenantHierarchy` data
+(168 orgs). It worked end-to-end: queried the data, previewed a Vega-Lite chart, then asked for
+approval — this time naming the actual consequence ("Approve Data: Create Dashboard: MSP Tenant
+Hierarchy Overview?"), not just a mechanism. Approved once, and the dashboard is real — see
+**Data → MspTenantHierarchy → Dashboards → MSP Tenant Hierarchy Overview** in Studio. One quirk: the
+dashboard list shows "Panels: 0 / Last Rendered: Never" even once it's fully built — open it, don't
+trust the list.
+
 ## Full writeup
 
 Three briefs in the repo, most detail-first-to-summary-last:

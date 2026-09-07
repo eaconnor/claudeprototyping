@@ -74,6 +74,30 @@ separate primitive from Agent Runs, meaning a portfolio dashboard would be query
 subsystems (Data Store for structured metrics, Agent Runs for run status) and joining them yourself. Not a
 blocker, just not a single query.
 
+**Confirmed live, 2026-09-07 — correction to the earlier "not yet tried" note.** A prior session's finding
+("no tool literally named `data_create_dashboard`, only the REST path `POST /data/{storeId}/dashboards`")
+was checked against the raw OpenAPI spec only. `docs.vertesiahq.com`'s separate Data Platform Tools
+Reference documents `data_create_dashboard` as a real, named agent tool (Write Tools category, disabled by
+default, unlocked by skills) alongside `data_preview_dashboard`, `data_update_dashboard`,
+`data_render_dashboard`, and dashboard versioning tools. `[CS: VERIFIED — direct doc read]`
+
+Tested end-to-end this session in the shared MSP project: asked Studio Assistant, in chat, to build and
+save a dashboard against the existing `MspTenantHierarchy` store (168-row `ncentral_orgs` table). It
+queried the data, iterated a Vega-Lite preview, requested approval with a properly-named consequence
+("Approve Data: Create Dashboard: MSP Tenant Hierarchy Overview?" — contrast with the vaguer approval card
+in the incident above), and on approval created a real, working, interactive dashboard styled to a
+supplied hex palette. Verified via `GET /data/{storeId}/dashboards` (not just the chat's self-report) —
+the object is real. `[CS: VERIFIED — live API round-trip + console screenshot, 2026-09-07]`
+
+**Platform quirk, not a blocker:** the dashboard list view showed "Panels: 0 / Queries: 0 / Last Rendered:
+Never" for a dashboard that, once opened, was fully populated and interactive. Stale summary metadata —
+same family of glitch as the chat's own expiring preview-image URLs (Studio Assistant named this itself:
+"a known platform timing issue"). Don't trust the list view's counts; open the dashboard to check.
+
+So: for the standalone-UI track, **the conversational path to `data_create_dashboard` is proven** — the
+open question is now Track A vs. Track B (build on Vertesia's own Dashboards UI vs. a standalone one
+calling the same REST path), not whether the tool works.
+
 ## 5. Chooser (the human approval gate)
 
 **Vertesia object: `Tasks`.** `POST /tasks`, `answer-task`, `complete`, `cancel` — this is explicitly

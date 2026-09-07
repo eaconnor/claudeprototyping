@@ -79,9 +79,52 @@ blocker, just not a single query.
 **Vertesia object: `Tasks`.** `POST /tasks`, `answer-task`, `complete`, `cancel` — this is explicitly
 human-in-the-loop, which is exactly what the Chooser step is. Alternative/complementary: `AgentRun`'s
 `tool_approval_mode` field and `POST /agents/{id}/advance` (resume a paused run after a decision).
-**Two candidate mechanisms, not confirmed which one Vertesia actually wires the two together with** — this
-needs a real test against the live API, not just the schema, before the Chooser screen is built against
-either. `[?]`
+**Three candidate mechanisms now, not two** — direct observation this session (2026-09-07) added a third:
+Vertesia's own **Studio Assistant** panel (the chat-with-tool-calls copilot embedded in the Interaction
+editor) has a live "**Ask for approval**" toggle next to its send button, mid-session, while it was
+editing an Interaction via `update_prompt`/`update_interaction` tool calls. That's the same
+propose→approve→act shape the Chooser step needs, observed running in production inside Vertesia's own
+product. **Still not confirmed which of the three (Tasks / tool_approval_mode / whatever backs the
+Assistant's approval toggle) is the one to build against** — this needs a real test against the live API,
+not just the schema. `[?]`
+
+### Studio Assistant — what it is, and whether you can reuse it directly
+
+Grep-checked against the full OpenAPI spec (267 endpoints): **"assistant" appears exactly once, as a
+`PromptRole` enum value** (`safety/system/user/assistant/negative/mask/tool` — a chat-message role, not a
+product feature). `[CS: VERIFIED — spec grep]` **There is no documented `/assistant` endpoint or Assistant
+schema.** The Studio Assistant panel you're looking at is Vertesia's own Studio frontend chrome — not
+something exposed for an external app to embed or call directly.
+
+**But its likely mechanism is reachable.** The live console's Calls history (this session) shows several
+`sys:`-prefixed interactions — `sys:GetConversationLessons`, `sys:DiscoverTools`,
+`sys:GetAgentConversationTopic` — run by other users' sessions. The spec has a matching endpoint,
+`GET /interactions/catalog/sys` ("List system interactions"), and any interaction (system or yours) is
+executable via the standard `POST /interactions/{id}/execute` / `POST /execute`. **Inference, not
+confirmed:** the Studio Assistant is very likely just Vertesia's own product built on the same public
+Interaction/Agent Run primitives you have access to — meaning you probably can't embed *the panel itself*,
+but you can likely build **your own agent with the same shape** (tool-calling, approval-gated, editing
+structured content) using the documented API. `[?] — not tested against the live API this session, only
+inferred from the naming pattern and the catalog/sys endpoint's existence.`
+
+### Direct evidence, 2026-09-07: the Studio Assistant's own approval gate fails the bar the Chooser step is designed to clear
+
+Live, while Beth was actually using it: the Assistant proposed writing and executing a Python script
+(`scripts/fix_runbook_prompts.py`) that reads `VERTESIA_TOKEN` and calls the API directly to patch this
+Interaction's prompts. The "Ask for approval" toggle surfaced the **mechanism** (script name, tool call) —
+not the **consequence** (what it will change, what it can touch, that it uses a credential). Beth's own
+words: *"I'm definitely approving things where I don't know what they are."* `[CS: VERIFIED — direct
+observation, screenshots, this session]`
+
+This is not a hypothetical risk to design against — it's a live demonstration that **Vertesia's own
+approval mechanism, whichever of the three candidates above backs it, does not do the translate step**
+(Stefanie's formula: data → risk → what it means → consequences if unactioned) that
+`ebr-coworker.runbook.technica.md` invariant 1 and step 4 require. If the EBR coworker's Chooser is built
+directly on top of this mechanism without adding a translation layer in front of it, it inherits this
+exact failure — a human clicking approve on a tool call they can't read, which is the opposite of "it
+proposes, you decide." **Whatever backs the Chooser gate, the human-readable consequence has to be
+composed by ACP's own layer, not assumed to come free from Vertesia's primitive.** This is now the
+sharpest, most concrete finding in this entire mapping.
 
 ## 6. Client report (the rendered register/output)
 

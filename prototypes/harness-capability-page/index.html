@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness — Agentic Capability States (Tier 1 Concept mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   HARNESS CAPABILITY PAGE — DESIGN TOKENS
+   Source: prototypes/harness-ebr-v2/design.md — Apex 2.0, Figma fileKey
+   K9CTAzip5gwJmhOQpyfbvM, extracted 2026-08-13, confirmed by Beth ("apex is
+   purple, believe 2.0 file").
+   NOT Apex v1 (blue accent, Open Sans, jetBrains-mono). NOT the Band Protocol /
+   Itten palette. Provenance is tagged per token below:
+     [VERIFIED] = node-cited resolved token in the Apex 2.0 pull
+     [OBSERVED] = pixel-sampled, no token name resolved — directional only
+     [A]        = not present in the 2.0 pull, estimated for this build
+   LIGHT ONLY. design.md: dark-mode values were not found in the Apex 2.0 file
+   ("treat as unspecified rather than inventing"). Beth's n-able.com reference is
+   dark/light alternating, but every dark value would be Band-authored. Light is
+   the verified surface, so this build stays on it. There is no dark section here;
+   if one is added later its values are Band-authored, never Apex-sourced.
+   NO MONOSPACE FACE. design.md: no monospace typeface exists in the 2.0 file and
+   v1's mono tokens must not be borrowed across generations. Metadata uses Inter
+   with tabular numerals and tracking instead.
+   ========================================================================== */
+:root{
+  /* ===== brand ===== */
+  --brand:#8500cc;                    /* [VERIFIED] border/container/active, node 23635:75103 */
+  --brand-soft:rgba(133,0,204,.09);   /* [A] derived tint of the verified brand */
+  --brand-line:rgba(133,0,204,.22);   /* [A] derived */
+  --brand-hero:#a90aff;               /* [OBSERVED] hero/display purple — directional, not resolved */
+  --brand-logo:#c046ff;               /* [OBSERVED] logo gradient light endpoint — directional */
+  /* ⚠ ACCENT CONFLICT, unresolved — see the flag rendered in the page body.
+     n-able.com was scouted 2026-06-02 as using "vibrant blue as primary accent"
+     (briefs/handoffs/luke-n-able-homepage-2026-06-02/scout/02-...md). That source
+     names no token. This build uses the Figma-verified purple because it is the
+     only node-cited resolved accent in evidence. Needs Laura's or brand's word. */
+
+  /* ===== surfaces ===== */
+  --bg-app:#fafafa;                   /* [VERIFIED] surface/status/default/subtle/hover */
+  --bg-surface:#ffffff;               /* [VERIFIED] surface/container/default */
+  --bg-elevated:#f8ebff;              /* [A] brand-tinted hover; no elevated tier in the 2.0 pull */
+  --bg-deep:#f3f3f5;                  /* [A] */
+  --border:#e2e2e6;                   /* [A] no neutral default-border token resolved in 2.0 */
+  --border-strong:#5c5c66;            /* [VERIFIED] border/status/default/down */
+
+  /* ===== text ===== */
+  --text-primary:#18191a;             /* [VERIFIED] content/default/heading */
+  --text-secondary:#3a3b3f;           /* [A] derived */
+  --text-tertiary:#6b6c72;            /* [A] derived */
+  --text-muted:#9a9ba2;               /* [A] derived */
+
+  /* ===== status ===== */
+  --critical:#d93333;                 /* [OBSERVED] error/critical text */
+  --critical-soft:#fdecea;            /* [A] */
+  --warn:#a8790a;                     /* [A] no warning token found in the 2.0 pull */
+  --warn-soft:#fbf1de;                /* [A] */
+  --success:#1a8c4c;                  /* [OBSERVED] success text */
+  --success-soft:#e8f7ed;             /* [OBSERVED] success-subtle fill */
+
+  /* ===== capability-state vocabulary — Band-authored, NOT Apex-sourced =====
+     Three visually distinct markers, deliberately ranked so that "Available" is
+     not the loudest thing on a card. Available = quiet green outline; In
+     development = amber with a half-fill glyph; Planned = neutral grey, dashed. */
+  --state-available:#166f3e;          /* [A] Band-authored, darkened from --success for AA on soft fill */
+  --state-available-soft:#eaf6ee;     /* [A] */
+  --state-available-line:#b8ddc6;     /* [A] */
+  --state-dev:#8a5a06;                /* [A] Band-authored, darkened from --warn for AA */
+  --state-dev-soft:#fbf2e0;           /* [A] */
+  --state-dev-line:#e2c78d;           /* [A] */
+  --state-planned:#5c5c66;            /* [VERIFIED] border/status/default/down, reused as neutral text */
+  --state-planned-soft:#f2f2f4;       /* [A] */
+  --state-planned-line:#cfcfd6;       /* [A] */
+
+  /* ===== shape ===== */
+  --radius-sm:2px;                    /* [OBSERVED] radius scale, screenshot */
+  --radius-md:4px;                    /* [OBSERVED] */
+  --radius-lg:8px;                    /* [OBSERVED] */
+  --radius-xl:16px;                   /* [VERIFIED] border/rounding/xl = 16 */
+  --radius-full:999px;                /* [OBSERVED] */
+
+  /* ===== type ===== */
+  --font-brand:'Manrope',-apple-system,sans-serif;                       /* [VERIFIED] fonts/context/brand */
+  --font-ui:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;         /* [VERIFIED] component default face */
+  /* deliberately no --font-mono: see header note */
+
+  /* ===== space ===== */
+  --space-xs:8px;                     /* [VERIFIED] space/xs */
+  --space-sm:12px;                    /* [VERIFIED] space/sm */
+  --space-md:16px;                    /* [A] space/md not resolved in the 2.0 pull */
+  --space-lg:20px;                    /* [VERIFIED] space/lg */
+  --space-xl:26px;                    /* [A] space/xl not resolved */
+  --space-2xl:32px;                   /* [VERIFIED] space/2xl */
+  --space-3xl:40px;                   /* [VERIFIED] space/3xl */
+  --space-4xl:48px;                   /* [VERIFIED] space/4xl */
+
+  /* ===== distinct surfaces — Band Protocol convention (CLAUDE.md §9b), not Apex ===== */
+  --topbar-bg:#160021;                /* [A] Band-authored dark brand cast */
+  --topbar-bg-2:#26063d;              /* [A] Band-authored */
+  --topbar-border:var(--brand);
+  --rail-bg:#f4edfc;                  /* [A] Band-authored violet-tinted rail surface */
+  --rail-border:#7c3aed;              /* [A] Band-authored council accent — not an Apex token */
+
+  /* ===== elevation — soft only. No Bauhaus hard offsets. ===== */
+  --shadow-sm:0 1px 2px rgba(20,10,30,.06), 0 1px 1px rgba(20,10,30,.04);
+  --shadow-md:0 4px 14px rgba(20,10,30,.09);
+  --shadow-lg:0 12px 32px rgba(20,10,30,.14);
+}
+
+/* ===== base ===== */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg-app);
+  color:var(--text-secondary);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--font-brand);margin:0;color:var(--text-primary);font-weight:700;}
+p{margin:0;}
+ul{margin:0;padding:0;list-style:none;}
+a{color:var(--brand);}
+button{font-family:inherit;cursor:pointer;}
+.num{font-variant-numeric:tabular-nums;letter-spacing:.01em;}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+::selection{background:var(--brand-soft);}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:var(--radius-sm);}
+
+.shell{display:flex;flex-direction:column;min-height:100vh;}
+
+/* ===== topbar — its own surface, stays dark and brand-edged ===== */
+.topbar{
+  background:linear-gradient(120deg,var(--topbar-bg) 0%,var(--topbar-bg-2) 100%);
+  border-bottom:2px solid var(--topbar-border);
+  color:#f4ecff;
+  display:flex;align-items:center;gap:var(--space-lg);
+  padding:11px var(--space-xl);
+  position:sticky;top:0;z-index:60;
+}
+.topbar .mark{
+  font-family:var(--font-brand);font-weight:800;font-size:19px;letter-spacing:.2px;
+  color:#fff;display:flex;align-items:center;gap:9px;
+}
+.topbar .mark .dot{
+  width:9px;height:9px;border-radius:var(--radius-full);background:var(--brand-logo);
+  box-shadow:0 0 0 4px rgba(192,70,255,.24);
+}
+.topbar .kicker{
+  font-size:12.5px;color:#cfa6ef;padding-left:var(--space-lg);
+  border-left:1px solid rgba(255,255,255,.18);
+}
+.topbar .kicker b{color:#fff;font-weight:600;}
+.topbar .spacer{flex:1;}
+.topbar .internal{
+  font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:#f4ecff;background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.26);border-radius:var(--radius-full);
+  padding:5px 12px;
+}
+
+/* ===== fidelity banner (§9b) ===== */
+.fidelity{
+  background:repeating-linear-gradient(135deg,#fdecea,#fdecea 10px,#fdf4f1 10px,#fdf4f1 20px);
+  border-bottom:1px solid #f0b8b3;
+  color:#7a2a20;
+  padding:11px var(--space-xl);
+  position:sticky;top:53px;z-index:59;
+}
+.fidelity .row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;max-width:1560px;margin:0 auto;}
+.fidelity .tier{
+  font-family:var(--font-brand);font-weight:800;font-size:11.5px;letter-spacing:.1em;
+  text-transform:uppercase;background:#7a2a20;color:#fff;
+  border-radius:var(--radius-sm);padding:3px 8px;flex:none;
+}
+.fidelity .txt{font-size:12.5px;}
+.fidelity .txt b{font-weight:700;}
+.fidelity .sep{color:#c98f86;}
+
+/* ===== accent-conflict flag — carried in the artifact, not a code comment ===== */
+.accent-flag{
+  background:var(--warn-soft);
+  border-bottom:1px solid #e2c78d;
+  padding:10px var(--space-xl);
+  color:#6b4905;
+  font-size:12.5px;
+}
+.accent-flag .inner{
+  max-width:1560px;margin:0 auto;display:flex;gap:10px;align-items:flex-start;
+}
+.accent-flag svg{flex:none;margin-top:1px;}
+.accent-flag .sw{
+  display:inline-flex;align-items:center;gap:5px;font-weight:600;
+  font-variant-numeric:tabular-nums;
+}
+.accent-flag .chip{
+  width:11px;height:11px;border-radius:var(--radius-sm);
+  border:1px solid rgba(0,0,0,.18);display:inline-block;
+}
+
+/* ===== main layout: content + Bradley rail ===== */
+.main{display:flex;align-items:flex-start;gap:0;flex:1;}
+.content{flex:1;min-width:0;padding:var(--space-3xl) var(--space-xl) var(--space-4xl);}
+.content-inner{max-width:1180px;margin:0 auto;}
+
+/* ===== page head ===== */
+.page-head{margin-bottom:var(--space-2xl);}
+.eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--brand);margin-bottom:10px;
+}
+.page-head h1{font-size:36px;line-height:1.15;letter-spacing:-.02em;max-width:22ch;}
+.page-head .sub{
+  margin-top:var(--space-md);font-size:16px;line-height:1.55;
+  color:var(--text-tertiary);max-width:64ch;
+}
+
+/* ===== legend — above the fold, sticks while the grid scrolls ===== */
+.legend{
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-left:3px solid var(--brand);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:var(--space-lg);
+  margin-bottom:var(--space-2xl);
+  position:sticky;top:139px;z-index:40;
+}
+.legend .lg-head{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding-bottom:var(--space-sm);margin-bottom:var(--space-md);
+  border-bottom:1px solid var(--border);
+}
+.legend h2{font-size:14px;letter-spacing:-.01em;}
+.datestamp{
+  font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-primary);background:var(--bg-deep);
+  border:1px solid var(--border);border-radius:var(--radius-full);
+  padding:3px 10px;font-variant-numeric:tabular-nums;
+}
+.legend .lg-note{font-size:12px;color:var(--text-tertiary);margin-left:auto;}
+.legend-defs{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);}
+.legend-def{
+  border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:var(--space-sm) var(--space-md);background:var(--bg-app);
+}
+.legend-def .def-body{font-size:12.5px;color:var(--text-tertiary);margin-top:7px;line-height:1.5;}
+.legend-def .def-body b{color:var(--text-secondary);font-weight:600;}
+.legend .lg-foot{
+  margin-top:var(--space-md);padding-top:var(--space-sm);
+  border-top:1px solid var(--border);
+  font-size:12px;color:var(--text-tertiary);
+}
+.legend .lg-foot b{color:var(--critical);font-weight:700;}
+
+/* ===== state marker — three visually distinct forms =====
+   Ranked deliberately: the capability name is the loudest element on a card, the
+   marker is second. Available is an outline chip, not a filled badge, so it does
+   not outshout its own headline. */
+.marker{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:var(--radius-full);padding:3px 10px 3px 7px;
+  border:1px solid transparent;flex:none;font-variant-numeric:tabular-nums;
+}
+.marker svg{flex:none;}
+.marker.available{color:var(--state-available);background:var(--state-available-soft);border-color:var(--state-available-line);}
+.marker.dev{color:var(--state-dev);background:var(--state-dev-soft);border-color:var(--state-dev-line);}
+.marker.planned{
+  color:var(--state-planned);background:var(--state-planned-soft);
+  border-style:dashed;border-color:var(--state-planned-line);
+}
+
+/* ===== the grid ===== */
+.grid-band{margin-bottom:var(--space-2xl);}
+.band-head{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  margin-bottom:var(--space-md);
+}
+.band-head h3{font-size:18px;letter-spacing:-.01em;}
+.band-head .count{
+  font-size:12px;color:var(--text-tertiary);font-variant-numeric:tabular-nums;
+}
+.band-head .trace{font-size:11.5px;color:var(--text-muted);margin-left:auto;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);}
+
+/* ===== capability card =====
+   ANTI-CROP: every card is self-sufficient. It carries its own state marker, its
+   own state definition in the title attribute, and its own footer micro-line with
+   the datestamp and the not-purchasable disclaimer. A card cropped alone, with the
+   legend stripped, still cannot be read as a purchase claim. */
+.card{
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:var(--space-md) var(--space-md) var(--space-sm);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:3px;
+}
+.card.s-available::before{background:var(--state-available-line);}
+.card.s-dev::before{background:var(--state-dev-line);}
+.card.s-planned::before{
+  background:repeating-linear-gradient(90deg,var(--state-planned-line),var(--state-planned-line) 5px,transparent 5px,transparent 10px);
+}
+.card .cat{
+  font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:9px;
+}
+.card h4{
+  font-size:17px;line-height:1.28;letter-spacing:-.015em;
+  margin-bottom:9px;font-weight:700;
+}
+.card .desc{font-size:13px;line-height:1.55;color:var(--text-tertiary);}
+.card .desc .not{color:var(--text-secondary);font-weight:600;}
+.card .marker-row{margin-bottom:var(--space-sm);}
+.card .trap{
+  margin-top:var(--space-sm);padding:8px 10px;
+  background:var(--bg-app);border:1px solid var(--border);
+  border-left:2px solid var(--text-muted);
+  border-radius:var(--radius-sm);
+  font-size:12px;line-height:1.45;color:var(--text-secondary);
+}
+.card .trap b{font-weight:700;color:var(--text-primary);}
+.card .src{
+  margin-top:var(--space-sm);font-size:11px;color:var(--text-muted);
+  font-variant-numeric:tabular-nums;letter-spacing:.01em;
+}
+/* the crop guard — repeated on EVERY card, deliberately not removable by a crop */
+.card .guard{
+  margin-top:auto;padding-top:var(--space-sm);
+  border-top:1px dashed var(--border);
+  font-size:10.5px;line-height:1.45;color:var(--text-muted);
+  letter-spacing:.02em;font-variant-numeric:tabular-nums;
+  display:flex;gap:6px;align-items:flex-start;
+}
+.card .guard svg{flex:none;margin-top:1px;}
+
+/* the consolidated Planned card spans the row */
+.card.wide{grid-column:1 / -1;}
+.planned-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:7px var(--space-md);margin-top:var(--space-sm);
+}
+.planned-list li{
+  font-size:12.5px;color:var(--text-tertiary);
+  padding-left:14px;position:relative;line-height:1.45;
+}
+.planned-list li::before{
+  content:"";position:absolute;left:0;top:7px;
+  width:6px;height:6px;border-radius:var(--radius-full);
+  border:1px dashed var(--state-planned-line);
+}
+.planned-list li b{color:var(--text-secondary);font-weight:600;}
+
+/* ===== mid-grid legend repeat — a single top banner is exactly what a crop removes ===== */
+.repeat-strip{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:var(--bg-surface);border:1px dashed var(--border);
+  border-radius:var(--radius-md);
+  padding:9px var(--space-md);margin-bottom:var(--space-2xl);
+  font-size:11.5px;color:var(--text-tertiary);
+  font-variant-numeric:tabular-nums;
+}
+.repeat-strip .mini{
+  display:inline-flex;align-items:center;gap:5px;font-weight:700;
+  font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+}
+.repeat-strip .mini.available{color:var(--state-available);}
+.repeat-strip .mini.dev{color:var(--state-dev);}
+.repeat-strip .mini.planned{color:var(--state-planned);}
+
+/* ===== provenance block ===== */
+.prov{
+  background:var(--bg-surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:var(--space-lg);
+  box-shadow:var(--shadow-sm);
+}
+.prov h3{font-size:15px;margin-bottom:var(--space-sm);}
+.prov ul li{
+  font-size:12.5px;color:var(--text-tertiary);line-height:1.55;
+  padding-left:14px;position:relative;margin-bottom:6px;
+}
+.prov ul li::before{
+  content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
+  border-radius:var(--radius-full);background:var(--brand-line);
+}
+.prov ul li b{color:var(--text-secondary);font-weight:600;}
+.prov .absent{
+  margin-top:var(--space-md);padding:var(--space-sm) var(--space-md);
+  background:var(--critical-soft);border:1px solid #f0b8b3;
+  border-radius:var(--radius-md);font-size:12.5px;color:#7a2a20;line-height:1.55;
+}
+.prov .absent b{font-weight:700;}
+
+/* ==========================================================================
+   BRADLEY RAIL — its own surface. Band Protocol convention (CLAUDE.md §9b).
+   These values are Band-authored and are NOT claimed as Apex 2.0 tokens.
+   ========================================================================== */
+.rail{
+  width:396px;flex:none;
+  background:var(--rail-bg);
+  border-left:4px solid var(--rail-border);
+  box-shadow:inset 6px 0 14px -10px rgba(124,58,237,.5);
+  padding:var(--space-2xl) var(--space-lg) var(--space-4xl);
+  align-self:stretch;
+  position:relative;
+}
+.rail::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(135deg,rgba(124,58,237,.035),rgba(124,58,237,.035) 2px,transparent 2px,transparent 9px);
+}
+.rail > *{position:relative;}
+.rail .rail-eyebrow{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rail-border);margin-bottom:8px;
+}
+.rail h2{font-size:19px;letter-spacing:-.015em;margin-bottom:var(--space-sm);}
+.readiness{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#2c1065;color:#f1e6ff;
+  border-radius:var(--radius-full);padding:5px 13px 5px 9px;
+  font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  margin-bottom:var(--space-md);
+}
+.rail .blurb{
+  font-size:13px;line-height:1.6;color:#3b2a56;
+  padding-bottom:var(--space-md);margin-bottom:var(--space-md);
+  border-bottom:1px solid rgba(124,58,237,.22);
+}
+.rail .blurb b{font-weight:700;color:#2c1065;}
+.dual{display:flex;flex-direction:column;gap:var(--space-sm);margin-bottom:var(--space-lg);}
+.dual .box{
+  background:#fff;border:1px solid rgba(124,58,237,.2);
+  border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md);
+}
+.dual .box.hurt{border-left:3px solid var(--critical);}
+.dual .box.nailed{border-left:3px solid var(--state-available);}
+.dual h3{
+  font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.dual .box.nailed h3{color:var(--state-available);}
+.dual .box.hurt h3{color:var(--critical);}
+.dual li{
+  font-size:12.5px;line-height:1.5;color:var(--text-secondary);
+  padding-left:13px;position:relative;margin-bottom:7px;
+}
+.dual li:last-child{margin-bottom:0;}
+.dual li::before{
+  content:"";position:absolute;left:0;top:7px;width:5px;height:5px;
+  border-radius:var(--radius-full);background:currentColor;opacity:.4;
+}
+.dual li b{font-weight:700;color:var(--text-primary);}
+
+.routed h3.routed-title{
+  font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:#4c2a8a;margin-bottom:var(--space-sm);
+}
+.route{
+  background:#fff;border:1px solid rgba(124,58,237,.2);
+  border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md);
+  margin-bottom:var(--space-sm);box-shadow:var(--shadow-sm);
+}
+.route .team{
+  display:flex;align-items:center;gap:7px;
+  font-family:var(--font-brand);font-size:12px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;color:#2c1065;
+  padding-bottom:8px;margin-bottom:9px;border-bottom:1px solid rgba(124,58,237,.14);
+}
+.route .team svg{flex:none;}
+.route dl{margin:0;}
+.route dt{
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-muted);margin-top:9px;
+}
+.route dt:first-of-type{margin-top:0;}
+.route dd{
+  margin:3px 0 0;font-size:12.5px;line-height:1.5;color:var(--text-secondary);
+}
+.route dd b{font-weight:700;color:var(--text-primary);}
+.route .roi{
+  margin-top:var(--space-sm);padding:9px 10px;
+  background:var(--bg-app);border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+}
+.route .roi .roi-h{
+  font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:6px;
+}
+.route .roi p{font-size:12px;line-height:1.5;margin-bottom:5px;color:var(--text-tertiary);}
+.route .roi p:last-child{margin-bottom:0;}
+.route .roi .lab{font-weight:700;color:var(--text-secondary);}
+.route .roi .unk{color:var(--critical);font-weight:700;}
+.rail .rail-foot{
+  margin-top:var(--space-lg);padding-top:var(--space-md);
+  border-top:1px solid rgba(124,58,237,.22);
+  font-size:11.5px;line-height:1.55;color:#5a4780;
+}
+
+/* ===== page footer ===== */
+.pagefoot{
+  border-top:1px solid var(--border);background:var(--bg-surface);
+  padding:var(--space-lg) var(--space-xl);
+  font-size:11.5px;color:var(--text-muted);line-height:1.6;
+}
+.pagefoot .inner{max-width:1560px;margin:0 auto;}
+
+/* ===== responsive ===== */
+@media (max-width:1400px){
+  .grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:1180px){
+  .main{flex-direction:column;}
+  .rail{width:100%;border-left:none;border-top:4px solid var(--rail-border);box-shadow:none;}
+  .legend{position:static;}
+}
+@media (max-width:760px){
+  .grid,.legend-defs{grid-template-columns:1fr;}
+  .page-head h1{font-size:28px;}
+}
+@media print{
+  .legend,.topbar,.fidelity{position:static;}
+  .card{break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+<div class="shell">

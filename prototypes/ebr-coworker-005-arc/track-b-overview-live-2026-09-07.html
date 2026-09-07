@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track B — risk register (live)</title>
+<!-- Track B proof-of-concept (see /Users/bethconnor/.claude/plans/virtual-munching-rivest.md).
+     Same risk-register .dcard as harness-2026-09-04.html's overview(), same Apex Bridge tokens/CSS
+     copied verbatim from that file — but FINDINGS is no longer a hardcoded array. It's fetched live
+     from Vertesia's Data Store API via a local proxy (serve.py), proving Track B can carry real
+     card elevation/shadow and real per-panel backgrounds that Vertesia's own native dashboard UI
+     could not (see the plan file's Track A synthesis for why).
+
+     LOCAL-ONLY PROTOTYPE. Run `python3 serve.py` in this folder, then open
+     http://127.0.0.1:7833/track-b-overview-live-2026-09-07.html — the bearer token lives server-side
+     in .secrets/vertesia-credentials.json (gitignored) and never reaches this file or the browser.
+     Not yet a hosted deliverable: shipping this beyond localhost needs real session auth in front
+     of the proxy first. Seed data is fictional (Fenwick Logistics), per §9b. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ===== Apex Bridge canonical tokens — copied verbatim from harness-2026-09-04.html ===== */
+    --bg-app:#fafafa; --bg-surface:#ffffff; --bg-elevated:#f8ebff; --bg-deep:#f4f4f6;
+    --border:#d5d5d5; --border-strong:#c9c9d2;
+    --text-primary:#18191a; --text-secondary:#2e2e33; --text-tertiary:#404047; --text-muted:#5c5c66;
+    --brand:#c046ff; --brand-strong:#8500cc; --brand-soft:rgba(192,70,255,.10);
+    --critical:#c0392b; --critical-soft:#fbecea; --medium:#a56a00; --medium-soft:#f8eeda; --low:#137a46; --low-soft:#e7f6ee;
+    --cyan:#0a95c4; --cyan-soft:#e7f6fb; --held:#8a8a93;
+    --radius-sm:2px; --radius-md:4px; --radius-lg:16px; --radius-full:999px;
+    --sh:0 1px 2px rgba(20,10,40,.05),0 1px 3px rgba(20,10,40,.05); --sh-lg:0 6px 24px -8px rgba(20,10,40,.16);
+    --font-brand:'Manrope',-apple-system,sans-serif; --font-ui:'Inter',-apple-system,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-app);color:var(--text-secondary);font-family:var(--font-ui);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:32px;max-width:900px;margin:0 auto}
+
+  /* ===== component CSS — copied verbatim from harness-2026-09-04.html lines 150-171, 497-498 ===== */
+  .dash{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+  .dcard{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh);padding:20px 22px}
+  .dcard h2{font-family:var(--font-brand);font-weight:700;font-size:15px;color:var(--text-primary);margin-bottom:3px}
+  .dcard .sub{font-size:12px;color:var(--text-tertiary);margin-bottom:16px}
+  .spectrum{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:4px 0 16px} .spectrum .seg{min-width:0} .spectrum .seg.red{background:var(--critical)} .spectrum .seg.amber{background:var(--medium)} .spectrum .seg.held{background:repeating-linear-gradient(45deg,#e3e3e8,#e3e3e8 5px,#d4d4dc 5px,#d4d4dc 10px)}
+  .keys{display:flex;gap:22px;flex-wrap:wrap} .key{display:flex;align-items:baseline;gap:8px} .key .num{font-family:var(--font-brand);font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1} .key.red .num{color:var(--critical)} .key.amber .num{color:var(--medium)} .key.green .num{color:var(--low)} .key.held .num{color:var(--text-tertiary)} .key .lab{font-size:11.5px;color:var(--text-tertiary)} .key .lab b{display:block;color:var(--text-primary);font-weight:600}
+  .count-check{font-family:var(--font-mono);font-size:10px;color:var(--held);margin:14px 0 16px;clear:both} .count-check b{color:var(--low)}
+  .reg{display:flex;flex-direction:column} .row{display:grid;grid-template-columns:3px minmax(0,1.7fr) minmax(0,.6fr) auto;gap:16px;align-items:center;padding:15px 4px 15px 16px;border-bottom:1px solid var(--border);position:relative}
+  .row>*{min-width:0} .row:last-child{border-bottom:none} .row::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:2px} .row.red::before{background:var(--critical)} .row.amber::before{background:var(--medium)} .row.held::before{background:var(--held)} .row.held{opacity:.66} .row:hover{background:var(--bg-elevated)}
+  .fnd{font-family:var(--font-brand);font-weight:600;font-size:14.5px;color:var(--text-primary);margin-bottom:4px;letter-spacing:-.01em} .mt{font-size:12px;color:var(--text-tertiary)} .mt .d{opacity:.4;margin:0 6px}
+  .tier{font-family:var(--font-mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap} .tier.measured{background:var(--low-soft);color:var(--low)} .tier.benchmarked{background:var(--cyan-soft);color:var(--cyan)} .tier.estimated{background:var(--medium-soft);color:var(--medium)} .tier.unverified{background:#f0f0f3;color:var(--held)}
+  .c3{display:flex;align-items:center;gap:14px;justify-content:flex-end} .ev{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-align:right;max-width:150px;line-height:1.4}
+  .held-foot{margin-top:16px;font-size:12px;color:var(--text-tertiary);display:flex;gap:9px;align-items:flex-start;line-height:1.5} .held-foot .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--held);flex:none;margin-top:2px}
+
+  /* ===== new for Track B: source/liveness strip, loading, error — not in the harness, this proof needs them ===== */
+  .src-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);border-top:1px solid var(--border);margin-top:16px;padding-top:12px}
+  .src-strip button{font-family:var(--font-mono);font-size:10.5px;font-weight:700;color:var(--brand-strong);background:var(--brand-soft);border:none;border-radius:var(--radius-full);padding:4px 12px;cursor:pointer}
+  .src-strip button:hover{background:rgba(192,70,255,.18)}
+  .loading{padding:24px;text-align:center;color:var(--text-tertiary);font-size:13px}
+  .error-banner{border-left:3px solid var(--critical);background:var(--critical-soft);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:14px 16px;margin:8px 0 16px;font-size:13px;color:var(--text-secondary);line-height:1.55}
+  .error-banner b{color:var(--critical)}
+</style>
+</head>
+<body>
+<div class="dash">
+  <div class="dcard" id="card">
+    <h2>Fenwick Logistics — risk register</h2>
+    <div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials — <b>Track B: live from Vertesia</b></div>
+    <div id="body"><div class="loading">Loading live register…</div></div>
+  </div>
+</div>
+
+<script>
+const GC = {red:'#c0392b', amber:'#a56a00', green:'#137a46', held:'#8a8a93'};
+let FINDINGS = [];
+
+function spark(f){
+  const pts = f.history.filter(v => v !== null && v !== undefined);
+  if (pts.length < 2) return `<span class="ev" style="font-style:normal">new</span>`;
+  const w=84, h=26, min=Math.min(...pts), max=Math.max(...pts), rng=(max-min)||1, step=w/(pts.length-1);
+  const nm = v => h-4-((v-min)/rng)*(h-8);
+  const d = pts.map((v,i) => `${i?'L':'M'}${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' ');
+  const last=pts[pts.length-1], first=pts[0], better=last<first, col=better?GC.green:GC.amber, g='g'+f.id;
+  const area = `M0,${h} L`+pts.map((v,i)=>`${(i*step).toFixed(1)},${nm(v).toFixed(1)}`).join(' L')+` L${w},${h} Z`;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="${g}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".2"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${((pts.length-1)*step).toFixed(1)}" cy="${nm(last).toFixed(1)}" r="2.6" fill="${col}"/></svg>`;
+}
+
+function rowsFromColumns(cols, rows){
+  const idx = {};
+  cols.forEach((c, i) => idx[c.name] = i);
+  return rows.map(r => {
+    const get = k => Array.isArray(r) ? r[idx[k]] : r[k];
+    return {
+      id: get('id'), finding: get('finding'), area: get('area'), grade: get('grade'),
+      tier: get('tier'), owner: get('owner'), status: get('status'),
+      history: [get('history_1'), get('history_2'), get('history_3'), get('history_4'), get('history_5')]
+    };
+  });
+}
+
+function renderCard(){
+  const order = {red:0, amber:1, green:2, held:3};
+  const r = FINDINGS.filter(f => f.grade === 'red').length;
+  const a = FINDINGS.filter(f => f.grade === 'amber').length;
+  const held = FINDINGS.filter(f => f.grade === 'held').length;
+  const seg = (c, n) => n ? `<div class="seg ${c}" style="flex:${n}"></div>` : '';
+  const rows = [...FINDINGS].sort((x, y) => order[x.grade] - order[y.grade]).map(f => `
+    <div class="row ${f.grade}">
+      <div></div>
+      <div><div class="fnd">${f.finding}</div><div class="mt">${f.area}<span class="d">·</span>${f.owner}<span class="d">·</span>${f.status}</div></div>
+      <div><span class="tier ${f.tier}">${f.tier}</span></div>
+      <div class="c3">${spark(f)}</div>
+    </div>`).join('');
+  document.getElementById('body').innerHTML = `
+    <div class="spectrum">${seg('red', r)}${seg('amber', a)}${seg('held', held)}</div>
+    <div class="keys">
+      <div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div>
+      <div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div>
+      <div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div>
+    </div>
+    <div class="count-check">${r} + ${a} + ${held} = <b>${FINDINGS.length}</b> findings in this register</div>
+    <div class="reg">${rows}</div>
+    <div class="held-foot"><span class="dot"></span><span><b style="color:var(--held)">Held.</b> Kept internally but hard-blocked from client view until vouched.</span></div>
+    <div class="src-strip"><span id="srcline">Source: Vertesia <code>/data/{store}/query</code> · fetched —</span><button onclick="load()">Refresh</button></div>
+  `;
+}
+
+function renderError(msg){
+  document.getElementById('body').innerHTML = `
+    <div class="error-banner"><b>Live fetch failed.</b> ${msg}</div>
+    <div class="src-strip"><span>Source: Vertesia <code>/data/{store}/query</code> · not connected</span><button onclick="load()">Retry</button></div>
+  `;
+}
+
+async function load(){
+  document.getElementById('body').innerHTML = '<div class="loading">Loading live register…</div>';
+  try {
+    const res = await fetch('/api/register-query', { method: 'POST' });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status} — ${text.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    FINDINGS = rowsFromColumns(data.columns, data.rows);
+    renderCard();
+    const line = document.getElementById('srcline');
+    if (line) line.textContent = `Source: Vertesia /data/{store}/query · fetched ${new Date().toLocaleTimeString()}`;
+  } catch (e) {
+    renderError(e.message || String(e));
+  }
+}
+
+load();
+</script>
+</body>
+</html>

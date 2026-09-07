@@ -535,3 +535,93 @@ button{font-family:inherit;cursor:pointer;}
 </head>
 <body>
 <div class="shell">
+
+<!-- monochrome inline SVG line icons, consistent 1.5 stroke. No emoji anywhere. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-available" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="8" cy="8" r="2.5" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-dev" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M8 1.75a6.25 6.25 0 0 0 0 12.5z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-planned" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"
+            stroke-dasharray="2.4 2.4" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-warn" viewBox="0 0 16 16">
+    <path d="M8 2.2 14.4 13.4H1.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M8 6.2v3.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="8" cy="11.3" r=".85" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-info" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M8 7.1v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="8" cy="4.8" r=".85" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-product" viewBox="0 0 16 16">
+    <path d="M8 1.9 14 5v6l-6 3.1L2 11V5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M2 5l6 3.1L14 5M8 8.1v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-design" viewBox="0 0 16 16">
+    <path d="M2.4 13.6l1-3.1 7-7a1.7 1.7 0 0 1 2.4 2.4l-7 7z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M9.6 4.1l2.3 2.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-research" viewBox="0 0 16 16">
+    <circle cx="6.9" cy="6.9" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M10.3 10.3l3.4 3.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-eng" viewBox="0 0 16 16">
+    <path d="M5.6 2.4 2.4 5.6l3 3-1.6 1.6a1.6 1.6 0 0 0 0 2.3l.7.7a1.6 1.6 0 0 0 2.3 0L8.4 11.6l3 3 3.2-3.2z"
+          fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-badge" viewBox="0 0 16 16">
+    <path d="M8 1.9 10 5.6l4 .6-2.9 2.9.7 4L8 11.9 4.2 13.1l.7-4L2 6.2l4-.6z"
+          fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="topbar">
+  <div class="mark"><span class="dot" aria-hidden="true"></span>Harness</div>
+  <div class="kicker">Agentic capability states &middot; <b>concept mock</b></div>
+  <div class="spacer"></div>
+  <div class="internal">Internal draft &middot; not customer-facing</div>
+</header>
+
+<!-- ===== FIDELITY BANNER (CLAUDE.md §9b) ===== -->
+<div class="fidelity" role="note" aria-label="Fidelity and confidence banner">
+  <div class="row">
+    <span class="tier">Tier 1 &middot; Concept</span>
+    <span class="txt">
+      Brief is <b class="num">55.4% [A]+[?]</b> &mdash; <b class="num">22 [A] + 19 [?] of 74</b> tags,
+      counted not estimated (<span class="num">briefs/harness-capability-page-math-recount.md</span>).
+      <span class="sep">|</span> Regime <b>PROCEED-PARTIAL</b>.
+      <span class="sep">|</span> <b>Package 2 is BLOCKED</b> and therefore absent: no &ldquo;our five use cases&rdquo;
+      hero and no second-track cards, pending a Beth + Nicole authority call on a three-way source conflict.
+      <span class="sep">|</span> <b>Nothing on this page is generally available.</b>
+      <span class="sep">|</span> <b>No capability state on this page has been validated</b> &mdash;
+      states are transcribed from one crosswalk on one date, not diffed against the tracker.
+    </span>
+  </div>
+</div>
+
+<!-- ===== ACCENT CONFLICT — carried visibly in the artifact, per the brief ===== -->
+<div class="accent-flag" role="note" aria-label="Unresolved accent colour flag">
+  <div class="inner">
+    <svg width="16" height="16" aria-hidden="true"><use href="#i-warn"/></svg>
+    <div>
+      <b>Unconfirmed accent colour.</b> This page is drawn in
+      <span class="sw"><span class="chip" style="background:#8500cc"></span>#8500cc</span>,
+      the only node-cited resolved brand token in evidence (Figma Apex 2.0, <span class="num">border/container/active</span>,
+      node <span class="num">23635:75103</span>). A 2026-06-02 scout of n-able.com describes
+      <b>&ldquo;vibrant blue as primary accent&rdquo;</b> and names no token. The two sources disagree and this build
+      does not resolve it &mdash; possibly n-able.com renders the older Apex v1, whose accent is blue, but that is a
+      hypothesis. <b>Needs Laura&rsquo;s or brand&rsquo;s confirmation before this artifact leaves the building.</b>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+<main class="content">
+<div class="content-inner">

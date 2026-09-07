@@ -6,6 +6,7 @@ sources:
   - Vertesia OpenAPI spec v1.4.0, fetched live 2026-09-07 from https://docs.vertesiahq.com/api-specs/vertesia (267 endpoints, 33 tags) [CS: VERIFIED — raw spec, parsed programmatically]
   - Vertesia console, authenticated live session, cloud.us1.vertesia.io, N-able/MSP project, 2026-09-07 [CS: VERIFIED — direct observation]
   - briefs/vertesia-brief-2026-08-21.md (prior company/product brief — this file supersedes its "open question #3" on API mapping)
+  - ~/Downloads/vertesia-api-mapping.md — N-able dev team, ACP→Vertesia API mapping, undated, provided by Beth 2026-09-07 [CS: HIGH — independent dev-authored spec analysis, not personally re-verified against the raw OpenAPI spec by this session]
 ---
 
 # Why this exists
@@ -43,6 +44,15 @@ Three real, API-level hooks, not one:
 - `[?]` Whether "N-able's own UI calling the API directly" vs. "N-able ships an installed App inside Vertesia's shell" is the actual deal shape — the tool-allowlist mechanism only applies to the latter. This is a commercial/architecture question, not one the spec answers.
 - `[?]` RA-023 (from the 2026-08-21 brief) is now more answerable but not closed: Access Control Entries and Content Object Types are project-scoped inside Vertesia's schema — so a Customer/Policy/Device/Audit Log primitive built as Vertesia Content Object Types lives in Vertesia's data model, not a portable one. Portability would mean keeping those primitives in N-able's own store and only using Vertesia for the Agent Run / Interaction layer on top.
 - `[?]` Multi-tenancy shape at scale — Project = tenant boundary is confirmed, but whether that's one Project per MSP client (thousands) or one Project per N-able account with internal scoping is not in the spec; it's an operational/cost question (see Costs endpoints — priced per-run, so tenant-splitting has a real cost-accounting angle).
+
+# Cross-check against the dev team's ACP→Vertesia mapping
+
+`~/Downloads/vertesia-api-mapping.md` compares Vertesia's spec against ACP's own ~130 routes (`apps/backend/app/api/v1/`) — a different angle than this file's UX-primitive read, done independently. Two of its findings converge with what this session found by hands-on testing rather than spec-reading alone, which raises confidence on both:
+
+- **Tenancy.** Their read: "`account` → `project`... project never appears in the path (except the admin `/projects/{projectId}` family)," and the whole **Access Control group** (`/iam/users`, `/iam/groups`, `/iam/roles`, `/iam/aces`) is listed under "Vertesia surface with no ACP counterpart." This session hit that gap directly, not in spec: creating a project via an `account:admin` key (`POST /projects`) does not grant that key — or any user — visibility into it. `GET /projects` and the console's own project switcher both stayed silent on a project that `GET /projects/{id}` proved was real. The fix needed an ACE (`/iam/aces`) or, in practice, just creating/renaming the project from inside the target user's own session. `[CS: VERIFIED — live API round-trip, 2026-09-07]`
+- **No draft lock / no version diff.** Their read: "runbook draft locks, version diffs... have no home in this API." Matches this session's live EBR Interaction problem (`briefs/ebr-vertesia-ux-mapping-2026-09-07.md`) — a `temperature` config fix that saved cleanly but didn't take effect on `Run`, with "publish vs. draft" as the untested leading theory precisely because there's no lock/diff primitive to check it against.
+
+Their document is the deeper structural comparison (concept-by-concept ACP↔Vertesia table, endpoint-by-endpoint per ACP router) — read it directly for anything beyond these two overlaps; not duplicating its full content here.
 
 # Full endpoint inventory
 267 endpoints / 33 tags, parsed from the raw spec — available on request if you want the complete list rather than this summary; not inlined here to keep this readable.

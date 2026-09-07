@@ -107,6 +107,27 @@ but you can likely build **your own agent with the same shape** (tool-calling, a
 structured content) using the documented API. `[?] — not tested against the live API this session, only
 inferred from the naming pattern and the catalog/sys endpoint's existence.`
 
+**Confirmed, 2026-09-07 (was inference, now direct observation):** the Studio Dashboard's "Latest Runs"
+list shows an entry named exactly `sys:StudioAssistant`, run this session, alongside our own failed EBR
+runs. The Studio Assistant is not special platform magic — it is an ordinary system Interaction, listed
+and run the same way any other Interaction is. `[CS: VERIFIED]`
+
+### CompositeAppConfig — write works, nothing renders it (tested live, 2026-09-07)
+
+Created an `admin`-role API key (the `developer` key 403'd on this endpoint — **write requires
+`account:admin`**, a tier above the per-project roles seen elsewhere in this spec `[CS: VERIFIED]`) and
+`PUT` a `message` banner override on the MSP project's CompositeAppConfig. `200`, and a follow-up `GET`
+confirms it persisted server-side, verbatim. **But it does not render anywhere found** — checked both
+the "Apps for MSP" portal page and the Studio Dashboard, no banner on either, after a hard reload.
+
+Read on this: the API is real and functional; Vertesia's own Studio frontend apparently does not consume
+`CompositeAppConfig.message` on any screen we could find. Best guess, not confirmed: this field is meant
+for a *different* consumer — an embedded/white-labeled shell (e.g. N-able's own eventual console) — to
+read and render, not for Vertesia's own Studio UI to display back to itself. If true, this is actually
+good news for the white-label plan: the mechanism is real and API-accessible even though Vertesia's own
+UI doesn't demonstrate it. `[?] — untested against any other consumer; we only have Studio's UI to check
+against right now.`
+
 ### Direct evidence, 2026-09-07: the Studio Assistant's own approval gate fails the bar the Chooser step is designed to clear
 
 Live, while Beth was actually using it: the Assistant proposed writing and executing a Python script

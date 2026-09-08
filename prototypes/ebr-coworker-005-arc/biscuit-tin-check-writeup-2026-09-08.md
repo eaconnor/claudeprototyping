@@ -210,54 +210,40 @@ That's the next real spike, not this one.
 
 ---
 
-## Part B — how this actually works, in plain language
+## Part B — how it works, plainly
 
-Think of a Vertesia **Process** as a flowchart with exactly two kinds of boxes that matter here:
+A Vertesia Process is a flowchart. Two boxes matter here:
 
-- **A step a person has to answer** (`human_task`) — the flowchart stops here and waits. Nothing
-  moves until someone reads the question and picks an answer.
-- **A step that means "we're done"** (`final`) — once the flowchart reaches this box, the run is over.
+- `human_task` — stops. Waits for a person to answer. No timeout, no error, just parked.
+- `final` — done. Run's over.
 
-The Biscuit Tin Check is the simplest possible version of this: one box asking "Restock the
-biscuits?", one box marked "Done," an arrow connecting them.
+Biscuit Tin Check: one box, one arrow, one exit. "Restock the biscuits?" → Done.
 
-**What happens when you "start" it:** Vertesia creates a live instance of that flowchart —
-a "run" — and immediately walks it to the first box. Since the first box is a `human_task`, the
-run just... stops there. It doesn't error, it doesn't time out. It sits, patiently, in a `running`
-state, parked at that box, for as long as it takes a human to answer.
+**Start it** → Vertesia spins up a live instance, walks it to box one, hits `human_task`, stops.
+Sits in `running`, parked at `ask`, however long that takes.
 
-**Where the question actually shows up:** Vertesia has one shared inbox — the **Task Inbox** —
-where every paused `human_task` from every running process lands, regardless of which process it
-came from. It's the one screen a human actually looks at. It shows the question ("Restock the
-biscuits?"), a short description, and whatever fields the process asked for (here: a dropdown —
-restock or skip — and an optional note).
+**The question lands in the Task Inbox** — one shared queue, every paused task from every
+process, regardless of which flowchart it came from. Title, description, whatever fields the
+process asked for. Here: a decision dropdown, an optional note.
 
-**What happens when you answer it:** you pick "restock," type a note, hit Submit. Two things
-happen simultaneously: (1) the Task Inbox marks that task `completed` and keeps a permanent record
-of exactly what you answered, and (2) the process run — which had been sitting frozen — wakes back
-up, takes your answer, and continues walking the flowchart. Since the only arrow out of "Restock
-the biscuits?" points to "Done," it walks straight there and the run finishes.
+**Answer it** → two things at once: the task itself gets marked `completed` with a permanent
+record of what you picked, and the run wakes up, takes the answer, walks the only arrow it has —
+to Done. Run's finished.
 
-**Why this maps to the real EBR sign-off screen:** the harness's Chooser/sign-off step ("Vanessa
-needs to approve before this goes to Fenwick") is the same shape — a flowchart that has to stop and
-wait for a specific human, then continue once they've decided. This test proves that stopping-and-
-waiting mechanism is real and works, using the exact same building block (`human_task`) the harness
-mod's "Native" badges are claiming.
+**Why it matters:** the Chooser/sign-off step — Vanessa has to approve before Fenwick sees
+anything — is the same shape. Stop, wait for a specific human, continue once they've decided.
+Every "Native" sign-off badge on the harness mod is claiming this exact mechanism. Now it's
+proven, not assumed.
 
-**What this test does *not* prove yet — two honest gaps:**
+**Two gaps, not swept under anything:**
 
-1. **The answer doesn't write itself anywhere permanent yet.** In this test, the answer only lives
-   inside that one run's memory and inside the Task Inbox's own record of it. A real sign-off needs
-   the decision to land in the actual findings table, as a durable, queryable fact ("this finding
-   was approved by Vanessa on this date"). That needs one more box in the flowchart — a step that
-   takes the answer and writes it into the table. Simple to add, just not done here.
-2. **We didn't test the "do it by code instead of by hand" path.** Answering was done by clicking
-   in the Task Inbox, on purpose — because nobody had confirmed exactly what a computer program
-   would need to send to answer a task automatically, and guessing at that on the highest-stakes
-   screen (client sign-off) was the wrong place to find out the hard way. That's still an open
-   question, not a solved one.
+1. The answer doesn't persist anywhere real yet. It lives in the run's memory and the task's own
+   record — not in the findings table. A real sign-off needs "Vanessa approved this, on this date"
+   sitting in the table, queryable. That's one more box in the flowchart (a `mutate` step), not
+   built here.
+2. Never tested answering by code. Did it by hand in the Task Inbox on purpose — nobody had
+   confirmed the payload shape for a scripted answer, and guessing at it on the sign-off screen is
+   the wrong place to find out you were wrong. Open question, not a solved one.
 
-**The one real surprise from this test:** creating the flowchart itself (the Process) didn't work
-through the same back-door API key that did everything else — it only worked by building it
-directly in Vertesia's own website. That's worth remembering: some things that look identical from
-the outside (they're all just "API calls") aren't actually the same door.
+**The one real surprise:** the API key that did everything else couldn't create the Process
+itself — that only worked through the actual website. Same-looking API calls, not the same door.

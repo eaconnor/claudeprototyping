@@ -1,22 +1,40 @@
-# Ecoverse — Riskiest Assumptions (consolidated, everything we know now)
+# Ecoverse — Riskiest Assumptions
 
-*One list. Ranked by how much it would hurt if wrong, and how cheap it is to check.*
+**Assumption: Bundling — combining multiple things — will be the killer app.**
+Risks of making it:
+- Market evidence right now favors specialists, not bundlers: Action1, Automox, and NinjaOne are all narrow tools, and all three are winning. N-able's own leadership said it's being disrupted *by the specialist* (Ninja), not out-bundled by a broader platform.
+- The sharper version of this bet — connect categories (patch + backup + security) rather than duplicate one category — is a different mechanism, but it's still unproven. Nobody's shown an MSP will pay or switch for the connection instead of just running best-of-breed tools side by side.
+- If this is wrong, nothing else below matters — there's no engine underneath it.
 
-1. **Bundling vs. specializing — does combining things actually beat being the best at one thing, in this market?** This sits under everything else. Right now the evidence leans against bundling: Action1, Automox, and NinjaOne are all narrow specialists, and all three are winning. N-able's own leadership called itself "disrupted" by the specialist (Ninja), not out-bundled by a broader platform. The deck's own competitive slide admits breadth "earns the right to compete" but doesn't differentiate. That's uncomfortable for the original "combine 4 vendors" pitch — and it's not automatically safe for the correlation-weapon idea either, even though that's a different *kind* of bundling (connecting categories — patch, backup, security — rather than duplicating one category). Nobody has tested whether an MSP actually wants that connection enough to pay or switch for it, versus being fine stitching best-of-breed tools together themselves. **This is the one to settle before the others matter.**
+**Assumption: The cross-product data (RMM + Cove backup + Adlumin security) is good enough to power this.**
+Risks of making it:
+- Overlap between customers running two or three of these products together might be small.
+- The data across separate products might not line up cleanly enough to correlate.
+- Correlating them might just produce noise, not a real signal worth showing a customer.
 
-2. **The cross-product data (RMM + Cove backup + Adlumin security) is actually good, not just theoretically possible.** Assumes enough customers run two or three of these together, with clean enough data, that correlating them finds real patterns instead of noise. Nobody has checked this yet. Cheap to test — pull real numbers on customer overlap, try correlating a handful of real accounts by hand before building anything. Only matters once #1 is answered "yes."
+**Assumption: Existing N-sight customers are the right first audience, and will actually respond.**
+Risks of making it:
+- There's still no decision on whether or when to migrate them at all — building for them assumes an answer nobody's given.
+- They might not want this any more than a brand-new customer would.
+- Doing this clumsily risks damaging trust with the base that currently pays the bills.
 
-3. **Nobody has decided what happens to existing N-sight customers.** Still true, and it matters more now — the winning plan depends on starting with the existing base, so this stops being a someday-question and becomes step one.
+**Assumption: The AI will be trusted once its actions are visible.**
+Risks of making it:
+- The one screen that would show this is currently broken — nobody's actually seen what "visible" looks like in practice yet.
+- A technician might still feel replaced even with full visibility. Nobody's tested a real technician's reaction to any of this.
+- Trust might require *control* (approve-before-it-acts), not just visibility — that decision hasn't been made either way.
 
-4. **The one screen that would show the AI "showing its work" is currently broken.** If the trust story depends on transparency, and the transparency screen doesn't render, there's nothing to point to yet.
+**Assumption: This will make money.**
+Risks of making it:
+- No real math exists anywhere showing what this is worth to a customer or what it should cost.
+- Could end up being a reason existing customers stay, with no real new revenue attached — not the growth engine the strategy needs.
 
-5. **A technician might not want this even if it works.** The tech-fears-for-their-job risk, still unresolved. Nobody's tested a real technician's reaction to any of this.
+**Assumption: "Ninja can't do this" stays true long enough to matter.**
+Risks of making it:
+- A competitor could partner their way into backup or security data faster than expected.
+- Nobody's checked how much runway this advantage actually has before it closes.
 
-6. **There's no math showing this makes money.** Not "is it cheap to build" — is there a real number showing what this is worth to a customer, and what it should cost.
-
-7. **The "Ninja can't do this" advantage might not last.** Ninja or someone else could partner with a backup/security vendor faster than expected. Nobody's checked how much runway this advantage actually has.
-
-8. **Leadership might approve the weaker "combine 4 competitors" story instead of this one**, simply because it's already written down and this reframe hasn't been put in front of anyone yet.
-
----
-*Everything above traces back to the deck, council, critic, gap analysis, and idea-chess work already in this folder — no new sourcing, just the short version.*
+**Assumption: Leadership backs this reframed pitch, not the weaker "combine 4 competitors" one already on the slide.**
+Risks of making it:
+- The weaker story is already written down and feels decided; this one hasn't been pitched to anyone yet.
+- Could lose to inertia even if it's the better idea, simply by not being the thing already in the deck.

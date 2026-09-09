@@ -62,9 +62,14 @@ Filtered to items the source tables explicitly tag **Phase 1**, plus the Trial U
 
 ## Part 3 — Gap to completion, N-sight replacement
 
-Two components: (a) capabilities existing N-sight customers rely on today that the new product must match to avoid regression, and (b) capabilities the deck already admits are **not offered** in the new product at all.
+**Scope correction before the tables — "N-sight replacement" is not one thing in this deck, and treating it as one thing is where the first draft of this section went hand-wavy.** The deck itself only ever states a narrow claim: Phase 2's "why we win" says *"No Classic N-sight dependency for new NCA customers; N-central unchanged."* That is a **new-customer independence goal** — a brand-new NCA customer never had Classic N-sight to begin with, so they don't need feature parity with it, they just need Ecoverse's own MVP to be complete (which is Part 2's analysis, not a separate one). Nowhere in this corpus does the deck commit to **migrating the existing N-sight installed base** off Classic N-sight — there is no stated phase, gate, or measure for that. So "N-sight replacement" as Laura's note names it has (at least) two different possible referents, and this document was imprecise about which one it was answering:
 
-### (a) High/Medium-value N-sight capabilities not yet at parity
+- **(3a) New-NCA-customer independence** (the deck's actual, stated Phase 2 goal) — the real gap here is mostly the same gap as Part 2 (MVP for NCA), because a new customer's bar is "does Ecoverse do what I need," not "does Ecoverse match a legacy product I never used."
+- **(3b) Existing N-sight customer migration** (NOT a stated goal anywhere in this deck) — this is where the "Classic N-sight Features Not Offered" table actually matters, because it's existing customers who'd feel a regression. But scoring a "gap to completion" against a goal the deck never states is scoring against an assumption, not a plan. **This needs to go back to Laura/Mackie as a question, not get answered as a gap:** is existing-customer migration even in scope for this strategy, on any phase or timeline? If yes, it needs its own gate and measures, the way Phases 1–4 have for new acquisition. If no, table (b) below is future-relevant context, not a current gap against a real target.
+
+Two components below, kept separate rather than blended: (a) capabilities existing N-sight customers rely on today that a migration would need to match — framed against the *unstated* migration goal, not a real one — and (b) capabilities the deck already admits are **not offered** in the new product at all, same caveat.
+
+### (a) High/Medium-value N-sight capabilities not yet at parity — scored against the unstated (3b) migration goal, not a confirmed target
 | Capability | N-sight benefit today | Ecoverse status | Gap |
 |---|---|---|---|
 | All three OS patching | High | High priority, expected Q1'27 | Timing gap to Q1'27 |
@@ -82,7 +87,7 @@ Two components: (a) capabilities existing N-sight customers rely on today that t
 
 **Count: of these 12 items, 4 are "Not started" or fully undefined, 1 (Monitoring) isn't even confirmed as in-scope for Phase 1, and only 1 (Asset inventory) is described as near-parity today.**
 
-### (b) Explicitly not offered in the new product — deck's own list, unresolved
+### (b) Explicitly not offered in the new product — deck's own list, unresolved, same caveat as (a)
 Direct from the "Classic N-sight Features Not Offered in the New Product" table — every row has a **blank status**, meaning none of these has an agreed disposition (rebuild, deliberately drop, or find a workaround) yet:
 - Web Protection
 - Classic Monitoring
@@ -93,7 +98,7 @@ Direct from the "Classic N-sight Features Not Offered in the New Product" table 
 - IP Address verification (security setting)
 - *(the deck's own list ends with "……." — an explicit ellipsis, meaning the author knows this list is incomplete and hasn't finished enumerating it)*
 
-**This list is the sharpest, most concrete finding in this gap analysis:** it is the deck acknowledging, in its own working document, that there are known N-sight capabilities the new product currently drops — and admitting the list of what's dropped isn't even finished being written down. Before any "N-sight replacement" claim can be made to a customer, this table needs (i) every row filled with a real disposition, and (ii) the trailing ellipsis resolved into an actual complete list.
+**Read this list correctly: it is not evidence that a migration plan is falling short, because there is no stated migration plan for it to fall short of.** What it *is* evidence of: if and when someone decides existing N-sight customers migrate to Ecoverse, these seven items (at minimum — the list is admittedly incomplete) are the ones that need an explicit decision. Right now this is a **pre-decision inventory**, not a gap against a target.
 
 ### Cybersecurity/compliance-adjacent gaps (ties back to Part 1)
 - Compliance assessment/reports: "TBC per Taha research"

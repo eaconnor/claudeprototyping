@@ -1,40 +1,59 @@
 # Ecoverse — Riskiest Assumptions
 
-*Citations use short keys — full paths in the Sources list at the bottom. `[A]` = my own proposal/inference, not something a source states directly — flagged so it doesn't get mistaken for research.*
+*Citations are short keys — full paths in the Sources table at the bottom. `[A]` = my own inference, not a source's claim.*
 
 **Assumption: Connecting categories (patch + backup + security) surfaces real, unrealized value.**
-Candidate unmet needs — grounded in real, sourced pressures, but the specific ideas below are `[A]` my proposals, not validated with a customer:
-- **"Am I actually protected, or just checking boxes?"** `[A]`. Grounded in a real, named gap: the deck's own "Prove the Outcome" pillar promises evidence of exposure reduced and security enhanced [DECK-0909], but nothing in Section 04 builds a mechanism for it — no report/evidence producer exists [DECK-0909, Differentiators table].
-- **Seeing trouble before it happens.** `[A]` — my proposal, not stated anywhere in the source material. Loosely related to the undefined "RT system state" capability the deck names but never explains [DECK-0909, Killer-App slide].
-- **Compliance and cyber-insurance evidence, assembled automatically.** Partly grounded: the deck names "increasing security, compliance and governance requirements" as a real, current pressure [DECK-0909, ITP ICP slide] and lists "Compliance assessment/reports: TBC per Taha research" as an unbuilt, open item [DECK-0909, Differentiators table]. The **cyber-insurance angle specifically is `[A]`** — my addition, not named in any source.
-- **Faster "what actually broke" answers.** `[A]` — my proposal. Loosely tied to the deck's stated aim of "reduces effort, increases technician productivity" [DECK-0909, Working Hypothesis slide], but the specific mechanism is mine, not sourced.
+Candidate unmet needs — grounded in real pressures, but the ideas themselves are `[A]`, not customer-validated:
+- **"Am I protected, or just checking boxes?"** `[A]`. The deck's "Prove the Outcome" pillar promises evidence of reduced exposure [DECK-0909], but no report/evidence producer exists for it [DECK-0909, Differentiators table].
+- **Seeing trouble before it happens.** `[A]` — not stated anywhere. Loosely tied to the undefined "RT system state" capability [DECK-0909, Killer-App slide].
+- **Compliance/cyber-insurance evidence, assembled automatically.** Partly grounded: "increasing security, compliance and governance requirements" is real [DECK-0909, ITP ICP slide], and "Compliance assessment/reports: TBC" is a named open item [DECK-0909]. The cyber-insurance angle itself is `[A]`.
+- **Faster root-cause answers.** `[A]` — loosely tied to the stated aim of reducing technician effort [DECK-0909], mechanism is mine.
 
-**Assumption: This is valuable enough for existing customers to want, safe enough not to break anything, and shiny enough to pull in new customers — without cannibalizing what we already have.**
-- The three-part framing is Beth's own bar, not derived from a source.
-- **The real gap: we don't know why current customers picked what they picked.** Checked and confirmed absent: council's Jobs-to-Be-Done pass named the switch trigger "unsourced, unproven" [COUNCIL]; the dedicated web-research pass on why MSPs actually leave NinjaOne found only secondhand, low-confidence signal (pricing/support friction), and explicitly found "no source describing a competitor winning switches on a features/AI reason" [A1-JIRA, tagged `[CS: MEDIUM]`/`[CS: LOW]` in that file itself]. Nowhere in the corpus is there real research on *why* an existing N-able customer chose N-able, either — that absence is `[CS: UNKNOWN]`, not just unproven.
+**How to test:** 5–10 short interviews with existing customers — show them a mocked combined view, ask if it's something they'd act on or already assemble manually elsewhere.
 
-**Assumption: We can actually build an AI that does this reliably — before anyone even gets to whether people trust it.**
-Two different bets, easy to run together: *can we make it work* and *will people believe it once it does*. This one is the first, and it's currently the weaker-looking of the two:
-- The AI layer this all depends on — N-zo, and the Coworkers built on it — is itself early: "All encompassing N-zo: In progress," "In-product Coworkers: Green assuming we continue to build out" [DECK-0909, Differentiators table]. "Assuming we continue to build out" is doing real work in that sentence — it's a condition, not a status.
-- The correlation idea (patch + backup + security together) asks the AI to do something harder than any single Coworker function shipped so far — combine three data types and produce a judgment, not just report one number. Nothing in the corpus shows this specific kind of cross-signal reasoning has been attempted yet, successfully or otherwise. `[CS: UNKNOWN]`.
-- The one live data point on reliability in practice isn't encouraging: the Coworkers UI — the closest thing to a working, customer-facing AI surface today — is currently broken [FSN-90125]. That's not proof the underlying AI is unreliable, but it's the only real-world evidence available right now, and it's not good news.
+---
+
+**Assumption: This is valuable enough for existing customers to want, safe enough not to break anything, and shiny enough to pull in new customers without cannibalizing what we have.**
+The real gap: **we don't know why current customers picked what they picked.** Council's JTBD pass called the switch trigger "unsourced, unproven" [COUNCIL]; dedicated web research on why MSPs leave NinjaOne found only weak secondhand signal and no case of anyone switching for an AI/feature reason [A1-JIRA]. Why an existing N-able customer chose N-able is equally undocumented — `[CS: UNKNOWN]`.
+
+**How to test:** pull any win/loss data that exists; if none, run 5 customer interviews on "why us, and what would make you leave."
+
+---
+
+**Assumption: We can build an AI that does this reliably** — separate from whether people trust it once it does.
+- The one shipped, customer-facing AI surface (N-zo's in-chat Reboot action) has real, documented reliability failures: no pre-flight check for offline devices or unsupported OS (user can complete the full flow before it fails at the final step), a premature "success" message shown before the device has actually rebooted, and one confirmed case of N-zo reporting 3,478 online devices for an account that in fact had 11, all offline [NZO-SEV]. This is the strongest real evidence in this whole file, and it's not encouraging.
+- The correlation idea (patch + backup + security → one judgment) asks more of the AI than anything shipped so far. No competitor — in this space or adjacent — has published a working version of this kind of cross-product-line fusion; none has publicly failed at it either. It's a genuine unknown, not a thin guess [AI-RELIABILITY-SCOUT §4].
+- The Coworkers UI itself was separately broken as of last check [FSN-90125].
+
+**How to test:** fix the pre-flight and success-state bugs already scoped in [NZO-SEV] and re-measure — that's a cheap, bounded test before betting on a harder three-signal correlation feature.
+
+---
 
 **Assumption: The AI will be reliable enough for people to trust it.**
-The four reliability questions below are `[A]` — my own framing of what "reliable" would need to mean, not a source's language — but each is anchored to a real, sourced gap:
-- Error-tolerance and escalation-when-uncertain: no threshold or standard is named anywhere in Section 04 [DECK-0909].
-- Rollback/undo: named as a structural gap with no design in the first idea-chess pass — "no rollback/recovery design... belongs on Phase 1 critical path" [IDEA-CHESS-V1, §1.8/HOLE2].
-- Consistency across environments: not addressed in any source; `[CS: UNKNOWN]`.
-- All four questions matter more because the one screen that would show any of this in practice is currently broken: `FSN-90125`, "Ecoverse -> Unable to view the Coworkers UI," status Open as of the last check [JIRA-FOLLOWUP].
+- N-able is already asking this question internally — a dedicated usability study exists on exactly this ("confirmation, progress, and completion states... trust in action success messaging") [NZO-TRUST-BRIEF]. This isn't an unaddressed gap; it's an open, active one.
+- Real finding from that research: reboot confirmation confidence rated as low as 2.5/5, and technicians consistently want a "safe vs. dangerous" action split with configurable approval — a human-in-the-loop model, not full autonomy [NZO-SEV].
+- That ask matches the emerging external pattern: no competitor publishes an AI-agent error rate; the one converging norm across the market is approval gates for high-risk actions and monitor-after for reversible ones [AI-RELIABILITY-SCOUT §3] — exactly what N-able's own users are asking for.
+- Base rate for what "reliable enough" is competing against: 65% of organizations reported an AI-agent-related incident in the past 12 months [AI-RELIABILITY-SCOUT §1].
 
-**Assumption: This makes money because it serves a real, unmet need in the market.**
-- **Cyber-insurance leverage** `[A]` — my proposal, not named in any source. Flagging clearly since this is the least-grounded of the three and shouldn't be repeated as if it were researched.
-- **Compliance-as-a-byproduct** — grounded in real, sourced pressure: "increasing security, compliance and governance requirements" [DECK-0909, ITP ICP slide] and the still-open "Compliance assessment/reports: TBC per Taha research" line [DECK-0909, Differentiators table]. The *packaging as a sellable outcome* is `[A]`, the *underlying pressure* is sourced.
-- **Reduced incident cost** `[A]` — my proposal, loosely tied to the "Prove the Outcome" pillar's "exposure identified and reduced" language [DECK-0909], but the specific dollar-savings framing is mine.
-- All three: no pricing, no willingness-to-pay data, and no margin model exist anywhere in the corpus, including Jira/Confluence [CRITIC, punch-list item P2#8; JIRA-FOLLOWUP, A5 section — search for internal pricing/economics modeling returned nothing].
+**How to test:** ship the autonomy-level/approval toggle already recommended internally, then re-run the reboot usability test against the current 2.5/5 baseline.
 
-**Assumption: Whatever we build here can't easily be copied.**
-- That N-able owns Cove (backup) and Adlumin (security/MDR) alongside RMM is sourced fact, not inference: "Moved $s to Cove" and MDR described as a "$10M+ biz inside N-C in '25" [Q1-QLS-2025]; Adlumin appears as a native signal source in N-able's own architecture diagram alongside endpoint/patch/scripting data [Q1-QLS-2025].
-- **Whether that ownership is actually harder to copy than a competitor partnering via API is `[A]`** — my own analytical question, not answered by any source. The deck's own language about Ecoverse being "open, extensible, built for AI | GraphQL + MCP" [DECK-0909, Killer-App slide] cuts both ways here — an open, API-friendly architecture is good for customers but may also make N-able's own advantage easier for others to approximate via integration, not just harder to copy. That tension isn't resolved anywhere in the source material.
+---
+
+**Assumption: This makes money because it serves a real, unmet need.**
+- **Cyber-insurance leverage** `[A]` — least-grounded of the three, flagging clearly so it isn't repeated as researched.
+- **Compliance-as-a-byproduct** — the underlying pressure is sourced [DECK-0909, ITP ICP slide; Differentiators table]; packaging it as a sellable outcome is `[A]`.
+- **Reduced incident cost** `[A]` — loosely tied to "Prove the Outcome" [DECK-0909], dollar framing is mine.
+- No pricing, willingness-to-pay, or margin model exists anywhere in the corpus [CRITIC P2#8; JIRA-FOLLOWUP].
+
+**How to test:** apply N-able's existing Cove/Adlumin attach-and-expand data to Ecoverse's actual price points before committing to "start cheap, expand later."
+
+---
+
+**Assumption: Whatever we build can't easily be copied.**
+- N-able owning Cove (backup) and Adlumin (security/MDR) alongside RMM is sourced fact, not inference [Q1-QLS-2025].
+- Whether that ownership is actually harder to copy than a competitor partnering via API is `[A]` — unresolved. The deck's own "open, extensible... GraphQL + MCP" framing [DECK-0909] cuts both ways: good for customers, but also easier for others to approximate via integration.
+
+**How to test:** run one concrete scenario — could Ninja or Action1 replicate the correlation story through a partnership within 12 months? Answer that before calling this a moat.
 
 ---
 
@@ -49,5 +68,8 @@ The four reliability questions below are `[A]` — my own framing of what "relia
 | A1-JIRA | `scout/ecoverse/riskiest-assumptions/01-A1-killer-app-switch-trigger.md` |
 | JIRA-FOLLOWUP | `scout/ecoverse/riskiest-assumptions/07-followup-atlassian-sharepoint-2026-09-09.md` |
 | IDEA-CHESS-V1 | `prototypes/ecoverse/idea-chess-ecoverse-2026-09-09.md` |
-| Q1-QLS-2025 | `Q1_QLS_2025_RMM_Upload_FINAL_NILLER.pptx` (N-able internal, SharePoint, GeneralNillerTeam site) |
-| FSN-90125 | Jira ticket, n-able.atlassian.net — "Ecoverse -> Unable to view the Coworkers UI" |
+| Q1-QLS-2025 | `Q1_QLS_2025_RMM_Upload_FINAL_NILLER.pptx` (N-able internal, SharePoint) |
+| FSN-90125 | Jira — "Ecoverse -> Unable to view the Coworkers UI" |
+| NZO-SEV | Confluence ProdUX — "N-Zo Reboot usability testing - Severity triage table" (id 62321786941) |
+| NZO-TRUST-BRIEF | Confluence ProdUX — "Internal Usability Testing of In-Chat Actions in N-zo: Focus on Reboot and User Trust" (id 61901373638) |
+| AI-RELIABILITY-SCOUT | `scout/ecoverse/ai-reliability-benchmarks-2026-09-09.md` |

@@ -151,21 +151,23 @@ Fields 1–4, 7–10 apply to *any* sketch (offering, feature, mechanism, pricin
 
 ## Step 6.5 — Idea Chess (stress-test the sketches — before market, not in it)
 
+**The `idea-chess` skill is the canonical definition of this method — read it and follow its section structure for each sketch's board rather than reinventing the shape here.** This step's job is fan-out and tiering (vision is stress-testing several candidate offerings in one pass, at volume); the board itself — ground truth, ten-tradition council, holes, Monte Carlo, Oregon Trail, bet table — follows `idea-chess`'s structure unchanged.
+
 **Idea Chess is the only name — use it consistently, in every artifact.** No martial/violent framing (retired: "murder board," "kill criterion," "battleship day," "sink the ship"). The vocabulary is chess and games: positions, moves, openings, checkmate, win-rate.
 
 Once sketches exist, try to **challenge** them. The synthesist's move: don't defend the idea, find where the position weakens. This is a gamified stress test — every analytical tradition makes a move against the idea; a required assumption failing is **checkmate**; the Monte Carlo is playing the game out 10,000 times; the survival % is the idea's win-rate against the board. Far cheaper here than in the market. An idea that holds *with its refuting moves named* is worth ten that were never played.
 
-Four composable mechanics — run the relevant ones per sketch:
+**Applying `idea-chess` at vision's scale:**
 
-1. **Council as the opposing side.** Run the 44-voice council (or the most relevant cluster) in *adversarial* mode: every voice states its **refuting evidence** — what would prove the idea wrong — and tries to make that case, not affirm. Adversarial-verify each surviving claim: spawn N skeptics prompted to refute; majority-refute means the position doesn't hold. Contradictions are findings, not noise.
+1. **Section 1 (council pass) as the opposing side, per sketch.** Run `idea-chess`'s ten-tradition panel against each sketch — or, if volume demands it, the most relevant cluster of traditions — in adversarial mode: each lens states its **refuting evidence** and tries to make that case, not affirm. Adversarial-verify surviving claims: spawn N skeptics prompted to refute; majority-refute means the position doesn't hold.
 
-2. **Monte Carlo (how often the position holds, and what breaks it most).** Every sketch is a chain of assumptions, each carrying a likelihood (pull from the Vision Risk Register — the numbers already exist). Model survival as a function of those assumptions, sample across N runs, read two outputs: **P(survives)** and the **sensitivity ranking** — which single assumption fails in the most losing runs. *That ranking is the research priority: test the assumption that breaks the most scenarios first.* Naive floor = multiply the independent required probabilities; the real sim adds partial-survival states and correlations. Report the survival % **with** the independence caveat — a false-precision number is its own hole.
+2. **Section 4 (Monte Carlo) exactly as specified there** — bets pulled from the Vision Risk Register where numbers already exist, `p(true)` as calibrated judgment with one-line reasoning, naive survival grep-verified before it's quoted, sensitivity ranking as the actual output, independence caveat named.
 
-3. **Oregon Trail (where on the path it falls).** Sequence the obstacles in the order they hit on the way to market — build → launch → adopt → defend (competitor ships · P0 study fails · buyer won't pay · Microsoft bundles · moat doesn't hold). Traverse; mark the stage the wagon falls. Same probabilities as the Monte Carlo, but *sequenced*, so you see the failure point, not just the odds.
+3. **Section 5 (Oregon Trail) exactly as specified there** — sequence the obstacles in the order they hit on the way to market for this sketch (competitor ships · P0 study fails · buyer won't pay · Microsoft bundles · moat doesn't hold), phase names chosen to fit the sketch rather than forced to one fixed set.
 
-4. **Tree-test (does the buyer's path reach "yes").** Borrow IA tree-testing: give the buyer a task ("would you buy this / build it yourself / switch to it?") and walk the decision tree of objections. A dead-end in the path is a design hole.
+4. **Tree-test (vision-specific addition, not in the base skill).** Borrow IA tree-testing: give the buyer a task ("would you buy this / build it yourself / switch to it?") and walk the decision tree of objections. A dead-end in the path is a design hole. Fold findings into Section 2 (holes).
 
-**Output per sketch:** a survival % (caveated), the stage it falls, and a **sensitivity-ranked list that *is* the test plan.** Feed it into Step 7 as `[?]` studies with owners. Idea Chess turns a pile of assumptions into a prioritized experiment queue — which is the whole point of doing it before market.
+**Output per sketch:** a full `idea-chess` board (or the survival %, the stage it falls, and the sensitivity-ranked list at minimum, if running the lightweight version at volume). Feed it into Step 7 as `[?]` studies with owners. Idea Chess turns a pile of assumptions into a prioritized experiment queue — which is the whole point of doing it before market.
 
 ## Step 6.75 — Persona-weighted feature matrix (fit, not survival)
 

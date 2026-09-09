@@ -13,6 +13,12 @@ Candidate unmet needs — grounded in real, sourced pressures, but the specific 
 - The three-part framing is Beth's own bar, not derived from a source.
 - **The real gap: we don't know why current customers picked what they picked.** Checked and confirmed absent: council's Jobs-to-Be-Done pass named the switch trigger "unsourced, unproven" [COUNCIL]; the dedicated web-research pass on why MSPs actually leave NinjaOne found only secondhand, low-confidence signal (pricing/support friction), and explicitly found "no source describing a competitor winning switches on a features/AI reason" [A1-JIRA, tagged `[CS: MEDIUM]`/`[CS: LOW]` in that file itself]. Nowhere in the corpus is there real research on *why* an existing N-able customer chose N-able, either — that absence is `[CS: UNKNOWN]`, not just unproven.
 
+**Assumption: We can actually build an AI that does this reliably — before anyone even gets to whether people trust it.**
+Two different bets, easy to run together: *can we make it work* and *will people believe it once it does*. This one is the first, and it's currently the weaker-looking of the two:
+- The AI layer this all depends on — N-zo, and the Coworkers built on it — is itself early: "All encompassing N-zo: In progress," "In-product Coworkers: Green assuming we continue to build out" [DECK-0909, Differentiators table]. "Assuming we continue to build out" is doing real work in that sentence — it's a condition, not a status.
+- The correlation idea (patch + backup + security together) asks the AI to do something harder than any single Coworker function shipped so far — combine three data types and produce a judgment, not just report one number. Nothing in the corpus shows this specific kind of cross-signal reasoning has been attempted yet, successfully or otherwise. `[CS: UNKNOWN]`.
+- The one live data point on reliability in practice isn't encouraging: the Coworkers UI — the closest thing to a working, customer-facing AI surface today — is currently broken [FSN-90125]. That's not proof the underlying AI is unreliable, but it's the only real-world evidence available right now, and it's not good news.
+
 **Assumption: The AI will be reliable enough for people to trust it.**
 The four reliability questions below are `[A]` — my own framing of what "reliable" would need to mean, not a source's language — but each is anchored to a real, sourced gap:
 - Error-tolerance and escalation-when-uncertain: no threshold or standard is named anywhere in Section 04 [DECK-0909].

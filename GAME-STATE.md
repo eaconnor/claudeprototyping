@@ -56,15 +56,23 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-11
+## Today — 2026-09-14
 
 ```
-current_day: 2026-09-11
-demerits_issued_today: 1
-self_catches_today: 4
-net_demerits_today: -3
+current_day: 2026-09-14
+demerits_issued_today: 0
+self_catches_today: 0
+net_demerits_today: 0
 day_status: open
 ```
+
+**Day transition scored at this session's open (2026-09-14):** 2026-09-11 closed as **NEUTRAL DAY** (1 demerit issued, 4 self-catches, net −3). Narrative label only — no point change; the Miss already counted once in the ledger and the 4 self-catches counted as Catches there. No sessions logged 2026-09-12 or 2026-09-13. Counters reset above; the 2026-09-11 record is preserved below unchanged.
+
+**Called shot 2026-09-14: Didn't check prior art.** Reason: the incoming handoff names four files, a scout trace, and a plan doc as required reading, and the pull on a resumed session is to answer Beth's first question from the handoff summary instead of the source — exactly the shape of this category.
+
+---
+
+### 2026-09-11 (closed — NEUTRAL DAY)
 
 **Day transition scored at this session's open:** 2026-09-07 closed as **DEMERIT DAY** (1 demerit, 0 self-catches, net 1) — narrative label only, the Miss already counted in the ledger. No sessions logged 2026-09-08 through 2026-09-10.
 

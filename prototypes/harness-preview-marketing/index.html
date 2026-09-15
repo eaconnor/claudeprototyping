@@ -70,6 +70,20 @@
   .btn-ink:hover{background:#241041}
   .btn-lg{padding:15px 28px;font-size:16px}
 
+  /* Step rail — same idea as harness-laura-salesdemo.html's act-rail ("Act 2 of 8 · Connect
+     integrations"), translated for a single-page scroll instead of a multi-page tour: five
+     sections, current one highlighted as you scroll, click any step to jump. IntersectionObserver
+     drives .active, same pattern already used for the pillar reveal / ledger count-up below. */
+  .steps{position:sticky;top:64px;z-index:49;background:rgba(20,6,40,.97);border-bottom:1px solid rgba(255,255,255,.08)}
+  .steps .wrap{display:flex;align-items:center;gap:0;height:40px;overflow-x:auto}
+  .steps .cur{font-family:var(--font-m);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);font-weight:700;flex:none;margin-right:18px;white-space:nowrap}
+  .steps .step{display:flex;align-items:center;gap:7px;font-family:var(--font-m);font-size:12px;font-weight:600;color:#7d7595;text-decoration:none;padding:0 14px;height:40px;border-bottom:2px solid transparent;white-space:nowrap;transition:.14s}
+  .steps .step .no{width:16px;height:16px;border-radius:50%;border:1px solid #7d7595;display:flex;align-items:center;justify-content:center;font-size:9.5px;flex:none}
+  .steps .step:hover{color:#c9c2da}
+  .steps .step.active{color:#fff;border-bottom-color:var(--cyan)}
+  .steps .step.active .no{background:var(--cyan);border-color:var(--cyan);color:var(--ink)}
+  @media(max-width:760px){.steps .cur{display:none}}
+
   .hero{background:radial-gradient(1200px 620px at 72% -8%,rgba(192,70,255,.28),transparent 60%),
       radial-gradient(900px 520px at 8% 12%,rgba(56,219,255,.18),transparent 58%),var(--ink);
     color:#fff;padding:88px 0 100px;overflow:hidden;position:relative}
@@ -222,23 +236,27 @@
 <nav>
   <div class="wrap">
     <div class="logo"><span class="mk"></span>N-able<span class="sub">Harness</span></div>
-    <div class="links">
-      <a href="#origin">Why "Harness"</a>
-      <a href="#how">How it works</a>
-      <a href="#ledger">Prove it</a>
-      <a href="#coworkers">Coworkers</a>
-      <a href="#trust">Trust</a>
-    </div>
     <div class="spacer"></div>
     <a href="ebr-app.html" class="btn btn-cyan">Start free trial</a>
   </div>
 </nav>
 
+<div class="steps" id="steps">
+  <div class="wrap">
+    <span class="cur" id="steps-cur">STEP 1 OF 5</span>
+    <a class="step" data-step="1" href="#origin"><span class="no">1</span>Why "Harness"</a>
+    <a class="step" data-step="2" href="#how"><span class="no">2</span>How it works</a>
+    <a class="step" data-step="3" href="#ledger"><span class="no">3</span>Prove it</a>
+    <a class="step" data-step="4" href="#coworkers"><span class="no">4</span>Coworkers</a>
+    <a class="step" data-step="5" href="#trust"><span class="no">5</span>Trust</a>
+  </div>
+</div>
+
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow">N-able · Harness</div>
     <h1>Hire the coworker. Keep the judgment.</h1>
-    <p class="lede">Every MSP is about to have AI agents running across their stack — some bought, some built in an afternoon. Almost none of them have a way to govern that. Harness is the control plane: working agents on day one, with the approval model, audit trail and proof of value that make it safe to turn them on.</p>
+    <p class="lede">Every MSP is about to run AI agents across their stack. Almost none can govern them yet. Harness is the control plane that makes it safe to turn them on.</p>
     <div class="cta-row">
       <a href="ebr-app.html" class="btn btn-cyan btn-lg">Start a free trial →</a>
       <a href="ebr-app.html" class="btn btn-ghost-d btn-lg">See it work</a>
@@ -264,13 +282,13 @@
   <div class="wrap">
     <div class="grid">
       <div>
+        <div style="width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;background:#fff;border:1px solid var(--line)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--apex)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
         <div class="kicker">Why it's called Harness</div>
         <h2>We didn't name it. The market did.</h2>
-        <p>"Harness" wasn't a marketing choice. It's the word security leaders were already reaching for — on their own, before we ever said it back to them.</p>
-        <p>That's not a coincidence. It's the whole pitch, in one word — handed to us, not the other way around.</p>
+        <p>"Harness" wasn't our word. It's what security leaders were already calling this — before we ever said it back to them.</p>
       </div>
       <div class="quote">
-        "I'd imagine you're familiar with the term and use case of harnessing. That's how I'd try to leverage pretty much anything — behind that idea, it's just to instill guardrails."
+        "I'd imagine you're familiar with the term and use case of harnessing. Behind that idea, it's just to instill guardrails."
         <span class="attr">— A CISO we interviewed, 17 clients into deciding how far to trust an agent</span>
       </div>
     </div>
@@ -281,25 +299,25 @@
   <div class="wrap">
     <div class="kicker">How it works</div>
     <h2>It learns your process. Not the other way around.</h2>
-    <p class="section-lede">Most tools make you rebuild your workflow to fit the software. A coworker starts from the runbook you already use, reasons with an AI expert scoped to exactly your case, and reaches your stack through a connector you can see and shut off — so day one feels like handing work to someone who already knows how you do it.</p>
+    <p class="section-lede">Most tools make you rebuild your workflow. A coworker starts from the one you already have.</p>
     <div class="pillars">
       <div class="pillar">
         <div class="ic" style="background:#f4edfb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div>
         <div class="n">01 · The Runbook</div>
         <h3>You bring the process</h3>
-        <p>Show it last quarter's report, or start from a template. It reads the structure — your sections, your sources, your grading — and drafts a coworker shaped like your work.</p>
+        <p>Show it last quarter's report. It reads your structure and drafts a coworker shaped like your work.</p>
       </div>
       <div class="pillar">
         <div class="ic" style="background:#f4edfb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4"/></svg></div>
         <div class="n">02 · The Expert + Connector</div>
         <h3>It does the legwork</h3>
-        <p>A focused AI expert works your specific case; a connector you can inspect reaches into your stack and its own. It flags what's a draft and finishes what isn't — before you sit down.</p>
+        <p>An AI expert works your case. A connector you can inspect reaches your stack. Drafts get flagged, not hidden.</p>
       </div>
       <div class="pillar">
         <div class="ic" style="background:#f4edfb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
         <div class="n">03 · The Ledger</div>
         <h3>You stay in charge</h3>
-        <p>It proposes; you decide. Every run writes an immutable record of what it did and what it saved — nothing reaches a client without a name on it, and nothing gets forgotten either.</p>
+        <p>It proposes, you decide. Every run is logged — nothing reaches a client without a name on it.</p>
       </div>
     </div>
   </div>
@@ -315,13 +333,12 @@
       <div>
         <div class="tagpill">★ Most-requested coworker</div>
         <h2>The business review that took a day. Now it takes the drive to the meeting.</h2>
-        <p>Your quarterly review is where retention, pipeline, and cyber-liability cover all live. It's also a manual slog across eight systems that most teams skip when they're busy.</p>
-        <p>The EBR Coworker does the prep the way your best analyst would — then hands you a draft you can stand behind, or correct in minutes. Every run writes to the Value Ledger, so "it saved time" is a number you can show, not a feeling you have to sell.</p>
+        <p>Your quarterly review is where retention and pipeline live — and a manual slog most teams skip when busy. The EBR Coworker does the prep, drafts the story, and logs the time it saved.</p>
         <ul>
-          <li><span class="ck">✓</span> Pulls identity, backup, patching, tickets and training from your stack automatically</li>
-          <li><span class="ck">✓</span> Computes the carry-forward as a real delta — not remembered from last time</li>
-          <li><span class="ck">✓</span> Drafts talking points in the language the business owner actually responds to</li>
-          <li><span class="ck">✓</span> Keeps a signed, dated record of what the client accepted or declined</li>
+          <li><span class="ck">✓</span> Pulls identity, backup, patching, tickets and training automatically</li>
+          <li><span class="ck">✓</span> Computes the carry-forward as a real delta</li>
+          <li><span class="ck">✓</span> Drafts talking points the business owner actually responds to</li>
+          <li><span class="ck">✓</span> Keeps a signed, dated record of what the client accepted</li>
         </ul>
         <a href="ebr-app.html" class="btn btn-ink btn-lg">Build the EBR Coworker →</a>
       </div>
@@ -348,7 +365,7 @@
   <div class="wrap">
     <div class="kicker">The coworker family</div>
     <h2>Start with one. They work together.</h2>
-    <p class="section-lede">Six platform coworkers, ranked by what MSPs actually said they'd pay for. Build one and the others feed it — the EBR Coworker pulls straight from Security Tabletop, Incident Response, and Environment Health.</p>
+    <p class="section-lede">Six coworkers, ranked by what MSPs said they'd pay for. Build one — the others feed it.</p>
     <div class="family-grid">
       <div class="cw you">
         <div class="flag">YOU'RE BUILDING THIS</div>
@@ -389,7 +406,7 @@
   <div class="wrap">
     <div class="kicker">Why you can trust it</div>
     <h2>It tells you what it knows — and what it's guessing.</h2>
-    <p class="section-lede">A coworker that sounds equally sure of everything is one you have to double-check on everything. Harness coworkers grade their own confidence, in words, and hold back what they can't stand behind — the same promotion ladder every MSP we interviewed asked for, in their own words.</p>
+    <p class="section-lede">A coworker that's equally sure of everything is one you have to double-check on everything. Ours grade their own confidence — the same ladder every MSP we interviewed asked for.</p>
     <div class="conf-row">
       <div class="conf measured"><div class="tier">MEASURED</div><p>Pulled straight from a connected source. This is fact, and it says so.</p></div>
       <div class="conf benchmarked"><div class="tier">BENCHMARKED</div><p>Compared against a standard or last quarter. Solid, with a stated basis.</p></div>
@@ -516,6 +533,29 @@ const pillarObs=new IntersectionObserver((entries)=>{
   });
 },{threshold:.3});
 document.querySelectorAll('.pillar').forEach(p=>pillarObs.observe(p));
+
+/* Step rail active-state — Beth's ask: show the steps, act-rail style. Watches the same five
+   sections the rail links to; whichever crosses the mid-viewport line first is "current." Uses
+   rootMargin to bias the trigger line toward the top third of the viewport (matches how a person
+   actually reads "which section am I in" while scrolling, not a literal 50% split). */
+const STEP_IDS=['origin','how','ledger','coworkers','trust'];
+const stepEls=STEP_IDS.map(id=>document.getElementById(id));
+const stepLinks=STEP_IDS.map(id=>document.querySelector(`.step[href="#${id}"]`));
+const stepsCur=document.getElementById('steps-cur');
+function setActiveStep(idx){
+  stepLinks.forEach((l,i)=>l.classList.toggle('active',i===idx));
+  if(stepsCur)stepsCur.textContent=`STEP ${idx+1} OF ${STEP_IDS.length}`;
+}
+const stepObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const idx=stepEls.indexOf(e.target);
+      if(idx>-1)setActiveStep(idx);
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px',threshold:0});
+stepEls.forEach(el=>{if(el)stepObs.observe(el);});
+setActiveStep(0);
 </script>
 </body>
 </html>

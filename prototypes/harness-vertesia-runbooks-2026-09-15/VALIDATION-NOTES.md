@@ -94,6 +94,22 @@ implement.
 - The generic `context.schema` (customer_id/source_results/decisions/errors) stamped across all
   nine skeletons is exactly as thin as it looks — real work per runbook, not attempted here.
 
+## Studio Assistant, tried live — not a viable build path
+
+Attempted 2026-09-15: asked Vertesia's own Studio Assistant (the in-console chat agent, session
+auth, not the blocked API key) to create and publish the QBR Advisor process from
+[08-qbr-advisor.md](08-qbr-advisor.md)'s skeleton. Required picking an Environment ("Google") and
+Model ("Global claude-sonnet-4-6") before it would even start. Ran 6m42s showing only decorative
+rotating status text ("Charting the course to answers...," "Baking fresh ideas...") with no visible
+progress trace — no partial process, no error, nothing in Processes → Configuration the entire
+time. Killed manually; confirmed nothing was created.
+
+**Conclusion: hand-writing the JSON directly into Studio's Code tab (the method that actually built
+and published Biscuit Tin Check in seconds once the syntax was right) is the proven path. The
+Assistant is not, at least for this kind of request.** Next session: build QBR Advisor the same way
+— paste/`setValue` the skeleton into the Code tab, Save, Publish, Run, verify via Task Inbox +
+`GET /agents?run_id=...`, same discipline as the original spike.
+
 ## One naming decision made during the split, not in the source doc
 
 The source document is HARNESS-wide (nine coworkers spanning every MSP function), not

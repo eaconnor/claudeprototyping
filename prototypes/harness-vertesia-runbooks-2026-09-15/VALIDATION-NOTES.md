@@ -116,3 +116,66 @@ The source document is HARNESS-wide (nine coworkers spanning every MSP function)
 Technica-specific — it does not belong inside `prototypes/ebr-coworker-005-arc/md-coworker/`, which
 is scoped to one customer (Technica) per that folder's own README. Split into a new sibling folder,
 `prototypes/harness-vertesia-runbooks-2026-09-15/`, instead.
+
+## QBR Advisor — hand-built and run, 2026-09-16: pipeline proven, tool/agent bodies fail as warned
+
+Per the prior session's plan ("Next session: build QBR Advisor the same way"), built
+[08-qbr-advisor.md](08-qbr-advisor.md)'s skeleton directly in Studio's Code tab (session auth, not
+API key — still blocked, confirmed again this session for both `POST` and `PUT /processes/{id}`,
+both 503 "Invalid JWT" under the developer-role key). Process id `6aaa63be04c219d0fa59b4fb`,
+published as version 1.
+
+**New Code-tab editing bug found and worked around.** `window.monaco.editor.getModels()[0].setValue(...)`
+sets the visible buffer but does not reliably flip the app's own dirty-state that the Save button's
+click handler reads — Save either submitted the *previous* edit (one-edit lag) or silently no-opped
+(confirmed via `GET /processes/{id}` showing `updated_at` unchanged). **Fix:** after `setValue()`,
+click into the editor, press End, type a space, press Backspace (forces a real onChange), wait ~3s,
+then click Save via a freshly re-found ref. Standard technique for any future process edit here.
+
+**Real discovery: `tool`/`agent` node placeholders need more than a name string.**
+- `type:"tool"` nodes need a *registered* tool name — confirmed via a live 400
+  ("tool node references unknown tool") the first time a placeholder tool name was used. Fixed by
+  binding to real builtin tools discovered via `GET /tools` (209 registered, no connector needed):
+  `data_query` for the two read nodes, `data_mutate_rows` for the write node. This closes a real gap
+  in every runbook in this set — Data Store reads/writes can bind to real tools today, not just
+  "design proposals."
+- **But a registered tool name alone is not enough to run.** Publishing succeeded and a real run
+  started (`GET /agents` confirms a `qbr_advisor` run, `customer_id: "fenwick-logistics"` correctly
+  captured in `process_state.context` — the Start dialog's input form worked exactly as designed).
+  The run then failed at the very first node, `load_reviewed_state` (`tool: data_query`), with a
+  generic `Activity task failed` error (confirmed via the Observability tab's Tool Call detail — the
+  Process tab's own "running"/"error" status badges never updated after the failure and stayed stale
+  through a manual Refresh; Observability was the only reliable place to see the real per-node
+  outcome, a second UI-staleness bug on top of the earlier "Open Tasks counter reads 0" one).
+  The node definition (checked via its own YAML tab) has no query/table/params field at all —
+  `data_query` was called with nothing to query. **This confirms, empirically rather than by caveat,
+  that a `tool` node needs real call parameters bound in the node body, and this session did not
+  find where that field lives** (`/tools` lists tool names only, no per-tool input schema; no
+  `/tools/{name}` or `/openapi.json` endpoint was reachable to check `NodeDefinition`'s param field
+  name). Per this project's own rule, not fixed by guessing — carried forward as `⟨VERIFY⟩`.
+- **`agent: "grading-proposer"` on the `translate`/`recommend` nodes is also unverified — and now
+  confirmed almost certainly wrong.** `GET /interactions` on this project returns `[]` — no
+  Interaction is registered under that name or any other. The run never reached these nodes (it
+  failed earlier), so this hasn't thrown its own error yet, but there is currently nothing in this
+  project for an `agent` field to resolve to. Same class of problem as the `tool` field's first
+  failure, not yet hit.
+
+**What this run genuinely proved, independent of the two failures above:**
+1. Hand-editing the Code tab, Save, Publish is a real, repeatable path to a live process (second
+   confirmation, after Biscuit Tin Check).
+2. The Start dialog correctly reads `context.schema` and produces real input fields; the submitted
+   value is correctly written into `process_state.context` before the first node runs.
+3. The Observability tab (Run Hierarchy → tool call row) is the trustworthy place to see a real
+   per-node failure and its raw error — more trustworthy than the Process tab's status badges, which
+   went stale on this run the same way the Process detail page's "Open Tasks" counter did on Biscuit
+   Tin Check. Use Observability first for any future run diagnosis.
+4. The in-console "Explain" feature (AI-generated failure explanation) does not work in this project
+   yet — it 400'd with `For in-code interactions, environment must be specified`, an unrelated config
+   gap, not a lead worth chasing further today.
+
+**Not yet re-attempted:** fixing `load_reviewed_state`/`continuity`/`publish` with real query
+parameters, or replacing `grading-proposer` with a real Interaction, then re-running to reach
+`chooser` and mirror Biscuit Tin Check's full pause/answer/resume/publish verification. Both fixes
+need a real answer to "what does a `tool` node's call-parameter field look like" and "what registers
+an `agent` name" — neither resolved this session. Worth a support question or a direct read of
+Vertesia's process-node docs before the next attempt, rather than guessing the field name.

@@ -56,19 +56,21 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-14
+## Today — 2026-09-16
 
 ```
-current_day: 2026-09-14
+current_day: 2026-09-16
 demerits_issued_today: 0
 self_catches_today: 0
 net_demerits_today: 0
 day_status: open
 ```
 
-**Day transition scored at this session's open (2026-09-14):** 2026-09-11 closed as **NEUTRAL DAY** (1 demerit issued, 4 self-catches, net −3). Narrative label only — no point change; the Miss already counted once in the ledger and the 4 self-catches counted as Catches there. No sessions logged 2026-09-12 or 2026-09-13. Counters reset above; the 2026-09-11 record is preserved below unchanged.
+**Day transition scored at this session's open (2026-09-16):** 2026-09-14 closed as **POINT DAY** (0 demerits, 0 self-catches, net 0). Under the reconciled house rule (§ Points, resolved 2026-08-21) this is a narrative label only — no point added; the old "+1 clean day" bonus is retired. **Gap flagged, not resolved:** `current_day` was left at 2026-09-14 with `day_status: open` — that session never ran `game-close`. Git history shows auto-commits on 2026-09-15 (multiple), meaning work happened that day, but no session on 2026-09-15 is narrated anywhere in this file — [CS: UNKNOWN] whether `listening-game`/`game-close` ran during it or it bypassed the ritual entirely (the latter would be a repeat of the 2026-08-21 "never invoked at session open" item under Unresolved, below). Not asserting either way. Counters reset above.
 
-**Called shot 2026-09-14: Didn't check prior art.** Reason: the incoming handoff names four files, a scout trace, and a plan doc as required reading, and the pull on a resumed session is to answer Beth's first question from the handoff summary instead of the source — exactly the shape of this category.
+**Called shot 2026-09-14 — unresolved, not scored.** No Miss or Catch was narrated against "Didn't check prior art" before the day closed open. Carrying no verdict forward.
+
+**Called shot 2026-09-16: Verification discipline · misread own evidence.** Reason: the queued work (`check-drift.sh` — FRESH/STALE/CONFLICT hash comparison against a MANIFEST; `check-skills.sh` — registry resolution) is exactly the shape that produced three prior Misses in this category — a computed-looking result (hash match, resolved/unresolved skill name) asserted without the comparison actually having run.
 
 ---
 

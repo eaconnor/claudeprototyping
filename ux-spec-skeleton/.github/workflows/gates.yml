@@ -1,0 +1,49 @@
+name: gates
+
+# Implements the policy in EXIT-CODES.md:
+#   FLOOR (can harm a user) -> fail the build
+#   FIT   (everything else) -> report, do not block
+#
+# The split is the reason engineering can live with this. A gate that blocks a
+# merge over unfinished polish gets switched off within a fortnight, and then the
+# accessibility gate goes with it.
+
+on: [push, pull_request]
+
+jobs:
+  floor:
+    name: FLOOR — blocks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: never events
+        run: ./check-never.sh            # exit 20 — stop and investigate
+      - name: waived never events
+        run: ./check-waivers.sh          # exit 15 — that is an incident, not a waiver
+      - name: engineering floor
+        run: ./check-eng.sh              # exit 10 — the build can harm a user
+      - name: skill registry resolves
+        run: ./check-skills.sh           # exit 21 — a registered capability does not exist
+      - name: source drift
+        run: ./check-drift.sh            # exit 19 CONFLICT · exit 22 misdeclared
+      - name: value register is honest
+        run: ./check-value.sh            # exit 13 — a register with no costs is a case study
+
+  fit:
+    name: FIT — reports, never blocks
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: gate criteria
+        run: ./check-gates.sh || echo "::warning::gates red — expected on honest work in progress"
+      - name: human decisions outstanding
+        run: ./check-blocked.sh || echo "::warning::a HUMAN row stands — someone owes a decision"
+      - name: criterion traces
+        run: ./check-trace.sh || echo "::warning::trace problem or no intent spec"
+      - name: design system
+        run: python3 scripts/check-design.py || echo "::warning::design-system finding"
+      - name: signature tiering
+        run: python3 scripts/check-tier.py || echo "::warning::tiering integrity — see exit 17"
+      - name: conformance report
+        run: python3 scripts/ux-score.py

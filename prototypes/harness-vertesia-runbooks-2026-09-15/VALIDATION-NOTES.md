@@ -179,3 +179,94 @@ parameters, or replacing `grading-proposer` with a real Interaction, then re-run
 need a real answer to "what does a `tool` node's call-parameter field look like" and "what registers
 an `agent` name" — neither resolved this session. Worth a support question or a direct read of
 Vertesia's process-node docs before the next attempt, rather than guessing the field name.
+
+## QBR Advisor v2 — real docs found, real rebuild, real new blocker (2026-09-16, later same day)
+
+Found `docs.vertesiahq.com` has actual process-authoring reference pages (Node types, Agent nodes,
+Tools Reference, Tutorial: Contract Review, The Process Model) — not just marketing copy. Direct
+navigation works (`https://docs.vertesiahq.com/processes/node-types` etc.); the in-page search
+widget is unreliable for scripted use (stale/concatenating input) but `cmd+k` search followed by
+reading the result list works when the direct URL isn't known.
+
+**What the docs corrected, all now applied and published as QBR Advisor version 2
+(`6aaa70ef0393dc7ee47c28f4`):**
+- `agent` nodes do **not** take an `agent: "<name>"` field — there is no agent registry. The real
+  shape is `prompt` (inline, `{{var}}`-templated against context), optional `tools: [...]` (real
+  builtin tool names), and `writes: [...]` (must be a subset of `context.schema.properties`, and the
+  engine derives a strict `result_schema` from exactly those fields — `additionalProperties: false`).
+  This retires the `grading-proposer` non-existent-agent concern from the previous entry: the field
+  itself was wrong, not just the value.
+- `type: "branch"` and `type: "condition"` are **both real but semantically different** — this
+  session's earlier "branch fix" (VALIDATION-NOTES's fix #1, from the Copilot document) used the
+  right `branches: [{to, when, default}]` *field shape* but the wrong *type name*. `condition` is
+  pure if/else routing (exactly what `value_frame` needed). `branch` is BPMN-style structured
+  parallel split/join — a fixed named set of child subprocesses launched together and joined,
+  completely unrelated to conditional routing. Every `type:"branch"`-as-if-else node across all nine
+  harness runbooks (not just QBR Advisor) has this same mislabel and needs the same `branch`→
+  `condition` rename — **not yet done in the other 8 files**, flagged as a follow-up below.
+- The original `type:"tool"` + `tool: data_query` placeholders (no query params at all) were the
+  root cause of QBR Advisor v1's first failed run: `type:"tool"` nodes need a real `config` object
+  (`config.context_update` for a literal write) — and, contrary to the docs' own canonical
+  `auto_approve` example, **this deployment's validator
+  rejects a `type:"tool"` node with no `tool` field at all**, even when only `config.context_update`
+  is used (confirmed via a live 400: `"tool node \"publish\" is missing tool"`). Docs vs. this
+  deployment disagree here; trust the deployment. Worked around by moving `publish` to `type:"agent"`
+  instead of chasing the exact tool-node contract further.
+- The Tools Reference page gave `data_query`'s real parameters (`store_id`, `sql`, `params`, `limit`)
+  — confirmed `data_mutate_rows` (used in the first QBR Advisor build) **is not in this reference at
+  all**, unlike `data_query`/`data_import`/`data_create_tables`/etc. Its earlier "confirmed real
+  tool" status rests only on appearing in the `/tools` name list, not on any documented parameter
+  schema — downgrade that specific tool's confidence; prefer `data_import`/`data_query` until
+  `data_mutate_rows` is seen working.
+
+**New platform bug found while re-testing the fix: editing a *published* process's Code tab silently
+forks a new draft under a different process id, and the Save success toast does not say so.**
+First re-save attempt (fixing `translate`/`recommend`/`value_frame`) returned "Process updated" and
+looked identical to Biscuit Tin Check's proven Save flow — but `GET /processes/{original_id}`
+afterward still showed the untouched original definition. The real edit had landed on a sibling
+draft id (`6aaa70ef0393dc7ee47c28f4`), only surfaced when a second Save attempt on the *original* id
+400'd with the actually-informative message: `"Process definition 6aaa63be...4fb is not the latest
+draft. Update draft 6aaa70ef...28f4 instead."` Editing a process that's already published creates a
+new draft revision rather than editing in place — the Code tab gives no visible signal of this. Fix
+for future edits: after any Save on a published process, re-fetch by the id the error/response
+implies, not the id in the URL bar, and treat a bare "Process updated" toast as unverified until
+confirmed by `GET` on the right id. Published the correct draft (`6aaa70ef...28f4`) as version 2 —
+confirmed via `GET` showing `agent`/`agent`/`human_task`/`agent`/`agent`/`condition`/`human_task`/
+`agent`/`final` node types, matching the intended fix exactly.
+
+**New run, same real blocker: every `agent`-type node fails immediately, every time.** Started two
+fresh runs against version 2 (`6aaa718a...28f5`, then `6aaa72c1...b4fd`), both with
+`customer_id: "fenwick-logistics"` correctly captured in context (Start dialog + context write still
+proven solid). Both failed at `load_reviewed_state` — the very first node, now `type:"agent"` — in
+~1 second, both times, with the same generic `{"error":"Child Workflow execution failed"}` at the
+`sys:ProcessAgentNode` child-run layer (visible via Observability → Run Hierarchy, not the Process
+tab's status badges, which again stayed stuck on stale "running"/"error" through a manual Refresh —
+third occurrence of that exact UI bug this project). A same-input retry ruled out a transient
+one-off. **Leading hypothesis, not fully confirmed:** this project's "in-code interactions" (ad-hoc,
+dynamically-defined prompts — which is exactly what an `agent` node's inline `prompt` is, as opposed
+to a pre-registered Studio Interaction) require an explicit environment/model that isn't resolved
+from the project's own configured default. Support for this: the in-console "Explain" feature threw
+the literal error `"For in-code interactions, environment must be specified"` earlier this session,
+and Studio Assistant separately refused to start without an explicit Environment+Model pick — a
+consistent pattern of ad-hoc LLM calls in this project needing an explicit environment where
+pre-registered ones don't. Against this: the Agent nodes and Process Model doc pages describe no
+`environment`/`model` field on an agent node at all, and this project does have one environment
+("Google") configured with a default model — so per the documented contract this should just work.
+**Not resolved — 1-second immediate failure is consistent with a fast validation-style rejection
+rather than an actual failed LLM call, which supports the hypothesis, but nothing in the UI or API
+surfaced the underlying string to confirm it.** `⟨VERIFY⟩` Worth a direct support question to
+Vertesia: "does an `agent`-type process node need an explicit environment/model field, and if so
+what's the JSON key?" — this is the one concrete blocking question standing between this rebuild and
+a full `chooser`→`sign_off`→`done` run.
+
+**Net position on "does the hand-build pipeline work":** yes, more thoroughly than before — Code tab
+edit-and-publish (with the new "which id am I actually editing" caveat), Start dialog input capture,
+and Observability-based failure diagnosis are all now proven across two different processes and two
+different kinds of failure. What's still unproven is getting *any* `agent`-type node to actually
+complete in this project — that's now the single named blocker, not a vague "tool bindings are
+placeholders" caveat.
+
+**Follow-up still open:** rename `type:"branch"`-as-if-else to `type:"condition"` across all nine
+runbook files in this folder (currently only fixed in QBR Advisor's live Vertesia build, not in the
+markdown files) — the `branches` field shape Copilot used was right, the type name was wrong, and
+this affects every runbook that has a routing/gate step, not just QBR Advisor's `value_frame`.

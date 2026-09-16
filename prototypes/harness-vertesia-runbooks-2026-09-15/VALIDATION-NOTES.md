@@ -270,3 +270,78 @@ placeholders" caveat.
 runbook files in this folder (currently only fixed in QBR Advisor's live Vertesia build, not in the
 markdown files) — the `branches` field shape Copilot used was right, the type name was wrong, and
 this affects every runbook that has a routing/gate step, not just QBR Advisor's `value_frame`.
+
+## The "environment must be specified" blocker — root cause confirmed, no fix found in-schema (same day, continued)
+
+Beth asked to actually find the root cause and retailor the JSON to name the environment/model
+explicitly, rather than leave it as a hypothesis. Pulled the *real* OpenAPI spec this time — the
+docs site has a working "Download OpenAPI Document" link (`https://docs.vertesiahq.com/api-specs/
+vertesia`, 968KB, v1.4.0) that a plain `curl` can fetch — no auth needed, and it's the actual
+schema, not the prose docs' paraphrase of it.
+
+**`NodeDefinition` really does have a `model` field** (confirmed via the schema, not the prose):
+`"model": { "type": "string", "description": "Model id override for this node. If unset, falls back
+to the process run's `config.model`, then to the project's default." }`. `ProcessDefinitionBody` has
+the same `model` field at the top level. **Set both** — process-level `model` and every agent node's
+`model` — to this project's one real, enabled model id (`GET /environments` confirmed it:
+`locations/global/publishers/anthropic/models/claude-sonnet-4-6`, environment id
+`6a3563634e91fba9048a3065`, the same environment id Studio Assistant used successfully earlier this
+session). Republished as version 3. **Reran — identical failure, identical error, down to the exact
+same generic `Child Workflow execution failed` message.** `model` alone did not fix it.
+
+**Found the actual raw error text, via a UI surface not touched before: Studio's own
+`/store/executions` page** — the native Temporal workflow-execution list (`ExecuteProcessWorkflow` /
+`ExecuteConversationWorkflow` rows, each with a real activity-level History tab). This is a more
+authoritative source than the Process/Observability tabs used earlier — it shows the actual failed
+Temporal *activity* (`startConversation`) and its real thrown error, not a wrapper's generic
+re-throw. The real error, unchanged across every attempt:
+
+```
+Interaction Execution failed sys:ProcessAgentNode: Bad Request: 400 - For in-code interactions,
+environment must be specified
+Request: POST https://api.us1.vertesia.io/api/v1/execute => 400
+```
+
+This is the exact same string the in-console "Explain" feature threw earlier this session — now
+confirmed to be the same underlying failure, not a coincidence of similar wording.
+
+**Checked whether `environment` can be supplied anywhere in the documented schema — it cannot,
+in four separate places checked directly against the real OpenAPI spec:**
+1. `NodeDefinition` — only `model` (string) and `config` (free `additionalProperties:true` object).
+   Tried routing environment through `config: {environment: "6a35...", model: "..."}` on every agent
+   node, matching `InteractionExecutionConfiguration`'s real shape (`id, environment, model,
+   do_validate, run_data, configMode, model_options, http_timeout` — confirmed via schema, this is
+   the object the error's own "environment must be specified" check almost certainly validates).
+   Republished as version 4, reran. **Identical error, near-identical activity timing (292ms vs
+   336ms) — `config.environment` on the node is not being forwarded into the `/execute` call at
+   all.** `NodeDefinition.config`'s free-form object is not a routing path to this check, at least
+   not for `type:"agent"` nodes — its only confirmed real use remains the `type:"tool"` +
+   `context_update` pattern from the docs' own `auto_approve` example.
+2. `ProcessDefinitionBody` (top-level) — only `model`, no `environment`, `additionalProperties:
+   false`.
+3. `ProcessRunConfig` (the object under `config.model` that `NodeDefinition.model`'s own docstring
+   points to as the run-level fallback) — only `model` and `user_message` and a workstream-monitor
+   sub-object. `additionalProperties: false`. No `environment` field, confirmed by direct schema
+   read, not inference.
+4. `Interaction`/`InteractionCreatePayload` — these DO have `environment`, but that's the schema for
+   a *persisted, registered* Interaction object (Studio's own "Calls"/Interactions resource, `GET
+   /interactions` — confirmed earlier this session to return `[]`, nothing registered). The error
+   text's own phrase — "for **in-code** interactions" — is very likely drawing exactly this
+   distinction: `sys:ProcessAgentNode` dispatches the agent node's inline `prompt` as an ephemeral,
+   not-persisted ("in-code") interaction built on the fly, which this deployment's `/execute`
+   validation refuses unless an environment is attached to *that specific ephemeral call* — and
+   nothing in `NodeDefinition`, `ProcessDefinitionBody`, or `ProcessRunConfig` is threaded into it.
+
+**Conclusion: this is very likely a genuine platform gap, not an authoring mistake.** Every
+documented and schema-confirmed lever for supplying a model/environment to a process node has now
+been tried and had zero effect on this specific error. The fix, if one exists, is not discoverable
+from the client side — either Vertesia's backend needs to resolve the project's environment default
+for `sys:ProcessAgentNode` calls (a bug, since a default environment demonstrably exists and is used
+successfully by Studio Assistant and dashboard-building tool calls elsewhere in this same project),
+or there's an undocumented mechanism (a project-level setting, a feature flag) that isn't reachable
+via the process-definition JSON or the OpenAPI schema as published. **Recommended next step: file
+this exact reproduction with Vertesia support/engineering** — process id `6aaa75fa04c219d0fa59b500`
+(version 4), run id `6aaa7637050a8b507a3043ab`, the exact error string above, and the four
+schema-confirmed non-fixes tried — rather than continue guessing client-side. Everything else about
+this build (Code-tab edit/publish, Start-dialog input capture, condition/tool/human_task nodes) is
+proven solid; this one interaction-dispatch path is the sole remaining blocker on reaching `chooser`.

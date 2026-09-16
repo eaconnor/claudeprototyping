@@ -49,6 +49,17 @@
 #    18   STALE — at least one source has moved since it was registered
 #    19   CONFLICT — a source is missing or unregistered, or staleness landed under
 #         ticked criteria. Blocks.
+# PRECEDENCE, AND WHY IT IS THE POINT: 22 outranks 19 outranks 18. So declaring
+# `drift: STALE` honestly when sources are stale exits 18 and only WARNS, while
+# declaring FRESH in the same situation exits 22 and FAILS THE BUILD. The ordering
+# is an incentive gradient: telling the truth about your own staleness is
+# mechanically cheaper than being optimistic about it. That is deliberate, and it
+# is the only part of this script that changes behaviour rather than detecting it.
+#
+# Consequence worth knowing: while every file ships declaring `drift: FRESH`, most
+# real degradation surfaces as 22 rather than 18/19. Codes 18 and 19 appear once a
+# file declares its staleness honestly, or when `drift:` is absent.
+#
 #    22   DRIFT MISDECLARED — `drift:` claims a state better than the computed one.
 #         The file is wrong about itself. Fix the field, not the script.
 #

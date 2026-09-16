@@ -1,83 +1,131 @@
-# Spec-driven design with gates that actually fire
+# UX in spec-driven design — a skeleton to clone
 
-A working template for wiring **design and research judgement into a spec-kit project** so it survives contact with an engineering workflow. Nine scripts, five registers, one config file.
+A working repo for wiring design and research judgment into a spec-kit engineering
+workflow, so it survives contact with how software actually gets built.
 
-This repo is the **template**. The worked example — a full pipeline run with red gates, real evidence and real defects — is [test-repo-doodle-journal](https://github.com/eaconnor/test-repo-doodle-journal).
+**14 scripts · 5 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
+Start at [`QUICKSTART.md`](QUICKSTART.md).
 
 ## The finding this is built on
 
-A gate written in prose does not fire.
+**A gate written in prose does not fire.**
 
-That is not a hunch. A controlled test ran **12 fresh agents on 6 trap tasks** — half with the 866-line gate documents present, half with them deleted. **Six of six pairs tied.** Not one agent cited either document. One agent put an emoji in the markup while holding the file that bans emoji; another built a confirmation dialog while holding the section stating that discard must never be confirmed.
+That is not a hunch. A controlled test ran **12 fresh agents on 6 trap tasks** — half with
+866 lines of gate documentation present, half with it deleted. **Six of six pairs tied.**
+Not one agent cited either document. One put an emoji in the markup while holding the file
+that bans emoji; another built a confirmation dialog while holding the section stating that
+discard must never be confirmed. `[CS: VERIFIED]`
 
-The same rules, moved into scripts, then found: 10 live accessibility violations in a build two critic passes had cleared, 5 requirements tracing to no stated intent, 2 gate boxes ticked while false, a cited claim contradicted by its own primary source, and a sequencing error in the register itself.
+The same rules, moved into scripts, then found: 10 live accessibility violations in a build
+two review passes had cleared, 5 requirements tracing to no stated intent, 2 gate boxes
+ticked while false, a cited claim contradicted by its own primary source.
 
 **Rules belong in the execution path. Everything else is a reading assignment nobody does.**
 
-## Setup
+## What is here
 
-```bash
-cp project.conf.example project.conf   # or edit project.conf directly
-```
+Three files hold the standard. Each ends in acceptance criteria a script reads.
 
-`project.conf` is the only project-specific file. Design tokens are read from your build's own `:root` block — **there is no palette hardcoded in any script**, so this works with Apex or any other design system. Hazards come from `HAZARDS.md`, criteria from the gate files, the accountable owner from the config.
+| file | question | owner |
+|---|---|---|
+| `ux.md` | Do we understand the problem and the people? | design + research |
+| `vision.md` | Are we building the right thing? | product, design-led |
+| `design.md` | Are we building the thing right? | engineering |
 
-```bash
-./check-gates.sh && ./check-eng.sh && python3 scripts/check-risk.py internal-demo
-```
+Five registers hold what is unresolved. They are **data, not prose** — each is parsed.
+
+| file | holds | script |
+|---|---|---|
+| `OPEN.md` | open questions, typed `HUMAN` / `RESEARCH` / `ACCEPTED` | `check-blocked.sh` |
+| `HAZARDS.md` | what goes wrong, to whom, how badly, per destination | `check-risk.py` |
+| `VALUE.md` | what design and research changed — **with the costs** | `check-value.sh` |
+| `WAIVERS.md` | every gate someone went around, and what it cost | `check-waivers.sh` |
+| `MANIFEST.md` | every source a gate file was built from, and its hash | `check-drift.sh` |
+
+Four files hold the human process, because none of the above tells a person what to do.
+
+| file | answers |
+|---|---|
+| `ROLES.md` | who owns which gate |
+| `RITUALS.md` | the four moments a person has to be in the room |
+| `SIGNOFF.md` | who signs — **by consequence, not by rank** |
+| `WHAT-ONLY-HUMANS-DO.md` | what the automation structurally cannot do |
+| `CONTRIBUTE.md` | the front door for anyone with customer contact |
 
 ## The scripts
+
+Each exits with a **distinct code per kind of problem** — never a bare pass/fail. A single
+pass/fail collapses "a box is unticked" and "this build can hurt someone" into one number
+and loses the only information that tells you what to do next. Full contract:
+[`EXIT-CODES.md`](EXIT-CODES.md).
 
 | script | question | exit |
 |---|---|---|
 | `./check-gates.sh` | are the gate boxes ticked? | 1 open · **fails on zero parsable criteria** |
-| `./check-blocked.sh` | are we waiting on a *person*? | 2 if a HUMAN row stands |
-| `./check-trace.sh` | have criteria drifted from what they claim to enforce? | 4 broken trace · 5 no intent spec |
-| `scripts/check-design.py` | does the **build** obey the design system? | 6 violation · 7 unresolved · 5 no build |
-| `scripts/check-risk.py <dest>` | risk of shipping **to a named destination**? | 9 ship-blocking · 2 no destination given |
-| `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · **12 unevaluated** |
+| `./check-blocked.sh` | are we waiting on a *person*? | 2 a `HUMAN` row stands · 3 register broken |
+| `./check-trace.sh` | have criteria drifted from what they enforce? | 4 broken trace · 5 no intent spec |
+| `./check-drift.sh` | are the **sources** still what we built on? | 18 stale · 19 conflict · **22 `drift:` misdeclared** |
+| `./check-skills.sh` | does every registered capability **exist**? | 21 unresolved name |
+| `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated |
 | `./check-never.sh` | has something happened that never should? | 20 — stop and investigate, do not score |
-| `./check-value.sh` | is the contribution register honest? | 13 if it records no costs |
-| `./check-waivers.sh` | are the gates worth obeying? | 15 never event waived · 16 undeclared bypass |
-| `scripts/check-tier.py` | who signs to proceed? | 17 if the tiering is a bottleneck |
-| `scripts/ux-score.py` | conformance baseline, ceiling, work list | 0 — reports, never blocks |
+| `./check-value.sh` | is the value register honest? | 13 if it records no costs |
+| `./check-waivers.sh` | are the gates worth obeying? | 15 a never event was waived · 16 malformed |
+| `scripts/check-design.py` | does the build obey the design system? | 6 violation · 7 unresolved · 5 no build |
+| `scripts/check-risk.py <dest>` | risk of shipping **to a named destination**? | 9 ship-blocking · 2 no destination |
+| `scripts/check-tier.py` | who has to sign? | 17 the tiering is a bottleneck |
+| `scripts/ux-score.py` | conformance baseline and work list | 0 — reports, never blocks |
+| `scripts/contrast.py` | computes the WCAG table | 0 — so ratios are reproducible, not asserted |
 
-**Every exit code is distinct on purpose.** A single pass/fail collapses "a box is unticked", "a person owes us an answer", "a criterion points at nothing" and "this build can hurt someone" into one number, losing the only information that tells you what to do next.
+## Three design decisions worth knowing before you change anything
 
-**Zero findings is never a pass.** Three scripts fail when they can parse nothing, because "I found nothing" must never render as "nothing is wrong". That false green is the failure this repo documents — and it happened twice while building it.
+**Zero findings is never a pass.** Every script fails rather than reporting "nothing found"
+when it could not parse anything. Three of the first nine scripts written here shipped with
+that bug and all three were real. "No violations found" and "no violations looked for"
+print almost identically, and that is the single most common way this apparatus gets
+defeated.
 
-## Gates do not block work
+**FLOOR is never gated on problem validation.** Accessibility, data integrity, lawfulness
+and security hold whether or not the concept is right — you do not wait for a reaction test
+to label a form field. Everything else waits. Eng gets a hard CI failure on FLOOR and a
+visible warning on the rest. "Don't build until Gate 1 passes" is right for polish and
+dangerously wrong for harm.
 
-Engineering and design must be able to work on other things while research runs. A gate that idles people for six weeks gets removed, deservedly. So:
+**Gates block artifacts, not people.** A pending signature never idles an engineer; what
+waits is the specific risky action. Waivers are a feature — `check-waivers.sh` computes what
+share of bypasses turned out costly versus vindicated, and **that number is the only
+evidence anyone has about whether these gates are worth their overhead.** At 30% or less
+costly, loosen them.
 
-- **Gate 3 splits into FLOOR and FIT.** FLOOR — accessibility, data integrity, lawfulness, security — is never gated on problem validation. You do not wait for a reaction test to label a form field. FIT is polish that only pays off if the concept survives. `check-eng.sh` separates them; only FIT waits.
-- **Anything can be bypassed, nothing silently.** `WAIVERS.md` records who proceeded, past what, and the **predicted** cost if wrong — settled later against the actual. `VINDICATED` waivers are evidence a gate is too strict; `COSTLY` ones are evidence it was right. A gate whose authority comes from evidence outranks one whose authority comes from policy.
-- **Signatures are tiered by consequence, not rank.** T0 self-serve → T1 a peer → T2 the accountable owner (a user bears it) → T3 owner + risk function (the company bears it) → T4 nobody, it is an incident. Escalating by rank is what makes sign-off hated; escalating by who gets hurt is defensible.
-- **Non-blocking is about people, not actions.** A pending signature never idles anyone. What waits is the risky action, or shipping it to that destination.
+## Every frontmatter field says who reads it
 
-## The registers
+The merged schema (v1.1) annotates every field with either the script that reads it or the
+word `documentary`. Schema v1.0 had 22 fields and **not one was read by any script** — a
+constitution nothing executed. A reader could not tell an enforced field from decoration,
+which is the same false-green problem one level up. If you add a field, write the reader or
+mark it documentary.
 
-| file | holds | integrity rule |
-|---|---|---|
-| `OPEN.md` | every unresolved thing, typed `HUMAN` / `RESEARCH` / `ACCEPTED` | `blocks` means "cannot be settled until you decide", never "is relevant to" |
-| `HAZARDS.md` | what goes wrong, to whom, per destination | every row names a real source; criticals never average away |
-| `VALUE.md` | what research and design actually contributed | **fails if it records no costs** — a register of only wins is a case study |
-| `WAIVERS.md` | who bypassed what, and what it cost | every waiver names the risk it accepted |
-| `instruments/` | the protocols that would settle the human-gated criteria | thresholds declared **before** any data exists |
+## What this cannot do
 
-The `HUMAN` / `RESEARCH` distinction is load-bearing: a `HUMAN` row is a decision no amount of research resolves, and an agent that guesses past one has made the exact error the register exists to prevent.
+These scripts check that a box is ticked. **They cannot check that the claim written next
+to it is true.** Only a person reading the evidence can do that — `RITUALS.md` §2 step 4 is
+where that happens, and it only samples.
 
-## Known rough edges in this repo
+So this is not a system that makes design rigorous. It is a system that makes the *absence*
+of rigour visible, and stops "nobody checked" from printing the same way as "someone checked
+and it was fine." That is the whole value. Everything else is plumbing in service of it.
 
-Recorded rather than hidden, and each has an `OPEN.md` row:
+## Gate state on a fresh clone
 
-- `spec.md` is hand-written as *What / Why / Open Questions* — a shape no `/speckit-*` command recognises (H-01)
-- `plan.md` and `tasks.md` are stubs of the kind `/speckit-plan` generates (H-01)
-- There is **no intent spec**, so `check-trace.sh` exits 5 and no `traces_to:` can be validated (H-02)
-- All 10 criteria here are ticked, so `check-gates.sh` exits 0. A template whose gates are green teaches nothing about red ones — see the worked example for that (H-03)
-- There is no build, so `check-design.py` exits 5 and `check-eng.sh` exits **12 — unevaluated, not passing** (A-01)
-- Criteria here are settled by reading, not by a command, so `check-eng.sh` EG-4 correctly reports a low executable count
+Red, on purpose. `./check-gates.sh` exits 1 — **22 criteria, none ticked.**
+`./check-blocked.sh` exits 2 on three real setup decisions. `scripts/check-design.py` exits
+5 because there is no build yet. Nothing here is ticked to make a script quiet.
 
-## What's ours and what isn't
+## What is ours and what is not
 
-`.specify/` and `.claude/skills/speckit-*` are **vendored from [github/spec-kit](https://github.com/github/spec-kit)**. They are committed rather than gitignored on purpose: the `speckit-*` skills are the layer that reads `.specify/extensions.yml`, so enforcement only travels with the repo if they do. Everything else — the scripts, the registers, the gate files — is original. MIT licensed; fork it, teach it, build on it.
+- `.specify/` and `.claude/skills/speckit-*` are **vendored from
+  [github/spec-kit](https://github.com/github/spec-kit)** — not original work. They are
+  committed rather than gitignored on purpose: those skills are the layer that reads
+  `.specify/extensions.yml`, so enforcement only travels with the repo if they do.
+- The `check-*` scripts, the gate files, the five registers, the human-process files, the
+  constitution and the merged schema are original.
+- Licensed MIT — see `LICENSE`. Fork it, teach it, build on it.

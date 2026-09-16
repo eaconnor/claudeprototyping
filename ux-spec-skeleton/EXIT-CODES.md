@@ -58,6 +58,14 @@ is split, branch on the script, not on the code alone. *(Recorded here rather th
 silently renumbered: renumbering would break any existing CI that already branches
 on 2.)*
 
+**Drift precedence is an incentive, not just an ordering.** `22` outranks `19` outranks
+`18`. Declaring `drift: STALE` honestly when your sources are stale exits `18` and warns.
+Declaring `drift: FRESH` in the same situation exits `22` and fails the build. Telling the
+truth about your own staleness is mechanically cheaper than being optimistic about it —
+the only place in this repo where a script shapes behaviour rather than just reporting on
+it. Side effect: while files ship declaring `FRESH`, most real degradation surfaces as `22`
+rather than `18`/`19`.
+
 ## The FLOOR / FIT split, which is what makes this usable by engineering
 
 - **FLOOR** — accessibility, data integrity, lawfulness, security. **Never gated on

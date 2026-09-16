@@ -1,7 +1,7 @@
 #!/bin/bash
 # check-trace.sh — keeps the gate checklists honest against the canonical intent spec.
 #
-# Judgment lives in "Intent Specs/doodle-journal.md". Each acceptance criterion in
+# Judgment lives in the file named by INTENT_SPEC in project.conf. Each criterion in
 # ux.md / vision.md / design.md carries a `traces_to:` pointer, and those pointers are
 # only safe if drift is detectable. So this checks BOTH directions:
 #

@@ -345,3 +345,96 @@ this exact reproduction with Vertesia support/engineering** — process id `6aaa
 schema-confirmed non-fixes tried — rather than continue guessing client-side. Everything else about
 this build (Code-tab edit/publish, Start-dialog input capture, condition/tool/human_task nodes) is
 proven solid; this one interaction-dispatch path is the sole remaining blocker on reaching `chooser`.
+
+---
+
+## QBR Advisor — full graph proven end to end, 2026-09-16 (run `6aaa9ab7050a8b507a3043b2`)
+
+**This is the run the whole Vertesia-as-backend question rested on. It completed.** Nine nodes,
+`load_reviewed_state → continuity → chooser → translate → recommend → value_frame → sign_off →
+publish → done`, `status: completed`, and a real row landed in `qbr_artifacts` — the exact write-back
+the Biscuit Tin Check explicitly *failed* to prove (see that section's own "row unchanged" finding).
+`[CS: VERIFIED — API-confirmed after the run, not read off a UI badge]`
+
+Verified by `POST /data/{store}/query`:
+
+```
+run_ref: fenwick-logistics-proof   customer_id: fenwick-logistics
+decision: include                  signed_off_by: Elizabeth Connor
+claim / recommendation: full LLM-written narrative text, derived from the six real findings rows
+```
+
+### The fix that unblocked it: stop using `type:"agent"`
+
+`type:"agent"` is dead on this deployment (see the "environment must be specified" section above).
+The route around it is **registered Interactions** — `type:"interaction"` + `interaction:"<Name>"`,
+where the Interaction object carries its own `environment` and `model`. Those two fields are the
+thing an agent node cannot supply. Created three (`Qbr_load_register`, `Qbr_translate`,
+`Qbr_recommend`), used two in the live graph, both executed first try.
+
+Creation chain is three calls, not one — inline prompt objects are rejected (`Cast to ObjectId
+failed`):
+1. `POST /prompts` — `{name, role, content, content_type: "jst"|"handlebars"|"text"}`
+2. `POST /interactions` — `{name, environment, model, result_schema, status}`
+3. `PUT /interactions/{id}` — `{prompts:[{type:"template", template:"<promptObjectId>"}]}`
+
+All three work under the API key. **Process creation still 503s ("Invalid JWT") — that blocker is
+unchanged.** So the shape that works today is: Interactions by API, Process by Studio Code tab.
+
+### `tool` nodes take their call parameters in `input` — undocumented
+
+The docs only ever show `config.context_update` on a tool node, which made `tool` look useless for
+real work. It isn't. `input:{...}` carries the tool's actual arguments:
+
+```json
+{"type":"tool","tool":"data_query","input":{"store_id":"<id>","sql":"SELECT * FROM findings"},
+ "writes":["source_results"]}
+```
+```json
+{"type":"tool","tool":"data_import","input":{"store_id":"<id>","mode":"append",
+ "tables":{"qbr_artifacts":{"source":"inline","data":[{"run_ref":"{{customer_id}}-proof", "...":"..."}]}}}}
+```
+
+Proven by `queryActivity completed` in the Temporal history plus real rows in context, and by the
+`qbr_artifacts` write above. **This matters more than the agent-node workaround** — it means the
+deterministic half of every runbook in this set (query, reconcile, count, write evidence) is
+buildable today with no LLM in the loop at all. `{{var}}` interpolation works inside `input`.
+
+Two shape traps: `data_query` returns `{columns, rows}`, not a bare array — declare the context
+property untyped (`"source_results": {}`) or the run dies on `must be array`. And in a prompt,
+`{{source_results}}` renders nothing usable; iterate `{{#each source_results.rows}}`.
+
+### Answering a human task: one endpoint completes the record without resuming the run
+
+**Never call `POST /tasks/{id}/complete` for a process task.** It returns 200, marks the task
+completed, and does *not* signal the workflow. The run stays parked forever, and the correct resume
+path then refuses: `409 Conflict: Task is already completed`. This permanently stranded run
+`6aaa999804c219d0fa59b508` at `chooser`. It is a one-way door with a success response on it.
+
+The correct endpoint is `POST /agents/{run_id}/answer-task`, and it needs `{task_id, result}` —
+`result` is required but **absent from `AnswerProcessTaskPayload` in the published spec**. It then
+fails anyway under an API key: `401 Invalid or expired on_behalf_of token` (`sts.vertesia.io/token/issue
+=> 401`). An API key cannot act on behalf of a user. **Answering tasks is a session-auth-only
+operation — the Task Inbox UI is the only working path**, confirming the original Biscuit Tin Check
+finding rather than overturning it.
+
+### Task Inbox UI: two things that silently swallow a submit
+
+1. **An unassigned task can be filled in and submitted with no error and no effect.** Task stays
+   `pending`, `result: null`. You must click **Take Task** first. Nothing on screen says so.
+2. **The floating "Open Studio Assistant" button overlaps the Submit button** and eats the click —
+   the Assistant panel opens instead of the form submitting. This, not the assignment, was the
+   actual cause of the first failed submit. Workaround: click Submit programmatically
+   (`[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Submit').click()`),
+   or scroll so Submit clears the floating button.
+
+Both failure modes look identical from the outside: form filled, button clicked, nothing happens.
+Always verify by polling `GET /agents/{run_id}` for `current_node`, never by the UI's own state.
+
+### What this changes for the nine runbooks
+
+The Part C skeletons are buildable today, with one substitution: every `type:"agent"` node becomes
+either a `tool` node (if the work is deterministic — most of them are) or a registered Interaction
+(if it genuinely needs an LLM). Node types `tool`, `interaction`, `human_task`, `condition`, `final`
+are all now live-fire proven in one graph. Still unproven: `foreach`, `branch` (real parallel
+split/join), `process` (subprocess), and every external connector.

@@ -2,6 +2,7 @@
 title: QBR Advisor / Business Review Narrative — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's branch node fixed to real Vertesia node shape; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # QBR Advisor / Business Review Narrative — the Vertesia-native version
@@ -89,9 +90,15 @@ learned correction or policy is read at the start of the next run rather than le
 | Chooser | `human_task` | Unverified/unreviewed blocked | Lead decides emphasis |
 | Translate | `agent` | Claim requires finding/evidence refs | Human edits |
 | Recommend | Agent proposal | One recommendation per source finding | Lead owns ask |
-| Value frame | `branch` on `baseline_source`/`requires_review` | Weak/negative/implausible held from headline | Human validates |
+| Value frame | `condition` on `baseline_source`/`requires_review` | Weak/negative/implausible held from headline | Human validates |
 | Sign off | `human_task` | Named approval before client write | Presenter |
 | Publish | Separate internal/client writes | Immutable version refs | none after approval |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 
@@ -120,7 +127,7 @@ learned correction or policy is read at the start of the next run rather than le
       "transitions": [{ "to": "recommend" }] },
     "recommend": { "type": "agent", "human_description": "One recommendation per source finding",
       "transitions": [{ "to": "value_frame" }] },
-    "value_frame": { "type": "branch", "human_description": "Weak/negative/implausible held from headline",
+    "value_frame": { "type": "condition", "human_description": "Weak/negative/implausible held from headline",
       "branches": [
         { "to": "sign_off", "when": {"in": [{"var": "value.baseline_source"}, ["weak", "negative", "implausible"]]}, "label": "held internal" },
         { "to": "sign_off", "default": true }

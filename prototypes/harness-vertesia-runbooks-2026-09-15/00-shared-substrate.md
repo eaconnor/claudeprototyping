@@ -3,6 +3,8 @@ title: HARNESS — Vertesia-Native Coworker Runbook Set — shared substrate
 status: internal working draft, 15 September 2026. Split from one Copilot-authored document into
   this folder — see VALIDATION-NOTES.md for two corrections made to the skeleton JSON during the split.
 read_first: every file in this folder (01–09) assumes you've read this one
+revised: 2026-09-16 — added 10-proven-node-patterns.md (the only live-fire-verified file in the set);
+  routing nodes retyped branch→condition throughout
 ---
 
 # Read this first
@@ -63,7 +65,32 @@ Each file below repeats Part 0 (the blocker + the spike) in full — this is del
 `ebr-coworker.runbook.technica.md` is self-contained so any one file can be dropped into a session
 on its own. The shared facts above are the canonical version if any copy drifts.
 
-See [VALIDATION-NOTES.md](VALIDATION-NOTES.md) for what was checked against this session's actual
-verified evidence, and the two skeleton-JSON corrections applied throughout (branch nodes need
-`branches`+`JsonLogicRule`, not `transitions`; steps described as "foreach X" need an actual
-`foreach` node, not just prose).
+## The tenth file — read it before editing any of the nine
+
+10. [**Proven Node Patterns**](10-proven-node-patterns.md) — added 2026-09-16.
+
+The nine runbooks above are design proposals, and each one's skeleton says so in its own disclaimer.
+File 10 is the exception: it is built from the QBR Advisor graph hand-built in Studio and **run to
+completion** on 2026-09-16 — real data in, a real human pause, real model-written narrative, and a
+real row written back to a Data Store table (run `6aaa9ab7050a8b507a3043b2`, `status: completed`).
+`[CS: VERIFIED — API-confirmed after the run]`
+
+Three of its findings change how the nine above should be read:
+
+- **`type:"agent"` does not work on this deployment.** It dispatches as an ephemeral "in-code"
+  interaction and is rejected — `For in-code interactions, environment must be specified` — and
+  nothing in the process-definition schema can supply an environment. Replace every agent node with
+  a `tool` node or a registered `interaction`.
+- **`tool` nodes take their arguments in `input`** (undocumented; the docs only show
+  `config.context_update`). This means the deterministic half of every runbook here — query,
+  reconcile, count, compare, write evidence — is buildable today with no model in the loop.
+- **Answering a human task is session-auth-only.** `answer-task` 401s under an API key, and
+  `POST /tasks/{id}/complete` returns 200 while silently failing to resume the run — it strands the
+  process permanently. The Task Inbox UI is the only working path.
+
+See [VALIDATION-NOTES.md](VALIDATION-NOTES.md) for the full chronological log — what was checked,
+what was tried and failed, and the skeleton-JSON corrections applied throughout. Two corrections have
+now landed across the set: routing nodes need `branches`+`JsonLogicRule` rather than `transitions`
+**and must be `type:"condition"`, not `type:"branch"`** (both are real types; `branch` is BPMN
+parallel split/join, retyped across all nine files 2026-09-16); and steps described as "foreach X"
+need an actual `foreach` node, not just prose.

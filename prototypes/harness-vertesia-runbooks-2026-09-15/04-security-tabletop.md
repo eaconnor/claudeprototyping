@@ -2,6 +2,7 @@
 title: Security Tabletop Coworker — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's foreach node fixed to real Vertesia node shape; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # Security Tabletop Coworker — the Vertesia-native version
@@ -93,6 +94,12 @@ learned correction or policy is read at the start of the next run rather than le
 | Assess | Agent proposals from recorded observations | No finding without observation refs | Facilitator validates |
 | After-action | Write report + `human_task` | Approval before final artifact | Named reviewer |
 | Handoff/retest | Write findings and proposed retest | Risk register update never silently skipped | Owner decides treatment |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 

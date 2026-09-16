@@ -2,6 +2,7 @@
 title: Incident Response Coworker — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's branch/foreach nodes fixed to real Vertesia node shapes; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # Incident Response Coworker — the Vertesia-native version
@@ -54,7 +55,7 @@ until their specific spike passes.
 
 | Source/decision | Status | Vertesia handling |
 |---|---|---|
-| Incident severity policy | Customer/operator configuration | Branch rules; never inferred from prose alone |
+| Incident severity policy | Customer/operator configuration | `condition` rules; never inferred from prose alone |
 | Customer notification/legal requirements | Human-supplied or approved policy source | `human_task`; no generic legal claim |
 | Business recovery confirmation | Named person | Required closure task |
 
@@ -94,13 +95,19 @@ learned correction or policy is read at the start of the next run rather than le
 | Original rule/step | Vertesia node | What is now deterministic | What still needs a person |
 |---|---|---|---|
 | Detect/open | `tool` → create incident row | Incident clock and scope record always exist | Severity may be corrected by lead |
-| Ingest/enrich | `foreach` source agents → `branch` per result | Failure/empty/wrong-tenant creates Source-Unavailable evidence | AI may summarize evidence |
+| Ingest/enrich | `foreach` source agents → `condition` per result | Failure/empty/wrong-tenant creates Source-Unavailable evidence | AI may summarize evidence |
 | Diagnose | `agent` node after evidence merge | Diagnosis cannot run before inputs and learned rules | Root cause remains a proposal |
 | Build response | `agent` selects canonical pattern + customer/asset context | Plan always names action, target, risk, evidence, rollback, validation | Lead modifies plan |
-| Approve | `branch` risk → `human_task` | High/customer-impact actions cannot bypass pause | Authorized responder decides |
+| Approve | `condition` risk → `human_task` | High/customer-impact actions cannot bypass pause | Authorized responder decides |
 | Execute | `tool` node per approved action | Scope and approval ID required | Person may stop run |
-| Validate/recover | re-query + `branch` on desired state | Failed validation cannot reach closed | Business owner confirms recovery |
+| Validate/recover | re-query + `condition` on desired state | Failed validation cannot reach closed | Business owner confirms recovery |
 | PIR/learn | write timeline, RCA, findings, lessons, proposed runbook update | All outputs remain versioned and linked | Named reviewer signs PIR |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 
@@ -124,7 +131,7 @@ learned correction or policy is read at the start of the next run rather than le
     "ingest_enrich": { "type": "foreach", "foreach": "context.source_agents", "as": "source_result",
       "human_description": "Call each connector agent independently",
       "transitions": [{ "to": "check_source_results" }] },
-    "check_source_results": { "type": "branch",
+    "check_source_results": { "type": "condition",
       "human_description": "Failure/empty/wrong-tenant creates Source-Unavailable evidence",
       "branches": [
         { "to": "log_source_unavailable", "when": {"==": [{"var": "source_result.status"}, "failed"]} },
@@ -136,7 +143,7 @@ learned correction or policy is read at the start of the next run rather than le
       "transitions": [{ "to": "build_response" }] },
     "build_response": { "type": "agent", "human_description": "Plan always names action, target, risk, evidence, rollback, validation",
       "transitions": [{ "to": "risk_route" }] },
-    "risk_route": { "type": "branch", "human_description": "High/customer-impact actions cannot bypass pause",
+    "risk_route": { "type": "condition", "human_description": "High/customer-impact actions cannot bypass pause",
       "branches": [
         { "to": "approve", "when": {"==": [{"var": "plan.risk"}, "high"]} },
         { "to": "execute", "default": true }
@@ -145,7 +152,7 @@ learned correction or policy is read at the start of the next run rather than le
       "transitions": [{ "to": "execute" }] },
     "execute": { "type": "tool", "human_description": "Scope and approval ID required",
       "transitions": [{ "to": "validate_recover" }] },
-    "validate_recover": { "type": "branch", "human_description": "Failed validation cannot reach closed",
+    "validate_recover": { "type": "condition", "human_description": "Failed validation cannot reach closed",
       "branches": [
         { "to": "execute", "when": {"==": [{"var": "validation.result"}, "failed"]} },
         { "to": "pir_learn", "default": true }

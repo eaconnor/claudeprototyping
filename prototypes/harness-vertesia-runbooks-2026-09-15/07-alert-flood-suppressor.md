@@ -2,6 +2,7 @@
 title: Alert Flood Suppressor — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's branch nodes fixed to real Vertesia node shape; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # Alert Flood Suppressor — the Vertesia-native version
@@ -87,12 +88,18 @@ learned correction or policy is read at the start of the next run rather than le
 |---|---|---|---|
 | Ingest | Batch/event source | Checkpoint and customer scope fixed | none |
 | Normalize | Transform | Required fields enforced | none |
-| Known-rule check | Deterministic `branch` | Only active in-scope rules apply | Human-authored rules |
+| Known-rule check | Deterministic `condition` | Only active in-scope rules apply | Human-authored rules |
 | Correlate | `agent` | Clusters retain members/evidence | Analyst reviews uncertain |
-| Novelty/rate check | `branch` vs baseline | Unknown defaults to surface; anomaly pauses | Human investigates |
-| Disposition | `tool`/`branch` | Every suppression has rule/version | none for existing rule |
+| Novelty/rate check | `condition` vs baseline | Unknown defaults to surface; anomaly pauses | Human investigates |
+| Disposition | `tool`/`condition` | Every suppression has rule/version | none for existing rule |
 | Propose rule | `agent` → `human_task` | New rule cannot self-activate | Analyst approves |
 | Report/learn | Write metrics/exceptions | Retention and audit fixed | Human reviews performance |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 
@@ -115,19 +122,19 @@ learned correction or policy is read at the start of the next run rather than le
       "transitions": [{ "to": "normalize" }] },
     "normalize": { "type": "tool", "human_description": "Required fields enforced",
       "transitions": [{ "to": "known_rule_check" }] },
-    "known_rule_check": { "type": "branch", "human_description": "Only active in-scope rules apply",
+    "known_rule_check": { "type": "condition", "human_description": "Only active in-scope rules apply",
       "branches": [
         { "to": "disposition", "when": {"==": [{"var": "alert.matched_rule"}, true]} },
         { "to": "correlate", "default": true }
       ]},
     "correlate": { "type": "agent", "human_description": "Clusters retain members/evidence",
       "transitions": [{ "to": "novelty_rate_check" }] },
-    "novelty_rate_check": { "type": "branch", "human_description": "Unknown defaults to surface; anomaly pauses",
+    "novelty_rate_check": { "type": "condition", "human_description": "Unknown defaults to surface; anomaly pauses",
       "branches": [
         { "to": "propose_rule", "when": {">": [{"var": "run.suppression_rate"}, {"var": "policy.max_rate"}]} },
         { "to": "disposition", "default": true }
       ]},
-    "disposition": { "type": "branch", "human_description": "Every suppression has rule/version",
+    "disposition": { "type": "condition", "human_description": "Every suppression has rule/version",
       "branches": [
         { "to": "report_learn", "when": {"==": [{"var": "alert.disposition"}, "suppressed"]} },
         { "to": "report_learn", "default": true }

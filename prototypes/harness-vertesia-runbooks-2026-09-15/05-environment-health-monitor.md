@@ -2,6 +2,7 @@
 title: Environment Health Monitor — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's branch nodes fixed to real Vertesia node shape; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # Environment Health Monitor — the Vertesia-native version
@@ -90,10 +91,16 @@ learned correction or policy is read at the start of the next run rather than le
 | Collect | N-query agent | Failed/partial coverage visible | none |
 | Compare | Deterministic policy checks | Same threshold every run | Human owns threshold |
 | Diagnose | `agent` | Inputs/rationale required | Human reviews uncertainty |
-| Plan | `branch` routine vs judgment | Only approved scripts eligible | Human approves policy/action |
+| Plan | `condition` routine vs judgment | Only approved scripts eligible | Human approves policy/action |
 | Act or ticket | `tool` or Halo write | Risk gate controls path | Approver for gated work |
-| Validate | Re-query/`branch` | Failed validation cannot close | Human handles exceptions |
+| Validate | Re-query/`condition` | Failed validation cannot close | Human handles exceptions |
 | Report | Write finding/value/EBR handoff | Trace retained | Human approves client claim |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 
@@ -116,21 +123,21 @@ learned correction or policy is read at the start of the next run rather than le
       "transitions": [{ "to": "collect" }] },
     "collect": { "type": "agent", "human_description": "Failed/partial coverage visible",
       "transitions": [{ "to": "compare" }] },
-    "compare": { "type": "branch", "human_description": "Same threshold every run",
+    "compare": { "type": "condition", "human_description": "Same threshold every run",
       "branches": [
         { "to": "diagnose", "when": {"<": [{"var": "observation.value"}, {"var": "policy.threshold"}]} },
         { "to": "diagnose", "default": true }
       ]},
     "diagnose": { "type": "agent", "human_description": "Inputs/rationale required",
       "transitions": [{ "to": "plan" }] },
-    "plan": { "type": "branch", "human_description": "Only approved scripts eligible",
+    "plan": { "type": "condition", "human_description": "Only approved scripts eligible",
       "branches": [
         { "to": "act_or_ticket", "when": {"==": [{"var": "plan.treatment"}, "approved_script"]} },
         { "to": "act_or_ticket", "default": true }
       ]},
     "act_or_ticket": { "type": "tool", "human_description": "Risk gate controls path",
       "transitions": [{ "to": "validate" }] },
-    "validate": { "type": "branch", "human_description": "Failed validation cannot close",
+    "validate": { "type": "condition", "human_description": "Failed validation cannot close",
       "branches": [
         { "to": "act_or_ticket", "when": {"==": [{"var": "validation.result"}, "failed"]} },
         { "to": "report", "default": true }

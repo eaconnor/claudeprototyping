@@ -2,6 +2,7 @@
 title: Ticket Triage & Dispatch Coworker — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's branch nodes fixed to real Vertesia node shape; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # Ticket Triage & Dispatch Coworker — the Vertesia-native version
@@ -87,11 +88,17 @@ learned correction or policy is read at the start of the next run rather than le
 | Trigger/read | Event or batch → Halo agent | Ticket/customer fixed | none |
 | Validate policy | `query` taxonomy/SLA | No policy means hold | Human owns policy |
 | Classify | Agent proposal | Schema and allowed values enforced | Queue lead may correct |
-| SLA check | `tool`/`branch` | Source fields drive arithmetic | none |
+| SLA check | `tool`/`condition` | Source fields drive arithmetic | none |
 | Pattern check | Agent handoff | Incident candidate separated from routine route | Analyst confirms if held |
-| Route decision | `branch` by confidence/risk | Ambiguous/high-impact goes `human_task` | Queue lead |
+| Route decision | `condition` by confidence/risk | Ambiguous/high-impact goes `human_task` | Queue lead |
 | Write | Halo `tool` | Approval + exact before/after required | none |
 | Validate/learn | Read-after-write + correction append | Failed write cannot look complete | Human correction becomes input later |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 
@@ -116,14 +123,14 @@ learned correction or policy is read at the start of the next run rather than le
       "transitions": [{ "to": "classify" }] },
     "classify": { "type": "agent", "human_description": "Schema and allowed values enforced",
       "transitions": [{ "to": "sla_check" }] },
-    "sla_check": { "type": "branch", "human_description": "Source fields drive arithmetic",
+    "sla_check": { "type": "condition", "human_description": "Source fields drive arithmetic",
       "branches": [
         { "to": "pattern_check", "when": {"<": [{"var": "sla.remaining_minutes"}, {"var": "sla.threshold_minutes"}]} },
         { "to": "pattern_check", "default": true }
       ]},
     "pattern_check": { "type": "agent", "human_description": "Incident candidate separated from routine route",
       "transitions": [{ "to": "route_decision" }] },
-    "route_decision": { "type": "branch", "human_description": "Ambiguous/high-impact goes human_task",
+    "route_decision": { "type": "condition", "human_description": "Ambiguous/high-impact goes human_task",
       "branches": [
         { "to": "held_for_review", "when": {"<": [{"var": "classify.confidence"}, 0.8]} },
         { "to": "write", "default": true }

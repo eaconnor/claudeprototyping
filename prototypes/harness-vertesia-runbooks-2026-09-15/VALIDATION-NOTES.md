@@ -266,10 +266,10 @@ different kinds of failure. What's still unproven is getting *any* `agent`-type 
 complete in this project — that's now the single named blocker, not a vague "tool bindings are
 placeholders" caveat.
 
-**Follow-up still open:** rename `type:"branch"`-as-if-else to `type:"condition"` across all nine
-runbook files in this folder (currently only fixed in QBR Advisor's live Vertesia build, not in the
-markdown files) — the `branches` field shape Copilot used was right, the type name was wrong, and
-this affects every runbook that has a routing/gate step, not just QBR Advisor's `value_frame`.
+**Follow-up — CLOSED 2026-09-16.** All fourteen `type:"branch"`-as-if-else nodes retyped to
+`type:"condition"` across files 01, 02, 03, 05, 06, 07 and 08, along with the Part C table prose that
+named them. `09` needed no change (its approval step was already a direct `human_task`). The
+`branches` field shape Copilot used was right; only the type name was wrong.
 
 ## The "environment must be specified" blocker — root cause confirmed, no fix found in-schema (same day, continued)
 

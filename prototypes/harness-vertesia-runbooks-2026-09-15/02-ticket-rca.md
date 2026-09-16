@@ -2,6 +2,7 @@
 title: Incident Response Analyst / Ticket RCA — the Vertesia-native version
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
 corrected: 2026-09-15 — skeleton's branch/foreach nodes fixed to real Vertesia node shapes; see VALIDATION-NOTES.md
+revised: 2026-09-16 — routing nodes retyped branch→condition; node syntax superseded by 10-proven-node-patterns.md
 ---
 
 # Incident Response Analyst / Ticket RCA — the Vertesia-native version
@@ -84,12 +85,18 @@ learned correction or policy is read at the start of the next run rather than le
 |---|---|---|---|
 | Collect | `foreach` source agents | Source failures logged | Analyst defines seed scope |
 | Normalize | `tool`/transform | IDs and timestamps standardized | none |
-| Map assets | `branch` on reconciliation | Unmapped records become gaps | Analyst may repair mapping |
+| Map assets | `condition` on reconciliation | Unmapped records become gaps | Analyst may repair mapping |
 | Cluster | `agent` proposal | Minimum similarity fields required | Analyst accepts/splits |
 | Correlate timeline | Deterministic sort + `agent` explanation | Temporal order preserved | Causation remains judgment |
 | Draft hypotheses | `agent` | For/against evidence required | Analyst disposes |
 | Approve RCA | `human_task` | Client write cannot bypass | Named reviewer |
 | Handoff | Separate internal/client writes + finding | Artifact paths fixed | Human chooses downstream actions |
+
+**Node syntax in the skeleton below is superseded by proven shapes** — see
+`10-proven-node-patterns.md`, built from a graph that actually ran end to end on 2026-09-16.
+In particular: `type:"agent"` fails on this deployment and must be replaced by a `tool` node
+(arguments go in `input`) or a registered `interaction`; anything fed by `data_query` must be
+declared untyped in the context schema, not `array`.
 
 ### Skeleton — illustrative, not a validated production graph
 
@@ -112,7 +119,7 @@ learned correction or policy is read at the start of the next run rather than le
       "human_description": "Source failures logged", "transitions": [{ "to": "normalize" }] },
     "normalize": { "type": "tool", "human_description": "IDs and timestamps standardized",
       "transitions": [{ "to": "map_assets" }] },
-    "map_assets": { "type": "branch", "human_description": "Unmapped records become gaps",
+    "map_assets": { "type": "condition", "human_description": "Unmapped records become gaps",
       "branches": [
         { "to": "cluster", "when": {"==": [{"var": "asset_mapping.unresolved"}, false]} },
         { "to": "cluster", "default": true }

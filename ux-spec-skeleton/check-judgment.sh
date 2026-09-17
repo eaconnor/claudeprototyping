@@ -100,11 +100,15 @@ echo "======================================================================"
 echo "JUDGMENT CONTRACT — is the plan->execute authorization coherent?"
 echo "======================================================================"
 
-WITH_CONTRACT=0; N_J1=0; N_INCOHERENT=0; N_UNDERSPEC=0
+NOT_FOUND=0; WITH_CONTRACT=0; N_J1=0; N_INCOHERENT=0; N_UNDERSPEC=0
 declare -a FINDINGS=()
 
 for file in "${TARGETS[@]}"; do
-  [ -f "$file" ] || { echo ""; echo "-- $file"; echo "   (skipped, not found)"; continue; }
+  if [ ! -f "$file" ]; then
+    # Named but unreadable is a failure, not a skip — see the note in check-skills.sh.
+    echo ""; echo "-- $file"; echo "   BROKEN — named but not found"
+    NOT_FOUND=$((NOT_FOUND+1)); continue
+  fi
 
   REGIME=$(field "$file" "confidence_regime")
   BECAUSE=$(field "$file" "proceed_because")
@@ -180,6 +184,10 @@ done
 
 echo ""
 echo "----------------------------------------------------------------------"
+if [ "$NOT_FOUND" -gt 0 ]; then
+  echo "BROKEN — $NOT_FOUND file(s) named on the command line could not be read."
+  exit 5
+fi
 if [ "$WITH_CONTRACT" -eq 0 ]; then
   echo "BROKEN — no file carried a readable confidence_regime:, so no contract was checked."
   echo "Reporting a coherent contract here would mean 'I read nothing and found nothing"

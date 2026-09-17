@@ -45,6 +45,17 @@
 #                                       .claude/ — use when FILE is borrowed
 
 set -uo pipefail
+# Resolve argument paths against the CALLER's cwd before cd-ing to the repo root, so
+# `./check-skills.sh ../briefs/foo.md` works. Without this, a relative arg silently reports
+# "not found" from the wrong directory, which reads identically to a real missing file.
+ORIG_PWD="$PWD"
+ARGS=()
+for a in "$@"; do
+  case "$a" in
+    /*) ARGS+=("$a") ;;
+    *)  ARGS+=("$ORIG_PWD/$a") ;;
+  esac
+done
 cd "$(dirname "$0")"
 
 [ -f project.conf ] && . ./project.conf
@@ -56,7 +67,7 @@ SKILLS_ROOT="${SKILLS_ROOT:-.}"
 SKILLS_DIR="$SKILLS_ROOT/.claude/skills"
 AGENTS_DIR="$SKILLS_ROOT/.claude/agents"
 
-RESOLVED=0; UNRESOLVED=0; REGISTRIES=0
+RESOLVED=0; UNRESOLVED=0; REGISTRIES=0; NOT_FOUND=0
 declare -a FAILURES=()
 
 resolve() {                                   # $1 name, $2 where it was registered
@@ -99,7 +110,13 @@ fi
 # ---- registry 2: `skills:` frontmatter blocks ----
 lint_frontmatter() {
   local file="$1"
-  [ -f "$file" ] || { echo "   (skipped, not found: $file)"; return 0; }
+  if [ ! -f "$file" ]; then
+    # A file the caller NAMED and we could not read is a failure, not a skip. Reporting
+    # "0 unresolved" for a file that was never opened is a false green — the exact class
+    # this suite exists to catch. Found in this script's own behaviour, 2026-09-17.
+    echo "   BROKEN — named but not found: $file"
+    NOT_FOUND=$((NOT_FOUND+1)); return 0
+  fi
   # the skills: block runs until the next top-level (column-0) frontmatter key
   local names
   names=$(awk '
@@ -123,7 +140,7 @@ lint_frontmatter() {
   done <<< "$names"
 }
 
-for f in "${GATE_1:-}" "${GATE_2:-}" "${GATE_3:-}" "$@"; do
+for f in "${GATE_1:-}" "${GATE_2:-}" "${GATE_3:-}" "${ARGS[@]:-}"; do
   [ -z "$f" ] && continue
   echo ""; echo "-- $f (skills: frontmatter)"
   lint_frontmatter "$f"
@@ -132,6 +149,12 @@ done
 # ---- verdict ----
 echo ""
 echo "----------------------------------------------------------------------"
+if [ "$NOT_FOUND" -gt 0 ]; then
+  echo "BROKEN — $NOT_FOUND file(s) were named on the command line but could not be read."
+  echo "Nothing was linted for them. This exits non-zero rather than reporting a clean"
+  echo "result for a file that was never opened."
+  exit 5
+fi
 if [ "$REGISTRIES" -eq 0 ]; then
   echo "BROKEN — no registry was found to lint."
   echo "Neither $EXT nor any named file carried a readable registry. Reporting"

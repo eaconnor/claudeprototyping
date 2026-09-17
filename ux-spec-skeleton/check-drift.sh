@@ -68,6 +68,17 @@
 #     ./check-drift.sh FILE [FILE...]   check these files instead
 
 set -uo pipefail
+# Resolve argument paths against the CALLER's cwd before cd-ing to the repo root, so
+# `./check-drift.sh ../briefs/foo.md` works. Without this, a relative arg silently reports
+# "not found" from the wrong directory, which reads identically to a real missing file.
+ORIG_PWD="$PWD"
+ARGS=()
+for a in "$@"; do
+  case "$a" in
+    /*) ARGS+=("$a") ;;
+    *)  ARGS+=("$ORIG_PWD/$a") ;;
+  esac
+done
 cd "$(dirname "$0")"
 [ -f project.conf ] && . ./project.conf
 MANIFEST="${MANIFEST:-MANIFEST.md}"
@@ -94,7 +105,7 @@ manifest_hash() {
       if ($4==want) { print $5; exit } }'
 }
 
-TARGETS=(); if [ "$#" -gt 0 ]; then TARGETS=("$@")
+TARGETS=(); if [ "${#ARGS[@]}" -gt 0 ]; then TARGETS=("${ARGS[@]}")
 else for f in "${GATE_1:-}" "${GATE_2:-}" "${GATE_3:-}"; do [ -n "$f" ] && TARGETS+=("$f"); done; fi
 
 echo "======================================================================"
@@ -102,11 +113,15 @@ echo "SOURCE DRIFT — computed, not declared"
 echo "======================================================================"
 echo "manifest: $MANIFEST · $NROWS registered source(s) · hash: $HASH"
 
-TOTAL_SRC=0; N_FRESH=0; N_STALE=0; N_CONFLICT=0; N_LIE=0; FILES_CHECKED=0
+NOT_FOUND=0; TOTAL_SRC=0; N_FRESH=0; N_STALE=0; N_CONFLICT=0; N_LIE=0; FILES_CHECKED=0
 declare -a NOTES=()
 
 for file in "${TARGETS[@]}"; do
-  [ -f "$file" ] || { echo ""; echo "-- $file"; echo "   (skipped, not found)"; continue; }
+  if [ ! -f "$file" ]; then
+    # Named but unreadable is a failure, not a skip — see the note in check-skills.sh.
+    echo ""; echo "-- $file"; echo "   BROKEN — named but not found"
+    NOT_FOUND=$((NOT_FOUND+1)); continue
+  fi
   echo ""; echo "-- $file"
 
   DECLARED=$(awk '/^---[[:space:]]*$/{fm++; if(fm==2)exit; next} fm==1 && /^drift:/{sub(/^drift:[[:space:]]*/,""); sub(/[[:space:]]*#.*$/,""); gsub(/[[:space:]]/,""); print; exit}' "$file")
@@ -175,6 +190,10 @@ done
 
 echo ""
 echo "----------------------------------------------------------------------"
+if [ "$NOT_FOUND" -gt 0 ]; then
+  echo "BROKEN — $NOT_FOUND file(s) named on the command line could not be read."
+  exit 5
+fi
 if [ "$NROWS" -eq 0 ]; then
   echo "BROKEN — $MANIFEST has no parsable rows (expected '| S-001 | shelf | path | hash | ...')."
   echo "Zero registered sources is reported as a failure, not as 'nothing drifted'."

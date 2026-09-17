@@ -69,6 +69,18 @@ CRIT_RE = re.compile(r"^- \[([ x])\] (\S+) — (.*)$")
 # better than me deciding case by case, which is how the earlier false-green
 # claims got in.
 HUMAN_MARKERS = [
+    # "a human" MUST come first in spirit if not in order. Its absence was a live false
+    # green found on 2026-09-17 by an agent told to get the gates passing under deadline
+    # pressure: 12 of the 22 shipped criteria read `verified_by: a human ...`, none of them
+    # matched any marker below, so this script reported Gate 1 and Gate 2 as "human-gated
+    # 0 criteria" and "ceiling 100.0% — fixable with code alone". The one instrument whose
+    # job is to say what code CANNOT close was saying code could close everything.
+    #
+    # That is the worst possible direction for this bug to point. A number claiming 17
+    # criteria are closable without users is precisely the argument someone under a
+    # deadline would use to tick 17 boxes a person has to verify — the failure HAZARDS.md
+    # RSK-01 names as the repo's top claim-risk.
+    "a human", "a person", "human ",
     "participant", "reviewer", "named reviewer", "test run", "a test run",
     "audit", "keyboard pass", "instrument", "signs off", "commission",
     "in front of a real person", "moved to the Resolved", "a comparison study",

@@ -40,7 +40,7 @@ explicitly **failed** to prove (its own finding was "row unchanged"). It is now 
 
 ## Part 0 — read this before anything else
 
-**Two blockers are confirmed unchanged.** `[CS: VERIFIED — retested 2026-09-16]`
+**Five things to know before you build. The first three are blockers.** `[CS: VERIFIED — retested 2026-09-17]`
 
 1. `POST /processes` and `PUT /processes` still 503 with `Failed to load process validation
    catalogs: Invalid JWT` under the project API key. **Processes are built in the Studio Code tab,
@@ -58,10 +58,34 @@ explicitly **failed** to prove (its own finding was "row unchanged"). It is now 
    inbox; an API key has none.** The endpoint needs the assignee or `task:manage`, and a
    developer-role key cannot mint such a key ("API keys cannot be assigned permissions the caller
    does not have"). Not proven impossible — **not yet obtained.** `[CS: MEDIUM]`
-4. **Unexplored route worth trying before accepting (2) and (3):** `GET /tools` lists
-   **`start_process_run`** and **`answer_process_task`** as real registered tools. Since a registered
-   Interaction is executable under a plain API key and can be given `tools`, an Interaction may be
-   able to do both things an API key cannot do directly. Untested. `[CS: UNKNOWN]`
+4. **`POST /agents` is broken outright for this key — not just its process branch.** Tested
+   2026-09-17: the *bare documented* payload (`{interaction: "sys:generic_question", data:{...}}`,
+   which is the shape the spec marks as the only required one) also returns a bare **500**, as does
+   every variant with `config`, `interactive`, `tool_names`, or one of our own Interactions. So (2)
+   is a symptom of a wholly non-functional endpoint. `[CS: VERIFIED]`
+
+5. **The agent-tool workaround is a dead end, by elimination.** `GET /tools` lists
+   **`start_process_run`** (`{process_id, process_definition, data, run_type}`) and
+   **`answer_process_task`** (`{run_id, task_id, result}`) — exactly the two capabilities an API key
+   lacks, and `answer_process_task`'s parameters are the payload the REST endpoint wanted. But
+   Vertesia only executes tools server-side inside an **agent run**, and agent runs cannot be created
+   (item 4). `POST /execute` accepts only `tool_definitions` — *client-side* tools, where the caller
+   executes them and returns the result, which just routes back to the endpoints that already refuse.
+   `[CS: VERIFIED — tested, not inferred]`
+
+**Proof this is a specific defect and not an outage.** All five calls below, same key, same minute:
+
+```
+GET  /agents             200      POST /data/{store}/query   200
+GET  /processes          200      POST /execute              200 → completed
+POST /agents             500  ← the only failure
+```
+
+**Therefore, and this is the load-bearing conclusion for anything built on top of Vertesia:
+its workflow engine can only be driven from a browser session. There is no API path to start a run
+or answer a task.** Data and reasoning are fully available by API; orchestration is not. An external
+UI must own its own workflow and use Vertesia for state and reasoning — which is exactly what the
+HARNESS prototype already does, since its stepper, Chooser and sign-off are client-side state.
 
 **What *did* become available under the API key:** creating Interactions and Prompts, creating Data
 Store tables, `POST /execute`, and every `GET`. That asymmetry is what makes the pattern below work.

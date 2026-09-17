@@ -36,8 +36,11 @@ policy is in the table's last column.
 | `20` | `check-never.sh` | a **never event** happened | **fail, hard — stop and investigate, do not score it** |
 | `21` | `check-skills.sh` | a registered skill name does not exist on disk | **fail** |
 | `22` | `check-drift.sh` | `drift:` claims a better state than the hashes show | **fail** |
+| `23` | `check-judgment.sh` | unfilled judgment slots with no directive keeping them provisional | **fail** |
+| `24` | `check-judgment.sh` | authorization incoherence — a permissive regime with no human sign-off, or a `BLOCKED` file authorizing work anyway | **fail** |
+| `25` | `check-judgment.sh` | regime declared without the constraints that define it | **warn** |
 
-`8` and `23`+ are unassigned. Take the next free number and add a row here in the
+`8` and `26`+ are unassigned. Take the next free number and add a row here in the
 same commit — an undocumented exit code is a number somebody will guess the meaning of.
 
 ## Two things about this table that are easy to get wrong
@@ -70,9 +73,9 @@ rather than `18`/`19`.
 
 - **FLOOR** — accessibility, data integrity, lawfulness, security. **Never gated on
   problem validation.** You do not wait for a reaction test to label a form field.
-  Codes `10`, `15`, `19`, `20`, `22` are FLOOR-class: fail hard.
+  Codes `10`, `15`, `19`, `20`, `22`, `23`, `24` are FLOOR-class: fail hard.
 - **FIT** — polish that only pays off if the concept survives. Codes `1`, `6`, `7`,
-  `11`, `17`, `18` are FIT-class: visible warning, do not block.
+  `11`, `17`, `18`, `25` are FIT-class: visible warning, do not block.
 
 "Don't build until Gate 1 passes" is correct for FIT and dangerously wrong for FLOOR.
 

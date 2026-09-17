@@ -32,11 +32,11 @@ eval_loop: "./check-gates.sh · scripts/check-design.py · ./check-eng.sh · ./c
                                   # Keep it accurate by hand; it is the map, not the territory.
 
 # ---- evidence regime --------------------------------------------------------
-confidence_regime: BLOCKED        # PROCEED | PROCEED-FLAGGED | PROCEED-PARTIAL | BLOCKED · documentary
+confidence_regime: BLOCKED        # READ BY: ./check-judgment.sh — PROCEED | PROCEED-FLAGGED | PROCEED-PARTIAL | BLOCKED
                                   # BLOCKED is the correct default for a skeleton: nothing
                                   # here is decided yet. Do not soften it to ship faster.
-proceed_because:                  # documentary — one sentence; without it the default is BLOCKED
-machine_behavior:                 # documentary — comma-separated directives for a reading agent
+proceed_because:                  # READ BY: ./check-judgment.sh — one sentence; without it the default is BLOCKED (exit 24)
+machine_behavior:                 # READ BY: ./check-judgment.sh — directives for the execute phase; must keep unfilled slots provisional
 confidence_score: UNSCORED        # READ BY: scripts/ux-score.py — computed by grep, never asserted
 
 # ---- source provenance (the part that is actually computed) -----------------

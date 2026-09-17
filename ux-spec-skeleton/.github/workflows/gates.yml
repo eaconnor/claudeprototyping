@@ -74,6 +74,18 @@ jobs:
             *)  echo "::warning::check-drift.sh exit $c"; ;;
           esac
 
+      - name: judgment contract (23 = unacknowledged · 24 = incoherent · 25 = under-specified, warns)
+        run: |
+          ./check-judgment.sh; c=$?
+          case $c in
+            0)  ;;
+            23) echo "::error::unfilled judgment slots with nothing keeping them provisional — an execute phase would be told to proceed and told nothing about what must stay blank"; exit 1 ;;
+            24) echo "::error::authorization incoherence — permissive regime with no sign-off, or a BLOCKED file authorizing work"; exit 1 ;;
+            25) echo "::warning::regime declared without its defining constraints (see exit 25)"; ;;
+            5)  echo "::warning::check-judgment.sh could not evaluate — no confidence_regime: found in any gate file"; ;;
+            *)  echo "::warning::check-judgment.sh exit $c"; ;;
+          esac
+
       - name: value register is honest (13 = no costs recorded)
         run: |
           ./check-value.sh; c=$?

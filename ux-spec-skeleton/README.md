@@ -3,7 +3,7 @@
 A working repo for wiring design and research judgment into a spec-kit engineering
 workflow, so it survives contact with how software actually gets built.
 
-**14 scripts · 5 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
+**15 scripts · 5 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
 Start at [`QUICKSTART.md`](QUICKSTART.md).
 
 ## The finding this is built on
@@ -66,6 +66,7 @@ and loses the only information that tells you what to do next. Full contract:
 | `./check-trace.sh` | have criteria drifted from what they enforce? | 4 broken trace · 5 no intent spec |
 | `./check-drift.sh` | are the **sources** still what we built on? | 18 stale · 19 conflict · **22 `drift:` misdeclared** |
 | `./check-skills.sh` | does every registered capability **exist**? | 21 unresolved name |
+| `./check-judgment.sh` | does the plan→execute **authorization** hang together? | 23 unacknowledged slot · 24 incoherent · 25 under-specified |
 | `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated |
 | `./check-never.sh` | has something happened that never should? | 20 — stop and investigate, do not score |
 | `./check-value.sh` | is the value register honest? | 13 if it records no costs |

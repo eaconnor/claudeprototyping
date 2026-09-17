@@ -5,6 +5,10 @@
 and still have no answer to "where would I look for what customers said?" — that is what
 this register is for, and it is the first thing UX onboarding sets up.
 
+**`project.conf` must name a `RESEARCH_OWNER` before any of this counts.** That person sets
+the register up; `check-evidence.sh` exits 28 until they are named, and the `ux-onboard` skill
+is barred from naming them.
+
 **Onboarding requires a row here, with an owner. It does not require a method, and it does
 not require a particular tool.** The distinction is
 load-bearing. Requiring "do a datadump" of a team that has a Condens repository and a
@@ -29,7 +33,9 @@ it resolves. How you make sense of what is there is yours.
 - **locator** — a repo-relative path, a URL, or a workspace/project identifier.
 - **method** — free text. What you actually do with this evidence. `none yet` is a legal
   and useful value; it is visible, which is the point. An empty cell is not the same thing.
-- **owner** — a person, and **required**. `unassigned` is the state a fresh clone ships in,
+- **owner** — a person, and **required**. A *function* is not a person: `UX`, `research`,
+  `the team`, `TBD` are all rejected. See ROLES.md — a register owned by everyone is owned by
+  nobody, and this is not a sign-off but a run of judgments a function name cannot hold. `unassigned` is the state a fresh clone ships in,
   and a register whose every row is unowned counts as **not set up** (exit 28). Setting this
   up is the job of whoever is assigned to research on the project; the register has to say
   who that is, or the pointer is one nobody maintains.

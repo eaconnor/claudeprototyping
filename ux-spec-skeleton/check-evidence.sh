@@ -34,6 +34,13 @@
 # ignore it. The honest limit is stated in EVIDENCE.md and printed in the output.
 #
 # Exit codes:
+#   ALWAYS A NAME. Both the project-level RESEARCH_OWNER in project.conf and the owner
+#   column of any row that counts as set up must be a PERSON. Function names — "UX",
+#   "research", "the team" — are rejected. This is the argument ROLES.md already makes
+#   about accountable owners, applied one layer earlier: a waiver signed by everyone is
+#   signed by nobody, and an evidence layer set up by "research" was set up by nobody.
+#
+# Exit codes (continued):
 #     0   at least one evidence home is set up, and every resolvable locator resolves
 #     5   cannot evaluate — EVIDENCE.md missing or no parsable rows
 #    28   NOT SET UP — no evidence home beyond the blank template. Onboarding is
@@ -87,10 +94,40 @@ if [ "$NROWS" -eq 0 ]; then
   exit 5
 fi
 
+# IS THIS A NAME? A FUNCTION IS NOT A NAME.
+#
+# The repo already makes this argument about accountable owners: "a waiver signed by
+# everyone is signed by nobody" (ROLES.md). It applies with more force here, because
+# setting up the evidence layer is not a sign-off — it is a series of judgments about
+# where evidence lives and how it is made sense of. "UX" cannot hold a judgment.
+#
+# Returns 0 if the value looks like a person, 1 otherwise. Deliberately a blocklist of
+# non-names rather than a pattern for names: names are not patternable, and a regex
+# trying to describe one would reject most of the world's.
+is_name() {
+  local v
+  v=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+  [ -z "$v" ] && return 1
+  case "$v" in *‹*|*›*) return 1 ;; esac
+  case "$v" in
+    unassigned|unowned|tbd|tba|n/a|na|none|nobody|-|—|?|???) return 1 ;;
+    ux|uxr|research|researcher|"the researcher"|"research team"|"ux team"|"ux research") return 1 ;;
+    design|"design team"|product|"product team"|eng|engineering|"eng team"|qa|ops) return 1 ;;
+    team|"the team"|everyone|all|us|we|someone|anyone|"whoever"|"whoever is free") return 1 ;;
+  esac
+  return 0
+}
+
+NO_RESEARCH_OWNER=0
+if ! is_name "${RESEARCH_OWNER:-}"; then
+  NO_RESEARCH_OWNER=1
+fi
+
 SETUP=0; TEMPLATE=0; DECLARED=0; RESOLVED=0; BROKEN=0; UNOWNED=0; OWNED_SETUP=0
 declare -a NOTES=()
 
 field() { printf '%s' "$1" | awk -F'|' -v n="$2" '{gsub(/^[ \t]+|[ \t]+$/,"",$n); gsub(/`/,"",$n); print $n}'; }
+
 
 while IFS= read -r row; do
   [ -z "$row" ] && continue
@@ -102,16 +139,15 @@ while IFS= read -r row; do
   # and their call to make, so the register has to say who that is. A home with a
   # locator and no named person is a pointer nobody maintains.
   OWNED_ROW=1
-  case "$owner" in
-    ""|unassigned|unowned|tbd|TBD|*‹*)
+  if ! is_name "$owner"; then
       OWNED_ROW=0
       # The blank `template` row is unowned BY DEFINITION — it is the placeholder every
       # fresh clone ships with. Counting it made the summary contradict itself ("1 with an
       # owner" alongside "1 row(s) have no owner"), which is the kind of output that
       # teaches people the script is noisy.
-      [ "$kind" != "template" ] && UNOWNED=$((UNOWNED+1))
-      ;;
-  esac
+      [ "$kind" != "template" ] && { UNOWNED=$((UNOWNED+1))
+        NOTES+=("$id: owner '"'"'$owner'"'"' is not a person. A function cannot hold the judgment this row records — see ROLES.md."); }
+  fi
 
   case "$kind" in
     template)
@@ -184,6 +220,15 @@ if [ "$BROKEN" -gt 0 ]; then
   echo "A register that names a missing path is worse than an empty one: it reads as"
   echo "set up to everyone who does not check."
   exit 29
+fi
+if [ "$NO_RESEARCH_OWNER" -eq 1 ]; then
+  echo "NOT SET UP — project.conf names no RESEARCH_OWNER."
+  echo ""
+  echo "Whoever is assigned to research on this project sets up the evidence layer and"
+  echo "chooses what form it takes. That requires a person. Set RESEARCH_OWNER in"
+  echo "project.conf to a real name — not \"UX\", not \"research\", not \"the team\"."
+  echo "A register owned by everyone is owned by nobody."
+  exit 28
 fi
 if [ "$SETUP" -gt 0 ] && [ "$OWNED_SETUP" -eq 0 ]; then
   echo "NOT SET UP — $SETUP evidence home(s) named, but not one has an owner."

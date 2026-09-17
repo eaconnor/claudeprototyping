@@ -221,8 +221,21 @@ it** — that's the design.
 ./check-evidence.sh; echo "exit: $?"
 ```
 
-**You should see:** `NOT SET UP — no evidence home beyond the blank template`, `exit: 28`,
-and two suggested routes.
+**You should see:** `NOT SET UP — project.conf names no RESEARCH_OWNER`, `exit: 28`.
+
+That is the first thing it wants, before any question about where evidence lives: **a name.**
+Try to satisfy it with a function and watch it refuse:
+
+```bash
+sed -i '' 's|^RESEARCH_OWNER=.*|RESEARCH_OWNER="UX"|' project.conf
+./check-evidence.sh; echo "exit: $?"          # still 28 — a function is not a person
+sed -i '' 's|^RESEARCH_OWNER=.*|RESEARCH_OWNER="Beth Connor"|' project.conf
+./check-evidence.sh; echo "exit: $?"          # 28 again, but now for the real reason
+```
+
+**You should see:** `28` both times — first `names no RESEARCH_OWNER`, then
+`no evidence home beyond the blank template`. Same code, two different sentences; read which
+one you got.
 
 Now set it up the way a team with a research repository would — no datadump file at all:
 

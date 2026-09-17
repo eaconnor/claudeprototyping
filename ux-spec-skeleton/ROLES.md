@@ -17,7 +17,7 @@ holds the evidence, and it is why the gates below sit where they do.
 | | Gate 1 · understand the problem | Gate 2 · right thing | Gate 3 · thing right |
 |---|---|---|---|
 | **Design** | **Owns.** The problem statement and the evidence tagging. | Contributes | Contributes |
-| **Research** | **Owns the data behind it** — interviews, surveys, analytics, synthesis | Contributes | Owns the instruments |
+| **Research** | **Owns the data behind it** — interviews, surveys, analytics, synthesis. **Owns where it lives** (`EVIDENCE.md`) | Contributes | Owns the instruments |
 | **Product** | Contributes | **Owns.** The strategic frame and the OKRs. | Contributes |
 | **Engineering** | Contributes feasibility | Weighs feasibility | **Owns.** Architecture, and the FLOOR. |
 
@@ -32,7 +32,9 @@ imply.
 rows at the top. Decides which of the generic gate criteria get replaced with criteria
 about *this* product. Does not get to tick a Gate 3 box; that is eng's layer.
 
-**Research** — owns `MANIFEST.md` and the `instruments/` folder. Designs the instrument
+**Research** — owns `EVIDENCE.md`, `MANIFEST.md` and the `instruments/` folder. Sets up the
+evidence layer at onboarding (see `RESEARCH_OWNER` below) — that step gates `after_specify`
+and nobody else, human or agent, may do it for them. Designs the instrument
 that closes a criterion, and declares its threshold and predicted outcome *before* data
 exists. Runs the studies. Decides whether a source is `primary`, `market` or `derived` —
 and that last one is load-bearing, see `MANIFEST.md`.
@@ -48,6 +50,25 @@ prioritisation call.
 **Whoever is accountable** (`ACCOUNTABLE_OWNER` in `project.conf`) — signs T2 waivers,
 where the consequence lands on a user. Must be a real named person. "The team" is not an
 accountable owner, because a waiver signed by everyone is signed by nobody.
+
+**Whoever is assigned to research** (`RESEARCH_OWNER` in `project.conf`) — **sets up the
+evidence layer, and chooses what form it takes.** Owns `EVIDENCE.md`: which homes are
+registered, what method sits against each, and whether this project needs a datadump file
+at all or already has a research repository that makes one redundant.
+
+This is the only setup step in the repo that is *mandatory and un-delegable*. `check-evidence.sh`
+exits 28 until this person is named, and `.claude/skills/ux-onboard/SKILL.md` forbids an
+agent from doing the setup on their behalf — not copying the template, not filling a row,
+not picking a method, not naming an owner. The reasoning is the same one that makes an
+unfilled judgment slot human-or-empty: an agent has no evidence of its own to put anywhere,
+so a datadump it scaffolds reads as research and contains none.
+
+**It has to be a name, and a function will not do.** "UX", "research", "the team" are all
+rejected by the script, on the argument directly above about accountable owners. It carries
+further here, because this is not a sign-off — it is a sequence of judgments about where
+evidence lives and how it is made sense of, and a function name cannot hold a judgment.
+There is no version of this where nobody is named: a register with no owner is a pointer
+nobody maintains, and a decayed register still reads authoritative.
 
 ## The role this practice needs someone to hold
 

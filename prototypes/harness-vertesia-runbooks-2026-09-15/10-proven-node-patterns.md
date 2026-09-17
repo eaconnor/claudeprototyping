@@ -1,7 +1,8 @@
 ---
 title: Proven Node Patterns — the only runbook in this set built from a graph that actually ran
 part_of: HARNESS Vertesia-Native Coworker Runbook Set — see 00-shared-substrate.md
-status: live-fire verified 2026-09-16 — run 6aaa9ab7050a8b507a3043b2, status completed
+status: live-fire verified — three graphs ported and run to completion (08 QBR Advisor 2026-09-16;
+  05 Environment Health Monitor and 01 Incident Response 2026-09-17)
 supersedes: the node-shape guesses in 00-shared-substrate.md and every Part C skeleton in 01–09
 ---
 
@@ -43,10 +44,24 @@ explicitly **failed** to prove (its own finding was "row unchanged"). It is now 
 
 1. `POST /processes` and `PUT /processes` still 503 with `Failed to load process validation
    catalogs: Invalid JWT` under the project API key. **Processes are built in the Studio Code tab,
-   by hand, under session auth.** There is no API path, and no endpoint in the published OpenAPI
-   spec for *starting* a run either — runs start from the UI.
-2. Answering a human task is session-auth-only. `POST /agents/{run_id}/answer-task` returns
-   `401 Invalid or expired on_behalf_of token`. An API key cannot act on behalf of a user.
+   by hand, under session auth.**
+2. **Starting a run by API is a server defect, not a permission.** `POST /agents` *does* accept a
+   process-run body — `process_id` is the discriminator (send `process` instead and it replies
+   "Missing interaction", so the process branch exists) — but every shape returns a bare **500**.
+   Retested 2026-09-17 with freshly minted `automation`- and `executor`-role keys: identical 500.
+   So this is almost certainly the same catalog/JWT defect as (1), and no amount of permission fixes
+   it. Runs start from the UI. `[CS: VERIFIED — three roles tested]`
+3. **Answering a human task needs a principal with a task inbox.** `POST
+   /agents/{run_id}/answer-task` returns `401 Invalid or expired on_behalf_of token` under the
+   `developer` key. Under higher-role keys it returns `404 Task not found` — and those keys see
+   *zero* pending tasks where the developer key sees several. **Tasks are scoped to a principal's
+   inbox; an API key has none.** The endpoint needs the assignee or `task:manage`, and a
+   developer-role key cannot mint such a key ("API keys cannot be assigned permissions the caller
+   does not have"). Not proven impossible — **not yet obtained.** `[CS: MEDIUM]`
+4. **Unexplored route worth trying before accepting (2) and (3):** `GET /tools` lists
+   **`start_process_run`** and **`answer_process_task`** as real registered tools. Since a registered
+   Interaction is executable under a plain API key and can be given `tools`, an Interaction may be
+   able to do both things an API key cannot do directly. Untested. `[CS: UNKNOWN]`
 
 **What *did* become available under the API key:** creating Interactions and Prompts, creating Data
 Store tables, `POST /execute`, and every `GET`. That asymmetry is what makes the pattern below work.
@@ -192,8 +207,8 @@ they meant `type:"condition"`. Corrected 2026-09-16.** The `branches: [{to, when
 shape* from the earlier correction pass was right; the type *name* was wrong. `09` needed no change —
 its approval step was already a direct `human_task`.
 
-Still unproven, by node type: `foreach`, real `branch` (parallel split/join), `process`
-(subprocess), and every external connector in every Part A table.
+Still unproven, by node type: real `branch` (parallel split/join), `process` (subprocess), and every
+external connector in every Part A table. (`foreach` **is** now proven — see Part H.)
 
 ---
 
@@ -329,7 +344,8 @@ The definition that ran. Model id and store id are this project's;
 
 ## Known opens — carried forward and newly introduced
 
-- `⟨VERIFY⟩` `foreach`, real `branch` (parallel split/join), and `process` (subprocess) node types
+- `⟨VERIFY⟩` real `branch` (parallel split/join) and `process` (subprocess) node types — `foreach` is proven, see Part H
+- `⟨VERIFY⟩` the Source-Unavailable / empty-source path, written in 01 but never taken — see Part H
 - `⟨VERIFY⟩` Whether a custom tool or MCP webhook can be registered as a `tool` node target —
   `/agent-runner/custom-tools` and `/agent-runner/mcp-tools` not yet read
 - `⟨VERIFY⟩` Every external connector in every Part A table — still zero proven
@@ -348,3 +364,191 @@ The definition that ran. Model id and store id are this project's;
   `NodeDefinition`, `ProcessDefinitionBody`, `ProcessRunConfig`, `AnswerProcessTaskPayload`.
 - Biscuit Tin Check spike, 2026-09-08 — proved `human_task` pause/resume; explicitly did **not**
   prove the Data Store write-back that Part A now does.
+
+---
+
+## Part G — second runbook ported: Environment Health Monitor (05), 2026-09-17
+
+**The pattern generalises.** `05-environment-health-monitor.md` was built as an 11-node graph and run
+to completion twice, for two different fictional customers, taking a **different branch each time**.
+`[CS: VERIFIED — API-confirmed, rows re-queried after each run]`
+
+| Run | Customer | gate | Branch taken | Recorded approver | Treatment |
+|---|---|---|---|---|---|
+| `6aaba6d3117f2ab90d40386b` | `fenwick-logistics` | 1 high-risk breach | `approve_action` (human) | Elizabeth Connor | `ticket_only` |
+| `6aaba93d4cd995e36bbd822c` | `marlow-freight` | 0 | `auto_act` (routine) | `platform_default` | `approved_script` |
+
+Graph: `resolve_scope → collect → compare → risk_gate → diagnose → plan ⇄ {approve_action → act_human
+| auto_act} → report → done`. Process `6aaba9064cd995e36bbd822b` (v4). Seed data is fictional
+(Fenwick Logistics, Marlow Freight — both already fictional names in the harness).
+
+Two things this buys that the QBR graph did not:
+
+- **Real two-way `condition` routing is now proven.** QBR's `value_frame` had both branches pointing
+  at the same node, so divergent routing was never actually exercised. Here the same published graph
+  sent one customer to a human and the other straight through, on a deterministic SQL count.
+- **The deterministic half is genuinely deterministic.** `compare` is a SQL `JOIN` with the threshold
+  comparison in the `WHERE` clause — 4 breaches out of 6 observations, correctly excluding the two
+  passing assets. No model involved in deciding what breached. Only `diagnose` (one registered
+  Interaction) touches an LLM, and its prompt forbids re-deciding breaches or inventing assets.
+
+### New mechanism findings
+
+**`condition` branches must not carry `label`.** A `label` key fails validation on save with a long
+`oneOf` error (`BranchDefinition: must NOT have additional properties: label`). Only `to`, `when`,
+`default`. (QBR v6 has `label` on its branches and saved — so either the validator tightened, or the
+earlier save slipped through. Don't rely on it.)
+
+**JsonLogic can index into a query result.** `{"var": "gate.rows.0.n"}` resolves correctly against a
+`data_query` result written to context — dotted array indexing works. That makes "count something in
+SQL, then branch on the number" a viable and fully deterministic gate pattern, which is what most of
+the nine runbooks' guard steps actually need.
+
+**`{{var}}` in a tool node's `input` is strict, and that is a trap for branching graphs.** A template
+referencing a context field nothing has written yet is a hard, non-retryable failure:
+`Process input template references missing context field "decision"`. It does **not** render empty.
+So if one branch writes a field and the other doesn't, every downstream node that references it dies
+on the second path. Good behaviour — it fails loudly rather than writing a blank into a client
+artifact — but it means **every branch must produce the same context shape.**
+
+**`config.context_update` works, and is gated by `writes`.** It is the fix for the above: a tool node
+can set context fields directly, and it coexists with `input` on the same node. But it must declare
+them, or you get `Process node attempted to write context without declared writes`. Working shape:
+
+```json
+{ "type": "tool", "tool": "data_import",
+  "input": { "...": "..." },
+  "config": { "context_update": { "decision": "approved_script", "approved_by": "platform_default" } },
+  "writes": ["decision", "approved_by"] }
+```
+
+### Three Data Store findings that matter more than the graph
+
+**`primary_key` is silently discarded on table creation.** The create payload was accepted with
+`primary_key: ["action_id"]`; reading the table back shows `primary_key: null`, and the table object
+carries only `name`, `column_count`, `row_count`, `tags`. **There is no primary-key enforcement.**
+Same class of bug as Vertesia's dashboard tool silently dropping a `background` key — the API accepts
+a field it does not honour. `[CS: VERIFIED — read back after creation]`
+
+**`import` with `mode:"append"` is therefore not idempotent.** `health_actions` ended with **three
+identical rows** for `marlow-freight-eh-a1`. Nothing rejected the duplicates.
+
+**A failed run leaves its earlier writes behind.** Those three rows came from two *failed* runs plus
+one successful one — both failures happened *after* `auto_act` had already written. There is no
+transaction around a process run. **Any runbook that writes to a register needs its own idempotency
+key and a re-run policy**; retrying a failed run silently double-counts. For a risk register this is
+the single most consequential finding in this file.
+
+### And one mistake worth keeping in the record
+
+My first version of `compare` and `risk_gate` had **no customer filter** — `WHERE` clauses on the
+threshold only. With one customer's data in the table it returned exactly the right answer and looked
+correct. The moment a second customer existed, `risk_gate` counted Fenwick's high-risk breach while
+running for Marlow and would have sent a routine job to a human approver citing another client's
+asset. Every runbook in this set already states the rule ("customer/tenant ID is mandatory on every
+cross-run object") and I still wrote it wrong, because **a single-tenant fixture cannot detect a
+scoping bug.** Seed two customers before trusting any cross-run query.
+
+### Operational note
+
+`POST /data/{store}/tables` **exceeds its own response timeout but still completes** — the request
+read-timed-out at 90s while all four tables were created within ~10 seconds. Poll `GET
+/data/{store}/tables` to confirm; do not retry the create, or you will race it.
+
+---
+
+## Part H — third runbook ported: Incident Response (01), and `foreach` proven, 2026-09-17
+
+**`foreach` works.** This was the highest-value unproven node type in the set — `01`, `02` and `07`
+all need fan-out — and it behaves correctly. Run `6aabab0a3c7e2b90fee0ca52` on process
+`6aabaada117f2ab90d403876` (v2), `status: completed`.
+`[CS: VERIFIED — per-item results read out of run context, row written back and re-queried]`
+
+Graph: `load_sources → fan_out (foreach) → signal_gate_node → coverage_check → diagnose →
+approve_response → record → done`, with a `no_signal` default branch.
+
+Fan-out over three fictional sources produced three children, each querying only its own source:
+
+```
+src-edr  status=fulfilled  rows=2
+src-net  status=fulfilled  rows=1
+src-uem  status=fulfilled  rows=1
+```
+
+The diagnosis then read all three and — unprompted by any rule beyond "say which signals are probably
+unrelated" — correctly separated the story from the noise: a credential attack that succeeded at
+06:52Z followed by a 2.1GB outbound transfer at 07:05Z (`confidence: high`), while explicitly setting
+aside the low-severity missed patch window at 02:00Z as predating the attack and likely unrelated.
+A named human then approved `contain_now`, and the incident row carries cause, confidence, the
+recommended action and the approver.
+
+### The real `foreach` contract
+
+```json
+{ "type": "foreach",
+  "foreach": "sources.rows",
+  "as": "src",
+  "item_id": "{{src.source_id}}",
+  "max_concurrency": 3,
+  "failure_policy": "collect_errors",
+  "node": { "type": "tool", "tool": "data_query",
+    "input": { "store_id": "<storeId>",
+      "sql": "SELECT ... WHERE customer_id='{{customer_id}}' AND source_id='{{src.source_id}}'" } },
+  "collect": { "into": "per_source", "mode": "array",
+    "include": ["status","index","item_id","output","error","child_run_id"] },
+  "writes": ["per_source"],
+  "transitions": [{ "to": "signal_gate_node" }] }
+```
+
+Details that are not guessable and cost a failed run each:
+
+- **`collect.into` requires a matching `writes`.** Without it: `Process node attempted to write
+  context without declared writes`. This completes a rule that now holds everywhere — **anything
+  that lands a value in context must be declared in `writes`:** an `interaction` result, a tool's
+  `config.context_update`, and a `foreach`'s `collect.into`. Three different mechanisms, one rule.
+- **Collected item `status` is `fulfilled`**, not `ok` or `completed`. Branch on the right string.
+- **The child node's template scope sees both the loop variable and the outer context** —
+  `{{src.source_id}}` and `{{customer_id}}` resolve in the same SQL string. That is what makes
+  per-item, customer-scoped queries possible in one node.
+- **A prompt can consume the collected array directly** with nested iteration:
+  `{{#each per_source}}` … `{{#each output.rows}}`. The grouping by source survives into the prompt,
+  which is why the diagnosis could reason per-source rather than over one flat list.
+- `failure_policy` is `fail_fast` | `collect_errors`; `collect.mode` is only ever `"array"`;
+  `ParallelCollectField` also offers `item`, `branch_id`, `branch_title`, `context_update`,
+  `child_workflow_id`, `child_workflow_run_id`.
+- **`GET /agents/{run_id}/children` returned 0** despite three fan-out children having run. The
+  per-item results are in `collect.into`, not on that endpoint — don't use it to verify fan-out.
+
+### What this port does NOT prove
+
+The `no_signal` branch of `coverage_check` was never taken — signals existed, so the gate was
+non-zero every time. **The "Source-Unavailable is itself a finding" behaviour that `01`, `02` and `09`
+all lean on is written but untested.** It would need a customer with sources and no signals, or a
+deliberately broken source. Naming it rather than letting the completed run imply it.
+
+Also still untested across the whole set: real `branch` (parallel split/join), `process`
+(subprocess), and every external connector.
+
+---
+
+## Part I — where the three ports leave the nine runbooks
+
+| Mechanism | Status | Proven by |
+|---|---|---|
+| `tool` + `input` (query and write) | **Proven** | 08, 05, 01 |
+| `interaction` (registered, for reasoning) | **Proven** | 08, 05, 01 |
+| `human_task` pause / answer / resume | **Proven** | Biscuit Tin, 08, 05, 01 |
+| `condition` — two-way divergent routing | **Proven** | 05 (one customer to a human, one straight through) |
+| `condition` — JsonLogic over a query result | **Proven** | 05, 01 (`{"var":"gate.rows.0.n"}`) |
+| `foreach` fan-out + collect | **Proven** | 01 (3 children, per-item results) |
+| `config.context_update` on a tool node | **Proven** | 05 |
+| `final` | **Proven** | all three |
+| `type:"agent"` | **Dead on this deployment** | see Part B |
+| Source-Unavailable / empty-source handling | **Written, untested** | — |
+| `branch` (parallel), `process` (subprocess) | **Untested** | — |
+| Every external connector (N-central, Halo, Cove, Adlumin) | **Zero proven** | — |
+
+**The honest read: the mechanism risk is now retired, and the connector risk is entirely intact.**
+Nothing stops the remaining six runbooks from being built the way `05` and `01` were — but every one
+of them is waiting on a real external source, not on Vertesia. Building more graphs against fictional
+Data Store rows would add confidence in nothing.

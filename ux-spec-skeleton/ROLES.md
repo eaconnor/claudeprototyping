@@ -68,6 +68,42 @@ consequence. A junior engineer signs their own T0 work; a director does not get 
 T3 just by being a director. `scripts/check-tier.py` computes the tier and `SIGNOFF.md`
 says what to do with it.
 
+## The design-location connector — `design_ref:` / `design_tier:`
+
+A new field pair, not yet in the merged schema — **Design owns declaring it, nobody hand-types
+the tier.**
+
+```
+design_ref:   prototypes/<name>/<name>.html   # or a Figma branch URL, or `none`
+design_tier:  [computed — grepped from design_ref's own fidelity banner]
+```
+
+**Why it isn't Figma-only.** The obvious precedent — `acp-core-main-3`'s `figma-design`
+extension, which links a Figma branch after a spec is created — assumes design lives in
+Figma. A lot of what this practice actually produces (the Tier 1/2/3 HTML prototypes the
+`bethproto`/`prototyping` pipelines build) never touches Figma. `design_ref:` accepts either,
+or `none` if nothing exists yet — never a forced Figma link where there isn't one.
+
+**Why the tier is computed, not asserted.** Every prototype ships a *mandatory* fidelity
+banner — "Tier 1 · Concept" etc., with a 3-pip indicator — enforced by both the `bethproto`
+and `prototyping` skills ("Not optional. Not just in the rail."). That means the tier is
+already stamped on disk, in the artifact, every time a prototype is built. `design_tier:`
+reads it off the banner rather than asking a person to retype it into frontmatter — same
+principle as `check-drift.sh`: compute from the artifact, don't let a hand-typed field go
+stale next to it.
+
+**Three axes, not one — do not conflate them:**
+
+| axis | measures | lives in |
+|---|---|---|
+| `design_tier` (Tier 1/2/3) | how built-out the artifact is | the prototype's own banner |
+| `design_lint:` rung | how rigorously checked against the design system | merged schema, `design_lint:` |
+| brief fidelity % (30/60/90) | how evidence-backed the *spec* is | tied to `[A]`/`[?]` ratio |
+
+A Tier 1 sketch can be `design_lint: static-tokens`-clean. A Tier 3 build can still rest on a
+30%-fidelity brief. Design owns the first; the second is a script's job; the third is
+Gate 1/2's evidence discipline, already covered above.
+
 ## Where this came from
 
 The Gate 1/2/3 ownership split and the design-integrity role are compiled from an internal

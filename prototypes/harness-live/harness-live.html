@@ -2511,8 +2511,8 @@ function overview(){
   const live=(S.act===6);
   const registerCard=`<div class="dcard span2"><h2>Fenwick Logistics — risk register</h2><div class="sub">The living deliverable · Q3 2026 · graded against NCSC 10 / Cyber Essentials · git-tracked</div>
       <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('held',held)}</div>
-      <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
-      <div class="count-check">${r} + ${a} + ${held} = ${FCOUNT.total} findings in this register</div>
+      <div class="keys"><div class="key red"><span class="num">${kpiN(r)}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${kpiN(a)}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${kpiN(held)}</span><span class="lab"><b>Held</b>needs a human</span></div></div>
+      <div class="count-check">${LIVE.state==='error' ? 'Counts unavailable \u2014 the register could not be read.' : `${r} + ${a} + ${held} = ${FCOUNT.total} findings in this register`}</div>
       <div class="viewtabs"><button class="${S.regView==='delta'?'on':''}" onclick="setView('delta')">Delta</button><button class="${S.regView==='register'?'on':''}" onclick="setView('register')">Register</button><button class="${S.regView==='time'?'on':''}" onclick="setView('time')">Over time</button><button class="${S.regView==='translate'?'on':''}" onclick="setView('translate')">Translate</button></div>
       ${S.regView==='delta'?deltaView():S.regView==='register'?regTable(true):S.regView==='translate'?translateArc():overTime()}</div>`;
   const runCycleCard=live
@@ -2549,7 +2549,7 @@ function posture(){
       <div class="ev-r"><span class="tier benchmarked">benchmarked</span><span>compared against a published standard</span></div>
       <div class="ev-r"><span class="tier estimated">estimated</span><span>the coworker&rsquo;s own guess \u2014 weakest, say it carefully</span></div>
       <div class="ev-r"><span class="tier unverified">unverified</span><span>inferred; never reaches a client</span></div></div>
-    <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${held}</span><span class="lab"><b>Held</b>needs a human</span></div></div>`;
+    <div class="keys"><div class="key red"><span class="num">${kpiN(r)}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${kpiN(a)}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key held"><span class="num">${kpiN(held)}</span><span class="lab"><b>Held</b>needs a human</span></div></div>`;
 }
 /* regTable(reviewMode) — reviewMode is optional/falsy by default so every existing call site
    (Dashboard's overview(), reportModeBody()) renders exactly as before, unchanged. Only the Review
@@ -2723,7 +2723,7 @@ function renderClientDashboard(){
   return `<div class="dash">
     <div class="dcard span2"><h2>Fenwick Logistics — status</h2><div class="sub">What Fenwick sees, live — not a point-in-time export</div>
       <div class="spectrum">${seg('red',r)}${seg('amber',a)}${seg('green',cf.length-r-a)}</div>
-      <div class="keys"><div class="key red"><span class="num">${r}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${a}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key"><span class="num">${cf.length-r-a}</span><span class="lab"><b>Green</b>on track</span></div></div>
+      <div class="keys"><div class="key red"><span class="num">${kpiN(r)}</span><span class="lab"><b>Red</b>act now</span></div><div class="key amber"><span class="num">${kpiN(a)}</span><span class="lab"><b>Amber</b>watch</span></div><div class="key"><span class="num">${kpiN(cf.length-r-a)}</span><span class="lab"><b>Green</b>on track</span></div></div>
       ${regTable(false,cf)}</div>
     <div class="dcard span2"><h2>Register → what we tell you</h2><div class="sub">Same finding, same colour, translated for the room</div>${translateArc(cf)}</div>
     <div class="dcard"><h2>Value, this quarter</h2><div class="sub">Written to the Value Ledger each run</div>
@@ -3106,6 +3106,12 @@ function mergeRegister(live){
   const droppedIds = SEED_FINDINGS.map(f=>f.id).filter(id => !live.some(l=>l.id===id));
   return { merged, droppedIds };
 }
+
+/* kpiN — the liveness test (2026-09-17) surfaced this: on a backend failure hydrate() correctly
+   empties FINDINGS, but every KPI key then renders a reassuring "0 Red act now". Zero findings and
+   unknown findings are not the same claim, and the second one must not be able to read as the first.
+   Numbers become em-dashes whenever the live layer has no data to stand behind them. */
+function kpiN(n){ return LIVE.state === 'error' ? '&mdash;' : n; }
 
 function liveStrip(){
   if (LIVE.state === 'error')

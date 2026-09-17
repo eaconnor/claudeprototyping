@@ -1,4 +1,4 @@
-# TRY IT — 15 minutes, breaking things on purpose
+# TRY IT — 20 minutes, breaking things on purpose
 
 Everything else in this repo is machine-facing: scripts, exit codes, CI. This page is the
 opposite. **You, at a terminal, deliberately lying to the system, watching what catches you.**
@@ -159,6 +159,54 @@ it was fine." Everything else in this repo is plumbing in service of that one di
 `RITUALS.md` §2 step 4 is the only countermeasure: once a fortnight, pick one criterion at
 random, read its cited source out loud, and decide as a group whether it says what the
 criterion claims. Fifteen minutes. If that stops happening, this repo is theatre.
+
+**undo:** `cp -R ../skeleton-backup/. .`
+
+---
+
+## 7 · Break the human layer — the one that isn't about gates at all
+
+`ux.README.md` is the hand-written companion to `ux.md`: how each reader should use the spine,
+which two ideas people conflate, what to do when you're not around. **None of that is
+generated, on purpose** — it's judgment, and a generator would overwrite the most useful part
+of the file. What *is* generated is the small `STATUS` block near the top.
+
+First, send a reader somewhere that doesn't exist:
+
+```bash
+sed -i '' 's|`RITUALS.md` §2|`RITUALS.md` §2 and §47|' ux.README.md
+./check-human.sh; echo "exit: $?"
+```
+
+**You should see:** `H-3 DANGLING — cites §47, but the spine has no section 47`, `exit: 26`.
+
+**undo:** `cp -R ../skeleton-backup/. .`
+
+Now move the spine underneath it and watch the status block go out of date:
+
+```bash
+sed -i '' 's/^status: SKELETON/status: DRAFT/' ux.md
+./check-human.sh; echo "exit: $?"
+./check-human.sh --write >/dev/null && ./check-human.sh; echo "exit: $?"
+```
+
+**You should see:** first a diff showing `SKELETON` → `DRAFT` and `exit: 27`, then `exit: 0`
+after `--write` regenerates the block.
+
+**What it proves — and the distinction is the point:** **26 fails the build, 27 doesn't.** A
+dangling reference sends a human to a file that isn't there, and no amount of regeneration
+fixes it — someone has to decide where that link should go. A stale status block is just a
+derived value that needs recomputing, so it warns and hands you the command. Same file, two
+different kinds of wrong, two different codes.
+
+**What it deliberately does *not* check:** whether the prose is still *true*. The README could
+describe a workflow you abandoned months ago and every reference would still resolve. There is
+also no count-checking, and that's a scar rather than an omission — an earlier version compared
+numbers in the README against the spine, and the first real pair it ran on said "26 moments" in
+the README versus "12 moments" in the spine. The README was **right**; the spine read *"26
+service moments across 7 stages (… Live Meeting × 12 moments …)"*. A check that turns correct
+prose into a red build is worse than no check, so numbers are now printed side by side under
+`INFO` and never judged.
 
 **undo:** `cp -R ../skeleton-backup/. .`
 

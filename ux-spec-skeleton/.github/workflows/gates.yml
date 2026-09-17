@@ -74,6 +74,20 @@ jobs:
             *)  echo "::warning::check-drift.sh exit $c"; ;;
           esac
 
+      - name: human layer — references resolve, status fence current
+        run: |
+          # Exact-code branching, not zero/non-zero. 26 is a dangling pointer that
+          # sends a person to a file that is not there — that fails. 27 is only a
+          # regenerable block being out of date, which must never fail a build.
+          ./check-human.sh; c=$?
+          case $c in
+            0)  ;;
+            26) echo "::error::the human layer references something that does not exist"; exit 1 ;;
+            27) echo "::warning::STATUS fence is stale — run ./check-human.sh --write"; ;;
+            5)  echo "::warning::check-human.sh could not evaluate — no README pair found"; ;;
+            *)  echo "::warning::check-human.sh exit $c"; ;;
+          esac
+
       - name: judgment contract (23 = unacknowledged · 24 = incoherent · 25 = under-specified, warns)
         run: |
           ./check-judgment.sh; c=$?

@@ -88,6 +88,20 @@ jobs:
             *)  echo "::warning::check-human.sh exit $c"; ;;
           esac
 
+      - name: evidence homes exist (28 = onboarding incomplete · 29 = broken locator)
+        run: |
+          # 28 fails. That is the point of the gate: a project with nowhere its evidence
+          # lives has not been onboarded, and a fresh clone SHOULD be red here until the
+          # research owner sets it up. Neither CI nor an agent may do that setup.
+          ./check-evidence.sh; c=$?
+          case $c in
+            0)  ;;
+            28) echo "::error::no owned evidence home — the research owner must set this up"; exit 1 ;;
+            29) echo "::error::an EVIDENCE.md row points at a path that does not exist"; exit 1 ;;
+            5)  echo "::warning::check-evidence.sh could not evaluate — EVIDENCE.md missing or unparsable"; ;;
+            *)  echo "::warning::check-evidence.sh exit $c"; ;;
+          esac
+
       - name: judgment contract (23 = unacknowledged · 24 = incoherent · 25 = under-specified, warns)
         run: |
           ./check-judgment.sh; c=$?

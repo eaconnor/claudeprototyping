@@ -1,4 +1,4 @@
-# TRY IT — 20 minutes, breaking things on purpose
+# TRY IT — 25 minutes, breaking things on purpose
 
 Everything else in this repo is machine-facing: scripts, exit codes, CI. This page is the
 opposite. **You, at a terminal, deliberately lying to the system, watching what catches you.**
@@ -207,6 +207,65 @@ the README versus "12 moments" in the spine. The README was **right**; the spine
 service moments across 7 stages (… Live Meeting × 12 moments …)"*. A check that turns correct
 prose into a red build is worse than no check, so numbers are now printed side by side under
 `INFO` and never judged.
+
+**undo:** `cp -R ../skeleton-backup/. .`
+
+---
+
+## 8 · Try to onboard without doing any research
+
+This is the gate that makes research setup mandatory. A fresh clone is **already failing
+it** — that's the design.
+
+```bash
+./check-evidence.sh; echo "exit: $?"
+```
+
+**You should see:** `NOT SET UP — no evidence home beyond the blank template`, `exit: 28`,
+and two suggested routes.
+
+Now set it up the way a team with a research repository would — no datadump file at all:
+
+```bash
+python3 - <<'EOF'
+import io
+s=io.open('EVIDENCE.md',encoding='utf-8').read()
+row="| E-002 | condens | `nable` | tagged highlights by Tag Group | Beth Connor | — |\n"
+i=s.index("| E-001 | template |"); io.open('EVIDENCE.md','w',encoding='utf-8').write(s[:i]+row+s[i:])
+EOF
+./check-evidence.sh; echo "exit: $?"
+```
+
+**You should see:** `exit: 0`, and a `NOTE` saying the row is **declared, not verified** —
+the script has no credentials and did not contact Condens.
+
+Then take your name off it:
+
+```bash
+sed -i '' 's/| Beth Connor |/| unassigned |/' EVIDENCE.md
+./check-evidence.sh; echo "exit: $?"
+```
+
+**You should see:** `NOT SET UP — 1 evidence home(s) named, but not one has an owner`,
+`exit: 28`.
+
+**What it proves, and it's three separate things:**
+
+1. **A location is mandatory. A method is not.** `method:` is free text and `none yet` is a
+   legal value. The datadump template ships method-agnostic on purpose — its shape came from
+   one person's grounded-theory axial coding, and requiring *that* of anyone else produces
+   filled-in headings with nothing learned. Try `| E-002 | airtable | ... |` and watch it
+   pass: the kinds listed in `EVIDENCE.md` are the ones the script knows how to *check*, not
+   the ones it allows.
+2. **An owner is mandatory.** Setting this up is the research owner's job and the form is
+   theirs to choose, so the register has to name them. An unowned pointer is one nobody
+   maintains.
+3. **The agent is forbidden from doing it for you.** Read
+   `.claude/skills/ux-onboard/SKILL.md` — on exit 28 it is explicitly barred from copying
+   the template, filling a row, picking a method or naming an owner. An agent that
+   scaffolds a plausible datadump has produced a file that reads as research and contains
+   none, which is worse than the empty state it replaced. Same rule as an unfilled judgment
+   slot: human or empty, never drafted.
 
 **undo:** `cp -R ../skeleton-backup/. .`
 

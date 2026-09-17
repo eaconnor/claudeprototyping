@@ -19,7 +19,7 @@ policy is in the table's last column.
 | `2` | `check-risk.py` | no destination argument was given | **fail the job config** — this is a caller error, not a finding |
 | `3` | `check-blocked.sh` · `check-risk.py` | the register is missing or has no parsable rows | **fail** |
 | `4` | `check-trace.sh` | a criterion's `traces_to:` points at nothing, or is orphaned | **fail** |
-| `5` | `check-trace.sh` · `check-design.py` · `check-tier.py` · `ux-score.py` · `check-skills.sh` · `check-drift.sh` · `check-human.sh` | **cannot evaluate** — a precondition is missing (no intent spec, no build, no gate file, nothing parsable) | **warn, never treat as pass** |
+| `5` | `check-trace.sh` · `check-design.py` · `check-tier.py` · `ux-score.py` · `check-skills.sh` · `check-drift.sh` · `check-human.sh` · `check-evidence.sh` | **cannot evaluate** — a precondition is missing (no intent spec, no build, no gate file, nothing parsable) | **warn, never treat as pass** |
 | `6` | `check-design.py` | the build violates the design system | **warn** (FIT) |
 | `7` | `check-design.py` | only unresolved token pairs remain | **warn** |
 | `9` | `check-risk.py` | a ship-blocking hazard at this destination | **fail** |
@@ -41,13 +41,15 @@ policy is in the table's last column.
 | `25` | `check-judgment.sh` | regime declared without the constraints that define it | **warn** |
 | `26` | `check-human.sh` | the human layer has a **dangling reference** — missing spine, missing file, or a cited section that does not exist | **fail** |
 | `27` | `check-human.sh` | the generated `STATUS` fence is absent or does not match the spine | **warn** — fix with `--write` |
+| `28` | `check-evidence.sh` | **not set up** — no owned evidence home. Onboarding is incomplete | **fail** |
+| `29` | `check-evidence.sh` | a register row points at a path that is not there | **fail** |
 
-`8` and `28`+ are unassigned. Take the next free number and add a row here in the
+`8` and `30`+ are unassigned. Take the next free number and add a row here in the
 same commit — an undocumented exit code is a number somebody will guess the meaning of.
 
 ## Two things about this table that are easy to get wrong
 
-**`5` is shared on purpose, and it is the most important code here.** Seven scripts use it
+**`5` is shared on purpose, and it is the most important code here.** Eight scripts use it
 for the same thing: *I could not evaluate this.* It is not a pass and not a failure — it
 is the absence of a result. Treating it as a pass is the single most common way this
 apparatus gets defeated, because "no violations found" and "no violations looked for"

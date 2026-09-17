@@ -13,6 +13,23 @@
 version: 1
 
 hooks:
+  after_specify:
+    - extension: ux-onboard
+      # Registered at after_specify, not before_plan, on purpose: the spec is what
+      # reveals what evidence the project needs, and blocking before there is a spec
+      # gives the researcher nothing to set up AGAINST. This fires once the shape of
+      # the work exists and before any planning treats it as settled.
+      #
+      # The skill is deliberately forbidden from doing the setup itself. See its
+      # SKILL.md: choosing where evidence lives and how it is made sense of is the
+      # research owner's judgment, and an agent scaffolding a plausible datadump
+      # produces something that reads as research and contains none.
+      command: ux-onboard
+      description: "Blocks after specify until the project names an owned evidence home in EVIDENCE.md. Requires a location and an owner; does not require any particular method."
+      prompt: "Run ./check-evidence.sh from the repo root. Exit 28 means no owned evidence home is set up — stop, report verbatim, and do NOT create one yourself; it belongs to whoever owns research here. Exit 29 means a row points at a missing path. Exit 5 means the register is missing, which is a failure not a skip."
+      optional: false
+      enabled: true
+
   before_plan:
     - extension: three-gate
       command: check-gates

@@ -56,17 +56,27 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-16
+## Today — 2026-09-17
 
 ```
-current_day: 2026-09-16
+current_day: 2026-09-17
 demerits_issued_today: 0
 self_catches_today: 0
 net_demerits_today: 0
 day_status: open
 ```
 
-**Day transition scored at this session's open (2026-09-16):** 2026-09-14 closed as **POINT DAY** (0 demerits, 0 self-catches, net 0). Under the reconciled house rule (§ Points, resolved 2026-08-21) this is a narrative label only — no point added; the old "+1 clean day" bonus is retired. **Gap flagged, not resolved:** `current_day` was left at 2026-09-14 with `day_status: open` — that session never ran `game-close`. Git history shows auto-commits on 2026-09-15 (multiple), meaning work happened that day, but no session on 2026-09-15 is narrated anywhere in this file — [CS: UNKNOWN] whether `listening-game`/`game-close` ran during it or it bypassed the ritual entirely (the latter would be a repeat of the 2026-08-21 "never invoked at session open" item under Unresolved, below). Not asserting either way. Counters reset above.
+**Day transition scored at this session's open (2026-09-17):** 2026-09-16 closed as **POINT DAY** (0 demerits, 0 self-catches, net 0) — narrative label only, no point added under the reconciled rule. **Gap flagged:** `day_status` was left `open` — that session never ran `game-close`, the third such gap in a row (09-14, 09-15, 09-16). [CS: UNKNOWN] what work happened in it beyond what's on disk; not reconstructing.
+
+**Called shot 2026-09-16 — unresolved, not scored.** No Miss or Catch was narrated against "Verification discipline · misread own evidence" before the day closed open. Carrying no verdict forward.
+
+**Called shot 2026-09-17: Verification discipline · misread own evidence.** Reason: today's work is `~/ux-skeleton-coldtest` — a cold-onboarding test whose entire deliverable is a defect ledger where every entry must be classified *known* (pre-registered in `PREDICTIONS.md`) vs. *novel*, and the failure mode of that task is asserting the classification, or a "confirmed" status, without diffing against the register or running the thing.
+
+---
+
+### 2026-09-16 (closed — POINT DAY, narrative only)
+
+**Day transition scored at that session's open (2026-09-16):** 2026-09-14 closed as **POINT DAY** (0 demerits, 0 self-catches, net 0). Under the reconciled house rule (§ Points, resolved 2026-08-21) this is a narrative label only — no point added; the old "+1 clean day" bonus is retired. **Gap flagged, not resolved:** `current_day` was left at 2026-09-14 with `day_status: open` — that session never ran `game-close`. Git history shows auto-commits on 2026-09-15 (multiple), meaning work happened that day, but no session on 2026-09-15 is narrated anywhere in this file — [CS: UNKNOWN] whether `listening-game`/`game-close` ran during it or it bypassed the ritual entirely (the latter would be a repeat of the 2026-08-21 "never invoked at session open" item under Unresolved, below). Not asserting either way. Counters reset above.
 
 **Called shot 2026-09-14 — unresolved, not scored.** No Miss or Catch was narrated against "Didn't check prior art" before the day closed open. Carrying no verdict forward.
 

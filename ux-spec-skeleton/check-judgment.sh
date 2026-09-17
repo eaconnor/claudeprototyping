@@ -45,7 +45,11 @@
 #    23   J-1 · unfilled judgment slots with no provisionality-preserving directive
 #    24   J-2/J-3 · authorization incoherence — a permissive regime with no human
 #         authorization, or a BLOCKED file handing out build instructions anyway
-#    25   J-4/J-5 · under-specified regime — declared, but missing the constraints its own
+#    25   J-5 · under-specified regime — PROCEED-PARTIAL declared with nothing named as
+#         gated. (J-4 also lived here until 2026-09-17; it is now an INFO note that does
+#         not affect the exit code UNLESS project.conf sets J4_MODE=warn, which is an
+#         onboarding choice. See the J-4 block for the evidence behind the default.)
+#         Formerly: under-specified regime — declared, but missing the constraints its own
 #         regime is defined by
 #
 # Usage:
@@ -100,7 +104,17 @@ echo "======================================================================"
 echo "JUDGMENT CONTRACT — is the plan->execute authorization coherent?"
 echo "======================================================================"
 
-NOT_FOUND=0; WITH_CONTRACT=0; N_J1=0; N_INCOHERENT=0; N_UNDERSPEC=0
+# J4_MODE is an onboarding choice (see project.conf). An unrecognised value falls back
+# to the evidence-backed default rather than failing — but says so, because a silently
+# ignored config value is how a project thinks it is strict and is not.
+J4_MODE="${J4_MODE:-note}"
+case "$J4_MODE" in
+  note|warn) ;;
+  *) echo "   (J4_MODE='$J4_MODE' is not 'note' or 'warn' — falling back to 'note')"
+     J4_MODE="note" ;;
+esac
+
+NOT_FOUND=0; WITH_CONTRACT=0; N_J1=0; N_INCOHERENT=0; N_UNDERSPEC=0; N_J4_NOTE=0
 declare -a FINDINGS=()
 
 for file in "${TARGETS[@]}"; do
@@ -162,13 +176,42 @@ for file in "${TARGETS[@]}"; do
     fi
   fi
 
-  # ---- J-4 · PROCEED-FLAGGED missing the constraints that define it ----
+  # ---- J-4 · PROCEED-FLAGGED without §9b's three named constraints — INFO ONLY ----
+  #
+  # DEMOTED FROM A WARNING ON 2026-09-17, BY RULING, ON EVIDENCE. It used to raise
+  # exit 25. A sweep of the whole corpus found 28 files carrying PROCEED-FLAGGED with
+  # a machine_behavior:, of which exactly two lacked all three of §9b's phrasings —
+  # and BOTH WERE CORRECT:
+  #
+  #   "no synthesis presented as settled · slots stay [0% Beth] · selective codes are
+  #    PROPOSED, hers to kill"
+  #   "written spec only, no HTML this pass · surface every place the schema doesn't
+  #    have a field we need · do not claim any of this is committed to their roadmap"
+  #
+  # Both hold the posture §9b describes — provisional, surfacing, not-claiming — in
+  # their own vocabulary. The second even says "do not claim", about roadmap commitment
+  # rather than validation. So the check had a 100% false-positive rate against real
+  # files, and the ruling was that §9b's three constraints describe a POSTURE, not a
+  # required token set.
+  #
+  # It still prints, because "this file's directives don't obviously encode the regime
+  # it declares" is worth a human glance. It no longer affects the exit code, because a
+  # check that turns correct files red teaches people to ignore the script — the same
+  # failure mode as an inflated never-event list.
   if [ "$REGIME" = "PROCEED-FLAGGED" ]; then
     if ! printf '%s' "$BEHAVIOR" | grep -qiE 'provisional|surface|do not claim|tier 1|unscored'; then
-      echo "   J-4 UNDER-SPECIFIED — PROCEED-FLAGGED is defined as: mark outputs provisional,"
-      echo "        surface [CS:] tags visibly, do not claim validation. machine_behavior"
-      echo "        carries none of those. (This encodes a reading of the spec, not a fact.)"
-      FINDINGS+=("$file|J-4|PROCEED-FLAGGED without its defining constraints"); N_UNDERSPEC=$((N_UNDERSPEC+1))
+      if [ "$J4_MODE" = "warn" ]; then
+        echo "   J-4 UNDER-SPECIFIED — machine_behavior carries none of §9b's three stated"
+        echo "        phrasings (mark provisional / surface [CS:] tags / do not claim"
+        echo "        validation). Reported as a finding because project.conf sets"
+        echo "        J4_MODE=warn."
+        FINDINGS+=("$file|J-4|PROCEED-FLAGGED without its defining constraints"); N_UNDERSPEC=$((N_UNDERSPEC+1))
+      else
+        echo "   J-4 note — machine_behavior carries none of §9b's three stated phrasings"
+        echo "        (mark provisional / surface [CS:] tags / do not claim validation)."
+        echo "        NOT a finding under J4_MODE=note. Glance, don't fix."
+        N_J4_NOTE=$((N_J4_NOTE+1))
+      fi
     fi
   fi
 
@@ -194,7 +237,7 @@ if [ "$WITH_CONTRACT" -eq 0 ]; then
   echo "wrong.' Check GATE_1/2/3 in project.conf, or pass a file explicitly."
   exit 5
 fi
-echo "$WITH_CONTRACT file(s) carry a contract · $N_J1 unacknowledged · $N_INCOHERENT incoherent · $N_UNDERSPEC under-specified"
+echo "$WITH_CONTRACT file(s) carry a contract · $N_J1 unacknowledged · $N_INCOHERENT incoherent · $N_UNDERSPEC under-specified · $N_J4_NOTE J-4 note(s) [J4_MODE=$J4_MODE]"
 if [ "${#FINDINGS[@]}" -gt 0 ]; then
   echo ""; echo "Findings:"
   for f in "${FINDINGS[@]}"; do
@@ -204,6 +247,6 @@ fi
 echo ""
 if [ "$N_INCOHERENT" -gt 0 ]; then echo "INCOHERENT — the authorization contradicts itself. Blocks."; exit 24; fi
 if [ "$N_J1" -gt 0 ];        then echo "UNACKNOWLEDGED — unfilled judgment with no directive protecting it. Blocks."; exit 23; fi
-if [ "$N_UNDERSPEC" -gt 0 ]; then echo "UNDER-SPECIFIED — regime declared without its defining constraints. Warns."; exit 25; fi
+if [ "$N_UNDERSPEC" -gt 0 ]; then echo "UNDER-SPECIFIED — PROCEED-PARTIAL declared with nothing named as gated. Warns."; exit 25; fi
 echo "OK — every contract checked hangs together."
 exit 0

@@ -38,7 +38,7 @@ policy is in the table's last column.
 | `22` | `check-drift.sh` | `drift:` claims a better state than the hashes show | **fail** |
 | `23` | `check-judgment.sh` | unfilled judgment slots with no directive keeping them provisional | **fail** |
 | `24` | `check-judgment.sh` | authorization incoherence — a permissive regime with no human sign-off, or a `BLOCKED` file authorizing work anyway | **fail** |
-| `25` | `check-judgment.sh` | regime declared without the constraints that define it | **warn** |
+| `25` | `check-judgment.sh` | `PROCEED-PARTIAL` declared with nothing named as gated | **warn** |
 | `26` | `check-human.sh` | the human layer has a **dangling reference** — missing spine, missing file, or a cited section that does not exist | **fail** |
 | `27` | `check-human.sh` | the generated `STATUS` fence is absent or does not match the spine | **warn** — fix with `--write` |
 | `28` | `check-evidence.sh` | **not set up** — no owned evidence home. Onboarding is incomplete | **fail** |

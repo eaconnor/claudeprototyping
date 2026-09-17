@@ -68,7 +68,7 @@ and loses the only information that tells you what to do next. Full contract:
 | `./check-trace.sh` | have criteria drifted from what they enforce? | 4 broken trace · 5 no intent spec |
 | `./check-drift.sh` | are the **sources** still what we built on? | 18 stale · 19 conflict · **22 `drift:` misdeclared** |
 | `./check-skills.sh` | does every registered capability **exist**? | 21 unresolved name |
-| `./check-judgment.sh` | does the plan→execute **authorization** hang together? | 23 unacknowledged slot · 24 incoherent · 25 under-specified |
+| `./check-judgment.sh` | does the plan→execute **authorization** hang together? | 23 unacknowledged slot · 24 incoherent · 25 partial with no named gate |
 | `./check-human.sh` | does the **human layer** still point at anything real? | 26 dangling reference · 27 fence stale (`--write` fixes) |
 | `./check-evidence.sh` | is there **anywhere the evidence lives**? | 28 not set up · 29 broken locator |
 | `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated |

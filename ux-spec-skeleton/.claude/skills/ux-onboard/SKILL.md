@@ -74,6 +74,22 @@ Tell me which, or hand it to whoever owns research here. I am not going to choos
   the fix is the owner's, since only they know whether the file moved or the row is wrong.
 - **Exit 5** — `EVIDENCE.md` is missing or unparsable. That is a failure, not a skip.
 
+## The two config values onboarding exists to settle
+
+When this check blocks, surface both of these to the person doing the onboarding. Report
+what they currently are; do not set either of them yourself.
+
+1. **`RESEARCH_OWNER` in `project.conf`** — must be a real person. A function name
+   ("UX", "research", "the team") is rejected by the script. This is whose job the setup
+   is, so guessing it defeats the purpose of asking.
+
+2. **`J4_MODE` in `project.conf`** — `note` (default) or `warn`. Whether `check-judgment.sh`
+   treats §9b's three `PROCEED-FLAGGED` constraints as required wording or as a posture
+   expressible in the team's own words. State the tradeoff and the evidence behind the
+   default — 28 corpus files, two flagged, both correct — and let them choose. If they
+   have no opinion, the default stands; do not talk them into `warn` because it sounds
+   more rigorous.
+
 ## Why this is a hook and not a norm
 
 `after_specify` is a slot `speckit-specify` actually reads and is instructed to execute.

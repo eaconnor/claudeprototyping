@@ -6,19 +6,17 @@
 Read /Users/bethconnor/Library/CloudStorage/OneDrive-N-able/Bethproto/HANDOFF-ux-spec-skeleton-review-2026-09-18.md
 before doing anything else.
 
-Beth is reviewing ux-spec-skeleton/ one file at a time in the Browser preview pane.
-README.md and project.conf are already reviewed and settled. Open
-ux-spec-skeleton/.claude/skills/ux-kickoff/SKILL.md in the Browser preview pane next
-and say: "Here's the ux-kickoff skill — take a look, say next when ready for OPEN.md."
-Do not re-show README.md or project.conf. Do not add anything to the review queue
-without asking first.
+The file-by-file review is DONE — README.md, project.conf, SKILL.md, and OPEN.md are
+all reviewed and settled. Do not re-show any of them or reopen that pass.
 
-A /scout is running (or may have completed) on a Confluence survey of common project
-types and how they relate to UX, to inform the /ux-kickoff skill's use-case coverage —
-check for a completed scout task before assuming it hasn't started. Beth also asked for
-the skill to guide whichever person is acting as UX/product-as-UX through their actual
-main task, not just the RACI/kickoff meta-process — that's not built yet, it's queued
-behind the scout findings.
+Beth's next phase is TESTING the toolkit, not more review. She has not yet said what
+form that takes (running /ux-kickoff for real on a project, a fresh-clone dry run, both)
+— ask, don't assume, before picking a test plan.
+
+The Confluence /scout survey for /ux-kickoff use-case coverage was CALLED OFF mid-survey
+("you are probably going too deep... just get started") — do not resume it or treat it
+as still queued. Beth gave her own five-category taxonomy directly instead, and it's
+already built into SKILL.md as Step 0b (see OPEN.md H-05b). That specific gap is closed.
 ```
 
 ---
@@ -62,17 +60,40 @@ the review queue, so it doesn't reorder anything Beth was already reviewing.
 
 ---
 
+## UPDATE — 2026-09-18, review closed, use-case gap fixed, ready for testing
+
+**File-by-file review is complete.** `README.md`, `project.conf`, `SKILL.md`, `OPEN.md`
+— all reviewed and settled. The Browser-pane, one-file-at-a-time protocol that governed
+this session is done; don't resume it or add files to it without a new ask.
+
+**The Confluence-survey plan was called off, not completed.** A `/scout` on common
+project types vs. UX involvement was started against real Confluence data (found two
+genuine, unrelated tiering systems in ProdUX — a research-method Tier 1/2/3, and a
+separate initiative-level UX-involvement Tier A/B/C) — then Beth stopped it mid-survey:
+*"you are probably going too deep... just get started."* Rather than resume the survey,
+she supplied her own five-category taxonomy directly (§18: Beth abducts, Claude deduces
+— her domain call was faster and more grounded than continuing to mine Confluence for
+it). That taxonomy is now **Step 0b** in `SKILL.md`: *"I don't know if this needs UX" /
+"updating an existing flow — minor" / "something's majorly wrong with existing UX" /
+"building a new feature" / "building a new product"* — each with a one-line note on what
+it shifts in Steps 1-4 (none of the five skips a step). Logged as `OPEN.md` **H-05b**.
+The Confluence findings themselves were not thrown away — noted below in case a later
+session wants them — but they are not wired into anything and no further survey is queued.
+
+**Next requested: testing.** Beth said "time to update /handoff to get to testing this."
+No test plan has been specified yet — what "testing" means (a live `/ux-kickoff` run on
+a real or fictional project, a fresh-clone script sweep, both) is the first thing to ask,
+not assume.
+
+---
+
 ## Where things stand right now
 
-**Active protocol:** Beth reviews ux-spec-skeleton/ file-by-file in the Claude Code Browser preview pane. One file shown, wait for "next" before advancing. She corrects inline as she reads.
+**File-by-file review: closed.** `README.md`, `project.conf`, `SKILL.md`, `OPEN.md` — all
+reviewed and settled. The Browser-pane one-at-a-time protocol is done.
 
-**Reviewed and settled:** `README.md`, `project.conf`
-
-**Next in queue, in this exact order:**
-1. `ux-spec-skeleton/.claude/skills/ux-kickoff/SKILL.md`
-2. `ux-spec-skeleton/OPEN.md`
-
-Do not extend this list without asking Beth first.
+**Current phase: testing the toolkit.** Not yet scoped — ask Beth what "test this" means
+before picking an approach.
 
 ---
 
@@ -125,7 +146,7 @@ Do not extend this list without asking Beth first.
 | `ux-spec-skeleton/project.conf` | Reviewed — two preamble sections just added |
 | `ux-spec-skeleton/OPEN.md` | Live register — rows A-05 through A-08, H-01, H-04/H-04a are all from this session |
 | `ux-spec-skeleton/templates/UX-INTENT-SPEC.template.md` | UX-integrated intent spec, 871 lines |
-| `ux-spec-skeleton/.claude/skills/ux-kickoff/SKILL.md` | Facilitator skill — next in review queue |
+| `ux-spec-skeleton/.claude/skills/ux-kickoff/SKILL.md` | Facilitator skill — reviewed, settled; now has Step 0b (project-type branching) |
 | `ux-spec-skeleton/check-roster.sh` | Newest script, tier-aware |
 | `ux-spec-skeleton/scripts/figures.py` | Content-hash comparison logic behind `check-condens.sh` |
 | `ux-spec-skeleton/EXIT-CODES.md` | Exit code registry (33 codes, documented) |
@@ -137,6 +158,21 @@ All paths verified against the filesystem at handoff time (2026-09-18): `ux-kick
 
 ## What's ambiguous or unresolved (name it, don't guess)
 
+- **What "testing" means is completely unscoped** — Beth's own words were "time to update /handoff to get to testing this." No method, no scope, no success criteria stated. Ask before choosing one.
 - `OPEN.md` A-08 (the skinny/full seam) is explicitly logged as an untested judgment call — no verdict yet on whether the boundary is drawn in the right place.
-- `OPEN.md` H-04's remaining scope (`ROLES.md` + `VALUE.md`) has not been reviewed in this session's file-by-file pass — status unknown until Beth gets there.
-- Whether Beth wants any files added to the review queue beyond `SKILL.md` → `OPEN.md` is unstated. Ask, don't assume.
+- `OPEN.md` H-04's remaining scope (`ROLES.md` + `VALUE.md`) was never reached in the file-by-file pass — status unknown, not reviewed.
+- `OPEN.md` H-05b's five categories are Beth's own on-the-spot taxonomy, not derived from anything external — treat as settled unless she revises it herself; don't "improve" it with the shelved Confluence material below.
+
+## Confluence material found, not used (available if a later session wants it)
+
+Two real, independent tiering systems exist in the ProdUX Confluence space — surfaced
+while the survey was still running, before Beth called it off. Neither is wired into
+`ux-spec-skeleton` and neither should be, unless Beth asks:
+
+- **Research Tiering Decision Tree** (Tier 1 Self-Serve / Tier 2 Coached / Tier 3
+  Researcher-Led) — a PM-or-designer-vs-UXR-involvement ladder by stakes and session
+  count. Authored by Beth Nam. Page id `62082580750`, plus `62082351514` (Tier 2 process)
+  and `62081630643` (Tier 1 templates).
+- **Initiative/Epic UX Tiering system** (Tier A / B / C) — a separate, initiative-level
+  UX-involvement ladder by value/ambiguity/impact/disruption/JTBD, run through the
+  triad/quadrad. Page ids `59637268523` (criteria) and `61028007944` (operationalization).

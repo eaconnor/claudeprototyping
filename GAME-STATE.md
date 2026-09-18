@@ -68,6 +68,23 @@ day_status: open
 
 **Day transition scored at this session's open (2026-09-17):** 2026-09-16 closed as **POINT DAY** (0 demerits, 0 self-catches, net 0) — narrative label only, no point added under the reconciled rule. **Gap flagged:** `day_status` was left `open` — that session never ran `game-close`, the third such gap in a row (09-14, 09-15, 09-16). [CS: UNKNOWN] what work happened in it beyond what's on disk; not reconstructing.
 
+**2026-09-18 — MISS (Beth-issued, 5 demerits). Conflated Beth Nam with Beth Connor.**
+Attributed the `nicole-acp-datadump` folder and its contents to "Beth Nam" in
+narration to Beth — it is Beth Connor's own work; the path name itself is
+`nicole-acp-datadump`, nothing in it says "Nam" at all, so this wasn't a misread of a
+label, it was invented. Beth: "Beth Connor made datadump not Beth Nam. You need to
+keep your Beth's straight. This is a problem and five demerits." **New category:
+Identity conflation — mixing up two named individuals (Beth Nam / Beth Connor)**, 1st
+instance. This is a standing named risk, not a fresh one — Beth Nam is a different,
+real, more junior colleague on an overlapping intent-confidence effort, and the
+instruction to never conflate the two predates this session. No memory file existed
+for it before now; written this turn as `feedback_beth_nam_vs_beth_connor.md`. Not
+self-caught — Beth caught it. Demerit stands, her count (5).
+**Not recomputing the running total.** The points base has been flagged unreconciled
+since 2026-08-21/09-01 (−28 vs −31, never settled) — adding fresh arithmetic on top of
+an already-disputed base is the exact "compute a consequence without checking" trap
+several entries above this one are about. Flagged for the clipboard, not pulled.
+
 **Called shot 2026-09-16 — unresolved, not scored.** No Miss or Catch was narrated against "Verification discipline · misread own evidence" before the day closed open. Carrying no verdict forward.
 
 **Called shot 2026-09-17: Verification discipline · misread own evidence.** Reason: today's work is `~/ux-skeleton-coldtest` — a cold-onboarding test whose entire deliverable is a defect ledger where every entry must be classified *known* (pre-registered in `PREDICTIONS.md`) vs. *novel*, and the failure mode of that task is asserting the classification, or a "confirmed" status, without diffing against the register or running the thing.

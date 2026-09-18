@@ -5,11 +5,24 @@ format, invented from the DATADUMP template's house style without checking wheth
 real one already existed. One did — richer, production-tested, and already the org
 standard.
 
-## Use this instead
+## Use one of these instead
+
+**For a UX/research-led kickoff — RACI, evidence status, change requests, scoped**
+**sign-off treated as core, not optional:**
+
+```
+templates/UX-INTENT-SPEC.template.md
+```
+
+**For a project where that groundwork is already settled elsewhere, and you only**
+**need Sections 0-20:**
 
 ```
 briefs/handoffs/what's up with the humans in ACP?/nicole-acp-datadump/Intent_Spec_Example.md
 ```
+
+The first is a first-class derivative of the second, not a competing format — see its
+own header for the lineage.
 
 Confirmed as the real standard, not one team's habit: two independent production
 documents that were **not** built from it — `acp-core-main-3/Intent Specs/

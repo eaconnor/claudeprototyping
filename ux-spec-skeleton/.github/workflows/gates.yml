@@ -163,6 +163,15 @@ jobs:
           esac
 
       - uses: actions/checkout@v4
+      - name: roster & RACI filled
+        run: |
+          ./check-roster.sh; c=$?
+          case $c in
+            0)  ;;
+            3)  echo "::warning::project.conf missing or ROSTER unparsable" ;;
+            33) echo "::warning::a roster/RACI/owner/escalation field is a placeholder, not an answer yet" ;;
+            *)  echo "::warning::check-roster.sh exit $c" ;;
+          esac
       - name: gate criteria
         run: ./check-gates.sh || echo "::warning::gates red — the normal state of honest work in progress"
       - name: human decisions outstanding

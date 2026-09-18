@@ -1,6 +1,6 @@
 ---
 name: "ux-kickoff"
-description: "Facilitates the UX-INTENT-SPEC kickoff — roster/RACI, owners, escalation, evidence basis — and writes each answer into BOTH project.conf and Intent Specs/<project>.mds own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
+description: "Facilitates the UX-INTENT-SPEC kickoff — roster/RACI, owners, escalation, evidence basis — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -15,9 +15,9 @@ rule below exists because something specific went sideways in that run.
 
 ## Read this before asking anything
 
-**This kickoff has one canonical document: the project's UX-INTENT-SPEC**
-**(`Intent Specs/<project>.md`, a copy of `ux-spec-skeleton/templates/**
-**UX-INTENT-SPEC.template.md`).** `project.conf` is a *mirror* of five of its
+**This kickoff has one canonical document: the project's UX-INTENT-SPEC** — the
+file named by `INTENT_SPEC` in `project.conf`, started from `templates/**
+**UX-INTENT-SPEC.template.md`.** `project.conf` is a *mirror* of five of its
 fields, kept only because the check scripts read config, not markdown frontmatter.
 Every answer in Steps 1-4 below gets written to **both**, at the same time, or they
 drift and nobody notices which one is stale. The exact correspondence:
@@ -122,13 +122,14 @@ counterpart — it's config-only, there to gate nothing, just to stay honest.
   legitimate answer — write `EVIDENCE_BASIS="HYPOTHESES"` in `project.conf` **and**
   `evidence_basis: HYPOTHESES` in the Intent Spec's frontmatter, without treating
   it as a problem to fix in this step.
-- If an Intent Spec doesn't exist yet, rename `Intent Specs/PROJECT-NAME.md` (the
-  `UX-INTENT-SPEC.template.md` copy) to the project's name and point `INTENT_SPEC`
-  in `project.conf` at it. **That rename, and the frontmatter fields in the table
-  above, are the only parts of this file you touch.** Its numbered §0-§20 content,
-  its `## Change requests` rows, and its Signatures table are the human's work —
-  if a discipline pushes back on a claim during this kickoff, tell the room to add
-  a `## Change requests` row themselves; do not add it for them.
+- If `INTENT_SPEC` in `project.conf` is empty, copy `templates/UX-INTENT-SPEC.template.md`
+  to wherever this project keeps its canonical documents, and point `INTENT_SPEC` at
+  the copy — same move as `ux-onboard`'s Path A for `EVIDENCE.md`. **That copy, the
+  rename, and the frontmatter fields in the table above are the only parts of this
+  file you touch.** Its numbered §0-§20 content, its `## Change requests` rows, and
+  its Signatures table are the human's work — if a discipline pushes back on a claim
+  during this kickoff, tell the room to add a `## Change requests` row themselves;
+  do not add it for them.
 
 ### Step 5 — Run the check, report verbatim
 

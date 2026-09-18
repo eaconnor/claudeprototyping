@@ -17,7 +17,7 @@ policy is in the table's last column.
 | `1` | `check-gates.sh` | a gate has unticked acceptance criteria | **warn** — red gates are the normal state of honest work |
 | `2` | `check-blocked.sh` | a `HUMAN` row stands: a person owes a decision | **warn + name the owner** |
 | `2` | `check-risk.py` · `figures.py` | no destination argument / no file argument was given | **fail the job config** — this is a caller error, not a finding |
-| `3` | `check-blocked.sh` · `check-risk.py` · `figures.py` | nothing parsable — the register is missing or empty of rows, or an artifact body holds no numeral at all | **fail** |
+| `3` | `check-blocked.sh` · `check-risk.py` · `figures.py` · `check-roster.sh` | nothing parsable — the register is missing or empty of rows, or an artifact body holds no numeral at all | **fail** |
 | `4` | `check-trace.sh` | a criterion's `traces_to:` points at nothing, or is orphaned | **fail** |
 | `5` | `check-trace.sh` · `check-design.py` · `check-tier.py` · `ux-score.py` · `check-skills.sh` · `check-drift.sh` · `check-human.sh` · `check-evidence.sh` · `check-never.sh` · `check-condens.sh` | **cannot evaluate** — a precondition is missing (no intent spec, no build, no gate file, nothing parsable) | **warn, never treat as pass** |
 | `6` | `check-design.py` | the build violates the design system | **warn** (FIT) |
@@ -47,8 +47,9 @@ policy is in the table's last column.
 | `30` | `check-condens.sh` | a cited artifact's **figures moved**, or it moved with no content baseline to judge by — every stat quoted from it is unverified | **fail** |
 | `31` | `check-condens.sh` | a registered artifact was never observed, or is no longer published | **fail** |
 | `32` | `check-condens.sh` | a cited artifact's **prose moved but every figure held** — skim it, no quoted number is invalidated | **warn** |
+| `33` | `check-roster.sh` | a roster/RACI/owner/escalation field is a placeholder, a function, or blank | **warn** |
 
-`8` and `33`+ are unassigned. Take the next free number and add a row here in the
+`8` and `34`+ are unassigned. `33` is now `check-roster.sh`. Take the next free number and add a row here in the
 same commit — an undocumented exit code is a number somebody will guess the meaning of.
 
 ## Two things about this table that are easy to get wrong

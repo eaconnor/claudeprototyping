@@ -77,6 +77,7 @@ and loses the only information that tells you what to do next. Full contract:
 
 | script | question | exit |
 |---|---|---|
+| `./check-roster.sh` | has the kickoff's own output — roster, RACI, owners, escalation — been written down? | 3 nothing to check · 33 a field is a placeholder |
 | `./check-gates.sh` | are the gate boxes ticked? | 1 open · **fails on zero parsable criteria** |
 | `./check-blocked.sh` | are we waiting on a *person*? | 2 a `HUMAN` row stands · 3 register broken |
 | `./check-trace.sh` | have criteria drifted from what they enforce? | 4 broken trace · 5 no intent spec |

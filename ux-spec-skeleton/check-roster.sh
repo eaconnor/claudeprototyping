@@ -1,10 +1,16 @@
 #!/bin/bash
 # check-roster.sh — is the kickoff's own output actually filled in?
 #
-# THE GAP THIS CLOSES. ux-spec-skeleton's check-evidence.sh established that a
-# location and an owner are mandatory for research, a method is not. This script
-# asks the same question one level up: before any gate content exists, does this
-# project know who is accountable for what, and where a disagreement goes?
+# CONSOLIDATED 2026-09-18 from a short-lived separate skeleton (ux-kickoff-skeleton)
+# built the same day, then folded back in here on the reasoning that one repo with
+# fourteen scripts beats two repos that both look half-finished. This is the ONLY
+# script this repo gained from that detour — the others (check-gates.sh,
+# check-blocked.sh) were copies of what already existed here.
+#
+# THE GAP THIS CLOSES. check-evidence.sh established that a location and an owner
+# are mandatory for research, a method is not. This script asks the same question
+# one level up: before any gate content exists, does this project know who is
+# accountable for what, and where a disagreement goes?
 #
 # A cognitive walkthrough of a UX kickoff (2026-09-18) found the roster and RACI
 # genuinely change mid-meeting — assignments get corrected, doubled cells get
@@ -13,15 +19,16 @@
 # actually written rather than left as placeholders.
 #
 # WHAT THIS DOES NOT DO. It cannot tell you the RACI is CORRECT — only that every
-# slot has a real name in it rather than a placeholder or a function. Whether
-# Beth should be R and A on the same area with no independent check is a judgment
-# call for the room, not something a script can rule on.
+# slot has a real name in it rather than a placeholder or a function. Whether one
+# person should be R and A on the same area with no independent check is a
+# judgment call for the room, not something a script can rule on.
 #
 # Exit codes:
 #   0   ROSTER, ACCOUNTABLE_OWNER, RESEARCH_OWNER and ESCALATION_PATH all name a
 #       real person; RISK_FUNCTION is either named or explicitly UNASSIGNED
-#   3   project.conf missing, or ROSTER is empty/unparsable — nothing to check is
-#       not the same as nothing wrong
+#   3   project.conf missing, or ROSTER is empty/unparsable — SHARED with
+#       check-blocked.sh/check-risk.py's "the register is missing" meaning, not a
+#       collision: "nothing to check" is never a pass in either script.
 #   33  a required field is a placeholder, a function, or blank
 
 [ -f ./project.conf ] && . ./project.conf

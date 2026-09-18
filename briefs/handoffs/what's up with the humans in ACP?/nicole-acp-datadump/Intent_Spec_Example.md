@@ -675,3 +675,89 @@ The implementation agent must produce:
 | Version | Date | Change | Changed by | Reason |
 |---|---|---|---|---|
 | 0.1.0 | YYYY-MM-DD | Initial draft | `<name>` | `<reason>` |
+
+---
+
+<a id="IC-addendum-gate-enforcement"></a>
+## Addendum — for teams running mechanical gate enforcement
+
+**Optional. Only relevant if your project uses a toolkit that reads this document by
+script** (e.g. `ux-spec-skeleton`'s `check-trace.sh` / `check-condens.sh` /
+`check-judgment.sh`). Most consumers of this template do not, and should ignore this
+section. It exists here rather than in a second competing template because one
+real-world-tested intent-spec format beats two, and because Sections 0–20 above are
+sufficient without it — this only adds machinery for a specific enforcement layer.
+
+### A.1 · Evidence basis — separate from `status:`
+
+`status:` (frontmatter) tracks **workflow stage** — Draft, UX Review, Released. It does
+not say whether the claims inside are evidenced or invented, and a spec can sit in
+`Draft` for months while §1–§9 read as settled fact. Section 12's per-assumption
+`Confidence` column is the right granular mechanism, but nothing forces a document-level
+declaration up front — and the failure this addendum exists for is not a missing
+assumption row, it's a whole document that was written in a single sitting with no
+research behind it at all, which is a normal and legitimate way to start.
+
+Add one frontmatter field if your team wants that declared at a glance:
+
+```yaml
+evidence_basis: HYPOTHESES   # HYPOTHESES | FINDINGS | MIXED — see below
+```
+
+- **HYPOTHESES** — nobody can point at evidence for the load-bearing claims. Routes to a
+  pre-spec phase in `ux-spec-skeleton`; `check-trace.sh` still resolves `traces_to:`
+  pointers into this document — that is alignment, not grounding, and a criterion can
+  trace perfectly to an invented claim. This field does not fix that; it names it.
+- **FINDINGS** — every load-bearing claim has a `source_material:` entry someone can
+  point at. Does not require rigor, only that it is locatable.
+- **MIXED** — some of each; §12's per-row `Confidence` carries the real weight.
+
+"I don't know" resolves to `HYPOTHESES`. It is a positive claim that requires someone
+able to point, not a penalty for admitting the document is a first draft.
+
+### A.2 · Change requests — the channel this template does not have
+
+`traces_to:` and the ID cross-references throughout Sections 0–20 point **from** a
+criterion **up** to this document. Nothing points back. Design, research and
+engineering each interrogate an intent spec by nature — research asks *is this true*,
+engineering asks *is this buildable and what does it cost* — and without a channel
+those arrive as corridor conversations instead of a record.
+
+| id | target section/ID | asked by | what they are asking | status |
+|---|---|---|---|---|
+| CR-001 | `<§N or REQ-##/UXI-##>` | `<name>` | `<the change requested, and why>` | `<open / accepted / rejected — with reason>` |
+
+Rejected is a legitimate outcome. Silent is not.
+
+### A.3 · Signatures — scoped, not void-all
+
+Section 17's Decision log records what was decided. It does not record who has agreed
+to the document as it currently stands. If your team wants that:
+
+- **Scope signatures by section**, not to the whole document. An edit to §6 should void
+  signatures over §6, not over §3 — a typo fix should notify, a changed acceptance
+  criterion should void. `check-condens.sh` in `ux-spec-skeleton` uses the same
+  content-hash-vs-baseline mechanism for research artifacts; reuse the pattern rather
+  than reinventing a diff.
+- **Two different signatures, and conflating them is the failure mode:**
+  - **AGREE** — I think this is right. Only for sections you are competent to judge.
+  - **READ** — I have read it and will not later claim nobody told me. Always legal.
+
+| who | role | AGREE / READ | sections | date |
+|---|---|---|---|---|
+| `<name>` | `<role>` | `<AGREE / READ>` | `<§ range>` | `<YYYY-MM-DD>` |
+
+**A refusal to sign is not a blocker to route around.** If your project uses `OPEN.md`,
+file it as a row typed `HUMAN`, owned by whoever your team names as the escalation
+path. Nothing in either template adjudicates a signature conflict — it only makes the
+disagreement visible and owned.
+
+### Honest limits of this addendum
+
+It cannot make a claim evidenced — `evidence_basis:` only makes the absence of evidence
+visible, same as `[R]/[D]/[A]/[?]` tagging does at the claim level. Nothing in the base
+template (Sections 0–20) reads A.1–A.3 automatically; they are documentary until a
+script is pointed at them, the same way `confidence_regime:` sat documentary in
+`ux-spec-skeleton` until `check-judgment.sh` was built against it. Do not let an agent
+fill in `evidence_basis:`, a change request, or a signature — a generated `HYPOTHESES`
+declaration is a self-assessment nobody made.

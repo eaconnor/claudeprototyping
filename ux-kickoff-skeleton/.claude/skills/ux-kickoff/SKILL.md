@@ -1,6 +1,6 @@
 ---
 name: "ux-kickoff"
-description: "Facilitates filling in project.conf's ROSTER/RACI/owners/escalation and the Intent Spec's frontmatter, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
+description: "Facilitates the UX-INTENT-SPEC kickoff — roster/RACI, owners, escalation, evidence basis — and writes each answer into BOTH project.conf and Intent Specs/<project>.mds own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -12,6 +12,38 @@ from an actual run of this meeting — a product owner handing over a made-up dr
 a designer and researcher discovering they're both R and A on their own areas, an
 engineer refusing to sign a data-egress design with no legal name attached. Every
 rule below exists because something specific went sideways in that run.
+
+## Read this before asking anything
+
+**This kickoff has one canonical document: the project's UX-INTENT-SPEC**
+**(`Intent Specs/<project>.md`, a copy of `ux-spec-skeleton/templates/**
+**UX-INTENT-SPEC.template.md`).** `project.conf` is a *mirror* of five of its
+fields, kept only because the check scripts read config, not markdown frontmatter.
+Every answer in Steps 1-4 below gets written to **both**, at the same time, or they
+drift and nobody notices which one is stale. The exact correspondence:
+
+| what you're asking about | `project.conf` field | Intent Spec location |
+|---|---|---|
+| roster & RACI | `ROSTER=( ... )` | frontmatter `roster:` list (line ~57) **and** the `## Roster & RACI — expanded` table (line ~136) — write BOTH, they're allowed different formats but must agree in content |
+| project-wide signer | `ACCOUNTABLE_OWNER` | frontmatter `accountable_owner:` (line ~72) |
+| research owner | `RESEARCH_OWNER` | frontmatter `research_owner:` (line ~73) |
+| risk co-signer | `RISK_FUNCTION` | frontmatter `risk_function:` (line ~74) |
+| escalation path | `ESCALATION_PATH`, `ESCALATION_PATH_TESTED` | frontmatter `escalation_path:` (line ~80) |
+| evidence basis | `EVIDENCE_BASIS` | frontmatter `evidence_basis:` (line ~44) |
+
+**Two sections of the Intent Spec exist for exactly what this skill is doing and**
+**have no `project.conf` counterpart at all** — don't skip them because they're not
+in the table above:
+
+- **`## Change requests`** (line ~245) — when a discipline pushes back on the
+  draft during this kickoff (a researcher saying "I can't sign this claim," an
+  engineer saying "I won't sign this without legal"), that pushback is a row here,
+  not a side conversation. If Step 4 below surfaces one, add the row.
+- **`## 17. Decision log and sign-off`** (line ~753) — once roster/owners/
+  escalation/evidence-basis are all answered, that's a decision worth a
+  `Decision log` row, dated, with who decided. Sign-off itself (the AGREE/READ
+  table) is NOT part of this skill — that happens after the document is actually
+  signable, which this kickoff alone does not establish.
 
 ## The two rules that make this safe to run unattended
 
@@ -49,9 +81,11 @@ Ask, one at a time, don't move on until each has an answer or an explicit "not y
   that it means no independent check exists on that area. Don't treat it as an
   error to resolve.**
 
-Write the answers into `project.conf`'s `ROSTER=( ... )` array, one line per
-person, in the documented pipe-delimited format. **You are transcribing what was
-said, not composing a roster.**
+Write the answers into **both**: `project.conf`'s `ROSTER=( ... )` array, and the
+Intent Spec's frontmatter `roster:` list AND its `## Roster & RACI — expanded`
+table — same people, same RACI letters, two formats because one is bash and one
+is a table a room can read out loud. **You are transcribing what was said, not**
+**composing a roster, in either place.**
 
 ### Step 2 — Owners
 
@@ -66,6 +100,9 @@ said, not composing a roster.**
   `RISK_FUNCTION="UNASSIGNED"` and say so; do not guess a plausible-sounding
   function to fill the field.
 
+Write all three into `project.conf` **and** the matching frontmatter field in the
+Intent Spec (`accountable_owner:`, `research_owner:`, `risk_function:`).
+
 ### Step 3 — Escalation
 
 - Who does a signature conflict, or a refusal to sign, go to? Write it to
@@ -74,17 +111,24 @@ said, not composing a roster.**
   is the honest value — naming a path is not the same as it working, and treating
   an untested path as proven is exactly the failure this field exists to prevent.
 
+Write the name into `project.conf`'s `ESCALATION_PATH` **and** the Intent Spec's
+`escalation_path:` frontmatter field. `ESCALATION_PATH_TESTED` has no Intent Spec
+counterpart — it's config-only, there to gate nothing, just to stay honest.
+
 ### Step 4 — Evidence basis and the Intent Spec
 
 - Ask: **can anyone in the room point at evidence for the claims in the draft, or
   was it written to get something started?** "I made it up" is a complete and
-  legitimate answer — route it to `EVIDENCE_BASIS="HYPOTHESES"` without treating
+  legitimate answer — write `EVIDENCE_BASIS="HYPOTHESES"` in `project.conf` **and**
+  `evidence_basis: HYPOTHESES` in the Intent Spec's frontmatter, without treating
   it as a problem to fix in this step.
-- If an Intent Spec doesn't exist yet, point at `Intent Specs/PROJECT-NAME.md`
-  (the `UX-INTENT-SPEC.template.md` copy) and `INTENT_SPEC` in `project.conf`.
-  **Do not author its content.** Naming the file and renaming it is scaffolding;
-  writing §0-§20 or filling `evidence_basis:` in its frontmatter is the human's
-  work you were just told not to do.
+- If an Intent Spec doesn't exist yet, rename `Intent Specs/PROJECT-NAME.md` (the
+  `UX-INTENT-SPEC.template.md` copy) to the project's name and point `INTENT_SPEC`
+  in `project.conf` at it. **That rename, and the frontmatter fields in the table
+  above, are the only parts of this file you touch.** Its numbered §0-§20 content,
+  its `## Change requests` rows, and its Signatures table are the human's work —
+  if a discipline pushes back on a claim during this kickoff, tell the room to add
+  a `## Change requests` row themselves; do not add it for them.
 
 ### Step 5 — Run the check, report verbatim
 

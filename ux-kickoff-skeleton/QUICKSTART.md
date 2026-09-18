@@ -1,6 +1,36 @@
 # QUICKSTART — running this on your project
 
-Ten minutes. Edit `project.conf`, fill the roster, run three scripts.
+Ten minutes. Get this folder into a repo, edit `project.conf`, fill the roster, run
+three scripts.
+
+## 0. Get this into an actual GitHub repo
+
+**`ux.md`, `vision.md` and `design.md` already exist in this folder right now —**
+**nothing generates them, nothing "brings them in."** They ship as editable stubs,
+exactly like every other file here. The only real question is how the *folder*
+becomes a tracked, pushed repo, and that's ordinary git, done once:
+
+```bash
+cd ux-kickoff-skeleton              # or wherever you copied this folder
+git init
+git add .
+git commit -m "start from ux-kickoff-skeleton"
+```
+
+Then either create the GitHub repo first and add it as a remote:
+
+```bash
+git remote add origin <your-new-repo-url>
+git push -u origin main
+```
+
+or, if you have the `gh` CLI: `gh repo create <name> --private --source=. --push`.
+
+**Ask before pushing anywhere if you're not sure which account or org it belongs**
+**to.** Publishing to the wrong org isn't reversible by deleting a local file.
+
+From here on, `ux.md`/`vision.md`/`design.md` are just files in your repo like any
+other — edit them directly, commit the edits, same as you would `README.md`.
 
 ## 1. Point it at your project
 

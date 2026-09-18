@@ -1,0 +1,26 @@
+# condens-state.tsv — OBSERVED state of published Condens artifacts.
+#
+# WRITTEN BY AN AGENT, READ BY A SCRIPT. This split is the whole design.
+#
+# check-condens.sh runs in CI with no credentials and cannot reach Condens. So the
+# loop has two halves:
+#
+#   FETCH   an agent with the Condens connector lists published artifacts and writes
+#           this file. That is a ritual, not a build step — it needs a session.
+#   CHECK   check-condens.sh compares what EVIDENCE.md claims against what this file
+#           observed. No network, works in CI, fails honestly when this file is stale.
+#
+# Deliberately NOT an API call from the script: a check that passes only when
+# somebody's token is valid fails for reasons unrelated to what it measures, and
+# teams learn to ignore it. Here the failure mode is legible instead — "this
+# observation is N days old" is a different sentence from "the artifact moved."
+#
+# Columns: share_id <TAB> artifact_id <TAB> updated_at <TAB> name
+# fetched_at: 2026-09-18T15:10:00Z
+# workspace: nable
+akynU7Jl7U6L53l1oRzDO	AflaV83s7UoUbKlcbsdp	2026-05-21T12:16:29.679Z	Vulnerability Management - Public Preview
+aPuuGvKTwZI2Ijq0T0jxc	UruWotPTYrzLEe7oTa01	2026-01-22T11:33:42.401Z	Vulnerability Management - Limited Preview
+adduwtlDmNY3GdbTT4VEK	SCGuCAF4Fa2dvGaQUDpY	2026-05-22T09:08:43.944Z	Internal Preview
+aVYzsor8mTNlfBpgZazUV	3WPiGfsOuk2ZfCgtFbx7	2025-12-01T13:34:37.929Z	Uninstalling an application is a remediation method
+aFTbNfKBelnx8U1GdoZwO	QTuPTMOncd2mdNobQ6yG	2026-01-26T14:31:10.370Z	Linux Patch - LTP Wave 1 Report
+aDz6ZwHJhfkdp3aR68k0e	DTXfcfXD2EiIVnsQntQj	2026-09-17T14:46:01.382Z	Asset View Evaluation Report

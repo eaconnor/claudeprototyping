@@ -47,7 +47,8 @@ it resolves. How you make sense of what is there is yours.
 | `local-file` | `briefs/datadump-2026-09-17.md` | **yes** — path must exist |
 | `local-dir` | `scout_input/` | **yes** — directory must exist and be non-empty |
 | `template` | `templates/DATADUMP.template.md` | **yes** — but counts as *not yet set up* |
-| `condens` | `nable` or a project URL | declared only — see limit |
+| `condens` | `nable` — a *workspace* | declared only. **Too coarse to check; prefer the row below** |
+| `condens-artifact` | a share id, e.g. `aDz6ZwHJhfkdp3aR68k0e` | **yes** — `check-condens.sh`, against `condens-state.tsv` |
 | `confluence` | `space/ADL` | declared only |
 | `jira` | `project = FSN` | declared only |
 | `repo` | `github.com/org/repo` | declared only |
@@ -74,6 +75,26 @@ is a *better* answer than a datadump file, not a worse one:
 | id | kind | locator | method | owner | resolves |
 |---|---|---|---|---|---|
 | E-002 | condens | `nable` | tagged highlights, rolled up by Tag Group | ‹name› | declared |
+
+## Why artifact granularity, and why the workspace row is the wrong shape
+
+`kind: condens` names a **workspace**. A workspace name is not a claim about anything, so
+there is nothing to verify and the row can only ever report `declared`. That was a design
+error, and it was found by reading how a researcher actually cites this material.
+
+A real evidence brief in this organisation cites **six specific published artifacts**, each by
+share link — not a workspace. A published artifact has an id, a name and an `updatedAt`, so a
+citation to one is checkable: does it still exist, is it still published, and **has it moved
+since the claim that rests on it was written.**
+
+That last question is the one worth having. On the first run against those six links, all six
+resolved and **one had been updated two weeks after the document citing it** — the source
+behind its lead behavioural finding. The claim may well still hold. Nobody has looked, and
+before this nothing could have told them to.
+
+So: register the artifact, not the workspace. `kind: condens` is kept as legal, because a team
+that has only got as far as "our research is in Condens" should be able to say so — but it
+reports as unverifiable, which is the truth.
 
 ## Honest limit — why half of these can only be declared
 

@@ -139,6 +139,22 @@ jobs:
     name: FIT — reports, never blocks
     runs-on: ubuntu-latest
     steps:
+      - name: research drift (30 = an artifact moved · 31 = never observed)
+        run: |
+          # 30 WARNS, deliberately. An artifact moving is not a defect — research is
+          # supposed to move. What must not happen is nobody noticing. So this routes a
+          # person to re-read, and does not redden a build for a source doing its job.
+          # 31 fails: a registered artifact nobody has ever observed is a citation that
+          # has never been checked, which is a different thing entirely.
+          ./check-condens.sh; c=$?
+          case $c in
+            0)  ;;
+            30) echo "::warning::a cited research artifact moved since the last reconciliation — a person must read what changed"; ;;
+            31) echo "::error::a registered research artifact was never observed, or is no longer published"; exit 1 ;;
+            5)  echo "::warning::check-condens.sh could not evaluate — no artifact rows, or nobody has run the fetch step"; ;;
+            *)  echo "::warning::check-condens.sh exit $c"; ;;
+          esac
+
       - uses: actions/checkout@v4
       - name: gate criteria
         run: ./check-gates.sh || echo "::warning::gates red — the normal state of honest work in progress"

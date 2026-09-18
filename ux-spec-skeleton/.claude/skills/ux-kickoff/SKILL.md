@@ -1,6 +1,6 @@
 ---
 name: "ux-kickoff"
-description: "Facilitates the UX-INTENT-SPEC kickoff — roster/RACI, owners, escalation, evidence basis — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
+description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -28,6 +28,25 @@ ask: *"Is your team's process for who's accountable, who researches, and where a
   so a team with its own settled process doesn't have to sit through a RACI
   walkthrough it doesn't need — running the walkthrough anyway defeats the
   point of asking.
+
+## Step 0b — what kind of project is this?
+
+Ask this right after Step 0, before Step 1. It doesn't skip anything below —
+none of these five is "small enough to not need a roster." It changes where
+the room's attention goes in Steps 1-4, not whether they run. Ask: *"Which of**
+**these is closest to what's actually happening?"*
+
+| answer | what changes in Steps 1-4 |
+|---|---|
+| "I don't know if this needs UX" | Don't infer this yourself — it's a HUMAN question, not a UX one. Run Steps 1-4 as normal, but at Step 4 add: can anyone in the room name the decision UX input would actually change? If nobody can, that's the finding — log it as an `OPEN.md` `HUMAN` row instead of quietly proceeding as if UX were assumed necessary. |
+| "Updating an existing flow — minor" | Check whether `INTENT_SPEC` already points at a real document before Step 4 offers to copy the template — a minor update usually already has one. Evidence basis (Step 4) is more often `FINDINGS` than `HYPOTHESES` here: there's usually existing usage data to point at, not a fresh guess. |
+| "Something's majorly wrong with existing UX" | Research owner (Step 2) and `RISK_FUNCTION` matter most here — "majorly wrong" usually means a FLOOR-level problem (accessibility, data integrity, harm), not a FIT one. If nobody can point at evidence of what's actually wrong yet, say that explicitly at Step 4 — "we know it's bad" is not the same as `EVIDENCE_BASIS="FINDINGS"`. |
+| "Building a new feature" | Run Steps 1-4 in full. Flag `OPEN.md` H-03 explicitly — a new feature is the case where at least one of the 22 generic house-rubric criteria in `ux.md`/`vision.md`/`design.md` needs a project-specific replacement, not a rubber stamp. |
+| "Building a new product" | Run Steps 1-4 in full, and treat `ESCALATION_PATH_TESTED` as higher-stakes than usual — new-product disagreements are the most expensive to resolve late. `INTENT_SPEC` almost certainly doesn't exist yet, so Step 4's template copy isn't optional. |
+
+If the room's answer doesn't match any of these five cleanly, record what they
+actually said instead of forcing it into the nearest row — this list describes
+what's been seen so far, not a closed set.
 
 ## Read this before asking anything
 

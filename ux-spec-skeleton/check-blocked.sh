@@ -38,6 +38,7 @@ trim() { echo "$1" | sed 's/^ *//; s/ *$//'; }
 
 human=0; research=0; accepted=0; unknown=0
 human_lines=""
+unowned=0
 
 while IFS= read -r line; do
   [ -z "$line" ] && continue
@@ -45,8 +46,24 @@ while IFS= read -r line; do
   kind=$(trim "$(echo "$line" | awk -F'|' '{print $3}')")
   q=$(trim "$(echo "$line" | awk -F'|' '{print $4}')")
   owner=$(trim "$(echo "$line" | awk -F'|' '{print $5}')")
+  # AN UNNAMED OWNER AND A PLACEHOLDER OWNER ARE THE SAME THING. `${owner:-UNASSIGNED}`
+  # caught the empty cell but not `‹you›`, which is what the skeleton ships — so a row
+  # owned by a template placeholder printed as though it had a real owner, in the one
+  # script whose whole job is "a person owes you an answer." Found 2026-09-18 while
+  # setting up a real project: two rows read `owner: ‹you›` and nothing objected.
+  # check-evidence.sh already refuses non-names; the rule was enforced in one register
+  # out of five.
+  case "$owner" in
+    ""|unassigned|UNASSIGNED|unowned|tbd|TBD|n/a|N/A|none|-|—|*‹*|*›*|    ux|UX|research|Research|design|Design|product|Product|team|"the team"|everyone|you|You)
+      owner="UNASSIGNED" ;;
+  esac
   case "$kind" in
-    HUMAN)    human=$((human+1));    human_lines="${human_lines}  [$id] owner: ${owner:-UNASSIGNED}
+    HUMAN)    human=$((human+1))
+              # count only HUMAN rows: the message below says "row(s) above", and only
+              # HUMAN rows are printed above it. Counting every kind made it claim 3
+              # when 2 were listed — a small lie, in a script about accountability.
+              [ "$owner" = "UNASSIGNED" ] && unowned=$((unowned+1))
+              human_lines="${human_lines}  [$id] owner: ${owner}
       $q
 " ;;
     RESEARCH) research=$((research+1)) ;;
@@ -66,6 +83,13 @@ if [ "$human" -gt 0 ]; then
   printf '%s' "$human_lines"
   echo "Do not infer these, do not pick a sensible default, do not proceed provisionally."
   echo "Ask the named owner. If the owner is UNASSIGNED, that is itself the first question."
+  if [ "$unowned" -gt 0 ]; then
+    echo ""
+    echo "  $unowned row(s) above have no named owner — either blank, a template"
+    echo "  placeholder, or a function rather than a person. A decision routed to"
+    echo "  \"design\" or to \"you\" is routed to nobody, and it will sit here. Naming"
+    echo "  the person is cheaper than the row is."
+  fi
   exit 2
 fi
 

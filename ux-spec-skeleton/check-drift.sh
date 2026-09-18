@@ -211,5 +211,20 @@ echo ""
 if [ "$N_LIE" -gt 0 ];      then echo "DRIFT MISDECLARED — $N_LIE file(s) claim a better state than computed."; exit 22; fi
 if [ "$N_CONFLICT" -gt 0 ]; then echo "CONFLICT — blocks. Re-register or restore the sources, then re-run."; exit 19; fi
 if [ "$N_STALE" -gt 0 ];    then echo "STALE — warns. Reconcile against the moved sources when you next touch this."; exit 18; fi
-echo "FRESH — every source hashes to its manifest row."
+# Say what was actually hashed, not what was registered. Found 2026-09-18 while setting
+# up a real project: six sources were registered in MANIFEST.md and only the three named
+# in a built_from: list were hashed, while this line claimed "every source." A manifest
+# row is inert until a gate file points at it — that is fine, but asserting completeness
+# you do not have is the false-green pattern this script exists to catch.
+UNREF=$((NROWS - TOTAL_SRC))
+if [ "$UNREF" -gt 0 ]; then
+  echo "FRESH — all $TOTAL_SRC hashed source(s) match their manifest row."
+  echo ""
+  echo "NOT A CLEAN BILL FOR THE MANIFEST: $NROWS row(s) are registered and only"
+  echo "$TOTAL_SRC were hashed. A row nothing lists in built_from: is never checked by"
+  echo "this script — registering a source and depending on one are two different acts,"
+  echo "and only the second is verified here."
+else
+  echo "FRESH — every registered source hashes to its manifest row."
+fi
 exit 0

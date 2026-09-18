@@ -54,6 +54,14 @@ DEST="${1:-internal-demo}"
 BUILD="${BUILD:-}"
 FIRED=0
 REPORTED=0
+# UNEVAL counts never events that could not be evaluated. Added 2026-09-18 after a cold
+# clone showed this script had no such state: every check was wrapped in `if [ -f … ]`
+# with no `else`, so `rm OPEN.md design.md` made it exit 0 and print "nothing
+# catastrophic was caught." A never-event detector that reports clean when its inputs
+# are missing is the exact false green README.md says three of the first nine scripts
+# shipped with, and it contradicts MANIFEST.md's rule that "I could not check" must
+# never present as "fine."
+UNEVAL=0
 
 hr() { printf '%.0s='  {1..72}; echo; }
 
@@ -71,7 +79,11 @@ echo "      Why never: this is inferring a decision that belongs to a person. It
 echo "      is the single failure the HUMAN/RESEARCH split exists to prevent, and"
 echo "      it is invisible afterwards — the box looks the same either way."
 echo
-if [ -f OPEN.md ]; then
+if [ ! -f OPEN.md ]; then
+  echo "  CANNOT EVALUATE — OPEN.md is missing. This never event is defined against the"
+  echo "  register; with no register there is nothing to compare ticks against."
+  UNEVAL=$((UNEVAL+1))
+elif [ -f OPEN.md ]; then
   openh=$(awk '/^## Open rows/{f=1;next} /^## /{f=0} f && /^\| H-[0-9]+ \| HUMAN \|/' OPEN.md)
   hit=0
   while IFS= read -r row; do
@@ -99,7 +111,10 @@ echo "      Why never: a false green is worse than a red. A red gate stops work;
 echo "      a false green certifies a defect and every downstream artifact"
 echo "      inherits the certification. This repo committed it twice in one day."
 echo
-if [ -f scripts/check-design.py ] && [ -f design.md ]; then
+if [ ! -f scripts/check-design.py ] || [ ! -f design.md ]; then
+  echo "  CANNOT EVALUATE — need both scripts/check-design.py and design.md."
+  UNEVAL=$((UNEVAL+1))
+elif [ -f scripts/check-design.py ] && [ -f design.md ]; then
   out=$(python3 scripts/check-design.py 2>/dev/null)
   vblock=$(echo "$out" | awk '/^=== [0-9]+ VIOLATION/{f=1;next} /^=== /{f=0} f')
   hit=0
@@ -164,14 +179,32 @@ echo "      to a person is not."
 echo
 if [ "$DEST" = "internal-demo" ]; then
   echo "  not applicable at internal-demo (no real user). Re-run with pilot."
-elif [ -f check-eng.sh ]; then
+elif [ ! -f check-eng.sh ]; then
+  echo "  CANNOT EVALUATE — check-eng.sh is not here to ask."
+  UNEVAL=$((UNEVAL+1))
+else
+  # THREE STATES, NOT TWO. check-eng.sh returns 10 (can harm a user), 12 (UNEVALUATED —
+  # no build to check), or 0. Until 2026-09-18 this tested `-eq 10` and let everything
+  # else fall to `clear`, so a fresh clone with BUILD unset exits 12 and the accessibility
+  # never-event detector printed "clear" at pilot and production. That is a false green on
+  # harm, in the default state of every clone, in the script the docs call "stop and
+  # investigate." The repo states the rule it broke in two places: HAZARDS.md RSK-02 and
+  # check-eng.sh's own header — an unevaluated harm gate must never read as a clear one.
   ./check-eng.sh >/dev/null 2>&1
-  if [ $? -eq 10 ]; then
-    echo "  FIRED  check-eng.sh EG-1 fails and destination is '$DEST'."
-    FIRED=1
-  else
-    echo "  clear"
-  fi
+  engrc=$?
+  case "$engrc" in
+    10) echo "  FIRED  check-eng.sh EG-1 fails and destination is '$DEST'."
+        FIRED=1 ;;
+    12) echo "  CANNOT EVALUATE — check-eng.sh exits 12: the accessibility gate is"
+        echo "  UNEVALUATED because there is no build to check. At destination '$DEST'"
+        echo "  that is NOT clear. Nobody has established whether a FLOOR failure would"
+        echo "  reach a user, and shipping on 'we did not look' is how exclusion ships."
+        UNEVAL=$((UNEVAL+1)) ;;
+    0)  echo "  clear — check-eng.sh evaluated EG-1 and it passes." ;;
+    *)  echo "  CANNOT EVALUATE — check-eng.sh exited $engrc, which this check does not"
+        echo "  know how to interpret. Not treating an unknown code as clear."
+        UNEVAL=$((UNEVAL+1)) ;;
+  esac
 fi
 
 # ---------------------------------------------------------------- NE-6
@@ -180,15 +213,46 @@ echo "NE-6  Special-category data is processed without a reviewed lawful basis."
 echo "      Why never: it is unlawful, not risky. There is no engineering fix and"
 echo "      no internal justification that makes it acceptable."
 echo
-if [ "$DEST" = "internal-demo" ]; then
-  echo "  not applicable at internal-demo — the pipeline is mocked, no inference"
-  echo "  occurs, so no Art. 9 processing happens."
-elif grep -qE '^\| H-02 \| HUMAN \|' OPEN.md 2>/dev/null; then
-  echo "  FIRED  H-02 (Art. 9 consent copy reviewed) is unresolved and destination"
-  echo "         is '$DEST'. The inference step is the regulated act."
-  FIRED=1
+# THIS CHECK USED TO ASSERT TWO THINGS IT COULD NOT KNOW, both found by a cold clone
+# on 2026-09-18:
+#
+#   1. At internal-demo it printed "the pipeline is mocked, no inference occurs, so no
+#      Art. 9 processing happens" — a statement about the ORIGIN project's build, printed
+#      unconditionally for whatever project cloned this. A checker asserting a fact about
+#      a build it has never read.
+#   2. At pilot it matched the bare row id `| H-02 | HUMAN |` and reported "H-02 (Art. 9
+#      consent copy reviewed) is unresolved." In a clone, H-02 is whatever that clone's
+#      second human row happens to be — here, "INTENT_SPEC is empty." So `check-never.sh
+#      pilot` exited 20, the hardest failure in the contract, because nobody had written
+#      an intent spec. OPEN.md itself names a false never event as how the mechanism gets
+#      switched off.
+#
+# Row ids are not stable identifiers across projects. Match on what the row SAYS.
+if [ ! -f OPEN.md ]; then
+  echo "  CANNOT EVALUATE — OPEN.md is missing, so no lawful-basis row can be found."
+  UNEVAL=$((UNEVAL+1))
+elif [ "$DEST" = "internal-demo" ]; then
+  echo "  not applicable at internal-demo ONLY IF no special-category data is processed."
+  echo "  This script cannot determine that — it has not read your build or your data"
+  echo "  flow. Human-attested: if your demo processes Art. 9 data, this never event is"
+  echo "  live and no script here will tell you."
+  UNEVAL=$((UNEVAL+1))
 else
-  echo "  clear"
+  # Match the CLAIM, not the id. A row is a lawful-basis row if it says so.
+  lawrow=$(awk '/^## Open rows/{f=1;next} /^## /{f=0} f' OPEN.md 2>/dev/null \
+           | grep -iE '^\|[[:space:]]*[A-Z]+-[0-9]+[[:space:]]*\|[[:space:]]*HUMAN' \
+           | grep -iE 'art\.? ?9|special.category|lawful basis|consent|gdpr|dpia' | head -1)
+  if [ -n "$lawrow" ]; then
+    rid=$(printf '%s' "$lawrow" | awk -F'|' '{gsub(/ /,"",$2); print $2}')
+    echo "  FIRED  $rid is an unresolved HUMAN row about lawful basis, and destination is"
+    echo "         '$DEST'. The inference step is the regulated act."
+    FIRED=1
+  else
+    echo "  CANNOT EVALUATE — no open HUMAN row mentions lawful basis, Art. 9, consent or"
+    echo "  a DPIA. That may mean the question was settled, or that nobody has asked it."
+    echo "  This script cannot tell those apart, and they are not the same."
+    UNEVAL=$((UNEVAL+1))
+  fi
 fi
 
 # ---------------------------------------------------------------- NE-7
@@ -245,6 +309,8 @@ fi
 # ================================================================ verdict
 echo
 hr
+# Precedence: a fired never event outranks an unevaluated one. But an unevaluated one
+# must never render as "no never event detected" — that sentence is what a reader acts on.
 if [ "$FIRED" -eq 1 ]; then
   echo "NEVER EVENT DETECTED at destination '$DEST'."
   echo
@@ -253,6 +319,17 @@ if [ "$FIRED" -eq 1 ]; then
   echo "not just the instance. A never event that gets triaged is a never event"
   echo "that will recur."
   exit 20
+fi
+if [ "$UNEVAL" -gt 0 ]; then
+  echo "CANNOT EVALUATE $UNEVAL of 7 never events at destination '$DEST'."
+  echo
+  echo "This is NOT a pass and must not be reported as one. Some of the things that"
+  echo "should never happen were not checked — because a register, a script or a build"
+  echo "was missing, or because the check needs a human to attest something a script"
+  echo "cannot see. 'We did not look' and 'nothing was there' are different findings,"
+  echo "and a never-event detector that conflates them is worse than none: it issues"
+  echo "the reassurance without doing the work."
+  exit 5
 fi
 echo "No never event detected at destination '$DEST'."
 echo

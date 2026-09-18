@@ -72,7 +72,7 @@ and loses the only information that tells you what to do next. Full contract:
 | `./check-human.sh` | does the **human layer** still point at anything real? | 26 dangling reference · 27 fence stale (`--write` fixes) |
 | `./check-evidence.sh` | is there **anywhere the evidence lives**? | 28 not set up · 29 broken locator |
 | `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated |
-| `./check-never.sh` | has something happened that never should? | 20 — stop and investigate, do not score |
+| `./check-never.sh` | has something happened that never should? | 20 stop and investigate · **5 could not evaluate — not a pass** |
 | `./check-value.sh` | is the value register honest? | 13 if it records no costs |
 | `./check-waivers.sh` | are the gates worth obeying? | 15 a never event was waived · 16 malformed |
 | `scripts/check-design.py` | does the build obey the design system? | 6 violation · 7 unresolved · 5 no build |

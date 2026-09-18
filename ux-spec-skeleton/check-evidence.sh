@@ -110,7 +110,15 @@ is_name() {
   [ -z "$v" ] && return 1
   case "$v" in *‹*|*›*) return 1 ;; esac
   case "$v" in
-    unassigned|unowned|tbd|tba|n/a|na|none|nobody|-|—|?|???) return 1 ;;
+    # QUOTE THE PUNCTUATION. `?` and `???` are GLOB PATTERNS in a case statement, not
+    # literal question marks: unquoted, `?` matches any 1-character value and `???` any
+    # 3-character one. Written unquoted on 2026-09-17, which made this check reject
+    # "Sam", "Bob", "Ann", "Tim", "Joe", "Amy", "Raj" — every three-letter name — with
+    # the message that they are not a person. Found 2026-09-18 by the cold-onboarding
+    # run, not by the author's own test matrix, which used "Sam R." and "Beth Connor"
+    # and so stepped over the bug: the values tested were the ones expected to matter,
+    # not the shape of the value space.
+    unassigned|unowned|tbd|tba|n/a|na|none|nobody|'-'|'—'|'?'|'??'|'???') return 1 ;;
     ux|uxr|research|researcher|"the researcher"|"research team"|"ux team"|"ux research") return 1 ;;
     design|"design team"|product|"product team"|eng|engineering|"eng team"|qa|ops) return 1 ;;
     team|"the team"|everyone|all|us|we|someone|anyone|"whoever"|"whoever is free") return 1 ;;

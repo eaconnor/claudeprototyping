@@ -26,10 +26,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: never events (20 = incident)
+      - name: never events (20 = incident · 5 = could not evaluate, not a pass)
         run: |
+          # EXACT CODES. This step was `[ $c -eq 0 ] || fail` until 2026-09-18 — the exact
+          # zero/non-zero shape this file's own header warns against, and it went unnoticed
+          # because check-never.sh only ever returned 0 or 20. The moment it gained a
+          # cannot-evaluate code, the old form would have hard-failed every fresh clone
+          # with the message "never event, exit 5" — a false red, announcing an incident
+          # that had not happened. Branch on the code or do not branch.
           ./check-never.sh; c=$?
-          [ $c -eq 0 ] || { echo "::error::never event, exit $c — stop and investigate, do not score it"; exit 1; }
+          case $c in
+            0)  ;;
+            20) echo "::error::a NEVER EVENT occurred — stop and investigate, do not score it"; exit 1 ;;
+            5)  echo "::warning::check-never.sh could not evaluate every never event. This is NOT a pass — some of the things that must never happen were not checked."; ;;
+            *)  echo "::warning::check-never.sh exit $c — unrecognised, not treating as pass"; ;;
+          esac
 
       - name: waivers (15 = a never event was waived · 16 = malformed)
         run: |

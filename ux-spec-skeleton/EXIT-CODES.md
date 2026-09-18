@@ -19,7 +19,7 @@ policy is in the table's last column.
 | `2` | `check-risk.py` | no destination argument was given | **fail the job config** — this is a caller error, not a finding |
 | `3` | `check-blocked.sh` · `check-risk.py` | the register is missing or has no parsable rows | **fail** |
 | `4` | `check-trace.sh` | a criterion's `traces_to:` points at nothing, or is orphaned | **fail** |
-| `5` | `check-trace.sh` · `check-design.py` · `check-tier.py` · `ux-score.py` · `check-skills.sh` · `check-drift.sh` · `check-human.sh` · `check-evidence.sh` | **cannot evaluate** — a precondition is missing (no intent spec, no build, no gate file, nothing parsable) | **warn, never treat as pass** |
+| `5` | `check-trace.sh` · `check-design.py` · `check-tier.py` · `ux-score.py` · `check-skills.sh` · `check-drift.sh` · `check-human.sh` · `check-evidence.sh` · `check-never.sh` | **cannot evaluate** — a precondition is missing (no intent spec, no build, no gate file, nothing parsable) | **warn, never treat as pass** |
 | `6` | `check-design.py` | the build violates the design system | **warn** (FIT) |
 | `7` | `check-design.py` | only unresolved token pairs remain | **warn** |
 | `9` | `check-risk.py` | a ship-blocking hazard at this destination | **fail** |
@@ -34,6 +34,7 @@ policy is in the table's last column.
 | `18` | `check-drift.sh` | **STALE** — a registered source has moved | **warn** |
 | `19` | `check-drift.sh` | **CONFLICT** — a source is missing or unregistered | **fail** |
 | `20` | `check-never.sh` | a **never event** happened | **fail, hard — stop and investigate, do not score it** |
+| `5` | `check-never.sh` | **one or more never events could not be evaluated** — a register, script or build was missing, or the check needs a human to attest. Never a pass | **warn loudly, never treat as pass** |
 | `21` | `check-skills.sh` | a registered skill name does not exist on disk | **fail** |
 | `22` | `check-drift.sh` | `drift:` claims a better state than the hashes show | **fail** |
 | `23` | `check-judgment.sh` | unfilled judgment slots with no directive keeping them provisional | **fail** |
@@ -49,7 +50,7 @@ same commit — an undocumented exit code is a number somebody will guess the me
 
 ## Two things about this table that are easy to get wrong
 
-**`5` is shared on purpose, and it is the most important code here.** Eight scripts use it
+**`5` is shared on purpose, and it is the most important code here.** Nine scripts use it
 for the same thing: *I could not evaluate this.* It is not a pass and not a failure — it
 is the absence of a result. Treating it as a pass is the single most common way this
 apparatus gets defeated, because "no violations found" and "no violations looked for"

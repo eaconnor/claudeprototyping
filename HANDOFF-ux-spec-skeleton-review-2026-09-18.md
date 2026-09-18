@@ -12,7 +12,53 @@ ux-spec-skeleton/.claude/skills/ux-kickoff/SKILL.md in the Browser preview pane 
 and say: "Here's the ux-kickoff skill — take a look, say next when ready for OPEN.md."
 Do not re-show README.md or project.conf. Do not add anything to the review queue
 without asking first.
+
+A /scout is running (or may have completed) on a Confluence survey of common project
+types and how they relate to UX, to inform the /ux-kickoff skill's use-case coverage —
+check for a completed scout task before assuming it hasn't started. Beth also asked for
+the skill to guide whichever person is acting as UX/product-as-UX through their actual
+main task, not just the RACI/kickoff meta-process — that's not built yet, it's queued
+behind the scout findings.
 ```
+
+---
+
+## UPDATE — 2026-09-18, later same session
+
+**"Wire ux.md to the main intent spec's UX section" — done.** Found while investigating:
+none of the three gate files (`ux.md`/`vision.md`/`design.md`) carried a single
+`traces_to:` field. `check-trace.sh`'s forward check would have reported every one of
+them `BROKEN` the instant a real `INTENT_SPEC` was set — the whole mechanism had never
+been exercised. Fixed all three:
+
+- `ux.md`: G1-01→§1, G1-02/G1-03→§3, new **G1-07**→§5 (the direct "UX section" bridge —
+  Gate 1 verifies UX intent is traceable to real research, not free-standing)
+- `vision.md`: G2-01→§1, G2-03→§4
+- `design.md`: G3-01/G3-02 (FLOOR accessibility)→§5 — the strongest natural §5 bridge
+
+Ran `check-trace.sh` for real, for the first time, against a copy of
+`templates/UX-INTENT-SPEC.template.md`. Forward pass resolved clean. Backward pass
+correctly flagged the template's own illustrative `UXI-01`/`UXI-02` rows as orphaned —
+section-level pointers (`§5`) satisfy the forward check but not the backward one; a real
+project needs id-level `traces_to: UXI-##` once it has real rows. Documented in `ux.md`
+itself so this isn't a surprise later.
+
+Also surfaced (correctly) a stale STATUS fence in `ux.README.md` — adding G1-07 changed
+ux.md's criteria count from 6 to 7, and the fence's cached "0 of 6" went stale. Fixed with
+`./check-human.sh --write`. Not a regression; the check did its job.
+
+Registered as `OPEN.md` **H-05a**. Full 14-script suite re-verified clean on a fresh copy
+afterward.
+
+**Then queued, not yet started:** `/scout` a Confluence survey of common project types
+and how they map to UX involvement, to give `/ux-kickoff` real use-case coverage instead
+of one generic walkthrough. Beth also wants the skill to eventually guide the UX/PM-as-UX
+person through their own main task, not just the org-process kickoff — noted, not
+designed yet; depends on what scout returns.
+
+**Review queue is unchanged** — still `.claude/skills/ux-kickoff/SKILL.md` next, then
+`OPEN.md`. The trace fix touched `ux.md`/`vision.md`/`design.md`, none of which were in
+the review queue, so it doesn't reorder anything Beth was already reviewing.
 
 ---
 

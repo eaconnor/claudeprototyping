@@ -103,8 +103,8 @@ The split that makes this usable by engineering, and it is not a detail:
 
 ## Acceptance Criteria — Gate 3: Are we making the thing right?
 
-- [ ] G3-01 — FLOOR · WCAG AA contrast met, measured not eyeballed · verified_by: scripts/contrast.py computes the table; a real audit confirms it
-- [ ] G3-02 — FLOOR · Keyboard-reachable and screen-reader labelled on every interactive element · verified_by: a human drives the build with keyboard only, then with a screen reader
+- [ ] G3-01 — FLOOR · WCAG AA contrast met, measured not eyeballed · traces_to: §5 · verified_by: scripts/contrast.py computes the table; a real audit confirms it
+- [ ] G3-02 — FLOOR · Keyboard-reachable and screen-reader labelled on every interactive element · traces_to: §5 · verified_by: a human drives the build with keyboard only, then with a screen reader
 - [ ] G3-03 — FLOOR · No data loss on any destructive action, and nothing irreversible without confirmation · verified_by: a human attempts each destructive path
 - [ ] G3-04 — FLOOR · Lawful basis for every piece of personal data touched; retention stated · verified_by: the risk function named in project.conf signs (T3)
 - [ ] G3-05 — FIT · Effectiveness: users complete the Top Tasks correctly and completely · verified_by: an instrument in instruments/ — declare the threshold before collecting data

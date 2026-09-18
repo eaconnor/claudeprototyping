@@ -13,7 +13,7 @@ at its top, and it is written by hand on purpose.** If the two ever disagree, `u
 | status | `SKELETON` |
 | confidence_regime | `BLOCKED` |
 | drift | `FRESH` |
-| acceptance criteria ticked | 0 of 6 |
+| acceptance criteria ticked | 0 of 7 |
 | unfilled judgment slots | 0 |
 
 Regenerate with `./check-human.sh --write`. If this block disagrees with the

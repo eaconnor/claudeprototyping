@@ -99,12 +99,29 @@ means one of them is stale and no script can tell you which.
 
 ## Acceptance Criteria — Gate 1: Do we understand the problem?
 
-- [ ] G1-01 — Problem statement is sourced to a named artefact (spec, ticket, transcript, study), not assumed · verified_by: a human reads the cited source and confirms it says this
-- [ ] G1-02 — Primary persona(s) named and evidence-tagged, not invented · verified_by: a human confirms each persona traces to real contact with a real person
-- [ ] G1-03 — Full cast mapped; every role-gap named as a `[?]` row rather than omitted · verified_by: a human reads the cast table against the journey
+- [ ] G1-01 — Problem statement is sourced to a named artefact (spec, ticket, transcript, study), not assumed · traces_to: §1 · verified_by: a human reads the cited source and confirms it says this
+- [ ] G1-02 — Primary persona(s) named and evidence-tagged, not invented · traces_to: §3 · verified_by: a human confirms each persona traces to real contact with a real person
+- [ ] G1-03 — Full cast mapped; every role-gap named as a `[?]` row rather than omitted · traces_to: §3 · verified_by: a human reads the cast table against the journey
 - [ ] G1-04 — Riskiest assumptions surfaced in OPEN.md, each with a named owner · verified_by: ./check-blocked.sh (exit 2 if a HUMAN row stands)
 - [ ] G1-05 — `[A]`+`[?]` share of tagged claims is computed and, if over 30%, flagged rather than buried · verified_by: python3 scripts/ux-score.py — computed by grep, never asserted
 - [ ] G1-06 — Every source this file was built from is registered in MANIFEST.md and hashes clean · verified_by: ./check-drift.sh (exit 22 if `drift:` misdeclares)
+- [ ] G1-07 — Every `UXI-##` requirement in the intent spec's §5 (UX intent) traces back to a named problem, persona or task above — a UX intent nobody can point research at is asserted, not grounded · traces_to: §5 · verified_by: ./check-trace.sh's backward pass (exit 4 if a UXI-## is orphaned), plus a human confirming the grounding named is real, not merely present
+
+**Why this file was wired to the intent spec on 2026-09-18, and not before:** none of the
+three gate files carried a single `traces_to:` field until today — `check-trace.sh` would
+have reported every one of them `BROKEN` the moment a real `INTENT_SPEC` was set, and
+nothing had ever exercised that path. G1-07 is the direct answer to "wire ux.md to the
+main intent spec's UX section" — Gate 1 doesn't assert UX intent, it verifies that
+whatever UX intent exists in §5 is traceable to real research here, not free-standing.
+
+**First real run of this mechanism, same day, caught something real.** Pointing G1-07 at
+the section level (`§5`) rather than a specific `UXI-##` makes the forward check pass but
+leaves `check-trace.sh`'s BACKWARD pass correctly reporting every `UXI-##` in a filled
+intent spec as an orphan — nothing points at the specific id, only at the section it lives
+in. On the template's own illustrative `UXI-01`/`UXI-02` rows that's expected. **On a real
+filled project it is not** — once your intent spec has real `UXI-##` rows, add a criterion
+here (or point G1-07 itself) at those specific ids, or the backward check will keep
+reporting orphans, correctly, every time.
 
 ## Mini docs
 

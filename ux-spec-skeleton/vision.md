@@ -87,9 +87,9 @@ stops the "pick one metric" argument.› `[?]`
 
 ## Acceptance Criteria — Gate 2: Are we making the right thing?
 
-- [ ] G2-01 — Goals decompose the stated problem, and the decomposition is design's named judgment · verified_by: a human traces each goal back to a problem in ux.md §1
+- [ ] G2-01 — Goals decompose the stated problem, and the decomposition is design's named judgment · traces_to: §1 · verified_by: a human traces each goal back to a problem in ux.md §1
 - [ ] G2-02 — Tasks are Top Tasks tied to goals, not a feature list · verified_by: a human checks each task against ux.md §2
-- [ ] G2-03 — Function structure maps 1:1 to tasks — an orphan function is scope creep, an unserved task is a gap · verified_by: a human walks the mapping both directions
+- [ ] G2-03 — Function structure maps 1:1 to tasks — an orphan function is scope creep, an unserved task is a gap · traces_to: §4 · verified_by: a human walks the mapping both directions
 - [ ] G2-04 — Each Must is a behavior tied to what fails when it is absent, not a decoration · verified_by: a human reads each Must and names the failure
 - [ ] G2-05 — Divergences from `canonical_spec` are logged in the Decision Log, not resolved unilaterally · verified_by: ./check-trace.sh
 - [ ] G2-06 — The outcome variable is named as ISO 9241-11 targets plus a context of use · verified_by: a human confirms the section is filled and not a single bare metric

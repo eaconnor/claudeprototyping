@@ -217,7 +217,7 @@ When this work is complete:
 <a id="IC-2-context"></a>
 ## 2. Context and rationale
 
-**Owner:** Product
+**Owner:** Product + Research
 **Load policy:** Load for planning; summarize for implementation
 **Stability:** Mostly stable
 
@@ -266,7 +266,7 @@ Rejected is a legitimate outcome for a row below. Silent is not.
 <a id="IC-3-users"></a>
 ## 3. Users and affected parties
 
-**Owner:** Product + UX
+**Owner:** Product + UX + Research
 **Load policy:** Always load summary; expand when user behavior or permissions are touched
 **Stability:** Stable before implementation
 
@@ -696,7 +696,7 @@ This work is done when all required criteria below are satisfied and evidenced.
 <a id="IC-15-evidence"></a>
 ## 15. Evidence requirements
 
-**Owner:** QA + Engineering + UX + Risk owners
+**Owner:** QA + Engineering + UX + Research + Risk owners
 **Load policy:** Always load for verification
 **Stability:** Stable before implementation
 
@@ -764,7 +764,12 @@ The implementation agent must produce:
 
 ### Sign-off — scoped, not void-all
 
-**Everyone on the Roster signs. An edit voids signatures only over the section it**
+**Everyone on the Roster signs, and so does anyone named `accountable_owner:`,**
+**`research_owner:`, or `risk_function:` who isn't already a Roster row — those**
+**three are explicitly allowed to be someone else (see Step 2 of `/ux-kickoff`),**
+**and a document with no place for them to sign has no place for them to refuse,**
+**either. Scope their row to the sections their frontmatter owner tag actually**
+**appears on. An edit voids signatures only over the section it**
 **landed in — a typo fix should notify, a changed acceptance criterion should void.**
 Reuse `check-condens.sh`'s content-hash-vs-baseline mechanism if this repo has it
 rather than re-deriving a diff.

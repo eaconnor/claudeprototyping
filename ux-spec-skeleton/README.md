@@ -8,31 +8,12 @@ Start at [`QUICKSTART.md`](QUICKSTART.md).
 
 ## The finding this is built on
 
-**A gate written in prose does not fire.**
+**A gate written in prose does not fire. Rules belong in the execution path —**
+**everything else is a reading assignment nobody does.**
 
-That is not a hunch. A controlled test ran **12 fresh agents on 6 trap tasks** — half with
-866 lines of gate documentation present, half with it deleted. **Six of six pairs tied.**
-Not one agent cited either document. One put an emoji in the markup while holding the file
-that bans emoji; another built a confirmation dialog while holding the section stating that
-discard must never be confirmed.
-
-> **`[CS: UNREGISTERED — this repo cannot substantiate the claim above, and says so
-> rather than letting the tag do the work]`** The test happened, in the project this
-> skeleton was extracted from. Its artifacts — the task set, the two agent cohorts, the
-> per-pair results — are **not in this repo and not in `MANIFEST.md`**, which holds one
-> row: a 48-line constitution containing none of these figures. This claim was tagged
-> `[CS: VERIFIED]` until 2026-09-18, when a cold clone pointed out the obvious: by this
-> repo's own rule an unregistered source cannot be shown to be current, so
-> `check-drift.sh` can say nothing about the strongest claim in the README, and a reader
-> has no way to check it. **The most load-bearing statement here is the least
-> checkable.** That is recorded as `OPEN.md` H-04 rather than smoothed over, and it is
-> the single best argument for not adopting this repo on the strength of its README.
-
-The same rules, moved into scripts, then found: 10 live accessibility violations in a build
-two review passes had cleared, 5 requirements tracing to no stated intent, 2 gate boxes
-ticked while false, a cited claim contradicted by its own primary source.
-
-**Rules belong in the execution path. Everything else is a reading assignment nobody does.**
+*(A specific study once backed this with numbers. Cut 2026-09-18 — the claim was
+`[CS: UNREGISTERED]` and unverifiable from this repo, and Beth's call on review was
+"probably don't need this." See `OPEN.md` H-04 for the record of why it left.)*
 
 ## What is here
 

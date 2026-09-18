@@ -12,3 +12,16 @@
 # Tracking .claude/ is also what makes the skills discoverable to a Claude Code
 # session, which is what allowed /speckit-plan and /check-gates to be invoked and
 # tested for real.
+
+# Condens content snapshots. The MECHANISM travels with this template; the CONTENT
+# never does. These directories hold whole research reports — participant quotes,
+# named customers, unredacted open-text feedback. Data gathered for a research
+# purpose stays in that purpose (CLAUDE.md §10b, purpose limitation), and a template
+# repo that gets forked and published is the wrong home for it.
+#
+# check-condens.sh degrades to a date-only comparison when they are absent and says
+# so in its output, so a fresh clone is honest rather than quietly weaker.
+condens-cache/*
+!condens-cache/.gitkeep
+condens-reconciled/*
+!condens-reconciled/.gitkeep

@@ -168,8 +168,19 @@ else
     while IFS= read -r row; do
       [ -z "$row" ] && continue
       rid=$(printf '%s' "$row" | awk -F'|' '{gsub(/ /,"",$2); print $2}')
-      # A quotable fragment: the longest backticked or quoted span in the row.
-      frag=$(printf '%s' "$row" | grep -oE '`[^`]{12,}`|"[^"]{12,}"' | head -1 | tr -d '`"')
+      # A quotable fragment: a backticked or quoted span from the row.
+      #
+      # IT MUST BE A PHRASE, NOT A TOKEN. Taking the first long backticked span fired
+      # this never event on `check-condens.sh` — a filename, found in three files,
+      # reported as "its wording is still cited." A never event that fires on a
+      # filename is exactly the inflation this script's own header warns kills the
+      # concept, so the discriminator is: a retracted CLAIM contains whitespace; a
+      # path, filename or identifier does not. Found 2026-09-18 by adding a register
+      # row whose first backticked span happened to be a script name.
+      frag=$(printf '%s' "$row" | grep -oE '`[^`]{12,}`|"[^"]{12,}"' | tr -d '`"' \
+             | grep -E '[[:space:]]' \
+             | grep -vE '^[^[:space:]]*\.(sh|py|md|ya?ml|tsv|json|html|conf)[^[:space:]]*$' \
+             | head -1)
       if [ -z "$frag" ]; then
         echo "  CANNOT EVALUATE  $rid is flagged but quotes no searchable fragment."
         echo "                   Put the retracted wording in backticks so this can check it."

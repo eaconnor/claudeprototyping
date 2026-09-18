@@ -56,6 +56,7 @@ Five registers hold what is unresolved. They are **data, not prose** — each is
 | `ux.README.md` | the hand-written human layer — orientation the spine cannot carry | `check-human.sh` |
 | `EVIDENCE.md` | **where evidence lives** — homes, not individual sources. Owner required, method free | `check-evidence.sh` |
 | `condens-state.tsv` | what the research repository **actually looked like** when an agent last fetched it | `check-condens.sh` |
+| `condens-cache/` · `condens-reconciled/` | the artifact **text** as last fetched, and the version a human last signed off. Gitignored — the mechanism travels, the research content does not | `check-condens.sh` |
 
 Four files hold the human process, because none of the above tells a person what to do.
 
@@ -84,7 +85,7 @@ and loses the only information that tells you what to do next. Full contract:
 | `./check-judgment.sh` | does the plan→execute **authorization** hang together? | 23 unacknowledged slot · 24 incoherent · 25 partial with no named gate |
 | `./check-human.sh` | does the **human layer** still point at anything real? | 26 dangling reference · 27 fence stale (`--write` fixes) |
 | `./check-evidence.sh` | is there **anywhere the evidence lives**? | 28 not set up · 29 broken locator |
-| `./check-condens.sh` | has the **research moved** under the claim? | 30 artifact moved · 31 never observed |
+| `./check-condens.sh` | has the **research moved** under the claim? | 30 figures moved · 31 never observed · 32 prose only |
 | `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated |
 | `./check-never.sh` | has something happened that never should? | 20 stop and investigate · **5 could not evaluate — not a pass** |
 | `./check-value.sh` | is the value register honest? | 13 if it records no costs |
@@ -94,6 +95,7 @@ and loses the only information that tells you what to do next. Full contract:
 | `scripts/check-tier.py` | who has to sign? | 17 the tiering is a bottleneck |
 | `scripts/ux-score.py` | conformance baseline and work list | 0 — reports, never blocks |
 | `scripts/contrast.py` | computes the WCAG table | 0 — so ratios are reproducible, not asserted |
+| `scripts/figures.py` | extracts an artifact's **figures** as a sorted multiset | 0 · 3 if the body holds no numeral at all |
 
 ## Three design decisions worth knowing before you change anything
 

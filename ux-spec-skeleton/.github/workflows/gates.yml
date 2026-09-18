@@ -147,9 +147,16 @@ jobs:
           # 31 fails: a registered artifact nobody has ever observed is a citation that
           # has never been checked, which is a different thing entirely.
           ./check-condens.sh; c=$?
+          # 30 was a warning while this script could only compare dates — failing a
+          # build because somebody fixed a typo in a report is how a check gets muted.
+          # It now compares content and isolates FIGURES, so 30 means specifically
+          # "a number this project quotes has moved," which is the condition
+          # CLAUDE.md's 47% rule says must not ship unverified. Hence a failure.
+          # Bypass through WAIVERS.md like anything else, never silently.
           case $c in
             0)  ;;
-            30) echo "::warning::a cited research artifact moved since the last reconciliation — a person must read what changed"; ;;
+            30) echo "::error::a cited research artifact's FIGURES moved (or moved with no content baseline) — re-verify every stat quoted from it"; exit 1 ;;
+            32) echo "::warning::a cited research artifact's prose moved, every figure held — skim the diff; a finding can reverse without moving a numeral"; ;;
             31) echo "::error::a registered research artifact was never observed, or is no longer published"; exit 1 ;;
             5)  echo "::warning::check-condens.sh could not evaluate — no artifact rows, or nobody has run the fetch step"; ;;
             *)  echo "::warning::check-condens.sh exit $c"; ;;

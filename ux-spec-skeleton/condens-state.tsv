@@ -5,10 +5,23 @@
 # check-condens.sh runs in CI with no credentials and cannot reach Condens. So the
 # loop has two halves:
 #
-#   FETCH   an agent with the Condens connector lists published artifacts and writes
-#           this file. That is a ritual, not a build step — it needs a session.
+#   FETCH   an agent with the Condens connector lists published artifacts, writes this
+#           file, AND saves each artifact's text to condens-cache/<artifact_id>.md.
+#           A ritual, not a build step — it needs a session and credentials.
 #   CHECK   check-condens.sh compares what EVIDENCE.md claims against what this file
 #           observed. No network, works in CI, fails honestly when this file is stale.
+#
+# THE CONTENT IS THE POINT, NOT THIS TABLE. updatedAt alone cannot tell a typo fix
+# from a reversed finding, so the fetch must save the text. check-condens.sh hashes
+# the cache against condens-reconciled/ — the version a human signed off — and
+# isolates whether the FIGURES moved. Without the cache it falls back to comparing
+# these dates and says so. Saving metadata only is the weak half of the ritual.
+#
+# RECONCILIATION IS THE OTHER HALF, and it is a human act:
+#     # read what changed, then record what you read
+#     mkdir -p condens-reconciled && cp condens-cache/*.md condens-reconciled/
+#     # and set reconciled_at: in the gate files to today
+# Copying without reading defeats the entire check. Nothing can detect that.
 #
 # Deliberately NOT an API call from the script: a check that passes only when
 # somebody's token is valid fails for reasons unrelated to what it measures, and

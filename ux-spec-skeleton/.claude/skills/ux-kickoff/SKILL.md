@@ -39,23 +39,43 @@ the room's attention goes in Steps 1-4, not whether they run. Ask: *"Which of**
 | answer | what changes in Steps 1-4 |
 |---|---|
 | "I don't know if this needs UX" | Don't infer this yourself — it's a HUMAN question, not a UX one. Run Steps 1-4 as normal, but at Step 4 add: can anyone in the room name the decision UX input would actually change? If nobody can, that's the finding — log it as an `OPEN.md` `HUMAN` row instead of quietly proceeding as if UX were assumed necessary. |
-| "Updating an existing flow — minor" | Check whether `INTENT_SPEC` already points at a real document before Step 4 offers to copy the template — a minor update usually already has one. Evidence basis (Step 4) is more often `FINDINGS` than `HYPOTHESES` here: there's usually existing usage data to point at, not a fresh guess. |
+| "Updating an existing flow — minor" | Check whether `INTENT_SPEC` already points at a real document **before Step 0c copies the template** — a minor update usually already has one, and Step 0c should point at the existing document instead of starting a second one. Evidence basis (Step 4) is more often `FINDINGS` than `HYPOTHESES` here: there's usually existing usage data to point at, not a fresh guess. |
 | "Something's majorly wrong with existing UX" | Research owner (Step 2) and `RISK_FUNCTION` matter most here — "majorly wrong" usually means a FLOOR-level problem (accessibility, data integrity, harm), not a FIT one. If nobody can point at evidence of what's actually wrong yet, say that explicitly at Step 4 — "we know it's bad" is not the same as `EVIDENCE_BASIS="FINDINGS"`. |
 | "Building a new feature" | Run Steps 1-4 in full. Flag `OPEN.md` H-03 explicitly — a new feature is the case where at least one of the 22 generic house-rubric criteria in `ux.md`/`vision.md`/`design.md` needs a project-specific replacement, not a rubber stamp. |
-| "Building a new product" | Run Steps 1-4 in full, and treat `ESCALATION_PATH_TESTED` as higher-stakes than usual — new-product disagreements are the most expensive to resolve late. `INTENT_SPEC` almost certainly doesn't exist yet, so Step 4's template copy isn't optional. |
+| "Building a new product" | Run Steps 1-4 in full, and treat `ESCALATION_PATH_TESTED` as higher-stakes than usual — new-product disagreements are the most expensive to resolve late. `INTENT_SPEC` almost certainly doesn't exist yet, so Step 0c's template copy isn't optional. |
 
 If the room's answer doesn't match any of these five cleanly, record what they
 actually said instead of forcing it into the nearest row — this list describes
 what's been seen so far, not a closed set.
 
+## Step 0c — create the Intent Spec now, before asking anything else
+
+If `INTENT_SPEC` in `project.conf` is empty, copy `templates/UX-INTENT-SPEC.template.md`
+to wherever this project keeps its canonical documents, and point `INTENT_SPEC` at the
+copy — same move as `ux-onboard`'s Path A for `EVIDENCE.md`. **Do this now, before**
+**Step 1, not at the end.**
+
+**Why this moved here:** Steps 1-4 below each write an answer to `project.conf` **and**
+the Intent Spec, at the same time. If the Intent Spec doesn't exist until the end, every
+answer from Steps 1-3 has nowhere to land in it yet — a kickoff interrupted before the
+old Step 4 left `project.conf` and the Intent Spec silently out of sync, which is exactly
+the drift this skill exists to prevent. (Found running this skill against a real project,
+2026-09-18 — see `OPEN.md`.)
+
+**Creating the file is not filling it in.** The copy, the rename, and pointing
+`INTENT_SPEC` at it are the only things that happen in this step. Its frontmatter fields
+stay as template placeholders until Steps 1-4 answer them one at a time, and its §0-§20
+content, `## Change requests`, and Signatures stay untouched — same rule as always, just
+stated earlier.
+
 ## Read this before asking anything
 
 **This kickoff has one canonical document: the project's UX-INTENT-SPEC** — the
-file named by `INTENT_SPEC` in `project.conf`, started from `templates/**
-**UX-INTENT-SPEC.template.md`.** `project.conf` is a *mirror* of five of its
-fields, kept only because the check scripts read config, not markdown frontmatter.
-Every answer in Steps 1-4 below gets written to **both**, at the same time, or they
-drift and nobody notices which one is stale. The exact correspondence:
+file named by `INTENT_SPEC` in `project.conf`, created in Step 0c above.
+`project.conf` is a *mirror* of five of its fields, kept only because the check scripts
+read config, not markdown frontmatter. Every answer in Steps 1-4 below gets written to
+**both**, at the same time, or they drift and nobody notices which one is stale. The
+exact correspondence:
 
 | what you're asking about | `project.conf` field | Intent Spec location |
 |---|---|---|
@@ -97,12 +117,14 @@ into `project.conf` or the Intent Spec on the human's behalf — stop. Ask inste
 
 ## Order, and why it's fixed
 
-Roster first: every later question assigns to a person, so it has to exist before
-anything else does. Owners next, because RACI at the area level doesn't resolve
-who signs project-wide or company-wide action — that's a different field. Escalation
-after owners, because you can't say where a conflict goes until you know who might
-be in one. Evidence basis and the Intent Spec last, because "is this signable"
-depends on knowing who's supposed to sign it.
+The Intent Spec file itself exists first now (Step 0c) — but an empty shell doesn't
+answer anything, so the question order below is unchanged. Roster first: every later
+question assigns to a person, so it has to exist before anything else does. Owners
+next, because RACI at the area level doesn't resolve who signs project-wide or
+company-wide action — that's a different field. Escalation after owners, because you
+can't say where a conflict goes until you know who might be in one. Evidence basis
+last, because "is this signable" depends on knowing who's supposed to sign it — that
+question is about the content now filling the shell, not about whether the file exists.
 
 ### Step 1 — Roster & RACI
 
@@ -150,21 +172,19 @@ Write the name into `project.conf`'s `ESCALATION_PATH` **and** the Intent Spec's
 `escalation_path:` frontmatter field. `ESCALATION_PATH_TESTED` has no Intent Spec
 counterpart — it's config-only, there to gate nothing, just to stay honest.
 
-### Step 4 — Evidence basis and the Intent Spec
+### Step 4 — Evidence basis
 
 - Ask: **can anyone in the room point at evidence for the claims in the draft, or
   was it written to get something started?** "I made it up" is a complete and
   legitimate answer — write `EVIDENCE_BASIS="HYPOTHESES"` in `project.conf` **and**
   `evidence_basis: HYPOTHESES` in the Intent Spec's frontmatter, without treating
   it as a problem to fix in this step.
-- If `INTENT_SPEC` in `project.conf` is empty, copy `templates/UX-INTENT-SPEC.template.md`
-  to wherever this project keeps its canonical documents, and point `INTENT_SPEC` at
-  the copy — same move as `ux-onboard`'s Path A for `EVIDENCE.md`. **That copy, the
-  rename, and the frontmatter fields in the table above are the only parts of this
-  file you touch.** Its numbered §0-§20 content, its `## Change requests` rows, and
-  its Signatures table are the human's work — if a discipline pushes back on a claim
-  during this kickoff, tell the room to add a `## Change requests` row themselves;
-  do not add it for them.
+
+**The frontmatter fields in the table above are the only parts of the Intent Spec**
+**you touch, in this step or any other.** Its numbered §0-§20 content, its
+`## Change requests` rows, and its Signatures table are the human's work — if a
+discipline pushes back on a claim during this kickoff, tell the room to add a
+`## Change requests` row themselves; do not add it for them.
 
 ### Step 5 — Run the check, report verbatim
 

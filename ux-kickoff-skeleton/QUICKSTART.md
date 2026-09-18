@@ -1,0 +1,45 @@
+# QUICKSTART — running this on your project
+
+Ten minutes. Edit `project.conf`, fill the roster, run three scripts.
+
+## 1. Point it at your project
+
+Edit `project.conf`. It is the only file you have to change to get started.
+
+Two things are not like the rest of the file:
+
+**`ROSTER`** needs at least one real row before `check-roster.sh` will pass —
+name, project role, and R/A/C/I per discipline. It is meant to change: correct it
+as the room corrects it, don't treat the first draft as final.
+
+**`ACCOUNTABLE_OWNER`, `RESEARCH_OWNER` and `ESCALATION_PATH`** must each be a real
+person. `RISK_FUNCTION` may legitimately be `UNASSIGNED` — it becomes an `OPEN.md`
+`HUMAN` row the moment anyone needs a T3 signature and there's nobody to give it.
+
+## 2. Fill the intent spec, or don't yet
+
+`Intent Specs/PROJECT-NAME.md` is a copy of `ux-spec-skeleton`'s
+`UX-INTENT-SPEC.template.md` — RACI, `evidence_basis:`, change requests and scoped
+sign-off as core sections, not an appendix. Rename it, fill what you know, and point
+`INTENT_SPEC` in `project.conf` at it. Leaving it unfilled and `INTENT_SPEC=""` is
+the pre-spec phase, not a missing step — say so rather than papering over it.
+
+## 3. Run the three scripts
+
+```bash
+./check-roster.sh    # is the kickoff's own output actually written down?
+./check-gates.sh      # are Gate 1/2/3's acceptance criteria ticked?
+./check-blocked.sh    # is a HUMAN row in OPEN.md waiting on a person?
+```
+
+All three warn rather than block — "gates do not block work" is the rule this
+skeleton inherits from `ux-spec-skeleton`. Nothing here stops you working; it stops
+you from *not noticing* what's still open.
+
+## 4. Outgrowing this skeleton
+
+This is the minimal sibling of `ux-spec-skeleton` — three scripts, not thirteen. When
+you need drift detection, the judgment-contract, design-system linting, or never-events,
+copy the relevant `check-*.sh` / `scripts/*.py` files across and restore the frontmatter
+fields they read (this skeleton's `ux.md`/`vision.md`/`design.md` deliberately cut any
+field whose script isn't vendored here — see the note at the top of `ux.md`).

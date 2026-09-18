@@ -46,8 +46,19 @@ gate file across from `ux-spec-skeleton` (and the script it names) if you need o
 
 ## Setup
 
+```
+/ux-kickoff
+```
+
+Runs the kickoff as a facilitated session — roster & RACI, owners, escalation,
+evidence basis, in that order — and writes the answers into `project.conf` for
+you. It asks; it never answers on your behalf. `.claude/skills/ux-kickoff/
+SKILL.md` names exactly what it will and won't fill in.
+
+Or skip straight to the scripts once `project.conf` is filled, by hand or by the
+skill:
+
 ```bash
-cp project.conf.example project.conf   # if you kept one; otherwise edit project.conf directly
 ./check-roster.sh && ./check-gates.sh && ./check-blocked.sh
 ```
 

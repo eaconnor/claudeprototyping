@@ -4,7 +4,19 @@ Ten minutes. Edit `project.conf`, fill the roster, run three scripts.
 
 ## 1. Point it at your project
 
-Edit `project.conf`. It is the only file you have to change to get started.
+Run the kickoff facilitator:
+
+```
+/ux-kickoff
+```
+
+It asks — roster & RACI, then owners, then escalation, then evidence basis — in
+that order, and writes down what you say. It never picks an answer for you; if a
+question hasn't been asked yet, it stops rather than guessing. See
+`.claude/skills/ux-kickoff/SKILL.md` for exactly what it will and won't do.
+
+**Or edit `project.conf` directly** if you'd rather skip the facilitated version —
+it's the only file you have to touch either way.
 
 Two things are not like the rest of the file:
 

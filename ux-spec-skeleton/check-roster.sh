@@ -62,6 +62,16 @@ if [ ! -f project.conf ]; then
   exit 3
 fi
 
+# PROCESS_TIER=skinny means this project's RACI/escalation lives outside this
+# repo, on purpose (see README-SKINNY.md). Reporting BLOCKED here would nag a
+# team for an answer they've deliberately placed elsewhere.
+if [ "${PROCESS_TIER:-full}" = "skinny" ]; then
+  echo "not applicable — PROCESS_TIER=skinny. This project's RACI and escalation"
+  echo "path live outside this repo. See README-SKINNY.md if that was not the"
+  echo "intent — the default is \"full\" for a reason."
+  exit 0
+fi
+
 if [ -z "${ROSTER+x}" ] || [ "${#ROSTER[@]}" -eq 0 ]; then
   echo "BROKEN — ROSTER is empty or unset in project.conf."
   echo ""

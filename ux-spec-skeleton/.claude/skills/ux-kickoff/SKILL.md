@@ -13,6 +13,22 @@ a designer and researcher discovering they're both R and A on their own areas, a
 engineer refusing to sign a data-egress design with no legal name attached. Every
 rule below exists because something specific went sideways in that run.
 
+## Step 0 — full loop, or skinny?
+
+**Ask this before anything else, and let the answer branch the rest of this**
+**skill.** Read `PROCESS_TIER` from `project.conf` if it's already set; otherwise
+ask: *"Is your team's process for who's accountable, who researches, and where a**
+**disagreement goes already settled somewhere else — or do you want to set that**
+**up here?"*
+
+- **Full** (the default) — continue to "Read this before asking anything" below
+  and run Steps 1-4 as written.
+- **Skinny** — set `PROCESS_TIER="skinny"` in `project.conf`, point the room at
+  `README-SKINNY.md`, and **stop**. Do not run Steps 1-4. Skinny exists precisely
+  so a team with its own settled process doesn't have to sit through a RACI
+  walkthrough it doesn't need — running the walkthrough anyway defeats the
+  point of asking.
+
 ## Read this before asking anything
 
 **This kickoff has one canonical document: the project's UX-INTENT-SPEC** — the

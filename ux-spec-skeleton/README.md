@@ -3,8 +3,8 @@
 A working repo for wiring design and research judgment into a spec-kit engineering
 workflow, so it survives contact with how software actually gets built.
 
-**15 scripts · 5 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
-Start at [`QUICKSTART.md`](QUICKSTART.md).
+**20 scripts · 5 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
+Start at [`QUICKSTART.md`](QUICKSTART.md). Team's process already tight? See [`README-SKINNY.md`](README-SKINNY.md).
 
 ## The finding this is built on
 

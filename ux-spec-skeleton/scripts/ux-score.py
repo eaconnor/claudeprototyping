@@ -228,13 +228,28 @@ def main():
 
     lv = linter_violations()
     if lv:
+        # counted here rather than asserted, so the sentence below cannot outlive its facts
+        try:
+            _g3 = os.environ.get("GATE_3", "design.md")
+            ticked_n = sum(1 for ln in open(_g3, encoding="utf-8")
+                           if re.match(r"^- \[[xX]\] ", ln))
+            GATE_3 = _g3
+        except OSError:
+            ticked_n, GATE_3 = 0, "design.md"
         v, u = lv
         print(f"\n  check-design.py independently finds {v} live violation(s) and "
               f"{u} unresolved")
         print( "  pair(s) in the shipped build. Note these are defects in code that "
                "the box")
-        print( "  state does not reflect — two design.md boxes were checked while "
-               "false.")
+        # WAS: "two design.md boxes were checked while false." That was a finding from
+        # the ORIGIN project, printed unconditionally whenever the linter found anything
+        # — including on a clone with 0 ticked boxes, where it contradicted this script's
+        # own output two lines above. Say what is actually computable here instead.
+        print(f"  state may not reflect. {ticked_n} box(es) are ticked in "
+              f"{GATE_3}; whether any of")
+        print( "  them asserts something these violations contradict is check-never.sh "
+               "NE-2's")
+        print( "  question, not this one's.")
         print( "  Treat the baseline above as an UPPER bound on conformance, not a "
                "measurement.")
 

@@ -128,7 +128,9 @@ Gate 1/2's evidence discipline, already covered above.
 ## Where this came from
 
 The Gate 1/2/3 ownership split and the design-integrity role are compiled from an internal
-policy brief, not invented here. `[CS: HIGH — internal policy brief §8]` The rest of the
+policy brief, not invented here. `[CS: UNREGISTERED — "internal policy brief §8" names
+no retrievable artifact: no path, no URL, no MANIFEST row. Treat the ownership split as
+one defensible reading, not as sourced. See OPEN.md H-04.]` The rest of the
 table is the practical reading of that split against the scripts in this repo, and has not
 been tested against a real multi-team project yet. `[A]` Treat it as a starting position
 to argue with, not a settled org chart — and record the argument in `OPEN.md`.

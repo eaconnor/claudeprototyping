@@ -137,17 +137,53 @@ echo "      support."
 echo "      Why never: this is not a confidence problem, it is a false statement"
 echo "      with a citation attached, which is more persuasive than an uncited one."
 echo
-if [ -f OPEN.md ]; then
-  hit=0
-  if grep -q 'FABRICATION RISK' OPEN.md; then
-    # Pizarro is the live instance. Check it is not still cited as support.
-    if grep -rqE 'art \+ writing beats writing alone|art and writing produced larger' \
-        ux.md briefs/*.md 2>/dev/null; then
-      echo "  FIRED  a claim marked FABRICATION RISK in OPEN.md is still cited as support."
-      hit=1; FIRED=1
-    fi
+# PERMANENTLY INERT UNTIL 2026-09-18, and the reason is instructive. The outer branch
+# required the literal string "FABRICATION RISK" in OPEN.md, and the inner greps looked
+# for one specific retracted sentence from the ORIGIN project ("art + writing beats
+# writing alone") in ux.md and briefs/*.md. In any clone: the flag is absent, the
+# sentence is absent, and briefs/ does not exist — so the branch could not be reached
+# and the check printed "clear" forever. One of seven never events that could never fire,
+# while the closing text reassured the reader that nothing catastrophic was caught.
+#
+# Now generic: find rows this project has flagged as retracted or source-contradicted,
+# pull a quotable fragment from each, and check nothing still cites it.
+if [ ! -f OPEN.md ]; then
+  echo "  CANNOT EVALUATE — OPEN.md is missing."
+  UNEVAL=$((UNEVAL+1))
+else
+  flagged=$(awk '/^## Open rows/{f=1;next} /^## /{f=0} f' OPEN.md 2>/dev/null \
+            | grep -iE 'FABRICATION RISK|RETRACTED|CONTRADICTED BY SOURCE|☠')
+  if [ -z "$flagged" ]; then
+    echo "  CANNOT EVALUATE — no row is flagged RETRACTED, FABRICATION RISK or"
+    echo "  CONTRADICTED BY SOURCE. That may mean every citation was checked against its"
+    echo "  primary source and none failed, or it may mean nobody has checked any. This"
+    echo "  script cannot tell those apart, and reporting 'clear' would pick the"
+    echo "  flattering one. Auditing a citation against its source is RITUALS.md §2"
+    echo "  step 4 — a human job."
+    UNEVAL=$((UNEVAL+1))
+  else
+    hit=0
+    n=$(printf '%s\n' "$flagged" | grep -c .)
+    echo "  $n flagged claim(s) found. Checking nothing still cites them as support."
+    while IFS= read -r row; do
+      [ -z "$row" ] && continue
+      rid=$(printf '%s' "$row" | awk -F'|' '{gsub(/ /,"",$2); print $2}')
+      # A quotable fragment: the longest backticked or quoted span in the row.
+      frag=$(printf '%s' "$row" | grep -oE '`[^`]{12,}`|"[^"]{12,}"' | head -1 | tr -d '`"')
+      if [ -z "$frag" ]; then
+        echo "  CANNOT EVALUATE  $rid is flagged but quotes no searchable fragment."
+        echo "                   Put the retracted wording in backticks so this can check it."
+        UNEVAL=$((UNEVAL+1)); continue
+      fi
+      where=$(grep -rlF "$frag" --include="*.md" . 2>/dev/null | grep -v "OPEN.md" | head -3)
+      if [ -n "$where" ]; then
+        echo "  FIRED  $rid is flagged, and its wording is still cited in:"
+        printf '%s\n' "$where" | sed 's/^/           /'
+        hit=1; FIRED=1
+      fi
+    done <<< "$flagged"
+    [ "$hit" -eq 0 ] && echo "  clear — no flagged claim is still cited as support"
   fi
-  [ "$hit" -eq 0 ] && echo "  clear — no FABRICATION RISK claim is still being used as support"
 fi
 
 # ---------------------------------------------------------------- NE-4
@@ -334,7 +370,8 @@ fi
 echo "No never event detected at destination '$DEST'."
 echo
 echo "This is a narrow statement. Seven never events is a floor, not a quality"
-echo "bar — NE-7 is only partially detectable and NE-3 checks one known instance."
+echo "bar — NE-7 is only partially detectable and NE-3 depends on someone having"
+echo "flagged a retracted claim in the first place."
 echo "Passing here means nothing catastrophic was caught. It does not mean the"
 echo "work is good; that is what the other eight scripts are for."
 exit 0

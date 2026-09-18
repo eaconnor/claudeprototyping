@@ -160,22 +160,28 @@ if [ -f OPEN.md ]; then
   openh=$(awk '/^## Open rows/{f=1;next} /^## /{f=0} f && /^\| H-[0-9]+ \| HUMAN \|/{c++} END{print c+0}' OPEN.md)
   echo "  $openh unresolved human decisions. Each is a value that may change under you:"
   echo
-  echo "    H-02  Art. 9 consent copy is unreviewed"
-  echo "          -> do NOT hardcode the consent string. Put it behind config."
-  echo "    H-03  retention / deletion SLA is undefined"
-  echo "          -> do NOT hardcode a duration. There is no correct number yet."
-  echo "    R-01/R-02  the generation mechanism may be cut entirely"
-  echo "          -> keep doodle generation behind an interface with a null"
-  echo "             implementation. The most likely test outcome is re-scope-or-kill,"
-  echo "             so the seam is not speculative — it is the expected path."
+  # Was a hardcoded list of the origin project's H-02/H-03/R-01/R-02 with their
+  # subject matter (Art. 9 consent, a retention SLA, doodle generation). A clone's
+  # rows are different rows. Print the project's ACTUAL open rows instead.
+  awk '/^## Open rows/{f=1;next} /^## /{f=0} f && /^\|[[:space:]]*[A-Z]+-[0-9]+[[:space:]]*\|[[:space:]]*(HUMAN|RESEARCH)/' OPEN.md 2>/dev/null \
+    | while IFS= read -r row; do
+        rid=$(printf '%s' "$row" | awk -F'|' '{gsub(/ /,"",$2); print $2}')
+        what=$(printf '%s' "$row" | awk -F'|' '{gsub(/^[ \t]+|[ \t]+$/,"",$4); print substr($4,1,88)}')
+        echo "    $rid  $what"
+        echo "          -> do not hardcode anything that depends on this. Put a seam there."
+      done
   echo
 fi
 
 if [ -f "$BUILD" ]; then
   # a hardcoded duration while the retention SLA is open
+  # Match the CLAIM, not the row id — H-03 is a different row in every clone.
   dur=$(grep -ocE '\b(30|60|90|7|14) (days?|day)\b' "$BUILD")
-  if [ "${dur:-0}" -gt 0 ] && grep -q '^| H-03 | HUMAN |' OPEN.md 2>/dev/null; then
-    echo "  WARN  the build names a duration while H-03 (retention SLA) is open."
+  retrow=$(awk '/^## Open rows/{f=1;next} /^## /{f=0} f' OPEN.md 2>/dev/null \
+           | grep -iE 'retention|deletion|SLA' | grep -iE 'HUMAN|RESEARCH' | head -1 \
+           | awk -F'|' '{gsub(/ /,"",$2); print $2}')
+  if [ "${dur:-0}" -gt 0 ] && [ -n "$retrow" ]; then
+    echo "  WARN  the build names a duration while $retrow (retention) is open."
     echo "        That number has no source. Externalise it."
     WARN=$((WARN+1))
   fi
@@ -202,14 +208,31 @@ for f in ux.md vision.md design.md; do
 done
 echo "  $exe of $tot criteria carry an executable assertion."
 echo
-echo "  THESE ARE A TEST SUITE ALREADY WRITTEN. Lift them:"
-echo "    G3-02  svgsOnLoad = 0, and 1 after the render click"
-echo "    G3-03  render control disabled before consent, enabled after"
-echo "    G3-04  after discard: svg count 0, entry text unchanged"
-echo "    G3-05  transcript readOnly = false before save"
-echo "    G3-26  save path requires only non-empty text"
-echo "  Each is a browser assertion. This is the highest-value thing eng can"
-echo "  take from this repo, and nothing currently does it."
+# HARDCODED ORIGIN FINDINGS UNTIL 2026-09-18. This used to print five specific
+# criterion ids with the origin product's assertions — SVG render counts, a transcript
+# readOnly flag, a discard path — as though it had computed them from the clone. One of
+# them, G3-26, did not exist in design.md at all. A clone's engineer was handed "THESE
+# ARE A TEST SUITE ALREADY WRITTEN" naming criteria that were not theirs and one that
+# was nobody's. That is the false-green pattern one level up: a hardcoded finding reading
+# as a computed one, surviving into every project that clones this.
+#
+# Now derived from this project's own gate file, and silent when there is nothing to say.
+if [ -f "${GATE_3:-design.md}" ]; then
+  execrit=$(grep -E '^- \[[ x]\] ' "${GATE_3:-design.md}" \
+            | grep -E 'verified_by:.*(`|grep|= [0-9]|DOM check|count|document\.fonts|svgs)' \
+            | sed -E 's/^- \[[ x]\] ([^ ]+) — .*verified_by: (.*)$/    \1  \2/' | head -8)
+  if [ -n "$execrit" ]; then
+    echo "  THESE ARE A TEST SUITE ALREADY WRITTEN — your own criteria, whose"
+    echo "  verified_by clause is already a mechanical assertion. Lift them:"
+    printf '%s\n' "$execrit"
+    echo "  Each is an assertion something can run. This is the highest-value thing eng"
+    echo "  can take from this repo."
+  else
+    echo "  No criterion in ${GATE_3:-design.md} carries a mechanically checkable"
+    echo "  verified_by clause yet, so there is no test suite to lift. Writing criteria"
+    echo "  whose verification is a command is how that changes."
+  fi
+fi
 [ "$tot" -gt 0 ] && [ "$exe" -lt $((tot/3)) ] && {
   echo "  WARN  fewer than a third are executable."
   WARN=$((WARN+1))

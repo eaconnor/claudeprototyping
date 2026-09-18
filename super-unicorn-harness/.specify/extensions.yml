@@ -1,0 +1,88 @@
+# Mechanical enforcement for the three-gate framework.
+#
+# Every speckit-* skill reads this file in its Pre-Execution Checks and is
+# instructed to EXECUTE_COMMAND for each hook registered with `optional: false`,
+# then wait for the result before continuing. That instruction is what makes the
+# gate check mechanical rather than a norm sitting in constitution prose.
+#
+# Deliberately NO `condition:` field on these hooks — the skills are told to SKIP
+# any hook that declares a non-empty condition and leave evaluation to a
+# HookExecutor that does not exist in this project. A condition here would
+# silently disable the gate.
+
+version: 1
+
+hooks:
+  after_specify:
+    - extension: ux-onboard
+      # Registered at after_specify, not before_plan, on purpose: the spec is what
+      # reveals what evidence the project needs, and blocking before there is a spec
+      # gives the researcher nothing to set up AGAINST. This fires once the shape of
+      # the work exists and before any planning treats it as settled.
+      #
+      # The skill is deliberately forbidden from doing the setup itself. See its
+      # SKILL.md: choosing where evidence lives and how it is made sense of is the
+      # research owner's judgment, and an agent scaffolding a plausible datadump
+      # produces something that reads as research and contains none.
+      command: ux-onboard
+      description: "Blocks after specify until the project names an owned evidence home in EVIDENCE.md. Requires a location and an owner; does not require any particular method."
+      prompt: "Run ./check-evidence.sh from the repo root. Exit 28 means no owned evidence home is set up — stop, report verbatim, and do NOT create one yourself; it belongs to whoever owns research here. Exit 29 means a row points at a missing path. Exit 5 means the register is missing, which is a failure not a skip."
+      optional: false
+      enabled: true
+
+  before_plan:
+    - extension: three-gate
+      command: check-gates
+      description: "Blocks planning until Gates 1-3 have zero unchecked acceptance criteria."
+      prompt: "Run ./check-gates.sh from the repo root. If it exits non-zero, stop and report BLOCKED. Do not plan."
+      optional: false
+      enabled: true
+
+    - extension: open-register
+      # NOTE: the command is `check-open` (it must match .claude/skills/check-open/)
+      # while the script it runs is `./check-blocked.sh`. The skill is named for the
+      # register it reads; the script is named for what it reports. Both names are
+      # kept — do not go hunting for a check-open.sh, there isn't one.
+      command: check-open
+      description: "Blocks planning while OPEN.md carries a HUMAN-owned decision. Distinguishes decision uncertainty from evidence uncertainty."
+      prompt: "Run ./check-blocked.sh from the repo root. Exit 2 means a person owes an answer — stop, report the questions and owners verbatim, and do not plan. Exit 3 means the register is missing, which is a failure not a skip."
+      optional: false
+      enabled: true
+
+  before_implement:
+    - extension: three-gate
+      command: check-gates
+      description: "Blocks implementation until Gates 1-3 have zero unchecked acceptance criteria."
+      prompt: "Run ./check-gates.sh from the repo root. If it exits non-zero, stop and report BLOCKED. Do not implement."
+      optional: false
+      enabled: true
+
+    - extension: open-register
+      # NOTE: the command is `check-open` (it must match .claude/skills/check-open/)
+      # while the script it runs is `./check-blocked.sh`. The skill is named for the
+      # register it reads; the script is named for what it reports. Both names are
+      # kept — do not go hunting for a check-open.sh, there isn't one.
+      command: check-open
+      description: "Blocks implementation while OPEN.md carries a HUMAN-owned decision."
+      prompt: "Run ./check-blocked.sh from the repo root. Exit 2 means a person owes an answer — stop, report the questions and owners verbatim, and do not implement."
+      optional: false
+      enabled: true
+
+  before_tasks:
+    - extension: three-gate
+      command: check-gates
+      description: "Blocks task breakdown until Gates 1-3 have zero unchecked acceptance criteria."
+      prompt: "Run ./check-gates.sh from the repo root. If it exits non-zero, stop and report BLOCKED. Do not break down tasks."
+      optional: false
+      enabled: true
+
+    - extension: open-register
+      # NOTE: the command is `check-open` (it must match .claude/skills/check-open/)
+      # while the script it runs is `./check-blocked.sh`. The skill is named for the
+      # register it reads; the script is named for what it reports. Both names are
+      # kept — do not go hunting for a check-open.sh, there isn't one.
+      command: check-open
+      description: "Blocks task breakdown while OPEN.md carries a HUMAN-owned decision."
+      prompt: "Run ./check-blocked.sh from the repo root. Exit 2 means a person owes an answer — stop, report the questions and owners verbatim, and do not break down tasks."
+      optional: false
+      enabled: true

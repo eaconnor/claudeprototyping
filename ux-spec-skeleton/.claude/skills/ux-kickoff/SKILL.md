@@ -13,6 +13,24 @@ a designer and researcher discovering they're both R and A on their own areas, a
 engineer refusing to sign a data-egress design with no legal name attached. Every
 rule below exists because something specific went sideways in that run.
 
+## Step -1 — is this toolkit even here?
+
+This skill is discoverable from any session now (it's symlinked into
+`~/.claude/skills/`), but its mechanics — `project.conf`, `./check-roster.sh`,
+`templates/UX-INTENT-SPEC.template.md` — only exist inside a project that has
+actually adopted this toolkit. Before Step 0, confirm all three are present,
+walking up from the current directory the same way `ux-onboard` resolves its
+root (not `git rev-parse --show-toplevel` — it returns the wrong root when this
+toolkit sits inside a larger repo).
+
+If any of the three is missing, **stop and say so plainly** — do not guess a
+path, do not offer to create `project.conf` from scratch, and do not treat this
+as the smaller case of "the roster is just unfilled." A project with no toolkit
+at all is a different problem (installing/adopting this toolkit onto an
+existing project — not yet built as its own skill) from a project that has the
+toolkit but hasn't run the kickoff yet. Naming which one you're in is the whole
+job of this step.
+
 ## Step 0 — full loop, or skinny?
 
 **Ask this before anything else, and let the answer branch the rest of this**

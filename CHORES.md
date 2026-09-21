@@ -8,6 +8,25 @@
 
 ## Open
 
+### From the derivative-synthesis failure (2026-09-21) — three recorded instances of one pattern
+
+**The pattern, stated once:** a synthesis pass reads *derivative* documents, never opens the *primary* sources, and then reports the absence of evidence as a finding. Fluent, sourced-looking, and wrong. It has now happened at least three times on this project:
+
+1. **2026-09-21 (this session).** Seven subagents were scoped at `acp-core-testrepo/specs/*/` only. All seven independently concluded "no user research exists anywhere for this project," and that claim was written into 7 mini `ux.md` files, the main `ux.md` spine, and `design.md` — and reported to Beth as the single strongest finding in the corpus. It is false: 22 transcripts exist (11 Ask N-zo tech-preview sessions, 8 Empower 2026 CAB, 3 IT Leaders roundtable), plus 62 competitor files and 3 vision PDFs, in `briefs/handoffs/what's up with the humans in ACP?/nicole-acp-datadump/`.
+2. **Previously, in the corpus itself.** `research-evidence.md` carries its own header admission: *"Scout did not independently read the raw transcript files (directory could not be enumerated). All quotes below are surfaced from that catalog with the attribution it carries."* Its `§CONFIDENCE-NOTES` adds that the catalog it used "is itself a synthesized derivative; Scout could not confirm fidelity to raw transcripts." `HANDOFF.md` flagged the fix and nobody took it: *"Their voice is sitting in `nicole-acp-datadump/transcripts/`. Worth grepping."*
+3. **In the Listening Game ledger.** A Miss recorded and carried across ~15 sessions: *"you lost a ton of richness in the coworker setup process and the vision framing."*
+
+- [ ] **Decide the structural guard against derivative-only synthesis.** Three candidate mechanisms, none chosen — this is Beth's call, not a fix to apply unilaterally:
+  - **(a) Wire `EVIDENCE.md` where the work happens.** The toolkit already has the designed guard for exactly this: `ux-onboard` + `check-evidence.sh` block until a project names an owned evidence home, and `.specify/extensions.yml` can register it at `after_specify` with `optional: false`. `acp-core-testrepo` has no `EVIDENCE.md`, which is precisely why the narrow scoping went uncaught. Cheapest fix, uses machinery that already exists.
+  - **(b) Make "no evidence exists" a claim that requires a corpus-wide search, not a directory-scoped one.** Mirrors the existing rule in the `careless-reading-pattern` memory ("verify a negative grep result with a second method before reporting absence"), but that rule currently lives only in memory, and memory is advisory. As a `CLAUDE.md` §4 clause it would be governing: an absence claim names the search performed and its scope, or it ships as `[?]` rather than as a finding.
+  - **(c) Give every subagent the corpus map in its prompt, and forbid unscoped absence claims.** A subagent handed one directory cannot distinguish "not here" from "nowhere," and will say the second when it means the first. Either the prompt carries a pointer to the primary-source corpus, or the agent is instructed to report "I only looked at X" instead of "nothing exists."
+
+- [ ] **Read the 22 transcripts as primary sources and fix what was built on the derivative catalog.** Two consumers to correct once read: `research-evidence.md` (which says outright it never read them) and the 5 CAB names it flags as having "no quotes surfaced in the catalog body." Related live contradiction to settle while in there: the deck/findings cite "8 blind interviews" and an earlier pass found "only 5 transcripts exist," while the directory actually holds 22 — at least one of those three numbers is wrong.
+
+- [ ] **Correct the false "no research" claim in the 11 `acp-core-testrepo` gate files.** Mechanical once (a)/(b)/(c) is decided: 7 × `specs/*/ux.md`, root `ux.md`, `design.md`, and the `R-01` row in `OPEN.md` all assert or rely on it. The honest replacement is not "research exists, all good" — it is that a substantial primary corpus exists and had not been read at the time those files were written.
+
+---
+
 ### From Insights Report (2026-08-13) — Automation & Process Discipline
 
 - [x] **Define prototype acceptance rubric.** — 2026-08-14. Tabled. Not a thing.

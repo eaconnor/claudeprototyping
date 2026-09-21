@@ -1,6 +1,6 @@
 ---
 name: "ux-kickoff"
-description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis, then the gate spine (mandatory root ux.md, optional main/mini split, conditional vision.md/design.md/OPEN.md/MANIFEST.md, traces_to sequencing, and Spec Kit hook wiring) — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
+description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis, then the gate spine (mandatory root ux.md, optional main/mini split, conditional vision.md/design.md/OPEN.md/MANIFEST.md, traces_to sequencing, Spec Kit hook wiring, and a check that the project's own constitution and Intent Spec actually reference the gate files — offering to add that wiring, which is the only content this skill generates rather than transcribes) — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -65,7 +65,7 @@ the agenda, not by launching straight into it. State, in plain language:
    template rather than actually decided (the same judgment call Step 0 already
    requires for `PROCESS_TIER`, generalized here to every field).
 3. **What's about to happen** — a short numbered preview of which steps will run
-   (Step 0's branch, and if full: 0b / 0c / 1-4 / 5-6 / 7-11), roughly how many
+   (Step 0's branch, and if full: 0b / 0c / 1-4 / 5-6 / 7-12), roughly how many
    questions that is, and what gets written where (`project.conf`, the Intent Spec,
    and — from Step 7 on — the gate files themselves, kept in sync).
 
@@ -298,14 +298,14 @@ used to soften a `BLOCKED` line:
 This read-out is commentary layered on top of Step 5's output, not a replacement
 for it — the verbatim report still runs first, in full, exactly as Step 5 requires.
 
-## Steps 7-11 exist because "mechanically enforce this" turned out to be its own kickoff
+## Steps 7-12 exist because "mechanically enforce this" turned out to be its own kickoff
 
 Running this skill against a real project (2026-09-18/21) surfaced a second layer under
 the RACI one: even with roster/owners/escalation/evidence-basis all answered, nobody had
 asked whether the gate files (`ux.md`/`vision.md`/`design.md`) and their supporting
 registers (`OPEN.md`, `MANIFEST.md`) existed, whether the project needed all of them, or
 whether the scripts that check them could even see the files that had been written. Steps
-7-11 close that gap the same way Steps 1-4 close the RACI one: by asking, not assuming.
+7-12 close that gap the same way Steps 1-4 close the RACI one: by asking, not assuming.
 
 **Why they come after Steps 1-6, not before:** a `SKELETON` gate file needs an owner to
 fill it in eventually, and an `OPEN.md` row needs an owner to chase it — both of those
@@ -394,6 +394,57 @@ norm someone has to remember to run by hand — the exact gap this whole toolkit
 close. Confirm `.specify/extensions.yml` exists and carries these hooks; if not, that is a
 real setup step, not a nice-to-have, and belongs on the same punch list as everything else
 Step 6 gathers.
+
+### Step 12 — Check the project's own rules mention the gates, and offer to add them
+
+Step 11 wires the hooks so the scripts *run*. This step checks whether the project's own
+governing documents ever *mention* the gate files — because a script that runs and a rule
+nobody wrote down produce two different failures, and the second one is invisible.
+
+Two checks. Report each verbatim.
+
+**1. The constitution.** If this is a Spec Kit project, look for
+`.specify/memory/constitution.md` and grep it for an evidence-wired-UX-gates principle
+(the heading, or its distinguishing clauses: `ux.md` mandatory, `UXI-##` single id space,
+criteria inherit forward, no claim above its evidence, no absence without a corpus search).
+
+- **No `constitution.md` at all** — this is not a Spec Kit project. **Do not create one.**
+  That is a different and larger decision than this kickoff covers, and a Spec Kit
+  constitution appearing in a non-Spec-Kit repo is worse than no rule at all. Say so, and
+  ask where the project's agent-facing rules actually live — its own instructions file, a
+  README, a wiki page. Wherever that is, the rule belongs there instead.
+- **Present, principle missing** — offer to add it. Read the file's own `## Governance`
+  section FIRST and follow whatever amendment procedure it states: renumber to the next
+  unused Roman numeral, bump the version (adding a principle is normally a MINOR bump),
+  and add a Rationale line to its Sync Impact Report. **If Governance requires an approval
+  this skill cannot obtain, stop at proposing the text** and put it on Step 6's punch list.
+- **Present and already there** — say so and move on.
+
+**2. The Intent Spec.** Grep the document named by `INTENT_SPEC` for a block in its UX
+intent section linking out to the gate files (`ux.md`, `vision.md`, `design.md`,
+`findings.yaml`, `OPEN.md`). If it's absent, offer to add it.
+
+The link matters in both directions. The gate files point at the Intent Spec for `UXI-##`
+ids; the Intent Spec points back at the gate files for the reasoning and the evidence. Fill
+in one side only and the other half of the work becomes findable by luck. **No field is
+copied across** — a duplicated field goes stale silently and neither side can be identified
+as the current one.
+
+**The exact text for both blocks is in `references/gate-wiring.md`.** Use it verbatim,
+adjusting only file names to match this project's `GATE_1`/`GATE_2`/`GATE_3`.
+
+**Why this skill is allowed to write these two blocks**, when rule 2 above forbids it from
+writing almost anything. They are pure mechanics: identical in every project, containing no
+names, no owners, no requirements, no judgment. They are wiring, in the same class as Step
+0c's template copy and Step 11's hook registration. **Everything else stays forbidden** —
+no `UXI-##` rows, no `owner:`, no `research_check:`, no §0-§20 content. If you find
+yourself about to write a requirement while adding the link table, that is the line.
+
+**Why this step exists at all.** A real project in 2026-09 had working gate scripts, a real
+Intent Spec, and a real research corpus — and seven agents still derived its user personas
+from an RBAC enum in the code, because no rule anywhere told them to look at the gate files
+first, and nothing in the Intent Spec pointed at the research. The scripts were fine. The
+scripts were never the gap.
 
 ## Override, and how it differs from skipping a step
 

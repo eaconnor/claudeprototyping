@@ -65,7 +65,7 @@ the agenda, not by launching straight into it. State, in plain language:
    template rather than actually decided (the same judgment call Step 0 already
    requires for `PROCESS_TIER`, generalized here to every field).
 3. **What's about to happen** — a short numbered preview of which steps will run
-   (Step 0's branch, and if full: 0b / 0c / 1-4 / 5-6 / 7-12), roughly how many
+   (Step 0's branch, then 0a-loop on either path, and if full: 0b / 0c / 1-4 / 5-6 / 7-12), roughly how many
    questions that is, and what gets written where (`project.conf`, the Intent Spec,
    and — from Step 7 on — the gate files themselves, kept in sync).
 
@@ -83,10 +83,43 @@ ask: *"Is your team's process for who's accountable, who researches, and where a
 - **Full** (the default) — continue to "Read this before asking anything" below
   and run Steps 1-4 as written.
 - **Skinny** — set `PROCESS_TIER="skinny"` in `project.conf`, point the room at
-  `README-SKINNY.md`, and **stop**. Do not run Steps 1-4. Skinny exists precisely
-  so a team with its own settled process doesn't have to sit through a RACI
-  walkthrough it doesn't need — running the walkthrough anyway defeats the
-  point of asking.
+  `README-SKINNY.md`, run **Step 0a-loop below**, and then **stop**. Do not run
+  Steps 1-4. Skinny exists precisely so a team with its own settled process doesn't
+  have to sit through a RACI walkthrough it doesn't need — running the walkthrough
+  anyway defeats the point of asking.
+
+## Step 0a-loop — where the wiring ends and a human carries it
+
+**Run this on BOTH paths, and on skinny run it before stopping.** Skinny used to stop
+before asking anything at all, which is the one thing it must not do: a team that skips
+the RACI walkthrough still has handoffs, it just has nowhere recording who catches them.
+Skipping the walkthrough is legitimate. Skipping the handoff question is how a check
+gets adopted and then silently never runs.
+
+Some of what this toolkit checks cannot be checked by a script — by design, not by
+omission. The script computes a confidence ceiling; only the researcher of record can
+grade a finding. The script names an unowned decision; only a human can own it. At each
+of those points the wiring hands off, and **the failure mode is never that the handoff
+exists — it is that nobody wrote down who catches it.**
+
+Ask, and record each answer as an `OPEN.md` row with a named person and a date to
+revisit. `UNASSIGNED` is a legal answer (rule 1) — say aloud what it leaves uncaught.
+
+| ask | if nobody carries it |
+|---|---|
+| Who runs the gate check, and when? Is it by hand, a pre-commit hook, or CI? | On the by-hand answer the check silently never runs while everyone assumes it's on. **This is the most common way this whole toolkit fails.** |
+| Who is the researcher of record who can set a `confidence:` grade? | Findings stay ungraded, every claim resting on them is flagged forever, and flags nobody can clear stop being read. |
+| When two sourced things disagree, who owns the conversation a `CONTESTED` row points at? | The dispute caps what work may claim, indefinitely, and nobody notices it is still capping. |
+| Who declares `evidence_basis:` and puts their name against it? | §5 has no stated basis, so a reader has nothing to calibrate the requirements against. |
+| When research re-grades or retires a finding, who tells the teams whose documents rest on it? | Interpretations drift from their evidence. This is the loop the whole design exists to keep closed, and it is the handoff with no automation behind it at all. |
+
+**Do not answer any of these yourself.** They are owner questions, and the two rules
+below apply in full — a generated name reads exactly like a real one.
+
+If the team's honest answer to the first question is "by hand, when someone remembers,"
+that is a real answer and worth naming as such: it means the gate is advisory at this
+tier. Say it plainly, record it, and offer the pre-commit hook as the cheapest thing
+that changes it — a single file, no pipeline and no permissions needed.
 
 ## Step 0b — what kind of project is this?
 

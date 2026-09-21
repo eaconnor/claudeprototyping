@@ -1,5 +1,59 @@
 # The UX Intent Spec — a tour for someone who's never seen it
 
+## What this is
+
+A set of three markdown files that live in the code repo, and a script that checks them.
+The files hold what we know about the user — the problem, the evidence it rests on, the
+direction, the criteria. The script refuses to let a document claim more than its evidence
+supports.
+
+That's it. No new tool, no platform, nothing to log into. Files in a repo and a shell
+script.
+
+## Why you should care about it
+
+Because the research evidence layer is the strongest evidence apparatus anyone here has
+built, and **nothing upstream of a spec can currently reach it.** Product writes a problem
+statement, design builds against it, engineering ships it — and none of those documents can
+point at a finding, so none of them are constrained by one. The evidence is sound and it is
+disconnected.
+
+Your own line for this is better than mine:
+
+> "The common failure is not too little research. It is sound research that was never
+> linked to the claim resting on it."
+
+This is the link. Concretely, it means three things that aren't true today:
+
+1. **Your findings become load-bearing on work you don't own.** A problem statement that
+   asserts HIGH on a `stated_attitude` finding fails a check — not a review comment three
+   weeks later, when the thing is already built.
+2. **You keep the grading pen.** The script computes the ceiling from `claim_type` and
+   `population_fidelity`. It never sets a grade. All 13 `confidence:` fields are blank and
+   marked `# ← yours`, and agents are barred from filling them by the project constitution.
+3. **Re-grading propagates.** When you lower a confidence, every document resting on that
+   finding is immediately claiming too much, and the check says so. Today a re-grade
+   changes nothing outside the research repo.
+
+It also means an AI agent working in the repo has to read your findings before answering
+anything about users — which is the part that made this necessary rather than nice. Seven
+agents were pointed at a spec folder, all seven correctly said "no research cited here,"
+and that became "this project has no user research." The research existed. Nothing in the
+repo said where to look.
+
+## What it does today, and what it doesn't
+
+| does now | doesn't yet |
+|---|---|
+| Fails a build when a claim exceeds its evidence ceiling | Run your `validate_findings.py` — the two checks are separate and only mine is wired here |
+| Reads your schema unchanged: `claim_type`, `population_fidelity`, `claim_scope`, per-instrument `n`, `review_by`, `fieldwork_date` | Implement G14–G18 |
+| Stops a user need being silently dropped between problem, direction and build | Notify anyone — it prints to a terminal and returns exit code 1. Nothing is routed to a PR, a dashboard or chat |
+| Lets unfinished work live in the repo, as long as it says it's unfinished | Handle `contradicts` or `superseded_by` — both are on your requested-changes list and two things here are blocked on them |
+| Treats two sourced sources disagreeing as a legal state that caps claims rather than blocking work | Touch the real research repo. The 13 findings are mine, written in your schema as a conformance test of it |
+| Refuses to accept a placeholder owner as a person | Have anyone's agreement. Every requirement row sits under a not-ratified banner |
+
+---
+
 ## Why this exists
 
 Products fail in three different ways, and each one is caught by a different person:
@@ -305,13 +359,3 @@ touched the real research repo.
 banner. The requirements are drafted from the abductive analysis as candidates.
 
 ---
-
-## What we need from research
-
-1. **Is the ceiling arithmetic right?** It's her rule, implemented by me. If I've got a
-   `claim_type` mapping wrong, every downstream check is wrong.
-2. **What's the stable address of a finding** — a path, an ID, or a URL? Everything else
-   waits on this.
-3. **`contradicts` and `superseded_by`** — two things here are blocked on those fields.
-4. **Does the schema survive contact?** 13 findings written in it. Where it strained is the
-   most useful thing we found.

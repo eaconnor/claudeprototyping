@@ -1,6 +1,6 @@
 ---
 name: "ux-kickoff"
-description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
+description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis, then the gate spine (mandatory root ux.md, optional main/mini split, conditional vision.md/design.md/OPEN.md/MANIFEST.md, traces_to sequencing, and Spec Kit hook wiring) — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -65,9 +65,9 @@ the agenda, not by launching straight into it. State, in plain language:
    template rather than actually decided (the same judgment call Step 0 already
    requires for `PROCESS_TIER`, generalized here to every field).
 3. **What's about to happen** — a short numbered preview of which steps will run
-   (Step 0's branch, and if full: 0b / 0c / 1-4 / 5-6), roughly how many questions
-   that is, and what gets written where (`project.conf` and the Intent Spec, kept
-   in sync).
+   (Step 0's branch, and if full: 0b / 0c / 1-4 / 5-6 / 7-11), roughly how many
+   questions that is, and what gets written where (`project.conf`, the Intent Spec,
+   and — from Step 7 on — the gate files themselves, kept in sync).
 
 This is a preview, not a commitment — Step 0's own answer can still route to skinny
 and skip most of it. Give the preview, then ask Step 0's question.
@@ -298,6 +298,103 @@ used to soften a `BLOCKED` line:
 This read-out is commentary layered on top of Step 5's output, not a replacement
 for it — the verbatim report still runs first, in full, exactly as Step 5 requires.
 
+## Steps 7-11 exist because "mechanically enforce this" turned out to be its own kickoff
+
+Running this skill against a real project (2026-09-18/21) surfaced a second layer under
+the RACI one: even with roster/owners/escalation/evidence-basis all answered, nobody had
+asked whether the gate files (`ux.md`/`vision.md`/`design.md`) and their supporting
+registers (`OPEN.md`, `MANIFEST.md`) existed, whether the project needed all of them, or
+whether the scripts that check them could even see the files that had been written. Steps
+7-11 close that gap the same way Steps 1-4 close the RACI one: by asking, not assuming.
+
+**Why they come after Steps 1-6, not before:** a `SKELETON` gate file needs an owner to
+fill it in eventually, and an `OPEN.md` row needs an owner to chase it — both of those
+owners come from Step 1's roster and Step 2's owners. Asking about gate files before
+anyone exists to own them just produces more `UNASSIGNED` rows with nobody positioned to
+resolve them.
+
+### Step 7 — The gate spine (mandatory, not asked about)
+
+Every project reaching this point needs exactly one `ux.md` at the project root — Gate 1,
+"do we understand the problem." Unlike Steps 8-9 below, **this one is not optional and you
+do not ask about it: if it doesn't exist, create it now.** Build it from the room's own
+Step 1-4 answers (roster, owners) plus whatever problem/cast material already exists —
+never invent what isn't there. Ship it honestly `status: SKELETON` with every acceptance
+criterion unticked if the room hasn't actually done the research yet; a red Gate 1 is a
+correct, informative state, not a failure to paper over before moving on.
+
+If `vision.md`/`design.md` already exist at the root with real content, Step 7 does not
+touch them — it is about the root `ux.md` only.
+
+### Step 8 — One project, or many units?
+
+Ask: does this project break into multiple specs, features, or epics that each need their
+own "do we understand THIS problem" answer — a `specs/` folder, several Jira epics — or is
+the root `ux.md` the whole story?
+
+- **One unit** — the root `ux.md` from Step 7 is Gate 1 in full. Nothing further.
+- **Many units** — each gets its own mini `ux.md`: `kind: mini`, `parent:` pointing at the
+  root `ux.md`, and the root's `mini_docs:` list updated to include it. A mini contains
+  ONLY what's specific to that unit — the problem, cast, and top tasks unique to it. It
+  does not repeat the root's project-wide problem statement or cast; that duplication is
+  exactly what the main/mini split exists to prevent. If a unit already has its own
+  `ux.md` from before this kickoff, check that it actually declares `parent:` back to the
+  root — a mini the root doesn't list, or one that doesn't declare its parent, is a drift
+  finding to name out loud, not a filing detail to fix silently.
+
+**Known limitation — say this plainly, don't let the room assume otherwise:**
+`check-gates.sh` as shipped only reads three hardcoded root files (`ux.md`, `vision.md`,
+`design.md`); it has no awareness of `mini_docs:` and will not fail a build over an
+unticked mini criterion. Until `check-gates.sh` is extended to walk `mini_docs:`, a mini's
+acceptance criteria are honesty-only, not mechanically enforced. A room that believes its
+minis are gated when they aren't has the exact false-green problem this whole toolkit
+exists to prevent — name it, and log an `OPEN.md` row if the room wants that fixed.
+
+### Step 9 — Conditional infra: ask, don't assume, don't build unasked
+
+Four more files show up in this toolkit's mechanics, and none of them are automatic. For
+each, ask **"do you need this now?"** The answer routes to exactly one of two places —
+never to silent invention, and never to silent omission either:
+
+| file | usually needed when | if yes | if no |
+|---|---|---|---|
+| `vision.md` (Gate 2) | Step 0b answered "new feature/new product," or anyone in the room is still asking "are we sure this is the right thing to build" | Create it now as `status: SKELETON` — real file, zero invented strategy — then log an `OPEN.md` row naming Gate 2 as open work, with an owner | Log the skip as an `OPEN.md` `ACCEPTED` row naming why (e.g. "settled at the portfolio level, see [link]") — see "Override" below |
+| `design.md` (Gate 3) | there's a build to hold it against, or one is imminent | Create it now as `SKELETON` — the file's own text says Gate 3 "cannot honestly be green before a build exists and has been measured," so shipping it red immediately is correct, not premature | If there's genuinely no build and none coming soon, this can wait — say so, don't create a file with nothing yet to say |
+| `OPEN.md` | almost always, immediately — the moment Steps 1-8 surface one `UNASSIGNED` or one unresolved assumption | Create it now, seeded with every gap already named out loud so far | Only skip if this kickoff has surfaced zero open questions, which should be rare |
+| `MANIFEST.md` | only once a gate file actually declares a `built_from:` list that `check-drift.sh` needs to verify | Create it once the first `built_from:` entry exists, not before | Defer — a manifest with nothing to hash yet isn't useful |
+
+This table describes what's been seen so far, not a closed set — if the room's project
+doesn't fit a row cleanly, ask the question anyway and record what they actually say,
+same rule as Step 0b.
+
+### Step 10 — traces_to, and why it waits on the Intent Spec
+
+Once `INTENT_SPEC` names a real document (Step 0c), every acceptance criterion in
+`ux.md`/`vision.md`/`design.md` should eventually carry a `traces_to:` pointer — into a
+numbered `UXI-##` requirement in the Intent Spec, a `§N` section of it, a `ds:N` section
+of the local file, or an `OPEN.md` row. `check-trace.sh` enforces both directions: every
+pointer must resolve to something real, and every `UXI-##` stated in the Intent Spec must
+be referenced by at least one criterion somewhere.
+
+**This cannot be done honestly before the Intent Spec has real numbered requirements in
+it.** If the Intent Spec is still a template shell (§0-§20 unfilled, no `UXI-##` rows), say
+so and stop — do not invent `traces_to:` pointers into sections that don't exist yet, and
+do not leave every criterion silently on `verified_by:` alone forever either. Log the gap:
+an `OPEN.md` row naming "criteria have no traces_to: because the Intent Spec has no
+UXI-## requirements yet," owned by whoever is filling in the Intent Spec.
+
+### Step 11 — Wire the hooks; don't rely on someone remembering to run a script
+
+If this project uses Spec Kit (`speckit-plan`/`speckit-tasks`/`speckit-implement`), a
+`./check-gates.sh` and `./check-blocked.sh` sitting in the repo do nothing on their own —
+they need `.specify/extensions.yml` hooks (`before_plan`/`before_tasks`/`before_implement`,
+`optional: false`) wired to the `check-gates`/`check-open` skills, the same way
+`ux-spec-skeleton` wires its own. Without that wiring, "mechanical enforcement" is still a
+norm someone has to remember to run by hand — the exact gap this whole toolkit exists to
+close. Confirm `.specify/extensions.yml` exists and carries these hooks; if not, that is a
+real setup step, not a nice-to-have, and belongs on the same punch list as everything else
+Step 6 gathers.
+
 ## Override, and how it differs from skipping a step
 
 Anyone in the room may decide a step doesn't apply right now — a solo project with
@@ -310,7 +407,8 @@ to stop asking about it.
 
 ## What "done" looks like
 
-Not `check-roster.sh` exiting 0. That's a script confirming fields aren't
-placeholders — it says nothing about whether the RACI is *right*. This skill is
-done when every step above has been asked out loud and answered or explicitly
-deferred, whether or not the script goes green afterward.
+Not `check-roster.sh` exiting 0, and not `check-gates.sh` exiting 0 either. Those are
+scripts confirming fields and boxes aren't placeholders — they say nothing about whether
+the RACI is *right* or the gate criteria are *true*. This skill is done when every step
+above — RACI through hook wiring — has been asked out loud and answered or explicitly
+deferred, whether or not any script goes green afterward.

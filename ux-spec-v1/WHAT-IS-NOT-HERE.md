@@ -54,6 +54,7 @@ above says why each target is absent.
 |---|---|
 | `AUTHORING.md` | design.md |
 | `AUTHORING.md` | ux.md |
+| `THE-LONGER-EXPLAINER.md` | README.md |
 | `TOOLKIT-OPEN.md` | OPEN.md |
 | `check-drift.sh` | ux.md |
 | `check-eng.sh` | OPEN.md |

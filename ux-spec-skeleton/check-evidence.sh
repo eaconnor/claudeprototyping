@@ -115,7 +115,7 @@ is_name() {
     # 3-character one. Written unquoted on 2026-09-17, which made this check reject
     # "Sam", "Bob", "Ann", "Tim", "Joe", "Amy", "Raj" — every three-letter name — with
     # the message that they are not a person. Found 2026-09-18 by the cold-onboarding
-    # run, not by the author's own test matrix, which used "Sam R." and "Beth Connor"
+    # run, not by the author's own test matrix, which used placeholder personal names
     # and so stepped over the bug: the values tested were the ones expected to matter,
     # not the shape of the value space.
     unassigned|unowned|tbd|tba|n/a|na|none|nobody|'-'|'—'|'?'|'??'|'???') return 1 ;;

@@ -5,7 +5,7 @@
 #
 # WHY THIS IS A LINTER AND NOT A GATE
 #
-# Beth Nam's research.md says the thing out loud: "validate_findings.py checks the
+# The research team's own schema doc says the thing out loud: "validate_findings.py checks the
 # records. Nothing automatically checks the prose generated from them." Her rules are
 # documented lint rules with no linter behind them, and her reading-evidence.md "Red
 # flags" section is, read literally, a rule list — eleven items, each mechanically
@@ -35,7 +35,7 @@
 # participant material into the repo. Two reasons, and they agree:
 #   1. GDPR purpose limitation. Interview data is consent-scoped to the purpose it was
 #      gathered for. "It was reachable" is not scope.
-#   2. Beth Nam's own rule: "Structured fields live only in findings.yaml; full evidence
+#   2. The schema's own rule: "Structured fields live only in findings.yaml; full evidence
 #      only on the Confluence study page. Link both, paste neither, or they drift."
 # For a Condens or Confluence source that means the URL and nothing else, ever.
 # ---------------------------------------------------------------------------
@@ -153,7 +153,7 @@ suggest() {
     echo "        corpus candidates (pointers only — promote one, or mark it [A] deliberately):"
     echo "$hits" | while read -r n path; do
       # PARTICIPANT MATERIAL GETS A PATH AND NOTHING ELSE.
-      # The first run of this printed a line of Craig Fisher's interview transcript as a
+      # The first run of this printed a line of a real interview transcript as a
       # "locating fragment" — which is participant data, consent-scoped to the purpose it
       # was gathered for, lifted into a build log. A fragment is content. The rule in this
       # file's own header said pointers only and the implementation broke it immediately,

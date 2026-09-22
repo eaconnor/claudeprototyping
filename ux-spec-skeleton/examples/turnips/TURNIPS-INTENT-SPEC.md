@@ -17,7 +17,7 @@ is part of what you're standing up.** Use the base `Intent_Spec_Example.md` dire
 when that groundwork is already settled elsewhere and you only need §0-§20.
 
 Base template reference, unchanged: `briefs/handoffs/what's up with the humans in
-ACP?/nicole-acp-datadump/Intent_Spec_Example.md`. Confirmed as the real org standard
+the org's own Intent Spec example (internal path withheld)`. Confirmed as the real org standard
 by matching two independent production documents section-for-section
 (`acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md`,
 `test-repo-doodle-journal/Intent Specs/doodle-journal.md`) — this file inherits that
@@ -42,7 +42,7 @@ status: "Draft" # Discovery | Draft | UX Review | Technical Review | Risk Review
 #   MIXED       some of each — the per-row Confidence column in §12 carries the
 #               real weight; this field only says "do not assume the rest is settled."
 evidence_basis: HYPOTHESES
-evidence_basis_stated_by: "Beth Connor"
+evidence_basis_stated_by: "Ada Lovelace"
 
 created_at: YYYY-MM-DDTHH:MM:SSZ
 updated_at: YYYY-MM-DDTHH:MM:SSZ
@@ -55,7 +55,7 @@ target_release: "<release / milestone / unknown>"
 # row `UNASSIGNED` rather than omitting it — the toolkit blocks on the absence of the
 # question, never on the absence of the answer.
 roster:
-  - name: "Beth Connor"
+  - name: "Ada Lovelace"
     project_role: "Solo founder — product, design, research"
     raci:
       product: R
@@ -75,15 +75,15 @@ roster:
 # The project-wide signer, distinct from any area's A above. Required even when every
 # area already has its own accountable name, because some actions don't belong to one
 # area — this is who check-tier.py's T2/T3 resolve to for those.
-accountable_owner: "Beth Connor"
-research_owner: "Beth Nam"
+accountable_owner: "Ada Lovelace"
+research_owner: "Grace Hopper"
 risk_function: "Legal — Matlock"
 
 # ESCALATION PATH. Who a signature conflict, or a refusal to sign, goes to. The
 # toolkit never adjudicates this itself — a conflict is an OPEN.md row typed HUMAN,
 # and this is its owner. An escalation path that never actually gets used is
 # untested, not proven; say so rather than assuming it works.
-escalation_path: "Beth Connor"
+escalation_path: "Ada Lovelace"
 escalation_path_tested: false
 
 owners:
@@ -146,7 +146,7 @@ disagreement about ownership actually gets read out loud in a room.**
 
 | who | project role | product | design | research | engineering |
 |---|---|---|---|---|---|
-| Beth Connor | Solo founder — product, design, research | R | R/A | R/A | UNASSIGNED |
+| Ada Lovelace | Solo founder — product, design, research | R | R/A | R/A | UNASSIGNED |
 | Sponge Bob | Product Exec / accountable executive | A | UNASSIGNED | UNASSIGNED | UNASSIGNED |
 
 **Reading this table:** an area with no A is unowned and every T2/T3 signature for it

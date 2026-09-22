@@ -17,7 +17,7 @@ is part of what you're standing up.** Use the base `Intent_Spec_Example.md` dire
 when that groundwork is already settled elsewhere and you only need §0-§20.
 
 Base template reference, unchanged: `briefs/handoffs/what's up with the humans in
-ACP?/nicole-acp-datadump/Intent_Spec_Example.md`. Confirmed as the real org standard
+the org's own Intent Spec example (internal path withheld)`. Confirmed as the real org standard
 by matching two independent production documents section-for-section
 (`acp-core-main-3/Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md`,
 `test-repo-doodle-journal/Intent Specs/doodle-journal.md`) — this file inherits that

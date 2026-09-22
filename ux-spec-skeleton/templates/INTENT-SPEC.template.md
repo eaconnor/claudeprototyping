@@ -18,7 +18,7 @@ templates/UX-INTENT-SPEC.template.md
 **need Sections 0-20:**
 
 ```
-briefs/handoffs/what's up with the humans in ACP?/nicole-acp-datadump/Intent_Spec_Example.md
+the org's own Intent Spec example (internal handoff folder — ask the toolkit owner for the path)
 ```
 
 The first is a first-class derivative of the second, not a competing format — see its

@@ -49,7 +49,9 @@
 #   review_by           how long this holds before someone re-reads it.
 #
 # The script computes the ceiling. It never sets, proposes, or fills a grade,
-# and agents are barred from writing, grading or overriding a finding.
+# Agents must not write, grade or override a finding. That is POLICY, NOT ENFORCEMENT —
+# no script here prevents it. What is enforced: check-gates.sh never writes this file, and
+# it fails any document claiming more than a row licenses.
 #
 # ── STARTING FROM NOTHING ───────────────────────────────────────────────────
 #

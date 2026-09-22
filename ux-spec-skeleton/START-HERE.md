@@ -168,8 +168,14 @@ Two consequences that catch people out:
 - **Ten consistent interviews still cap at MEDIUM.** More of the same kind of evidence
   widens *who* a claim applies to. It does not make anyone more certain.
 - **The script computes the ceiling. Only a named researcher sets the grade** — and may set
-  it lower. Every grade field ships blank. Agents are barred from filling one in by the
-  repo's own constitution, not by convention.
+  it lower. Every grade field ships blank.
+- **"Agents must not fill in a grade" is policy here, and nothing enforces it.** Worth
+  stating plainly because the sentence that used to sit here claimed the repo's constitution
+  barred it — and this skeleton's constitution says nothing about grading at all. What is
+  actually true and checkable: `check-gates.sh` never writes to `findings.yaml`, and it fails
+  a document that asserts more than a finding licenses. Nothing stops an agent editing the
+  file directly. If you need that enforced, it has to be a CODEOWNERS rule or a CI diff
+  check on `findings.yaml` — neither of which ships here.
 
 **Having no research is a legal state.** Write the problem as you understand it, tag the
 claims, declare the regime, and say "no findings back this yet" in words. Then run the

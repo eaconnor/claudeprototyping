@@ -106,7 +106,8 @@ panel, internal staff, nobody — everything caps at LOW regardless. Lowest cap 
 - **No grades are set.** Every `confidence:` field is blank with
   `confidence_set_by:` beside it. The script computes the *maximum*; a named
   researcher sets the actual grade inside it and may set it lower. The script will
-  never fill one in, and agents are barred from doing so.
+  never fill one in. "Agents must not either" is policy, not something any script here
+  enforces — see START-HERE.md.
 - **The `source_links` are dead on purpose** — `example.invalid` and fictional paths.
   Real ones would make invented evidence look real.
 - **It carries no Intent Spec.** The Intent Spec is a separate, already-established

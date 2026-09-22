@@ -53,8 +53,14 @@ Then `population_fidelity` of `proxy` / `internal` / `none` caps everything at L
 governs.
 
 **The grading pen does not move.** The script computes the maximum. It never sets, proposes
-or fills a grade — all 15 `confidence:` fields in the test file are blank. Agents are barred
-from writing, grading or overriding a finding by the repo's constitution, not by convention.
+or fills a grade — all 15 `confidence:` fields in the test file are blank.
+
+**"Agents must not grade a finding" is policy, and nothing enforces it.** This paragraph
+claimed the repo's constitution barred it. It does not — the skeleton's constitution says
+nothing about grading at all, which I found by grepping it while answering your review. What
+is true and checkable: no script writes to `findings.yaml`, and `check-gates.sh` fails any
+document claiming more than a row licenses. Nothing stops a direct edit. Enforcing it needs
+CODEOWNERS or a CI diff check on that file, and neither exists yet.
 A researcher may grade **below** the ceiling; judgment overrides arithmetic downward only.
 
 ## Two things I changed my mind about, because of your email

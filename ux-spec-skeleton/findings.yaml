@@ -1,0 +1,111 @@
+# findings.yaml — the evidence layer. SHIPS EMPTY ON PURPOSE.
+#
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ AN EMPTY FINDINGS FILE IS A LEGAL STATE. A MISSING ONE IS NOT.           │
+# │                                                                          │
+# │ This file exists so that "we have no research yet" is something the repo  │
+# │ can SAY, rather than something a reader has to infer from a gap. Silence  │
+# │ and "none found" look identical from the outside, and only one of them    │
+# │ is honest.                                                               │
+# └──────────────────────────────────────────────────────────────────────────┘
+#
+# ── WHAT THIS IS FOR ────────────────────────────────────────────────────────
+#
+# A claim in `ux.md` or `design.md` points at a row here with `rests_on:`.
+# `./check-gates.sh` reads the row, works out the strongest claim that row can
+# support, and FAILS anything asserting more than that. Nothing is copied — the
+# pointer is the whole mechanism, so re-grading a row here changes what every
+# document resting on it is allowed to say.
+#
+# ── HOW STRONG A CLAIM A ROW CAN SUPPORT ────────────────────────────────────
+#
+#   what the evidence actually is              strongest claim allowed
+#   ─────────────────────────────────────────  ───────────────────────
+#   we watched people do it                    HIGH      (OBSERVED_BEHAVIOR)
+#   people told us what they do, or think      MEDIUM    (STATED_ATTITUDE)
+#   someone worked it out from other evidence  MEDIUM    (INFERRED)
+#   someone recommended it                     LOW       (RECOMMENDED)
+#
+# Then one override: if the people studied were NOT the actual users — a
+# screened panel, internal staff, nobody at all — everything caps at LOW
+# whatever the row above says. `population_fidelity: proxy | internal | none`.
+# The lowest cap governs.
+#
+# Volume does not move the cap. Ten interviews and one interview are both
+# self-report. More of the same kind of evidence widens WHO a claim applies to,
+# which is `claim_scope`, not how certain anyone is.
+#
+# ── WHO FILLS IN WHAT ───────────────────────────────────────────────────────
+#
+# You fill in (mechanical, checkable against the source):
+#   claim · claim_type · population_fidelity · population_scope · claim_scope
+#   instruments[] with per-instrument n · fieldwork_date · invalidates_if
+#   source_links · max_confidence  ← the CEILING, arithmetic from the two above
+#
+# Only the researcher of record fills in:
+#   confidence          the grade inside the ceiling. May be LOWER than the
+#                       ceiling — judgment overrides arithmetic downward.
+#   confidence_set_by   their name. A grade with nobody behind it is a number.
+#   review_by           how long this holds before someone re-reads it.
+#
+# The script computes the ceiling. It never sets, proposes, or fills a grade,
+# and agents are barred from writing, grading or overriding a finding.
+#
+# ── STARTING FROM NOTHING ───────────────────────────────────────────────────
+#
+# Leave `findings:` empty and say so in `ux.md`'s `## Evidence` section in
+# words — "no findings back this yet." That passes. Then run
+# ./check-gates.sh: THE FLAGS ARE YOUR RESEARCH PLAN. You do not need research
+# to start. You need it to finish.
+#
+# Before gathering anything new, look for what exists: set CORPUS_PATHS in
+# project.conf and run ./check-claims.sh — it attaches candidate sources to
+# unsupported claims. It prints paths only, never content, because participant
+# material is consent-scoped and a search result is not a licence to quote.
+#
+# ── PROMOTION RULE ──────────────────────────────────────────────────────────
+#
+# A source becomes a row here when a gate file actually LEANS on it. If nothing
+# cites it, it does not need a row — that is what keeps this file small enough
+# to maintain. A source log is a different object and belongs in your datadump.
+#
+# ── A WORKED EXAMPLE ────────────────────────────────────────────────────────
+#
+# examples/alert-digest/findings.yaml — five filled rows spread from LOW to
+# HIGH, including one that argues against its own project. Read that before
+# writing your first row here.
+
+findings: []
+
+# Copy this block to start a row. Delete every ‹…› or the checks will flag it,
+# which is correct: a placeholder is not an answer.
+#
+#  - finding_id: ‹short-kebab-case-name›   # never renamed once cited
+#    claim: "‹what was found, in one sentence, about a named population›"
+#    claim_type: ‹OBSERVED_BEHAVIOR | STATED_ATTITUDE | INFERRED | RECOMMENDED›
+#    population_fidelity: ‹primary | proxy | internal | none›
+#    max_confidence: ‹the ceiling — lowest of the two caps above›
+#    confidence:                 # ← researcher of record only
+#    confidence_set_by:          # ← their name
+#    review_by:                  # ← their call
+#    status: active              # active | superseded | retired
+#    claim_scope: ‹existence | pattern | prevalence›
+#                                # prevalence needs a sampling frame. Almost
+#                                # nothing has one. Do not reach for it.
+#    population_scope: "‹who exactly — and who this is NOT true of›"
+#    instruments:
+#      - instrument: ‹how the evidence was actually produced›
+#        n: ‹number of people in THIS instrument›
+#        per_claim_n: ‹how many of them support THIS claim, if fewer›
+#        sampling_frame: "‹how they were chosen, or ABSENT — absent is an answer›"
+#    fieldwork_date: ‹YYYY-MM-DD when it happened, NOT when it was written up›
+#    single_source: ‹true | false›
+#    provenance_status: ‹clean | disputed›
+#    provenance_note: "‹anything a reader would be misled without›"
+#    invalidates_if: >
+#      ‹what observation would kill this. THIS IS THE PRIMARY RESEARCH PLAN —
+#      name what would falsify the claim and you have written the brief for the
+#      study that settles it.›
+#    source_links:
+#      - url: "‹link or file path — if it is not linked, it is not a source›"
+#        label: "‹what a reader will find there›"

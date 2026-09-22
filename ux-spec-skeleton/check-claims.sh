@@ -51,6 +51,21 @@ FINDINGS="${FINDINGS_FILE:-findings.yaml}"
 CORPUS="${CORPUS_PATHS:-}"
 
 CLAIM_FILES=""
+
+# THE INTENT SPEC IS LINTED TOO, AND LEAVING IT OUT WAS THE WRONG OMISSION.
+#
+# This used to check the gate files only. But §5 Requirements is where a claim about
+# users becomes a commitment someone signs, and it is the single best hiding place in
+# the whole set for a business case wearing a user need's grammar — because the Intent
+# Spec legitimately holds the business rationale two sections earlier, so citing it
+# looks like sourcing rather than circular reference.
+#
+# The tell this linter can actually see: a requirement whose provenance points at the
+# spec's own §1/§2 rather than at a finding or at §3's affected parties.
+if [ -n "${INTENT_SPEC:-}" ] && [ -f "$INTENT_SPEC" ]; then
+  CLAIM_FILES="$CLAIM_FILES $INTENT_SPEC"
+fi
+
 for f in ux.md vision.md design.md; do
   [ -f "$f" ] && CLAIM_FILES="$CLAIM_FILES $f"
 done
@@ -159,14 +174,38 @@ r1=0
 for f in $CLAIM_FILES; do
   while IFS=: read -r ln val; do
     [ -z "${val:-}" ] && continue
-    id=$(echo "$val" | sed -e 's/.*rests_on:[[:space:]]*//' -e 's/[[:space:]]*$//' | tr -d '`"'"'")
+    # TAKE THE LEADING ID TOKEN ONLY, NOT THE REST OF THE LINE.
+    #
+    # The old version stripped everything up to `rests_on:` and kept the remainder,
+    # which is correct for a gate file — `- rests_on: some-id` sits alone on its line.
+    # It is wrong the moment this linter is pointed at the Intent Spec, where the same
+    # field appears INSIDE A TABLE CELL: `| rests_on: some-id — why it matters | ... |`.
+    # The captured "id" then ran to the cell boundary, never resolved, and produced four
+    # confident errors naming ids that are in fact present in findings.yaml. A linter
+    # whose first rule cries wolf on a well-formed file gets switched off.
+    #
+    # Finding ids are kebab-case by convention, so read exactly that and stop.
+    id=$(echo "$val" \
+         | sed -e 's/.*rests_on:[[:space:]]*//' \
+         | tr -d '`"'"'" \
+         | sed -E 's/^([A-Za-z0-9_-]+).*/\1/')
     [ -z "$id" ] && continue
     if ! echo "$KNOWN" | grep -qx -- "$id"; then
       report_error "$f:$ln — rests_on: '$id' does not resolve in $FINDINGS."
       r1=$((r1+1))
     fi
+    # MATCH rests_on: AS A FIELD, NOT AS A WORD IN A SENTENCE.
+    #
+    # This grepped for the bare string anywhere on a line, so any document EXPLAINING
+    # the mechanism tripped its own linter: "`rests_on:` is a pointer, and the evidence
+    # stays where research maintains it" was read as a citation of a finding called
+    # "is". Every gate template that documents itself would ship with a false error, and
+    # a rule that fires on correct prose is a rule people learn to ignore.
+    #
+    # A real field sits at the start of a line, optionally behind a list dash or a table
+    # pipe. A backtick before it means someone is talking about the field, not using it.
   done <<EOF
-$(grep -nE 'rests_on:' "$f" 2>/dev/null)
+$(grep -nE '^[[:space:]]*[-*|]?[[:space:]]*rests_on:' "$f" 2>/dev/null)
 EOF
   while IFS=: read -r ln val; do
     [ -z "${val:-}" ] && continue

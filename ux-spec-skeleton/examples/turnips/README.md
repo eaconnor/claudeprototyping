@@ -1,5 +1,10 @@
 # EXAMPLE — Turnips for Halloween
 
+> **Moved here 2026-09-22**, from the repo root. This is the record of a kickoff that
+> actually ran; it is not the template. The *authored* worked example, with filled files
+> and live evidence ceilings, is `../alert-digest/`. Read that one to learn the mechanics;
+> read this one to see what running the kickoff for real exposed about the toolkit.
+
 A worked example, not a real product. Used to dry-run this toolkit end-to-end:
 `project.conf` filled, `/ux-kickoff` run for real (Step 0 → 0b → 0c → 1-4 → 5),
 `check-roster.sh` exiting 0, and the full check suite run against the result.
@@ -14,14 +19,14 @@ kickoff's job, so it stays as placeholders.
 Testing this on a real (if fictional) solo project surfaced three genuine gaps in
 the toolkit itself, not in Turnips's own content:
 
-- **`OPEN.md` H-06** (open) — `check-tier.py` routes every T1 criterion to "one
+- **`TOOLKIT-OPEN.md` H-06** (open) — `check-tier.py` routes every T1 criterion to "one
   peer who is not the author." Mechanically impossible for a team of one. No
   policy decided yet for what a solo founder does instead.
-- **`OPEN.md` H-07** (resolved) — Research had no owned section anywhere in the
+- **`TOOLKIT-OPEN.md` H-07** (resolved) — Research had no owned section anywhere in the
   20-section Intent Spec body, despite being one of the kickoff's four RACI
   disciplines. Fixed in `templates/UX-INTENT-SPEC.template.md` itself, so every
   future project inherits it, not just this one.
-- **`OPEN.md` H-08** (resolved) — `/ux-kickoff` used to create the Intent Spec
+- **`TOOLKIT-OPEN.md` H-08** (resolved) — `/ux-kickoff` used to create the Intent Spec
   copy only at the old Step 4, last. Any answer written to `project.conf` during
   Steps 1-3 had nowhere to land until then. Fixed: new **Step 0c** creates the
   file immediately after Step 0b, before any RACI question is asked.

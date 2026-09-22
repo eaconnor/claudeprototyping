@@ -229,7 +229,7 @@ Try to satisfy it with a function and watch it refuse:
 ```bash
 sed -i '' 's|^RESEARCH_OWNER=.*|RESEARCH_OWNER="UX"|' project.conf
 ./check-evidence.sh; echo "exit: $?"          # still 28 — a function is not a person
-sed -i '' 's|^RESEARCH_OWNER=.*|RESEARCH_OWNER="Beth Connor"|' project.conf
+sed -i '' 's|^RESEARCH_OWNER=.*|RESEARCH_OWNER="Ada Lovelace"|' project.conf
 ./check-evidence.sh; echo "exit: $?"          # 28 again, but now for the real reason
 ```
 
@@ -243,7 +243,7 @@ Now set it up the way a team with a research repository would — no datadump fi
 python3 - <<'EOF'
 import io
 s=io.open('EVIDENCE.md',encoding='utf-8').read()
-row="| E-002 | condens | `nable` | tagged highlights by Tag Group | Beth Connor | — |\n"
+row="| E-002 | condens | `nable` | tagged highlights by Tag Group | Ada Lovelace | — |\n"
 i=s.index("| E-001 | template |"); io.open('EVIDENCE.md','w',encoding='utf-8').write(s[:i]+row+s[i:])
 EOF
 ./check-evidence.sh; echo "exit: $?"
@@ -255,7 +255,7 @@ the script has no credentials and did not contact Condens.
 Then take your name off it:
 
 ```bash
-sed -i '' 's/| Beth Connor |/| unassigned |/' EVIDENCE.md
+sed -i '' 's/| Ada Lovelace |/| unassigned |/' EVIDENCE.md
 ./check-evidence.sh; echo "exit: $?"
 ```
 

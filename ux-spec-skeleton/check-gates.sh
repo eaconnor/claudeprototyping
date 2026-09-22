@@ -796,6 +796,23 @@ configured_gate() {
   echo "$v"
 }
 
+# ---- A MERGED GATE FILE IS CHECKED ONCE, NOT ONCE PER GATE -----------------
+#
+# A project may answer two gates in one document (project.conf pointing GATE_1
+# and GATE_2 at the same file). Every check below is per-FILE, so running them
+# again under the second gate key re-reads the same frontmatter and reprints the
+# same verdict under a different heading.
+#
+# That is not merely noisy, it is misleading in a specific way: two BLOCKED lines
+# citing the same `confidence_regime` read as two independent problems, and the
+# error counts double. Someone triaging output would go looking for a second file
+# that does not exist. Found immediately on merging vision.md into ux.md,
+# 2026-09-22.
+#
+# The gate coverage is still reported — the file says which gates it answers —
+# but the checks run once.
+GATES_SEEN=""
+
 check_optional_gate() {
   local key="$1" default="$2" gate="$3"
   local file; file="$(configured_gate "$key" "$default")"
@@ -805,6 +822,14 @@ check_optional_gate() {
     echo "       also be an ACCEPTED row in OPEN.md so the next reader knows it was decided."
     return
   fi
+  case " $GATES_SEEN " in
+    *" $file "*)
+      echo "  note Gate $gate: answered by $file, already checked above under an earlier gate."
+      echo "       One document, two gates — a legal merge. Its checks are not re-run, so a"
+      echo "       single fault is reported once rather than once per gate it covers."
+      return ;;
+  esac
+  GATES_SEEN="$GATES_SEEN $file"
   check_file "$file" "$gate"
 
   # Every gate file is an INTERPRETATION of evidence, not just ux.md. That was the
@@ -892,7 +917,15 @@ check_gate1_main_and_minis() {
 require_ux_md
 
 check_gate1_main_and_minis
-check_evidence_dialogue "ux.md" "1 (right problem)"
+
+# GATE_1's filename comes from config too. It was hardcoded here — `"ux.md"` — so a
+# project that renamed its Gate 1 file got the mini-doc check on the real file and the
+# evidence check on a file that no longer existed. Registering it in GATES_SEEN is what
+# stops a merged Gate 1/Gate 2 file being checked twice below.
+GATE1_FILE="$(configured_gate GATE_1 ux.md)"
+GATES_SEEN="$GATES_SEEN $GATE1_FILE"
+check_evidence_dialogue "$GATE1_FILE" "1 (right problem)"
+
 check_optional_gate "GATE_2" "vision.md" "2 (right thing)"
 check_optional_gate "GATE_3" "design.md" "3 (right build)"
 

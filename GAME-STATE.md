@@ -56,15 +56,23 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
-## Today — 2026-09-17
+## Today — 2026-09-22
 
 ```
-current_day: 2026-09-17
+current_day: 2026-09-22
 demerits_issued_today: 0
 self_catches_today: 0
 net_demerits_today: 0
 day_status: open
 ```
+
+**Day transition scored at this session's open (2026-09-22):** `current_day` was `2026-09-17` with `day_status: open` — the 4th consecutive session-open gap where `game-close` never ran (09-14, 09-15, 09-16, 09-17). By its own counters 2026-09-17 reads as a **POINT DAY** (0 demerits, 0 self-catches) — narrative label only, no point added under the reconciled rule. **But do not trust that label:** a Miss dated **2026-09-18** is narrated in this same block (Beth-issued, 5 demerits, identity conflation Beth Nam / Beth Connor), which means at least one session ran after 09-17 without ever advancing `current_day` or resetting the counters. So the 09-17 counters cover an unknown span, and 09-18's demerits were never written into any day's totals. [CS: UNKNOWN] what 09-19 → 09-21 contained; git shows auto-commits on 2026-09-22 before this session. Flagged, not reconciled — recomputing day labels on top of this would be inventing a record.
+
+**Called shot 2026-09-17 — unresolved, not scored.** No Miss or Catch was narrated against "Verification discipline · misread own evidence" for 09-17 itself before the block stopped being maintained. Carrying no verdict forward.
+
+**Called shot 2026-09-22: Verification discipline · misread own evidence.** Reason: the handoff task is "pull the Figma QBR/EBR experience map in full and report whether it depicts a held/exception state" — a board too large for the previous session to extract, where the failure mode is producing a plausible-sounding account of lanes and stages that were never actually read, and stating "no held state exists on the board" from partial coverage. Compounded by the preflight hook reporting `Figma MCP: Not configured` while `whoami` returns an authenticated enterprise admin seat — the exact stale-status-line shape as the 2026-08-21 Miss.
+
+**2026-09-22 — verified, not asserted:** preflight hook line `Figma MCP: Not configured` is **wrong**. `whoami` returns handle Elizabeth Connor, N-able Technologies enterprise plan, Full seat, admin. Figma MCP is live this session. Checked directly rather than repeated from the status line.
 
 **Day transition scored at this session's open (2026-09-17):** 2026-09-16 closed as **POINT DAY** (0 demerits, 0 self-catches, net 0) — narrative label only, no point added under the reconciled rule. **Gap flagged:** `day_status` was left `open` — that session never ran `game-close`, the third such gap in a row (09-14, 09-15, 09-16). [CS: UNKNOWN] what work happened in it beyond what's on disk; not reconstructing.
 

@@ -99,9 +99,14 @@ line. Nobody typed that ceiling — it was computed from two fields on the findi
 | you're asking | go to |
 |---|---|
 | "how do I set this up on my project?" | [`QUICKSTART.md`](QUICKSTART.md) — fifteen minutes, one file to edit |
-| "what does this exit code mean?" | [`REFERENCE.md`](REFERENCE.md) — exit codes, roles, waivers, hazards, all in one place |
+| "a script exited 22 and I don't know what that means" | [`EXIT-CODES.md`](EXIT-CODES.md) — one code per kind of problem |
+| "who's supposed to do what, and what can't be automated?" | [`ROLES.md`](ROLES.md) |
+| "a check is red and we need to ship anyway" | [`WAIVERS.md`](WAIVERS.md) — signatures block the action, never the person |
 | "I want to drive every script by hand once" | [`TRY-IT.md`](TRY-IT.md) |
 | "I'm maintaining the toolkit itself" | [`START-HERE.md`](START-HERE.md) — the deeper version of this page |
+
+There are more documents in here than that. You don't need them, and the fact that there
+are eleven of them is a known problem being fixed — see `TOOLKIT-OPEN.md`.
 
 Questions, gaps, and things that don't make sense are more useful to us than a clean trial.
 If a sentence here only makes sense to the person who wrote it, that's a bug — say so.

@@ -55,6 +55,7 @@ above says why each target is absent.
 | `AUTHORING.md` | design.md |
 | `AUTHORING.md` | ux.md |
 | `TOOLKIT-OPEN.md` | OPEN.md |
+| `check-drift.sh` | ux.md |
 | `check-eng.sh` | OPEN.md |
 | `check-eng.sh` | design.md |
 | `check-never.sh` | OPEN.md |
@@ -62,4 +63,5 @@ above says why each target is absent.
 | `scripts/check-design.py` | OPEN.md |
 | `scripts/check-design.py` | design.md |
 | `scripts/contrast.py` | design.md |
+| `scripts/ux-score.py` | ux.md |
 | `vision.md` | ux.md |

@@ -280,21 +280,15 @@ GOOD LOOKS LIKE: "UXI-04 — a technician can complete triage without leaving th
 - [ ] G1-06 — Every source this file was built from is registered in MANIFEST.md and hashes clean · verified_by: ./check-drift.sh (exit 22 if `drift:` misdeclares)
 - [ ] G1-07 — Every `UXI-##` requirement in the intent spec's §5 (UX intent) traces back to a named problem, persona or task above — a UX intent nobody can point research at is asserted, not grounded · traces_to: §5 · verified_by: ./check-trace.sh's backward pass (exit 4 if a UXI-## is orphaned), plus a human confirming the grounding named is real, not merely present
 
-**Why this file was wired to the intent spec on 2026-09-18, and not before:** none of the
-three gate files carried a single `traces_to:` field until today — `check-trace.sh` would
-have reported every one of them `BROKEN` the moment a real `INTENT_SPEC` was set, and
-nothing had ever exercised that path. G1-07 is the direct answer to "wire ux.md to the
-main intent spec's UX section" — Gate 1 doesn't assert UX intent, it verifies that
-whatever UX intent exists in §5 is traceable to real research here, not free-standing.
+**What G1-07 does, and the trap in it.** Gate 1 does not assert UX intent — it checks that
+whatever UX intent the spec already carries is traceable back to real research here, rather
+than free-standing.
 
-**First real run of this mechanism, same day, caught something real.** Pointing G1-07 at
-the section level (`§5`) rather than a specific `UXI-##` makes the forward check pass but
-leaves `check-trace.sh`'s BACKWARD pass correctly reporting every `UXI-##` in a filled
-intent spec as an orphan — nothing points at the specific id, only at the section it lives
-in. On the template's own illustrative `UXI-01`/`UXI-02` rows that's expected. **On a real
-filled project it is not** — once your intent spec has real `UXI-##` rows, add a criterion
-here (or point G1-07 itself) at those specific ids, or the backward check will keep
-reporting orphans, correctly, every time.
+The trap: pointing G1-07 at the *section* (`§5`) makes the forward check pass while
+`check-trace.sh`'s backward pass correctly reports every requirement id in a filled spec as
+an orphan, because nothing points at the specific id — only at the section it sits in. Once
+your spec has real requirement rows, point a criterion at **those ids**, not at `§5`, or the
+backward check will keep reporting orphans. It is right to.
 
 ## Acceptance Criteria — Gate 2: Are we making the right thing?
 

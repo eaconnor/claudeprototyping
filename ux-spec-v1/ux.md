@@ -276,25 +276,19 @@ GOOD LOOKS LIKE: "UXI-04 — a technician can complete triage without leaving th
 - [ ] G1-02 — Primary persona(s) named and evidence-tagged, not invented · traces_to: §3 · verified_by: a human confirms each persona traces to real contact with a real person
 - [ ] G1-03 — Full cast mapped; every role-gap named as a `[?]` row rather than omitted · traces_to: §3 · verified_by: a human reads the cast table against the journey
 - [ ] G1-04 — Riskiest assumptions surfaced in OPEN.md, each with a named owner · verified_by: ./check-blocked.sh (exit 2 if a HUMAN row stands)
-- [ ] G1-05 — `[A]`+`[?]` share of tagged claims is computed and, if over 30%, flagged rather than buried · verified_by: python3 scripts/ux-score.py — computed by grep, never asserted
-- [ ] G1-06 — Every source this file was built from is registered in MANIFEST.md and hashes clean · verified_by: ./check-drift.sh (exit 22 if `drift:` misdeclares)
-- [ ] G1-07 — Every `UXI-##` requirement in the intent spec's §5 (UX intent) traces back to a named problem, persona or task above — a UX intent nobody can point research at is asserted, not grounded · traces_to: §5 · verified_by: ./check-trace.sh's backward pass (exit 4 if a UXI-## is orphaned), plus a human confirming the grounding named is real, not merely present
+- [ ] G1-05 — `[A]`+`[?]` share of tagged claims is computed and, if over 30%, flagged rather than buried · verified_by: python3 scripts/ux-score.py — computed by grep, never asserted · **NOT CHECKABLE IN V1** — `scripts/ux-score.py` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.
+- [ ] G1-06 — Every source this file was built from is registered in MANIFEST.md and hashes clean · verified_by: ./check-drift.sh (exit 22 if `drift:` misdeclares) · **NOT CHECKABLE IN V1** — `check-drift.sh` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.
+- [ ] G1-07 — Every `UXI-##` requirement in the intent spec's §5 (UX intent) traces back to a named problem, persona or task above — a UX intent nobody can point research at is asserted, not grounded · traces_to: §5 · verified_by: ./check-trace.sh's backward pass (exit 4 if a UXI-## is orphaned), plus a human confirming the grounding named is real, not merely present · **NOT CHECKABLE IN V1** — `check-trace.sh` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.
 
-**Why this file was wired to the intent spec on 2026-09-18, and not before:** none of the
-three gate files carried a single `traces_to:` field until today — `check-trace.sh` would
-have reported every one of them `BROKEN` the moment a real `INTENT_SPEC` was set, and
-nothing had ever exercised that path. G1-07 is the direct answer to "wire ux.md to the
-main intent spec's UX section" — Gate 1 doesn't assert UX intent, it verifies that
-whatever UX intent exists in §5 is traceable to real research here, not free-standing.
+**What G1-07 does, and the trap in it.** Gate 1 does not assert UX intent — it checks that
+whatever UX intent the spec already carries is traceable back to real research here, rather
+than free-standing.
 
-**First real run of this mechanism, same day, caught something real.** Pointing G1-07 at
-the section level (`§5`) rather than a specific `UXI-##` makes the forward check pass but
-leaves `check-trace.sh`'s BACKWARD pass correctly reporting every `UXI-##` in a filled
-intent spec as an orphan — nothing points at the specific id, only at the section it lives
-in. On the template's own illustrative `UXI-01`/`UXI-02` rows that's expected. **On a real
-filled project it is not** — once your intent spec has real `UXI-##` rows, add a criterion
-here (or point G1-07 itself) at those specific ids, or the backward check will keep
-reporting orphans, correctly, every time.
+The trap: pointing G1-07 at the *section* (`§5`) makes the forward check pass while
+`check-trace.sh`'s backward pass correctly reports every requirement id in a filled spec as
+an orphan, because nothing points at the specific id — only at the section it sits in. Once
+your spec has real requirement rows, point a criterion at **those ids**, not at `§5`, or the
+backward check will keep reporting orphans. It is right to.
 
 ## Acceptance Criteria — Gate 2: Are we making the right thing?
 
@@ -307,7 +301,7 @@ question — and the separation is what stops a business case passing as a user 
 - [ ] G2-04 — Each concept cites the evidence it rests on by findings id, and asserts nothing above that finding's ceiling · verified_by: ./check-gates.sh
 - [ ] G2-05 — No concept is phrased as a screen, a feature or a technology · verified_by: a human reads §4 and rejects any row naming a UI element instead of an outcome
 - [ ] G2-06 — Candidates that were dropped are in §5 with a reason and a person · traces_to: §5 · verified_by: a human confirms §5 is not empty where §4 shows evidence of having narrowed
-- [ ] G2-07 — Divergences from the Intent Spec's §1 outcome are logged in §17 there, not resolved unilaterally here · verified_by: ./check-trace.sh
+- [ ] G2-07 — Divergences from the Intent Spec's §1 outcome are logged in §17 there, not resolved unilaterally here · verified_by: ./check-trace.sh · **NOT CHECKABLE IN V1** — `check-trace.sh` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.
 
 ## Mini docs
 

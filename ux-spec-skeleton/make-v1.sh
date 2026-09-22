@@ -333,6 +333,34 @@ dropping the ritual files from v1 does not make it less true.
   `OPEN.md` carries that as an open row.
 DOC
 
+# ---- criteria whose verifier is not in v1, marked in place -----------------------
+# The gate files carry 24 acceptance criteria and each names a `verified_by:`. Six of
+# them name a script v1 leaves out. Left unmarked, a team reads "verified_by:
+# ./check-drift.sh", finds no such file, and does the worst available thing: ticks the
+# box because it "doesn't apply here". A criterion you cannot check is not a criterion
+# you have met — and this toolkit's whole argument is that those two must never print
+# the same way.
+#
+# Marked, not deleted. Dropping a criterion silently is the exact failure the
+# drop-detector exists to catch, and doing it in the build script would be worse than
+# doing it by hand.
+set +e
+MARKED=0
+for gf in "$OUT/ux.md" "$OUT/design.md"; do
+  while IFS= read -r cid; do
+    [ -n "$cid" ] || continue
+    tool=$(grep -m1 "^- \[[ x]\] $cid " "$gf" | grep -oE '(\./)?(check-[a-z]+\.sh|scripts/[a-z_-]+\.py)' | head -1)
+    [ -n "$tool" ] || continue
+    t="${tool#./}"
+    if [ ! -e "$OUT/$t" ]; then
+      # shellcheck disable=SC2016
+      perl -i -pe "s{^(- \\[[ x]\\] \Q$cid\E .*)\$}{\$1 · **NOT CHECKABLE IN V1** — \`$t\` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.}" "$gf"
+      MARKED=$((MARKED+1))
+    fi
+  done < <(grep -oE '^- \[[ x]\] [A-Z0-9]+-[0-9]+' "$gf" | sed -E 's/^- \[[ x]\] //')
+done
+set -e
+
 # ---- pointers that will not resolve, listed rather than left to be discovered -----
 # The gate files and registers are copied verbatim, and they legitimately reference
 # documents that v1 leaves out. Rewriting that prose programmatically would be fragile,

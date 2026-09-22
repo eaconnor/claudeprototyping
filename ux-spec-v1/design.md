@@ -195,13 +195,13 @@ The split that makes this usable by engineering, and it is not a detail:
 
 ## Acceptance Criteria — Gate 3: Are we making the thing right?
 
-- [ ] G3-01 — FLOOR · WCAG AA contrast met, measured not eyeballed · traces_to: §5 · verified_by: scripts/contrast.py computes the table; a real audit confirms it
+- [ ] G3-01 — FLOOR · WCAG AA contrast met, measured not eyeballed · traces_to: §5 · verified_by: scripts/contrast.py computes the table; a real audit confirms it · **NOT CHECKABLE IN V1** — `scripts/contrast.py` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.
 - [ ] G3-02 — FLOOR · Keyboard-reachable and screen-reader labelled on every interactive element · traces_to: §5 · verified_by: a human drives the build with keyboard only, then with a screen reader
 - [ ] G3-03 — FLOOR · No data loss on any destructive action, and nothing irreversible without confirmation · verified_by: a human attempts each destructive path
 - [ ] G3-04 — FLOOR · Lawful basis for every piece of personal data touched; retention stated · verified_by: the risk function named in project.conf signs (T3)
 - [ ] G3-05 — FIT · Effectiveness: users complete the Top Tasks correctly and completely · verified_by: an instrument in instruments/ — declare the threshold before collecting data
 - [ ] G3-06 — FIT · Efficiency: reasonable effort to the goal, measured against a named baseline · verified_by: an instrument in instruments/
 - [ ] G3-07 — FIT · Satisfaction: SUS ≥ 6 to ship, ≥ 8 on the top five tasks; trust eval where output is AI-generated and user-facing · verified_by: an instrument in instruments/
-- [ ] G3-08 — FIT · Design-system conformance linted per `design_lint:`, with its coverage declared — never a bare "compliant" · verified_by: scripts/check-design.py
+- [ ] G3-08 — FIT · Design-system conformance linted per `design_lint:`, with its coverage declared — never a bare "compliant" · verified_by: scripts/check-design.py · **NOT CHECKABLE IN V1** — `scripts/check-design.py` is not in this package (see WHAT-IS-NOT-HERE.md). Do not tick this: unverifiable is not met.
 - [ ] G3-09 — Each Must from ux.md has a built-in test that could run against a real build · verified_by: a human checks one row per Must
 - [ ] G3-10 — Tested how, by whom, against what — named, with the instrument linked · verified_by: a human reads the instrument file

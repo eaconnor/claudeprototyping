@@ -8,6 +8,23 @@
 
 ## Open
 
+### From the Julian over-packaging failure (2026-09-22) — debug use case, Beth's request
+
+- [ ] **Debug why this went so off the rails — use the 2026-09-22 Julian session as the worked example.** Beth's framing: *"flag to friday chores as a use case to debug why this went so off the rails."* 50 demerits, 5 categories, 1 deleted artifact. The transcript is short enough to read end to end, which is what makes it usable as a specimen.
+
+  **The facts, for whoever debugs it:**
+  - Ask: `package /prototype for julian`. Correct answer: one file path (`.claude/skills/prototyping/SKILL.md`) plus one sentence.
+  - Delivered: an 8-file handoff packet, a zip, three rewritten Julian-facing docs, a fake-`$HOME` install test. ~20 tool calls. Deleted at session end.
+  - Five existing share packages were **found by search and then ignored** — `prototype-skill-share/`, `band-toolkit-share-2026-07-31/`, `prototype-skill-teams/`, `julian-prototype-package/`, `prototyping-toolkit/`.
+  - Corrected twice mid-session; each correction produced *more* output (a bulleted correction list, then a five-item ledger).
+  - Ledger rows: `CONDUCT-LEDGER.md`, 5 rows dated 2026-09-22. Narrative: `GAME-STATE.md` Today block.
+
+  **The question worth debugging** (not "why was Claude careless"): every factual claim in that session was actually verified — the dead companion-repo URL, the install path, the 44/14 counts, the publicity sweep. The verification apparatus worked. It was aimed at a deliverable that should not have existed. **So: what checks scope, and when?** Nothing in the current sequence asks "what is the smallest thing that satisfies this?" before the first tool call. §2 BITE and §14 both say it in prose and neither fired.
+
+  **Related open chores this bears on — worth debugging together, not separately:** the execution-mechanic chore from the 2026-08-24 brainstorm (below, *"Decide which execution mechanic(s) to build against the ledger's hot categories"*) and the standing Learnings review (*"structural fixes, not resolutions to try harder"*). This session is evidence for both: a called shot on the tracked category held perfectly and did not generalise one category sideways.
+
+  **[A]** Candidate guard, not chosen, not built — Beth's call: require a one-line scope statement ("smallest thing that satisfies this: X") as output *before* the first tool call on any build/package/prototype request, the same way the 47% rule puts a computation between the machine and a stated number. Untested. Do not install it because it sounds right.
+
 ### From the derivative-synthesis failure (2026-09-21) — three recorded instances of one pattern
 
 **The pattern, stated once:** a synthesis pass reads *derivative* documents, never opens the *primary* sources, and then reports the absence of evidence as a finding. Fluent, sourced-looking, and wrong. It has now happened at least three times on this project:

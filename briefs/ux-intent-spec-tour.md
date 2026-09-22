@@ -282,48 +282,49 @@ FAIL E-03 — asserts HIGH. partners-want-a-standalone-discoverable-surface is
      downstream cannot see this gap from where they are standing.
 ```
 
-See the next section.
 
 ---
 
-## Where research sits — the part that matters to research
+## How strong a claim are you allowed to make?
 
-**Research owns the evidence, and nothing here can overwrite it.**
+This is the mechanism everything else hangs off, so it is worth the two minutes.
 
-`findings.yaml` is Beth Nam's schema, unchanged. Every finding carries `claim_type`,
-`population_fidelity`, `claim_scope`, `n` per instrument, `fieldwork_date`, `review_by`.
+**How strong a claim you may make is set by how the evidence was gathered — not by how
+sure anyone feels.** That is computed, not argued.
 
-The script reads those fields and **computes a ceiling** — `observed_behavior` can reach
-HIGH, `stated_attitude` and `inferred` cap at MEDIUM, `recommended` at LOW; proxy, internal
-or no population caps everything at LOW; the lowest governs.
+| what the evidence actually is | strongest claim allowed |
+|---|---|
+| we watched people do it | **HIGH** |
+| people told us what they do, or what they think | **MEDIUM** |
+| someone worked it out from other evidence | **MEDIUM** |
+| someone recommended it | **LOW** |
 
-Then it checks every interpretation made upstream against that ceiling. E-03 above asserts
-HIGH on a `stated_attitude / primary` finding. The ceiling is MEDIUM. It fails.
+Then one override: **if the people studied were not the actual users** — a screened expert
+panel, internal staff, nobody at all — everything caps at **LOW**, whatever the row above
+says. The lowest cap wins.
+
+So a finding built from interviews with a stand-in panel cannot support a confident claim,
+no matter how many interviews there were or how consistent they sounded. More of the same
+kind of evidence widens what you can say it applies to. It does not make you more certain.
+
+**The worked example** is the failing check in the tour above. A problem statement asserted
+HIGH confidence on a finding that came from people describing their own preferences. That
+caps at MEDIUM. The check fails and names the gap — because the person writing the problem
+statement cannot see it from where they are standing.
+
+### Who owns which half
 
 > The script computes the ceiling. Only the researcher of record sets the grade.
 
-All 15 `confidence:` fields in `findings.yaml` are blank, each marked to show the grade is
-the researcher's to set. The
-script flags them as ungraded and carries on — it will never fill one in. Agents are
-forbidden from writing, grading, or overriding a finding, and that's written into the
-project constitution, not just a convention.
+The script works out the *maximum*. A human researcher sets the actual grade inside it, and
+may set it lower. Every grade in the findings file is deliberately left blank for that
+person. The script flags a blank as ungraded and carries on — it will never fill one in,
+and agents are forbidden from writing, grading or overriding a finding by the repo's own
+constitution.
 
-**What research gets out of this that it doesn't have today:**
-
-- Findings become load-bearing. A claim that exceeds them fails a build, not a review
-  comment three weeks later.
-- Research's *interpretation* propagates. Criteria derived from findings travel forward
-  into what engineering builds, and can't be silently dropped.
-- Disagreement is a legal state, not an error. Two sourced studies that conflict get marked
-  `CONTESTED`: it does not block work, it caps what the work may claim, and it requires a
-  pointer to wherever the disagreement is being worked out. A pointer, not a resolution.
-- The loop is the point, not the snapshot. Findings get re-graded and interpretations get
-  updated, and the check compares the date an interpretation was inherited against the
-  fieldwork date so drift is visible instead of silent.
-
----
-
-## How this wires to the research repo
+The evidence itself never moves. A claim carries a pointer to the finding it rests on; the
+finding stays where research maintains it. Re-grading one changes what every document
+pointing at it is allowed to say.
 
 ```
         RESEARCH SIDE                      PRODUCT SIDE
@@ -333,10 +334,10 @@ project constitution, not just a convention.
               │  deep dives, raw material
               ▼
         findings.yaml  ◄─────── research's own validator
-   claim_type · population_fidelity        (is this finding
-   claim_scope · n · review_by              labelled honestly?)
+   how it was gathered · who from          (is this finding
+   how many · when · review date            labelled honestly?)
               │
-              │  rests_on:  ← a pointer. Nothing is copied.
+              │  a pointer. Nothing is copied.
               ▼
                   ux.md ──────────► design.md
                      │                  │
@@ -351,14 +352,24 @@ project constitution, not just a convention.
                these findings license?)
 ```
 
-**Two checks, two different questions, one file.** Hers asks whether a finding is labelled
-honestly. This one asks whether anything upstream claims more than the findings license.
-Neither works alone — a perfectly valid findings file with an overclaiming problem
+**Two checks, two different questions.** Research's validator asks whether a finding is
+*labelled* honestly. This one asks whether anything upstream *claims* more than the findings
+license. Neither works alone: a perfectly valid findings file with an overclaiming problem
 statement still ships a lie.
 
-**Nothing is copied across.** `rests_on:` is a pointer. The evidence stays in research's
-repo, where research maintains it, and re-grading a finding changes what every document
-resting on it is allowed to say.
+### What this gives research that doesn't exist today
+
+- **Findings become load-bearing on work research doesn't own.** A claim that exceeds them
+  fails a check, not a review comment three weeks later when it is already built.
+- **Research's interpretation travels.** Criteria derived from findings move forward into
+  what engineering builds and cannot be quietly dropped.
+- **Disagreement becomes a legal state, not an error.** Two sourced studies that conflict
+  get marked `CONTESTED`: it does not block work, it caps what the work may claim, and it
+  requires a pointer to wherever the disagreement is being worked out. A pointer, not a
+  resolution.
+- **A re-grade propagates.** Lowering a confidence immediately makes every document resting
+  on it claim too much, and the check says so. Today a re-grade changes nothing outside the
+  research repository.
 
 ---
 

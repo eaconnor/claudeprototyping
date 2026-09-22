@@ -74,7 +74,7 @@ want.
 
 ## 4. What you are looking at
 
-Three files hold the standard, and each ends in a list of acceptance criteria that a
+Two files hold the standard, and each ends in a list of acceptance criteria that a
 script reads:
 
 | file | question it answers | who owns it |

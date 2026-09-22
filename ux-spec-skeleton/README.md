@@ -3,8 +3,9 @@
 A working repo for wiring design and research judgment into a spec-kit engineering
 workflow, so it survives contact with how software actually gets built.
 
-**20 scripts · 5 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
-Start at [`QUICKSTART.md`](QUICKSTART.md). Team's process already tight? See [`README-SKINNY.md`](README-SKINNY.md).
+**21 scripts · 9 registers · 1 config file.** Clone it, edit `project.conf`, run the chain.
+New to this? Start at [`READ-THIS-FIRST.md`](READ-THIS-FIRST.md) — one page.
+Setting it up? [`QUICKSTART.md`](QUICKSTART.md). Process already tight? [`README-SKINNY.md`](README-SKINNY.md).
 
 ## The finding this is built on
 
@@ -17,14 +18,20 @@ Start at [`QUICKSTART.md`](QUICKSTART.md). Team's process already tight? See [`R
 
 ## What is here
 
-Three files hold the standard. Each ends in acceptance criteria a script reads.
+**Two** files hold the standard. Each ends in acceptance criteria a script reads. It was
+three until 2026-09-22, when Gate 2 moved out of `vision.md` and became the second half of
+`ux.md` — one person's reading of one body of evidence, split across two documents, where
+the bet kept drifting from the problem it was a bet about.
 
 | file | question | owner |
 |---|---|---|
 | `ux.md` | Do we understand the problem and the people? **and** are we building the right thing? | design + research; product on the second half |
 | `design.md` | Are we building the thing right? | engineering |
 
-Five registers hold what is unresolved. They are **data, not prose** — each is parsed.
+Nine registers hold what is unresolved. They are **data, not prose** — each is parsed by the
+script beside it. Verified by reading both the shell and the Python checkers on 2026-09-22;
+two of them (`MANIFEST.md`, `EVIDENCE.md`) are reached through a config variable rather than
+a literal filename, so a quick grep will tell you they are unread. They are not.
 
 | file | holds | script |
 |---|---|---|
@@ -38,7 +45,7 @@ Five registers hold what is unresolved. They are **data, not prose** — each is
 | `condens-state.tsv` | what the research repository **actually looked like** when an agent last fetched it | `check-condens.sh` |
 | `condens-cache/` · `condens-reconciled/` | the artifact **text** as last fetched, and the version a human last signed off. Gitignored — the mechanism travels, the research content does not | `check-condens.sh` |
 
-Four files hold the human process, because none of the above tells a person what to do.
+Five files hold the human process, because none of the above tells a person what to do.
 
 | file | answers |
 |---|---|
@@ -58,7 +65,8 @@ and loses the only information that tells you what to do next. Full contract:
 | script | question | exit |
 |---|---|---|
 | `./check-roster.sh` | has the kickoff's own output — roster, RACI, owners, escalation — been written down? | 3 nothing to check · 33 a field is a placeholder |
-| `./check-gates.sh` | are the gate boxes ticked? | 1 open · **fails on zero parsable criteria** |
+| `./check-gates.sh` | is this honest about being unfinished? | 1 a real fault · **fails on zero parsable criteria** |
+| `./check-claims.sh` | is every claim well-formed and attributed? | 1 malformed claim, untagged assertion, or a grade with nobody behind it |
 | `./check-blocked.sh` | are we waiting on a *person*? | 2 a `HUMAN` row stands · 3 register broken |
 | `./check-trace.sh` | have criteria drifted from what they enforce? | 4 broken trace · 5 no intent spec |
 | `./check-drift.sh` | are the **sources** still what we built on? | 18 stale · 19 conflict · **22 `drift:` misdeclared** |
@@ -67,7 +75,7 @@ and loses the only information that tells you what to do next. Full contract:
 | `./check-human.sh` | does the **human layer** still point at anything real? | 26 dangling reference · 27 fence stale (`--write` fixes) |
 | `./check-evidence.sh` | is there **anywhere the evidence lives**? | 28 not set up · 29 broken locator |
 | `./check-condens.sh` | has the **research moved** under the claim? | 30 figures moved · 31 never observed · 32 prose only |
-| `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated |
+| `./check-eng.sh` | the five gates eng owns | 10 can harm a user · 11 off-roadmap · 12 unevaluated · 8 a FLOOR gate's tool is missing |
 | `./check-never.sh` | has something happened that never should? | 20 stop and investigate · **5 could not evaluate — not a pass** |
 | `./check-value.sh` | is the value register honest? | 13 if it records no costs |
 | `./check-waivers.sh` | are the gates worth obeying? | 15 a never event was waived · 16 malformed |
@@ -118,9 +126,13 @@ and it was fine." That is the whole value. Everything else is plumbing in servic
 
 ## Gate state on a fresh clone
 
-Red, on purpose. `./check-gates.sh` exits 1 — **22 criteria, none ticked.**
-`./check-blocked.sh` exits 2 on three real setup decisions. `scripts/check-design.py` exits
-5 because there is no build yet. Nothing here is ticked to make a script quiet.
+Red, on purpose, and measured on 2026-09-22 rather than recalled: **11 of the 15 `check-*.sh`
+scripts exit non-zero, 4 pass.** `./check-gates.sh` exits 1 — **24 criteria across the two
+gate files, none ticked.** `./check-blocked.sh` exits 2 on one open `HUMAN` decision.
+`scripts/check-design.py` exits 5 because there is no build yet. Nothing here is ticked to
+make a script quiet, and a green run on an empty repo would be the bug.
+
+The full per-script table is in [`START-HERE.md`](START-HERE.md).
 
 ## What is ours and what is not
 

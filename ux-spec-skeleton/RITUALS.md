@@ -72,6 +72,25 @@ owners. Not minutes.
 ticked. They cannot check that the claim next to it is true. Step 4 is the only thing that
 does, and it only samples. If the room stops doing step 4, this apparatus is theatre.
 
+### If your team does not do standing meetings
+
+Some don't, as a deliberate constraint rather than an accident, and a doc that ignores that
+just gets ignored back. **Step 4 is the requirement. This meeting is one way to get it.**
+
+The async version: one named person per sprint audits **one** criterion against its cited
+source and writes two lines in `OPEN.md` — what they read, and whether it says what the
+criterion claims. Rotate the name. Steps 1-3 work async too: script output goes to CI,
+`HUMAN` rows already carry owners, and waiver costs can be filled in by whoever owns the
+row.
+
+**What you lose, so the trade is visible:** step 4 in a room means three other people hear
+the source read out and can say "that's not what that means." Alone, one person's reading
+goes unchallenged — which is the failure the whole apparatus is about, one level up. If you
+go async, have a second person initial the audit line.
+
+Neither version has been run. Pick one, run it four times, then change it — and record what
+you changed rather than drifting.
+
 ---
 
 ## 3 · Waiver — someone needs to go around a gate
@@ -99,7 +118,7 @@ over a wall.
 
 **What the arriving person gets, and should refuse the handoff without:**
 
-- the three gate files, with `drift:` computed clean (`./check-drift.sh` exit 0)
+- both gate files (`ux.md`, `design.md`), with `drift:` computed clean (`./check-drift.sh` exit 0)
 - `OPEN.md` with every `HUMAN` row carrying a real owner, not the departing person
 - `MANIFEST.md` with every source registered and hashed
 - three decisions, named, that only a human can make — and who decides each

@@ -19,11 +19,6 @@ documents feeding it stop being paperwork and become the instructions.
 
 We are rowing that direction on purpose.
 
-One honest note, because it is the whole point of this document: all of that is practitioner
-and vendor writing. Nobody has measured how many teams actually do it. Independent sources
-converging tells you a practice exists and has a shape — not that it is widespread. Same
-rule we apply to claims about users.
-
 And the gap every one of them leaves: they describe what belongs in the files. **None says
 how you stop a document claiming more than its evidence supports.** That is the only thing
 this adds — and it is the failure that reaches customers.

@@ -21,8 +21,7 @@ Three files hold the standard. Each ends in acceptance criteria a script reads.
 
 | file | question | owner |
 |---|---|---|
-| `ux.md` | Do we understand the problem and the people? | design + research |
-| `vision.md` | Are we building the right thing? | product, design-led |
+| `ux.md` | Do we understand the problem and the people? **and** are we building the right thing? | design + research; product on the second half |
 | `design.md` | Are we building the thing right? | engineering |
 
 Five registers hold what is unresolved. They are **data, not prose** — each is parsed.

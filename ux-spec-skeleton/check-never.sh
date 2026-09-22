@@ -91,8 +91,13 @@ elif [ -f OPEN.md ]; then
     hid=$(echo "$row" | awk -F'|' '{gsub(/ /,"",$2); print $2}')
     blocks=$(echo "$row" | awk -F'|' '{print $6}')
     for crit in $(echo "$blocks" | grep -oE 'G[123]-[0-9]+'); do
-      for f in "${GATE_1:-ux.md}" "${GATE_2:-vision.md}" "${GATE_3:-design.md}"; do
-        [ -f "$f" ] || continue
+      # Dedupe — GATE_1 and GATE_2 name one file since the 2026-09-22 merge, and a
+      # doubled entry printed each FIRED line twice for a single ticked criterion.
+      _seen=""
+      for f in "${GATE_1:-ux.md}" "${GATE_2:-}" "${GATE_3:-design.md}"; do
+        [ -n "$f" ] && [ -f "$f" ] || continue
+        case " $_seen " in *" $f "*) continue ;; esac
+        _seen="$_seen $f"
         if grep -qE "^- \[x\] $crit " "$f"; then
           echo "  FIRED  $crit is ticked in $f, but $hid is unresolved."
           hit=1; FIRED=1
@@ -204,7 +209,16 @@ echo "      Why never: it converts an untested concept into a licence to spend,"
 echo "      and it is unrecoverable — nobody unhears 'it tested well'."
 echo
 hit=0
-for f in ux.md vision.md design.md README.md; do
+# Gate files from config (deduped) plus README.md — the literal three-file list named
+# vision.md, which ceased to exist when Gate 2 merged into ux.md on 2026-09-22, and
+# ignored project.conf entirely so a renamed gate file was skipped in silence.
+_nv_seen=""; _nv=""
+for _f in "${GATE_1:-ux.md}" "${GATE_2:-}" "${GATE_3:-design.md}" README.md; do
+  [ -n "$_f" ] || continue
+  case " $_nv_seen " in *" $_f "*) continue ;; esac
+  _nv_seen="$_nv_seen $_f"; _nv="$_nv $_f"
+done
+for f in $_nv; do
   [ -f "$f" ] || continue
   # assertions, not prohibitions and not descriptions of other people's claims
   bad=$(grep -inE '\b(we|this|it) (have |has )?(validated|proven|tested)\b' "$f" \

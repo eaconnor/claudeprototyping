@@ -54,24 +54,32 @@ echo "" >> .specify/memory/constitution.md    # a source moved
 instead — say it's stale when it is:
 
 ```bash
-sed -i '' 's/^drift: FRESH/drift: STALE/' ux.md vision.md design.md
+sed -i '' 's/^drift: FRESH/drift: STALE/' ux.md design.md
 ./check-drift.sh; echo "exit: $?"
 ```
 
-**You should see:** `0 fresh · 3 stale · 0 conflict` and `exit: 18` — a *warning*, not a
-failure. Admitting staleness costs you a warning; claiming freshness you don't have fails the
-build. That gap is deliberate: it makes honesty mechanically cheaper than optimism.
+**You should see:** `2 source(s) across 2 file(s) · 0 fresh · 2 stale · 0 conflict` and
+`exit: 18` — a *warning*, not a failure. Admitting staleness costs you a warning; claiming
+freshness you don't have fails the build. That gap is deliberate: it makes honesty
+mechanically cheaper than optimism.
 
-**Note that all three files are in that command, and that matters.** `ux.md`, `vision.md` and
-`design.md` each declare their own `drift:`, and all three are built from the constitution you
-just touched. Be honest in only one of them and you still get **22**, because two files are
-still claiming freshness they don't have. Partial honesty scores as dishonesty here, which is
-the correct behaviour and worth seeing for yourself:
+**Note that both files are in that command, and that matters.** `ux.md` and `design.md` each
+declare their own `drift:`, and both are built from the constitution you just touched. Be
+honest in only one of them and you still get **22**, because the other is still claiming
+freshness it does not have. Partial honesty scores as dishonesty here, which is the correct
+behaviour and worth seeing for yourself:
 
 ```bash
-sed -i '' 's/^drift: STALE/drift: FRESH/' vision.md design.md   # re-introduce the lie in two
-./check-drift.sh; echo "exit: $?"                                # back to 22
+sed -i '' 's/^drift: STALE/drift: FRESH/' design.md   # re-introduce the lie in one
+./check-drift.sh; echo "exit: $?"                     # back to 22
 ```
+
+**You should see** `DRIFT MISDECLARED — 1 file(s) claim a better state than computed.` and
+`exit: 22`. One lie out of two costs the same as two out of two.
+
+Two files, not three: `vision.md` held Gate 2 until 2026-09-22 and is now the second half of
+`ux.md`. If you are following an older copy of this walkthrough that names three files, the
+third does not exist and `sed` will skip it without saying so.
 
 **undo:** `cp -R ../skeleton-backup/. .`
 

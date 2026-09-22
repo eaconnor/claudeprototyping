@@ -18,7 +18,7 @@ An agent that hits a `HUMAN` row and guesses anyway has made the specific error 
 
 | id | kind | question / assumption | owner | blocks | resolves_when | revisit |
 |---|---|---|---|---|---|---|
-| H-03 | HUMAN | The 22 criteria shipped in the three gate files are the **generic house rubric**, not this project's. Gating on generalities passes without proving anything about your product. Which of them do you replace with project-specific criteria, and which are genuinely universal? | ‹you› | whether Gate 1–3 mean anything here | Each criterion is either rewritten for this project or consciously kept | ‹YYYY-MM-DD› |
+| H-03 | HUMAN | The 24 criteria shipped in the two gate files (14 in `ux.md` across Gates 1 and 2, 10 in `design.md`) are the **generic house rubric**, not this project's. Gating on generalities passes without proving anything about your product. Which of them do you replace with project-specific criteria, and which are genuinely universal? | ‹you› | whether Gate 1–3 mean anything here | Each criterion is either rewritten for this project or consciously kept | ‹YYYY-MM-DD› |
 | A-01 | ACCEPTED | `BUILD` is empty, so `scripts/check-design.py` exits 5 and `check-eng.sh` EG-1 is **UNEVALUATED, not passing**. An unevaluated harm gate must never read as a clear one. | — | nothing; must stay visible | n/a — carried until a build exists | n/a — accepted, not pending |
 
 ## Counts

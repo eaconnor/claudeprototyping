@@ -337,6 +337,35 @@ check_evidence_dialogue() {
 
   [ -z "$rows" ] && return 0
 
+  # A findings file that EXISTS but parses to nothing is not an empty evidence base.
+  # It is a broken one, and it used to degrade into per-row "not in findings" FLAGS —
+  # so a gate file overclaiming on every single link printed "no overclaiming. 5 flag(s)"
+  # and exited 0. Reproduced 2026-09-22 by replacing findings.yaml with `findings: []`
+  # under an ux.md that genuinely overclaims. An empty findings.yaml is a legal state
+  # on its own (see the header of the shipped one); an empty findings.yaml underneath
+  # documents that cite it by id is a parse failure wearing a clean bill of health.
+  #
+  # Note the parse count below is NOT `$(grep -c … || echo 0)`. grep -c prints "0" AND
+  # exits 1 when it matches nothing, so the `||` fires too and the substitution becomes
+  # the two-line string "0\n0" — which makes `[ … -eq 0 ]` fail with "integer expression
+  # expected" on stderr and take the FALSE branch. That is this same check failing open
+  # on its first draft, in the same way it exists to prevent. Caught 2026-09-22 only
+  # because the reproduction it was written for still printed the old output.
+  local parsed_rows
+  parsed_rows=$(grep -cE '^[[:space:]]*-?[[:space:]]*finding_id:' "$findings" 2>/dev/null | tr -dc '0-9')
+  [ -z "$parsed_rows" ] && parsed_rows=0
+  if [ "$parsed_rows" -eq 0 ]; then
+    echo "BLOCKED — Gate $gate: $file cites findings by id, but no finding_id: rows could be"
+    echo "          parsed out of $findings. Every rests_on: here is dangling, so NOTHING in"
+    echo "          this file has been checked against anything. This is reported as a block"
+    echo "          rather than as per-row flags because an unparsable evidence base makes the"
+    echo "          whole check vacuous, and a vacuous check that prints 'no overclaiming' is"
+    echo "          worse than no check. If the evidence base is genuinely empty, the links"
+    echo "          citing it have to go too."
+    FAIL=1
+    return
+  fi
+
   local n=0 bad=0 flagged=0 today
   today=$(date +%Y-%m-%d)
 
@@ -369,18 +398,62 @@ check_evidence_dialogue() {
     fi
 
     # ---- THE ONLY FAILURES: overclaiming ----------------------------------
+    #
+    # FAIL CLOSED. NO COMPUTABLE CEILING IS A BLOCKER, NOT A SKIP.
+    #
+    # This used to end `*) cap=0; capname="" ;;` and then guard the comparison with
+    # `[ "$cap" -gt 0 ]`. So ONE TYPO IN THE FIELD THAT SETS THE CEILING DISABLED THE
+    # CEILING. `claim_type: STATED-ATTITUDE` (hyphen, not underscore) → cap=0 → the
+    # overclaim comparison was guarded out → `asserted_at: HIGH` passed in silence.
+    # Reproduced 2026-09-22: E-03's genuine FAIL vanished from the output entirely when
+    # a single underscore was changed to a hyphen.
+    #
+    # Worse, the ungraded-finding branch below then printed "Checked against its
+    # computed $capname ceiling only, WHICH IT RESPECTS" with $capname empty — a
+    # sentence asserting the check passed, in the one message a reader uses to decide
+    # the row is fine. That is a false green in prose, which this script's own comments
+    # (:36, and the drop-detector note further down) call worse than a false red.
+    #
+    # Same treatment for the other two fields the arithmetic depends on. An unparsable
+    # assertion used to rank 0 and therefore never exceed anything — an invalid value
+    # was treated as the weakest possible claim, when it is in fact an unknown claim.
     local cap capname
     case "$(echo "$ctype" | tr '[:upper:]' '[:lower:]')" in
       observed_behavior) cap=3; capname=HIGH ;;
       inferred|stated_attitude) cap=2; capname=MEDIUM ;;
       recommended) cap=1; capname=LOW ;;
-      *) cap=0; capname="" ;;
+      "") echo "BLOCKED $id — $rests has no claim_type, so no ceiling can be computed and"
+          echo "        nothing here can be checked. An unchecked claim must not read as a"
+          echo "        checked one. Set claim_type: OBSERVED_BEHAVIOR | STATED_ATTITUDE |"
+          echo "        INFERRED | RECOMMENDED."
+          bad=$((bad+1)); continue ;;
+      *)  echo "BLOCKED $id — $rests has claim_type: '$ctype', which is not one of"
+          echo "        OBSERVED_BEHAVIOR | STATED_ATTITUDE | INFERRED | RECOMMENDED."
+          echo "        This is the field the ceiling is computed from, so an unrecognised"
+          echo "        value means there is no ceiling — not a high one. Check the spelling."
+          bad=$((bad+1)); continue ;;
     esac
     case "$(echo "$fid" | tr '[:upper:]' '[:lower:]')" in
       proxy|internal|none) if [ "$cap" -gt 1 ]; then cap=1; capname="LOW ($fid fidelity)"; fi ;;
+      primary) : ;;
+      "") echo "BLOCKED $id — $rests has no population_fidelity. Who the evidence came from"
+          echo "        is half the ceiling arithmetic: primary does not lower the cap, and"
+          echo "        proxy / internal / none lower it to LOW. Blank is not primary."
+          bad=$((bad+1)); continue ;;
+      *)  echo "BLOCKED $id — $rests has population_fidelity: '$fid', which is not one of"
+          echo "        primary | proxy | internal | none. An unrecognised value silently"
+          echo "        skipped the demotion to LOW."
+          bad=$((bad+1)); continue ;;
+    esac
+    case "$(echo "$asserted" | tr '[:upper:]' '[:lower:]')" in
+      high|medium|low) : ;;
+      *)  echo "BLOCKED $id — asserts '$asserted', which is not HIGH, MEDIUM or LOW."
+          echo "        An unparsable assertion used to rank below everything and therefore"
+          echo "        never exceed a ceiling. An unknown claim is not a weak claim."
+          bad=$((bad+1)); continue ;;
     esac
 
-    if [ "$cap" -gt 0 ] && [ "$ar" -gt "$cap" ]; then
+    if [ "$ar" -gt "$cap" ]; then
       echo "  FAIL $id — asserts $asserted. $rests is $ctype / $fid fidelity, which ceilings"
       echo "       at $capname. Repetition raises scope, not confidence — and someone"
       echo "       downstream cannot see this gap from where they are standing."
@@ -391,9 +464,15 @@ check_evidence_dialogue() {
     # This branch used to compare against conf_rank("") == 0 and therefore failed every
     # honest entry resting on an ungraded row — 4 false FAILs out of 5 in the
     # 2026-09-21 wiring test, against a findings.yaml whose confidence: fields are
-    # deliberately blank because only the researcher of record may fill them. The
-    # ceiling check above already guards with [ "$cap" -gt 0 ] for exactly this reason;
-    # this one did not. Ungraded is a research to-do, not an overclaim.
+    # deliberately blank because only the researcher of record may fill them.
+    # Ungraded is a research to-do, not an overclaim.
+    #
+    # The sentence below asserts the row respects its ceiling. That is only safe to
+    # print because the three enum checks above now BLOCK rather than skip — when this
+    # line runs, $capname is guaranteed non-empty and the comparison at :427 actually
+    # ran. It previously could print "which it respects" with $capname empty and no
+    # comparison performed at all. If you ever re-loosen those checks, delete this
+    # sentence in the same commit.
     if [ -z "$grade" ]; then
       echo "  flag $id — $rests has no confidence grade yet, so there is nothing to"
       echo "       inherit. Checked against its computed $capname ceiling only, which it"
@@ -407,10 +486,14 @@ check_evidence_dialogue() {
 
     # ---- FLAGS: the loop ---------------------------------------------------
     case "$(echo "$f_status" | tr '[:upper:]' '[:lower:]')" in
-      stale|retired)
+      stale|retired|superseded)
         echo "  flag $id — $rests is status: $f_status. The evidence moved; this"
         echo "       interpretation has not. Revisit it."
         flagged=$((flagged+1)) ;;
+      current|active|""|—|-) : ;;
+      *) echo "  flag $id — $rests has status: '$f_status', which this check does not"
+         echo "       recognise, so it cannot tell you whether the evidence is still live."
+         flagged=$((flagged+1)) ;;
     esac
 
     [ -n "$superseded" ] && {
@@ -675,12 +758,25 @@ check_criteria_inheritance() {
   # because the output still looks complete. Same class as the vacuous-pass bug below.
   local g1 g2 g3
   g1="$(configured_gate GATE_1 ux.md)"
-  g2="$(configured_gate GATE_2 vision.md)"
+  g2="$(configured_gate GATE_2 "")"   # no vision.md default — merged into Gate 1, 2026-09-22
   g3="$(configured_gate GATE_3 design.md)"
 
   [ -f "$g1" ] || return 0
   local origin; origin=$(ux_criteria_ids "$g1")
-  [ -z "$origin" ] && return 0   # nothing authored yet — inert, not a failure
+  if [ -z "$origin" ]; then
+    # SAY SO. This used to `return 0` in silence, and the silence was the bug: the
+    # ux-spec-skeleton shipped with no '## UX Acceptance Criteria' section at all, so
+    # in the one repo every adopter copies, the drop-detector could not fire and said
+    # nothing about it. A check that is structurally unable to run must report that it
+    # did not run — "no output" is indistinguishable from "no problem", which is the
+    # failure mode this whole script is built against. Found 2026-09-22.
+    echo "  note criteria: $g1 has no '## UX Acceptance Criteria' section carrying UXI-## ids,"
+    echo "       so there is nothing to carry forward and the drop-detector did NOT run. This"
+    echo "       is the normal state before the Intent Spec's §5 requirements are wired back"
+    echo "       into the gate files — it is reported rather than skipped so you can tell the"
+    echo "       difference between 'nothing dropped' and 'nothing checked'."
+    return 0
+  fi
 
   # Build the downstream stage list from config, skipping any file that IS the origin.
   # A project that merges Gate 1 and Gate 2 into one file points GATE_1 and GATE_2 at
@@ -755,7 +851,9 @@ check_criteria_inheritance() {
 # cast an agent reads instead of inventing, the UX criteria that inherit forward
 # into vision.md and design.md. With no ux.md there is nothing to inherit from,
 # nothing pointing at the research, and an agent fills the gap confidently — see
-# this repo's OPEN.md R-01 for what that costs.
+# TOOLKIT-OPEN.md for what that costs. (This comment cited 'OPEN.md R-01' until
+# 2026-09-22; no such row exists — OPEN.md carries H-03 and A-01, and the toolkit's
+# own history moved to TOOLKIT-OPEN.md when the register was split.)
 #
 # So: hard stop, immediately, before any other check runs. No regime can declare
 # past it and no flag softens it.
@@ -926,17 +1024,26 @@ GATE1_FILE="$(configured_gate GATE_1 ux.md)"
 GATES_SEEN="$GATES_SEEN $GATE1_FILE"
 check_evidence_dialogue "$GATE1_FILE" "1 (right problem)"
 
-check_optional_gate "GATE_2" "vision.md" "2 (right thing)"
+check_optional_gate "GATE_2" "" "2 (right thing)"   # no vision.md fallback — merged into GATE_1
 check_optional_gate "GATE_3" "design.md" "3 (right build)"
 
 # Inline `case` inside $( ) breaks: the `)` terminates the substitution. Caught
 # 2026-09-21 by running the script in a bare project.
 gate_num_for() {
-  if [ "$1" = "ux.md" ]; then echo 1
-  elif [ "$1" = "vision.md" ]; then echo 2
+  # Config-driven. Was three literal filename comparisons, so a renamed gate file was
+  # reported under the wrong gate number, and "vision.md" named a file that no longer
+  # exists after the 2026-09-22 merge.
+  if [ "$1" = "$(configured_gate GATE_1 ux.md)" ]; then echo 1
+  elif [ "$1" = "$(configured_gate GATE_2 "")" ]; then echo 2
   else echo 3; fi
 }
-for f in ux.md vision.md design.md; do
+# Deduped: GATE_1 and GATE_2 normally name the same file, and without this guard the
+# merged file had its owner/research_check flags printed twice.
+_og_seen=""
+for f in "$(configured_gate GATE_1 ux.md)" "$(configured_gate GATE_2 "")" "$(configured_gate GATE_3 design.md)"; do
+  [ -n "$f" ] || continue
+  case " $_og_seen " in *" $f "*) continue ;; esac
+  _og_seen="$_og_seen $f"
   [ -f "$f" ] && check_owner_and_check "$f" "$(gate_num_for "$f")"
 done
 check_criteria_inheritance
@@ -959,7 +1066,7 @@ fi
 # Do not claim Gates 2-3 passed when they were skipped. Same class of small lie
 # as the "fix the unchecked boxes" line — this one would tell a reader three
 # gates were checked when one project legitimately has only the first.
-g2="$(configured_gate GATE_2 vision.md)"; g3="$(configured_gate GATE_3 design.md)"
+g2="$(configured_gate GATE_2 "")"; g3="$(configured_gate GATE_3 design.md)"
 if [ -z "$g2" ] && [ -z "$g3" ]; then
   echo "Gate 1 passes — main spine and every declared mini. Gates 2-3 declared absent"
   echo "in project.conf; nothing else was checked. Clear to proceed on that basis."

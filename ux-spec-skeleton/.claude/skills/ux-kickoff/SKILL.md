@@ -1,6 +1,6 @@
 ---
 name: "ux-kickoff"
-description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis, then the gate spine (mandatory root ux.md, optional main/mini split, conditional vision.md/design.md/OPEN.md/MANIFEST.md, traces_to sequencing, Spec Kit hook wiring, and a check that the project's own constitution and Intent Spec actually reference the gate files — offering to add that wiring, which is the only content this skill generates rather than transcribes) — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
+description: "Facilitates the UX-INTENT-SPEC kickoff — project type, roster/RACI, owners, escalation, evidence basis, then the gate spine (mandatory root ux.md holding Gates 1 and 2, optional main/mini split, conditional design.md/OPEN.md/MANIFEST.md, traces_to sequencing, Spec Kit hook wiring, and a check that the project's own constitution and Intent Spec actually reference the gate files — offering to add that wiring, which is the only content this skill generates rather than transcribes) — and writes each answer into BOTH project.conf and the document named by INTENT_SPEC's own frontmatter and tables, in sync, then runs ./check-roster.sh and reports it verbatim. Does not fill in any answer itself — asks, in dependency order, and blocks on a question going unasked rather than on an answer it dislikes."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -133,7 +133,7 @@ the room's attention goes in Steps 1-4, not whether they run. Ask: *"Which of**
 | "I don't know if this needs UX" | Don't infer this yourself — it's a HUMAN question, not a UX one. Run Steps 1-4 as normal, but at Step 4 add: can anyone in the room name the decision UX input would actually change? If nobody can, that's the finding — log it as an `OPEN.md` `HUMAN` row instead of quietly proceeding as if UX were assumed necessary. |
 | "Updating an existing flow — minor" | Check whether `INTENT_SPEC` already points at a real document **before Step 0c copies the template** — a minor update usually already has one, and Step 0c should point at the existing document instead of starting a second one. Evidence basis (Step 4) is more often `FINDINGS` than `HYPOTHESES` here: there's usually existing usage data to point at, not a fresh guess. |
 | "Something's majorly wrong with existing UX" | Research owner (Step 2) and `RISK_FUNCTION` matter most here — "majorly wrong" usually means a FLOOR-level problem (accessibility, data integrity, harm), not a FIT one. If nobody can point at evidence of what's actually wrong yet, say that explicitly at Step 4 — "we know it's bad" is not the same as `EVIDENCE_BASIS="FINDINGS"`. |
-| "Building a new feature" | Run Steps 1-4 in full. Flag `OPEN.md` H-03 explicitly — a new feature is the case where at least one of the 22 generic house-rubric criteria in `ux.md`/`vision.md`/`design.md` needs a project-specific replacement, not a rubber stamp. |
+| "Building a new feature" | Run Steps 1-4 in full. Flag `OPEN.md` H-03 explicitly — a new feature is the case where at least one of the generic house-rubric criteria in `ux.md`/`design.md` needs a project-specific replacement, not a rubber stamp. |
 | "Building a new product" | Run Steps 1-4 in full, and treat `ESCALATION_PATH_TESTED` as higher-stakes than usual — new-product disagreements are the most expensive to resolve late. `INTENT_SPEC` almost certainly doesn't exist yet, so Step 0c's template copy isn't optional. |
 
 If the room's answer doesn't match any of these five cleanly, record what they
@@ -335,7 +335,7 @@ for it — the verbatim report still runs first, in full, exactly as Step 5 requ
 
 Running this skill against a real project (2026-09-18/21) surfaced a second layer under
 the RACI one: even with roster/owners/escalation/evidence-basis all answered, nobody had
-asked whether the gate files (`ux.md`/`vision.md`/`design.md`) and their supporting
+asked whether the gate files (`ux.md`/`design.md`) and their supporting
 registers (`OPEN.md`, `MANIFEST.md`) existed, whether the project needed all of them, or
 whether the scripts that check them could even see the files that had been written. Steps
 7-12 close that gap the same way Steps 1-4 close the RACI one: by asking, not assuming.
@@ -356,8 +356,11 @@ never invent what isn't there. Ship it honestly `status: SKELETON` with every ac
 criterion unticked if the room hasn't actually done the research yet; a red Gate 1 is a
 correct, informative state, not a failure to paper over before moving on.
 
-If `vision.md`/`design.md` already exist at the root with real content, Step 7 does not
-touch them — it is about the root `ux.md` only.
+If `design.md` already exists at the root with real content, Step 7 does not touch it — it
+is about the root `ux.md` only. Note that `ux.md` now holds **both** Gate 1 and Gate 2
+(merged 2026-09-22), so Step 7 is touching the file that answers "do we understand the
+problem" *and* "is this the right thing" — do not treat the Gate 2 half as a separate file
+to go looking for.
 
 ### Step 8 — One project, or many units?
 
@@ -376,8 +379,8 @@ the root `ux.md` the whole story?
   finding to name out loud, not a filing detail to fix silently.
 
 **Known limitation — say this plainly, don't let the room assume otherwise:**
-`check-gates.sh` as shipped only reads three hardcoded root files (`ux.md`, `vision.md`,
-`design.md`); it has no awareness of `mini_docs:` and will not fail a build over an
+`check-gates.sh` reads only the root gate files named in `project.conf` (`ux.md` for Gates 1
+and 2, `design.md` for Gate 3); it has no awareness of `mini_docs:` and will not fail a build over an
 unticked mini criterion. Until `check-gates.sh` is extended to walk `mini_docs:`, a mini's
 acceptance criteria are honesty-only, not mechanically enforced. A room that believes its
 minis are gated when they aren't has the exact false-green problem this whole toolkit
@@ -391,7 +394,7 @@ never to silent invention, and never to silent omission either:
 
 | file | usually needed when | if yes | if no |
 |---|---|---|---|
-| `vision.md` (Gate 2) | Step 0b answered "new feature/new product," or anyone in the room is still asking "are we sure this is the right thing to build" | Create it now as `status: SKELETON` — real file, zero invented strategy — then log an `OPEN.md` row naming Gate 2 as open work, with an owner | Log the skip as an `OPEN.md` `ACCEPTED` row naming why (e.g. "settled at the portfolio level, see [link]") — see "Override" below |
+| Gate 2 — the second half of `ux.md` (§4 The concepts, §5 Rejected and superseded, `## Acceptance Criteria — Gate 2`) | Step 0b answered "new feature/new product," or anyone in the room is still asking "are we sure this is the right thing to build" | **No new file** — Gate 2 lives in `ux.md` since 2026-09-22. Leave those sections `status: SKELETON` with zero invented strategy, and log an `OPEN.md` row naming Gate 2 as open work, with an owner | Log the skip as an `OPEN.md` `ACCEPTED` row naming why (e.g. "settled at the portfolio level, see [link]") — see "Override" below. Do NOT set `GATE_2=""`: Gate 2 is not optional the way Gate 3 is, because the file answering it is required anyway |
 | `design.md` (Gate 3) | there's a build to hold it against, or one is imminent | Create it now as `SKELETON` — the file's own text says Gate 3 "cannot honestly be green before a build exists and has been measured," so shipping it red immediately is correct, not premature | If there's genuinely no build and none coming soon, this can wait — say so, don't create a file with nothing yet to say |
 | `OPEN.md` | almost always, immediately — the moment Steps 1-8 surface one `UNASSIGNED` or one unresolved assumption | Create it now, seeded with every gap already named out loud so far | Only skip if this kickoff has surfaced zero open questions, which should be rare |
 | `MANIFEST.md` | only once a gate file actually declares a `built_from:` list that `check-drift.sh` needs to verify | Create it once the first `built_from:` entry exists, not before | Defer — a manifest with nothing to hash yet isn't useful |
@@ -403,7 +406,7 @@ same rule as Step 0b.
 ### Step 10 — traces_to, and why it waits on the Intent Spec
 
 Once `INTENT_SPEC` names a real document (Step 0c), every acceptance criterion in
-`ux.md`/`vision.md`/`design.md` should eventually carry a `traces_to:` pointer — into a
+`ux.md`/`design.md` should eventually carry a `traces_to:` pointer — into a
 numbered `UXI-##` requirement in the Intent Spec, a `§N` section of it, a `ds:N` section
 of the local file, or an `OPEN.md` row. `check-trace.sh` enforces both directions: every
 pointer must resolve to something real, and every `UXI-##` stated in the Intent Spec must
@@ -454,7 +457,7 @@ criteria inherit forward, no claim above its evidence, no absence without a corp
 - **Present and already there** — say so and move on.
 
 **2. The Intent Spec.** Grep the document named by `INTENT_SPEC` for a block in its UX
-intent section linking out to the gate files (`ux.md`, `vision.md`, `design.md`,
+intent section linking out to the gate files (`ux.md`, `design.md`,
 `findings.yaml`, `OPEN.md`). If it's absent, offer to add it.
 
 The link matters in both directions. The gate files point at the Intent Spec for `UXI-##`

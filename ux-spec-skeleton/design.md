@@ -97,7 +97,7 @@ Four moves. Each names **what it has to produce** — how you get there is yours
 **This is where the loop closes.** Testing a prototype produces `observed_behavior` findings
 at `population_fidelity: primary` — the only combination that reaches a HIGH ceiling. So
 this file is not just a consumer of evidence, it is **the main manufacturer of the strongest
-evidence in the system**, and the step that pays back whatever bet `vision.md` made on
+evidence in the system**, and the step that pays back whatever bet `ux.md` made on
 secondary material. Those results go back into `findings.yaml`.
 
 **Secondary evidence stops being enough here.** Converged desk research can tell you the
@@ -133,13 +133,13 @@ a property of specified users doing specified tasks in a specified context — s
 measure below this line is meaningless until these three rows are real. This is the most
 skipped section in the file and skipping it is what produces "the design tested well"
 with no statement of for whom.
-WHO FILLS IT: design, from ux.md's cast and vision.md's Top Tasks. Do not invent a user
+WHO FILLS IT: design, from ux.md's cast and its Top Tasks (§2). Do not invent a user
 here — if ux.md does not name them, that is a `[?]` and it belongs in OPEN.md.
 GOOD LOOKS LIKE: "a technician, mid-shift, on a shared workstation, interrupted every few
 minutes" — not "IT professionals".>>
 
 - **Users:** ‹who, specifically› `[?]`
-- **Tasks:** ‹which tasks, from vision.md G2-02› `[?]`
+- **Tasks:** ‹which tasks, from ux.md G2-02› `[?]`
 - **Environment:** ‹where, on what, under what pressure, with what interruptions› `[?]`
 
 ## Rules pulled from the design system
@@ -154,8 +154,15 @@ GOOD LOOKS LIKE: a short table where every row names the script that checks it. 
 nothing checks is a preference; label it as one.>>
 
 `design_system:` names the system; `design_lint:` sets how hard it is checked. Tokens are read
-from the build's own `:root` block — **no palette is hardcoded in any script here**, which is
-what lets this repo work with any design system.
+from the build's own `:root` block.
+
+**Three scripts here DO hardcode a palette, and it is not yours.** `scripts/check-design.py`
+branches on the literal token names `ochre` and `cadmium` and prescribes `--ink` /
+`--ultramarine` / `--violet`; `scripts/contrast.py` hardcodes a nine-colour palette;
+`check-eng.sh` hardcodes the FLOOR criterion ids `CLR-01`/`CLR-02` and `UXI-13`. They carry
+the design system this skeleton was extracted from, and against differently-named tokens they
+report nonsense confidently. Port them to your palette or drop them from CI until you have.
+This paragraph used to claim the opposite — see the same correction in `project.conf`.
 
 | id | rule | how it is checked |
 |---|---|---|
@@ -206,5 +213,5 @@ and collapsing them is how a project reads as failing when it has simply not sta
 - [ ] G3-06 — FIT · Efficiency: reasonable effort to the goal, measured against a named baseline · verified_by: an instrument in instruments/
 - [ ] G3-07 — FIT · Satisfaction: SUS ≥ 6 to ship, ≥ 8 on the top five tasks; trust eval where output is AI-generated and user-facing · verified_by: an instrument in instruments/
 - [ ] G3-08 — FIT · Design-system conformance linted per `design_lint:`, with its coverage declared — never a bare "compliant" · verified_by: scripts/check-design.py
-- [ ] G3-09 — Each Must from vision.md has a built-in test that could run against a real build · verified_by: a human checks one row per Must
+- [ ] G3-09 — Each Must from ux.md has a built-in test that could run against a real build · verified_by: a human checks one row per Must
 - [ ] G3-10 — Tested how, by whom, against what — named, with the instrument linked · verified_by: a human reads the instrument file

@@ -66,10 +66,23 @@ if [ -n "${INTENT_SPEC:-}" ] && [ -f "$INTENT_SPEC" ]; then
   CLAIM_FILES="$CLAIM_FILES $INTENT_SPEC"
 fi
 
-for f in ux.md vision.md design.md; do
-  [ -f "$f" ] && CLAIM_FILES="$CLAIM_FILES $f"
-done
-for f in specs/*/ux.md specs/*/vision.md specs/*/design.md; do
+# The gate files, from config, deduped. This was the literal list
+# `ux.md vision.md design.md`, which had two faults: it silently skipped a project that
+# RENAMED its gate files in project.conf (the check looked complete and checked nothing),
+# and it named vision.md, which stopped existing when Gate 2 merged into ux.md on
+# 2026-09-22. Same fault and same fix as check_criteria_inheritance in check-gates.sh.
+_gate_files() {
+  local f out="" seen=""
+  for f in "${GATE_1:-ux.md}" "${GATE_2:-}" "${GATE_3:-design.md}"; do
+    [ -n "$f" ] || continue
+    case " $seen " in *" $f "*) continue ;; esac
+    seen="$seen $f"
+    [ -f "$f" ] && out="$out $f"
+  done
+  echo "$out"
+}
+CLAIM_FILES="$CLAIM_FILES $(_gate_files)"
+for f in specs/*/ux.md specs/*/design.md; do
   [ -f "$f" ] && CLAIM_FILES="$CLAIM_FILES $f"
 done
 

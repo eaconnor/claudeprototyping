@@ -5,7 +5,8 @@ research, or any of the long script headers to get started.
 
 ## 1. Point it at your project
 
-Edit `project.conf`. It is the only file you have to change.
+Edit `project.conf`. It is the only file you have to **edit** — but not the only step:
+section 2 below creates one more file, and without it nothing runs at all.
 
 ```
 PROJECT_NAME="your-project"
@@ -16,7 +17,7 @@ RISK_FUNCTION="legal / privacy"        # who co-signs when the company could be
 RESEARCH_OWNER="a real person"         # who sets up the evidence layer — REQUIRED
 J4_MODE="note"                         # a judgement call — see below
 GATE_1="ux.md"
-GATE_2="vision.md"
+GATE_2="ux.md"        # Gates 1 and 2 share one file — see below
 GATE_3="design.md"
 ```
 
@@ -78,8 +79,7 @@ script reads:
 
 | file | question it answers | who owns it |
 |---|---|---|
-| `ux.md` | Do we understand the problem and the people? | design, with research |
-| `vision.md` | Are we building the right thing? | design-led, eng weighs feasibility |
+| `ux.md` | Do we understand the problem and the people? **and** are we building the right thing? | design, with research; eng weighs feasibility on the second half |
 | `design.md` | Are we building the thing right? | eng — this is the stable layer |
 
 Five registers hold everything that is unresolved or worth recording. They are data,

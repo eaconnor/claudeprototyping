@@ -35,6 +35,22 @@
 # --- project.conf is the single source of project-specific paths. Nothing in
 # --- this script is hardcoded to one project; see project.conf.
 [ -f ./project.conf ] && . ./project.conf
+
+# The gate files, from config, deduped. This was the literal list
+# `ux.md vision.md design.md`, which had two faults: it silently skipped a project that
+# RENAMED its gate files in project.conf (the check looked complete and checked nothing),
+# and it named vision.md, which stopped existing when Gate 2 merged into ux.md on
+# 2026-09-22. Same fault and same fix as check_criteria_inheritance in check-gates.sh.
+_gate_files() {
+  local f out="" seen=""
+  for f in "${GATE_1:-ux.md}" "${GATE_2:-}" "${GATE_3:-design.md}"; do
+    [ -n "$f" ] || continue
+    case " $seen " in *" $f "*) continue ;; esac
+    seen="$seen $f"
+    [ -f "$f" ] && out="$out $f"
+  done
+  echo "$out"
+}
 INTENT="${INTENT_SPEC:-}"
 BUILD="${BUILD:-}"
 HARM=0
@@ -130,7 +146,7 @@ if [ -f spec.md ] && [ -f "$INTENT" ]; then
   else
     orphans=0
     for fr in $frs; do
-      if ! grep -qE "$fr" "$INTENT" design.md ux.md vision.md 2>/dev/null; then
+      if ! grep -qE "$fr" "$INTENT" $(_gate_files) 2>/dev/null; then
         echo "  ORPHAN  $fr is specified but traces to no intent and no gate criterion"
         orphans=$((orphans+1))
       fi
@@ -199,9 +215,9 @@ echo "  An acceptance criterion that needs someone's judgement is not an"
 echo "  acceptance criterion, it is an opinion with a checkbox."
 echo
 
+
 exe=0; tot=0
-for f in ux.md vision.md design.md; do
-  [ -f "$f" ] || continue
+for f in $(_gate_files); do
   t=$(grep -cE '^- \[[ x]\] ' "$f")
   e=$(grep -E '^- \[[ x]\] ' "$f" | grep -cE 'verified_by:.*(`|grep|= [0-9]|DOM check|count|document\.fonts|svgs)')
   tot=$((tot+t)); exe=$((exe+e))

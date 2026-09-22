@@ -212,8 +212,7 @@ goes here, or it vanishes and nobody can later tell rejection from forgetting.
 
 ## Lives in the Intent Spec — pointers, not copies
 
-These were sections of `vision.md` and are now links. **A pointer is only honest if the
-target is filled** — if the Intent Spec still has a placeholder where one of these should
+These are links, not sections. **A pointer is only honest if the target is filled** — if the Intent Spec still has a placeholder where one of these should
 be, that is the finding, not a formatting problem.
 
 | what you want | where it actually lives |
@@ -243,7 +242,35 @@ maintains it.
   - stance: ‹accepts | disputes›
   - handling: ‹required if stance is disputes — where the disagreement is being worked out›
 
-## Acceptance Criteria — Gate 1: Do we understand the problem?
+## UX Acceptance Criteria
+
+<<UNWRITTEN. This section is the origin of the criteria-inheritance chain and it ships
+EMPTY on purpose — every row here is a project-specific requirement, and a generated one
+would read exactly like a real one while committing you to nothing you chose.
+
+WHAT GOES HERE: one row per `UXI-##` requirement in §5 of the document named by
+`INTENT_SPEC` in `project.conf`. These are the UX requirements that must survive all the
+way into the build. `check-gates.sh` reads the `UXI-##` ids out of this section and then
+checks that **every one of them also appears in `design.md`** — a criterion that exists
+here and is missing downstream is reported by id as a DROP. That is the only thing this
+section is for: it is the list nothing is allowed to quietly lose.
+
+WHY IT IS EMPTY AND NOT PRE-FILLED: the ids have to match your Intent Spec's §5 rows.
+Invented ones resolve to nothing, and `check-trace.sh` would correctly report every one
+as orphaned. Wire §5 first, then copy the ids here.
+
+UNTIL YOU FILL THIS IN: `check-gates.sh` prints a `note criteria:` line saying the
+drop-detector did not run. That note is the honest state, not an error — but it also
+means nothing is protecting your UX requirements from being dropped between `ux.md` and
+`design.md`. This is the single highest-value section to fill in this file.
+
+FORMAT — one row each, ids from your own §5:
+
+- [ ] ‹UXI-NN› — ‹the requirement, in one line› · traces_to: §5 · verified_by: ‹who or what confirms it, named›
+
+GOOD LOOKS LIKE: "UXI-04 — a technician can complete triage without leaving the keyboard
+· traces_to: §5 · verified_by: scripts/check-a11y.py keyboard-path assertion". Not
+"UXI-04 — the UI is accessible".>>
 
 - [ ] G1-01 — Problem statement is sourced to a named artefact (spec, ticket, transcript, study), not assumed · traces_to: §1 · verified_by: a human reads the cited source and confirms it says this
 - [ ] G1-02 — Primary persona(s) named and evidence-tagged, not invented · traces_to: §3 · verified_by: a human confirms each persona traces to real contact with a real person

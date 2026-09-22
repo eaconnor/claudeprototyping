@@ -30,14 +30,16 @@ Rationale line to the Sync Impact Report at the top.
 ### VII. Evidence-Wired UX Gates (NON-NEGOTIABLE)
 
 Product work is gated on understanding the problem, not only on passing tests.
-Three files carry that: `ux.md` (the problem and what we know), `vision.md` (the
-concepts), `design.md` (the build). `findings.yaml` carries the evidence and is
+Two files carry that: `ux.md` (the problem, what we know, **and** the bet — Gate 2
+was a separate `vision.md` until 2026-09-22 and is now the second half of this
+file), and `design.md` (the build). `findings.yaml` carries the evidence and is
 owned by research. The following MUST hold, and each is mechanically enforced —
 a principle nothing checks is decoration.
 
 - **`ux.md` MUST exist.** This is the one requirement with no way around it; no
-  confidence regime declares past it and no flag softens it. `vision.md` and
-  `design.md` MAY be absent when `GATE_2`/`GATE_3` are empty in `project.conf`
+  confidence regime declares past it and no flag softens it. It answers two gates,
+  so there is no configuration in which it is optional. `design.md`
+  MAY be absent when `GATE_3` is empty in `project.conf`
   — an empty value is a recorded decision, a named file that does not exist is a
   broken pointer and fails. *(`check-gates.sh`, hard stop before any other check.)*
 - **Every gate file MUST declare `confidence_regime` and, for any `PROCEED*`
@@ -56,7 +58,7 @@ a principle nothing checks is decoration.
   *(`check-gates.sh` resolves each id against §5; `check-trace.sh` resolves
   `traces_to:` there in the full tier.)*
 - **UX acceptance criteria inherit forward and MUST NOT be dropped**, `ux.md` →
-  `vision.md` → `design.md`. Each gate MAY add its own. Carrying a criterion
+  `ux.md` → `design.md`. Each gate MAY add its own. Carrying a criterion
   forward unticked is always acceptable; removing one deletes a user need from
   the chain without anyone deciding to. *(`check-gates.sh`.)*
 - **A claim MUST NOT be asserted above the confidence its evidence licenses.**
@@ -102,7 +104,7 @@ a copied field goes stale silently and nobody can tell which side is current.
 | What | Where | Holds |
 |---|---|---|
 | The problem, and what we know | `ux.md` | Problem statement, cast, evidence log, eval loops. Authors the UX acceptance criteria that cite the `UXI-##` rows below. |
-| The concepts | `vision.md` | Vision prototypes, service blueprints, experience maps. **Several concepts at once is expected**, labelled and comparable — the bet itself lives at §1/§2/§4 of this document, not there. |
+| The concepts | `ux.md` §4 | Vision prototypes, service blueprints, experience maps. **Several concepts at once is expected**, labelled and comparable — the bet itself lives at §1/§2/§4 of this document, not there. |
 | The build | `design.md` | Every UX criterion carried forward from `ux.md`, plus design-system conformance, accessibility, lawful basis, security. |
 | The evidence | `findings.yaml` | Owned by research. Each finding carries `claim_type`, `population_fidelity` and a confidence grade. **A `UXI-##` row's `basis:` tag must not exceed what the finding it rests on licenses.** |
 | What is unresolved | `OPEN.md` | Typed by who can unblock it: a decision, a research gap, a contested pair of sources, or an accepted weakness. |

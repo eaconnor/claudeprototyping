@@ -18,6 +18,23 @@ FILE="OPEN.md"
 
 # ---- owner indirection, so a shipped register carries no real names ---------
 #
+# CONTESTED — the fourth kind. Spec Kit assumes evidence converges; UX research
+# produces evidence that diverges, and the divergence is the finding. RESEARCH means
+# the evidence is *missing*; HUMAN means no research *could* settle it. Neither fits
+# "we have two real sources and they contradict."
+#
+# CONTESTED does NOT block (the exit code does not change for it). It caps what may
+# be *claimed*: a claim resting on a contested row is `[A]`, never `[R]` or `[D]`, no
+# matter how well-sourced either side is on its own. Blocking would be wrong — the
+# work can proceed honestly, it just cannot cite a disputed thing as settled.
+#
+# Restored 2026-09-22. This handling was dropped from this file when it gained owner
+# indirection, while `check-gates.sh` went on accepting a CONTESTED row in OPEN.md as
+# one of the two legal ways to handle a `stance: disputes` (see check-gates.sh's
+# dispute branch). So the suite contradicted itself: one script treated the row as
+# valid handling and the other warned it was an unrecognised kind. Two checks
+# disagreeing about what is legal is worse than either rule on its own.
+#
 # A row may name a SLOT instead of a person: `→ RESEARCH_OWNER`. The slot is
 # resolved against project.conf here, so the template ships anonymous and each
 # project's own kickoff answers decide who actually owes the decision.
@@ -84,7 +101,8 @@ fi
 
 trim() { echo "$1" | sed 's/^ *//; s/ *$//'; }
 
-human=0; research=0; accepted=0; unknown=0
+human=0; research=0; accepted=0; contested=0; unknown=0
+contested_lines=""; unowned_contested=0
 human_lines=""
 unowned=0
 undated=0; overdue=0; undated_lines=""; overdue_lines=""
@@ -137,19 +155,34 @@ while IFS= read -r line; do
               # count only HUMAN rows: the message below says "row(s) above", and only
               # HUMAN rows are printed above it. Counting every kind made it claim 3
               # when 2 were listed — a small lie, in a script about accountability.
-              [ "$owner" = "UNASSIGNED" ] && unowned=$((unowned+1))
+              # Prefix match, not equality. resolve_owner() returns a bare "UNASSIGNED"
+              # for a placeholder cell but "UNASSIGNED (via RESEARCH_OWNER)" for a row
+              # that names a SLOT which project.conf has not filled. An equality test
+              # counted the first and missed the second, so the most likely real case —
+              # a shipped register pointing at an unfilled slot — reported an owner it
+              # did not have. Introduced with owner indirection 2026-09-22, fixed same day.
+              case "$owner" in UNASSIGNED*|UNKNOWN*) unowned=$((unowned+1)) ;; esac
               human_lines="${human_lines}  [$id] owner: ${owner}
       $q
 " ;;
     RESEARCH) research=$((research+1)) ;;
     ACCEPTED) accepted=$((accepted+1)) ;;
-    *)        unknown=$((unknown+1)); echo "WARNING — row $id has unrecognised kind '$kind' (expected HUMAN/RESEARCH/ACCEPTED)." ;;
+    CONTESTED) contested=$((contested+1))
+              # SEPARATE tally from $unowned. Folding these in made the HUMAN block
+              # print "6 row(s) above have no named owner" while listing 5. Each
+              # "N row(s) above" message counts only the rows in its own block.
+              # Same prefix-match reasoning as the HUMAN block above.
+              case "$owner" in UNASSIGNED*|UNKNOWN*) unowned_contested=$((unowned_contested+1)) ;; esac
+              contested_lines="${contested_lines}  [$id] adjudicator: ${owner}
+      $q
+" ;;
+    *)        unknown=$((unknown+1)); echo "WARNING — row $id has unrecognised kind '$kind' (expected HUMAN/RESEARCH/ACCEPTED/CONTESTED)." ;;
   esac
 done <<< "$rows"
 
-total=$((human+research+accepted+unknown))
+total=$((human+research+accepted+contested+unknown))
 
-echo "OPEN.md — $total open rows: $human HUMAN · $research RESEARCH · $accepted ACCEPTED$([ "$unknown" -gt 0 ] && echo " · $unknown UNRECOGNISED")"
+echo "OPEN.md — $total open rows: $human HUMAN · $research RESEARCH · $accepted ACCEPTED · $contested CONTESTED$([ "$unknown" -gt 0 ] && echo " · $unknown UNRECOGNISED")"
 echo ""
 
 report_ageing() {
@@ -178,6 +211,23 @@ report_ageing() {
     echo "  guess about when this will be worth chasing, not a commitment."
   fi
 }
+
+if [ "$contested" -gt 0 ]; then
+  echo "CONTESTED — $contested conflict(s) between sources that are BOTH real:"
+  echo ""
+  printf '%s' "$contested_lines"
+  echo "These do not block. They cap what you may claim: any statement resting on a"
+  echo "contested row is \`[A]\`, never \`[R]\` or \`[D]\` — however well-sourced either"
+  echo "side is on its own. Do not pick the side that suits the build. Do not average"
+  echo "them. Do not quietly cite one and omit the other."
+  if [ "$unowned_contested" -gt 0 ]; then
+    echo ""
+    echo "  $unowned_contested contested row(s) above have no named adjudicator. A"
+    echo "  conflict of evidence with nobody assigned to weigh it does not stay"
+    echo "  neutral — it gets resolved silently, by whoever needs an answer first."
+  fi
+  echo ""
+fi
 
 if [ "$human" -gt 0 ]; then
   echo "BLOCKED ON A HUMAN — $human decision(s) that no amount of research resolves:"

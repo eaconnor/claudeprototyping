@@ -48,7 +48,7 @@ Recompute with `shasum -a 256 <path> | cut -c1-12` (or `sha256sum`).
 
 | id | shelf | path | hash | feeds | maturity | added_at |
 |---|---|---|---|---|---|---|
-| S-001 | internal | .specify/memory/constitution.md | eac34bbcc34b | ux.md · vision.md · design.md | cited | 2026-09-16 |
+| S-001 | internal | .specify/memory/constitution.md | eac34bbcc34b | ux.md · design.md | cited | 2026-09-16 |
 
 <!-- Add a row per source. To register or re-register one:
 

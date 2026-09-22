@@ -39,7 +39,18 @@
 [ -f ./project.conf ] && . ./project.conf
 INTENT="${INTENT_SPEC:-}"
 REGISTER="OPEN.md"
-DERIVED=("${GATE_1:-ux.md}" "${GATE_2:-vision.md}" "${GATE_3:-design.md}")
+# Dedupe the gate list. GATE_1 and GATE_2 legitimately name the SAME file since
+# the 2026-09-22 merge of Gate 2 into ux.md, and every script that expanded the trio
+# blind collected it twice. Measured: check-drift.sh reported "3 source(s) across
+# 3 file(s)" with two files on disk, and each fault in the shared file printed twice.
+# Same fault and same fix as the GATES_SEEN guard in check-gates.sh.
+DERIVED=()
+_seen=""
+for f in "${GATE_1:-ux.md}" "${GATE_2:-}" "${GATE_3:-design.md}"; do
+  [ -n "$f" ] || continue
+  case " $_seen " in *" $f "*) continue ;; esac
+  _seen="$_seen $f"; DERIVED+=("$f")
+done
 
 if [ -z "$INTENT" ]; then
   echo "BROKEN — no INTENT_SPEC set in project.conf."

@@ -169,8 +169,16 @@ fi
 
 # The reconciliation dates this project claims
 RECON=""
-for f in "${GATE_1:-ux.md}" "${GATE_2:-vision.md}" "${GATE_3:-design.md}"; do
-  [ -f "$f" ] || continue
+# Dedupe the gate list. GATE_1 and GATE_2 legitimately name the SAME file since
+# the 2026-09-22 merge of Gate 2 into ux.md, and every script that expanded the trio
+# blind collected it twice. Measured: check-drift.sh reported "3 source(s) across
+# 3 file(s)" with two files on disk, and each fault in the shared file printed twice.
+# Same fault and same fix as the GATES_SEEN guard in check-gates.sh.
+_seen=""
+for f in "${GATE_1:-ux.md}" "${GATE_2:-}" "${GATE_3:-design.md}"; do
+  [ -n "$f" ] && [ -f "$f" ] || continue
+  case " $_seen " in *" $f "*) continue ;; esac
+  _seen="$_seen $f"
   r=$(awk '/^---[[:space:]]*$/{fm++; if(fm==2)exit; next} fm==1 && /^reconciled_at:/{sub(/^reconciled_at:[[:space:]]*/,""); sub(/[[:space:]]*#.*$/,""); gsub(/[[:space:]]/,""); print; exit}' "$f")
   [ -n "$r" ] || continue
   echo "             $f reconciled_at $r"

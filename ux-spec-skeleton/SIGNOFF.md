@@ -47,7 +47,7 @@ produces a tier nobody has to argue about.
    "can you approve the a11y gate" — "this ships without keyboard navigation, which means
    a keyboard-only user cannot complete the primary task. Accepting that?"
 4. **Record the answer where the next person will find it** — `WAIVERS.md` for a bypass,
-   `vision.md`'s Decision Log for a direction call, `OPEN.md` for a decision still open.
+   `ux.md`'s Rejected and superseded section for a direction call, `OPEN.md` for a decision still open.
 5. **Keep working.** The signature blocks the *action*, never the person. If you are idle
    waiting for a signature, something has gone wrong with the process, not with you.
 

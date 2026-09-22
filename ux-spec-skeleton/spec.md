@@ -2,7 +2,6 @@
 feature: ‹feature-name›
 status: pre-spec
 ux_ref: ux.md
-vision_ref: vision.md
 design_ref: design.md
 gates:
   gate_1: OPEN
@@ -52,7 +51,7 @@ were found in a predecessor repo by this exact check.
 
 These are the Gate 2 outcome variable made specific. Name them as targets under
 effectiveness, efficiency and satisfaction in a named context of use — not as one metric.
-See `vision.md` § The outcome variable.
+See `ux.md` § The outcome variable.
 
 ## Assumptions
 

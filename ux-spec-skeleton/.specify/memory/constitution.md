@@ -1,18 +1,31 @@
-# Constitution — Test Repo
+# Constitution — ‹project name›
 
 Trimmed on purpose. Gate rubric only — no org-wide baggage carried over from the real constitution.
 
 ## Gates
 
-- **Gate 1 — Understanding.** Do we understand the problem? Checked against ux.md's Acceptance Criteria.
-- **Gate 2 — Right Thing.** Does this advance the vision? Checked against vision.md's Acceptance Criteria.
-- **Gate 3 — Right Build.** Is it usable and accessible? Checked against design.md's Acceptance Criteria.
+- **Gate 1 — Understanding.** Do we understand the problem? Checked against `ux.md`'s Acceptance Criteria.
+- **Gate 2 — Right Thing.** Is this the right thing to build? Checked against `ux.md`'s Gate 2 Acceptance Criteria — **the same file.** Gates 1 and 2 were two documents until 2026-09-22 and are now two halves of one, because they are both interpretations of the same evidence and splitting them meant the bet drifted from the problem it was a bet about. `project.conf` points `GATE_1` and `GATE_2` at the same path and the check reports the file once.
+- **Gate 3 — Right Build.** Is it usable and accessible? Checked against `design.md`'s Acceptance Criteria.
 
-A spec does not move to "Ready to Build" without all three gates showing PASS, or an explicit override logged in vision.md's Decision Log.
+Gate 3 is **optional and must say so out loud.** A project with no `design.md` is legal; a project that silently has no Gate 3 is not. Set `GATE_3=""` to declare the absence.
+
+A spec does not move to "Ready to Build" without every gate either passing or declaring why it has not, plus an explicit override logged in `ux.md`'s Rejected and superseded section for any direction call taken against the evidence.
 
 ## Enforcement
 
-`./check-gates.sh` reads the Acceptance Criteria checkboxes in `ux.md`, `vision.md`, and `design.md` directly and exits non-zero if any gate has unchecked boxes. No file, no pass, no proceeding.
+`./check-gates.sh` reads the gate files named in `project.conf` and exits non-zero on a real fault.
+
+**What a red gate is, exactly** — this changed on 2026-09-21 and the old wording survived here for a day, which is how a constitution ends up describing a script that no longer exists:
+
+An unchecked Acceptance Criteria box is **no longer a blocker by itself.** Early work has unchecked boxes; that is what early work is, and a gate that fires on incompleteness only teaches people to tick boxes. What blocks is narrower and harder to fake:
+
+- a `confidence_regime:` of `BLOCKED` — the file naming a decision a human owes,
+- **no** `confidence_regime:` at all — silence about how finished the work is,
+- a claim asserted **above the confidence its evidence licenses** (see Principle VII), or
+- a `stance: disputes` with nowhere it is being handled.
+
+The question the gate asks is not *is this finished.* It is *is this honest about not being finished.*
 
 It is wired in mechanically, by this chain — **all five links required.** Break any one and
 the gates still exist, still pass review, and never fire.
@@ -41,7 +54,7 @@ the gates still exist, still pass review, and never fire.
 
 **What this section used to say, and why it was wrong:** it claimed "enforcement is mechanical, not a norm" while the only thing connecting the script to the workflow was this sentence. Nothing in the `speckit-*` machinery referenced `check-gates.sh` — verified by grep, 2026-09-11 — so enforcement depended entirely on an agent reading this file and choosing to act on it. That is a norm wearing a mechanism's hat. The chain above is the fix.
 
-The only ways past a red gate: checked boxes, or an override logged in `vision.md`'s Decision Log by a human.
+The only ways past a red gate: fix the fault the script named, or log a human override in `ux.md`'s Rejected and superseded section. Ticking a box is no longer one of them.
 
 ## No Giant Repo Rule
 

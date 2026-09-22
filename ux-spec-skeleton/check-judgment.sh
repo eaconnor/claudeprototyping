@@ -98,7 +98,19 @@ field() {   # $1 file, $2 key — frontmatter only, strip trailing comment and q
 }
 
 TARGETS=(); if [ "${#ARGS[@]}" -gt 0 ]; then TARGETS=("${ARGS[@]}")
-else for f in "${GATE_1:-}" "${GATE_2:-}" "${GATE_3:-}"; do [ -n "$f" ] && TARGETS+=("$f"); done; fi
+else
+# Dedupe the gate list. GATE_1 and GATE_2 legitimately name the SAME file since
+# the 2026-09-22 merge of Gate 2 into ux.md, and every script that expanded the trio
+# blind collected it twice. Measured: check-drift.sh reported "3 source(s) across
+# 3 file(s)" with two files on disk, and each fault in the shared file printed twice.
+# Same fault and same fix as the GATES_SEEN guard in check-gates.sh.
+  _seen=""
+  for f in "${GATE_1:-}" "${GATE_2:-}" "${GATE_3:-}"; do
+    [ -n "$f" ] || continue
+    case " $_seen " in *" $f "*) continue ;; esac
+    _seen="$_seen $f"; TARGETS+=("$f")
+  done
+fi
 
 echo "======================================================================"
 echo "JUDGMENT CONTRACT — is the plan->execute authorization coherent?"

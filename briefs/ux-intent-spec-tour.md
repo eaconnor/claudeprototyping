@@ -2,44 +2,70 @@
 
 ## What this is
 
-A set of three markdown files that live in the code repo, and a script that checks them.
-The files hold what we know about the user — the problem, the evidence it rests on, the
-direction, the criteria. The script refuses to let a document claim more than its evidence
-supports.
+Markdown files that live in the code repo, and a script that checks them. The files hold
+what we know about the people we are building for — the problem, the evidence under it, the
+direction, and the criteria the build will be held to. The script refuses to let a document
+claim more than its evidence supports.
 
-That's it. No new tool, no platform, nothing to log into. Files in a repo and a shell
-script.
+No new tool, no platform, nothing to log into. Files in a repo and a shell script.
 
-## Why you should care about it
+## Why this exists now
 
-Because the research evidence layer is the strongest evidence apparatus anyone here has
-built, and **nothing upstream of a spec can currently reach it.** Product writes a problem
-statement, design builds against it, engineering ships it — and none of those documents can
-point at a finding, so none of them are constrained by one. The evidence is sound and it is
-disconnected.
+Three articles in four months from the Nielsen Norman Group — the usability people most of
+us already cite — arrive at the same problem from three directions. Once AI writes part of
+your product, the documents feeding it stop being paperwork. They become the instructions.
 
-Your own line for this is better than mine:
+- **Alicea, "UX-Context Design"** (Jul 2026) proposes keeping what an organisation knows
+  about its users in the repo, in two files, maintained as a living thing rather than a
+  handoff. He names them `ux.md` and `design.md`.
+- **Perez, "Context Architecture"** (Jun 2026) asks the question that decides whether any of
+  it works: which sources should the system trust more? The answer offered is
+  document-level — approved policy above team notes, current above deprecated.
+- **Kohler, "The 3 Roles of Context for AI Agents"** (Sep 2026) sorts that knowledge by how
+  often it changes and who maintains it.
 
-> "The common failure is not too little research. It is sound research that was never
-> linked to the claim resting on it."
+All three describe the shelf. **None of them says how you stop a document claiming more
+than its evidence supports** — and that is the failure that actually reaches customers.
 
-This is the link. Concretely, it means three things that aren't true today:
+That gap is the only thing this adds. The files are the two Alicea names, already running.
+Perez's trust question gets answered **per claim rather than per document**, which is the
+part no one else has built: a sentence about users carries a pointer to the finding it rests
+on, and if it asserts more confidence than that finding licenses, a check fails.
 
-1. **Your findings become load-bearing on work you don't own.** A problem statement that
-   asserts HIGH on a `stated_attitude` finding fails a check — not a review comment three
-   weeks later, when the thing is already built.
-2. **You keep the grading pen.** The script computes the ceiling from `claim_type` and
-   `population_fidelity`. It never sets a grade. All 13 `confidence:` fields are blank and
-   marked `# ← yours`, and agents are barred from filling them by the project constitution.
-3. **Re-grading propagates.** When you lower a confidence, every document resting on that
-   finding is immediately claiming too much, and the check says so. Today a re-grade
-   changes nothing outside the research repo.
+Stated without the literature:
 
-It also means an AI agent working in the repo has to read your findings before answering
-anything about users — which is the part that made this necessary rather than nice. Seven
-agents were pointed at a spec folder, all seven correctly said "no research cited here,"
-and that became "this project has no user research." The research existed. Nothing in the
-repo said where to look.
+> The common failure is not too little research. It is sound research that was never linked
+> to the claim resting on it.
+
+## What each function gets from it
+
+| | today | with this |
+|---|---|---|
+| **Product** | the problem gets re-argued every sprint, from memory | the problem is written down once with its sources attached, and changing it is a visible edit |
+| **Design** | criteria arrive late, or as a review comment after the build | the criteria you will be measured against exist before anything is generated, accessibility and design-system conformance included |
+| **Engineering** | "is this requirement real or did someone guess?" is unanswerable | every requirement resolves to one canonical table, and the ones resting on a guess say so |
+| **Research** | findings are sound, cited by nobody, and a re-grade changes nothing outside the research repo | findings become load-bearing on work research does not own — and lowering a confidence immediately makes every document resting on it fail |
+
+Two things hold that together, and they are worth stating plainly because they are what makes
+it safe to adopt:
+
+**Nothing is copied.** A document points at a finding; the evidence stays where research
+maintains it.
+
+**The script computes the ceiling. Only the researcher of record sets the grade.** The
+arithmetic comes from how the evidence was gathered — what people were seen doing can reach
+HIGH, what they said about themselves caps lower, a stand-in population caps lower again.
+Every `confidence:` field in `findings.yaml` is blank and marked `# ← yours`. Agents are
+barred from filling one in by the project constitution, not by convention.
+
+## The incident that made this necessary rather than nice
+
+Seven AI agents were pointed at a spec folder and asked about the users. All seven derived
+the personas from an enum in the code. Every answer was fluent and every answer was
+invented. The summary above them then reported that the project had no user research.
+
+Interviews, a survey and a living research page all existed. Nobody was careless. The
+evidence was unreachable from the repo, and unreachable reads exactly like absent.
 
 ## What it does today, and what it doesn't
 
@@ -49,7 +75,7 @@ repo said where to look.
 | Reads your schema unchanged: `claim_type`, `population_fidelity`, `claim_scope`, per-instrument `n`, `review_by`, `fieldwork_date` | Implement G14–G18 |
 | Stops a user need being silently dropped between problem, direction and build | Notify anyone — it prints to a terminal and returns exit code 1. Nothing is routed to a PR, a dashboard or chat |
 | Lets unfinished work live in the repo, as long as it says it's unfinished | Handle `contradicts` or `superseded_by` — both are on your requested-changes list and two things here are blocked on them |
-| Treats two sourced sources disagreeing as a legal state that caps claims rather than blocking work | Touch the real research repo. The 13 findings are mine, written in your schema as a conformance test of it |
+| Treats two sourced sources disagreeing as a legal state that caps claims rather than blocking work | Touch the real research repo. The 15 findings are mine, written in your schema as a conformance test of it |
 | Refuses to accept a placeholder owner as a person | Have anyone's agreement. Every requirement row sits under a not-ratified banner |
 
 ---
@@ -193,7 +219,7 @@ HIGH on a `stated_attitude / primary` finding. The ceiling is MEDIUM. It fails.
 
 > The script computes the ceiling. Only the researcher of record sets the grade.
 
-All 13 `confidence:` fields in `findings.yaml` are blank, each marked `# ← yours`. The
+All 15 `confidence:` fields in `findings.yaml` are blank, each marked `# ← yours`. The
 script flags them as ungraded and carries on — it will never fill one in. Agents are
 forbidden from writing, grading, or overriding a finding, and that's written into the
 project constitution, not just a convention.
@@ -346,13 +372,13 @@ including on the skinny path, which previously stopped before asking anything.
 
 **Real and running:** the three gate files, regime-aware gating, criteria inheritance,
 §5 resolution, the evidence-ceiling check, `CONTESTED`, `owner`/`research_check` split,
-Principle VII, a 13-finding `findings.yaml` in her schema.
+Principle VII, a 15-finding `findings.yaml` in her schema.
 
 **Proposed, not built:** `[!]` (data exists and is the problem) versus `[?]` (no data);
 auto-generating `CONTESTED` rows from inline handling pointers.
 
 **Not wired:** `validate_findings.py` doesn't run in this repo. G14–G18 aren't implemented.
-The 13 findings are mine, written in her schema as a conformance test of it — nothing has
+The 15 findings are mine, written in her schema as a conformance test of it — nothing has
 touched the real research repo.
 
 **Nobody has agreed any of this.** Every `UXI-##` row in §5 sits under a not-ratified

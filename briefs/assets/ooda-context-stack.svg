@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1624" height="1288" viewBox="0 0 1624 1288" font-family="'Space Mono', ui-monospace, monospace">
+<defs>
+  <style>
+    .h1{font-size:34px;font-weight:700;letter-spacing:.02em;fill:#1a1612}
+    .h2{font-size:15px;font-weight:700;letter-spacing:.16em;fill:#1F3C96}
+    .ooda{font-size:52px;font-weight:700;fill:#efe7d6}
+    .oodaw{font-size:13px;font-weight:700;letter-spacing:.22em;fill:#efe7d6}
+    .tier{font-size:12px;font-weight:700;letter-spacing:.14em;fill:#1F3C96}
+    .fname{font-size:16px;font-weight:700;fill:#1a1612}
+    .fnote{font-size:13px;fill:#1a1612;font-family:'Kalam',cursive}
+    .brk{font-size:14px;font-weight:700;fill:#D8472B}
+    .brkn{font-size:13px;fill:#1a1612;font-family:'Kalam',cursive}
+    .num{font-size:16px;font-weight:700;fill:#efe7d6}
+    .dt{font-size:15px;font-weight:700;fill:#1a1612}
+    .dc{font-size:13px;fill:#1a1612;font-family:'Kalam',cursive}
+    .sub{font-size:13px;fill:#1a1612;font-family:'Kalam',cursive}
+    .lgd{font-size:12px;fill:#1a1612;font-family:'Kalam',cursive}
+  </style>
+</defs>
+
+<rect width="1624" height="1288" fill="#efe7d6"/>
+
+<!-- ══ header ══ -->
+<text x="56" y="62" class="h1">The context stack, as an OODA loop</text>
+<text x="56" y="92" class="sub">Beth Connor · 2026-09-22 · Kohler's three context roles (left) against your actual files (middle). Red = the break. Six decisions on the right.</text>
+<line x1="56" y1="112" x2="1568" y2="112" stroke="#1a1612" stroke-width="2"/>
+
+<!-- ══════════ BAND 1 — OBSERVE ══════════ -->
+<rect x="62" y="154" width="924" height="168" fill="#1a1612"/>
+<rect x="56" y="148" width="924" height="168" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="56" y="148" width="132" height="168" fill="#C99A2E" stroke="#1a1612" stroke-width="2"/>
+<text x="122" y="222" class="ooda" text-anchor="middle">O</text>
+<text x="122" y="248" class="oodaw" text-anchor="middle">OBSERVE</text>
+<text x="212" y="180" class="tier">KOHLER: AMBIENT — raw, uncurated, not scoped in advance</text>
+<text x="212" y="212" class="fname">scout_input/ · Condens · Teams Brain Dump · Jira · Confluence</text>
+<text x="212" y="240" class="fnote">187 files. 55 correctly absent from the index. 72 never examined.</text>
+<text x="212" y="264" class="fnote">Kohler: "user connects sources; AI sieves for relevance."</text>
+<text x="212" y="294" class="fnote" fill="#5E7A3F">✓ The sieve exists — the datadump is the boundary artifact.</text>
+
+<!-- break 1 -->
+<line x1="320" y1="322" x2="320" y2="392" stroke="#D8472B" stroke-width="3" stroke-dasharray="9 7"/>
+<circle cx="320" cy="357" r="17" fill="#D8472B"/>
+<text x="320" y="363" class="num" text-anchor="middle">1</text>
+<text x="352" y="348" class="brk">PROMOTION HAS NO MECHANISM</text>
+<text x="352" y="370" class="brkn">Three files declared "User evidence" in their own frontmatter and never crossed. Nothing writes ambient → findings.yaml.</text>
+
+<!-- ══════════ BAND 2 — ORIENT ══════════ -->
+<rect x="62" y="404" width="924" height="296" fill="#1a1612"/>
+<rect x="56" y="398" width="924" height="296" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="56" y="398" width="132" height="296" fill="#1F3C96" stroke="#1a1612" stroke-width="2"/>
+<text x="122" y="536" class="ooda" text-anchor="middle">O</text>
+<text x="122" y="562" class="oodaw" text-anchor="middle">ORIENT</text>
+<text x="212" y="430" class="tier">KOHLER: LOCAL — scoped to this project · ALICEA: the file pair</text>
+
+<rect x="216" y="446" width="230" height="106" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
+<text x="232" y="472" class="fname">findings.yaml</text>
+<text x="232" y="494" class="fnote">L1 — what happened.</text>
+<text x="232" y="514" class="fnote">15 rows. Ceilinged, none graded.</text>
+<text x="232" y="536" class="fnote" fill="#5E7A3F">✓ the trace log</text>
+
+<rect x="470" y="446" width="230" height="106" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
+<text x="486" y="472" class="fname">ux.md</text>
+<text x="486" y="494" class="fnote">L2 — what we say it means.</text>
+<text x="486" y="514" class="fnote">problem · cast · evidence</text>
+<text x="486" y="536" class="fnote" fill="#D8472B">+ world models (was vision)</text>
+
+<rect x="724" y="446" width="230" height="106" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
+<text x="740" y="472" class="fname">design.md</text>
+<text x="740" y="494" class="fnote">L2 — the behaviour.</text>
+<text x="740" y="514" class="fnote">FLOOR/FIT · context of use</text>
+<text x="740" y="536" class="fnote" fill="#5E7A3F">✓ Google Labs name</text>
+
+<line x1="446" y1="499" x2="470" y2="499" stroke="#1a1612" stroke-width="2" marker-end="url(#a)"/>
+<line x1="700" y1="499" x2="724" y2="499" stroke="#1a1612" stroke-width="2" marker-end="url(#a)"/>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#1a1612"/></marker></defs>
+
+<text x="216" y="592" class="fnote" font-weight="700">THE AUTHORING STEP LIVES HERE — and neither half of the system marks it.</text>
+<text x="216" y="614" class="fnote">Findings do not contain user needs. A need, a concept, a behaviour is authored. It rests on evidence and is not gradeable above it.</text>
+<text x="216" y="644" class="brk" font-size="13">MISSING: glossary — Alicea's 5th part. Yours is in CLAUDE.md: the GLOBAL tier, not here.</text>
+<text x="216" y="672" class="fnote">Global tier (rarely changes, you curate): <tspan font-family="'Space Mono',monospace" font-weight="700">CLAUDE.md</tspan> · the constitution · the design system · DO-NOT-CITE</text>
+
+<!-- break 2 -->
+<line x1="320" y1="700" x2="320" y2="756" stroke="#D8472B" stroke-width="3" stroke-dasharray="9 7"/>
+<circle cx="320" cy="728" r="17" fill="#D8472B"/>
+<text x="320" y="734" class="num" text-anchor="middle">2</text>
+<text x="352" y="722" class="brk">CORRECTIONS DO NOT PROPAGATE BACK UP</text>
+<text x="352" y="744" class="brkn">C-13: the file that kills the $300/user figure was gathered 3 weeks before the correction and is not reachable from the index carrying it.</text>
+
+<!-- ══════════ BAND 3 — DECIDE ══════════ -->
+<rect x="62" y="774" width="924" height="152" fill="#1a1612"/>
+<rect x="56" y="768" width="924" height="152" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="56" y="768" width="132" height="152" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+<text x="122" y="832" class="ooda" text-anchor="middle">D</text>
+<text x="122" y="858" class="oodaw" text-anchor="middle">DECIDE</text>
+<text x="212" y="798" class="tier">L3 COMMITMENT — signed, contractual</text>
+<text x="212" y="828" class="fname">ACP-HARNESS-INTENT-SPEC.md — §5 Requirements (UXI-##) · §17 signatures</text>
+<text x="212" y="854" class="fnote">The gate files point AT this; they never restate it. Only ux.md is unconditionally required upstream.</text>
+<text x="212" y="882" class="fnote" fill="#5E7A3F">✓ check-gates.sh enforces: a criterion is inherited forward and never dropped.</text>
+<text x="212" y="906" class="fnote" fill="#D8472B">⚠ …but the inheritance check hardcodes the three filenames instead of reading project.conf.</text>
+
+<!-- break 3 -->
+<line x1="320" y1="926" x2="320" y2="982" stroke="#1a1612" stroke-width="3"/>
+<circle cx="320" cy="954" r="17" fill="#5E7A3F"/>
+<text x="320" y="960" class="num" text-anchor="middle">✓</text>
+<text x="352" y="948" class="brk" fill="#5E7A3F">THIS LINK WORKS</text>
+<text x="352" y="970" class="brkn">Evidence basis, regime gating, criteria inheritance, §5 resolution, the claim linter — all run, all fail loudly.</text>
+
+<!-- ══════════ BAND 4 — ACT ══════════ -->
+<rect x="62" y="1000" width="924" height="128" fill="#1a1612"/>
+<rect x="56" y="994" width="924" height="128" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="56" y="994" width="132" height="128" fill="#5B3A7E" stroke="#1a1612" stroke-width="2"/>
+<text x="122" y="1052" class="ooda" text-anchor="middle">A</text>
+<text x="122" y="1078" class="oodaw" text-anchor="middle">ACT</text>
+<text x="212" y="1024" class="tier">BUILD — where code SDD starts, and where it assumes the spec is already right</text>
+<text x="212" y="1054" class="fname">the product · the prototype · what users actually meet</text>
+<text x="212" y="1082" class="fnote">A UX spec is a claim about humans, so it cannot assume itself correct. That is why Observe and Orient exist at all.</text>
+<text x="212" y="1106" class="fnote">Code SDD has no equivalent of either.</text>
+
+<!-- ══ the return loop — missing ══ -->
+<path d="M 1006 1058 L 1042 1058 L 1042 232 L 1006 232" fill="none" stroke="#D8472B" stroke-width="3" stroke-dasharray="9 7"/>
+<circle cx="1042" cy="860" r="19" fill="#D8472B"/>
+<text x="1042" y="866" class="num" text-anchor="middle">3</text>
+<text x="1018" y="300" class="brk" font-size="12">NO RETURN</text>
+<text x="1018" y="318" class="brk" font-size="12">PATH</text>
+
+<!-- ══════════ RIGHT RAIL — DECISIONS ══════════ -->
+<line x1="1092" y1="148" x2="1092" y2="1122" stroke="#1a1612" stroke-width="2"/>
+<text x="1124" y="180" class="h2">DECISIONS TO MAKE</text>
+<text x="1124" y="204" class="lgd">Ordered worst-first. 4–6 are cheap; 1–3 are the system.</text>
+
+<circle cx="1140" cy="248" r="16" fill="#D8472B"/><text x="1140" y="254" class="num" text-anchor="middle">1</text>
+<text x="1170" y="242" class="dt">Who promotes ambient → findings?</text>
+<text x="1170" y="264" class="dc">A shelf declaration in a file is not a promotion. Does the</text>
+<text x="1170" y="284" class="dc">refresh ritual write the row, or does a human? Nothing does now.</text>
+
+<circle cx="1140" cy="332" r="16" fill="#D8472B"/><text x="1140" y="338" class="num" text-anchor="middle">2</text>
+<text x="1170" y="326" class="dt">Where does a correction land?</text>
+<text x="1170" y="348" class="dc">A killed figure has to reach every surface quoting it.</text>
+<text x="1170" y="368" class="dc">Candidate: superseded_by + a reverse index off findings.yaml.</text>
+
+<circle cx="1140" cy="416" r="16" fill="#D8472B"/><text x="1140" y="422" class="num" text-anchor="middle">3</text>
+<text x="1170" y="410" class="dt">Where does a frame correction go?</text>
+<text x="1170" y="432" class="dc">When a premise changes, everything beneath it needs re-reading.</text>
+<text x="1170" y="452" class="dc">No slot for this anywhere — not in the gate files, not in §0–§20.</text>
+
+<circle cx="1140" cy="500" r="16" fill="#1F3C96"/><text x="1140" y="506" class="num" text-anchor="middle">4</text>
+<text x="1170" y="494" class="dt">Fold vision.md into ux.md?</text>
+<text x="1170" y="516" class="dc">Recommend yes — Alicea's UX.md has the slot ("world models").</text>
+<text x="1170" y="536" class="dc">Cost: need and bet share a file, which is where a business case</text>
+<text x="1170" y="556" class="dc">in user-need clothing hides best. Keep both gate rubrics separate.</text>
+
+<circle cx="1140" cy="604" r="16" fill="#1F3C96"/><text x="1140" y="610" class="num" text-anchor="middle">5</text>
+<text x="1170" y="598" class="dt">Glossary: global or local?</text>
+<text x="1170" y="620" class="dc">Alicea puts it in UX.md. Yours is in CLAUDE.md. Product</text>
+<text x="1170" y="640" class="dc">vocabulary is probably per-product — so local. Your call.</text>
+
+<circle cx="1140" cy="688" r="16" fill="#1F3C96"/><text x="1140" y="694" class="num" text-anchor="middle">6</text>
+<text x="1170" y="682" class="dt">Fix the hardcoded filenames?</text>
+<text x="1170" y="704" class="dc">check-gates.sh:667–682 greps for ux/vision/design.md while</text>
+<text x="1170" y="724" class="dc">check_optional_gate reads project.conf. Any rename → green</text>
+<text x="1170" y="744" class="dc">and blind. Not blocking now that #4 keeps the names.</text>
+
+<!-- settled -->
+<line x1="1124" y1="792" x2="1568" y2="792" stroke="#1a1612" stroke-width="1"/>
+<text x="1124" y="822" class="h2" fill="#5E7A3F">ALREADY SETTLED — STOP RE-DECIDING</text>
+<text x="1124" y="850" class="dc">· File names. ux.md + design.md are Alicea's own pair. No rename.</text>
+<text x="1124" y="874" class="dc">· No context.md. "Context" spans all three of Kohler's roles, so</text>
+<text x="1124" y="894" class="dc">  it cannot be scoped to one file without re-importing ambiguity.</text>
+<text x="1124" y="918" class="dc">· vision and ux are both INTERPRETATIONS of research, not one</text>
+<text x="1124" y="938" class="dc">  derived from the other.</text>
+<text x="1124" y="962" class="dc">· A vision on secondary evidence runs honestly at LOW. The defect</text>
+<text x="1124" y="982" class="dc">  is only LOW travelling downstream unmarked.</text>
+<text x="1124" y="1006" class="dc">· claim_scope resolves volume: convergence supports existence and</text>
+<text x="1124" y="1026" class="dc">  pattern, never prevalence. Volume widens scope, not confidence.</text>
+<text x="1124" y="1050" class="dc">· Only the researcher of record sets a grade. The script computes</text>
+<text x="1124" y="1070" class="dc">  the ceiling and refuses anything above it.</text>
+
+<line x1="56" y1="1158" x2="1568" y2="1158" stroke="#1a1612" stroke-width="2"/>
+<text x="56" y="1188" class="lgd">Sources: Kohler, "The 3 Roles of Context for AI Agents" (NN/g, 2026-09-18) · Alicea, "UX-Context Design" (NN/g, 2026-07-24) · Perez, "Context Architecture" (NN/g, 2026-06-12).</text>
+<text x="56" y="1212" class="lgd">Breaks 1 and 2 are findings in acp-core-testrepo/findings.yaml (datadump-understates-its-own-user-shelf · counterevidence-exists-but-is-unindexed). Working: datadump-refresh-2026-09-22.md.</text>
+<text x="56" y="1236" class="lgd">Perez names the question "which sources should be trusted more?" and gives only document-level hierarchy. findings.yaml answers it per claim, arithmetically. That is the contribution.</text>
+</svg>

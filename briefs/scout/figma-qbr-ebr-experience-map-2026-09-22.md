@@ -235,6 +235,244 @@ So: **Raw → Reconciled → Cleared** is a lifecycle, `Short` is the no-source 
 
 ---
 
+---
+
+## Region A — "EBR Template — Technica (Redacted) · SRC-U-009"
+
+The real client spreadsheet, redacted, tab by tab. Eight tabs: `1. Agenda` · `2. Current Climate` · `3. Risk Review` · `4. Employee Review` · `5. Hardware` · `6. Tech Roadmap` · `7. Referrals` · `8. Follow Up`.
+
+`3 · Risk Review` header reads **`H:17 · M:4 · L:8 · N:12`** and its categories are: Risk Mgmt · Incident Mgmt · Supply Chain · Engagement & Training · Asset Mgmt · Data Security · User Mgmt · Arch & Config · Vulnerability Mgmt · IAM · Logging & Monitoring. Columns: Category / Threat / Det. / Lik. / Treatment / Notes. This confirms the handoff's note that grading is plain-text H/M/L/N, not RAG.
+
+### Correction to the handoff — RocketCyber
+
+The handoff states RocketCyber "has never appeared in any sources table anyone built." **That is not right, and the board is where it appears.** `2 · Current Climate` has a `Dashboards` row reading verbatim:
+
+> `Halo portal · Rocket Cyber · SLA Met % · Users raised`
+
+So RocketCyber is named on the board, inside the redacted source template, as a Current Climate dashboard input. The sharper, defensible version of the handoff's claim is: **RocketCyber is in the source template but is not a part in THE KIT** — THE KIT's `CURRENT CLIMATE` section has five parts (device count, licensed user count, what's deployed, contract lines, licenses/renewal dates) and none of them is RocketCyber or incident data. The incident part lives in `RISK REVIEW` as *"Anything that went wrong this quarter, and why"*, whose STATE is *"No source today"*, and the blueprint's `SHORTS` row says it outright: *"1 — nothing watches for incidents. If one happens this quarter, no part records it and it reaches the EBR only if David remembers."* [CS: HIGH — read on the board 2026-09-22]
+
+---
+
+## Region D — four artifacts, stacked
+
+### D1 · `EBR / QBR PHASES →` — the experience map proper
+
+Six phases: `1 · Cadence Hits` · `2 · Prep` · `3 · Room Opens` · `4 · Hard Moments` · `5 · Follow-Up` · `6 · Close Loop`.
+Rows: `Client Exec — Doing` · `Client Exec — Thinking/Feeling` · `MSP Operator — Doing` · `MSP Operator — Thinking/Feeling` · `Pain` · `Opportunity`.
+
+A sticky overlaps the `1 · Cadence Hits` header carrying a **`FABRICATION RISK — Navigator CRM, needs Beth/Craig to confirm Technica's actual CRM, if any`** flag.
+
+Notable cells:
+- `Pain / 2 · Prep` — *"Two scarce people consumed per cycle, not one — and the second one degrades a different system's SLA (the service desk) while doing it [R — Vanessa 25:25, the sharpest finding in the whole corpus per Theory-of-Constraints council testimony]."*
+- `Pain / 5 · Follow-Up` — *"Action items that never became tickets — named explicitly as the fastest way to lose a client's faith [R — Stefanie 1:26:33, CS: HIGH — her stated #1 killer]. Fully mechanisable; the chokepoint (writing into a PSA) sits inside software N-able doesn't own — Halo, ConnectWise, Autotask."*
+- `Opportunity / 6 · Close Loop` — *"This is the cheapest, highest-leverage step in the entire cycle, and it needs zero AI — just an unskippable habit. Not every step in this process should be automated; this and tiering in Phase 1 are pure discipline."*
+- `MSP Operator — Thinking/Feeling / 1 · Cadence Hits` — *"The excuse trap — accepting 'we're a little busy, do we really need to meet?' as a real reason to skip, which Stefanie calls a terrible reason but says MSPs take at face value constantly [R — 0:33:01–0:33:16, CS: HIGH]."*
+
+### D2 · `Cast of Characters`
+
+Four groups. The fourth is the one that matters for the defensibility argument:
+
+- **Frontstage — MSP side:** the delivery lead (Vanessa's role); the account executive; the Head Nerd(s) — Joe Ferla, Lewis Pope, Stefanie Hammond.
+- **Backstage — MSP side:** the technician pulled off the service desk; the *"OUR security standard" owner* — *"Unnamed in any source; a real role with no evidence anyone holds it. [?]"*
+- **Client side:** the client executive / finance director — *"the thinnest evidence in this whole map"*; the end users / technicians.
+- **Offstage — third parties who read the artifact later, not in real time:** the cyber insurer / underwriter (*"per the legal register, no evidence any carrier actually treats it as mitigating [?]"*); **a court, in discovery** — *"the audience Map 5 (backstage half) now treats as [?], not a finding"*; an auditor — Lewis, distinctly: *"'You need those for… an auditor's question, or [to] prove something to a cyber-insurance underwriter. Compliance evidence.' [R — 1:06:41] — and his explicit warning that this evidence should NOT be what's presented at the QBR itself."*
+
+### D3 · `The Maturity Ladder — Kit → Adapt → Autolearn`
+
+| Rung | Beth's question | Lewis's words | systems-maps v-number | Grounded? |
+|---|---|---|---|---|
+| 1 · KIT | "the best practices kit — let me see what is good" | "my best-practices model — my 'what good looks like'… we want control" [27:06] | v0 — the corpus, built once | [R] — strongly grounded, two independent speakers |
+| 2 · ADAPT | "how do I adapt it to my business?" | "that's a generic, philosophical version… you cannot standardize that away" [35:16]; Joe Ferla's 75/25 split [17:41] | v1 — Head Nerd/operator wields the kit, fits the 25% | [R] — strongly grounded |
+| 3 · AUTOLEARN | "how does it autolearn me?" | closest: "interactive, able to ask questions about the environment, probe, and have some self-correction built in" [38:45] — ask-once, not learn-over-time | v2 — MSP self-serves; judgment concentrates on certify + hardest fits | **[A] — this rung is Beth's contribution, not the corpus's. Nobody in any source describes a system that gets better at a specific MSP's business over repeated cycles.** |
+
+### D4 · `The Line of Visibility` + `What This Map Does NOT Claim`
+
+Above the line = what the client sees or the operator experiences in the room. Below = handed off to the backstage half already mapped in `ebr-process-map-2026-07-28.md`. Four items named as below-the-line:
+- The second scarce person (technician building the risk review, pulled off the service desk) — Map 1
+- The "OUR security standard" register measures against — a per-MSP configuration surface nobody has costed — Service Blueprint voice
+- The PSA write path for action-item tickets — a chokepoint N-able doesn't own — Map 1, Value Chain voice
+- The liability mechanism and its actual (unsubstantiated) legal status — Map 5, **now downgraded to [?]**
+
+`What This Map Does NOT Claim` — four disclaimers, verbatim in substance:
+- Built from one mature operator (n=1, vendor-selected) and one trainer's taught framework for the MSP-operator lane. **Not a validated journey for the median MSP.**
+- The client-exec lane is the thinnest evidence in the whole map — almost everything about their thinking/feeling is inferred from the MSP-side account of the room, not from talking to a client executive directly. **A named gap, not a filled one.**
+- **Cadence is not uniform** — Stefanie: tier and cap at six months; Vanessa: ranges from quarterly to six-monthly to refused entirely; Paul Green (UK): explicitly not quarterly, "overkill" for smaller clients. The six-phase cycle repeats at whatever interval the client's tier warrants, **not on a fixed clock.**
+
+### D5 · Ten Types crosswalk (`TYPE / STATUS / FINDING / NEXT MOVE`)
+
+| Type | Status |
+|---|---|
+| Process | STRONG |
+| Service | STRONG |
+| Product Performance | STRONG |
+| Product System | VERIFIED |
+| Channel | GAP |
+| Customer Engagement | OPEN OPTIONS |
+| Profit Model | ASSUMED |
+| Network | OPEN |
+| Brand | WITHHELD |
+| Structure | ABSENT |
+
+Process row: *"7-stage spine already designed (0 Onboard & Customize → 6 Close & Compound). **8/11 of this brief.** No action; carry forward."*
+
+---
+
+## Region E — `EBR Coworker — Service Blueprint (detailed, new)`
+
+Subtitle: *"Adaptive Path canonical structure (Customer Actions / Touchpoints / Line of Interaction / Frontstage / Line of Visibility / Backstage / Support Processes). Fidelity: spreadsheet-level precision, not a printed-poster claim of production-readiness — most backstage cells below are honestly 'half-built' or 'never built' today. Customer = fictional end-client 'Fenwick Logistics'; MSP = fictional 'Bracken IT Group'; practitioner = fictional 'Priya' — real names live only in source docs, per CLAUDE.md §9b. Grounded in briefs/ebr-coworker-004-assembly.brief.md, briefs/technica-ebr-runbook-draft-2026-08-21.md, and prototypes/ebr-coworker-004-assembly/ (this session, 2026-08-24)."*
+
+**Columns — and this is the crosswalk engineering needs:**
+
+`Service Moment →` · `Signal Fires` · `Coworker Ingests & Grades` · `Priya Reviews & Chooses` · **`Sign-off Gate`** · `Deliver to Client` · `Client Decides` · `Close & Log Continuity`
+
+**`Sign-off Gate` is a first-class stage on this board, not a v2 annotation.**
+
+Rows: `Customer Actions (Fenwick Logistics)` · `Touchpoints` · — LINE OF INTERACTION — *what the customer can and cannot directly touch* · `Staff Actions — Frontstage (Priya, Bracken IT Group)` · — LINE OF VISIBILITY — *what we choose to show the customer, and when* · `Staff Actions — Backstage (Priya + the coworker)` · `Support Processes`.
+
+The cells that answer the handoff's question:
+
+- `Backstage / Sign-off Gate` — *"If the risk is graded high, nothing can reach Fenwick until Priya, or a named owner, explicitly signs off. Nobody has named this: whether a lower 'medium' risk tier even exists, or what it would let through faster."*
+- `Touchpoints / Sign-off Gate` — *"None. The sign-off happens inside the coworker's own workflow, never in front of the client."*
+- `Customer Actions / Sign-off Gate` — *"Fenwick doesn't see this step at all. It's an internal checkpoint that happens before anything reaches them."*
+- `Backstage / Coworker Ingests & Grades` — *"The coworker reads Fenwick's own 8-tab file plus six other tool exports that Priya still has to paste in by hand, compares it all to what was said last time, and grades every gap red, amber, or green against the NCSC 10 / Cyber Essentials baseline. **Half-built: the grading logic is written down; whether it actually matches Priya's real judgment has never been checked against her real practice.**"*
+- `Support Processes / Sign-off Gate` — *"A liability log — a permanent, append-only record — backs up every sign-off, whatever the risk tier turns out to be. This part is solid in concept, though it's never been tested against a real high-stakes call."*
+- `Support Processes / Signal Fires` — *"Vertesia (the platform this all runs on) and N-able's own trigger rules together are supposed to decide what counts as a signal — **but nobody has actually written down what a 'signal' is yet.**"*
+
+---
+
+## Region F — `EBR Coworker — N-able Perspective (nested blueprint)`
+
+A **nested double blueprint** — the same journey, told twice, with a seam row where the two meet. Bracken IT Group is simultaneously the service provider (to Fenwick) and N-able's customer.
+
+Columns: `Onboarded to the Coworker` · `Signal Fires` · `Coworker Ingests & Grades` · `Priya Reviews & Chooses` · **`Sign-off Gate`** · `Deliver to Client` · `Client Decides` · `Close & Log Continuity`
+
+Rows, top to bottom:
+- `Customer Actions (Fenwick Logistics — Bracken's own client)`
+- `Touchpoints (Fenwick-facing)`
+- — LINE OF INTERACTION — Fenwick / Bracken
+- `Staff Actions — Frontstage · MARCUS (technical practitioner)`
+- `Staff Actions — Frontstage · PRIYA (relationship / account lead)`
+- — LINE OF VISIBILITY — what Fenwick sees
+- `Staff Actions — Backstage · MARCUS (the deep technical / grading work)`
+- `Staff Actions — Backstage · PRIYA (coordination, business framing prep)`
+- **`THE COWORKER (the software itself)`**
+- **`THE RUNBOOK (the judgment / rules it runs)`**
+- **`THE SEAM →`** *"The two rows above (Bracken's own backstage work — Marcus, Priya, the coworker, the runbook) and the row below (Bracken as N-able's customer) are the same activity, seen from two different vantage points. This is where the two nested blueprints meet."*
+- `Customer Actions (Bracken IT Group — Marcus + Priya, as N-able's actual customers)`
+- `Touchpoints (Bracken-facing, into ACP/Harness + Vertesia)`
+- — LINE OF INTERACTION — Bracken / N-able
+- `Staff Actions — Frontstage (N-able + Vertesia, facing Bracken)`
+- — LINE OF VISIBILITY — what N-able chooses to show Bracken
+- `Staff Actions — Backstage (N-able + Vertesia teams)`
+- `THE COWORKER (running on Vertesia)`
+- `THE RUNBOOK (N-able's owned judgment asset)`
+- `Support Processes (shared systems underneath)`
+
+### The decisive cells
+
+**`THE COWORKER` / `Sign-off Gate`:**
+> *"Holds the client-facing render until sign-off is recorded. **The gate itself is designed, not yet a working control.**"*
+
+**`THE RUNBOOK` / `Sign-off Gate`:**
+> *"Defines the rule that high-risk findings need a named person's explicit sign-off. The risk tier itself is unconfirmed, so this rule only has one setting to fall back to today."*
+
+**`THE RUNBOOK` / `Deliver to Client`:**
+> *"Defines which findings are allowed to reach the client… **a finding graded Unverified never renders client-facing, no matter what.**"*
+
+**`THE RUNBOOK (N-able's owned judgment asset)` / `Onboarded to the Coworker`** — the 8-agent decomposition:
+> *"Before this runs as a real product, N-able has to actually build the pipeline the runbook only describes on paper today. **The runbook's own 8 steps map onto roughly 8 candidate agents, one per job:** an ingestion agent per connected tool, a continuity/delta agent that compares this cycle to last cycle, a grading/judgment agent that applies the runbook's actual red/amber/green rules, a technical-to-business translation agent, a chooser/ranking agent, **a sign-off/guardrail agent**, a rendering agent (dashboard or Excel) and **a liability-log agent**. None of these have been scoped as real, separate pieces of software yet — right now the runbook is one document describing what eight different workers would need to do."*
+
+**`THE RUNBOOK (N-able's owned judgment asset)` / `Sign-off Gate`:**
+> *"The sign-off/guardrail agent (above) is what would enforce this automatically — **today it's a rule on paper, not a running check.**"*
+
+**`Touchpoints (Bracken-facing)` / `Sign-off Gate`:**
+> *"A sign-off button inside the console — the exact screen for it doesn't exist yet."*
+
+**`THE COWORKER (running on Vertesia)` / `Coworker Ingests & Grades`:**
+> *"This is where N-able's side of the MCP-building work lives — the six connectors named in the Bracken-tier row above are N-able's to build, not Vertesia's: 'Vertesia ships zero PSA connectors; every integration is an N-able build.' Each one is its own scoped engineering task, not a single feature."*
+
+**`Support Processes` / `Sign-off Gate`:**
+> *"The append-only liability log — the one part of this whole chain that's solid today, no matter which tier is asking."*
+
+---
+
+## Centre column (long stack, top to bottom)
+
+1. **`NONGOAL-002 — Orchestration Depth Options`** — the architecture decision, stated as three options, not a binary. *"Coworker-to-coworker orchestration is NONGOAL-002 in the canonical spec — but the deck's own thesis ('these aren't six products, it's one job') pushes against it. Calculated as three options, not a binary. See briefs/qbr-system-blueprint-2026-08-04.md §10."*
+
+   | Option | What it is | Pros | Cons | Effort |
+   |---|---|---|---|---|
+   | **A — MVP** (stays inside the nongoal) | QBR Coworker reads other coworkers' Value Ledger/audit entries as structured input. No write-back, no triggering. | Ships without renegotiating the spec; low engineering risk; testable now. | Doesn't deliver the deck's full "one job" thesis; killed continuous-visibility concept stays dead in full form. | Low–med |
+   | **B — Event-notify** (smaller ask for Nicole) | Coworker A's completed run emits an event; Coworker B's trigger listens and enqueues its own, independently-approved run. No runtime output-sharing. | Closes part of the demand gap (proactive triggering) without reopening the architecture decision; most under-explored option. | Still not the deck's full operating-system vision; new event-bus concept doesn't exist in the Temporal model today. | Med–ium |
+   | **C — Full orchestration** (reopens the nongoal) | Coworkers trigger each other and share state at runtime — the six-coworker system the deck actually describes. | Delivers the deck's validated thesis directly; matches buyer-side demand most closely. | Reopens a closed architecture decision with Nicole; guardrail model wasn't designed for compounding cross-coworker risk chains. | High |
+
+   **Option B's "enqueues its own, independently-approved run" is a queue, named, costed, and marked "most under-explored."**
+
+2. **`Service Blueprint — The Proposed System`** — the 7-stage spine (`0 Onboard & Customize` → `6 Close & Compound`) with a `Customer Thinking/Feeling` row tagged `[A — designed target, untested]`.
+
+3. **`Sources & Links`** — provenance box, transcribed verbatim:
+   - `briefs/qbr-system-blueprint-2026-08-04.md` — the full synthesis: repo reuse, definition of good, the ten forks, the MSP tech stack
+   - `MSP Superpower Problem.pdf` (Nicole Reineke + Beth, June 2026) — the deck this system's structure is traced back to
+   - `acp-core-main-3/specs/004-ai-coworker-registry/spec.md` — the canonical Coworker structural grammar
+   - **`acp-core-main-3/specs/_ux/qbr-ebr.ux.md` — the 8 Musts, the job-shop/production-line classification, the riskiest assumptions**
+   - `Intent Specs/FSN-83143_AI_Coworkers_in_ACP.md` — DEC-006, the platform-default coworker decision log
+   - *"This board, above — the current-state EBR/QBR experience map + full step classification this system automates and reshapes"*
+
+4. **`Service Blueprint — 3x Detail (moment-level)`** — `Stage / Moment / What needs solving / How (as tabled) / Confidence`, ~22 moments across all 7 stages, each with a confidence tag. Header: *"What needs solving, not how — 'how' is left blank/ET) wherever the corpus genuinely doesn't have it… 'get into what we need to solve — how we solve it can leave blanks where you don't know. I can fill them in.' Confidence tags per Band Protocol convention."*
+
+5. **`Overlay 1 — Urlocker's Internal QBR Structure`** · **`Overlay 2 — Korl's Deck Structure`** · **`Overlay 3 — Salesforce's QBR Structure`** · **`Overlay Synthesis — what all three surface, together`** · **`Overlay 4 — ConnectWise's 8 Best Practices + ABCD Tiering`** · **`Overlay 5 — Vault Q1 Shareout (Beth's own real deck, 2018)`**
+
+   **Every overlay uses the same `Class` column, with four values: `Production-line` · `Hybrid` · `Brains-work` · `Gap`.** The job-shop/production-line classification is applied as a working instrument against five independent reference QBR structures on this board. It is not a metaphor here; it is the coding scheme.
+
+6. **`Laissez Faire Fellows — the ideal-fit MSP persona`** — fictional MSP, tech stack deliberately 3 native / 3 cross-vendor (RMM: N-central · MDR: Adlumin · Backup/DR: Cove · PSA: ConnectWise Manage · Identity/MFA: Microsoft Entra ID · Security awareness: KnowBe4), ABCD client base with counts and avg MRR, and a named cast.
+
+7. **`STORYBOARD — A Year of Small Honest Touches`** — 12 panels.
+
+8. **`DETAILED SERVICE BLUEPRINT — ACP-Grounded (real spec citations, acp-core-main-3)`** — `Stage / Customer-Facing Surface / Backstage Mechanism — ACP-Grounded / Real Spec Citation`, 7 stages, with `DEC-006` cited repeatedly in the backstage column.
+
+9. **`STORYBOARD — The Room Is For Brains Only (Tier A → B-tier delta)`** — 11 panels, including `5 · DRAFT LANDS AS A CHOOSER`, `6 · MARCUS ELECTS WHAT ENTERS THE RECORD`, `10 · CLOSE & COMPOUND`, `11 · B-TIER DELTA`.
+
+10. **`SYSTEM BLUEPRINT — take their template, automate what we can, kit the rest, and make Davids able to do more of these`** — the same 7-stage spine, rows including `WHAT HAPPENS TODAY (baseline)`, `WHAT THE MACHINE HANDLES`, `WHAT THE MACHINE HANDLES AND A JUDGMENT`, **`THE BIGGEST RISK / HOLE`** (dark red band), and `WHAT THE MACHINE CANNOT DO`. Three pink callouts above it, one of which reads (approximately) *"THE NEVER PICTURE: THE SYSTEM DOESN'T KNOW WHAT IT CLEAN'S"* — [CS: LOW on that transcription, it needs a re-read at source].
+
+---
+
+## The corroborating find OFF the board — `acp-core-main-3/specs/_ux/qbr-ebr.ux.md`
+
+The board cites this file for "the job-shop/production-line classification." It is on disk at
+`acp-core-main-3/specs/_ux/qbr-ebr.ux.md` (867 lines). Read 2026-09-22. It contains, already written:
+
+**The 8 Musts** (behaviours whose absence causes failure). Must 8, verbatim:
+
+> `| 8. No overclaiming | Language check: does client-facing content assert legal/liability-protection language? Flag/fail if so. Treat `Source-Unavailable` the same as `Unverified` — hard-blocked from client-facing output. |`
+
+**Operating principle 1 — Job shop vs. production line**, with the actual 15-tab template classified into Production line / Hybrid / Brains work, and this line:
+
+> *"Maister's leverage-ratio distinction isn't just color on the Cognitive human factor — **it's an architecture principle**: proceduralize what's procedure work, protect senior judgment for what isn't."*
+
+> *"**Automating a row does not relax the Musts** — an auto-drafted risk register still has to pass Must 1 (business-value framing) and Must 8 (no overclaiming) before it reaches the client."*
+
+**Defensibility tiers** — `Measured / Benchmarked / Estimated / Unverified / Source-Unavailable`:
+
+> *"only Measured gets headlined; **Unverified and Source-Unavailable are both hard-blocked from clients. Source-Unavailable applies when a source doc was expected (e.g., a connected platform is offline or the connector returned no data)** — distinct from Unverified, which means the claim was never sourced. `[WA-001 proposed — not built substrate, 2026-07-31 grep-verified]`"*
+
+And the file's own correction, verbatim:
+
+> *"**Correction 2026-07-31:** this section previously claimed the tier was 'already implemented in code.' A full-repo grep of `acp-core-main-3` (orchestrator, qbr-prep-sim pipeline) returns zero hits for the tier vocabulary — what exists in code is `baseline_source` (tenant_configured | platform_default | coworker_reported) only. **The tier is proposed grammar, not built substrate.** `[CS: VERIFIED — grep 2026-07-31]`"*
+
+> *"**a hard gate on the Unverified tier, not a passive warning**, because warning-fatigue research says a visible warning requiring no action reads as [...]"*
+
+### What that means for the argument
+
+`Source-Unavailable` **is** the state for "Ingest hit a source that's down." It is already specified, already defined as distinct from `Unverified`, and already hard-blocked from client output. The repo's own grep says the vocabulary does not exist in code; what exists is `baseline_source` with three values, none of which is a held state.
+
+So the honest framing of the gap is **not** "nobody modelled the held state." It is:
+
+> **The held states are specified. They are named in the UX spec, drawn as a first-class column on the experience map, and decomposed into a sign-off/guardrail agent and a liability-log agent. What the board says about them, in its own words, is "designed, not yet a working control" and "a rule on paper, not a running check." The gap is design-to-build, not design.**
+
+That is the [🟡 Medium] riskiest assumption in the handoff — *"The Figma board may already depict held/exception lanes that engineering just hasn't built yet, which would mean this is a design-to-build gap, not a design gap"* — **confirmed.** It should be promoted out of Medium and made the spine of the conversation.
+
+---
+
 ## Coverage ledger — what is NOT yet read
 
 This file is honest about being partial. [CS: UNKNOWN] on everything below.
@@ -243,11 +481,13 @@ This file is honest about being partial. [CS: UNKNOWN] on everything below.
 |---|---|---|
 | B — UX + Meet Eng Blueprint | x3617-4650, y692-2270 | **READ IN FULL** |
 | C — THE KIT (28 parts) | x5230-6650, y717-2925 | **PARTIALLY READ** — all 9 section headers, columns, STATE/JUDGMENT/NOISE vocabulary, and ~18 of 28 part names. Remaining: part names and cells for TAB 5 HARDWARE onward, and the full `PICKED FROM` / `KIT IT — HOW, TODAY` / `HOW BETTER ARRIVES` / `HOW WE KNOW IT'S RIGHT` columns. |
-| A — left purple tables | x0-1400, y600-2100 | **NOT READ** |
-| D — centre-top tables | x9700-11400, y650-3000 | **NOT READ** |
-| E | x13950-15200, y650-1600 | **NOT READ** |
-| F | x15300-16575, y600-3500 | **NOT READ** |
-| Centre column (long stack, ~12 separate tables) | x9700-11500, y4800-20000 | **NOT READ** |
+| A — EBR Template (Technica, redacted) | x0-1400, y600-2100 | **READ** — all 8 tabs and their field structure. Redacted values are placeholders (`[hostname]`, `[email]`), so there is nothing further to extract. |
+| D — four stacked artifacts | x9700-11400, y650-3000 | **READ IN FULL** — phase table (6 phases × 6 rows), Cast of Characters, Maturity Ladder, Line of Visibility + What This Map Does NOT Claim, Ten Types crosswalk. |
+| E — EBR Coworker Service Blueprint (detailed, new) | x13980-15270, y670-1560 | **READ IN FULL** |
+| F — EBR Coworker N-able Perspective (nested) | x15310-16580, y670-3430 | **READ** — all 20 row labels, all 8 column labels, and the `Onboarded` / `Signal Fires` / `Priya Reviews` / `Sign-off Gate` / `Deliver to Client` columns in full. **Not read: `Coworker Ingests & Grades`, `Client Decides` and `Close & Log Continuity` below the SEAM row** (tiles Fx3/Fx6/Fx9 were cropped, not read). |
+| Centre column (10 separate artifacts) | x9700-11500, y4700-20000 | **STRUCTURE READ IN FULL** — all 10 artifacts identified, titled, column schemas captured. **Deep-read:** NONGOAL-002 (all 3 options × 5 columns) and Sources & Links (verbatim). **Not deep-read:** the ~22 moment rows of `3x Detail`, the five Overlay tables' cells, the 12 + 11 storyboard panels, `DETAILED SERVICE BLUEPRINT — ACP-Grounded` cells, `SYSTEM BLUEPRINT` cells. |
+
+**What a next pass should pick up, in priority order:** (1) the `SYSTEM BLUEPRINT`'s `THE BIGGEST RISK / HOLE` row — the only row on the board reserved explicitly for failure modes, and it is unread; (2) the `DETAILED SERVICE BLUEPRINT — ACP-Grounded` backstage column, which carries real `DEC-006` spec citations per stage and is the closest thing on the board to a build contract; (3) region F's three unread columns; (4) the remaining ~10 of THE KIT's 28 part names.
 
 Two "Feedback WANTED" stickies sit above regions B and C. A third, isolated element sits near x9800 y400.
 

@@ -142,6 +142,48 @@ minutes" — not "IT professionals".>>
 - **Tasks:** ‹which tasks, from ux.md G2-02› `[?]`
 - **Environment:** ‹where, on what, under what pressure, with what interruptions› `[?]`
 
+## Accessibility
+
+<<WHAT THIS IS: the standard this build is held to, at what level, measured by whom, and
+what is deliberately out of scope. Not a list of good intentions — four answers a script or
+an auditor can check.
+
+WHY IT IS ITS OWN SECTION: accessibility is FLOOR (see below). FLOOR is never gated on
+problem validation — you do not wait for a usability test to label a form field. Buried in
+a design-system table it reads as conformance polish, which is how it ends up behind a
+concept that hasn't been proven yet. It is the one part of Gate 3 that is owed even if the
+concept is later thrown away.
+
+WHO FILLS IT: design names the standard and the scope; whoever audits is named by name, not
+by function. "Design will check it" is not an audit.
+
+GOOD LOOKS LIKE: "WCAG 2.2 AA, full product, audited by ‹name› at ‹date›, keyboard + NVDA +
+VoiceOver, no mobile screen-reader pass this cycle and that is logged in OPEN.md." Not
+"accessible".>>
+
+| what | this project's answer |
+|---|---|
+| Standard and level | ‹WCAG 2.2 AA is the house default — name it and any exception› `[?]` |
+| Scope | ‹the whole product, or named surfaces — say which are excluded and why› `[?]` |
+| Assistive tech actually tested | ‹keyboard · screen reader (name which) · zoom/reflow · reduced motion› `[?]` |
+| Who audits, by name | ‹a person — not "design", not "QA"› `[?]` |
+| Known gaps carried on purpose | ‹each one an `OPEN.md` row with an owner and a revisit date› `[?]` |
+
+**Two rules that are not negotiable here, and the reason for each:**
+
+- **An untested assistive path is `[?]`, not "met".** The criteria below split on exactly
+  this: `scripts/contrast.py` computes a contrast table, and a human drives the keyboard and
+  the screen reader. A computed contrast pass says nothing about whether the thing can be
+  operated, and the two get conflated constantly because one of them is cheap.
+- **"Accessible" with no instrument named is the same failure as a claim with no finding
+  under it.** Same rule as the evidence ceiling: the strength of the claim is set by how it
+  was checked, not by how confident anyone is. An eyeballed contrast ratio is not a measured
+  one.
+
+Gate 3 carries the mechanical rows: **G3-01** contrast, **G3-02** keyboard and screen
+reader, **G3-03** destructive actions, **G3-04** lawful basis. This section is where the
+scope and the auditor get named; those rows are where they get ticked.
+
 ## Rules pulled from the design system
 
 <<WHAT THIS IS: the subset of your design system this project is actually held to — not a

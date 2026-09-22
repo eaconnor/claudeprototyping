@@ -14,7 +14,8 @@ policy is in the table's last column.
 | code | script | means | CI |
 |---|---|---|---|
 | `0` | all | pass | pass |
-| `1` | `check-gates.sh` | a gate has unticked acceptance criteria | **warn** — red gates are the normal state of honest work |
+| `1` | `check-gates.sh` | a **real** gate fault: a `BLOCKED` or undeclared `confidence_regime`, a claim asserted above the confidence its evidence licenses, or a dispute with nowhere it is being handled. **Not** unticked criteria — those stopped blocking on 2026-09-21 | **warn** — red gates are the normal state of honest work |
+| `1` | `check-claims.sh` | a claim is malformed: an untagged assertion, a `rests_on:` pointing at no finding, or a grade with nobody behind it | **warn** — and note `1` is shared with `check-gates.sh`, so branch on the script |
 | `2` | `check-blocked.sh` | a `HUMAN` row stands: a person owes a decision | **warn + name the owner** |
 | `2` | `check-risk.py` · `figures.py` | no destination argument / no file argument was given | **fail the job config** — this is a caller error, not a finding |
 | `3` | `check-blocked.sh` · `check-risk.py` · `figures.py` · `check-roster.sh` | nothing parsable — the register is missing or empty of rows, or an artifact body holds no numeral at all | **fail** |
@@ -22,6 +23,7 @@ policy is in the table's last column.
 | `5` | `check-trace.sh` · `check-design.py` · `check-tier.py` · `ux-score.py` · `check-skills.sh` · `check-drift.sh` · `check-human.sh` · `check-evidence.sh` · `check-never.sh` · `check-condens.sh` | **cannot evaluate** — a precondition is missing (no intent spec, no build, no gate file, nothing parsable) | **warn, never treat as pass** |
 | `6` | `check-design.py` | the build violates the design system | **warn** (FIT) |
 | `7` | `check-design.py` | only unresolved token pairs remain | **warn** |
+| `8` | `check-eng.sh` | a **FLOOR gate's tool is missing**, so EG-1 never ran. Not a finding of harm — the absence of one | **fail** — but never report it as a harm finding |
 | `9` | `check-risk.py` | a ship-blocking hazard at this destination | **fail** |
 | `10` | `check-eng.sh` | **FLOOR** — the build can harm a user | **fail, hard** |
 | `11` | `check-eng.sh` | something is off-roadmap | **warn** |
@@ -49,7 +51,7 @@ policy is in the table's last column.
 | `32` | `check-condens.sh` | a cited artifact's **prose moved but every figure held** — skim it, no quoted number is invalidated | **warn** |
 | `33` | `check-roster.sh` | a roster/RACI/owner/escalation field is a placeholder, a function, or blank | **warn** |
 
-`8` and `34`+ are unassigned. `33` is now `check-roster.sh`. Take the next free number and add a row here in the
+`34`+ are unassigned. `8` was claimed 2026-09-22 by `check-eng.sh`; `33` is `check-roster.sh`. Take the next free number and add a row here in the
 same commit — an undocumented exit code is a number somebody will guess the meaning of.
 
 ## Two things about this table that are easy to get wrong
@@ -61,6 +63,13 @@ apparatus gets defeated, because "no violations found" and "no violations looked
 print almost identically. Three of the first nine scripts written here shipped with that
 bug and all three were real. Every script now fails rather than reporting zero findings
 as clear.
+
+**`1` is double-booked too, and deliberately.** `check-gates.sh` and `check-claims.sh`
+both exit `1`, and they answer different questions about the same file: gates asks *is this
+claim allowed to be this strong*, claims asks *is this claim even well-formed*. The
+`examples/alert-digest/` example is built to show the gap — `check-gates.sh` exits 1 there
+on a genuine overclaim while `check-claims.sh` exits 0 on the identical file, because the
+form is fine and only the strength is wrong. Branch on the script.
 
 **`2` is genuinely double-booked and has not been fixed.** In `check-blocked.sh` it
 means a human owes an answer. In `check-risk.py` it means you forgot the destination
@@ -82,7 +91,9 @@ rather than `18`/`19`.
 
 - **FLOOR** — accessibility, data integrity, lawfulness, security. **Never gated on
   problem validation.** You do not wait for a reaction test to label a form field.
-  Codes `10`, `15`, `19`, `20`, `22`, `23`, `24` are FLOOR-class: fail hard.
+  Codes `8`, `10`, `15`, `19`, `20`, `22`, `23`, `24` are FLOOR-class: fail hard. `8` is the
+  one that is not a finding — it is a FLOOR gate that could not run at all, which fails for
+  the same reason an unevaluated harm gate is never a passing one.
 - **FIT** — polish that only pays off if the concept survives. Codes `1`, `6`, `7`,
   `11`, `17`, `18`, `25` are FIT-class: visible warning, do not block.
 

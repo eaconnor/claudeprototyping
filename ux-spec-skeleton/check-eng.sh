@@ -54,6 +54,7 @@ _gate_files() {
 INTENT="${INTENT_SPEC:-}"
 BUILD="${BUILD:-}"
 HARM=0
+FLOOR_UNEVAL=0   # a FLOOR gate whose TOOL is absent — distinct from a FLOOR violation
 ROADMAP=0
 WARN=0
 
@@ -98,7 +99,16 @@ if [ -f scripts/check-design.py ]; then
 else
   echo "  SKIP  scripts/check-design.py not present — EG-1 cannot be evaluated."
   echo "        An unevaluated harm gate is a failed harm gate in CI. Treat as FAIL."
-  HARM=1
+  # NOT HARM=1. This used to set HARM, which meant a MISSING SCRIPT exited 10 under
+  # the message "This build can harm a user. FLOOR failures are not gated on problem
+  # validation and are not tech debt." All of that is false when the only fact in
+  # evidence is that a file is not on disk. Failing is right; saying we found harm is
+  # a fabricated finding, and it is the kind a team learns to route around once they
+  # discover the tool was simply never installed.
+  #
+  # Exit 8 instead — previously unassigned, claimed here per EXIT-CODES.md's own rule
+  # that a new code gets a row in the same commit. It fails like 10 and reads like 12.
+  FLOOR_UNEVAL=1
 fi
 UNEVAL=0
 if [ "${code:-0}" -eq 5 ]; then
@@ -288,6 +298,15 @@ fi
 if [ "$ROADMAP" -eq 1 ]; then
   echo "BLOCKED — EG-2. Something is being built that traces to no stated intent."
   exit 11
+fi
+if [ "$FLOOR_UNEVAL" -eq 1 ]; then
+  echo "UNEVALUATED — EG-1's TOOL IS MISSING, so the harm gate never ran."
+  echo "This is not a finding of harm and this script is not claiming one. It is the"
+  echo "absence of a result on the one gate that is never gated on problem validation."
+  echo "Install scripts/check-design.py or remove EG-1 from CI deliberately — but do"
+  echo "not read this as a clear FLOOR. Exiting 8 (fail) rather than 10, so nobody"
+  echo "later discovers the 'harm' was a file that was never on disk."
+  exit 8
 fi
 if [ "$UNEVAL" -eq 1 ]; then
   echo "UNEVALUATED — EG-1 could not be assessed (no build)."

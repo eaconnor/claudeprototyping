@@ -35,8 +35,7 @@ this adds — and it is the failure that reaches customers.
 | **Engineering** | "is this requirement real or did someone guess?" is unanswerable | every requirement resolves to one canonical table, and the ones resting on a guess say so |
 | **Research** | findings are sound, cited by nobody, and a re-grade changes nothing outside the research repo | findings become load-bearing on work research does not own — and lowering a confidence immediately makes every document resting on it fail |
 
-Two things hold that together, and they are worth stating plainly because they are what makes
-it safe to adopt:
+Two things make that safe to adopt.
 
 **Nothing is copied.** A document points at a finding; the evidence stays where research
 maintains it.
@@ -44,10 +43,11 @@ maintains it.
 **The script computes the ceiling. Only the researcher of record sets the grade.** The
 arithmetic comes from how the evidence was gathered — what people were seen doing can reach
 HIGH, what they said about themselves caps lower, a stand-in population caps lower again.
-Every `confidence:` field in `findings.yaml` is blank and marked `# ← yours`. Agents are
-barred from filling one in by the project constitution, not by convention.
+Every confidence grade in the findings file is left blank for the researcher of record to
+set. Agents are barred from filling one in by the repo's own constitution, not by
+convention.
 
-## The incident that made this necessary rather than nice
+## What happens without it
 
 Seven AI agents were pointed at a spec folder and asked about the users. All seven derived
 the personas from an enum in the code. Every answer was fluent and every answer was
@@ -60,11 +60,11 @@ evidence was unreachable from the repo, and unreachable reads exactly like absen
 
 | does now | doesn't yet |
 |---|---|
-| Fails a build when a claim exceeds its evidence ceiling | Run your `validate_findings.py` — the two checks are separate and only mine is wired here |
-| Reads your schema unchanged: `claim_type`, `population_fidelity`, `claim_scope`, per-instrument `n`, `review_by`, `fieldwork_date` | Implement G14–G18 |
+| Fails a build when a claim exceeds its evidence ceiling | Check whether a finding is *labelled* honestly — research has its own validator for that, and it is not wired in here. The two checks ask different questions |
+| Read the research evidence schema unchanged: `claim_type`, `population_fidelity`, `claim_scope`, per-instrument `n`, `review_by`, `fieldwork_date` | Support five schema extensions research has asked for (tracked as G14–G18) |
 | Stops a user need being silently dropped between problem, direction and build | Notify anyone — it prints to a terminal and returns exit code 1. Nothing is routed to a PR, a dashboard or chat |
-| Lets unfinished work live in the repo, as long as it says it's unfinished | Handle `contradicts` or `superseded_by` — both are on your requested-changes list and two things here are blocked on them |
-| Treats two sourced sources disagreeing as a legal state that caps claims rather than blocking work | Touch the real research repo. The 15 findings are mine, written in your schema as a conformance test of it |
+| Lets unfinished work live in the repo, as long as it says it's unfinished | Handle `contradicts` or `superseded_by` — two fields research has requested. Two things here are blocked until they exist |
+| Treat two sourced studies disagreeing as a legal state that caps claims rather than blocking work | Touch the real research repository. The 15 findings here were written in the research schema as a test of whether it fits — they are not the research team's own records |
 | Refuses to accept a placeholder owner as a person | Have anyone's agreement. Every requirement row sits under a not-ratified banner |
 
 ---
@@ -91,18 +91,16 @@ right problem · right thing   →     right build
 Two files, three gates. `ux.md` answers Gate 1 (do we understand the problem) and Gate 2
 (are we making the right thing), because both are interpretations of the same evidence by
 the same author — the need and the bet belong next to each other. `design.md` answers
-Gate 3, which is a genuinely different question: not *what should exist* but *is this one
-built right*.
+Gate 3, a different question: not *what should exist* but *is this one built right*.
 
 `ux.md` is mandatory. `design.md` is not, and a project can legitimately say "we have no
 Gate 3 yet" — but it has to *say* it. Silence isn't allowed.
 
-**The cost of merging, named up front:** a need and a bet in one file is exactly where a
-business case in user-need clothing hides best. "Users need a unified dashboard" is a
-solution wearing a need's grammar. The two gate rubrics stay separate sections for that
-reason, and the tell is mechanical — a real need has a population, a falsifier, and
-provenance pointing at a finding. A business case has none of those and cites the Intent
-Spec's own §1 or §2 instead.
+**The risk of one file:** a need and a bet together is where a business case in user-need
+clothing hides best. "Users need a unified dashboard" is a solution wearing a need's
+grammar. The two gate checklists stay separate sections for that reason, and the tell is
+mechanical: a real need names a population, says what would prove it wrong, and points at
+a finding. A business case does none of those, and cites the business rationale instead.
 
 ---
 
@@ -118,10 +116,11 @@ reasoning that produced it.
 
 ### Why in the repo, and not Confluence
 
-Four reasons, in order of how much they matter:
+Four reasons.
 
-1. **The agent reads the repo.** It does not read Confluence. That is the entire seven-agent
-   incident — the research existed and was unreachable from where the work was happening.
+1. **The agent reads the repo.** It does not read Confluence. That is exactly what went
+   wrong in the incident above — the research existed, and it was unreachable from where
+   the work was being done.
 2. **A check can run on it.** You cannot fail a build on a wiki page. The exit code is the
    integration surface, and it is what lets this be enforced rather than encouraged.
 3. **It versions with the code.** A change to what we believe about the user and the change
@@ -135,7 +134,7 @@ synthesis. What goes in the repo is the *claim* and a pointer back. Nothing is c
 
 ### Why separate documents, and not §21 of the Intent Spec
 
-This was the first thing tried, and it fails on signature state.
+It fails on signature state.
 
 - **A contract asserts; reasoning hedges.** The Intent Spec is signed, which means its
   contents are claims someone stands behind. A provisional reading of thin evidence cannot
@@ -156,11 +155,11 @@ in both will drift, and the copy in the unsigned document wins by accident — b
 the one being edited. So direction, non-goals, success metrics and the decision log stay in
 the Intent Spec and the gate files link to them.
 
-§5 Requirements is the single ID space. Every `UXI-##` criterion resolves to one row there,
+§5 Requirements is the single ID space. Every UX requirement id resolves to one row there,
 so there is one canonical list rather than four documents each with their own.
 
-**What the gate files add, that twenty sections of Intent Spec have no slot for.** This is
-the honest test of whether they are redundant:
+**What the gate files add that the Intent Spec's twenty sections have no slot for.** If the
+answer were nothing, they would be redundant:
 
 1. **Which claim rests on which finding.** §2 Source evidence is a source log — one row per
    document, same object as the datadump. §15 Evidence requirements is build verification —
@@ -177,11 +176,12 @@ the honest test of whether they are redundant:
 Everything else the gate files might have held is already in the Intent Spec, and belongs
 there.
 
-**And what neither was built for.** Spec Kit and the Intent Spec were written for code.
+**And what neither was built for.** Spec-driven development tooling and the Intent Spec
+were both written for code.
 Code specs can assume the spec is correct and check the build against it. A claim about
 people can't — so the question "do we actually know this about the user, and how well" has
 no home in either, which is why it ends up in Confluence and Figma where nothing in the
-repo can reach it. That is the gap being wired, and it is the whole idea.
+repo can reach it. That is the gap this closes.
 
 ---
 
@@ -196,7 +196,7 @@ sometimes a PM on a small team. The owner is a named person, not a function.
 `owner:` and `research_check:` are two different fields precisely so a team of one can't
 quietly mark its own homework — it has to write down that it did.
 
-**Humans get** two halves that used to be two files.
+**Humans get** two things.
 
 *The need* — a problem statement, the cast of people affected, an evidence log, and the
 acceptance criteria. Product stops re-litigating the problem every sprint because it's
@@ -211,18 +211,19 @@ can tell whether it was rejected or forgotten.
 **Bots get:** the instruction to read this *first*, before answering anything about users.
 More on why that matters below.
 
-**Why one file and not two:** both halves are the same author reading the same evidence and
-saying what it means. Splitting them produced a second document that mostly restated the
-Intent Spec — direction, non-goals, metrics, decision log, all duplicated with no signature
-on the copy. What was genuinely its own survived the merge: the concepts, the evidence they
-rest on, and the candidates that lost.
+**Why one file:** both halves are the same person reading the same evidence and saying what
+it means. Split across two documents, the second one mostly restates the Intent Spec —
+direction, non-goals, metrics, decision log — with no signature on the copy, and the copy
+wins because it is the one being edited.
 
 ### `design.md` — are we making the thing right?
 
 **Who owns it:** design.
 
 **Humans get:** all the build-level criteria in one place — the UX acceptance criteria
-inherited from upstream, plus accessibility, APEX conformance, the FLOOR items.
+inherited from upstream, plus accessibility, conformance to the design system, and the
+non-negotiables — the items that are never traded off against scope, as opposed to the ones
+that are judged per context.
 
 **Bots get:** the criteria they'll be checked against, before they generate anything.
 
@@ -234,10 +235,9 @@ inherited from upstream, plus accessibility, APEX conformance, the FLOOR items.
 cd ~/Library/CloudStorage/OneDrive-N-able/Bethproto/acp-core-testrepo && ./check-gates.sh
 ```
 
-> **The terminal output below is transcribed verbatim from a run made before `vision.md`
-> was folded into `ux.md`, so it still names three files.** It is left unedited rather than
-> rewritten to match the new shape — inventing plausible output in a document about not
-> overclaiming would be the wrong kind of irony. Re-run and re-paste once the fold lands.
+> The output below is copied from a real run made before the two upstream files were
+> merged, so it still names three. Left as-is rather than edited to match; it needs a
+> re-run.
 
 ### 1. The gate refuses to grade you on being unfinished
 
@@ -268,7 +268,8 @@ criteria: every UXI-## resolves to a row in ACP-HARNESS-INTENT-SPEC.md §5.
 ```
 
 Criteria travel `ux.md → design.md`. Drop one and it fails, naming the id.
-`design.md` may *add* — accessibility and APEX belong at the build stage — and additions
+`design.md` may *add* — accessibility and design-system conformance belong at the build
+stage — and additions
 are owed by everything after them. Every id resolves to one canonical table in the Intent
 Spec, so there's a single ID space rather than four.
 
@@ -281,7 +282,7 @@ FAIL E-03 — asserts HIGH. partners-want-a-standalone-discoverable-surface is
      downstream cannot see this gap from where they are standing.
 ```
 
-This is the important one. Read on.
+See the next section.
 
 ---
 
@@ -299,11 +300,10 @@ or no population caps everything at LOW; the lowest governs.
 Then it checks every interpretation made upstream against that ceiling. E-03 above asserts
 HIGH on a `stated_attitude / primary` finding. The ceiling is MEDIUM. It fails.
 
-**The line, stated plainly:**
-
 > The script computes the ceiling. Only the researcher of record sets the grade.
 
-All 15 `confidence:` fields in `findings.yaml` are blank, each marked `# ← yours`. The
+All 15 `confidence:` fields in `findings.yaml` are blank, each marked to show the grade is
+the researcher's to set. The
 script flags them as ungraded and carries on — it will never fill one in. Agents are
 forbidden from writing, grading, or overriding a finding, and that's written into the
 project constitution, not just a convention.
@@ -314,9 +314,9 @@ project constitution, not just a convention.
   comment three weeks later.
 - Research's *interpretation* propagates. Criteria derived from findings travel forward
   into what engineering builds, and can't be silently dropped.
-- Disagreement is a legal state. When two sourced studies conflict, that's `CONTESTED` —
-  it doesn't block work, it caps what work may claim, and it requires a pointer to where
-  it's being handled. Not a resolution. A pointer.
+- Disagreement is a legal state, not an error. Two sourced studies that conflict get marked
+  `CONTESTED`: it does not block work, it caps what the work may claim, and it requires a
+  pointer to wherever the disagreement is being worked out. A pointer, not a resolution.
 - The loop is the point, not the snapshot. Findings get re-graded and interpretations get
   updated, and the check compares the date an interpretation was inherited against the
   fieldwork date so drift is visible instead of silent.
@@ -329,10 +329,10 @@ project constitution, not just a convention.
         RESEARCH SIDE                      PRODUCT SIDE
    (research owns, research grades)   (product/design own, cite only)
 
-   Datadump · Condens · Confluence
+  research index · repository · wiki
               │  deep dives, raw material
               ▼
-        findings.yaml  ◄─────── validate_findings.py
+        findings.yaml  ◄─────── research's own validator
    claim_type · population_fidelity        (is this finding
    claim_scope · n · review_by              labelled honestly?)
               │
@@ -342,7 +342,7 @@ project constitution, not just a convention.
                      │                  │
                      └──────────────────┘
                              │
-                   UXI-## ids resolve to
+                 requirement ids resolve to
                    Intent Spec §5 (canonical)
                              │
                              ▼
@@ -352,7 +352,7 @@ project constitution, not just a convention.
 ```
 
 **Two checks, two different questions, one file.** Hers asks whether a finding is labelled
-honestly. Mine asks whether anything upstream claims more than the findings license.
+honestly. This one asks whether anything upstream claims more than the findings license.
 Neither works alone — a perfectly valid findings file with an overclaiming problem
 statement still ships a lie.
 
@@ -368,7 +368,7 @@ Three legs. A rule with only two of them is a suggestion.
 
 1. **A file that must exist** — `ux.md`, unconditional.
 2. **A check that fails** — `check-gates.sh`.
-3. **Something that runs the check unasked** — `.specify/extensions.yml` hooks for Spec Kit
+3. **Something that runs the check unasked** — toolkit hooks for spec-driven development
    paths; `CLAUDE.md` for plain sessions; Principle VII in the constitution, which is read
    by 10 different entry points.
 
@@ -379,9 +379,8 @@ on its own.
 
 ## Where does a block actually go?
 
-**Today, honestly: standard output and an exit code.** Nothing is notified. That's the
-weakest part of this and it's worth saying first, because a check nobody runs is a
-suggestion with extra steps.
+**Today: standard output and an exit code.** Nothing is notified. That is the weakest part
+of this, and it comes first because a check nobody runs is a suggestion.
 
 The exit code is the integration surface — anything that reads an exit code can gate on
 this, which is most things. So the question isn't *can* we route it, it's *where should
@@ -392,8 +391,8 @@ is standing.** Not wherever we can technically reach them.
 
 | what happened | where it should go | why |
 |---|---|---|
-| A claim exceeds its evidence | **PR check**, annotated on the diff | The person who wrote the overclaim is already there, in the moment they can fix it. This is the natural home and it's the one to build first. |
-| A decision has no owner | **Dashboard row**, plus a named person | Nobody is "already there" — that's the whole problem. This is the only case that genuinely needs a nudge out to a human. |
+| A claim exceeds its evidence | **PR check**, annotated on the diff | The person who wrote it is already there, at the point they can fix it. Build this one first. |
+| A decision has no owner | **Dashboard row**, plus a named person | Nobody is already there — that is the problem. The only case that needs a nudge out to a human. |
 | A finding was re-graded or retired | **Chat** | This is the one true *event*. Research lowering a grade changes what every document resting on it may claim, and the people affected have no way to know. |
 | Two sources now contradict | **Chat**, once, with the pointer to where it's handled | `CONTESTED` doesn't block. It needs a human conversation, so it should land where conversations happen. |
 
@@ -405,9 +404,9 @@ decisions, and which findings are past `review_by`" is a real dashboard question
 block on a single PR is not — by the time you've opened a dashboard to see it, the PR
 check would have told you already.
 
-**Chat: yes, but only for the loop.** This is the bit that took me a while to see. The
+**Chat: yes, but only for the loop.** The
 blocks want to be in the PR. But the *re-grade* — research learning something new and
-lowering a confidence — is the whole point of treating this as a loop rather than a
+lowering a confidence — is why this is a loop rather than a
 snapshot, and it's the one thing where the affected people are somewhere else entirely and
 will never find out. If we build one notification, it's that one, and it belongs to
 research.
@@ -432,7 +431,7 @@ should be tiered so a team of two isn't blocked on infrastructure.
 a team with a settled process shouldn't have to adopt tooling to get value. But T0 has an
 obvious hole: **the check only fires when a human remembers to run it.**
 
-So at T0 and T1, the wiring genuinely ends at a person. That has to be *recorded* rather
+So at T0 and T1 the wiring ends at a person. That has to be *recorded* rather
 than assumed — which is what the kickoff now asks about (below).
 
 ### Where the wiring ends and a human carries it
@@ -456,16 +455,18 @@ including on the skinny path, which previously stopped before asking anything.
 
 **Real and running:** the two gate files, regime-aware gating, criteria inheritance,
 §5 resolution, the evidence-ceiling check, `CONTESTED`, `owner`/`research_check` split,
-Principle VII, a 15-finding `findings.yaml` in her schema.
+Principle VII of the repo constitution, and a 15-finding `findings.yaml` written in the
+research schema.
 
 **Proposed, not built:** `[!]` (data exists and is the problem) versus `[?]` (no data);
 auto-generating `CONTESTED` rows from inline handling pointers.
 
-**Not wired:** `validate_findings.py` doesn't run in this repo. G14–G18 aren't implemented.
-The 15 findings are mine, written in her schema as a conformance test of it — nothing has
+**Not wired:** research's own validator doesn't run in this repo. The five requested schema
+extensions aren't implemented.
+The 15 findings here were written in the research schema to test whether it fits — nothing has
 touched the real research repo.
 
-**Nobody has agreed any of this.** Every `UXI-##` row in §5 sits under a not-ratified
+**Nobody has agreed any of this.** Every requirement row in §5 sits under a not-ratified
 banner. The requirements are drafted from the abductive analysis as candidates.
 
 ---

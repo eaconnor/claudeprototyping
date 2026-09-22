@@ -140,6 +140,24 @@ eb="${EVIDENCE_BASIS:-}"
 case "$eb" in
   HYPOTHESES) echo "NOTE — EVIDENCE_BASIS: HYPOTHESES. Legitimate at kickoff. FLOOR invariants" ;;
   FINDINGS|MIXED) : ;;
+  # UNASKED IS NOT THE SAME AS WRONG, AND THIS FIELD USED TO CONFLATE THEM.
+  #
+  # Every other field here separates "nobody has been asked" (BLOCKED — go ask)
+  # from "answered badly" (BROKEN — fix the value). EVIDENCE_BASIS had three legal
+  # values and one else-branch, so an empty field and a typo produced the same
+  # line: "expected HYPOTHESES | FINDINGS | MIXED". That reads as a formatting
+  # error, which invites somebody to type one of the three to clear it — and that
+  # is a judgment slot being filled to silence a check, which is the exact failure
+  # this script exists to prevent. A fresh skeleton must say "not asked yet."
+  ""|UNASSIGNED|UNKNOWN|*‹*|*PLACEHOLDER*|*TODO*)
+     echo "BLOCKED — EVIDENCE_BASIS has not been answered yet ('$eb')."
+     echo "         This is a question for the room, not a value to pick: can anyone"
+     echo "         point at evidence for the claims in the draft, or was it written to"
+     echo "         get something started? \"We made it up\" is a complete and legitimate"
+     echo "         answer — it is HYPOTHESES, and it is not a problem to fix here."
+     echo "         Run /ux-kickoff Step 4, or answer it by hand. Do not guess a value"
+     echo "         to clear this line."
+     FAIL=1 ;;
   *) echo "BROKEN — EVIDENCE_BASIS is '$eb', expected HYPOTHESES | FINDINGS | MIXED."; FAIL=1 ;;
 esac
 if [ "$eb" = "HYPOTHESES" ]; then

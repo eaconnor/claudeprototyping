@@ -9,9 +9,22 @@ statement about what should be true for one product, and somebody has to make it
 is the authoring step. It is not evidence, it rests on evidence, and it can never be graded
 above what it rests on.
 
-The methods below already exist and already do this. What's missing is that **their outputs
-have nowhere to land** — so the evidence they pull in and the falsifiers they produce
-evaporate when the session ends.
+## The system requires the OUTPUT, not the TOOL
+
+Every step below names **the move** and **what it has to produce.** How you get there is
+yours. Each one lists a from-scratch route that needs nothing but a document and a meeting,
+plus the Band Protocol skill that does it if that toolkit has been loaned to the project.
+
+**This matters more than it looks.** A process that only works with one person's private
+toolkit isn't a process, it's a dependency on that person. The checks read files. They have
+no opinion about how the file got written, and they must not acquire one.
+
+> **On loaning the skills.** `scout`, `abductive-tag`, `journey-map`, `vision`, `idea-chess`,
+> `prototyping`, `council` are Band Protocol — mine, not the process's. Two options, and it's
+> a decision not a default: **bundle** them into the packet (Zero Vector says the curriculum
+> is open, so this is consistent), or **cite the method** and let people bring their own. The
+> `prototyping` skill already shows the pattern — it has a public edition with no proprietary
+> agents or brands, and a companion toolkit repo. That's the shape a loaned skill takes.
 
 ---
 
@@ -22,26 +35,24 @@ evaporate when the session ends.
 **Owner:** whoever is closest to the user. Often research, sometimes a designer or a PM.
 A named person, with a separate `research_check:` even when that's the same person twice.
 
-**How you make it**
-
-| step | method | what it gives you |
-|---|---|---|
-| 1 | `scout` | the secondary dive. Sourced dossiers, `[CS:]`-tagged. **Write them to disk in the same turn** — a dossier left in the transcript dies with the context window. |
-| 2 | `abductive-tag` | **this is the authoring step, already formalised.** You abduct first — your colour, your reading. Claude classifies deductively second. Never the reverse. |
-| 3 | `journey-map` | the cast and the moments. Experience map for the outside view, service blueprint for the seams. |
-| 4 | write the need | in your words, from your abductive pass. Every claim carries a tag. Most will be `[A]` on day one — that's the finding, not a failure. |
+| the move | what it must produce | from scratch | with the toolkit |
+|---|---|---|---|
+| **Secondary dive.** Look before you gather. | A written source log — every source linked, or it isn't a source | Desk research into a doc with a link per row. Your datadump's own rule is the whole method: *"if it's not linked, it's not a source."* | `scout` — and write its output to disk in the same turn, or it dies with the context window |
+| **The interpretive pass.** Your reading of what the sources mean. | Your interpretation, recorded as yours — separate from the sources it came from | A spreadsheet: source rows, your own column, your own colour coding. Then a second reader classifies independently and you record where you disagree. | `abductive-tag` — the same thing with the order enforced: you abduct first, the machine classifies second, never reversed |
+| **Map the people and the moments.** | The cast, with the gaps named rather than smoothed | Adaptive Path's service blueprinting method, or Whitney/IIT's Four Lenses context brief — both published, neither needs a tool | `journey-map` (which cites exactly those two) |
+| **Write the need.** | The need statement, in your words, tagged | You. There is no from-scratch alternative and no tool route — this is the authoring step. | — |
 
 **What it emits into the evidence layer**
 
-- Any scout dossier something will *lean on* gets promoted to a `findings.yaml` row.
-  Demand-driven — if nothing cites it, it doesn't need a row.
-- `abductive-tag`'s **divergence column** — where your read and Claude's differ — is the
-  single best source of `invalidates_if`. That gap marks where the tacit knowledge is
-  carrying the most load, which is exactly what's most worth testing.
+- Any source something will *lean on* gets promoted to a `findings.yaml` row. Demand-driven —
+  if nothing cites it, it doesn't need a row.
+- **Where your interpretation and a second reader's diverge is the best source of
+  `invalidates_if` you will ever get.** That gap marks where tacit knowledge is carrying the
+  most load, which is exactly what's most worth testing.
 
-**Done looks like:** a problem statement you'd defend out loud, a cast with the gaps named
-as `[?]` rather than smoothed, and an `## Evidence` block — *even if it says "no findings
-back this yet."* Absent can't be told from unchecked.
+**Done looks like:** a problem statement you'd defend out loud, a cast with gaps as `[?]`
+rather than smoothed, and an `## Evidence` block — *even if it says "no findings back this
+yet."* Absent can't be told from unchecked.
 
 ---
 
@@ -51,25 +62,20 @@ back this yet."* Absent can't be told from unchecked.
 
 **Owner:** strategy. Often the same person as `ux.md`; still written down.
 
-**How you make it**
-
-| step | method | what it gives you |
-|---|---|---|
-| 1 | `vision` skill | reads the whole pile, reconciles qual against quant, names the few **offerings** worth betting on. Ends in Tier 0 sketches. |
-| 2 | `council` | five frameworks, parallel, **un-synthesised**. Voices contradict — that's the point, and it's where multi-concept comes from. |
-| 3 | `idea-chess` | one adversarial voice, converging to a scored board position. Ranked holes, a survival read, and where it most likely dies. |
-| 4 | write the bet | the `vision` skill already ships every offering with a `[0% Claude — fill this in]` slot. **That slot is the authoring step.** The tool clusters and tags; you write the bet. |
+| the move | what it must produce | from scratch | with the toolkit |
+|---|---|---|---|
+| **Read the whole pile.** Reconcile qual against quant. | Candidate **offerings**, not features | Affinity mapping / a synthesis workshop. Slow, works, needs a wall. | `vision` skill |
+| **Get more than one frame on it.** | Contradictory readings, left contradictory | Convene people with genuinely different lenses and *do not synthesise the output*. Disagreement is the deliverable. | `council` — five frameworks, parallel, un-synthesised |
+| **Attack it.** | A ranked list of where this fails, and what would falsify it | A premortem, a red-team review, or assumption mapping. Rule: the attacker must not be the person who wants the bet to be true. | `idea-chess` — one adversarial voice converging to a scored position |
+| **Write the bet.** | The concept, owned, with its falsifiers attached | You. The `vision` skill ships every offering with a `[0% Claude — fill this in]` slot precisely because this part can't be delegated. | — |
 
 **What it emits into the evidence layer**
 
-- **`idea-chess` output *is* `invalidates_if`.** Its ranked holes and its "where this dies"
-  read are falsifiers, written adversarially, which is the hardest way and the right one.
-  Its ground-truth check — explicitly *"against real evidence, not the artifact's own claims
-  about itself"* — is an evidence-ceiling check done by hand.
-- `council`'s contradictions, where two frameworks disagree on the same evidence, are
-  `CONTESTED` candidates.
-- Concepts rest mostly on **secondary** findings, and that is correct. A converged desk-research
-  pattern is real evidence for *the shape of a space*.
+- **The adversarial pass output *is* `invalidates_if`.** Ranked holes and "where this dies"
+  are falsifiers written by someone trying to break it — the hardest way and the right one.
+- Where two frames disagree on the same evidence, that's a `CONTESTED` candidate.
+- Concepts rest mostly on **secondary** findings, and that is correct. A converged
+  desk-research pattern is real evidence for *the shape of a space*.
 
 **The rule that matters here:** `claim_scope` is `existence` or `pattern`, **never
 `prevalence`**. Convergence across independent sources tells you a thing exists and roughly
@@ -77,8 +83,7 @@ how it behaves. It never tells you how common it is. Volume widens scope, not co
 
 **Done looks like:** offerings, not features. More than one future, legibly. Every bet
 carrying what would falsify it. Honest at LOW — a vision built on secondary evidence isn't
-unevidenced, it's correctly graded, and the defect is only ever LOW travelling downstream
-unmarked.
+unevidenced, it's correctly graded, and the only defect is LOW travelling downstream unmarked.
 
 ---
 
@@ -88,53 +93,50 @@ unmarked.
 
 **Owner:** design.
 
-**How you make it**
-
-| step | method | what it gives you |
-|---|---|---|
-| 1 | `prototyping` | the evidence-first pipeline: research → brief → critique → build → critique → council → handoff. Ships the honesty apparatus, not just the screen. |
-| 2 | `critic` | pre- and post-build scorecards, six dimensions, plus the delta. |
-| 3 | `proctor` | process compliance. Did the pipeline do what it said it did. |
-| 4 | write the criteria | UX acceptance criteria inherited from upstream, plus the FLOOR items — WCAG, APEX, data integrity. |
+| the move | what it must produce | from scratch | with the toolkit |
+|---|---|---|---|
+| **Make the thing, evidence first.** | A prototype **plus** the honesty apparatus around it | Any prototyping process, as long as the brief is claim-tagged before the build starts and the fidelity tier is stated on the artifact | `prototyping` (a public edition already exists) |
+| **Critique it against the brief, twice.** | A pre-build and post-build score, with the delta | A written rubric and a reviewer who didn't build it. Six dimensions is a reasonable number; the count matters less than the reviewer not being the author. | `critic` |
+| **Check the process ran.** | Did the steps happen, or get claimed | Ask someone to verify the artifacts exist. Unglamorous and it catches real things. | `proctor` |
+| **Write the criteria.** | Inherited `UXI-##` rows, plus the FLOOR items | You. | — |
 
 **What it emits into the evidence layer — and this is where the loop closes**
 
-Testing a prototype produces **`observed_behavior` findings with `population_fidelity:
-primary`** — the only combination that reaches a HIGH ceiling. So design work is not just a
+Testing a prototype produces **`observed_behavior` findings at `population_fidelity:
+primary`** — the only combination reaching a HIGH ceiling. So design work is not just a
 consumer of evidence. **It is the main manufacturer of the strongest evidence in the system**,
-and it's the step that pays back the bet `vision.md` made on secondary material.
+and the step that pays back the bet `vision.md` made on secondary material.
 
 `design.md` is also the one file with claims that legitimately rest on **standards rather than
-findings** — WCAG and APEX conformance need no evidence row. They're the only unsourced claims
-in the system that are fine.
+findings** — WCAG and APEX conformance need no evidence row. The only unsourced claims in the
+system that are fine.
 
 **Done looks like:** every inherited `UXI-##` present and unticked-but-honest, FLOOR items
-named even when not yet assessable (`[?]`, not "unmet"), and eval loops that say who tests
-what.
+named even when not yet assessable (`[?]`, not "unmet"), and eval loops naming who tests what.
 
 ---
 
 ## Where Beth Nam's system plugs in
 
-Not as a checking loop bolted on afterwards. **Every method above already produces exactly
-what her schema wants — the outputs just aren't written anywhere.** The integration is giving
-each one an output slot.
+Not as a checking loop bolted on afterwards. **Each move above already produces something her
+schema has a slot for — the outputs just have nowhere to land.** The integration is giving
+each one an output slot, and it's tool-independent:
 
-| method | already produces | her slot |
+| the move | what comes out | her slot |
 |---|---|---|
-| `scout` | sourced dossiers, `[CS:]`-tagged, secondary | candidate `findings.yaml` rows · `population_fidelity: none`/`proxy` · `source_links` |
-| `abductive-tag` | the divergence between your read and Claude's | `invalidates_if` · and the `claim_type` distinction is what her `[R:obs]`/`[R:said]` split makes visible |
-| `vision` skill | offerings with a `[0% Claude]` human slot | `status: hypothesis` · `origin: design` · G17 caps until research backs it |
-| `idea-chess` | ranked holes · survival read · where it dies | `invalidates_if`, adversarially derived — **the best version of this field anyone will write** |
-| `council` | parallel contradictory testimony | `CONTESTED` candidates · her requested `contradicts` |
-| `prototyping` + `critic` | usability results from real sessions | `claim_type: observed_behavior` · `population_fidelity: primary` · `claim_scope: usability` |
-| `refresh-datadump` | the corpus index, human-gated | stays exactly as it is — `findings.yaml` points *at* it, never duplicates it |
+| secondary dive | sourced, tagged, not-your-users material | candidate rows · `population_fidelity: none`/`proxy` · `source_links` |
+| interpretive pass | your reading, and where a second reader differs | `claim_type: inferred` · `invalidates_if` from the divergence |
+| read the pile | offerings with a human-only slot | `status: hypothesis` · `origin: design` · G17 caps until research backs it |
+| attack it | ranked holes, survival read | `invalidates_if` — **the best version of that field anyone will write** |
+| more than one frame | contradictory readings | `CONTESTED` · her requested `contradicts` |
+| prototype + test | real session results | `observed_behavior` · `primary` · `claim_scope: usability` |
+| corpus upkeep | the index, human-gated | stays as it is — findings point *at* it, never duplicate it |
 
-**So the promotion rule, in one line:** when a method returns something a document is going
-to lean on, it becomes a `findings.yaml` row. Nothing else does.
+**The promotion rule, in one line:** when a move returns something a document is going to
+lean on, it becomes a `findings.yaml` row. Nothing else does.
 
 That's what keeps the findings layer small — 13 rows against a corpus of dozens of sources —
-and it's why this isn't a second encyclopedia to maintain.
+and why this isn't a second encyclopedia to maintain.
 
 ---
 
@@ -142,11 +144,10 @@ and it's why this isn't a second encyclopedia to maintain.
 
 1. **`rests_on:` takes one finding.** A need authored off a secondary dive rests on the
    convergence of several, sometimes on the tension between them. Parser change, mine.
-2. **Nothing writes the promotion.** Today a scout dossier lands on disk and stops. The step
-   from dossier to finding row is manual, undocumented, and therefore skipped — which is how
+2. **Nothing writes the promotion.** A dossier lands on disk and stops. The step from source
+   to finding row is manual, undocumented, and therefore skipped — which is how
    `briefs/uxi-candidates-2026-09-21.md` ended up holding the whole converged secondary
    reading with no `findings.yaml` row behind any of it, and why `vision.md` has nothing to
    rest on.
 
-Gap 2 is the one that actually bites. Everything upstream works; the evidence just never
-gets filed.
+Gap 2 is the one that bites. Every move works; the evidence just never gets filed.

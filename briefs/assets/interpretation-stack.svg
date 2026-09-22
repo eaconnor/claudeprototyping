@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120">
+  <style>
+    .paper{fill:#efe7d6;}
+    .t  {font-family:'Space Mono',Menlo,monospace;fill:#1a1612;}
+    .h  {font-family:'Space Mono',Menlo,monospace;font-weight:700;letter-spacing:.07em;fill:#1a1612;}
+    .sm {font-family:'Space Mono',Menlo,monospace;font-size:11.5px;fill:#1a1612;opacity:.78;}
+    .xs {font-family:'Space Mono',Menlo,monospace;font-size:10.5px;fill:#1a1612;opacity:.66;}
+    .bn {fill:#f7f0df;stroke:#1F3C96;stroke-width:2.5;}
+    .bc {fill:#f7f0df;stroke:#D8472B;stroke-width:2.5;}
+    .bo {fill:#f7f0df;stroke:#C99A2E;stroke-width:2.5;}
+    .risk{fill:#f7f0df;stroke:#D8472B;stroke-width:4.5;}
+    .leap{fill:#E8B93A;stroke:#1a1612;stroke-width:2.5;}
+    .sd {fill:#1a1612;opacity:.15;}
+    .ar {stroke:#1a1612;stroke-width:3;fill:none;}
+  </style>
+  <rect class="paper" x="0" y="0" width="1440" height="1120"/>
+
+  <text class="h" x="40" y="44" font-size="20">ux.md · vision.md · design.md ARE ALL INTERPRETATIONS OF RESEARCH</text>
+  <text class="sm" x="40" y="68">A pile of findings does not contain user needs. Findings record what happened. A need is a claim about what should be true for one product.</text>
+  <text class="sm" x="40" y="88">Somebody has to make that leap. The leap is where the product value is created, it is legitimately not evidence, and it has to be marked as a leap.</text>
+
+  <text class="xs" x="40" y="118">Each row below authors something new, rests it on evidence, and can never be graded above what it rests on. Blue = research owns · red = UX owns · amber = the leap.</text>
+
+  <!-- L1 -->
+  <rect class="sd" x="206" y="146" width="500" height="118"/>
+  <rect class="bn" x="200" y="140" width="500" height="118"/>
+  <text class="h"  x="216" y="168" font-size="15">findings.yaml</text>
+  <text class="sm" x="216" y="192">WHAT HAPPENED. Someone did a thing, or said a thing.</text>
+  <text class="xs" x="216" y="214">observed_behavior · stated_attitude — the only two rungs</text>
+  <text class="xs" x="216" y="232">that record reality rather than read it</text>
+  <text class="t"  x="216" y="252" font-size="11.5" font-weight="700">Research authors AND grades. Nothing downstream may overwrite.</text>
+
+  <text class="h"  x="736" y="166" font-size="12" fill="#1F3C96">NOT TAILORED TO ANY PRODUCT</text>
+  <text class="sm" x="736" y="190">A finding is true about the people it was gathered from, on the</text>
+  <text class="sm" x="736" y="208">date it was gathered, about the build it was gathered against.</text>
+  <text class="sm" x="736" y="226">It is not about your feature. It cannot be, and asking it to be</text>
+  <text class="sm" x="736" y="244">is how scope gets widened.</text>
+
+  <!-- THE LEAP -->
+  <path class="ar" d="M450 264 L450 296" marker-end="url(#am)"/>
+  <rect class="sd" x="206" y="302" width="1200" height="74"/>
+  <rect class="leap" x="200" y="296" width="1200" height="74"/>
+  <text class="h"  x="216" y="322" font-size="14">THE LEAP — abduction. Owned by UX. Not a finding, not an unsupported guess. A third thing.</text>
+  <text class="sm" x="216" y="344" opacity=".9">Her vocabulary already has the slots: claim_type: inferred · status: hypothesis · origin: design · invalidates_if · G17 caps it at LOW until research backs it.</text>
+  <text class="sm" x="216" y="364" opacity=".9">Nothing REQUIRES them where the leap happens. That is the hole in both halves: hers stops overclaiming, mine stops dropping, neither marks the leap.</text>
+
+  <!-- ux.md -->
+  <path class="ar" d="M450 376 L450 404" marker-end="url(#am)"/>
+  <rect class="sd" x="206" y="416" width="500" height="132"/>
+  <rect class="bc" x="200" y="410" width="500" height="132"/>
+  <text class="h"  x="216" y="438" font-size="15">ux.md — authors THE NEED</text>
+  <text class="sm" x="216" y="462">"Given this evidence, here is the problem, and whose it is."</text>
+  <text class="xs" x="216" y="486">scope: mostly existence / pattern — claims about what IS</text>
+  <text class="xs" x="216" y="504">typical rung: inferred, resting on observed + stated findings</text>
+  <text class="t"  x="216" y="528" font-size="11.5" font-weight="700" fill="#5E7A3F">✓ has ## Evidence · ceiling check runs</text>
+
+  <text class="h"  x="736" y="438" font-size="12">THE NEED IS NEW CONTENT, NOT A RESTATEMENT</text>
+  <text class="sm" x="736" y="462">This is the file where a need statement first exists. It is not in</text>
+  <text class="sm" x="736" y="480">findings.yaml and could not be — findings are about what happened,</text>
+  <text class="sm" x="736" y="498">needs are about what should be true. So this claim is authored, and</text>
+  <text class="sm" x="736" y="516">it still cannot be graded above the findings under it.</text>
+  <text class="xs" x="736" y="540">Limitation: rests_on: takes ONE finding. A need usually rests on several.</text>
+
+  <!-- vision.md -->
+  <path class="ar" d="M450 548 L450 576" marker-end="url(#am)"/>
+  <rect class="sd" x="206" y="588" width="500" height="146"/>
+  <rect class="risk" x="200" y="582" width="500" height="146"/>
+  <text class="h"  x="216" y="610" font-size="15">vision.md — authors THE BET</text>
+  <text class="sm" x="216" y="634">"Given this evidence, here is what would be valuable."</text>
+  <text class="t"  x="216" y="660" font-size="12" font-weight="700" fill="#D8472B">scope: ADOPTION — will they want it, keep it, pay for it</text>
+  <text class="xs" x="216" y="682">status: hypothesis · origin: design / product_brief</text>
+  <text class="xs" x="216" y="700">G17: cannot be High until research backs it · G18: usability</text>
+  <text class="xs" x="216" y="716">evidence cannot answer this question at all</text>
+
+  <text class="h"  x="736" y="606" font-size="12" fill="#D8472B">THE HIGHEST-RISK FILE, AND IT HAD NO CHECK UNTIL TODAY</text>
+  <text class="sm" x="736" y="630">A vision is an adoption claim by construction. Adoption evidence is the</text>
+  <text class="sm" x="736" y="648">thing we have least of — in this corpus, none. So the file making the</text>
+  <text class="sm" x="736" y="666">least checkable claims was the one nothing looked at, while ux.md,</text>
+  <text class="sm" x="736" y="684">whose claims are mostly about what already happens, carried the only check.</text>
+  <text class="t"  x="736" y="710" font-size="11.5" font-weight="700">This is why [SCOPE: adoption] is the tag to KEEP, not trade away.</text>
+  <text class="xs" x="736" y="728">Reversing what I said yesterday — vision is exactly what it is for.</text>
+
+  <!-- design.md -->
+  <path class="ar" d="M450 734 L450 762" marker-end="url(#am)"/>
+  <rect class="sd" x="206" y="774" width="500" height="132"/>
+  <rect class="bc" x="200" y="768" width="500" height="132"/>
+  <text class="h"  x="216" y="796" font-size="15">design.md — authors THE BEHAVIOUR</text>
+  <text class="sm" x="216" y="820">"Given this evidence, here is how it must behave."</text>
+  <text class="xs" x="216" y="844">scope: usability — can they do it, did they do it unaided</text>
+  <text class="xs" x="216" y="862">the one file with claims that rest on STANDARDS, not findings:</text>
+  <text class="xs" x="216" y="880">WCAG, APEX, the FLOOR items. Those need no evidence row.</text>
+
+  <text class="h"  x="736" y="796" font-size="12">USABILITY EVIDENCE LIVES HERE AND ONLY ANSWERS HERE</text>
+  <text class="sm" x="736" y="820">"9 of 12 completed unaided" belongs to this file. It says nothing about</text>
+  <text class="sm" x="736" y="838">whether anyone will adopt the thing — that is the row above, and the</text>
+  <text class="sm" x="736" y="856">G18 failure is answering a vision question with a design finding.</text>
+  <text class="xs" x="736" y="882">FLOOR items are the only claims in the system that are legitimately unsourced.</text>
+
+  <!-- L3 -->
+  <path class="ar" d="M450 906 L450 934" marker-end="url(#am)"/>
+  <rect class="sd" x="206" y="946" width="500" height="96"/>
+  <rect class="bc" x="200" y="940" width="500" height="96"/>
+  <text class="h"  x="216" y="968" font-size="15">Intent Spec §5 → the build</text>
+  <text class="sm" x="216" y="992">THE COMMITMENT. UXI-## · append-only · inherits forward.</text>
+  <text class="xs" x="216" y="1014">This is where code spec-driven design starts. Everything above it</text>
+  <text class="xs" x="216" y="1030">is the part code SDD assumes someone else got right.</text>
+
+  <text class="h"  x="736" y="968" font-size="12">A ROW CAN OUTLIVE ITS BASIS</text>
+  <text class="sm" x="736" y="992">The id survives a re-grade; the justification quietly does not. Nothing</text>
+  <text class="sm" x="736" y="1010">re-opens a UXI row when research lowers the finding under it. That is the</text>
+  <text class="sm" x="736" y="1028">missing half of "it is a loop, not a snapshot."</text>
+
+  <defs>
+    <marker id="am" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 z" fill="#1a1612"/>
+    </marker>
+  </defs>
+</svg>

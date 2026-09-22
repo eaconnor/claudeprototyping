@@ -95,10 +95,49 @@ right problem →  right thing    →   right build
 `ux.md` is the only one that's mandatory. A project can legitimately say "we have no
 Gate 2 yet" — but it has to *say* it. Silence isn't allowed.
 
-**This is not a new process on top of Spec Kit or Intent Spec.** Those were written for
-code. Neither has anywhere for "what do we actually know about the user" to live, so that
-knowledge sits in Confluence and Figma and nothing in the repo can reach it. This wires
-the two together. That's the whole idea.
+---
+
+## How this relates to the Intent Spec
+
+**It is not a second spec.** The Intent Spec stays the contract. The gate files hold the
+reasoning that produced it.
+
+| | holds | signed? |
+|---|---|---|
+| **Intent Spec** | the conclusion. What we are building, why the business wants it, what must be true to ship | **yes** — §17 |
+| **`ux.md` / `design.md`** | how we got there. Do we understand the human problem · is this the right thing · is it built right | **no** — provisional on purpose |
+
+**The rule: a gate file points at the Intent Spec, it never restates it.** Anything written
+in both will drift, and the copy in the unsigned document wins by accident — because it is
+the one being edited. So direction, non-goals, success metrics and the decision log stay in
+the Intent Spec and the gate files link to them.
+
+§5 Requirements is the single ID space. Every `UXI-##` criterion resolves to one row there,
+so there is one canonical list rather than four documents each with their own.
+
+**What the gate files add, that twenty sections of Intent Spec have no slot for.** This is
+the honest test of whether they are redundant:
+
+1. **Which claim rests on which finding.** §2 Source evidence is a source log — one row per
+   document, same object as the datadump. §15 Evidence requirements is build verification —
+   tests, screenshots, logs. Neither can express *this sentence rests on that finding, and
+   therefore may not claim more than this.*
+2. **More than one concept at a time.** §1 is a single outcome statement, contractual. Five
+   candidate futures side by side have nowhere to live.
+3. **A forwarding address for a dropped candidate.** §17 logs decisions taken, §12 logs
+   questions open. Neither holds *this was a contender, and here is why it isn't.*
+4. **The marked leap.** Nothing in §0–§20 distinguishes "this is a finding" from "this is
+   our reading of a finding." That distinction is why these are separate documents and not
+   a §21.
+
+Everything else the gate files might have held is already in the Intent Spec, and belongs
+there.
+
+**And what neither was built for.** Spec Kit and the Intent Spec were written for code.
+Code specs can assume the spec is correct and check the build against it. A claim about
+people can't — so the question "do we actually know this about the user, and how well" has
+no home in either, which is why it ends up in Confluence and Figma where nothing in the
+repo can reach it. That is the gap being wired, and it is the whole idea.
 
 ---
 

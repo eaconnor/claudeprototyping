@@ -68,7 +68,7 @@
 <text x="740" y="472" class="fname">design.md</text>
 <text x="740" y="494" class="fnote">L2 — the behaviour.</text>
 <text x="740" y="514" class="fnote">FLOOR/FIT · context of use</text>
-<text x="740" y="536" class="fnote" fill="#5E7A3F">✓ Google Labs name</text>
+<text x="740" y="536" class="fnote" fill="#5E7A3F">✓ the industry-standard name</text>
 
 <line x1="446" y1="499" x2="470" y2="499" stroke="#1a1612" stroke-width="2" marker-end="url(#a)"/>
 <line x1="700" y1="499" x2="724" y2="499" stroke="#1a1612" stroke-width="2" marker-end="url(#a)"/>

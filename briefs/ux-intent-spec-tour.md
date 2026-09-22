@@ -9,30 +9,24 @@ claim more than its evidence supports.
 
 No new tool, no platform, nothing to log into. Files in a repo and a shell script.
 
-## Why this exists now
+## Where this comes from
 
-Three articles in four months from the Nielsen Norman Group — the usability people most of
-us already cite — arrive at the same problem from three directions. Once AI writes part of
-your product, the documents feeding it stop being paperwork. They become the instructions.
+As of September 2026 this is named practice. Microsoft and Thoughtworks call it spec-driven
+development. Nielsen Norman Group calls it context architecture, and puts two files in the
+repo — `ux.md` and `design.md`. AWS, Addy Osmani at Google, and the preprint literature
+reach the same shape from different directions: once AI writes part of your product, the
+documents feeding it stop being paperwork and become the instructions.
 
-- **Alicea, "UX-Context Design"** (Jul 2026) proposes keeping what an organisation knows
-  about its users in the repo, in two files, maintained as a living thing rather than a
-  handoff. He names them `ux.md` and `design.md`.
-- **Perez, "Context Architecture"** (Jun 2026) asks the question that decides whether any of
-  it works: which sources should the system trust more? The answer offered is
-  document-level — approved policy above team notes, current above deprecated.
-- **Kohler, "The 3 Roles of Context for AI Agents"** (Sep 2026) sorts that knowledge by how
-  often it changes and who maintains it.
+We are rowing that direction on purpose.
 
-All three describe the shelf. **None of them says how you stop a document claiming more
-than its evidence supports** — and that is the failure that actually reaches customers.
+One honest note, because it is the whole point of this document: all of that is practitioner
+and vendor writing. Nobody has measured how many teams actually do it. Independent sources
+converging tells you a practice exists and has a shape — not that it is widespread. Same
+rule we apply to claims about users.
 
-That gap is the only thing this adds. The files are the two Alicea names, already running.
-Perez's trust question gets answered **per claim rather than per document**, which is the
-part no one else has built: a sentence about users carries a pointer to the finding it rests
-on, and if it asserts more confidence than that finding licenses, a check fails.
-
-Stated without the literature:
+And the gap every one of them leaves: they describe what belongs in the files. **None says
+how you stop a document claiming more than its evidence supports.** That is the only thing
+this adds — and it is the failure that reaches customers.
 
 > The common failure is not too little research. It is sound research that was never linked
 > to the claim resting on it.

@@ -79,16 +79,30 @@ Products fail in three different ways, and each one is caught by a different per
 | Right problem, wrong thing | strategy / design | research — the evidence was fine |
 | Right thing, built badly | design / eng | product — the plan was fine |
 
-Nobody sees all three. So there are three files, each owned by whoever can actually see
-that failure, and the work moves forward through them.
+Nobody sees all three. The first two are the same act — reading the evidence and saying
+what it means — so they share a file. The third is a different act, so it gets its own.
 
 ```
-ux.md            vision.md          design.md
-right problem →  right thing    →   right build
+        ux.md                        design.md
+right problem · right thing   →     right build
+  the need, and the bet             the behaviour
 ```
 
-`ux.md` is the only one that's mandatory. A project can legitimately say "we have no
-Gate 2 yet" — but it has to *say* it. Silence isn't allowed.
+Two files, three gates. `ux.md` answers Gate 1 (do we understand the problem) and Gate 2
+(are we making the right thing), because both are interpretations of the same evidence by
+the same author — the need and the bet belong next to each other. `design.md` answers
+Gate 3, which is a genuinely different question: not *what should exist* but *is this one
+built right*.
+
+`ux.md` is mandatory. `design.md` is not, and a project can legitimately say "we have no
+Gate 3 yet" — but it has to *say* it. Silence isn't allowed.
+
+**The cost of merging, named up front:** a need and a bet in one file is exactly where a
+business case in user-need clothing hides best. "Users need a unified dashboard" is a
+solution wearing a need's grammar. The two gate rubrics stay separate sections for that
+reason, and the tell is mechanical — a real need has a population, a falsifier, and
+provenance pointing at a finding. A business case has none of those and cites the Intent
+Spec's own §1 or §2 instead.
 
 ---
 
@@ -101,6 +115,41 @@ reasoning that produced it.
 |---|---|---|
 | **Intent Spec** | the conclusion. What we are building, why the business wants it, what must be true to ship | **yes** — §17 |
 | **`ux.md` / `design.md`** | how we got there. Do we understand the human problem · is this the right thing · is it built right | **no** — provisional on purpose |
+
+### Why in the repo, and not Confluence
+
+Four reasons, in order of how much they matter:
+
+1. **The agent reads the repo.** It does not read Confluence. That is the entire seven-agent
+   incident — the research existed and was unreachable from where the work was happening.
+2. **A check can run on it.** You cannot fail a build on a wiki page. The exit code is the
+   integration surface, and it is what lets this be enforced rather than encouraged.
+3. **It versions with the code.** A change to what we believe about the user and the change
+   to the code implementing it land in the same diff, reviewable together. In Confluence
+   those two facts drift apart silently and nobody can date the divergence.
+4. **It travels.** Hand the folder to someone else, or to a new session, and the context
+   comes with it. A link doesn't survive a handoff; a file does.
+
+Confluence is still the right home for the research itself — the datadump, the studies, the
+synthesis. What goes in the repo is the *claim* and a pointer back. Nothing is copied.
+
+### Why separate documents, and not §21 of the Intent Spec
+
+This was the first thing tried, and it fails on signature state.
+
+- **A contract asserts; reasoning hedges.** The Intent Spec is signed, which means its
+  contents are claims someone stands behind. A provisional reading of thin evidence cannot
+  live inside a signed document without either freezing something that should stay editable,
+  or making the signature mean less than it says.
+- **They change on different clocks, driven by different people.** The Intent Spec changes
+  when the commitment changes. The evidence interpretation changes when the evidence changes
+  — more often, and usually by someone else.
+- **They fail differently, and merging hides the worse one.** A wrong conclusion in the
+  Intent Spec is a bad contract: visible, arguable, fixable. A wrong *premise* invalidates
+  everything derived from it and looks like nothing at all. Keeping the premise in its own
+  document is what makes it inspectable.
+- **A contract has no grammar for "this is our reading."** It can't. Asserting is its job.
+  That sentence needs somewhere else to live.
 
 **The rule: a gate file points at the Intent Spec, it never restates it.** Anything written
 in both will drift, and the copy in the unsigned document wins by accident — because it is
@@ -138,7 +187,7 @@ repo can reach it. That is the gap being wired, and it is the whole idea.
 
 ## What each file is, and who fills it in
 
-### `ux.md` — do we understand the problem?
+### `ux.md` — do we understand the problem, and is this the right thing?
 
 **Who owns it:** whoever is closest to the user. Often research. Sometimes a designer,
 sometimes a PM on a small team. The owner is a named person, not a function.
@@ -147,24 +196,26 @@ sometimes a PM on a small team. The owner is a named person, not a function.
 `owner:` and `research_check:` are two different fields precisely so a team of one can't
 quietly mark its own homework — it has to write down that it did.
 
-**Humans get:** a problem statement, the cast of people affected, an evidence log, and the
+**Humans get** two halves that used to be two files.
+
+*The need* — a problem statement, the cast of people affected, an evidence log, and the
 acceptance criteria. Product stops re-litigating the problem every sprint because it's
 written down with sources attached.
+
+*The bet* — direction, and the place where multiple concepts can coexist. Design can put
+five futures side by side and everyone knows how to read them. Engineering gets concepts
+early enough to spin up preliminary wireframes instead of waiting. Candidates that lost are
+recorded here too, with the reason — otherwise a dropped idea just disappears and nobody
+can tell whether it was rejected or forgotten.
 
 **Bots get:** the instruction to read this *first*, before answering anything about users.
 More on why that matters below.
 
-### `vision.md` — are we making the right thing?
-
-**Who owns it:** strategy. Often the same person as `ux.md` on a small team — again, fine,
-as long as it's written down.
-
-**Humans get:** direction, and the place where multiple concepts can coexist. Design can
-put five futures side by side; everyone knows how to read them. Engineering gets concepts
-early enough to spin up preliminary wireframes instead of waiting.
-
-**Bots get:** enough to make better assumptions, which keeps UX and engineering on the same
-track before anyone commits.
+**Why one file and not two:** both halves are the same author reading the same evidence and
+saying what it means. Splitting them produced a second document that mostly restated the
+Intent Spec — direction, non-goals, metrics, decision log, all duplicated with no signature
+on the copy. What was genuinely its own survived the merge: the concepts, the evidence they
+rest on, and the candidates that lost.
 
 ### `design.md` — are we making the thing right?
 
@@ -182,6 +233,11 @@ inherited from upstream, plus accessibility, APEX conformance, the FLOOR items.
 ```bash
 cd ~/Library/CloudStorage/OneDrive-N-able/Bethproto/acp-core-testrepo && ./check-gates.sh
 ```
+
+> **The terminal output below is transcribed verbatim from a run made before `vision.md`
+> was folded into `ux.md`, so it still names three files.** It is left unedited rather than
+> rewritten to match the new shape — inventing plausible output in a document about not
+> overclaiming would be the wrong kind of irony. Re-run and re-paste once the fold lands.
 
 ### 1. The gate refuses to grade you on being unfinished
 
@@ -211,7 +267,7 @@ criteria: design.md carries all 9 UX criteria the chain requires.
 criteria: every UXI-## resolves to a row in ACP-HARNESS-INTENT-SPEC.md §5.
 ```
 
-Criteria travel `ux.md → vision.md → design.md`. Drop one and it fails, naming the id.
+Criteria travel `ux.md → design.md`. Drop one and it fails, naming the id.
 `design.md` may *add* — accessibility and APEX belong at the build stage — and additions
 are owed by everything after them. Every id resolves to one canonical table in the Intent
 Spec, so there's a single ID space rather than four.
@@ -282,9 +338,9 @@ project constitution, not just a convention.
               │
               │  rests_on:  ← a pointer. Nothing is copied.
               ▼
-           ux.md ──────► vision.md ──────► design.md
-              │              │                  │
-              └──────────────┴──────────────────┘
+                  ux.md ──────────► design.md
+                     │                  │
+                     └──────────────────┘
                              │
                    UXI-## ids resolve to
                    Intent Spec §5 (canonical)
@@ -398,7 +454,7 @@ including on the skinny path, which previously stopped before asking anything.
 
 ## Honest status
 
-**Real and running:** the three gate files, regime-aware gating, criteria inheritance,
+**Real and running:** the two gate files, regime-aware gating, criteria inheritance,
 §5 resolution, the evidence-ceiling check, `CONTESTED`, `owner`/`research_check` split,
 Principle VII, a 15-finding `findings.yaml` in her schema.
 

@@ -1,0 +1,31 @@
+# Basic hook wiring for the skinny v1 — one check, two moments.
+#
+# The full toolkit registers six hooks across four moments. This registers the gate
+# check before planning and before implementing, which are the two points where an
+# unchecked claim would actually cost something.
+#
+# NO `condition:` FIELD ON PURPOSE. The speckit-* skills skip any hook that declares a
+# condition and hand it to a HookExecutor that does not exist in this project — so a
+# condition here silently disables the gate instead of narrowing it.
+#
+# `command:` must match a directory at .claude/skills/<command>/SKILL.md. A registered
+# hook whose skill is absent is not a gate, it is a line of YAML.
+
+version: 1
+
+hooks:
+  before_plan:
+    - extension: three-gate
+      command: check-gates
+      description: "Blocks planning on a real gate fault: a BLOCKED or undeclared confidence_regime, a claim asserted above what its evidence licenses, or a dispute with nowhere it is being handled. Unticked criteria are NOT a fault."
+      prompt: "Run ./check-gates.sh from the repo root. If it exits non-zero, stop and report its output verbatim. Do not plan, do not summarise, do not re-derive the verdict by reading the markdown yourself."
+      optional: false
+      enabled: true
+
+  before_implement:
+    - extension: three-gate
+      command: check-gates
+      description: "Same check, before code gets written."
+      prompt: "Run ./check-gates.sh from the repo root. If it exits non-zero, stop and report its output verbatim. Do not implement."
+      optional: false
+      enabled: true

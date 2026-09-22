@@ -1,0 +1,243 @@
+# findings.yaml — WORKED EXAMPLE: the overnight alert digest
+#
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ THIS IS FICTIONAL. Every participant, company, number and quote below    │
+# │ is invented to demonstrate the mechanics. Nothing here is real research  │
+# │ and nothing here may be cited as evidence about anyone.                  │
+# └──────────────────────────────────────────────────────────────────────────┘
+#
+# It exists because nothing else in this toolkit shows a FILLED findings file.
+# Read it to answer one question: how does the script work out the strongest
+# claim a document is allowed to make?
+#
+# The five rows are deliberately spread across the whole range, worst to best:
+#
+#   vendor-claims-digest-saves-time   LOW     a supplier's marketing number
+#   technicians-want-one-dashboard    LOW     a solution wearing a need's grammar
+#   overnight-alerts-arrive-in-bulk   MEDIUM  people describing their own morning
+#   triage-order-is-recency-not-risk  HIGH    watched it happen, twice
+#   digests-get-ignored-after-a-week  HIGH    watched it happen — and it CONTRADICTS
+#                                             the whole idea. That is the useful one.
+#
+# WHAT IS FILLED AND WHAT IS NOT
+#   Filled: claim · claim_type · population_fidelity · population_scope ·
+#           claim_scope · instruments[] with n · fieldwork_date · max_confidence
+#   Blank on purpose: confidence · review_by — a named researcher sets those.
+#           The script computes the CEILING. It never sets the grade, and it
+#           never fills one of these in. See `confidence_set_by:` below.
+
+findings:
+
+  # ══ the weakest kind of evidence there is ═══════════════════════════════════
+
+  - finding_id: vendor-claims-digest-saves-time
+    claim: "A tooling supplier states that a daily alert digest reduces triage
+            time by 40%."
+    claim_type: RECOMMENDED        # someone advising, not observing → caps at LOW
+    population_fidelity: none      # no population at all → caps at LOW
+    max_confidence: LOW
+    confidence:                    # ← the researcher's to set
+    confidence_set_by:             # ← their name goes here
+    review_by:
+    status: active
+    claim_scope: existence         # that the CLAIM exists. Not that it is true.
+    population_scope: "None stated. The figure appears in a product brochure with
+                       no sample, no method, and no baseline."
+    instruments:
+      - instrument: vendor marketing page
+        n: 0
+        sampling_frame: "ABSENT — and absent is the finding here, not a gap to fill."
+    fieldwork_date:                # NOT STATED IN SOURCE
+    single_source: true
+    provenance_status: disputed
+    provenance_note: "Recorded so that it stops travelling. A number with no
+                      method is not weak evidence, it is not evidence — but it
+                      circulates fluently, which is exactly why it needs a row
+                      saying so. Anything asserting more than LOW while resting
+                      on this will fail the check."
+    invalidates_if: >
+      The supplier publishes a method and a sample, at which point this is
+      superseded rather than corrected.
+    source_links:
+      - url: "https://example.invalid/fictional-vendor/digest"
+        label: "FICTIONAL — stands in for a supplier brochure"
+
+  # ══ the trap: a solution written in the grammar of a need ═══════════════════
+
+  - finding_id: technicians-want-one-dashboard
+    claim: "Asked what would help, several technicians said they wanted
+            everything in a single dashboard."
+    claim_type: STATED_ATTITUDE
+    population_fidelity: proxy     # asked at a supplier conference, not at work
+    max_confidence: LOW
+    confidence:
+    confidence_set_by:
+    review_by:
+    status: active
+    claim_scope: existence
+    population_scope: "Attendees at a supplier conference who stopped at a stand.
+                       Self-selecting. No role, tenure or company size captured,
+                       so it cannot be said whether these were the people who do
+                       the triage or the people who buy the tool."
+    instruments:
+      - instrument: intercept conversation, unstructured
+        n: 6
+        sampling_frame: "ABSENT"
+    fieldwork_date: 2026-05-14
+    single_source: true
+    provenance_status: disputed
+    provenance_note: "READ THIS ONE CAREFULLY — it is the most dangerous row in
+                      the file, and it looks like the safest.
+                      'Technicians want one dashboard' is a SOLUTION wearing the
+                      grammar of a need. The need underneath might be 'I lose the
+                      thread when I switch tools' — which a dashboard is one
+                      answer to, and not obviously the best one.
+                      The tells, all mechanical: no population it is true OF; no
+                      statement of what would prove it wrong; and the thing asked
+                      for is a screen rather than an outcome. A finding phrased
+                      as a feature has skipped the interpretation step, and the
+                      skip is invisible once it is written down."
+    invalidates_if: >
+      The same people are asked what they are trying to achieve rather than what
+      they want built, and the answer is not about losing continuity.
+    source_links:
+      - url: "file://examples/alert-digest/notes/fictional-intercepts.md"
+        label: "FICTIONAL — stands in for conference intercept notes"
+
+  # ══ self-report: legitimate, and capped ═════════════════════════════════════
+
+  - finding_id: overnight-alerts-arrive-in-bulk
+    claim: "Technicians at small managed-service firms describe arriving to a
+            large batch of alerts raised overnight, most of which need no action."
+    claim_type: STATED_ATTITUDE    # what people say about themselves → caps MEDIUM
+    population_fidelity: primary   # these are the actual users
+    max_confidence: MEDIUM         # primary does not lift a self-report to HIGH
+    confidence:
+    confidence_set_by:
+    review_by:
+    status: active
+    claim_scope: pattern           # consistent across 9 people in 7 firms
+    population_scope: "9 technicians across 7 independent managed-service firms,
+                       all under 15 staff, all running overnight monitoring."
+    instruments:
+      - instrument: semi-structured interview
+        n: 9
+        sampling_frame: "Recruited from a trade forum. Volunteers, so skewed
+                         toward people who find this annoying enough to talk
+                         about it."
+    fieldwork_date: 2026-06-02
+    single_source: false
+    provenance_status: clean
+    provenance_note: "This is solid and it still caps at MEDIUM, which is the
+                      lesson. Nine people consistently describing their own
+                      morning is good evidence that the experience is real and
+                      has a shape. It is not a measurement of how many alerts
+                      arrive, and nobody counted. Adding a tenth interview widens
+                      who it applies to; it does not make it more certain."
+    invalidates_if: >
+      Alert volumes are pulled from monitoring logs and the overnight batch is
+      not materially larger than the daytime flow.
+    source_links:
+      - url: "file://examples/alert-digest/notes/fictional-interviews.md"
+        label: "FICTIONAL — stands in for interview notes, P1–P9"
+
+  # ══ watched it happen: the only route to HIGH ═══════════════════════════════
+
+  - finding_id: triage-order-is-recency-not-risk
+    claim: "When working through the overnight queue, technicians opened alerts
+            newest-first and did not re-order by severity, including when a
+            severity column was visible on screen."
+    claim_type: OBSERVED_BEHAVIOR  # seen, not recalled → can reach HIGH
+    population_fidelity: primary
+    max_confidence: HIGH
+    confidence:
+    confidence_set_by:
+    review_by:
+    status: active
+    claim_scope: pattern
+    population_scope: "4 technicians at 4 independent firms, each working their
+                       own live queue on their own machine."
+    instruments:
+      - instrument: observed work session, unmoderated after setup
+        n: 4
+        per_claim_n: 4             # all four did this
+        sampling_frame: "Recruited from the interview cohort above. Overlapping
+                         population — NOT an independent confirmation of it."
+    fieldwork_date: 2026-06-18
+    single_source: false
+    provenance_status: clean
+    provenance_note: "The ceiling reaches HIGH because the behaviour was on screen
+                      rather than reported afterwards. Note what the claim does
+                      NOT say: nothing about why. Asking why produces a
+                      STATED_ATTITUDE finding, which caps at MEDIUM, and it would
+                      be a separate row. Keeping the two apart is the point —
+                      what was seen and what was said about it carry different
+                      weight and must not be merged into one sentence."
+    invalidates_if: >
+      The same technicians are observed on a redesigned queue and re-order by
+      severity without being prompted.
+    source_links:
+      - url: "file://examples/alert-digest/notes/fictional-sessions.md"
+        label: "FICTIONAL — stands in for session recordings, S1–S4"
+
+  # ══ the finding that argues with the project ════════════════════════════════
+
+  - finding_id: digests-get-ignored-after-a-week
+    claim: "On a comparable daily digest in an adjacent product, opening rates
+            fell steeply after the first week and the digest was then filtered to
+            a folder unread."
+    claim_type: OBSERVED_BEHAVIOR
+    population_fidelity: primary
+    max_confidence: HIGH
+    confidence:
+    confidence_set_by:
+    review_by:
+    status: active
+    claim_scope: pattern
+    population_scope: "31 technicians who received an existing daily digest in a
+                       neighbouring product, measured over 6 weeks of mail logs."
+    instruments:
+      - instrument: mail-system open and filter logs
+        n: 31
+        sampling_frame: "Everyone enrolled in that digest. A complete population,
+                         not a sample — but of a DIFFERENT product's digest."
+    fieldwork_date: 2026-04-07
+    single_source: true
+    provenance_status: clean
+    provenance_note: "KEEP THIS ROW EVEN THOUGH IT ARGUES AGAINST THE PROJECT.
+                      This is the strongest evidence in the file and it points
+                      away from the proposed answer. It sits directly against
+                      `vendor-claims-digest-saves-time`, which is LOW — so the
+                      disagreement is not symmetrical, and the check will cap any
+                      claim resting on the vendor row far below any claim resting
+                      on this one.
+                      Two studies disagreeing is a legal state: mark it
+                      CONTESTED, point at wherever it is being worked out, and
+                      carry on. It does not stop the work. It caps what the work
+                      may claim — which is a different and more useful thing than
+                      a blocker.
+                      A file that only holds supporting findings is not an
+                      evidence log. It is a case being made."
+    invalidates_if: >
+      The digest is rebuilt so that it is entered rather than read — a queue that
+      opens where it left off, rather than a mail-out — and retention holds past
+      six weeks.
+    source_links:
+      - url: "file://examples/alert-digest/notes/fictional-mail-logs.md"
+        label: "FICTIONAL — stands in for mail-system log extract"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NOT ENTERED, AND WHY
+#
+# "Alert fatigue costs the industry billions" — no source, no method, no
+# population. It reads like evidence and is not. If a claim cannot be traced to
+# an instrument, it does not get a row, and a row is not how you launder it.
+#
+# "Everyone knows the overnight queue is broken" — this may well be true, and it
+# is not a finding until someone can say who was asked and what they did.
+#
+# WHAT TO DO WITH THIS FILE
+#
+# Point at a row from `ux.md` using `rests_on:` and then assert something
+# stronger than its `max_confidence`. Run `./check-gates.sh`. It should fail and
+# name the row. If it passes, the wiring is broken — that is the actual test.

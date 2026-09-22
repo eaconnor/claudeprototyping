@@ -1,126 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1512" height="1008" viewBox="0 0 1512 1008" font-family="'Space Mono', ui-monospace, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" width="1512" height="1036" viewBox="0 0 1512 1036" font-family="'Space Mono', ui-monospace, monospace">
 <defs>
   <style>
     .h1{font-size:32px;font-weight:700;fill:#1a1612}
-    .sub{font-size:13px;fill:#1a1612;font-family:'Kalam',cursive}
+    .sub{font-size:13.5px;fill:#1a1612;font-family:'Kalam',cursive}
     .lbl{font-size:12px;font-weight:700;letter-spacing:.14em;fill:#efe7d6}
     .ttl{font-size:19px;font-weight:700;fill:#1a1612}
     .fn{font-size:15px;font-weight:700;fill:#1a1612}
     .bd{font-size:12.5px;fill:#1a1612;font-family:'Kalam',cursive}
     .sec{font-size:12px;font-weight:700;fill:#1F3C96}
-    .ptr{font-size:11.5px;fill:#1a1612;font-family:'Kalam',cursive}
+    .ptr{font-size:12px;fill:#1a1612;font-family:'Kalam',cursive}
     .kp{font-size:12.5px;font-weight:700;fill:#D8472B}
     .cap{font-size:11px;fill:#1a1612;font-family:'Kalam',cursive}
   </style>
   <marker id="ar" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
     <path d="M0,0 L10,5 L0,10 z" fill="#1F3C96"/></marker>
-  <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
-    <path d="M0,0 L10,5 L0,10 z" fill="#D8472B"/></marker>
 </defs>
-<rect width="1512" height="1008" fill="#efe7d6"/>
+<rect width="1512" height="1036" fill="#efe7d6"/>
 
 <text x="56" y="58" class="h1">How ux.md works with the Intent Spec</text>
-<text x="56" y="86" class="sub">Two documents, one direction of travel. The gate files hold the reasoning; the Intent Spec holds the conclusion and the signature.</text>
+<text x="56" y="86" class="sub">Two documents, one direction of travel. The gate files hold the thinking. The Intent Spec holds the decision and the signature.</text>
 <line x1="56" y1="104" x2="1456" y2="104" stroke="#1a1612" stroke-width="2"/>
 
 <!-- ═══ LEFT: the gate files ═══ -->
-<rect x="62" y="146" width="580" height="490" fill="#1a1612"/>
-<rect x="56" y="140" width="580" height="490" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="62" y="146" width="580" height="524" fill="#1a1612"/>
+<rect x="56" y="140" width="580" height="524" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="56" y="140" width="580" height="46" fill="#1F3C96" stroke="#1a1612" stroke-width="2"/>
-<text x="78" y="170" class="lbl">THE REASONING — UNSIGNED, PROVISIONAL ON PURPOSE</text>
+<text x="78" y="170" class="lbl">THE THINKING — UNSIGNED, AND STILL CHANGING</text>
 
-<rect x="84" y="212" width="524" height="180" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
+<rect x="84" y="212" width="524" height="184" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
 <text x="104" y="240" class="ttl">ux.md</text>
-<text x="104" y="262" class="bd">Gate 1 — do we understand the problem · Gate 2 — is this the right thing</text>
-<text x="104" y="288" class="sec">§1 the problem, and for whom</text>
-<text x="104" y="308" class="sec">§2 top tasks</text>
-<text x="104" y="328" class="kp">§4 THE CONCEPTS — more than one future, side by side</text>
-<text x="104" y="348" class="kp">§5 REJECTED AND SUPERSEDED — the forwarding address</text>
-<text x="104" y="368" class="kp">## EVIDENCE — which claim rests on which finding</text>
-<text x="104" y="385" class="cap">Mandatory. Every project has a problem and some state of knowledge about it.</text>
+<text x="104" y="262" class="bd">Do we understand the problem · Is this the right thing to build</text>
+<text x="104" y="288" class="sec">The problem, and whose it is</text>
+<text x="104" y="308" class="sec">The tasks people are actually trying to finish</text>
+<text x="104" y="330" class="kp">THE OPTIONS — more than one, side by side</text>
+<text x="104" y="350" class="kp">WHAT WE RULED OUT, AND WHY</text>
+<text x="104" y="370" class="kp">THE EVIDENCE — which claim rests on which finding</text>
+<text x="104" y="388" class="cap">Always required. Every project has a problem and some state of knowledge about it.</text>
 
-<rect x="84" y="416" width="524" height="128" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
-<text x="104" y="444" class="ttl">design.md</text>
-<text x="104" y="466" class="bd">Gate 3 — is this one built right</text>
-<text x="104" y="490" class="kp">## CONTEXT OF USE — users, tasks, environment (ISO 9241-11)</text>
-<text x="104" y="510" class="kp">## EVAL LOOPS — the usability instrument and its threshold</text>
-<text x="104" y="530" class="cap">Optional — but a project with no Gate 3 must SAY so. Silence is what's disallowed.</text>
+<rect x="84" y="420" width="524" height="180" fill="#efe7d6" stroke="#1a1612" stroke-width="2"/>
+<text x="104" y="448" class="ttl">design.md</text>
+<text x="104" y="470" class="bd">Is this one built right</text>
+<text x="104" y="494" class="sec">Who uses it, to do what, where, under what pressure</text>
+<text x="104" y="516" class="kp">ACCESSIBILITY — the standard, the scope, who audits it</text>
+<text x="104" y="536" class="kp">APEX — real components, bound tokens, the canonical view</text>
+<text x="104" y="556" class="sec">How it gets tested, and the number that counts as passing</text>
+<text x="104" y="578" class="cap">Optional — but a project with no Gate 3 has to SAY so. Silence is what's disallowed.</text>
 
-<text x="84" y="576" class="bd" font-weight="700">Both are interpretations of the same evidence.</text>
-<text x="84" y="598" class="bd">Neither is signed. That is the point: a provisional reading cannot live inside a</text>
-<text x="84" y="616" class="bd">signed document without freezing it or devaluing the signature.</text>
+<text x="84" y="624" class="bd" font-weight="700">Both are one person's reading of the same evidence.</text>
+<text x="84" y="646" class="bd">Neither is signed, on purpose — a reading that is still changing cannot sit inside a signed document.</text>
 
 <!-- ═══ RIGHT: the Intent Spec ═══ -->
-<rect x="882" y="146" width="580" height="490" fill="#1a1612"/>
-<rect x="876" y="140" width="580" height="490" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="882" y="146" width="580" height="524" fill="#1a1612"/>
+<rect x="876" y="140" width="580" height="524" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="876" y="140" width="580" height="46" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-<text x="898" y="170" class="lbl">THE CONCLUSION — SIGNED, CONTRACTUAL</text>
+<text x="898" y="170" class="lbl">THE DECISION — SIGNED, AND BINDING</text>
 
-<text x="904" y="216" class="ttl">ACP-HARNESS-INTENT-SPEC.md</text>
-<text x="904" y="238" class="bd">Already exists. Already established. Nothing here replaces it.</text>
+<text x="904" y="216" class="ttl">The Intent Spec</text>
+<text x="904" y="238" class="bd">You already have this. Nothing here replaces it or competes with it.</text>
 
 <rect x="904" y="258" width="504" height="34" fill="#C99A2E" stroke="#1a1612" stroke-width="2"/>
-<text x="920" y="281" class="fn">§5 Requirements — UXI-## · THE SINGLE ID SPACE</text>
+<text x="920" y="281" class="fn">Requirements — ONE canonical list, not four</text>
 
-<text x="904" y="322" class="sec">§1 desired outcome · success metrics · anti-success signals</text>
-<text x="904" y="344" class="sec">§2 why this work exists — the business rationale</text>
-<text x="904" y="366" class="sec">§3 users and affected parties</text>
-<text x="904" y="388" class="sec">§4 out of scope / non-goals</text>
-<text x="904" y="410" class="sec">§7 invariants — FLOOR / FIT split</text>
-<text x="904" y="432" class="sec">§12 open questions · §14 testing · §15 evidence requirements</text>
-<text x="904" y="454" class="sec">§17 decision log · signatures</text>
+<text x="904" y="322" class="sec">What success looks like, and what would count as failing</text>
+<text x="904" y="346" class="sec">Why this work exists at all</text>
+<text x="904" y="370" class="sec">Who it is for, and who else is affected</text>
+<text x="904" y="394" class="sec">What is explicitly out of scope</text>
+<text x="904" y="418" class="sec">What must never break, vs. what should be good</text>
+<text x="904" y="442" class="sec">Open questions · how it gets tested · what evidence is required</text>
+<text x="904" y="466" class="sec">The decision log, and the signatures</text>
 
-<text x="904" y="500" class="bd" font-weight="700">The rule, and the reason it matters:</text>
-<text x="904" y="522" class="bd">a gate file POINTS at this. It never restates it. Anything written</text>
-<text x="904" y="540" class="bd">in both drifts — and the copy in the unsigned document wins by</text>
-<text x="904" y="558" class="bd">accident, because it is the one being edited.</text>
-<text x="904" y="590" class="bd" fill="#D8472B" font-weight="700">A pointer is only honest if the target is filled.</text>
-<text x="904" y="610" class="cap">Converting "Direction" to "see §1" is worse than restating it if §1 is a placeholder.</text>
+<text x="904" y="510" class="bd" font-weight="700">The one rule, and why it matters:</text>
+<text x="904" y="532" class="bd">a gate file POINTS at this. It never restates it. Anything written in</text>
+<text x="904" y="550" class="bd">both places drifts apart — and the unsigned copy wins by accident,</text>
+<text x="904" y="568" class="bd">because it is the one people are actually editing.</text>
+<text x="904" y="602" class="bd" fill="#D8472B" font-weight="700">A pointer is only honest if the thing it points at is filled in.</text>
+<text x="904" y="622" class="cap">Replacing a real sentence with "see the Intent Spec" is worse than repeating it, if the spec still says TBD.</text>
+<text x="904" y="648" class="cap">Six of the fourteen sections first proposed for the gate files turned out to belong here, and became pointers.</text>
 
 <!-- ═══ MIDDLE: the traffic ═══ -->
 <line x1="620" y1="275" x2="896" y2="275" stroke="#C99A2E" stroke-width="4" marker-end="url(#ar)"/>
-<text x="758" y="264" class="ptr" text-anchor="middle" font-weight="700">every UXI-## resolves here</text>
-<text x="758" y="296" class="ptr" text-anchor="middle">one canonical list, not four</text>
+<text x="758" y="264" class="ptr" text-anchor="middle" font-weight="700">every requirement id</text>
+<text x="758" y="296" class="ptr" text-anchor="middle">resolves to one row here</text>
 
-<line x1="896" y1="380" x2="620" y2="380" stroke="#1F3C96" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar)"/>
-<text x="758" y="369" class="ptr" text-anchor="middle" font-weight="700">direction · non-goals</text>
-<text x="758" y="400" class="ptr" text-anchor="middle">metrics · decision log</text>
-<text x="758" y="418" class="ptr" text-anchor="middle">— read from here,</text>
-<text x="758" y="436" class="ptr" text-anchor="middle">never copied</text>
+<line x1="896" y1="400" x2="620" y2="400" stroke="#1F3C96" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar)"/>
+<text x="758" y="389" class="ptr" text-anchor="middle" font-weight="700">direction · non-goals</text>
+<text x="758" y="420" class="ptr" text-anchor="middle">metrics · decisions</text>
+<text x="758" y="438" class="ptr" text-anchor="middle">— read from here,</text>
+<text x="758" y="456" class="ptr" text-anchor="middle">never copied over</text>
 
-<!-- ═══ BOTTOM: the four gaps ═══ -->
-<rect x="62" y="678" width="1400" height="230" fill="#1a1612"/>
-<rect x="56" y="672" width="1400" height="230" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
-<rect x="56" y="672" width="1400" height="42" fill="#D8472B" stroke="#1a1612" stroke-width="2"/>
-<text x="78" y="700" class="lbl">WHAT TWENTY SECTIONS HAVE NO SLOT FOR — the test of whether the gate files are redundant</text>
+<!-- ═══ BOTTOM: why separate files ═══ -->
+<rect x="62" y="712" width="1400" height="224" fill="#1a1612"/>
+<rect x="56" y="706" width="1400" height="224" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="56" y="706" width="1400" height="42" fill="#D8472B" stroke="#1a1612" stroke-width="2"/>
+<text x="78" y="734" class="lbl">"WHY NOT JUST PUT ALL THIS IN THE SPEC?" — FOUR THINGS IT HAS NOWHERE TO PUT</text>
 
-<text x="88" y="748" class="fn">1 · Which claim rests on which finding</text>
-<text x="88" y="770" class="bd">§2 Source evidence is a source LOG —</text>
-<text x="88" y="788" class="bd">one row per document. §15 Evidence</text>
-<text x="88" y="806" class="bd">requirements is BUILD verification.</text>
-<text x="88" y="824" class="bd">Neither carries a per-claim dependency.</text>
+<text x="88" y="784" class="fn">1 · The receipts</text>
+<text x="88" y="808" class="bd">A contract says what we will</text>
+<text x="88" y="826" class="bd">build. It has no line for</text>
+<text x="88" y="844" class="bd"><tspan font-style="italic">which promise rests on which</tspan></text>
+<text x="88" y="862" class="bd"><tspan font-style="italic">piece of evidence</tspan> — so nobody</text>
+<text x="88" y="880" class="bd">can check one without you.</text>
 
-<text x="480" y="748" class="fn">2 · More than one concept</text>
-<text x="480" y="770" class="bd">§1 is one outcome statement,</text>
-<text x="480" y="788" class="bd">singular and contractual. Five</text>
-<text x="480" y="806" class="bd">candidate futures side by side</text>
-<text x="480" y="824" class="bd">have nowhere to live.</text>
+<text x="440" y="784" class="fn">2 · More than one idea</text>
+<text x="440" y="808" class="bd">It holds a single answer,</text>
+<text x="440" y="826" class="bd">because that is what a</text>
+<text x="440" y="844" class="bd">commitment is. Early on you</text>
+<text x="440" y="862" class="bd">need three or four options</text>
+<text x="440" y="880" class="bd">next to each other.</text>
 
-<text x="800" y="748" class="fn">3 · A forwarding address</text>
-<text x="800" y="770" class="bd">§17 logs decisions taken. §12</text>
-<text x="800" y="788" class="bd">logs questions open. Neither</text>
-<text x="800" y="806" class="bd">holds <tspan font-style="italic">this was a contender, and</tspan></text>
-<text x="800" y="824" class="bd"><tspan font-style="italic">here is why it isn't.</tspan></text>
+<text x="792" y="784" class="fn">3 · The ideas that lost</text>
+<text x="792" y="808" class="bd">It records what was decided,</text>
+<text x="792" y="826" class="bd">not what was considered and</text>
+<text x="792" y="844" class="bd">dropped. So the same idea</text>
+<text x="792" y="862" class="bd">gets pitched again next</text>
+<text x="792" y="880" class="bd">quarter, and argued again.</text>
 
-<text x="1120" y="748" class="fn">4 · The marked leap</text>
-<text x="1120" y="770" class="bd">Nothing in §0–§20 separates</text>
-<text x="1120" y="788" class="bd">"this is a finding" from "this is</text>
-<text x="1120" y="806" class="bd">our reading of one." A contract</text>
-<text x="1120" y="824" class="bd">asserts — that is its job.</text>
+<text x="1136" y="784" class="fn">4 · Fact vs. reading</text>
+<text x="1136" y="808" class="bd">It states things plainly —</text>
+<text x="1136" y="826" class="bd">that is its job. It cannot</text>
+<text x="1136" y="844" class="bd">show the difference between</text>
+<text x="1136" y="862" class="bd">"we watched people do this"</text>
+<text x="1136" y="880" class="bd">and "this is our reading".</text>
 
-<line x1="88" y1="852" x2="1424" y2="852" stroke="#1a1612" stroke-width="1"/>
-<text x="88" y="878" class="bd">Everything else a gate file might hold is already in the Intent Spec, and belongs there. Six of the fourteen sections originally proposed became pointers.</text>
-
-<text x="56" y="956" class="cap">Beth Connor · 2026-09-22 · ux.md holds Gates 1 and 2 since the vision.md merge; project.conf points GATE_1 and GATE_2 at the same file and check-gates.sh dedupes.</text>
-<text x="56" y="976" class="cap">Spec-driven tooling and the Intent Spec were both written for code. A code spec may assume itself correct and check the build against it; a claim about people may not.</text>
+<text x="56" y="984" class="cap">Beth Connor · 2026-09-22 · ux.md answers Gates 1 and 2 in one file. design.md answers Gate 3, which is a different question: not what should exist, but whether this one is built right.</text>
+<text x="56" y="1004" class="cap">Spec-driven tooling was written for code. A code spec may assume itself correct and check the build against it. A claim about people may not — which is what the left-hand column is for.</text>
 </svg>

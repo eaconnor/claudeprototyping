@@ -2,9 +2,8 @@
 <defs>
   <style>
     .h1{font-size:32px;font-weight:700;fill:#1a1612}
-    .sub{font-size:13px;fill:#1a1612;font-family:'Kalam',cursive}
+    .sub{font-size:13.5px;fill:#1a1612;font-family:'Kalam',cursive}
     .lbl{font-size:12px;font-weight:700;letter-spacing:.13em;fill:#efe7d6}
-    .st{font-size:17px;font-weight:700;fill:#1a1612}
     .bd{font-size:12.5px;fill:#1a1612;font-family:'Kalam',cursive}
     .mono{font-size:13px;font-weight:700;fill:#1a1612}
     .fl{font-size:12px;font-weight:700;fill:#1F3C96}
@@ -21,120 +20,119 @@
 </defs>
 <rect width="1512" height="1064" fill="#efe7d6"/>
 
-<text x="56" y="58" class="h1">The research loop — and where it is still open</text>
-<text x="56" y="86" class="sub">Evidence does not travel. Claims point at it. Re-grading a finding changes what every document pointing at it is allowed to say.</text>
+<text x="56" y="58" class="h1">How research gets into the work, and stays true</text>
+<text x="56" y="86" class="sub">Nothing is copied. Every claim points back at the finding underneath it — so when a finding changes, everything resting on it knows.</text>
 <line x1="56" y1="104" x2="1456" y2="104" stroke="#1a1612" stroke-width="2"/>
 
-<!-- ── 1. CORPUS ── -->
+<!-- ── 1. RAW ── -->
 <rect x="62" y="152" width="300" height="180" fill="#1a1612"/>
 <rect x="56" y="146" width="300" height="180" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="56" y="146" width="300" height="38" fill="#C99A2E" stroke="#1a1612" stroke-width="2"/>
-<text x="74" y="171" class="lbl">1 · THE CORPUS — RAW</text>
-<text x="74" y="212" class="mono">scout_input/ · Condens</text>
+<text x="74" y="171" class="lbl">1 · THE RAW MATERIAL</text>
+<text x="74" y="212" class="mono">Interviews · surveys</text>
 <text x="74" y="232" class="mono">Confluence · Teams · Jira</text>
-<text x="74" y="258" class="bd">Uncurated. Gathered for one purpose,</text>
-<text x="74" y="276" class="bd">not scoped to this project.</text>
+<text x="74" y="258" class="bd">Unsorted, and gathered for other</text>
+<text x="74" y="276" class="bd">reasons than this project.</text>
 <text x="74" y="302" class="cap">Research owns this. Nothing downstream writes here.</text>
 
 <!-- ── 2. FINDINGS ── -->
-<rect x="62" y="392" width="300" height="252" fill="#1a1612"/>
-<rect x="56" y="386" width="300" height="252" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="62" y="392" width="300" height="256" fill="#1a1612"/>
+<rect x="56" y="386" width="300" height="256" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="56" y="386" width="300" height="38" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-<text x="74" y="411" class="lbl">2 · FINDINGS — WHAT HAPPENED</text>
+<text x="74" y="411" class="lbl">2 · WHAT WE ACTUALLY FOUND</text>
 <text x="74" y="452" class="mono">findings.yaml</text>
-<text x="74" y="478" class="bd">One row per finding that something</text>
-<text x="74" y="496" class="bd">actually leans on. Each carries:</text>
-<text x="74" y="522" class="fl">claim_type — how it was gathered</text>
-<text x="74" y="542" class="fl">population_fidelity — who from</text>
-<text x="74" y="562" class="fl">n per instrument · fieldwork_date</text>
-<text x="74" y="582" class="fl">review_by · confidence_set_by</text>
-<text x="74" y="612" class="bd" font-weight="700">Only the researcher of record grades.</text>
-<text x="74" y="630" class="cap">The script computes a ceiling. It never fills a grade in.</text>
+<text x="74" y="478" class="bd">One line per finding that something</text>
+<text x="74" y="496" class="bd">leans on. Each one records:</text>
+<text x="74" y="522" class="fl">how we know it — watched, or told</text>
+<text x="74" y="542" class="fl">who we heard it from</text>
+<text x="74" y="562" class="fl">how many people, and when</text>
+<text x="74" y="582" class="fl">when it should be looked at again</text>
+<text x="74" y="612" class="bd" font-weight="700">Only research sets the confidence.</text>
+<text x="74" y="630" class="cap">The script works out the ceiling. It never fills in a grade.</text>
 
-<!-- break 1: promotion -->
 <line x1="206" y1="326" x2="206" y2="382" stroke="#D8472B" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#a3)"/>
 <circle cx="234" cy="354" r="15" fill="#D8472B"/><text x="234" y="360" class="num" text-anchor="middle">1</text>
-<text x="258" y="359" class="warn" font-size="11">no promotion step — see above</text>
+<text x="258" y="359" class="warn" font-size="11">nothing does this step — see below</text>
 
-<!-- ── 3. INTERPRETATION ── -->
-<rect x="546" y="452" width="420" height="192" fill="#1a1612"/>
-<rect x="540" y="446" width="420" height="192" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<!-- ── 3. WHAT IT MEANS ── -->
+<rect x="546" y="452" width="420" height="196" fill="#1a1612"/>
+<rect x="540" y="446" width="420" height="196" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="540" y="446" width="420" height="38" fill="#1F3C96" stroke="#1a1612" stroke-width="2"/>
-<text x="558" y="471" class="lbl">3 · INTERPRETATION — WHAT WE SAY IT MEANS</text>
+<text x="558" y="471" class="lbl">3 · WHAT WE SAY IT MEANS</text>
 <text x="558" y="512" class="mono">ux.md  ·  design.md</text>
-<text x="558" y="538" class="bd">the need · the bet · the behaviour</text>
-<text x="558" y="566" class="warn">THE AUTHORING STEP IS HERE — and nothing marks it.</text>
-<text x="558" y="586" class="bd">Findings do not contain user needs. A need, a concept, a behaviour</text>
-<text x="558" y="604" class="bd">is <tspan font-style="italic">authored</tspan>. It rests on evidence and is not gradeable above it.</text>
-<text x="558" y="628" class="cap">Both files are interpretations. Neither is signed — that is deliberate.</text>
+<text x="558" y="538" class="bd">the problem · the need · the bet · the behaviour</text>
+<text x="558" y="568" class="warn">A PERSON ADDS SOMETHING HERE.</text>
+<text x="558" y="588" class="bd">Research tells you what happened. It does not contain a user</text>
+<text x="558" y="606" class="bd">need — somebody writes that, and it can never be stated more</text>
+<text x="558" y="624" class="bd">confidently than the evidence under it allows.</text>
 
 <line x1="362" y1="512" x2="534" y2="512" stroke="#1a1612" stroke-width="3" marker-end="url(#a2)"/>
-<text x="448" y="500" class="fl" text-anchor="middle">rests_on:</text>
-<text x="448" y="534" class="cap" text-anchor="middle">a pointer.</text>
-<text x="448" y="550" class="cap" text-anchor="middle">NOTHING IS COPIED.</text>
+<text x="448" y="500" class="fl" text-anchor="middle">points at it</text>
+<text x="448" y="534" class="cap" text-anchor="middle">NOTHING IS</text>
+<text x="448" y="550" class="cap" text-anchor="middle">COPIED ACROSS.</text>
 
 <!-- ── 4. THE CHECK ── -->
-<rect x="1042" y="452" width="414" height="192" fill="#1a1612"/>
-<rect x="1036" y="446" width="414" height="192" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="1042" y="452" width="414" height="196" fill="#1a1612"/>
+<rect x="1036" y="446" width="414" height="196" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="1036" y="446" width="414" height="38" fill="#D8472B" stroke="#1a1612" stroke-width="2"/>
-<text x="1054" y="471" class="lbl">4 · THE CHECK — DOES IT OVERCLAIM?</text>
+<text x="1054" y="471" class="lbl">4 · THE CHECK: ARE WE OVERSTATING IT?</text>
 <text x="1054" y="510" class="mono">./check-gates.sh</text>
-<text x="1054" y="534" class="bd">Recomputes the ceiling from claim_type +</text>
-<text x="1054" y="552" class="bd">population_fidelity. Fails anything above it.</text>
-<text x="1054" y="580" class="mono" font-size="11" fill="#D8472B">FAIL E-02 — asserts HIGH.</text>
-<text x="1054" y="596" class="mono" font-size="11" fill="#D8472B">…is STATED_ATTITUDE / primary,</text>
-<text x="1054" y="612" class="mono" font-size="11" fill="#D8472B">which ceilings at MEDIUM.</text>
-<text x="1054" y="632" class="cap">Exit 1. The exit code is the whole integration surface.</text>
+<text x="1054" y="534" class="bd">Works out the strongest claim the evidence</text>
+<text x="1054" y="552" class="bd">allows, and fails anything above it — by name.</text>
+<text x="1054" y="582" class="mono" font-size="10.5" fill="#D8472B">FAIL E-02 — asserts HIGH.</text>
+<text x="1054" y="598" class="mono" font-size="10.5" fill="#D8472B">People told us this, so it</text>
+<text x="1054" y="614" class="mono" font-size="10.5" fill="#D8472B">tops out at MEDIUM.</text>
+<text x="1054" y="636" class="cap">Nobody typed that ceiling. It was computed from the finding.</text>
 
 <line x1="962" y1="542" x2="1030" y2="542" stroke="#1a1612" stroke-width="3" marker-end="url(#a2)"/>
 
 <!-- ── 5. COMMITMENT ── -->
-<rect x="546" y="712" width="420" height="150" fill="#1a1612"/>
-<rect x="540" y="706" width="420" height="150" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
-<rect x="540" y="706" width="420" height="38" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-<text x="558" y="731" class="lbl">5 · COMMITMENT — SIGNED</text>
-<text x="558" y="772" class="mono">Intent Spec §5 · §17 signatures</text>
-<text x="558" y="798" class="bd">Every UXI-## resolves to one canonical row.</text>
-<text x="558" y="822" class="bd">A criterion is inherited forward and never dropped —</text>
-<text x="558" y="840" class="bd">drop one and the check names the id.</text>
-<line x1="750" y1="644" x2="750" y2="700" stroke="#5E7A3F" stroke-width="3" marker-end="url(#a4)"/>
+<rect x="546" y="716" width="420" height="150" fill="#1a1612"/>
+<rect x="540" y="710" width="420" height="150" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="540" y="710" width="420" height="38" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+<text x="558" y="735" class="lbl">5 · WHAT WE COMMIT TO — SIGNED</text>
+<text x="558" y="776" class="mono">The Intent Spec</text>
+<text x="558" y="802" class="bd">Every requirement resolves to one canonical row.</text>
+<text x="558" y="826" class="bd">A requirement carries forward and is never quietly</text>
+<text x="558" y="844" class="bd">dropped — drop one and the check names it.</text>
+<line x1="750" y1="648" x2="750" y2="704" stroke="#5E7A3F" stroke-width="3" marker-end="url(#a4)"/>
 
 <!-- ── 6. BUILD ── -->
-<rect x="1042" y="712" width="414" height="150" fill="#1a1612"/>
-<rect x="1036" y="706" width="414" height="150" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
-<rect x="1036" y="706" width="414" height="38" fill="#5B3A7E" stroke="#1a1612" stroke-width="2"/>
-<text x="1054" y="731" class="lbl">6 · BUILD — WHAT USERS MEET</text>
-<text x="1054" y="772" class="bd">Where code spec-driven development starts,</text>
-<text x="1054" y="790" class="bd">and where it assumes the spec is correct.</text>
-<text x="1054" y="818" class="bd">A claim about people cannot assume that,</text>
-<text x="1054" y="836" class="bd">which is why steps 1–4 exist at all.</text>
-<line x1="966" y1="780" x2="1030" y2="780" stroke="#1a1612" stroke-width="3" marker-end="url(#a2)"/>
+<rect x="1042" y="716" width="414" height="150" fill="#1a1612"/>
+<rect x="1036" y="710" width="414" height="150" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
+<rect x="1036" y="710" width="414" height="38" fill="#5B3A7E" stroke="#1a1612" stroke-width="2"/>
+<text x="1054" y="735" class="lbl">6 · WHAT USERS ACTUALLY MEET</text>
+<text x="1054" y="776" class="bd">This is where spec-driven development for code</text>
+<text x="1054" y="794" class="bd">starts — and it assumes the spec is correct.</text>
+<text x="1054" y="822" class="bd">A claim about people cannot assume that, which</text>
+<text x="1054" y="840" class="bd">is the whole reason steps 1 to 4 exist.</text>
+<line x1="966" y1="784" x2="1030" y2="784" stroke="#1a1612" stroke-width="3" marker-end="url(#a2)"/>
 
-<!-- ══ THE RETURN LEG — the loop that closes ══ -->
-<path d="M 1246 862 L 1246 934 L 206 934 L 206 650" fill="none" stroke="#5E7A3F" stroke-width="3" marker-end="url(#a4)"/>
-<rect x="560" y="908" width="390" height="52" fill="#f7f0df" stroke="#5E7A3F" stroke-width="2"/>
-<text x="580" y="930" class="mono" fill="#5E7A3F">A RE-GRADE PROPAGATES — this leg works</text>
-<text x="580" y="950" class="cap">Lower a confidence and every document resting on it now overclaims. The check says so.</text>
+<!-- ── RETURN LEG ── -->
+<path d="M 1246 866 L 1246 938 L 206 938 L 206 654" fill="none" stroke="#5E7A3F" stroke-width="3" marker-end="url(#a4)"/>
+<rect x="540" y="912" width="428" height="52" fill="#f7f0df" stroke="#5E7A3F" stroke-width="2"/>
+<text x="560" y="934" class="mono" fill="#5E7A3F">CHANGE A FINDING AND EVERYTHING KNOWS</text>
+<text x="560" y="954" class="cap">Lower a confidence and every document resting on it is now overstating. The check says so on the next run.</text>
 
-<!-- ── the two open breaks, right column ── -->
+<!-- ── STILL OPEN ── -->
 <rect x="398" y="152" width="1058" height="180" fill="#1a1612"/>
 <rect x="392" y="146" width="1058" height="180" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
 <rect x="392" y="146" width="1058" height="38" fill="#D8472B" stroke="#1a1612" stroke-width="2"/>
-<text x="410" y="171" class="lbl">STILL OPEN — the three places the loop does not close</text>
+<text x="410" y="171" class="lbl">THREE PLACES THIS DOESN'T WORK YET — SAID OUT LOUD, NOT HIDDEN</text>
 
 <circle cx="428" cy="216" r="15" fill="#D8472B"/><text x="428" y="222" class="num" text-anchor="middle">1</text>
-<text x="454" y="212" class="warn">Corpus → findings: no promotion step.</text>
-<text x="454" y="231" class="bd">A shelf declaration in a file is not a promotion. Does the refresh ritual write the row, or a human?</text>
+<text x="454" y="212" class="warn">Nothing moves a finding out of the pile and into the list.</text>
+<text x="454" y="231" class="bd">Somebody has to decide it counts. No step names who, or when — so in practice it happens when someone remembers.</text>
 
 <circle cx="428" cy="262" r="15" fill="#D8472B"/><text x="428" y="268" class="num" text-anchor="middle">2</text>
-<text x="454" y="258" class="warn">Corrections do not reach the index.</text>
-<text x="454" y="277" class="bd">A killed figure has to reach every surface quoting it. Candidate: superseded_by + a reverse index.</text>
+<text x="454" y="258" class="warn">When a number turns out to be wrong, we can't find everywhere it went.</text>
+<text x="454" y="277" class="bd">A killed figure has to reach every deck and doc still quoting it. Today nothing lists them.</text>
 
 <circle cx="428" cy="308" r="15" fill="#D8472B"/><text x="428" y="314" class="num" text-anchor="middle">3</text>
-<text x="454" y="304" class="warn">A changed premise has no slot anywhere.</text>
-<text x="454" y="323" class="bd">When a frame changes, everything beneath it needs re-reading. Not in the gate files, not in §0–§20.</text>
+<text x="454" y="304" class="warn">When the whole premise changes, nothing flags what to re-read.</text>
+<text x="454" y="323" class="bd">If we were wrong about the basic situation, every conclusion under it needs another look. There is no slot for that anywhere.</text>
 
-<line x1="56" y1="990" x2="1456" y2="990" stroke="#1a1612" stroke-width="2"/>
-<text x="56" y="1016" class="cap">Beth Connor · 2026-09-22 · How strong a claim you may make is set by how the evidence was gathered, not by how sure anyone feels. Watched → HIGH · told → MEDIUM ·</text>
-<text x="56" y="1036" class="cap">inferred → MEDIUM · recommended → LOW. Then: if the people studied were not the actual users, everything caps at LOW. Lowest cap wins. Volume widens scope, not confidence.</text>
+<line x1="56" y1="994" x2="1456" y2="994" stroke="#1a1612" stroke-width="2"/>
+<text x="56" y="1018" class="cap">Beth Connor · 2026-09-22 · How strong a claim you may make is set by how the evidence was gathered — not by how sure anyone feels. Watched people do it → HIGH. Asked them → MEDIUM.</text>
+<text x="56" y="1038" class="cap">Worked it out ourselves → MEDIUM. Somebody recommended it → LOW. Then: if the people studied weren't the actual users, everything drops to LOW. More of the same evidence widens who a claim covers; it does not raise confidence.</text>
 </svg>

@@ -211,6 +211,38 @@ This paragraph used to claim the opposite — see the same correction in `projec
 | DS-01 | ‹token names, not raw hex› | scripts/check-design.py |
 | DS-02 | ‹named type stack› | scripts/check-design.py |
 
+### If your design system is Apex
+
+<<Replace this whole subsection if you are on a different system. It is here because the
+house system is Apex and "conform to the design system" is unactionable without knowing
+what conformance means in the specific — but nothing below is portable, so do not leave it
+in place while pointing `design_system:` at something else.
+
+Every rule here is DOCUMENTARY unless a script is named beside it. `scripts/check-design.py`
+checks tokens and nothing else; component identity, view structure and slot-filling are
+human review today.>>
+
+Set `design_system: Apex` and `design_lint:` to the strictest level you can actually run.
+
+| # | Apex rule | why it exists | checked by |
+|---|---|---|---|
+| A-1 | Build with **real Apex component instances** — never primitives faking a component, and never invent one Apex already has | a faked component looks right and behaves differently; it also silently opts out of every later system fix | human review |
+| A-2 | **[Apex v1] library. Do not mix v1 and 2.0** in one surface | mixed versions produce two visual languages in one screen, and the mismatch reads as a bug to users | human review |
+| A-3 | **Never `Lo-fi - *` components** unless lo-fi is explicitly what was asked for | a lo-fi component in a hi-fi review gets read as the real design and critiqued as one | human review |
+| A-4 | Style with **Apex tokens (Figma Variables)** bound to fills, strokes, padding, gap, radius — raw hex or magic numbers are a last resort and get annotated | untokenised values are invisible to every future theme, contrast or density change | `scripts/check-design.py` |
+| A-5 | Lay out with **Auto Layout + token spacing**, not absolute x/y | absolute positioning does not survive translation, zoom, reflow, or a longer string — and reflow is an accessibility requirement, not a nicety | human review |
+| A-6 | Use the **canonical view structure**: Product Bar → Primary Navigation → Main (View Header → Widgets → Worksheet) | users navigate by position across the whole product; a bespoke scaffold costs them that | human review |
+| A-7 | **Fill every component slot — never ship an empty `SLOT`.** Data Grids get real spec-derived rows, columns fill available width, cells truncate rather than wrap | an empty slot is read as "not designed yet" by engineering and as "broken" by a stakeholder | human review |
+| A-8 | Design notes go in Figma's **native annotations**, categorised Development / Interaction / Content — not sticky-note frames | annotations are machine-readable and visible in Dev Mode; stickies are neither | human review |
+
+**Source-layout first.** Clone the closest on-file `[Template]` view frame and instantiate
+the matching `[Apex] Patterns` `[Slot]` components before hand-building anything. Bespoke is
+for when nothing fits, and it should be rare enough to be worth explaining in a note.
+
+**Six of these eight are human review.** That is the honest state, not a gap to paper over —
+and it means Gate 3's `G3-08` conformance row cannot be ticked by a script alone. If you
+need them enforced, that is a tooling decision with an owner, and it belongs in `OPEN.md`.
+
 ## FLOOR and FIT
 
 <<WHAT THIS IS: the reason engineering can act on this file before the product question is

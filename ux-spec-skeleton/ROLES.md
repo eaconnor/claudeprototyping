@@ -43,7 +43,7 @@ and that last one is load-bearing, see `MANIFEST.md`.
 failure on anything that can harm a user, and a visible warning on everything else. Is
 never blocked *as a person* — see `SIGNOFF.md`.
 
-**Product** — owns the direction half of `ux.md` (§4 The concepts, §5 Rejected and superseded) and the Decision Log. Is the only role that can
+**Product** — owns the direction half of `ux.md` (§4 The concepts, §5 What we ruled out, and why) and the Decision Log. Is the only role that can
 resolve a `HUMAN` row about scope. Does not own Gate 1; a problem statement is not a
 prioritisation call.
 

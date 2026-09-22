@@ -41,7 +41,7 @@ signatures on it.
 | Decision Log | **§17 Decision log** | **point.** Straight duplicate |
 | **The concepts** | **nothing** | **KEEP — the centerpiece.** §1 holds *one* outcome. There is nowhere in twenty sections for five futures side by side |
 | **Evidence** | **nothing** | **KEEP.** See below |
-| **Rejected and superseded** | **nothing** | **KEEP.** §17 records decisions taken, not candidates dropped and why |
+| **What we ruled out, and why** | **nothing** | **KEEP.** §17 records decisions taken, not candidates dropped and why |
 
 So `vision.md` stops being a mini-spec and becomes what it should be: **the concept
 workshop.** Three content sections — concepts, evidence, rejected — plus inherited criteria
@@ -84,7 +84,7 @@ is what `## Evidence` adds, and it's genuinely additive rather than a second cop
 has nowhere to live. The Intent Spec is the right place for the one that won; it's the wrong
 place for the four that didn't.
 
-### 3. A forwarding address — `## Rejected and superseded`
+### 3. A forwarding address — `## What we ruled out, and why`
 
 §17 logs decisions made. §12 logs questions open. Neither holds *a candidate that was
 dropped, and why.* This is the gap that let Alert Flood Suppression rank #2 on the survey
@@ -106,7 +106,7 @@ The section list gets **shorter**, not longer:
 
 - `ux.md` — add `## Evidence` and `## UX Acceptance Criteria`. Convert `3. Open items` to a
   pointer at `OPEN.md` and §12.
-- `vision.md` — add `## The concepts`, `## Evidence`, `## Rejected and superseded`,
+- `vision.md` — add `## The concepts`, `## Evidence`, `## What we ruled out, and why`,
   `## UX Acceptance Criteria`. **Convert Direction, What this is not, The outcome variable
   and Decision Log to pointers** at §1, §4, §1 and §17.
 - `design.md` — add `## Evidence`, `## UX Acceptance Criteria`, `## Eval loops`. **Convert

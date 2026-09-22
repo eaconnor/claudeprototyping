@@ -10,7 +10,7 @@ Trimmed on purpose. Gate rubric only — no org-wide baggage carried over from t
 
 Gate 3 is **optional and must say so out loud.** A project with no `design.md` is legal; a project that silently has no Gate 3 is not. Set `GATE_3=""` to declare the absence.
 
-A spec does not move to "Ready to Build" without every gate either passing or declaring why it has not, plus an explicit override logged in `ux.md`'s Rejected and superseded section for any direction call taken against the evidence.
+A spec does not move to "Ready to Build" without every gate either passing or declaring why it has not, plus an explicit override logged in `ux.md`'s “What we ruled out, and why” section for any direction call taken against the evidence.
 
 ## Enforcement
 
@@ -54,7 +54,7 @@ the gates still exist, still pass review, and never fire.
 
 **What this section used to say, and why it was wrong:** it claimed "enforcement is mechanical, not a norm" while the only thing connecting the script to the workflow was this sentence. Nothing in the `speckit-*` machinery referenced `check-gates.sh` — verified by grep, 2026-09-11 — so enforcement depended entirely on an agent reading this file and choosing to act on it. That is a norm wearing a mechanism's hat. The chain above is the fix.
 
-The only ways past a red gate: fix the fault the script named, or log a human override in `ux.md`'s Rejected and superseded section. Ticking a box is no longer one of them.
+The only ways past a red gate: fix the fault the script named, or log a human override in `ux.md`'s “What we ruled out, and why” section. Ticking a box is no longer one of them.
 
 ## No Giant Repo Rule
 

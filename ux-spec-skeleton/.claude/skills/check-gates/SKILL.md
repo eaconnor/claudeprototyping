@@ -33,7 +33,7 @@ BLOCKED — three-gate check failed.
 Fix the unchecked acceptance criteria above and re-run. Not proceeding to plan, tasks, or implement.
 ```
 
-There is no discretion here. A red gate is not a consideration to note and design around. Do not offer to proceed anyway, do not plan "provisionally," do not downgrade the failure to an assumption and carry on. The only ways past a red gate are fixing the fault the script named, or an override a human has logged in `ux.md`'s Rejected and superseded section. Ticking a box is not one of them — unticked boxes stopped being a blocker on 2026-09-21.
+There is no discretion here. A red gate is not a consideration to note and design around. Do not offer to proceed anyway, do not plan "provisionally," do not downgrade the failure to an assumption and carry on. The only ways past a red gate are fixing the fault the script named, or an override a human has logged in `ux.md`'s “What we ruled out, and why” section. Ticking a box is not one of them — unticked boxes stopped being a blocker on 2026-09-21.
 
 ## Why this is a hook and not a norm
 

@@ -197,7 +197,7 @@ being one.
 **`invalidates_if` IS the research plan.** The last column is not a formality. Name what
 would falsify a concept and you have written the brief for the study that settles it.
 
-## 5. Rejected and superseded
+## 5. What we ruled out, and why
 
 <<An agent must not populate this from the concepts above. A row here records a human
 decision that was actually taken.>>

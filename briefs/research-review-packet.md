@@ -2,14 +2,15 @@
 
 Beth Connor · 2026-09-22 · **nothing here is agreed, and nothing has touched your repository**
 
-One page. Everything below is checkable in about twenty minutes.
+Three pages. Every claim in it is checkable in about twenty minutes, and the five questions
+are the only things I need back.
 
 ---
 
 ## What I am asking for
 
-Not approval of the whole thing. Four specific answers, at the bottom. Everything else is
-context for them.
+Not approval of the whole thing. Five specific answers — one in the section on where the
+checks fire, four at the bottom. Everything else is context for them.
 
 ## What was built, in one paragraph
 
@@ -61,7 +62,8 @@ nothing about grading at all, which I found by grepping it while answering your 
 is true and checkable: no script writes to `findings.yaml`, and `check-gates.sh` fails any
 document claiming more than a row licenses. Nothing stops a direct edit. Enforcing it needs
 CODEOWNERS or a CI diff check on that file, and neither exists yet.
-A researcher may grade **below** the ceiling; judgment overrides arithmetic downward only.
+
+A researcher may grade **below** the ceiling. Judgment overrides arithmetic downward only.
 
 ## Two things I changed my mind about, because of your email
 
@@ -73,7 +75,46 @@ defect is never the LOW. It is LOW travelling downstream unmarked.
 It is exactly the instrument for the case where convergent secondary sources support that
 a thing *exists* without saying how common it is.
 
-## Four questions
+## Where the checks actually fire — and the two moments that have no home
+
+You asked for four research moments. Here is what is genuinely wired versus what I have only
+described. Read from `.specify/extensions.yml` on 2026-09-22, not recalled.
+
+| the moment you named | what fires today | wired? |
+|---|---|---|
+| **A project has begun at all** — so research can check it was set up properly | `after_specify` runs `ux-onboard` → `check-evidence.sh`. Blocks until the project names an evidence home **with an owner**. Requires a location and an owner; deliberately does **not** require a method | **yes, mandatory** |
+| **Pre-spec: lint + secondary dive** | nothing. The earliest hook Spec Kit offers is `after_specify` — *after* the spec exists. `before_plan` is later still | **no** |
+| **Before shipping: lint + secondary dive** | nothing. **Spec Kit has no `before_ship` hook point**, so there is nowhere mechanical to attach it | **no** |
+| **Forced lints on `ux.md`, the Intent Spec and `design.md`** | `check-claims.sh` reads all three (`:66` adds the Intent Spec, `:84` the gate files) — and **is registered in no hook.** It runs only when somebody types it | **built, not wired** |
+
+Three things worth being blunt about:
+
+**The linter you asked to be forced is the one thing that isn't.** Every other check is
+registered at `after_specify` / `before_plan` / `before_tasks` / `before_implement` with
+`optional: false`. `check-claims.sh` is mentioned nowhere in `extensions.yml`. It is the
+check that covers exactly the three files you named, and it fires by memory. Logged as
+`TOOLKIT-OPEN.md` A-11 rather than quietly registered, because adding a mandatory hook also
+needs a matching skill directory and that is a change to the enforcement chain, not a
+one-liner.
+
+**The secondary dive does not exist in this toolkit at all** — not as a step, not as a slot,
+not as a trigger. I grepped for it. `ux.md` says secondary research is "accurately graded,
+not unevidenced," which is the *principle*, but there is no point in the process where a
+secondary dive is asked for or recorded as having happened. If it is a real stage in your
+method, it currently has no home here and nothing would notice its absence.
+
+**"Pre-spec" and "before shipping" are the two ends of your loop and neither has a hook.**
+The middle is well covered and the edges are not. That may be a Spec Kit limitation we route
+around with CI rather than hooks — `.github/workflows/gates.yml` exists and runs on push,
+which is closer to "before shipping" than any hook is.
+
+**Question 5, and it is the one I most want your answer on:** are the pre-spec and pre-ship
+dives *meant* to be mechanical gates, or are they reviews a person schedules? I have not
+built either, because the honest answer changes the design — a gate needs a hook and an exit
+code, a review needs a named owner and a calendar. Guessing would produce a convincing
+mechanism for the wrong thing.
+
+## The other four questions
 
 **1. `rests_on:` takes one finding. A need usually rests on several.**
 The parser reads a single id (`check-gates.sh:330`). Do you want a list, and if so does the

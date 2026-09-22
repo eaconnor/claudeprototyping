@@ -62,11 +62,52 @@ last_updated: 2026-09-16          # documentary
 
 # Vision — ‹project›
 
-Gate 2. A **derived** checklist: direction and scope are decided in the intent spec
-(`canonical_spec:`), and this file records whether that decision is coherent enough to build
-against. Judgment lives upstream; this is the gate on it.
+Gate 2. Canonical for direction, and for the concepts that direction is expressed as.
 
 > **Ships red.** See the note in `ux.md` — it applies identically here.
+
+> **FRAMING CHANGED 2026-09-22 — reconcile before relying on the old reading.** This file
+> used to describe itself as *"a derived checklist… judgment lives upstream; this is the
+> gate on it."* That is no longer the intent. `vision.md` **authors** the concepts; it does
+> not merely gate a decision made elsewhere. Vision prototypes, blueprints and multiple
+> concurrent futures live here. If a downstream doc still treats this file as derived,
+> that doc is stale.
+
+## How to fill this out — delete this block once the file is written
+
+**This file authors THE CONCEPTS:** *"given this evidence, here is what would be
+valuable."* Offerings, not features. More than one future, legibly — design can put five
+side by side and everyone should know how to read them.
+
+Four moves. Each names **what it has to produce** — how you get there is yours.
+
+1. **Read the whole pile.** Reconcile qual against quant. → candidate offerings.
+   *From scratch:* affinity mapping or a synthesis workshop. Slow, works, needs a wall.
+2. **Get more than one frame on it.** → contradictory readings, **left contradictory**.
+   *From scratch:* convene people with genuinely different lenses and do not synthesise the
+   output. The disagreement is the deliverable.
+3. **Attack it.** → a ranked list of where this fails, and what would falsify it.
+   *From scratch:* a premortem, a red-team review, or assumption mapping. One rule: the
+   attacker must not be the person who wants the bet to be true.
+4. **Write the bet.** → the concept, owned, with its falsifiers attached.
+   No from-scratch route and no tool route. This is the authoring step and it is yours.
+
+**Two rules specific to this file.**
+
+**`claim_scope` is `existence` or `pattern`, never `prevalence`.** Convergence across
+independent sources tells you a thing exists and roughly how it behaves. It never tells you
+how common it is. Volume widens scope, not confidence.
+
+**This file runs honestly at LOW, and that is correct.** A vision resting on secondary
+research is not unevidenced — it is accurately graded. Concepts are usually adoption claims
+("will they want it, keep it, pay for it") and adoption evidence is the thing any project
+has least of. The defect is never the LOW. The defect is LOW travelling downstream unmarked.
+
+**What step 3 gives you that nothing else does:** the ranked holes *are* `invalidates_if`,
+and `invalidates_if` **is the primary research plan.** Name what would falsify the concept
+and you have written the brief for the research that settles it.
+
+Longer version, with the toolkit routes: `AUTHORING.md`.
 
 ## Direction
 

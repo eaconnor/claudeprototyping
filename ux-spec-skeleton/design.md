@@ -74,6 +74,43 @@ specified users achieve specified goals with effectiveness, efficiency and satis
 specified context of use. `[CS: HIGH — ISO 9241-11:2018]` There is no universal usability —
 name the context of use or the measures below mean nothing.
 
+## How to fill this out — delete this block once the file is written
+
+**This file authors THE BEHAVIOUR:** *"given this evidence, here is how it must behave."*
+
+Four moves. Each names **what it has to produce** — how you get there is yours.
+
+1. **Make the thing, evidence first.** → a prototype **plus** the honesty apparatus around
+   it.
+   *From scratch:* any prototyping process, as long as the brief is claim-tagged *before*
+   the build starts and the fidelity tier is stated on the artifact itself.
+2. **Critique it against the brief, twice.** → a pre-build and a post-build score, with the
+   delta between them.
+   *From scratch:* a written rubric and a reviewer who did not build it. The number of
+   dimensions matters far less than the reviewer not being the author.
+3. **Check the process ran.** → did the steps happen, or just get claimed.
+   *From scratch:* ask someone to verify the artifacts exist. Unglamorous, catches real
+   things.
+4. **Write the criteria.** → the inherited `UXI-##` rows, plus the FLOOR items.
+   Yours.
+
+**This is where the loop closes.** Testing a prototype produces `observed_behavior` findings
+at `population_fidelity: primary` — the only combination that reaches a HIGH ceiling. So
+this file is not just a consumer of evidence, it is **the main manufacturer of the strongest
+evidence in the system**, and the step that pays back whatever bet `vision.md` made on
+secondary material. Those results go back into `findings.yaml`.
+
+**Secondary evidence stops being enough here.** Converged desk research can tell you the
+conversation is the human half of the job. It cannot tell you whether your approval step is
+reachable by keyboard. This is the file where fidelity has to be primary.
+
+**The one exception to needing evidence at all:** FLOOR items — WCAG, APEX, data integrity —
+rest on **standards, not findings**, and need no evidence row. They are the only legitimately
+unsourced claims in the whole system. Name them even when they cannot yet be assessed:
+`[?]` means "no UI exists to measure," which is not the same as "unmet."
+
+Longer version, with the toolkit routes: `AUTHORING.md`.
+
 ## Context of use
 
 - **Users:** ‹who, specifically› `[?]`

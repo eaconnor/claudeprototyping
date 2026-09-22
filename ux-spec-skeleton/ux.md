@@ -72,6 +72,43 @@ Canonical for the research corpus, the problem, and the cast. **§ Acceptance Cr
 > that a box is ticked, and only a person reading the evidence can check that the
 > claim beside it is true.
 
+## How to fill this out — delete this block once the file is written
+
+**This file authors THE NEED:** *"given this evidence, here is the problem, and whose it
+is."* That statement is not in the research and cannot be. Findings record what happened;
+a need is a claim about what should be true for **this** product. You make it. It rests on
+evidence and can never be graded above what it rests on.
+
+Four moves. Each names **what it has to produce** — how you get there is yours.
+
+1. **Look before you gather.** → a source log, every row linked.
+   *From scratch:* desk research into a document, one link per row. If it isn't linked, it
+   isn't a source.
+2. **Interpret.** → your reading, recorded as yours, kept separate from the sources it came
+   from.
+   *From scratch:* a spreadsheet with your own column and your own colour coding. Then a
+   second reader classifies independently and you **record where you disagree** — that
+   disagreement is the best `invalidates_if` you will get, because it marks where tacit
+   knowledge is carrying the most load.
+3. **Map the people and the moments.** → the cast, with gaps named `[?]` rather than
+   smoothed over.
+   *From scratch:* Adaptive Path's service blueprinting method, or Whitney/IIT's Four
+   Lenses context brief. Both published; neither needs a tool.
+4. **Write the need.** → the need statement, in your words, tagged.
+   No from-scratch route and no tool route. This is the authoring step and it is yours.
+
+**If you have no research yet, that is a legal state.** Write the problem as you understand
+it, tag every claim `[A]`, leave `confidence_regime: BLOCKED` or declare `PROCEED-FLAGGED`
+with a reason, and add an `## Evidence` section that says "no findings back this yet."
+Then run `./check-gates.sh` — **the flags are your research plan.** You do not need research
+to start this file. You need it to finish it.
+
+**Promotion rule:** when a source is something this file actually leans on, it becomes a
+`findings.yaml` row. If nothing cites it, it does not need one. That is what keeps the
+findings layer small enough to maintain.
+
+Longer version, with the toolkit routes: `AUTHORING.md`.
+
 ## 1. The problem, and for whom
 
 **Problem statement** — ‹sourced, not invented. Quote the intent spec verbatim if one exists.› `[?]`

@@ -111,13 +111,47 @@ unsourced claims in the whole system. Name them even when they cannot yet be ass
 
 Longer version, with the toolkit routes: `AUTHORING.md`.
 
+### Two markers, and they mean different things
+
+Both readers — the person filling this in and any agent generating into it — need to tell an
+instruction from content. There are exactly two markers:
+
+| marker | means | who acts on it |
+|---|---|---|
+| `‹…›` | **a slot.** Replace it with real content. A `‹…›` left in a shipped file is an unanswered question wearing the shape of an answer. | whoever owns the section |
+| `<<…>>` | **an annotation.** What this section is for, who fills it, what good looks like. Never content. Delete it once the section is written. | both — a human reads it as guidance, an agent reads it as scope |
+
+**For an agent specifically:** a `<<…>>` block is instruction, not material. Never quote it,
+never carry it into generated prose, never treat its example text as a finding. If a section
+still holds its `<<…>>` and no content, it is **unwritten** — say so rather than filling it,
+and never infer content for it from the surrounding sections.
+
 ## Context of use
+
+<<WHAT THIS IS: the ISO 9241-11 denominator. Usability is not a property of a screen, it is
+a property of specified users doing specified tasks in a specified context — so every
+measure below this line is meaningless until these three rows are real. This is the most
+skipped section in the file and skipping it is what produces "the design tested well"
+with no statement of for whom.
+WHO FILLS IT: design, from ux.md's cast and vision.md's Top Tasks. Do not invent a user
+here — if ux.md does not name them, that is a `[?]` and it belongs in OPEN.md.
+GOOD LOOKS LIKE: "a technician, mid-shift, on a shared workstation, interrupted every few
+minutes" — not "IT professionals".>>
 
 - **Users:** ‹who, specifically› `[?]`
 - **Tasks:** ‹which tasks, from vision.md G2-02› `[?]`
 - **Environment:** ‹where, on what, under what pressure, with what interruptions› `[?]`
 
 ## Rules pulled from the design system
+
+<<WHAT THIS IS: the subset of your design system this project is actually held to — not a
+copy of the system, a pointer at it plus the rules a script can check. Copying the system
+in here guarantees drift the first time it changes.
+WHO FILLS IT: design, with whoever owns the design system. If there is no design system,
+say so — "none, and deviations are therefore unjudgeable" is an honest row and it belongs
+in OPEN.md as a decision, not left blank.
+GOOD LOOKS LIKE: a short table where every row names the script that checks it. A rule
+nothing checks is a preference; label it as one.>>
 
 `design_system:` names the system; `design_lint:` sets how hard it is checked. Tokens are read
 from the build's own `:root` block — **no palette is hardcoded in any script here**, which is
@@ -130,6 +164,17 @@ what lets this repo work with any design system.
 
 ## FLOOR and FIT
 
+<<WHAT THIS IS: the reason engineering can act on this file before the product question is
+settled. FLOOR is what is true regardless of whether the concept survives; FIT only pays
+off if it does. Getting this split wrong in either direction is expensive: gate FLOOR on
+problem validation and you ship something inaccessible, treat FIT as FLOOR and you polish
+a thing nobody wanted.
+WHO FILLS IT: design writes the split, engineering agrees it is buildable, and the risk
+function named in project.conf owns the lawfulness row. Three names, not one.
+GOOD LOOKS LIKE: every FLOOR item traceable to a standard or a law rather than to taste.
+FLOOR items are the only claims in this whole system that legitimately rest on standards
+instead of findings — they need no evidence row, and that is correct, not an omission.>>
+
 The split that makes this usable by engineering, and it is not a detail:
 
 - **FLOOR** — accessibility, data integrity, lawfulness, security. **Never gated on problem
@@ -139,6 +184,19 @@ The split that makes this usable by engineering, and it is not a detail:
 "Don't build until Gate 1 passes" is right for FIT and dangerously wrong for FLOOR.
 
 ## Acceptance Criteria — Gate 3: Are we making the thing right?
+
+<<WHAT THIS IS: this gate's own rubric. These `G3-` rows stay here — they do NOT travel
+forward, unlike the `UXI-##` rows, which are product criteria and must appear in every
+later file. Two different kinds of checklist in one document; do not merge them.
+WHO FILLS IT: design ticks, but `verified_by:` names who actually checked. Half of these
+cannot be ticked by any script — a human drives the keyboard, a human attempts the
+destructive path, the risk function signs the lawful-basis row.
+GOOD LOOKS LIKE: unticked and honest. An unticked box with a reason beside it is a working
+document. A ticked box with nothing behind it is the only real failure here — do not tick a
+box to quiet a script, because the script only checks that the box is ticked and only a
+person reading the evidence can check that the claim beside it is true.
+NOTE ON `[?]`: "no UI exists to measure" is `[?]`, not "unmet". Those are different states
+and collapsing them is how a project reads as failing when it has simply not started.>>
 
 - [ ] G3-01 — FLOOR · WCAG AA contrast met, measured not eyeballed · traces_to: §5 · verified_by: scripts/contrast.py computes the table; a real audit confirms it
 - [ ] G3-02 — FLOOR · Keyboard-reachable and screen-reader labelled on every interactive element · traces_to: §5 · verified_by: a human drives the build with keyboard only, then with a screen reader

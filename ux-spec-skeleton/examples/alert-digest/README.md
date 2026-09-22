@@ -43,15 +43,50 @@ Three things worth stopping on:
 - **The strongest row points the wrong way.** It stays in. A file holding only
   supporting findings is not an evidence log, it is a case being made.
 
-**2. Assert too much, on purpose.** Point `ux.md` at a row with `rests_on:`, claim a
-confidence above that row's ceiling, and run the check:
+**2. [`ux.md`](ux.md) — and run it.** This folder is a complete miniature project with
+its own `project.conf`, so the checks run against it without touching the skeleton at
+the repo root:
 
 ```bash
-./check-gates.sh
+cd examples/alert-digest && ../../check-gates.sh
 ```
 
-It should fail and name the row. **If it passes, the wiring is broken** — that is the
-real test of an install, not a green run.
+`E-02` in `ux.md` asserts HIGH on a row that caps at MEDIUM. It is left in on purpose.
+The run exits **1** and prints:
+
+```
+FAIL E-02 — asserts HIGH. overnight-alerts-arrive-in-bulk is STATED_ATTITUDE / primary fidelity, which ceilings
+     at MEDIUM. Repetition raises scope, not confidence — and someone
+     downstream cannot see this gap from where they are standing.
+```
+
+**If that run comes back clean, the install is broken.** A green run proves nothing;
+this is the test.
+
+Worth noticing in the same output:
+
+- **Gate 1 PASSes with 0 of 5 criteria ticked** — because the file declares
+  `PROCEED-FLAGGED`. Unticked boxes are not a blocker. What blocks is a claim above
+  its evidence, an undeclared regime, or a dispute with nowhere to go.
+- **Every finding flags as ungraded**, and the check carries on against the computed
+  ceiling. It will not invent a grade.
+- **E-04 and E-05 dispute their own rows and pass**, because each carries a
+  `handling:` pointer. Disagreement is legal; unhandled disagreement is not.
+- **Empty `GATE_2`/`GATE_3` and an empty `INTENT_SPEC` flag but don't block** — a
+  pre-spec phase with no Gate 2 yet is a real state, as long as it is declared rather
+  than silent.
+
+Then run the other check:
+
+```bash
+../../check-claims.sh
+```
+
+It exits **0** — and that is the point. The linter checks the *form* of a claim: does
+a cited finding exist, does a hedge carry its reason, is a rate quoted off a
+single-digit sample. The overclaim in E-02 is well-formed. **Two checks, two
+questions**: one asks whether a claim is written honestly, the other whether it claims
+more than its evidence licenses. Neither catches the other's failure.
 
 **3. Then read the ceiling rule.** How strong a claim you may make is set by how the
 evidence was gathered, not by how sure anyone feels:

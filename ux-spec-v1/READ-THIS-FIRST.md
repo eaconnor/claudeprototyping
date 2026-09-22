@@ -1,6 +1,6 @@
 # Read this first
 
-One page. You do not need to read anything else to start.
+You do not need to read anything else to start.
 
 ---
 
@@ -86,18 +86,18 @@ line. Nobody typed that ceiling — it was computed from two fields on the findi
 
 - **It does not block you.** A red check is the normal state of honest early work. The gate
   asks *"is this honest about being unfinished?"*, not *"is this finished?"* An unticked box
-  is not a failure and hasn't been since 21 September.
-- **It adds one recurring obligation, and I'm not going to pretend otherwise.** Everything
-  here is a file and a script *except one thing*: a script can check that a box is ticked, but
-  it cannot check that the claim written next to it is true. Only a person reading the source
-  can. So somebody has to audit **one claim, picked at random, against its actual source** on
-  a regular basis — about fifteen minutes. Skip that and this whole apparatus is theatre, and
-  `RITUALS.md` says so in those words.
+  is not a failure.
+- **It does add one recurring obligation, stated up front rather than discovered later.**
+  Everything here is a file and a script *except one thing*: a script can check that a box is
+  ticked. It cannot check that the claim written next to it is true. Only a person reading the
+  source can. So somebody needs to audit **one claim, picked at random, against its actual
+  source** — about fifteen minutes, regularly. Skip it and the rest of this is theatre.
 
-  `RITUALS.md` proposes doing it in a fortnightly 30-minute review. **If your team doesn't do
-  standing meetings, do it async** — one named person per sprint audits one criterion and
-  writes two lines in `OPEN.md`. The audit is the requirement; the meeting is one way to get
-  it. Neither version has been run yet, so treat both as a proposal.
+  One named person per sprint, auditing one criterion and writing two lines in `OPEN.md`, is
+  enough; a second person initialling it is better, because one unchallenged reading is the
+  failure this whole thing is about, one level up. Some teams do it in a short fortnightly
+  review instead. The audit is the requirement — the meeting is just one way to get it, and
+  neither version has been run yet, so treat both as a proposal rather than a process.
 - **It does not replace the Intent Spec, Spec Kit, or your workflow.** It bolts on. And
   honestly: in your real repository it is **not wired in yet.** That connection is the thing
   we want you to test.

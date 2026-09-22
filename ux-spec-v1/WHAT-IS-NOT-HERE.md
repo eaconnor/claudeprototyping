@@ -54,7 +54,6 @@ above says why each target is absent.
 |---|---|
 | `AUTHORING.md` | design.md |
 | `AUTHORING.md` | ux.md |
-| `RITUALS.md` | READ-THIS-FIRST.md |
 | `TOOLKIT-OPEN.md` | OPEN.md |
 | `check-eng.sh` | OPEN.md |
 | `check-eng.sh` | design.md |

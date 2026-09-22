@@ -25,10 +25,20 @@ Exit codes below were run against a fresh clone on 2026-09-22, not recalled:
 | `check-evidence.sh` | **28** | no evidence home beyond the blank template |
 | `check-eng.sh` | **12** | nothing is being built, so the harm gate could not be *evaluated* — which is not the same as passing, and the code is distinct so CI cannot confuse them |
 | `check-claims.sh` | **1** | `ux.md`'s `## Evidence` section still holds its `‹finding id›` placeholder. A placeholder is not an answer |
+| `check-drift.sh` | **22** | the gate files declare `drift: FRESH` while the constitution they are built from has moved. The loudest code in the suite, and the one most people hit first |
+| `check-human.sh` | **27** | the generated `STATUS` fence does not match the spine. Fix with `./check-human.sh --write` |
+| `check-condens.sh` · `check-never.sh` · `check-trace.sh` | **5** | **cannot evaluate** — no registered artifacts, no build, no `INTENT_SPEC`. Read this as "nothing was looked at," never as "nothing was wrong" |
+| `check-judgment.sh` · `check-skills.sh` · `check-value.sh` · `check-waivers.sh` | **0** | genuinely clean: no unfilled judgment slot contradicts its own regime, no registered skill is missing, no cost register is malformed, no waiver is outstanding |
+
+That is all fifteen scripts. Four of them pass on a fresh clone and eleven do not, which is
+the correct ratio for a repo where nothing has been decided.
 
 **A green run on an empty repo would be the bug.** The whole apparatus exists to stop
 absence reading as approval. `EXIT-CODES.md` has the full table, one code per kind of
-wrong.
+wrong — and note that exit `5` there is shared by ten scripts for one meaning: *I could not
+evaluate this.* Treating a `5` as a pass is the single most common way this apparatus gets
+defeated, because "no violations found" and "no violations looked for" print almost
+identically.
 
 **2. You probably already have an Intent Spec. This bolts onto it — and is not wired to it yet.**
 

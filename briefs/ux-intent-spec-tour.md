@@ -232,17 +232,19 @@ that are judged per context.
 ## The tour — run it
 
 ```bash
-cd ~/Library/CloudStorage/OneDrive-N-able/Bethproto/acp-core-testrepo && ./check-gates.sh
+cd ux-spec-skeleton/examples/alert-digest && ../../check-gates.sh
 ```
 
-> The output below is copied from a real run made before the two upstream files were
-> merged, so it still names three. Left as-is rather than edited to match; it needs a
-> re-run.
+That is a small, self-contained, entirely fictional project that ships with the toolkit —
+five findings, one of which argues against the project it belongs to. Every block below is
+copied from that command's real output on 2026-09-22.
 
 ### 1. The gate refuses to grade you on being unfinished
 
 ```
-PASS — Gate 1 (right problem): ux.md (PROCEED-FLAGGED · 4 of 6 checked).
+PASS — Gate 1 (right problem): ux.md (PROCEED-FLAGGED · 0 of 5 checked).
+       5 criteria open and declared. Not a blocker: this document says
+       it is provisional, so outputs it feeds must not be claimed as validated.
        2 criteria open and declared. Not a blocker: this document says
        it is provisional, so outputs it feeds must not be claimed as validated.
 ```
@@ -276,11 +278,19 @@ Spec, so there's a single ID space rather than four.
 ### 3. No claim above what the evidence licenses
 
 ```
-FAIL E-03 — asserts HIGH. partners-want-a-standalone-discoverable-surface is
-     STATED_ATTITUDE / primary fidelity, which ceilings at MEDIUM.
-     Repetition raises scope, not confidence — and someone
-     downstream cannot see this gap from where they are standing.
+  FAIL E-02 — asserts HIGH. overnight-alerts-arrive-in-bulk is STATED_ATTITUDE / primary
+       fidelity, which ceilings at MEDIUM. Repetition raises scope, not confidence —
+       and someone downstream cannot see this gap from where they are standing.
 ```
+
+Nobody typed that ceiling. `MEDIUM` was computed from two fields on the finding the claim
+points at: people *said* this (not observed), about the *actual* population. Said-by-the-real-
+population tops out at MEDIUM, the document claimed HIGH, and the check named the id.
+
+Worth knowing what this is *not* catching: run `./check-claims.sh` on the identical file and
+it exits 0. The claim is perfectly well-formed — it has an id, a pointer, a grade, and the
+pointer resolves. Only its *strength* is wrong. Two checks, two questions, and neither one
+catches the other's failure.
 
 
 ---

@@ -25,33 +25,33 @@
   <text x="76" y="156" font-size="16" font-weight="700" fill="#efe7d6">PRODUCTION LINE</text>
   <text x="636" y="156" font-size="13" fill="#efe7d6" text-anchor="end" opacity=".9">automate it</text>
 
-  <text x="76" y="200" font-size="14" fill="#1a1612">Every order is the same order.</text>
+  <text x="76" y="198" font-size="14" fill="#1a1612">Every order is the same order.</text>
 
   <!-- identical units -->
   <g>
-    <rect x="76" y="226" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-    <rect x="212" y="226" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-    <rect x="348" y="226" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-    <rect x="484" y="226" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-    <text x="124" y="270" font-size="13" fill="#efe7d6" text-anchor="middle">PULL</text>
-    <text x="260" y="270" font-size="13" fill="#efe7d6" text-anchor="middle">COUNT</text>
-    <text x="396" y="270" font-size="13" fill="#efe7d6" text-anchor="middle">FORMAT</text>
-    <text x="532" y="270" font-size="13" fill="#efe7d6" text-anchor="middle">SEND</text>
-    <line x1="176" y1="263" x2="206" y2="263" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
-    <line x1="312" y1="263" x2="342" y2="263" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
-    <line x1="448" y1="263" x2="478" y2="263" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
+    <rect x="76" y="252" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+    <rect x="212" y="252" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+    <rect x="348" y="252" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+    <rect x="484" y="252" width="96" height="74" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+    <text x="124" y="296" font-size="13" fill="#efe7d6" text-anchor="middle">PULL</text>
+    <text x="260" y="296" font-size="13" fill="#efe7d6" text-anchor="middle">COUNT</text>
+    <text x="396" y="296" font-size="13" fill="#efe7d6" text-anchor="middle">FORMAT</text>
+    <text x="532" y="296" font-size="13" fill="#efe7d6" text-anchor="middle">SEND</text>
+    <line x1="176" y1="289" x2="206" y2="289" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
+    <line x1="312" y1="289" x2="342" y2="289" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
+    <line x1="448" y1="289" x2="478" y2="289" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
   </g>
 
-  <text x="76" y="342" font-size="13" fill="#1a1612" opacity=".8">One direction. No branches. Nothing waits.</text>
-  <text x="76" y="364" font-size="13" fill="#1a1612" opacity=".8">Designed so nobody has to think — that is why it works.</text>
+  <text x="76" y="396" font-size="13" fill="#1a1612" opacity=".8">One direction. No branches. Nothing waits.</text>
+  <text x="76" y="414" font-size="13" fill="#1a1612" opacity=".8">Designed so nobody has to think — that is why it works.</text>
 
-  <line x1="76" y1="392" x2="636" y2="392" stroke="#1a1612" stroke-width="1.5" opacity=".3"/>
+  <line x1="76" y1="432" x2="636" y2="432" stroke="#1a1612" stroke-width="1.5" opacity=".3"/>
 
-  <text x="76" y="424" font-size="13" font-weight="700" fill="#1a1612">IN THE EBR, THIS IS:</text>
-  <text x="76" y="452" font-size="13" fill="#1a1612">Device and licence counts · asset inventory</text>
-  <text x="76" y="476" font-size="13" fill="#1a1612">Action items into tickets · next meeting booked</text>
-  <text x="76" y="500" font-size="13" fill="#1a1612">Agenda · current climate · KPIs</text>
-  <text x="76" y="538" font-size="13" font-weight="700" fill="#5E7A3F">Most of the prep hours. None of the value.</text>
+  <text x="76" y="458" font-size="13" font-weight="700" fill="#1a1612">IN THE EBR, THIS IS:</text>
+  <text x="76" y="482" font-size="13" fill="#1a1612">Device and licence counts · asset inventory</text>
+  <text x="76" y="504" font-size="13" fill="#1a1612">Action items into tickets · next meeting booked</text>
+  <text x="76" y="526" font-size="13" fill="#1a1612">Agenda · current climate · KPIs</text>
+  <text x="76" y="556" font-size="13" font-weight="700" fill="#5E7A3F">Most of the prep hours. None of the value.</text>
 
   <!-- ============ RIGHT: JOB SHOP ============ -->
   <rect x="744" y="126" width="600" height="440" fill="#f7f0df" stroke="#1a1612" stroke-width="2"/>
@@ -61,45 +61,46 @@
   <text x="764" y="156" font-size="16" font-weight="700" fill="#efe7d6">JOB SHOP</text>
   <text x="1324" y="156" font-size="13" fill="#efe7d6" text-anchor="end" opacity=".95">protect it</text>
 
-  <text x="764" y="200" font-size="14" fill="#1a1612">Same input. Different correct answer per client.</text>
+  <text x="764" y="198" font-size="14" fill="#1a1612">Same input. A different correct answer each time.</text>
 
   <!-- one input -->
-  <rect x="764" y="226" width="104" height="74" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
-  <text x="816" y="258" font-size="12" fill="#efe7d6" text-anchor="middle">ONE</text>
-  <text x="816" y="276" font-size="12" fill="#efe7d6" text-anchor="middle">FINDING</text>
+  <rect x="764" y="252" width="100" height="74" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
+  <text x="814" y="284" font-size="12" fill="#efe7d6" text-anchor="middle">ONE</text>
+  <text x="814" y="302" font-size="12" fill="#efe7d6" text-anchor="middle">FINDING</text>
 
-  <line x1="872" y1="263" x2="906" y2="263" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="868" y1="289" x2="900" y2="289" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
 
   <!-- decision -->
-  <path d="M968 216 L1024 263 L968 310 L912 263 z" fill="#C99A2E" stroke="#1a1612" stroke-width="2"/>
-  <text x="968" y="259" font-size="11" font-weight="700" fill="#1a1612" text-anchor="middle">WHO</text>
-  <text x="968" y="274" font-size="11" font-weight="700" fill="#1a1612" text-anchor="middle">DECIDES</text>
+  <path d="M962 244 L1016 289 L962 334 L908 289 z" fill="#C99A2E" stroke="#1a1612" stroke-width="2"/>
+  <text x="962" y="285" font-size="11" font-weight="700" fill="#1a1612" text-anchor="middle">WHO</text>
+  <text x="962" y="300" font-size="11" font-weight="700" fill="#1a1612" text-anchor="middle">DECIDES</text>
 
   <!-- three branches -->
-  <line x1="1028" y1="240" x2="1082" y2="214" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
-  <line x1="1028" y1="263" x2="1082" y2="263" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
-  <line x1="1028" y1="286" x2="1082" y2="312" stroke="#D8472B" stroke-width="2.5" marker-end="url(#arR)"/>
+  <line x1="1020" y1="268" x2="1070" y2="248" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="1020" y1="289" x2="1070" y2="289" stroke="#1a1612" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="1020" y1="310" x2="1070" y2="332" stroke="#D8472B" stroke-width="2.5" marker-end="url(#arR)"/>
 
-  <rect x="1088" y="190" width="232" height="46" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
-  <text x="1104" y="219" font-size="12" fill="#efe7d6">Raise it — it is a real gap</text>
+  <rect x="1076" y="228" width="248" height="42" fill="#5E7A3F" stroke="#1a1612" stroke-width="2"/>
+  <text x="1090" y="254" font-size="12" fill="#efe7d6">Raise it — a real gap</text>
 
-  <rect x="1088" y="240" width="232" height="46" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
-  <text x="1104" y="269" font-size="12" fill="#efe7d6">Suppress it — already accepted</text>
+  <rect x="1076" y="274" width="248" height="42" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
+  <text x="1090" y="300" font-size="12" fill="#efe7d6">Suppress — already accepted</text>
 
-  <rect x="1088" y="290" width="232" height="46" fill="#D8472B" stroke="#1a1612" stroke-width="2"/>
-  <text x="1104" y="312" font-size="12" fill="#efe7d6">Hold it — nobody knows yet</text>
-  <text x="1104" y="328" font-size="11" fill="#efe7d6" opacity=".85">and holding is a valid answer</text>
+  <rect x="1076" y="320" width="248" height="46" fill="#D8472B" stroke="#1a1612" stroke-width="2"/>
+  <text x="1090" y="341" font-size="12" fill="#efe7d6">Hold — nobody knows yet,</text>
+  <text x="1090" y="357" font-size="12" fill="#efe7d6">and holding is a valid answer</text>
 
-  <text x="764" y="368" font-size="13" fill="#1a1612" opacity=".8">The deciding IS the work. Route it wrong and the output is</text>
-  <text x="764" y="386" font-size="13" fill="#1a1612" opacity=".8">not slower — it is confidently wrong.</text>
+  <text x="764" y="396" font-size="13" fill="#1a1612" opacity=".8">The deciding IS the work. Route it wrong and the output</text>
+  <text x="764" y="414" font-size="13" fill="#1a1612" opacity=".8">is not slower — it is confidently wrong.</text>
 
-  <line x1="764" y1="404" x2="1324" y2="404" stroke="#1a1612" stroke-width="1.5" opacity=".3"/>
+  <line x1="764" y1="404" x2="1324" y2="404" stroke="none"/>
 
-  <text x="764" y="432" font-size="13" font-weight="700" fill="#1a1612">IN THE EBR, THIS IS:</text>
-  <text x="764" y="458" font-size="13" fill="#1a1612">Accepted deviations · temporary exclusions</text>
-  <text x="764" y="480" font-size="13" fill="#1a1612">Disagreeing sources · per-person security data</text>
-  <text x="764" y="502" font-size="13" fill="#1a1612">Business goals · referrals · roadmap order</text>
-  <text x="764" y="540" font-size="13" font-weight="700" fill="#D8472B">Few hours. All of the value. And the liability.</text>
+  <line x1="764" y1="432" x2="1324" y2="432" stroke="#1a1612" stroke-width="1.5" opacity=".3"/>
+  <text x="764" y="458" font-size="13" font-weight="700" fill="#1a1612">IN THE EBR, THIS IS:</text>
+  <text x="764" y="482" font-size="13" fill="#1a1612">Accepted deviations · temporary exclusions</text>
+  <text x="764" y="504" font-size="13" fill="#1a1612">Disagreeing sources · per-person security data</text>
+  <text x="764" y="526" font-size="13" fill="#1a1612">Business goals · referrals · roadmap order</text>
+  <text x="764" y="556" font-size="13" font-weight="700" fill="#D8472B">Few hours. All of the value. And the liability.</text>
 
   <text x="56" y="600" font-size="12.5" fill="#1a1612" opacity=".7">Automating the left is what buys back the hours for the right. Automate both and we have replaced the part they are paid for with a template.</text>
 </svg>

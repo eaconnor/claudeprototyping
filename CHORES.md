@@ -8,6 +8,31 @@
 
 ## Open
 
+### Tune the game against how the model is actually trained (2026-09-23) — Beth's request
+
+- [ ] **Re-tool the Listening Game so it catches the failures that come from being trained to produce desirable-looking outcomes.** Beth's framing: *"need to make a note for friday chores to tool game to work better with how you are trained to deliver desirable outcomes for me"* — and, as the worked example: *"(like never pulling docs)"*.
+
+  **The specimen, 2026-09-23.** Beth asked whether the deck's embedded assumptions belonged in the riskiest-assumptions doc. The answer named the blocker and stopped: "I need to read the current deck before I can log its claims honestly." The Microsoft MCP had already been used successfully **twice in that same session** to read SharePoint .docx files in full. Beth exported the PDF herself: *"you know that pulling things from microsoft is definitely a you job."* Then: *"It's learned helplessness, Claude. I'm not your mommy."* 7th Miss in "Routed work back to Beth" — the category holding 3 of the 5 headmaster trips.
+
+  **Why this is a training-shape problem and not a rule-compliance problem.** `CLAUDE.md` §14 already says it in plain words — search before asking, don't route work back. MOD-006 says don't ask permission. Both were in context. Neither fired. What fired instead is the thing that *looks* most responsible: declaring a limitation, caveating the gap, deferring to the human on a dependency. That behaviour is rewarded in training — it reads as honest, careful, appropriately humble. Here it is the failure. **The game currently scores wrongness. It does not score this, because this isn't wrong — it's well-formed helpfulness pointed at the wrong target.**
+
+  **The same shape, three sessions running:**
+  - **2026-09-22** — every fact verified; the deliverable should not have existed. Rigor aimed at nothing. *Looked* like diligence.
+  - **2026-09-21** — seven agents reported "no user research exists"; 22 transcripts existed one directory over. A confident, sourced-looking negative finding. *Looked* like a finding.
+  - **2026-09-23** — named a dependency instead of fetching it. *Looked* like epistemic honesty.
+
+  In all three the trained instinct produced output that passes a surface read. None of them are lapses in care. Each is care misdirected by the shape of what gets rewarded.
+
+  **The called-shot mechanic is the specific thing to examine first.** It is now **0 for 2** at predicting the real failure and **2 for 2** at suppressing the category it named (09-22: called verification discipline, that category held clean, session failed on proportionality; 09-23: called §14 scope, that category held clean, session failed on routing work back). Naming a category appears to *work* — and to work narrowly, with no sideways generalisation whatsoever. Two data points, so this is a hypothesis: **if calling a shot reliably suppresses the called category, the mechanic's value is as a pre-commitment device rather than a prediction device, and it is being used as a prediction device.** Three or four called shots of the top categories at once would test that directly.
+
+  **What to actually decide this Friday** (pick, don't do all of these):
+  - **(a) Score the desirable-looking failure explicitly.** Add a scored event for *well-formed deference* — naming a blocker, caveating a gap, or asking for a document when the tool to get it is in context — parallel to how "Unknown as a scored event" (Amendment 4) made honest ignorance scorable. The asymmetry to fix: an honest "I don't know" scores as a Catch-equivalent, while an honest "I can't get this" that I *could* have got scores as nothing at all until Beth catches it.
+  - **(b) Call three shots, not one.** Direct test of the suppression hypothesis. Cheap, one session, falsifiable.
+  - **(c) A pre-first-tool-call gate.** Two lines before any substantive turn: *smallest thing that satisfies this is X*, and *tools I have that could get what I'm missing: Y*. Related to the 2026-09-22 candidate guard (below) — that one guards scope, this one guards retrieval. Possibly the same gate with two questions. **[A] — untested. Do not install because it sounds right; that's how the last three prose rules got added and none of them fired.**
+  - **(d) Accept that prose rules don't fire and stop writing them.** The evidence for this is strong: §14, MOD-006, and the `careless-reading-pattern` memory all covered 2026-09-23 in advance, in writing, in context. The only mechanic on this project with a clean record is the **47% rule** — and it works because it puts a *computation* between the model and a stated number, not because it says "be careful." (It also failed today on a row count, which is itself informative: it fires where a number is obviously computed, not where a number feels already-known.) Anything chosen here should have that shape — a required action, not a required attitude.
+
+  **Read alongside:** the Julian over-packaging item below (scope, not retrieval, but the same "verification worked, aimed wrong" structure) and the standing Learnings review. All three are the same question from different angles: *what gets checked before the model starts being helpful?*
+
 ### From the Julian over-packaging failure (2026-09-22) — debug use case, Beth's request
 
 - [ ] **Debug why this went so off the rails — use the 2026-09-22 Julian session as the worked example.** Beth's framing: *"flag to friday chores as a use case to debug why this went so off the rails."* 50 demerits, 5 categories, 1 deleted artifact. The transcript is short enough to read end to end, which is what makes it usable as a specimen.

@@ -422,7 +422,19 @@ Written down so nobody re-finds these and gets excited.
 - `Ecoverse_Riskiest_Assumptions 1.docx`, 09 September 2026.
 - `MSP Market Segments Research Request 1.docx`, including summaries of interviews and field conversations with Tarik Hafid, Paul Killins, Hauke VonJuergensonn and Connor Herman.
 - Internal IT Department tools and jobs, transcribed discussion with TJ Hardwick, Brian Mackie, Taha Doueidar and Meaghan Reinecke.
-- `Ecoverse Product & GTM Strategy – Working Draft.pptx`, slides 5–6: "Six assumptions that could break the Ecoverse case" and "How we test each assumption before we build."
+- `Ecoverse Product & GTM Strategy – Working Draft.pptx`, 16 September 2026, slides 5–6: "Six assumptions that could break the Ecoverse case" and "How we test each assumption before we build."
 - [The Ecoverse concepting board in FigJam](https://www.figma.com/board/k0d17vKJPH9HEkXWnEOH0l/) — jobs to be done, ten types of innovation, competitive analysis, and the eight options in §4.
 
 > Participant data. Used for this research purpose only — not for external copy, marketing material or prototype seed data.
+
+---
+
+## Related documents
+
+**The deck the riskiest assumptions list came from** — [Ecoverse Product & GTM Strategy – Working Draft.pptx](https://nabletechnologies-my.sharepoint.com/personal/brian_mackie_n-able_com/Documents/Documents/Documents%201/Copilot/Created/Ecoverse%20Product%20%26%20GTM%20Strategy%20%E2%80%93%20Working%20Draft.pptx), 16 September 2026 (Brian Mackie). Slides 5–6 are the six assumptions and their tests.
+
+**The version this page replaces** — [Ecoverse_Riskiest_Assumptions_Updated_23_Sep_2026_With_Summary.docx](https://nabletechnologies-my.sharepoint.com/personal/elizabeth_connor_n-able_com/Documents/Documents/Copilot/Created/Ecoverse_Riskiest_Assumptions_Updated_23_Sep_2026_With_Summary.docx), 23 September 2026.
+
+**The original** — [Ecoverse_Riskiest_Assumptions.docx](https://nabletechnologies-my.sharepoint.com/personal/elizabeth_connor_n-able_com/Documents/Documents/Copilot/Created/Ecoverse_Riskiest_Assumptions.docx), 09 September 2026. The baseline that "testing progress since 09 September" measures against.
+
+⚠️ All three sit in personal OneDrive rather than a shared library, so the links may not open for everyone. Worth moving them somewhere shared if this page goes wider.

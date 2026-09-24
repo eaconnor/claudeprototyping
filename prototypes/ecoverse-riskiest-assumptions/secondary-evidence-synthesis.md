@@ -6,7 +6,67 @@ Twenty-seven scout dossiers, roughly 5,000 lines, run on 23 September. This is t
 
 ---
 
-## The read, in one table
+## First, back to the six
+
+The deck named six risks on 09 September and set a test against each. That is where this started and it is what people have in their heads, so here is what the secondary round did to each one, in the deck's own order and using the deck's own wording.
+
+| # | Risk | The assumption, as the deck wrote it | What the secondary did to it |
+|---|---|---|---|
+| 1 | **Value** — *Combined view creates value* | Connecting categories surfaces real, unrealized value | **Backed the deck's own doubt, not the assumption.** The deck worried that "the market still rewards products that are very strong at one clear job" and that bundling could hurt us. Interviewees say they arrive shopping for one problem, and the growth rates agree: asset discovery is the fastest-growing part of endpoint security at 12.8%, patching about 8.3%, and vulnerability management the slowest at 6.38%. We had been leading with the slow one. The one thing that would settle it — whether buyers set out to buy a point solution or a suite — **has never been published by anyone.** Not Gartner, not Forrester, not G2. Secondary cannot answer this and the mocked-view interview is still the only instrument that can. |
+| 2 | **Demand** — *Pull without cannibalization* | This product vision will easily tie to business outcomes | **Found a trigger, and it isn't the one the deck was worried about.** The deck said "we think we can make an efficiency gain, but we don't know if that's enough of a draw." It isn't — nobody buys less effort, and there is no evidence that time-saving or AI is a switch trigger. But compliance is the top security investment driver at 70%, first of nine, and it is someone else's deadline rather than our efficiency claim. That moves the assumption from "efficiency will pull" to "a legal duty might." Two things still missing: the word *easily* should go, and **no source anywhere ties a compliance deadline to a rise in purchasing around that date.** |
+| 3 | **Build** — *We can build it reliably* | We can build an AI that does this reliably | **Unchanged, and now externally grounded with a number to design against.** The deck's read — "correlating signals into judgment is harder than anything we have proved so far" — turns out to be right and measurable. On ITBench, agents resolved 13.8% of site-reliability scenarios and 25.2% of compliance ones; on the independent re-run every frontier model is under 50%; Microsoft's own AIOpsLab best is 59.32%. Separately, a synthesis of 20 studies puts the usefulness crossover at about **0.70 reliability** — below that, unreliable automation is worse than none. That is the acceptance threshold the deck's test was missing. |
+| 4 | **Trust** — *Technicians will trust it* | The AI will be reliable enough for people to trust it out of the gate | **The deck's instinct was right and the deck's test needs a second instrument.** "Full autonomy is probably the wrong target; guided action with human in the loop is likely necessary" is confirmed by the market: Microsoft shipped its remediation agent read-only, Tanium requires sign-off. But two findings complicate the plan to ship the toggle and watch the 2.5/5 move. A field study of over 25 million real confirmation prompts found click-through from 10% up to 70.2%, so shipping a gate is not the same as earning trust. And self-reported trust has been shown to move independently of actual reliance — the 2.5/5 going up would not prove adoption, and it staying put would not prove failure. Also worth dropping "out of the gate"; it's the wrong bar. **And the two things the test names as the fix — approval gates and completion states — are split: gates have measured evidence, completion confirmation and audit trails have none at all.** |
+| 5 | **Commercial** — *The need is payable* | We have a real, unmet business need that translates into commercial value | **Right on all three clauses, and now we can be specific about each.** Need: credible, and evidenced — patching is the hardest NIS2 requirement at 50%, 63% of organisations are a month or more late, only 34% of UK firms have a 14-day policy. Pricing: worse than the deck assumed. The comparison price isn't $8 a user, it's zero, because Intune arrives inside a bundle already bought for email and from 1 July 2026 that bundle absorbed more, and Action1 is free to 200 endpoints. **Cyber-insurance savings: still unvalidated, and now known to be contradictory** — ENISA ranks insurance last of nine drivers at 5%, while a DSIT study found 65% of UK SMEs had to meet security requirements to get cover, half of them spending £5,000 to £25,000. **Incident-cost savings: no independent controlled study of MTTR reduction exists** — the "40 to 60%" figures circulating are vendor marketing with no baseline or method. And there is still no willingness-to-pay study for this category anywhere. |
+| 6 | **Moat** — *The advantage is a moat* | This product's advantage cannot be copied easily | **Overtaken by events, and the deck's hedge was the accurate half.** "Ownership may not be enough" was right. NinjaOne announced its Intune integration on 18 November 2025 and Action1 announced an equivalent at Microsoft Ignite the same month — no partnership, well inside twelve months. They did it differently, which the test wouldn't have caught: NinjaOne keeps control and treats Intune as a data feed, Action1 sits inside Intune and extends it. **Two threats, not one.** Retire the question as written and ask instead what they can't copy, and how long the lead lasts. |
+
+### The test plan, with owners
+
+Separate table because this is the one to take into a conversation with Taha and Brian. The test column is the deck's test with this round's amendments folded in. Owners are blank on purpose — those are decisions, not findings, and I'm not going to put someone's name against a test they haven't agreed to.
+
+| # | Risk | The test, as amended | Who we'd test with | Who's testing |
+|---|---|---|---|---|
+| 1 | Value | 5–10 short interviews against a mocked combined patch, backup and security view. Split the sample by change-control strictness, because Gartner warns that companies with strict change-approval processes get the least value from automation — and those are the compliance-driven companies we most want. | Existing customers inside the stated band: in-house IT, 100–299 staff, under about 1,000 machines. Half with a formal change-approval process, half without. Segment the install base first so we know the band exists before recruiting into it. | *unassigned* |
+| 2 | Demand | Two steps, not one. First find out whether win/loss data exists at all — that's a question to sales ops, not a project. Only if it doesn't, commission the qualitative pricing study on bundles and value props. Test the compliance trigger specifically rather than the efficiency claim. | Step one: internal, sales operations. Step two: in-house IT buyers in the band who changed tools in the last twelve months, so there's a real switch to describe rather than a hypothetical one. | *unassigned* |
+| 3 | Build | Fix the pre-flight and success-state bugs already scoped in NZO-SEV, re-measure, build the first lightweight prototype. **New: measure against 0.70 reliability on one bounded action** before attempting three-signal correlation. | No participants. Engineering, against the threshold. | *unassigned* |
+| 4 | Trust | Ship the autonomy-level / approval toggle, then re-run the reboot usability test. **New: add a behavioural measure of reliance alongside the 2.5/5 self-report**, because the two have been shown to move independently. Record whether the gate gets read or rubber-stamped. | The same technician cohort as the original reboot test, so the 2.5/5 stays comparable. People who actually run reboots and patching, not managers describing them. | *unassigned* |
+| 5 | Commercial | Blocked until Ecoverse has price points. Then apply the Cove and Adlumin attach-and-expand data to them. **New: run it against a free alternative, not a list price** — Action1 at zero to 200 endpoints and Intune at zero incremental are the real comparators. | Needs product and pricing to set the points first. Then budget holders in the band — which may not be the same people as the IT staff in tests 1 and 4, and finding that out is part of the test. | *unassigned* |
+| 6 | Moat | **Retire as written.** Replace with: what can NinjaOne and Action1 not copy, and how long does our lead last? Both have already done the Intune integration, separately and without a partner. | No participants. Competitive desk research, plus somebody opening the Canalys article by hand. | *unassigned* |
+
+Four more risks (7 to 10) have been running without being written down and have no deck test: who this is actually for, whether onboarding can carry a self-serve trial, which unit the target is expressed in, and whether we can reach and convince this buyer at all. Tests for those are in the working document.
+
+### The vendor worth copying
+
+**Tanium**, and specifically the governance mechanism rather than the product.
+
+Everyone else in the set either claims autonomy without publishing how it's controlled, or doesn't act at all. Microsoft's Vulnerability Remediation Agent is read-only by design — the agentic identity gets Read Only Operator — so there's nothing to govern, and its own documentation admits there's no way to stop or pause it once started. Tanium claims autonomous action and then publishes the controls that make it safe:
+
+- **Confidence scores** generated per deployment action from installation success rates *and* post-deployment performance baselines — CPU, memory, application crashes. Not a static risk rating. A measured read of whether this action, on this estate, tends to work.
+- **Ring deployment** with configurable entry and exit criteria per ring, cited as 1% → 15% → 40% → all. Their own phrasing: start small and scale quickly when results meet confidence thresholds.
+- **Sign-off required on every action.**
+
+Why this is the thing to copy rather than admire: it is the mechanism that makes supervised automation shippable at *today's* reliability. The literature says below about 0.70 reliability automation is worse than nothing, and the benchmarks say nobody is near that on multi-signal work. Confidence scoring plus rings is how you ship useful automation anyway — you don't need the model to be right everywhere, you need the system to know where it has been right before and to expand only there. It also generates exactly the artefact our best play sells: a per-machine, dated record of what was attempted and what actually completed.
+
+Two caveats. Tanium is an enterprise product and this is an enterprise design — ring criteria a 150-person company won't configure. And all of the above comes from Tanium's own solution material, so it is a description of a design, not independent evidence that the design works. Neither of those is a reason not to copy the pattern.
+
+One other thing worth copying, and it's a pricing model rather than a product: **Atera charges per technician with unlimited endpoints at a flat fee**, and Gartner calls that out as unique and a strength. It changes the economics rather than the volume, it needs our own cost base rather than anyone's research, and it sidesteps the per-endpoint race to zero entirely. It's a decision, not a build.
+
+### What this does to the deck's "what we need"
+
+The test slide asked for owners and dates against tests 1, 2 and 6, on the grounds that 3 and 4 already had work in flight. That reading has changed in three places.
+
+- **Test 6 doesn't need an owner, it needs a new question.** It has been answered, and the answer is no.
+- **Test 5 is blocked in a way the slide didn't flag.** It says to apply the Cove and Adlumin attach-and-expand data to "Ecoverse's actual price points." There are no Ecoverse price points. And when they exist, the test has to run against a free alternative rather than a list price.
+- **Test 2's first step is smaller than it looks.** Before commissioning a pricing study, someone needs to find out whether win/loss data exists at all. That's a question, not a project.
+
+So the three that need owners and dates are now **1, 2 and 5**. Tests 3 and 4 can still start, with the amendments above — 0.70 as the reliability target for 3, and a behavioural measure alongside the 2.5/5 for 4.
+
+Four risks have also been running without being written down: who this is actually for, whether onboarding can carry a self-serve trial, which unit the target is expressed in, and whether we can reach and convince this buyer at all. The last is the weakness Gartner names about us and it doesn't appear on either slide. Those are numbered 7 to 10 in the working document.
+
+---
+
+## The read across the corpus, in one table
+
+Same evidence, organised by question rather than by deck assumption. Useful when someone asks "what do we actually know about X."
 
 | What we wanted to know | What the secondary says | Weight |
 |---|---|---|

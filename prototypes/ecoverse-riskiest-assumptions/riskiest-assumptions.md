@@ -431,7 +431,7 @@ Written down so nobody re-finds these and gets excited.
 
 ## Related documents
 
-**The deck the riskiest assumptions list came from** — [Ecoverse Product & GTM Strategy – Working Draft.pptx](https://nabletechnologies-my.sharepoint.com/personal/brian_mackie_n-able_com/Documents/Documents/Documents%201/Copilot/Created/Ecoverse%20Product%20%26%20GTM%20Strategy%20%E2%80%93%20Working%20Draft.pptx), 16 September 2026 (Brian Mackie). Slides 5–6 are the six assumptions and their tests.
+**The deck the riskiest assumptions list came from** — [Ecoverse Product & GTM Strategy – Working Draft.pptx](https://nabletechnologies-my.sharepoint.com/personal/brian_mackie_n-able_com/Documents/Documents/Documents%201/Copilot/Created/Ecoverse%20Product%20%26%20GTM%20Strategy%20%E2%80%93%20Working%20Draft.pptx), 16 September 2026 (Brian Mackie's file). Slides 5–6 are the six assumptions and their tests. The slides credit *Riskiest Assumptions — E. Connor, 09 Sep 2026* as their source, which is why this page measures progress from 09 September. What the deck added, and what this page therefore uses, are the risk names — VALUE, DEMAND, BUILD, TRUST, COMMERCIAL, MOAT — and the short titles like "Pull without cannibalization" and "The need is payable." Those appear nowhere in the 09 September document.
 
 **The version this page replaces** — [Ecoverse_Riskiest_Assumptions_Updated_23_Sep_2026_With_Summary.docx](https://nabletechnologies-my.sharepoint.com/personal/elizabeth_connor_n-able_com/Documents/Documents/Copilot/Created/Ecoverse_Riskiest_Assumptions_Updated_23_Sep_2026_With_Summary.docx), 23 September 2026.
 

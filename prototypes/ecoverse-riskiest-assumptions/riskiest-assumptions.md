@@ -70,20 +70,20 @@ Not settled. Each one names what's behind it and how much weight it carries [[5]
 
 ## 2. The assumptions
 
-Ordered most to least risky. **NEW** marks the four that were being carried without being written down. The wording below is what each assumption should now say — click any of them for the history of how it changed. The deck's slide 5–6 numbering is kept in the detail headings so the crosswalk back to the deck still works.
+Ordered most to least risky. **NEW** marks the four that were being carried without being written down. The wording below is what each assumption should now say — click any of them for the history of how it changed. Deck slides 5–6 covered six of these. The four marked NEW were not on them.
 
 | Risk | The assumption, as it should now read | Where it stands | The test | Who's testing |
 |---|---|---|---|---|
-| **1** | [We have a real, unmet business need that translates into commercial value](#risk-1--assumption-5-a-real-unmet-need-that-translates-into-commercial-value) | Need is evidenced. **Commercial case has no evidence at all** — no willingness-to-pay study exists for this category anywhere. | Apply the Cove and Adlumin attach-and-expand data to Ecoverse price points. **Blocked: there are no price points.** When there are, run it against a free alternative, not a list price. | |
-| **2** | **NEW** — [We can reach this buyer, convince them, and prove it](#risk-2--assumption-10-we-can-reach-this-buyer-convince-them-and-prove-it) | Every weakness Gartner lists about us is commercial, not product. The deck doesn't contain this risk. | Two cheap things: make people in the band pick between the two differentiator statements, and count internally how many customer stories we could publish in 90 days. | |
-| **3** | **NEW** — [We can ship onboarding good enough to carry a self-serve trial in Phase 1](#risk-3--assumption-8-we-can-ship-onboarding-good-enough-to-carry-a-self-serve-trial) | 9 of 11 trial and onboarding items on the deck's delivery slide are Not started. **Poor trial experience eliminates 50% of shortlisted vendors** [[3]](#notes). | Set a target for time-to-first-useful-result, then five sessions with no help at all. Record where people stop. | |
-| **4** | [Can we build and sell an advantage **faster than it gets copied?**](#risk-4--assumption-6-the-advantage-cant-be-copied-easily) | **Retired as written — answered by events.** Both competitors did it in a month, without partnerships, two different ways. | Retire the old question. New one: what can't they copy, and how long does the lead last? | |
-| **5** | [A compliance duty is a repeatable reason to buy](#risk-5--assumption-2-a-compliance-duty-is-a-repeatable-reason-to-buy) — and in North America that duty comes from an **insurer or a customer**, not a regulator | Dropped "easily." Trigger identified and evidenced as a *spending driver*; **not yet evidenced as a switch trigger.** | Get the win/loss data. If none exists, qualitative pricing study on bundles and value props. Test the compliance trigger, not the efficiency claim. | **Taha** — talking to sales, pulling win/loss, sitting in on calls |
-| **6** | [We can build an AI that does this reliably](#risk-6--assumption-3-we-can-build-an-ai-that-does-this-reliably) | Unchanged, now with an external bar: **0.70 reliability on one bounded action** before attempting three-signal correlation. | **Engineering test.** Fix the pre-flight and success-state bugs scoped in NZO-SEV, re-measure against 0.70, build the first lightweight prototype. | |
-| **7** | [**Split in two:** a narrow entry point earns adoption, and the joined-up view earns expansion later](#risk-7--assumption-1-connecting-categories-surfaces-real-unrealized-value) | Interviews say people arrive shopping for one problem. **The question that would settle it has never been published by anyone**, so only our own interviews can answer it. | 5–10 interviews against the mocked combined view, sample split by change-control strictness. **The mock doesn't exist yet.** | |
-| **8** | [People will trust it when the **controls and the proof** are right](#risk-8--assumption-4-people-will-trust-it-when-the-controls-and-the-proof-are-right) | Dropped "out of the gate" — wrong bar. Market already settled the autonomy question: Microsoft shipped read-only, Tanium requires sign-off. | Ship the approval toggle, re-run the reboot usability test, and add a behavioural measure alongside the self-report. ⚠️ **Which instrument gave the 2.5/5? Needs confirming before the re-run — the score isn't comparable otherwise.** | |
-| **9** | **NEW** — [We know who this is for — internal IT, not the MSP proposition repositioned](#risk-9--assumption-7-we-know-who-this-is-for) | Holds the sharpest open question we have: whether the compliance message attracts the customer least able to use the product. | Segment the install base against the stated band, then run the Assumption 1 concept test with two groups — half with formal change approval, half without. | |
-| **10** | **NEW** — [We know the ICP unit — headcount converts to endpoints for our band](#risk-10--assumption-9-we-know-the-icp-unit) | Deck describes the target in three different units. **No published benchmark exists** and every circulating figure traces to a paywall or a competitor's blog. | Query the install base: machines per customer inside the band, by region and industry, returning the spread rather than the average. One day. | |
+| **1** | [We have a real, unmet business need that translates into commercial value](#a-real-unmet-need-that-translates-into-commercial-value) | Need is evidenced. **Commercial case has no evidence at all** — no willingness-to-pay study exists for this category anywhere. | Apply the Cove and Adlumin attach-and-expand data to Ecoverse price points. **Blocked: there are no price points.** When there are, run it against a free alternative, not a list price. | |
+| **2** | **NEW** — [We can reach this buyer, convince them, and prove it](#we-can-reach-this-buyer-convince-them-and-prove-it) | Every weakness Gartner lists about us is commercial, not product. The deck doesn't contain this risk. | Two cheap things: make people in the band pick between the two differentiator statements, and count internally how many customer stories we could publish in 90 days. | |
+| **3** | **NEW** — [We can ship onboarding good enough to carry a self-serve trial in Phase 1](#we-can-ship-onboarding-good-enough-to-carry-a-self-serve-trial) | 9 of 11 trial and onboarding items on the deck's delivery slide are Not started. **Poor trial experience eliminates 50% of shortlisted vendors** [[3]](#notes). | Set a target for time-to-first-useful-result, then five sessions with no help at all. Record where people stop. | |
+| **4** | [Can we build and sell an advantage **faster than it gets copied?**](#the-advantage-cant-be-copied-easily) | **Retired as written — answered by events.** Both competitors did it in a month, without partnerships, two different ways. | Retire the old question. New one: what can't they copy, and how long does the lead last? | |
+| **5** | [A compliance duty is a repeatable reason to buy](#a-compliance-duty-is-a-repeatable-reason-to-buy) — and in North America that duty comes from an **insurer or a customer**, not a regulator | Dropped "easily." Trigger identified and evidenced as a *spending driver*; **not yet evidenced as a switch trigger.** | Get the win/loss data. If none exists, qualitative pricing study on bundles and value props. Test the compliance trigger, not the efficiency claim. | **Taha** — talking to sales, pulling win/loss, sitting in on calls |
+| **6** | [We can build an AI that does this reliably](#we-can-build-an-ai-that-does-this-reliably) | Unchanged, now with an external bar: **0.70 reliability on one bounded action** before attempting three-signal correlation. | **Engineering test.** Fix the pre-flight and success-state bugs scoped in NZO-SEV, re-measure against 0.70, build the first lightweight prototype. | |
+| **7** | [**Split in two:** a narrow entry point earns adoption, and the joined-up view earns expansion later](#connecting-categories-surfaces-real-unrealized-value) | Interviews say people arrive shopping for one problem. **The question that would settle it has never been published by anyone**, so only our own interviews can answer it. | 5–10 interviews against the mocked combined view, sample split by change-control strictness. **The mock doesn't exist yet.** | |
+| **8** | [People will trust it when the **controls and the proof** are right](#people-will-trust-it-when-the-controls-and-the-proof-are-right) | Dropped "out of the gate" — wrong bar. Market already settled the autonomy question: Microsoft shipped read-only, Tanium requires sign-off. | Ship the approval toggle, re-run the reboot usability test, and add a behavioural measure alongside the self-report. ⚠️ **Which instrument gave the 2.5/5? Needs confirming before the re-run — the score isn't comparable otherwise.** | |
+| **9** | **NEW** — [We know who this is for — internal IT, not the MSP proposition repositioned](#we-know-who-this-is-for) | Holds the sharpest open question we have: whether the compliance message attracts the customer least able to use the product. | Segment the install base against the stated band, then run the combined-view concept test with two groups — half with formal change approval, half without. | |
+| **10** | **NEW** — [We know the ICP unit — headcount converts to endpoints for our band](#we-know-the-icp-unit) | Deck describes the target in three different units. **No published benchmark exists** and every circulating figure traces to a paywall or a competitor's blog. | Query the install base: machines per customer inside the band, by region and industry, returning the spread rather than the average. One day. | |
 
 **Owners still needed on 1, 3, 6, 7, 8, 9 and 10.** Taha has 5. Test 4 needs a rewritten question rather than an owner.
 
@@ -91,7 +91,7 @@ Ordered most to least risky. **NEW** marks the four that were being carried with
 
 ## 3. The detail
 
-### Risk 1 · Assumption 5: a real, unmet need that translates into commercial value
+### A real, unmet need that translates into commercial value
 
 **Where it stands:** need and problem evidence stronger; willingness to pay, pricing and margin unproven.
 
@@ -109,7 +109,7 @@ The need is credible. Interviewees keep naming the same four jobs — patching, 
 
 ---
 
-### Risk 2 · Assumption 10: we can reach this buyer, convince them, and prove it
+### We can reach this buyer, convince them, and prove it
 
 **Where it stands:** new this round. The weakness Gartner names and the deck doesn't.
 
@@ -125,7 +125,7 @@ We do have share where we're already known: [Canalys](https://www.channele2e.com
 
 ---
 
-### Risk 3 · Assumption 8: we can ship onboarding good enough to carry a self-serve trial
+### We can ship onboarding good enough to carry a self-serve trial
 
 **Where it stands:** new this round. Nothing we reviewed suggests we can, and the Phase 1 gate assumes a working trial.
 
@@ -137,7 +137,7 @@ The buying research makes this sharper than it looks. **50% of buyers call a tri
 
 ---
 
-### Risk 4 · Assumption 6: the advantage can't be copied easily
+### The advantage can't be copied easily
 
 **Where it stands:** retired as written. Answered by events.
 
@@ -155,7 +155,7 @@ And the category now has a name we don't own. Gartner calls it autonomous endpoi
 
 ---
 
-### Risk 5 · Assumption 2: a compliance duty is a repeatable reason to buy
+### A compliance duty is a repeatable reason to buy
 
 **Where it stands:** testing in progress. Business outcomes recur; a repeatable switch trigger and commercial pull are not yet proven. **Drop "easily."**
 
@@ -178,7 +178,7 @@ Compliance keeps coming up as the reason to spend — **70% of EU organisations 
 
 ---
 
-### Risk 6 · Assumption 3: we can build an AI that does this reliably
+### We can build an AI that does this reliably
 
 **Where it stands:** unchanged by this round's evidence, but now with an external bar to design against. This is an engineering test.
 
@@ -196,7 +196,7 @@ The deck's read — *"correlating signals into judgment is harder than anything 
 
 ---
 
-### Risk 7 · Assumption 1: connecting categories surfaces real, unrealized value
+### Connecting categories surfaces real, unrealized value
 
 **Where it stands:** mixed evidence, now pointing the other way. Direct evaluation of the mocked combined view is still outstanding.
 
@@ -212,7 +212,7 @@ Interviewees say they arrive shopping for one problem; one put it as replacing a
 
 ---
 
-### Risk 8 · Assumption 4: people will trust it when the controls and the proof are right
+### People will trust it when the controls and the proof are right
 
 **Where it stands:** testing in progress. Interviews clarify the trust conditions; they don't prove the proposed controls move the baseline. **Drop "out of the gate" — wrong bar.**
 
@@ -234,7 +234,7 @@ The trust conditions came out clearly: approvals, accuracy, an audit trail, and 
 
 ---
 
-### Risk 9 · Assumption 7: we know who this is for
+### We know who this is for
 
 **Where it stands:** new this round. Named properly in the deck for the first time, not yet tested.
 
@@ -253,7 +253,7 @@ One encouraging signal from the Canadian data, in roughly the right size band: o
 
 ---
 
-### Risk 10 · Assumption 9: we know the ICP unit
+### We know the ICP unit
 
 **Where it stands:** new this round. The cheapest thing here to settle, and still unsettled.
 
@@ -271,7 +271,7 @@ One research firm does hold it: [Mordor](https://www.mordorintelligence.com/indu
 
 ## 4. Concepting — what we could do
 
-**This section is concepting, not evidence.** We took what we already know — the interviews, the deck, the secondary research above — and ran the propositions through three frameworks on [the FigJam board](https://www.figma.com/board/k0d17vKJPH9HEkXWnEOH0l/): jobs to be done, ten types of innovation, and competitive analysis. Eight options came out. Nothing here has been tested with a customer. **The three struck through won't work, and they're kept because ruling something out is a result and it saves the next round.**
+**This section is concepting, not evidence.** I took what we already know — the interviews, the deck, the secondary research above — and ran the propositions through three frameworks on [the FigJam board](https://www.figma.com/board/k0d17vKJPH9HEkXWnEOH0l/): jobs to be done, ten types of innovation, and competitive analysis. Eight options came out. Nothing here has been tested with a customer. **The three struck through won't work, and they're kept because ruling something out is a result and it saves the next round.**
 
 **On the analyst column.** Analysts score two things separately: how good your product and plan look, and how well you actually sell, support and get known. Almost everything on this list only moves the first. Only the go-to-market push moves the second, and the second is what gets anyone into the top group. **That's my reading of how the scoring works, not something Gartner has stated.**
 
@@ -312,9 +312,9 @@ Two versions of the last clause, for two different fights. **Against Microsoft: 
 
 | What to test | Why | Where |
 |---|---|---|
-| **Does proof actually move a buyer?** | The one trust condition with **no measured evidence anywhere.** Approval gates have evidence; accuracy has a threshold; audit trails and completion confirmation have nothing. We'd be selling the untested one. | Fold into the Assumption 1 concept test |
+| **Does proof actually move a buyer?** | The one trust condition with **no measured evidence anywhere.** Approval gates have evidence; accuracy has a threshold; audit trails and completion confirmation have nothing. We'd be selling the untested one. | Fold into the combined-view concept test |
 | **Does a duty turn into a purchase?** | No source ties a compliance deadline to a rise in buying around it. | Taha's win/loss work |
-| **Which duty, for which market?** | Four different conversations — UK statute, PCI DSS, an insurer's form, a customer's questionnaire. We've been writing one. | Assumption 7 |
+| **Which duty, for which market?** | Four different conversations — UK statute, PCI DSS, an insurer's form, a customer's questionnaire. We've been writing one. | Who this is for |
 | **Does the insurance leg hold?** | ENISA puts insurance last of nine at **5%**; Canadian data has **39–40%** of insured firms asked for new proof of controls last year. Nobody has reconciled them. | Needs a scout pass, not a test |
 
 ### Vendors worth referencing
@@ -330,7 +330,7 @@ Not products to copy — mechanisms other people have already proved work in thi
 - **Confidence scoring needs a population of prior outcomes, and we have one** at mid-market scale where Tanium doesn't.
 - **Gartner already scores our automation as a strength** — monitoring, threat detection, forecasting, automated remediation, agent frameworks, generative scripting. The weaknesses it names are all commercial.
 
-⚠️ **The honest counter, and it's the same one as Risk 4:** whether our endpoint data is actually good enough to produce better confidence scores is unresolved, and our own deck argues both sides — slide 2 treats rich endpoint data as core IP, slide 27 lists it as something to spike into.
+⚠️ **The honest counter, and it's the same one as the copyability question:** whether our endpoint data is actually good enough to produce better confidence scores is unresolved, and our own deck argues both sides — slide 2 treats rich endpoint data as core IP, slide 27 lists it as something to spike into.
 
 **Atera — how to price out of the race to zero.** Atera charges **per technician with unlimited endpoints at a flat fee**, and Gartner calls that out as unique and a strength. A pricing move rather than a proof move: it changes the economics rather than the volume, needs our own cost base rather than anyone's published research, and it stops Action1's free tier and Intune's zero incremental being the comparison. **A decision, not a build.**
 
@@ -363,7 +363,7 @@ Where something is paywalled, vendor-sponsored, licensed, or unreachable, it say
 - **MarketsandMarkets**, [endpoint security](https://www.marketsandmarkets.com/Market-Reports/TableOfContent/endpoint-security-market-29081235.html), July 2026 — the 12.8% asset-discovery growth figure and the $17.76B global total. The one report worth buying if we buy one; $4,950.
 - **Mordor Intelligence**, [endpoint management](https://www.mordorintelligence.com/industry-reports/unified-endpoint-management-market) and [security and vulnerability management](https://www.mordorintelligence.com/industry-reports/security-and-vulnerability-management-market) — the 71.6% and 71.1% large-enterprise concentration, North America ~40% regional share, and the only research firm that publishes its method.
 - **IMARC**, [patch management](https://www.imarcgroup.com/patch-management-market) — the 8.3% figure.
-- **Gartner** — [public endpoint management category page](https://www.gartner.com/reviews/market/endpoint-management-tools), and the [NinjaOne reprint](https://www.ninjaone.com/resource/gartner-magic-quadrant-2026-mq/) as a public route to the ranking. ⚠️ **Our own copy is licensed: internal use only, not to be copied or sent outside N-able, and not to be fed into any AI tool.** The adoption forecast cited under Assumption 10 has been republished without attribution on a vendor blog — cite it from our licensed copy and its document number, not that page.
+- **Gartner** — [public endpoint management category page](https://www.gartner.com/reviews/market/endpoint-management-tools), and the [NinjaOne reprint](https://www.ninjaone.com/resource/gartner-magic-quadrant-2026-mq/) as a public route to the ranking. ⚠️ **Our own copy is licensed: internal use only, not to be copied or sent outside N-able, and not to be fed into any AI tool.** The adoption forecast cited under reaching this buyer has been republished without attribution on a vendor blog — cite it from our licensed copy and its document number, not that page.
 - **Forrester**, [The Forrester Wave: Endpoint Management Platforms, Q2 2026](https://www.forrester.com/report/the-forrester-wave-tm-endpoint-management-platforms-q2-2026/RES195001) — the "unify IT and security operations on a single platform" criterion. Body gated; title and criterion public.
 - **Canalys**, via [ChannelE2E](https://www.channele2e.com/news/big-3-rmm-psa-vendors-see-market-share-slip-canalys) — the 11.4% vs 9.4% share figures. ⚠️ Use with care: the article blocks automated reading, the period looks like one quarter of 2024 rather than a year, the fifth-placed vendor is reported two ways, and the shares don't sum as described. Someone should open it by hand.
 - **Microsoft**, [Intune pricing](https://www.microsoft.com/en-us/security/microsoft-intune-pricing), [2026 bundle changes](https://www.microsoft.com/en-us/licensing/news/2026-m365-packaging-pricing-updates), [licensing documentation](https://learn.microsoft.com/en-us/intune/fundamentals/licensing) — why the comparison price is zero. Microsoft's own words: most organisations get Intune inside a Microsoft 365 bundle rather than buying it directly. Note Intune is licensed per user, not per device.

@@ -262,6 +262,8 @@ Full detail: `briefs/insights-report-2026-09-01.md`. Five decisions, not build t
 
 ## Done
 
+- [x] **Stop hook's auto-commit push silently no-op'd twice in one session.** — 2026-09-25. `git push origin main` pushes the local `main` branch ref, not `HEAD` — in this environment `HEAD` runs detached and every auto-commit lands there, leaving local `main` stale. The push reported success (no error) but never advanced `origin/main`; caught only because the Stop hook re-fired complaining of uncommitted changes when `git status` was already clean, twice (10:22 and 10:25 auto-commits, both stranded until pushed by hand as `HEAD:main`). Fixed the hook itself: `git push origin main` → `git push origin HEAD:main`, which pushes whatever's actually checked out regardless of detached state. Mechanically fixable repeat, no PreToolUse hook needed — the Stop hook's own command was the bug.
+
 - [x] **Preflight check for write paths.** — 2026-08-14. Hook confirmed live in `.claude/settings.json` SessionStart. Runs curl (Atlassian), `gh auth status`, and Figma MCP config check. Active and firing at session start.
 
 - [x] **Golden-dataset-scout output persisted — all 11 companies on disk.** — 2026-08-07. The "20 companies" claim in the original chore entry was wrong; `graded.json` confirms the dataset was always 11 companies (airbnb, betamax, google-1998, googleglass, googleplus, iphone, juicero, newcoke, quibi, tesla, webvan). All 11 source files are in `eval/council-calibration/golden-sources/` (written Aug 3). Task `whmd9kp5l` has expired; no loss occurred.

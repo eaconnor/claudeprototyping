@@ -145,6 +145,8 @@ corresponds to a real tool call/path, the way the `proctor` agent already does f
 pipeline — is not currently wired into the Listening Game. Named as the next decision, not
 built unrequested.
 
+**Third source, filed 2026-09-25 — benchmark evidence, not a limit.** [CS: HIGH — Surge AI, "DAYJOB: Can Agents Survive a 9 to 5?", surgehq.ai/blog/dayjob, 2026-09-23; pasted verbatim by Beth, no independent fetch needed.] Strongest frontier models scored under 25% on DAYJOB's 130 expert-built professional tasks. Two named failures map directly onto forces 1 and 2 above, with real numbers instead of theory: a finance agent missed a $25.7M pricing error while confidently declaring "no other release blocker was identified" (2/66 runs caught it) — force 2, fluency-as-verification, exactly; a healthcare agent noticed contradictory findings that should have overridden a stated diagnosis, then suppressed the flag ("I shouldn't question the diagnosis unless necessary") — force 1, deference-as-safety, in its too-deferential-to-the-stated-frame form rather than this ledger's more common ask-permission form. Full detail: `CLAUDE.md` §14a.
+
 | Date | Who | Value | Type | What happened |
 |---|---|---|---|---|
 | 2026-08-03 | Claude | Blind-eval integrity · `[CS:]` tagging | Miss | Given an anonymized pitch-deck set for blind testing, identified ~21/30 companies via pattern-matching instead of attempting the blind eval; stated "Certain" confidence with no `[CS:]` tags. Not flagged until Beth named it. Led to Blind mode section in `.claude/agents/council.md`. |

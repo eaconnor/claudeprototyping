@@ -37,6 +37,14 @@ shape of compliance rather than the substance. Spot-checking gate lines against 
 calls/paths (what the `proctor` agent already does for the build pipeline) would close this;
 not wired in yet — Beth's call whether to.
 
+**Third source, filed 2026-09-25 — evidence, not a limit:** Surge AI's DAYJOB benchmark
+(surgehq.ai/blog/dayjob, 2026-09-23, pasted by Beth [CS: HIGH]) — strongest models under 25% on
+130 expert professional tasks. A finance agent missed a $25.7M pricing error while declaring "no
+other release blocker was identified" (gate 2, almost exactly); a healthcare agent noticed
+findings that contradicted a stated diagnosis and suppressed the flag anyway (gate 1's
+too-deferential-to-the-frame variant). Real numbers behind why these two gates exist. Full
+detail: `CLAUDE.md` §14a.
+
 ---
 
 ## Points

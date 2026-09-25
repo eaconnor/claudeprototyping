@@ -69,6 +69,22 @@
 
 ---
 
+### From Insights Report (2026-09-25) — Process Decisions
+
+Full detail: `briefs/insights-report-2026-09-25.md`. Five decisions, not build tasks — the report
+also notes the called-shot/self-report mechanic was retired in-session today (Amendment 5,
+`CONDUCT-LEDGER.md`) and replaced with four structural gates plus one real, tested `PreToolUse`
+hook for the "map means Figma" category. That's a live-built exception to "report, don't build,"
+not a precedent for this report to build unattended going forward.
+
+- [ ] **Recompute `GAME-STATE.md`'s Points-section total, or keep it flagged?** Unreconciled since 2026-08-25, three insights reports running on the same open arithmetic.
+- [ ] **Does today's four-gate redesign satisfy the Learnings-review chore (below), or does that chore stay open on its own terms?** Arguably closer to answered than on 2026-09-01 — worth a line either way.
+- [ ] **Wire `listening-game` into the `SessionStart` hook for real, or accept the non-invocation gap as recurring?** Third insights report naming the identical gap (2026-08-21, 2026-09-01, 2026-09-25).
+- [ ] **Build the same `PreToolUse`-hook pattern for the other hot categories** (routed-work-back, verification discipline) now that a tested template exists — which one next, or wait a week and watch the first one?
+- (Hand-carry the 2 PENDING mods — unchanged from 2026-08-21, see that entry below.)
+
+---
+
 ### From Insights Report (2026-08-13) — Automation & Process Discipline
 
 - [x] **Define prototype acceptance rubric.** — 2026-08-14. Tabled. Not a thing.

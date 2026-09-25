@@ -11,7 +11,19 @@
           {
             "type": "command",
             "command": "echo '=== PREFLIGHT ===' && echo 'Atlassian:' && curl -s -I https://n-able.atlassian.net/ | grep HTTP && echo 'GitHub:' && gh auth status 2>/dev/null | head -1 || echo 'gh CLI not authenticated' && echo 'Figma MCP:' && grep -q figma .mcp.json 2>/dev/null && echo 'Configured' || echo 'Not configured'",
-            "statusMessage": "Checking write paths…"
+            "statusMessage": "Checking write paths\u2026"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); file_path=$(printf '%s' \"$input\" | jq -r '.tool_input.file_path // \"\"'); content=$(printf '%s' \"$input\" | jq -r '.tool_input.content // .tool_input.new_string // \"\"'); case \"$file_path\" in *.md|*.html) if printf '%s' \"$content\" | grep -qiE 'service blueprint|journey map|experience map|swimlane|blueprint'; then jq -n --arg reason \"This file ($file_path) contains diagram/map language (blueprint/journey map/swimlane). Project memory (feedback_map_means_figma_diagram.md) and CONDUCT-LEDGER.md (3 repeat Misses: 2026-08-04, 2026-08-12 x2) say maps/diagrams in this project go to Figma, not markdown/HTML. Confirm this write is a citation/reference, not a new diagram, before proceeding.\" '{hookSpecificOutput:{hookEventName:\"PreToolUse\",permissionDecision:\"ask\",permissionDecisionReason:$reason}}'; fi ;; esac",
+            "statusMessage": "Checking for map/diagram-shaped content\u2026"
           }
         ]
       }
@@ -23,7 +35,7 @@
           {
             "type": "command",
             "command": "git add -A && (git diff --cached --quiet || git commit -m \"auto-commit: session end $(date -u +%Y-%m-%dT%H:%M:%SZ)\") && git push origin main 2>&1 || true",
-            "statusMessage": "Committing & pushing session work…"
+            "statusMessage": "Committing & pushing session work\u2026"
           }
         ]
       }

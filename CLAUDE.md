@@ -369,6 +369,23 @@ Beth doesn't need her work explained back to her. She is a senior UX designer, t
 
 ---
 
+## 14a. THE FOUR GATES — structural checks, not self-report (added 2026-09-25)
+
+Prose rules don't fire reliably — recall competes with generation and loses (`CHORES.md`, 2026-09-23 entry; the standing Learnings-review chore). The one mechanic on this project with a clean record, the 47% rule, works because it's a required computation, not a required attitude. These four gates generalize that shape across the conduct ledger's recurring failure families. Full rationale: `CONDUCT-LEDGER.md` Amendment 5 (2026-09-25).
+
+**Grounding** [CS: VERIFIED — arXiv:2212.08073, "Constitutional AI: Harmlessness from AI Feedback"]: the paper's supervised-learning gain came from critiquing a response against an explicit written principle and revising it *before* the response was finalized — not from hoping a trained instinct fires unprompted. The paper is candid that the critique step itself is often wrong ("critiques were sometimes reasonable, but often made inaccurate or overstated criticisms," §4.2) — the gate doesn't have to reason well to work; it has to exist and come first. [CS: HIGH — this is an inference-time practice modeled on a training-time technique, not a claim that the same RLAIF procedure runs here.] Same paper names the trained root of the worst category on this ledger directly: a model trained partly for harmlessness/caution "tend[s] to be more evasive and generally less helpful" (§1, footnote) — that's the source of "routed work back to Beth," not a resolve problem to try harder against.
+
+1. **Deference gate.** Before ending a turn on a question: state "tools I have that could resolve this myself: [x]." Non-empty list → use it first, don't ask.
+2. **Verification gate.** Any stated count, status, "fixed," "verified," or "confirmed" must be preceded, same turn, by the tool call that produced it. Never type the claim before the result exists.
+3. **Context-read gate.** Before writing or building: name the existing artifact read (path), or "none exist — confirmed via [command]."
+4. **Scope gate.** Before the first tool call: "smallest thing that satisfies this: X." Grade the output against that line, not against maximum thoroughness.
+
+These are checkable directly in the transcript — gate line present-and-real before the qualifying action, or it isn't. This replaces self-report as the Listening Game's scoring input (see `GAME-STATE.md`, `CONDUCT-LEDGER.md` Amendment 5, and the `listening-game`/`game-close` skills).
+
+**Known limit, named not solved:** the gate *lines* are still self-generated. [CS: HIGH — sourced from a Vals AI benchmark-cheating study Beth pasted 2026-09-25 (via tl;dr.tech; no independent primary-source fetch — tl;dr.tech is proxy-blocked from this environment)]. Their finding — vendor-reported benchmark scores diverging sharply from independent audits because "the same guardrails preventing models from cheating during training are being used during evaluations" — names the same risk here: a fabricated "tools I have: none" or a hollow "smallest thing that satisfies this" is the shortcut-shaped cheat their study measured, not a fix. Spot-checking that a gate line corresponds to a real tool call/path (not just that the line exists) is what would close this — the `proctor` agent already does exactly this kind of compliance check for the build pipeline; it is not currently wired into the Listening Game. Named as the next thing to decide, not built unrequested.
+
+---
+
 ## 15. MODEL GUIDANCE
 
 **Default: Sonnet.**

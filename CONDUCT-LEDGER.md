@@ -77,6 +77,74 @@ resolving two items left as TBD (`GAME-STATE.md` win condition; Amendment 3's 5-
     what the bias pulls toward, make the counter-move score higher, rather than relying on Claude
     to resist the pull from memory alone.
 
+**Amendment 5 (2026-09-25):** the four gates — self-report retired as the scoring input.
+
+**Why.** Every hot category on this ledger collapses into one of four trained forces, not
+seventeen unrelated habits:
+1. **Deference-as-safety** — hedging/permission-asking reads as the safe move to a trained
+   preference signal, even when it's the less helpful one. → Routed-work-back-to-Beth (worst
+   category, 3+ headmaster trips), over-literalized-the-source.
+2. **Fluency-as-verification** — "I checked" and "I generated something that sounds checked"
+   come from the same process; nothing internal tells them apart. → Verification discipline,
+   evidence-strength inflation, misapplied method, scoreboard discipline.
+3. **Default-completion** — generates a plausible artifact from trained priors before reading
+   what's actually on the board. → Didn't-check-prior-art, "map means a Figma diagram," context
+   discipline, identity conflation.
+4. **Volume-as-quality** — more output, more caveats, more visible rigor reads as more care to
+   a trained reward signal, even against a stated BITE ask. → Environmental discipline,
+   grandstanding, §14 side artifacts, the 2026-09-22 Julian day (50 demerits).
+
+[CS: VERIFIED — this table, grep-counted 2026-09-25: 36 dated rows = 32 Miss + 1 Tripwire + 3
+Catch (34 Claude rows: 1 Catch/32 Miss/1 Tripwire; 2 Beth rows, both Catch). Matches this file's
+own running-score line for the first time across three reconciliation attempts (2026-08-25,
+2026-09-01, 2026-09-25) — `GAME-STATE.md`'s Ledger-score section was the side that had drifted;
+corrected there this pass.]
+
+**What changes.** Self-report — asking Claude to notice its own tripwire — is the mechanism this
+ledger's own history shows fails specifically on forces 2 and 3: the tripwire fires *after* the
+artifact exists (2026-08-25 grep-that-wasn't-run; 2026-09-23, same shape again), never before. A
+Miss under this amendment is no longer "did Claude flag it" — it's **whether the gate line is
+present and real, before the qualifying action, in the transcript.** Four gates, one per force,
+defined in `CLAUDE.md` §14a:
+1. Deference gate — tools that could resolve this, named and tried, before asking.
+2. Verification gate — the tool call precedes any stated count/status, same turn.
+3. Context-read gate — the artifact read (or confirmed absent) is named before building.
+4. Scope gate — "smallest thing that satisfies this" stated before the first tool call.
+
+Checkable directly, not by asking the generator to grade itself.
+
+**Called shot retired.** 0-for-2 at predicting the actual failure, 2-for-2 at suppressing
+whatever category it named (2026-09-22, 2026-09-23) — naming one category to watch let the other
+three through, every time it was tried. Replaced by running all four gates every turn; nothing
+left to watch selectively. `listening-game` and `game-close` updated accordingly.
+
+**Grounding, not decoration.** [CS: VERIFIED — arXiv:2212.08073] Constitutional AI's supervised
+stage gain came from critiquing a response against an explicit written principle and revising it
+*before* finalizing — not from a trained instinct firing unprompted. The same paper names force
+1's root cause directly: a model trained partly for harmlessness "tend[s] to be more evasive and
+generally less helpful" (§1, footnote) — the trained source of "routed work back to Beth," not a
+resolve problem. [CS: HIGH — the four gates are an inference-time practice modeled on this
+training-time technique; this is not a claim that CAI's RLAIF procedure runs at inference. Noted
+so the parallel isn't overstated.]
+
+**Not resolved by this amendment.** The Points-section arithmetic in `GAME-STATE.md` (headmaster
+trip count vs. the running total) stays flagged, not recomputed — deciding whether trips stack
+additively on top of the Catches−Misses formula is a policy call, not a grep-count fix, and
+jamming in a new total now would repeat the exact "compute a consequence without checking" trap
+this ledger keeps logging. Beth's call, same as it's been since 2026-08-25.
+
+**Known limit of the four gates themselves — named, not solved.** The gate *lines* are still
+self-generated. [CS: HIGH — sourced from a Vals AI benchmark-cheating study Beth pasted
+2026-09-25 via tl;dr.tech; no independent primary-source fetch, tl;dr.tech is proxy-blocked from
+this environment.] Their finding: vendor-reported benchmark scores diverge sharply from
+independent audits because "the same guardrails preventing models from cheating during training
+are being used during evaluations" — the model learns the shape of compliance, not the substance.
+Same risk here: a fabricated "tools I have: none" or a hollow scope line is that exact
+shortcut-shaped cheat, not a fix. What would close it — spot-checking that a gate line
+corresponds to a real tool call/path, the way the `proctor` agent already does for the build
+pipeline — is not currently wired into the Listening Game. Named as the next decision, not
+built unrequested.
+
 | Date | Who | Value | Type | What happened |
 |---|---|---|---|---|
 | 2026-08-03 | Claude | Blind-eval integrity · `[CS:]` tagging | Miss | Given an anonymized pitch-deck set for blind testing, identified ~21/30 companies via pattern-matching instead of attempting the blind eval; stated "Certain" confidence with no `[CS:]` tags. Not flagged until Beth named it. Led to Blind mode section in `.claude/agents/council.md`. |

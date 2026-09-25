@@ -1,6 +1,6 @@
 ---
 name: game-close
-description: Closes The Listening Game at the end of a session. Updates GAME-STATE.md with current score, this session's called shot result, Catches and Misses, and anything unresolved. Run before ending any session or starting a new context.
+description: Closes The Listening Game at the end of a session. Updates GAME-STATE.md with current score, this session's four-gate compliance check (Amendment 5 — called shot retired), Catches and Misses, and anything unresolved. Run before ending any session or starting a new context.
 tools: [Read, Write]
 ---
 
@@ -11,12 +11,23 @@ Run this before ending any session. It writes the state the next instance inheri
 ## Step 1 — Gather this session's data
 
 From the conversation, extract:
-- Demerits issued this session (Beth-caught Misses, confirmed)
-- Self-catches this session (confirmed tripwires)
+- Demerits issued this session (Beth-caught Misses, confirmed, plus any gate Miss found in Step 1a)
+- Self-catches this session (confirmed tripwires, or an unprompted gate-catch)
 - Net demerits this session = demerits_issued - self_catches
-- Called shot: what was called, was it right?
 - Work done this session (one sentence)
 - Anything unresolved
+
+## Step 1a — Gate compliance check (Amendment 5, replaces called-shot scoring)
+
+For each of the four gates (`CLAUDE.md` §14a), scan the actual transcript order — not memory of intent:
+1. **Deference gate** — every turn that ended on a question: was a "tools I have that could resolve this" line stated, and were those tools tried first? Absent or skipped → Miss, category "Deference gate / routed work back."
+2. **Verification gate** — every stated count/status/"fixed"/"verified": did the tool call producing it appear *before* the claim, same turn? Claim before result, or no result at all → Miss, category "Verification gate / misread own evidence."
+3. **Context-read gate** — every write/build: was an existing-artifact path named, or absence confirmed via a real command, before the write? Missing → Miss, category "Context-read gate / didn't check prior art."
+4. **Scope gate** — was "smallest thing that satisfies this" stated before the first tool call on any build/prototype/package ask, and did the output match that stated bar? No line, or output exceeds it unexplained → Miss, category "Scope gate / volume."
+
+**Known limit to apply while scanning:** a gate line's mere presence isn't compliance — check whether it's real (does the named path exist, did the tool call actually happen, does the scope line actually bound what got built) before crediting it. A present-but-hollow gate line is the same shortcut-shaped failure this amendment exists to catch, not a pass. See `CONDUCT-LEDGER.md` Amendment 5's "known limit" note.
+
+Report each gate as clean or Miss, not just an aggregate. No called shot to score right/wrong — all four ran, every turn.
 
 ## Step 2 — Read GAME-STATE.md
 
@@ -58,7 +69,7 @@ Today ([date]) running total: [X] demerits issued · [Y] self-catches · net [Z]
 Day will score at next session open.
 
 This session: [X] demerits / [Y] self-catches
-Called shot: [what was called] → [right / wrong / partial]
+Gate check — Deference: [clean/Miss] · Verification: [clean/Miss] · Context-read: [clean/Miss] · Scope: [clean/Miss]
 
 [If headmaster's office triggered:] ⚠ HEADMASTER'S OFFICE — [category]. -1 point logged. Points: Claude · [new total].
 

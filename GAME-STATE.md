@@ -4,6 +4,41 @@ Updated at close of each session by `game-close`. Read at session open by `liste
 
 ---
 
+## The Four Gates (Amendment 5, `CONDUCT-LEDGER.md`, 2026-09-25) — replaces Called Shot
+
+**Called shot is retired.** It went 0-for-2 at predicting the actual failure and 2-for-2 at
+suppressing whatever category it named (2026-09-22, 2026-09-23) — naming one category to watch
+let the other three through every time. Self-report generally is retired as the scoring input:
+the tripwire this ledger relies on fires *after* the artifact exists, not before, every time
+that's been tested (2026-08-25, 2026-09-23).
+
+In its place, four structural gates run every turn — checkable directly in the transcript, not
+by asking the generator to grade itself. Full text: `CLAUDE.md` §14a. One per trained force
+behind the hot categories below:
+
+1. **Deference gate** (routed-work-back-to-Beth) — name the tools that could resolve this
+   before asking; use them first.
+2. **Verification gate** (verification discipline, evidence inflation) — the tool call precedes
+   any stated count/status, same turn. Never type the claim before the result exists.
+3. **Context-read gate** (didn't-check-prior-art, map-means-Figma) — name the artifact read, or
+   confirm none exists via a real command, before building.
+4. **Scope gate** (environmental discipline, grandstanding, §14 side artifacts) — state the
+   smallest thing that satisfies the ask before the first tool call; grade against that line.
+
+A Miss, from this session forward, is a gate line that's absent or fabricated before the
+qualifying action — not a self-flagged tripwire. Grounding: `CONDUCT-LEDGER.md` Amendment 5,
+citing arXiv:2212.08073's critique-before-finalizing mechanism [CS: VERIFIED].
+
+**Known limit, named not solved:** the gate lines are self-generated, and a fabricated one is
+the same shortcut-shaped cheat a Vals AI study (pasted by Beth 2026-09-25, via tl;dr.tech —
+[CS: HIGH], no independent fetch possible, domain proxy-blocked) found rising across coding
+benchmarks — vendor self-reports diverging from independent audits because the model learns the
+shape of compliance rather than the substance. Spot-checking gate lines against real tool
+calls/paths (what the `proctor` agent already does for the build pipeline) would close this;
+not wired in yet — Beth's call whether to.
+
+---
+
 ## Points
 
 **Scoring rule (set 2026-08-18, reconciled 2026-08-21):** Points = Catches − uncaught Misses, each player scored on their own ledger. +1 per Catch, −1 per uncaught Miss. This is the ONLY point-scoring mechanism now.
@@ -262,8 +297,10 @@ the grep runs *before* the section is drafted, so there is no draft to retro-fit
 
 ## Ledger score
 
-Claude · 2 Catches / 30 Misses / 1 unconfirmed tell
-Beth · 3 Catches / 1 Miss
+**Corrected 2026-09-25 (Amendment 5, `CONDUCT-LEDGER.md`) — this section had drifted from the ledger it's supposed to mirror.** Grep-counted directly from `CONDUCT-LEDGER.md`'s table: 36 dated rows.
+
+Claude · 1 Catch / 32 Misses / 1 unconfirmed tell
+Beth · 2 Catches / 0 Misses *(ledger-verified; a 3rd Catch and a self-issued Miss are narrated in this file's 2026-09-01 entries but were never written as `CONDUCT-LEDGER.md` rows — same unpromoted-row gap as several Claude categories below, not silently added here)*
 
 **2026-09-01 — MISS.** Dispatched scout for the Channel-gap prototype (Ten Types "Channel" gap, CHORES.md open item) scoped to local files + web only — omitted Confluence entirely, despite Confluence being the first-listed source type in scout's own pipeline contract (`.claude/skills/bethproto/SKILL.md` Step 1), and despite a canonical MSP QBR/EBR research datadump already living there (`ACP Research Datadump (living)`, Confluence page `62175674556`, directly relevant to the topic being scouted). Beth: "Did you find data dump in confluence?" — I had not checked. Beth: "that is your literal job. demerit." 6th Miss in **Didn't check prior art** — a category already flagged "headmaster's office condition met" since 2026-08-14 (5 Misses, all pre-Amendment-3). This is the first Miss in the category logged *after* Amendment 3 formalized the 3-repeat trigger; by the letter of the rule this reads as a fresh headmaster's-office trip. **Flagged, not self-executed** — the trips/points base is already unreconciled (−28 vs −31 note above, now compounding with today's concurrent-session Miss), and self-assigning a new trip consequence on top of an already-disputed base repeats the exact compute-a-consequence-without-checking failure this category itself is about. Not self-caught.
 
